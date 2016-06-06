@@ -11,12 +11,11 @@ const devtools = window.devToolsExtension || (() => noop => noop);
 const isDev = process.env.NODE_ENV !== 'production';
 
 export default function configureStore(initialState = {}) {
-
   const enhancers = [
     devtools(),
   ];
   const middlewares = [
-    thunk
+    thunk,
   ];
 
   if (isDev) {
