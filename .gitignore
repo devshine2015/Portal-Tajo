@@ -9,3 +9,7 @@ build/
 #
 node_modules/
 npm-debug.log
+
+# sublime
+*.sublime-project
+*.sublime-workspace
