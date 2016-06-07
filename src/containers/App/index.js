@@ -6,11 +6,11 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        app root
-        <Link to="/another">Got to Another</Link>
+        Lol
+        <Link to="/another">Go to Another</Link>
       </div>
     );
   }
 }
 
-module.exports = App;
+export default App;

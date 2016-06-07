@@ -17,10 +17,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import configureStore from './redux/store';
-import routes from './routes';
 
-// Observe loading of Open Sans (to remove open sans, remove the <link> tag in
-// the index.html file and this observer)
 // import styles from 'containers/App/styles.css';
 
 // Create redux store with history
@@ -29,10 +26,11 @@ const initialState = {};
 const store = configureStore(initialState);
 
 // Set up the router, wrapping all Routes in the App component
+import createRoutes from './routes';
 
 ReactDOM.render(
   <Provider store={store}>
-    {routes}
+    {createRoutes(store)}
   </Provider>,
   document.getElementById('app')
 );

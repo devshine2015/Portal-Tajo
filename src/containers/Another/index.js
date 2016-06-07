@@ -7,10 +7,10 @@ class Another extends React.Component {
     return (
       <div>
         some another component
-        <Link to="/">Got to Root</Link>
+        <Link to="/">Go to Root</Link>
       </div>
     );
   }
 }
 
-module.exports = Another;
+export default Another;
