@@ -1,0 +1,11 @@
+@media screen and (min-width: 100px) {
+
+  .controlWrapper {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .controlWrapper:last-child {
+    margin-bottom: 0;
+  }
+}

@@ -16,6 +16,7 @@ import 'file?name=[name].[ext]!./.htaccess';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { browserHistory } from 'react-router';
 import configureStore from './redux/store';
 
 // import styles from 'containers/App/styles.css';
@@ -23,7 +24,7 @@ import configureStore from './redux/store';
 // Create redux store with history
 // this uses the singleton
 const initialState = {};
-const store = configureStore(initialState);
+const store = configureStore(initialState, browserHistory);
 
 // Set up the router, wrapping all Routes in the App component
 import createRoutes from './routes';

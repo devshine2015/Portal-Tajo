@@ -1,0 +1,49 @@
+@media screen and (min-width: 100px) {
+  .button {
+    background-color: #222;
+    color: #fff;
+    text-align: center;
+    border-radius: 3px;
+    padding: 0 30px;
+    line-height: 50px;
+    font-size: 16px;
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color .2s;
+  }
+
+  .button_main {
+    background-color: #3eb6aa;
+    text-transform: uppercase;
+    border: 1px solid #fff;
+  }
+
+  .button_transparent {
+    background-color: transparent;
+    border: 1px solid #fff;
+  }
+
+  .button_small {
+    padding: 0 20px;
+    line-height: 35px;
+    text-transform: capitalize;
+    font-size: 14px;
+    display: inherit;
+    min-width: auto;
+  }
+
+  .button_disabled {
+    background-color: #ccc;
+    color: #e6e6e6;
+    border-color: #ddd;
+  }
+
+  .loaderWrapper {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    margin-left: 5px;
+  }
+}

@@ -5,17 +5,20 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { fromJS } from 'immutable';
 import thunk from 'redux-thunk';
+import { routerMiddleware } from 'react-router-redux';
 import createReducer from './reducers';
 
 const devtools = window.devToolsExtension || (() => noop => noop);
 const isDev = process.env.NODE_ENV !== 'production';
 
-export default function configureStore(initialState = {}) {
+export default function configureStore(initialState = {}, history) {
   const enhancers = [
     devtools(),
   ];
+
   const middlewares = [
     thunk,
+    routerMiddleware(history),
   ];
 
   if (isDev) {
@@ -39,7 +42,6 @@ export default function configureStore(initialState = {}) {
   store.asyncReducers = {}; // Async reducer registry
 
   // Make reducers hot reloadable, see http://mxs.is/googmo
-  /* istanbul ignore next */
   if (module.hot) {
     module.hot.accept('./reducers', () => {
       System.import('./reducers').then((reducerModule) => {
