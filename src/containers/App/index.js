@@ -20,7 +20,6 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        Root
         {this.props.children}
       </div>
     );

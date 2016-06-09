@@ -43,6 +43,7 @@ export default function createRoutes(store) {
     <Router history={history}>
       <Route
         path={ROOT}
+        name="root"
         getComponent={(location, cb) => {
           System.import('containers/App')
             .then(loadModule(cb))
@@ -51,16 +52,37 @@ export default function createRoutes(store) {
       >
         <Route
           path="dashboard"
+          name="dashboard"
           getComponent={(location, cb) => {
             System.import('containers/Dashboard')
               .then(loadModule(cb))
               .catch(errorHandler);
           }}
-        />
+        >
+          <Route
+            path="reports"
+            name="reports"
+            getComponent={(location, cb) => {
+              const importModules = Promise.all([
+                System.import('containers/ReportsScreen/reducer'),
+                System.import('containers/ReportsScreen'),
+              ]);
+
+              const renderModule = loadModule(cb);
+
+              importModules.then(([reducer, component]) => {
+                injectReducer('reports', reducer.default);
+                renderModule(component);
+              });
+
+              importModules.catch(errorHandler);
+            }}
+          />
+        </Route>
         <Route
           path="login"
+          name="login"
           getComponent={(location, cb) => {
-            // inject reducer and component asyncroniously;
             const importModules = Promise.all([
               System.import('containers/LoginScreen/reducer'),
               System.import('containers/LoginScreen'),
