@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
+import RaisedButton from 'material-ui/RaisedButton';
+import DatePicker from 'material-ui/DatePicker';
 import Form from 'components/Form';
-import Button from 'components/Button';
-import InputField from 'components/InputField';
 import InputFieldWrapper from 'components/InputFieldWrapper';
 import { generateReport } from './actions';
 
@@ -34,20 +34,22 @@ class ReportsScreen extends React.Component {
         onSubmit={this.onSubmit}
       >
         <InputFieldWrapper>
-          <InputField
+          <DatePicker
+            hintText="Start time interval"
+            container="inline"
             name="from"
-            type="date"
           />
-          <InputField
+          <DatePicker
             name="to"
-            placeholder="Username"
-            type="date"
+            hintText="End time interval"
+            container="inline"
           />
         </InputFieldWrapper>
         <InputFieldWrapper>
-          <Button
+          <RaisedButton
+            label="Generate report"
             onClick={this.onSubmit}
-            text="Generate report"
+            primary
           />
         </InputFieldWrapper>
       </Form>

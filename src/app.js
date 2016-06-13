@@ -17,9 +17,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 import configureStore from './redux/store';
 
-// import styles from 'containers/App/styles.css';
+injectTapEventPlugin();
 
 // Create redux store with history
 // this uses the singleton

@@ -5,7 +5,16 @@ import {
   checkUserAuthentication,
   setFleet,
 } from './actions';
+import { deepOrange500 } from 'material-ui/styles/colors';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import createBaseUrl from 'utils/createBaseUrl';
+
+const muiTheme = getMuiTheme({
+  palette: {
+    accent1Color: deepOrange500,
+  },
+});
 
 class App extends React.Component {
 
@@ -19,9 +28,9 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <MuiThemeProvider muiTheme={muiTheme}>
         {this.props.children}
-      </div>
+      </MuiThemeProvider>
     );
   }
 }

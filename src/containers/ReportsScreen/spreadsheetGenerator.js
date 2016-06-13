@@ -1,7 +1,84 @@
-// require('xlsx');
-// import { saveAs } from 'file-saver';
+// require('excel-builder');
+// import FileSaver from 'file-saver';
+// require('utils/excel/sheetjs.all.min');
+// require('utils/excel/excelplus-2.3.min');
 
-function _mapRecordsToRows(data) {
+function Book(headers = [], data = [], {
+  fileName = 'Sheet1',
+  fileType = 'csv',
+} = {}) {
+  this.headers = headers;
+  this.rowData = data;
+  this.fileName = fileName;
+  this.fileType = `text/${fileType};charset=utf-8`;
+}
+
+/**
+ * Main function
+ */
+Book.prototype.createBook = function () {
+  let bookData = '';
+
+  bookData = this.addHeaders(this.headers, true);
+
+  this.rowData.forEach(data => {
+    // const row = this.mapRecordsToString(data);
+    const row = _addRow(data);
+    bookData = bookData.concat(row);
+  });
+
+  this.download(bookData);
+};
+
+/**
+ * Generate file out of data and download it
+ */
+Book.prototype.download = function (data = '') {
+  const file = new Blob([data], { type: this.fileType });
+
+  const url = window.URL.createObjectURL(file);
+  const link = document.createElement('a');
+  link.href = url;
+  link.style = 'hidden';
+  link.download = `${this.fileName}.csv`;
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+/**
+ * Add headers to file
+ */
+Book.prototype.addHeaders = (headers = [], asString = false) => {
+  if (!asString) {
+    return headers;
+  }
+
+  return _addRow(headers);
+};
+
+/**
+ * Map array to string rows
+ */
+Book.prototype.mapRecordsToString = (data = []) => {
+  let rows = '';
+
+  data.reportRecords.forEach(record => {
+    rows += `${data.vehicle.name},`;
+    rows += `${new Date(record.time).toLocaleDateString()},`;
+    rows += `${record.distance.toFixed(2)}`;
+
+    rows += '\r\n';
+  });
+
+  return rows;
+};
+
+/**
+ * Create [[a,b,c,],[...]]
+ */
+Book.prototype.mapRecordsToArray = (data = []) => {
   const rows = [];
 
   data.reportRecords.forEach(record => {
@@ -14,22 +91,20 @@ function _mapRecordsToRows(data) {
   });
 
   return rows;
-}
+};
 
-function _addHeaderColumn(array, newHeaders = []) {
-  array[0].concat(newHeaders);
-}
+function _addRow(array = []) {
+  let row = '';
 
-function _createBook(headers = [], rows = []) {
-  const sheetName = 'Sheet1';
-  let bookData = headers;
-
-  rows.forEach(data => {
-    const row = _mapRecordsToRows(data);
-    bookData = bookData.concat(row);
+  array.forEach(el => {
+    row += `${el},`;
   });
 
-  console.log(bookData);
+  // remove last comma
+  row = row.slice(0, -1);
+  row += '\r\n';
+
+  return row;
 }
 
-export default _createBook;
+export default Book;
