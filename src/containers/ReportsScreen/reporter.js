@@ -40,8 +40,9 @@ export function createReport(vehiclesReportData) {
     'Average Temp.',
   ];
   const b = new Book(headers, vehiclesReportData);
-
   b.createBook();
+
+  return new Promise(resolve => resolve(vehiclesReportData));
 }
 
 /**

@@ -1,11 +1,24 @@
 import api from 'utils/api';
 import { prepareDataForReport, createReport } from './reporter';
 
+export const REPORT_SCREEN_SET_LOADER = 'portal/ReportsScreen/REPORT_SCREEN_SET_LOADER';
+export const REPORT_SCREEN_SET_REPORT_DATA = 'portal/ReportsScreen/REPORT_SCREEN_SET_REPORT_DATA';
+export const REPORT_SCREEN_RESET_REPORT_DATA = 'portal/ReportsScreen/REPORT_SCREEN_RESET_REPORT_DATA';
+
 export const generateReport = (timePeriod) => (dispatch, getState) => {
   _generateReport(timePeriod, dispatch, getState);
 };
+export const saveGenerated = () => (dispatch, getState) => {
+  _saveGenerated(dispatch, getState);
+};
+export const resetReportData = () => ({
+  type: REPORT_SCREEN_RESET_REPORT_DATA,
+});
 
 function _generateReport(timePeriod, dispatch, getState) {
+  dispatch(_setLoader(true));
+  dispatch(resetReportData());
+
   const fleet = getState().getIn(['global', 'fleet']);
   const baseVehiclesUrl = `${fleet}/vehicles`;
   const tzoffset = new Date().getTimezoneOffset();
@@ -33,10 +46,31 @@ function _generateReport(timePeriod, dispatch, getState) {
     ))
     .then(prepareDataForReport)
     .then(createReport)
+    .then(vehiclesReportData => {
+      dispatch(_setReportData(vehiclesReportData));
+      dispatch(_setLoader(false));
+    })
     .catch(error => {
+      dispatch(_setLoader(false));
       console.error(error);
     });
 }
+
+function _saveGenerated(dispatch, getState) {
+  const reportData = getState().getIn(['reports', 'reportData']).toArray();
+
+  createReport(reportData);
+}
+
+const _setLoader = (nextState) => ({
+  type: REPORT_SCREEN_SET_LOADER,
+  nextState,
+});
+
+const _setReportData = (reportData) => ({
+  type: REPORT_SCREEN_SET_REPORT_DATA,
+  reportData,
+});
 
 function _reportRequest(baseVehiclesUrl, vehicles = [], {
   reportType = 'mileage',

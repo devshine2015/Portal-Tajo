@@ -1,18 +1,22 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import createBaseUrl from 'utils/createBaseUrl';
+import {
+  deepOrange500,
+  grey300,
+} from 'material-ui/styles/colors';
 import {
   checkUserAuthentication,
   setFleet,
 } from './actions';
-import { deepOrange500 } from 'material-ui/styles/colors';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import createBaseUrl from 'utils/createBaseUrl';
 
 const muiTheme = getMuiTheme({
   palette: {
     accent1Color: deepOrange500,
+    disabledColor: grey300,
   },
 });
 
