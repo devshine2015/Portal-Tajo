@@ -1,6 +1,8 @@
 import 'whatwg-fetch';
-import { HOST_BASE } from './constants';
-import { SESSION_ID_STORAGE_KEY } from './constants';
+import {
+  HOST_BASE,
+  LOCAL_STORAGE_SESSION_KEY,
+} from './constants';
 import localStorage from './localStorage';
 
 function checkStatus(response) {
@@ -18,7 +20,7 @@ function sendRequest({ endpoint, options }) {
 }
 
 function getSessionId() {
-  return localStorage.read(SESSION_ID_STORAGE_KEY);
+  return localStorage.read(LOCAL_STORAGE_SESSION_KEY);
 }
 
 function invoke(method, url, { payload, optionalHeaders = {} } = {}) {

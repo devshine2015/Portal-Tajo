@@ -1,0 +1,7 @@
+@media screen and (min-width: 100px) {
+  .message {
+    position: absolute;
+    top: -35px;
+    width: 100%;
+  }
+}

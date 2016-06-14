@@ -22,6 +22,8 @@ import configureStore from './redux/store';
 
 injectTapEventPlugin();
 
+require('sanitize.css/sanitize.css');
+
 // Create redux store with history
 // this uses the singleton
 const initialState = {};

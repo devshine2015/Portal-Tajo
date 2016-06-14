@@ -1,0 +1,22 @@
+@media screen and (min-width: 100px) {
+  .controlWrapper_offlineButtons {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .offline {}
+
+  .offline__list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 10px;
+  }
+
+  .offline__item {
+    margin-bottom: 10px;
+  }
+
+  .offline__item:last-child {
+    margin-bottom: 0;
+  }
+}

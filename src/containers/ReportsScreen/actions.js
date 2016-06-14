@@ -5,8 +5,8 @@ export const REPORT_SCREEN_SET_LOADER = 'portal/ReportsScreen/REPORT_SCREEN_SET_
 export const REPORT_SCREEN_SET_REPORT_DATA = 'portal/ReportsScreen/REPORT_SCREEN_SET_REPORT_DATA';
 export const REPORT_SCREEN_RESET_REPORT_DATA = 'portal/ReportsScreen/REPORT_SCREEN_RESET_REPORT_DATA';
 
-export const generateReport = (timePeriod) => (dispatch, getState) => {
-  _generateReport(timePeriod, dispatch, getState);
+export const generateReport = (timePeriod, isOneDay) => (dispatch, getState) => {
+  _generateReport(timePeriod, isOneDay, dispatch, getState);
 };
 export const saveGenerated = () => (dispatch, getState) => {
   _saveGenerated(dispatch, getState);
@@ -15,7 +15,7 @@ export const resetReportData = () => ({
   type: REPORT_SCREEN_RESET_REPORT_DATA,
 });
 
-function _generateReport(timePeriod, dispatch, getState) {
+function _generateReport(timePeriod, isOneDay, dispatch, getState) {
   dispatch(_setLoader(true));
   dispatch(resetReportData());
 
@@ -26,7 +26,7 @@ function _generateReport(timePeriod, dispatch, getState) {
     to,
     from,
     daysCount,
-  } = periodForReport(timePeriod);
+  } = periodForReport(timePeriod, isOneDay);
   const periodParam = `from=${from}&to=${to}&tzoffset=${tzoffset}`;
 
   api(baseVehiclesUrl)
@@ -88,9 +88,9 @@ function toJson(response) {
   return response.json();
 }
 
-function periodForReport({ from, to } = {}) {
+function periodForReport({ from, to } = {}, isOneDay = false) {
   const fromPlus = new Date(from);
-  const toPlus = new Date(to).setSeconds(1);
+  const toPlus = _generateToDate(from, to, isOneDay);
   const dt = (toPlus - fromPlus) / (1000 * 60 * 60 * 24);
   let daysCount;
 
@@ -111,4 +111,21 @@ function _formateDate(date) {
   const dateISO = new Date(date).toISOString();
 
   return `${dateISO.slice(0, -1)}+0000`;
+}
+
+function _generateToDate(fromDate, toDate, isOneDay = false) {
+  let result;
+
+  if (isOneDay) {
+    result = new Date(fromDate);
+    result.setHours(23);
+    result.setMinutes(59);
+    result.setSeconds(59);
+  } else {
+    // add one second to count day amount
+    result = new Date(toDate);
+    result.setSeconds(1);
+  }
+
+  return result;
 }

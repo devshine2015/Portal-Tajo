@@ -18,9 +18,9 @@ module.exports = require('./webpack.base.babel')({
 
   // Utilize long-term caching by adding content hashes (not compilation hashes) to compiled assets
   output: {
-    filename: '[name].[chunkhash].js',
-    chunkFilename: '[name].[chunkhash].chunk.js',
-    publicPath: '',
+    filename: '[name]_[chunkhash].js',
+    chunkFilename: '[name]_[chunkhash].chunk.js',
+    publicPath: '/assets/common-portal/tajo/',
   },
 
   // We use ExtractTextPlugin so we get a seperate CSS file instead
@@ -79,20 +79,20 @@ module.exports = require('./webpack.base.babel')({
 
     // Put it in the end to capture all the HtmlWebpackPlugin's
     // assets manipulations and do leak its manipulations to HtmlWebpackPlugin
-    new OfflinePlugin({
-      relativePaths: true, // Use generated relative paths by default
-      // No need to cache .htaccess. See http://mxs.is/googmp,
-      // this is applied before any match in `caches` section
-      excludes: ['.htaccess'],
+    // new OfflinePlugin({
+    //   relativePaths: true, // Use generated relative paths by default
+    //   // No need to cache .htaccess. See http://mxs.is/googmp,
+    //   // this is applied before any match in `caches` section
+    //   excludes: ['.htaccess'],
 
-      caches: {
-        main: [':rest:'],
+    //   caches: {
+    //     main: [':rest:'],
 
-        // All chunks marked as `additional`, loaded after main section
-        // and do not prevent SW to install. Change to `optional` if
-        // do not want them to be preloaded at all (cached only when first loaded)
-        additional: ['*.chunk.js'],
-      },
-    }),
+    //     // All chunks marked as `additional`, loaded after main section
+    //     // and do not prevent SW to install. Change to `optional` if
+    //     // do not want them to be preloaded at all (cached only when first loaded)
+    //     additional: ['*.chunk.js'],
+    //   },
+    // }),
   ],
 });

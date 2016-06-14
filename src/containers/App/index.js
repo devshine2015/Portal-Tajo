@@ -9,6 +9,7 @@ import {
   grey300,
 } from 'material-ui/styles/colors';
 import {
+  changeOnlineState,
   checkUserAuthentication,
   setFleet,
 } from './actions';
@@ -27,7 +28,20 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    window.addEventListener('offline', this.handleOnlineState);
+    window.addEventListener('online', this.handleOnlineState);
     this.props.checkUserAuthentication(this.props.urls);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('offline', this.handleOnlineState);
+    window.removeEventListener('online', this.handleOnlineState);
+  }
+
+  handleOnlineState = (e) => {
+    const isOnline = e.type === 'online';
+
+    this.props.changeOnlineState(isOnline);
   }
 
   render() {
@@ -44,6 +58,7 @@ App.contextTypes = {
 };
 
 App.propTypes = {
+  changeOnlineState: React.PropTypes.func.isRequired,
   checkUserAuthentication: React.PropTypes.func.isRequired,
   children: React.PropTypes.node,
   fleet: React.PropTypes.string.isRequired,
@@ -66,6 +81,7 @@ const mapState = (state, ownProps) => {
   };
 };
 const mapDispatch = {
+  changeOnlineState,
   checkUserAuthentication,
   setFleet,
 };

@@ -1,0 +1,29 @@
+@media screen and (min-width: 100px) {
+  .item__label {
+    position: relative;
+    display: block;
+  }
+
+  .checkboxWrapper {
+    position: absolute;
+    left: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .info {
+    padding-left: 30px;
+    list-style: none;
+    font-size: 13px;
+  }
+
+  .info__item {
+    color: #777;
+  }
+
+  .info__detail {
+    margin-left: 5px;
+    color: #333;
+  }
+}

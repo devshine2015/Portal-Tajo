@@ -3,7 +3,7 @@ import { getHooks } from './utils/hooks';
 import { Router, Route, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 
-const ROOT = '/portal/:fleet/escape/';
+const ROOT = '/portal/:fleet/tajo/';
 
 // load module only if it is necessary
 // see https://blog.mxstbr.com/2016/01/react-apps-with-pages/
@@ -73,6 +73,46 @@ export default function createRoutes(store) {
               importModules.then(([reducer, component]) => {
                 injectReducer('reports', reducer.default);
                 renderModule(component);
+              });
+
+              importModules.catch(errorHandler);
+            }}
+          />
+          <Route
+            path="installer"
+            name="installer"
+            getComponent={(location, cb) => {
+              const importModules = Promise.all([
+                System.import('containers/Message/reducer'),
+                System.import('containers/OfflineData/reducer'),
+                System.import('containers/Notification/reducer'),
+                System.import('containers/InstallerScreen/reducer'),
+                System.import('containers/Message'),
+                System.import('containers/OfflineData'),
+                System.import('containers/Notification'),
+                System.import('containers/InstallerScreen'),
+              ]);
+
+              const renderModule = loadModule(cb);
+
+              importModules.then(([
+                messageReducer,
+                offlineReducer,
+                notifiationReducer,
+                installerReducer,
+                messageComponent,
+                offlineDataComponent,
+                notifiationComponent,
+                installerScreenComponent,
+              ]) => {
+                injectReducer('message', messageReducer.default);
+                injectReducer('offlineData', offlineReducer.default);
+                injectReducer('notification', notifiationReducer.default);
+                injectReducer('installer', installerReducer.default);
+                renderModule(installerScreenComponent);
+                renderModule(messageComponent);
+                renderModule(notifiationComponent);
+                renderModule(offlineDataComponent);
               });
 
               importModules.catch(errorHandler);

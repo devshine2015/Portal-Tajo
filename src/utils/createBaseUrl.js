@@ -1,3 +1,3 @@
 export default function createBaseUrl(fleet = 'test') {
-  return `/portal/${fleet}/escape`;
+  return `/portal/${fleet}/tajo`;
 }

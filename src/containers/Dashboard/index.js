@@ -13,6 +13,7 @@ class Dashboard extends React.Component {
       <div>
         <div className="toppanel">Top Panel</div>
         <Link to={`${baseUrl}/reports`}>Reports</Link>
+        <Link to={`${baseUrl}/installer`}>Installer</Link>
 
         <div className="content">{this.props.children}</div>
       </div>

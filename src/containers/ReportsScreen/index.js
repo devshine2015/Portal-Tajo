@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import Checkbox from 'material-ui/Checkbox';
 import DatePicker from 'material-ui/DatePicker';
 import Form from 'components/Form';
 import InputFieldWrapper from 'components/InputFieldWrapper';
@@ -22,14 +23,17 @@ class ReportsScreen extends React.Component {
     this.state = {
       from: null,
       to: null,
+      isOneDay: false,
     };
+
+    this.onOneDayToggle = this.onOneDayToggle.bind(this);
   }
 
-  onFromDateChange = (undefined, date) => {
+  onFromDateChange = (event = undefined, date) => {
     this.onChange(date, 'from');
   }
 
-  onToDateChange = (undefined, date) => {
+  onToDateChange = (event = undefined, date) => {
     this.onChange(date, 'to');
   }
 
@@ -58,7 +62,13 @@ class ReportsScreen extends React.Component {
       data[fields[i].name] = fields[i].value.trim();
     }
 
-    this.props.generateReport(data);
+    this.props.generateReport(data, this.state.isOneDay);
+  }
+
+  onOneDayToggle = (event, isInputChecked) => {
+    this.setState({
+      isOneDay: isInputChecked,
+    });
   }
 
   saveGenerated = () => {
@@ -72,22 +82,26 @@ class ReportsScreen extends React.Component {
         refs={FORM_NAME}
         onSubmit={this.onSubmit}
       >
-        <InputFieldWrapper>
-          <DatePicker
-            autoOk
-            hintText="Start time interval"
-            container="inline"
-            onChange={this.onFromDateChange}
-            name="from"
-          />
-          <DatePicker
-            autoOk
-            container="inline"
-            hintText="End time interval"
-            onChange={this.onToDateChange}
-            name="to"
-          />
-        </InputFieldWrapper>
+        <DatePicker
+          autoOk
+          hintText="Start time interval"
+          container="inline"
+          name="from"
+          onChange={this.onFromDateChange}
+        />
+        <DatePicker
+          autoOk
+          container="inline"
+          disabled={this.state.isOneDay}
+          hintText="End time interval"
+          name="to"
+          onChange={this.onToDateChange}
+        />
+        <Checkbox
+          checked={this.state.isOneDay}
+          label="One-day report"
+          onCheck={this.onOneDayToggle}
+        />
         <InputFieldWrapper>
           <RaisedButton
             label="Generate report"
