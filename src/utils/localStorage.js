@@ -62,11 +62,12 @@ export function cleanExact(key, indexesToRemove) {
     savedData.splice(i, 1);
   });
 
+  // clean up localStorage item
   if (savedData.length === 0) {
     needCleanEverything = true;
   }
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     if (needCleanEverything) {
       clean(key)
         .then(() => resolve(savedData));

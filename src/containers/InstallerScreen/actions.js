@@ -1,27 +1,16 @@
 import api from 'utils/api';
-import { save, read } from 'utils/localStorage';
-import {
-  LOCAL_STORAGE_SESSION_KEY,
-  LOCAL_STORAGE_DATA_KEY,
-} from 'utils/constants';
-import {
-  updateDataOffline,
-  checkStorage,
-} from 'containers/OfflineData/actions';
+import { save } from 'utils/localStorage';
+import { LOCAL_STORAGE_DATA_KEY } from 'utils/constants';
+import { updateDataOffline } from 'containers/OfflineData/actions';
 import { showMessage } from 'containers/Message/actions';
 
 export const FORM_SET_LOADER_STATE = 'portal/InstallerScreen/FORM_SET_LOADER_STATE';
 export const FORM_SUBMIT_SUCCESS = 'portal/InstallerScreen/FORM_SUBMIT_SUCCESS';
 export const FORM_SUBMIT_RESET = 'portal/InstallerScreen/FORM_SUBMIT_RESET';
 
-export const checkIfAuthenticated = () => (dispatch) => {
-  const userData = read(LOCAL_STORAGE_SESSION_KEY);
-
-  if (userData && userData.length) {
-    dispatch(checkStorage());
-  }
+export const sendData = (data) => (dispatch, getState) => {
+  return _sendData(data, getState);
 };
-export const sendData = () => () => ({});
 export const submitData = (data) => (dispatch, getState) => {
   _submitData(data, getState, dispatch);
 };
@@ -30,11 +19,9 @@ export const saveLocally = (data) => (dispatch) => {
 };
 
 function _submitData(data, getState, dispatch) {
-  const fleet = getState().getIn(['global', 'fleet']);
-
   dispatch(_setLoaderState(true));
 
-  _boundRequest(fleet, data)
+  _sendData(data, getState)
   .then(() => {
     dispatch(_submitSuccess());
     dispatch(_setLoaderState(false));
@@ -67,7 +54,8 @@ function _saveLocally(data, dispatch) {
     });
 }
 
-function _boundRequest(fleet, data) {
+function _sendData(data, getState) {
+  const fleet = getState().getIn(['global', 'fleet']);
   const devicesUrl = `${fleet}/devices`;
   const vehiceslUrl = `${fleet}/vehicles`;
   const createDevicePayload = {

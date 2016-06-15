@@ -5,7 +5,7 @@ import {
 
 const initialState = fromJS({
   hasOfflineData: false,
-  data: List(),
+  data: new List(),
 });
 
 export default function offlineDataReducer(state = initialState, action) {
@@ -14,17 +14,18 @@ export default function offlineDataReducer(state = initialState, action) {
       let nextState = state;
 
       if (action.hasOwnProperty('data')) {
-
-        // push if data is not an array
-        if (!action.data.hasOwnProperty('length')) {
+        // push data is it's a object
+        if (action.data && !action.data.hasOwnProperty('length')) {
           nextState = nextState.update('data', list => list.push(action.data));
-        } else {
-          nextState = nextState.set('data', List(action.data));
+        } else if (action.data && action.data.hasOwnProperty('length')) {
+          nextState = nextState.set('data', new List(action.data));
+        } else if (action.data === undefined) {
+          nextState = nextState.set('data', new List());
         }
       }
 
       const hasData = nextState.get('data').size !== 0;
-      nextState = nextState.set('hasOfflineData', hasData)
+      nextState = nextState.set('hasOfflineData', hasData);
 
       return nextState;
     }

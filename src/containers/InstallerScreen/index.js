@@ -11,8 +11,8 @@ import Form from 'components/Form';
 import Message from 'containers/Message';
 import OfflineData from 'containers/OfflineData';
 import Notification from 'containers/Notification';
-import { submitData, saveLocally, checkIfAuthenticated } from './actions';
-import { cleanOfflineData, sendFromStorage } from 'containers/OfflineData/actions';
+import { submitData, saveLocally } from './actions';
+import { sendFromStorage, checkStorage } from 'containers/OfflineData/actions';
 import { showNotification, hideNotification } from 'containers/Notification/actions';
 import { validateForm } from 'utils/forms';
 
@@ -38,7 +38,7 @@ class InstallerScreen extends React.Component {
   }
 
   componentWillMount() {
-    this.props.checkIfAuthenticated();
+    this.props.checkStorage();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -154,8 +154,7 @@ class InstallerScreen extends React.Component {
 }
 
 InstallerScreen.propTypes = {
-  cleanOfflineData: React.PropTypes.func.isRequired,
-  checkIfAuthenticated: React.PropTypes.func.isRequired,
+  checkStorage: React.PropTypes.func.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
   isOnline: React.PropTypes.bool.isRequired,
   hasOfflineData: React.PropTypes.bool.isRequired,
@@ -173,8 +172,7 @@ const mapState = (state) => ({
   hasOfflineData: state.getIn(['offlineData', 'hasOfflineData']),
 });
 const mapDispatch = {
-  cleanOfflineData,
-  checkIfAuthenticated,
+  checkStorage,
   hideNotification,
   saveLocally,
   sendFromStorage,

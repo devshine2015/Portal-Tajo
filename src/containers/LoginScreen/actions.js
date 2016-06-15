@@ -1,7 +1,7 @@
 import { push } from 'react-router-redux';
 import api from 'utils/api';
 import localStorage from 'utils/localStorage';
-import { SESSION_ID_STORAGE_KEY } from 'utils/constants';
+import { LOCAL_STORAGE_SESSION_KEY } from 'utils/constants';
 import createBaseUrl from 'utils/createBaseUrl';
 import { setUserAuthentication } from 'containers/App/actions';
 
@@ -19,7 +19,7 @@ function _login(fleet, data, dispatch) {
   api.post(loginUrl, options)
     .then(response => response.text())
     .then(token => {
-      localStorage.save(SESSION_ID_STORAGE_KEY, token);
+      localStorage.save(LOCAL_STORAGE_SESSION_KEY, token);
       setUserAuthentication(true);
       dispatch(push(`${createBaseUrl(fleet)}/dashboard`));
     });

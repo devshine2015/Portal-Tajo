@@ -23,7 +23,7 @@ class Notification extends React.Component {
     return (
       <div className={className}>
         <div className={styles.notification__inn}>
-          you have saved data on your devise
+          You have saved data on your device
           <div className={styles.notification__buttons}>
             <Button
               modifierClass="button_main button_small"
