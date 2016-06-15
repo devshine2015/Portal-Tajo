@@ -2,11 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import { fromJS } from 'immutable';
-import classnames from 'classnames';
-import Button from 'components/Button';
-import InputField from 'components/InputField';
-import InputFieldWrapper from 'components/InputFieldWrapper';
-import Loader from 'components/Loader';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+// import Loader from 'components/Loader';
 import Form from 'components/Form';
 import Message from 'containers/Message';
 import OfflineData from 'containers/OfflineData';
@@ -93,16 +91,13 @@ class InstallerScreen extends React.Component {
   render() {
     let mainButtonText = this.props.isOnline ? 'Send' : 'Save Locally';
     const mainButtonDisabled = this.state.cannotSubmit || this.props.isLoading;
-    const mainButtonModifierClass = classnames('button_main', {
-      button_disabled: mainButtonDisabled,
-    });
 
     if (this.props.isLoading) {
       mainButtonText = 'Sending...';
     }
 
     return (
-      <div>
+      <div className={styles.installer}>
         <Form
           name="bounder"
           onSubmit={this.onSubmit}
@@ -110,41 +105,34 @@ class InstallerScreen extends React.Component {
           className={styles.form}
         >
           <Message />
-          <InputFieldWrapper>
-            <InputField
-              name="name"
-              onChange={this.onChange}
-              placeholder="Vehicle Name"
-              required
-            />
-          </InputFieldWrapper>
-          <InputFieldWrapper>
-            <InputField
-              name="license"
-              onChange={this.onChange}
-              placeholder="License Plate Number"
-              required
-            />
-          </InputFieldWrapper>
-          <InputFieldWrapper>
-            <InputField
-              name="imei"
-              onChange={this.onChange}
-              placeholder="IMEI"
-              required
-            />
-          </InputFieldWrapper>
+          <TextField
+            fullWidth
+            name="name"
+            onChange={this.onChange}
+            floatingLabelText="Vehicle Name"
+            required
+          />
+          <TextField
+            fullWidth
+            name="license"
+            onChange={this.onChange}
+            floatingLabelText="License Plate Number"
+            required
+          />
+          <TextField
+            fullWidth
+            name="imei"
+            onChange={this.onChange}
+            floatingLabelText="IMEI"
+            required
+          />
 
-          <InputFieldWrapper>
-            <Button
-              disabled={mainButtonDisabled}
-              loader={ this.props.isLoading && <Loader /> }
-              modifierClass={mainButtonModifierClass}
-              onClick={this.onSubmit}
-              text={mainButtonText}
-              type="submit"
-            />
-          </InputFieldWrapper>
+          <RaisedButton
+            disabled={mainButtonDisabled}
+            onClick={this.onSubmit}
+            label={mainButtonText}
+            type="submit"
+          />
         </Form>
         { this.props.hasOfflineData && <OfflineData /> }
         <Notification />

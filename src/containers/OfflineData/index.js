@@ -1,9 +1,8 @@
 import React from 'react';
-import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { List } from 'immutable';
 import pure from 'recompose/pure';
-import Button from 'components/Button';
+import FlatButton from 'material-ui/FlatButton';
 import InputFieldWrapper from 'components/InputFieldWrapper';
 import OfflineDataItem from 'components/OfflineDataItem';
 import { cleanOfflineData, sendFromStorage } from './actions';
@@ -70,14 +69,8 @@ class OfflineData extends React.Component {
       </li>
     ));
 
-    const buttonsDisabled = this.state.indexes.size === 0;
-
-    const sendBtnClassName = classnames('button_small', {
-      button_disabled: !this.props.isOnline || buttonsDisabled,
-    });
-    const cleanBtnClassName = classnames('button_small', {
-      button_disabled: buttonsDisabled,
-    });
+    const cleanBtnDisabled = this.state.indexes.size === 0;
+    const sendBtnDisabled = !this.props.isOnline || this.state.indexes.size === 0;
 
     return (
       <div className={styles.offline}>
@@ -86,17 +79,16 @@ class OfflineData extends React.Component {
           { list }
         </ul>
         <InputFieldWrapper inlineClass={styles.controlWrapper_offlineButtons}>
-          <Button
-            disabled={!this.props.isOnline}
-            modifierClass={sendBtnClassName}
+          <FlatButton
+            disabled={sendBtnDisabled}
+            label="Send checked"
+            primary
             onClick={this.sendChecked}
-            text="Send checked"
           />
-          <Button
-            disabled={buttonsDisabled}
-            modifierClass={cleanBtnClassName}
+          <FlatButton
+            disabled={cleanBtnDisabled}
+            label="Clean checked"
             onClick={this.cleanChecked}
-            text="Clean checked"
           />
         </InputFieldWrapper>
       </div>
