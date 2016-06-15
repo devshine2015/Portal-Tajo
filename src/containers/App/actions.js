@@ -27,10 +27,10 @@ function _checkUserAuthentication(urls, dispatch) {
 
   if (Boolean(ssid)) {
     dispatch(setUserAuthentication(true));
-    dispatch(replace(urls.success));
+    // dispatch(replace(urls.success));
   } else {
     dispatch(setUserAuthentication(false));
-    dispatch(replace(urls.failure));
+    // dispatch(replace(urls.failure));
   }
 }
 

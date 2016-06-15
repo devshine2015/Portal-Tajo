@@ -2,6 +2,7 @@ import React from 'react';
 import { getHooks } from './utils/hooks';
 import { Router, Route, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
+import App from 'containers/App';
 
 const ROOT = '/portal/:fleet/tajo/';
 
@@ -44,78 +45,78 @@ export default function createRoutes(store) {
       <Route
         path={ROOT}
         name="root"
-        getComponent={(location, cb) => {
-          System.import('containers/App')
-            .then(loadModule(cb))
-            .catch(errorHandler);
-        }}
+        component={App}
       >
         <Route
           path="dashboard"
           name="dashboard"
           getComponent={(location, cb) => {
-            System.import('containers/Dashboard')
-              .then(loadModule(cb))
-              .catch(errorHandler);
+            require.ensure([], require => {
+              cb(null, require('containers/Dashboard').default);
+            }, 'dashboard');
           }}
         >
           <Route
             path="reports"
             name="reports"
             getComponent={(location, cb) => {
-              const importModules = Promise.all([
-                System.import('containers/ReportsScreen/reducer'),
-                System.import('containers/ReportsScreen'),
-              ]);
+              require.ensure([], require => {
+                const importModules = Promise.all([
+                  require('containers/ReportsScreen/reducer'),
+                  require('containers/ReportsScreen'),
+                ]);
 
-              const renderModule = loadModule(cb);
+                const renderModule = loadModule(cb);
 
-              importModules.then(([reducer, component]) => {
-                injectReducer('reports', reducer.default);
-                renderModule(component);
-              });
+                importModules.then(([reducer, component]) => {
+                  injectReducer('reports', reducer.default);
+                  renderModule(component);
+                });
 
-              importModules.catch(errorHandler);
+                importModules.catch(errorHandler);
+              }, 'reports');
             }}
           />
           <Route
             path="installer"
             name="installer"
             getComponent={(location, cb) => {
-              const importModules = Promise.all([
-                System.import('containers/Message/reducer'),
-                System.import('containers/OfflineData/reducer'),
-                System.import('containers/Notification/reducer'),
-                System.import('containers/InstallerScreen/reducer'),
-                System.import('containers/Message'),
-                System.import('containers/OfflineData'),
-                System.import('containers/Notification'),
-                System.import('containers/InstallerScreen'),
-              ]);
+              require.ensure([], require => {
+                const importModules = Promise.all([
+                  require('containers/Message/reducer'),
+                  require('containers/OfflineData/reducer'),
+                  require('containers/Notification/reducer'),
+                  require('containers/InstallerScreen/reducer'),
+                  require('containers/Message'),
+                  require('containers/OfflineData'),
+                  require('containers/Notification'),
+                  require('containers/InstallerScreen'),
+                ]);
 
-              const renderModule = loadModule(cb);
+                const renderModule = loadModule(cb);
 
-              importModules.then(([
-                messageReducer,
-                offlineReducer,
-                notifiationReducer,
-                installerReducer,
-                messageComponent,
-                offlineDataComponent,
-                notifiationComponent,
-                installerScreenComponent,
-              ]) => {
-                injectReducer('message', messageReducer.default);
-                injectReducer('offlineData', offlineReducer.default);
-                injectReducer('notification', notifiationReducer.default);
-                injectReducer('installer', installerReducer.default);
-                renderModule(installerScreenComponent);
-                renderModule(messageComponent);
-                renderModule(notifiationComponent);
-                renderModule(offlineDataComponent);
-              });
+                importModules.then(([
+                  messageReducer,
+                  offlineReducer,
+                  notifiationReducer,
+                  installerReducer,
+                  messageComponent,
+                  offlineDataComponent,
+                  notifiationComponent,
+                  installerScreenComponent,
+                ]) => {
+                  injectReducer('message', messageReducer.default);
+                  injectReducer('offlineData', offlineReducer.default);
+                  injectReducer('notification', notifiationReducer.default);
+                  injectReducer('installer', installerReducer.default);
+                  renderModule(installerScreenComponent);
+                  renderModule(messageComponent);
+                  renderModule(notifiationComponent);
+                  renderModule(offlineDataComponent);
+                });
 
-              importModules.catch(errorHandler);
+                importModules.catch(errorHandler);
+              }, 'installer');
             }}
           />
         </Route>
@@ -123,19 +124,21 @@ export default function createRoutes(store) {
           path="login"
           name="login"
           getComponent={(location, cb) => {
-            const importModules = Promise.all([
-              System.import('containers/LoginScreen/reducer'),
-              System.import('containers/LoginScreen'),
-            ]);
+            require.ensure([], require => {
+              const importModules = Promise.all([
+                require('containers/LoginScreen/reducer'),
+                require('containers/LoginScreen'),
+              ]);
 
-            const renderModule = loadModule(cb);
+              const renderModule = loadModule(cb);
 
-            importModules.then(([reducer, component]) => {
-              injectReducer('auth', reducer.default);
-              renderModule(component);
-            });
+              importModules.then(([reducer, component]) => {
+                injectReducer('auth', reducer.default);
+                renderModule(component);
+              });
 
-            importModules.catch(errorHandler);
+              importModules.catch(errorHandler);
+            }, 'login');
           }}
         />
       </Route>
