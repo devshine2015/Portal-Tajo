@@ -63,8 +63,8 @@ App.propTypes = {
   children: React.PropTypes.node,
   fleet: React.PropTypes.string.isRequired,
   urls: React.PropTypes.shape({
-    success: React.PropTypes.string.isRequired,
-    failure: React.PropTypes.string.isRequired,
+    dashboard: React.PropTypes.string.isRequired,
+    login: React.PropTypes.string.isRequired,
   }).isRequired,
   setFleet: React.PropTypes.func.isRequired,
 };
@@ -75,8 +75,8 @@ const mapState = (state, ownProps) => {
   return {
     fleet: ownProps.params.fleet,
     urls: {
-      success: `${base}/dashboard`,
-      failure: `${base}/login`,
+      dashboard: `${base}/dashboard`,
+      login: `${base}/login`,
     },
   };
 };

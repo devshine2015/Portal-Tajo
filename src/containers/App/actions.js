@@ -27,10 +27,13 @@ function _checkUserAuthentication(urls, dispatch) {
 
   if (Boolean(ssid)) {
     dispatch(setUserAuthentication(true));
-    // dispatch(replace(urls.success));
+    // got to {ROOT}/dashboard
+    if (!/dashboard/.test(location.pathname)) {
+      dispatch(replace(urls.dashboard));
+    }
   } else {
     dispatch(setUserAuthentication(false));
-    // dispatch(replace(urls.failure));
+    dispatch(replace(urls.login));
   }
 }
 
