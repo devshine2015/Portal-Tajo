@@ -34,7 +34,7 @@ export function createReport(vehiclesReportData) {
   const headers = [
     'Vehicle name',
     'Date',
-    'Driving Distance,',
+    'Driving Distance',
     'Max Temp.',
     'Min Temp.',
     'Average Temp.',

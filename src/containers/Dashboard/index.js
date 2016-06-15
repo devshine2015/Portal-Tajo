@@ -12,8 +12,9 @@ class Dashboard extends React.Component {
     return (
       <div>
         <div className="toppanel">Top Panel</div>
-        <Link to={`${baseUrl}/reports`}>Reports</Link>
-        <Link to={`${baseUrl}/installer`}>Installer</Link>
+        <Link to={`${baseUrl}/reports`}>Reports</Link> <wbr />
+        <Link to={`${baseUrl}/installer`}>Installer</Link> <wbr />
+        <Link to={`${baseUrl}/promos`}>Promos</Link> <wbr />
 
         <div className="content">{this.props.children}</div>
       </div>
