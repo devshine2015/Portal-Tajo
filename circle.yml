@@ -1,0 +1,18 @@
+machine:
+  node:
+    version: 5.7.0
+
+general:
+  branches:
+    ignore:
+      - dev
+
+deployment:
+  production:
+    branch: stage
+    commands:
+      - ./deploy.sh 'drvrappbeta@drvrappbeta.cloudapp.net'
+  dev:
+    branch: dev-release
+    commands:
+      - ./deploy.sh 'ddsdev@ddsdev.cloudapp.net'

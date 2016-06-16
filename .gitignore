@@ -4,6 +4,7 @@
 
 # project relate
 build/
+tajo/
 
 # node.js
 #
