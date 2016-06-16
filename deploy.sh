@@ -9,6 +9,6 @@ npm run build:clean
 npm run build
 mv $DIR $FOLDER_NAME
 
-echo "upload $FOLDER_NAME to $1"
+# echo "upload $FOLDER_NAME to $1"
 ssh $1 "cd $TARGET_FOLDER && rm -r $FOLDER_NAME"
 scp -r $FOLDER_NAME $1:$TARGET_FOLDER
