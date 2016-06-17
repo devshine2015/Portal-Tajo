@@ -3,6 +3,8 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import createBaseUrl from 'utils/createBaseUrl';
+import { AppBar, FlatButton } from 'material-ui';
+import { logout } from 'containers/App/actions';
 
 class Dashboard extends React.Component {
 
@@ -11,7 +13,16 @@ class Dashboard extends React.Component {
 
     return (
       <div>
-        <div className="toppanel">Top Panel</div>
+        <AppBar
+          title="Dashboard"
+          showMenuIconButton={false}
+          iconElementRight={
+            <FlatButton
+              label="Logout"
+              onClick={this.props.logout}
+            />
+          }
+        />
         <Link to={`${baseUrl}/reports`}>Reports</Link> <wbr />
         <Link to={`${baseUrl}/installer`}>Installer</Link> <wbr />
         <Link to={`${baseUrl}/promos`}>Promos</Link> <wbr />
@@ -25,6 +36,7 @@ class Dashboard extends React.Component {
 Dashboard.propTypes = {
   children: React.PropTypes.node,
   fleet: React.PropTypes.string.isRequired,
+  logout: React.PropTypes.func.isRequired,
 };
 
 const PureDashboard = pure(Dashboard);
@@ -32,5 +44,8 @@ const PureDashboard = pure(Dashboard);
 const mapState = (state) => ({
   fleet: state.getIn(['global', 'fleet']),
 });
+const mapDispatch = {
+  logout,
+};
 
-export default connect(mapState)(PureDashboard);
+export default connect(mapState, mapDispatch)(PureDashboard);
