@@ -15,6 +15,7 @@ class OfflineDataItem extends React.Component {
       imei,
       license,
       name,
+      odometer,
     } = this.props;
 
     return (
@@ -38,6 +39,9 @@ class OfflineDataItem extends React.Component {
             <li className={styles.info__item}>
               IMEI: <span className={styles.info__detail}>{imei}</span>
             </li>
+            <li className={styles.info__item}>
+              Odometer: <span className={styles.info__detail}>{odometer}</span>
+            </li>
           </ul>
         </label>
       </div>
@@ -46,9 +50,10 @@ class OfflineDataItem extends React.Component {
 }
 
 OfflineDataItem.propTypes = {
-  index: React.PropTypes.number.isRequired,
+  index: React.PropTypes.string.isRequired,
   imei: React.PropTypes.string.isRequired,
   license: React.PropTypes.string.isRequired,
+  odometer: React.PropTypes.number.isRequired,
   name: React.PropTypes.string.isRequired,
   onChange: React.PropTypes.func.isRequired,
 };

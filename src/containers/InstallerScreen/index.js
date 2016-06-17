@@ -4,7 +4,6 @@ import pure from 'recompose/pure';
 import { fromJS } from 'immutable';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-// import Loader from 'components/Loader';
 import Form from 'components/Form';
 import Message from 'containers/Message';
 import OfflineData from 'containers/OfflineData';
@@ -20,6 +19,7 @@ const initialFields = fromJS({
   name: null,
   imei: null,
   license: null,
+  odometer: null,
 });
 
 class InstallerScreen extends React.Component {
@@ -126,7 +126,14 @@ class InstallerScreen extends React.Component {
             floatingLabelText="IMEI"
             required
           />
-
+          <TextField
+            fullWidth
+            name="odometer"
+            onChange={this.onChange}
+            floatingLabelText="Odometer value (not implemented on backend)"
+            required
+            type="number"
+          />
           <RaisedButton
             disabled={mainButtonDisabled}
             onClick={this.onSubmit}
