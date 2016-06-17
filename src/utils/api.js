@@ -27,8 +27,7 @@ function invoke(method, url, { payload, optionalHeaders = {} } = {}) {
   let query;
   let body;
   const headers = Object.assign({}, {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
+    'content-type': 'application/json',
     'DRVR-SESSION': getSessionId(),
   }, {
     ...optionalHeaders,
@@ -48,7 +47,6 @@ function invoke(method, url, { payload, optionalHeaders = {} } = {}) {
     body,
     method,
     headers,
-    mode: 'no-cors',
   };
 
   return sendRequest({ endpoint, options });
