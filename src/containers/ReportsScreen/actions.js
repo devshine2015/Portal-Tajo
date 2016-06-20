@@ -1,5 +1,5 @@
 import api from 'utils/api';
-import { prepareDataForReport, createReport } from './reporter';
+import { prepareDataForReport, createReport } from 'utils/reports';
 
 export const REPORT_SCREEN_SET_LOADER = 'portal/ReportsScreen/REPORT_SCREEN_SET_LOADER';
 export const REPORT_SCREEN_SET_REPORT_DATA = 'portal/ReportsScreen/REPORT_SCREEN_SET_REPORT_DATA';
