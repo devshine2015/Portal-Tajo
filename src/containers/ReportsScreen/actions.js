@@ -21,12 +21,12 @@ function _generateReport(timePeriod, isOneDay, dispatch, getState) {
 
   const fleet = getState().getIn(['global', 'fleet']);
   const baseVehiclesUrl = `${fleet}/vehicles`;
-  const tzoffset = new Date().getTimezoneOffset();
+  const tzoffset = 0;
   const {
     to,
     from,
     daysCount,
-  } = periodForReport(timePeriod, isOneDay);
+  } = _periodForReport(timePeriod, isOneDay);
   const periodParam = `from=${from}&to=${to}&tzoffset=${tzoffset}`;
 
   api(baseVehiclesUrl)
@@ -88,10 +88,11 @@ function toJson(response) {
   return response.json();
 }
 
-function periodForReport({ from, to } = {}, isOneDay = false) {
-  const fromPlus = new Date(from);
-  const toPlus = _generateToDate(from, to, isOneDay);
-  const dt = (toPlus - fromPlus) / (1000 * 60 * 60 * 24);
+function _periodForReport({ fromTs, toTs } = {}, isOneDay = false) {
+  const toPlusTs = _generateToDate(fromTs, toTs, isOneDay);
+  const dt = (toPlusTs - fromTs) / (1000 * 60 * 60 * 24);
+  const offsetInMinutes = new Date().getTimezoneOffset();
+  const offsetInMilliseconds = 1000 * 60 * offsetInMinutes;
   let daysCount;
 
   if (dt < 1) {
@@ -102,30 +103,31 @@ function periodForReport({ from, to } = {}, isOneDay = false) {
 
   return {
     daysCount,
-    to: _formateDate(toPlus),
-    from: _formateDate(fromPlus),
+    to: _formateDate(toPlusTs, offsetInMilliseconds),
+    from: _formateDate(fromTs),
   };
 }
 
-function _formateDate(date) {
-  const dateISO = new Date(date).toISOString();
+// Just formatting to ISO string. Keep actual date and time values
+function _formateDate(dateTs, offsetInMilliseconds = 0) {
+  const dateISO = new Date(dateTs - offsetInMilliseconds).toISOString();
 
   return `${dateISO.slice(0, -1)}+0000`;
 }
 
-function _generateToDate(fromDate, toDate, isOneDay = false) {
+function _generateToDate(fromTs, toTs, isOneDay = false) {
   let result;
 
   if (isOneDay) {
-    result = new Date(fromDate);
+    result = new Date(fromTs);
     result.setHours(23);
     result.setMinutes(59);
     result.setSeconds(59);
   } else {
     // add one second to count day amount
-    result = new Date(toDate);
+    result = new Date(toTs);
     result.setSeconds(1);
   }
 
-  return result;
+  return result.getTime();
 }

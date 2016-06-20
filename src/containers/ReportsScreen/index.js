@@ -54,13 +54,14 @@ class ReportsScreen extends React.Component {
     e.preventDefault();
 
     const fields = document.forms[FORM_NAME].elements;
-    const data = {};
 
-    for (let i = 0; i < fields.length; i++) {
-      if (fields[i].tagName.toLowerCase() !== 'input') continue;
+    const from = fields.from.value.trim();
+    const to = fields.to.value ? fields.to.value.trim() : null;
 
-      data[fields[i].name] = fields[i].value.trim();
-    }
+    const data = {
+      fromTs: new Date(from).getTime(),
+      toTs: new Date(to).getTime(),
+    };
 
     this.props.generateReport(data, this.state.isOneDay);
   }
