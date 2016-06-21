@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable' ;
 import {
-  PROMO_TRACKING_UPDATE_DATA,
-  PROMO_TRACKING_FIREBASE_INITIATED,
+  PROMO_DATA_UPDATE,
+  PROMO_FIREBASE_INITIATED,
 } from './actions';
 
 const initialState = fromJS({
@@ -11,13 +11,18 @@ const initialState = fromJS({
 
 export default function promoTrackingScreen(state = initialState, action) {
   switch (action.type) {
-    case PROMO_TRACKING_UPDATE_DATA: {
+    case PROMO_DATA_UPDATE: {
       return state.set('data', action.data);
     }
-    case PROMO_TRACKING_FIREBASE_INITIATED: {
+    case PROMO_FIREBASE_INITIATED: {
       return state.set('firebaseInitiated', action.initiated);
     }
     default:
       return state;
   }
 }
+
+export const getPromoData = (state) =>
+  state.getIn(['promos', 'data']);
+export const getFirebaseStatus = (state) =>
+  state.getIn(['promos', 'firebaseInitiated']);

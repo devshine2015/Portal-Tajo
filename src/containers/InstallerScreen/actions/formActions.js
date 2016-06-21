@@ -1,30 +1,28 @@
-import api from 'utils/api';
-import { save } from 'utils/localStorage';
-import { LOCAL_STORAGE_DATA_KEY } from 'utils/constants';
+import {
+  api,
+  localStorage,
+  constants,
+} from 'utils';
 import { updateDataOffline } from 'containers/OfflineData/actions';
 import { showMessage } from 'containers/Message/actions';
+import { setLoaderState } from './loaderActions';
 
-export const FORM_SET_LOADER_STATE = 'portal/InstallerScreen/FORM_SET_LOADER_STATE';
-export const FORM_SUBMIT_SUCCESS = 'portal/InstallerScreen/FORM_SUBMIT_SUCCESS';
-export const FORM_SUBMIT_RESET = 'portal/InstallerScreen/FORM_SUBMIT_RESET';
+export const INSTALLER_FORM_SUBMIT_SUCCESS = 'portal/InstallerScreen/INSTALLER_FORM_SUBMIT_SUCCESS';
+export const INSTALLER_FORM_SUBMIT_RESET = 'portal/InstallerScreen/INSTALLER_FORM_SUBMIT_RESET';
 
-export const sendData = (data) => (dispatch, getState) => {
-  return _sendData(data, getState);
-};
-export const submitData = (data) => (dispatch, getState) => {
-  _submitData(data, getState, dispatch);
-};
-export const saveLocally = (data) => (dispatch) => {
+export const sendData = (fleet, data) => (dispatch) =>
+  _sendData(fleet, data);
+export const submitData = (fleet, data) => (dispatch) =>
+  _submitData(data, dispatch);
+export const saveLocally = (data) => (dispatch) =>
   _saveLocally(data, dispatch);
-};
 
-function _submitData(data, getState, dispatch) {
-  dispatch(_setLoaderState(true));
+function _submitData(fleet, data, dispatch) {
+  dispatch(setLoaderState(true));
 
-  _sendData(data, getState)
-  .then(() => {
+  return _sendData(fleet, data).then(() => {
     dispatch(_submitSuccess());
-    dispatch(_setLoaderState(false));
+    dispatch(setLoaderState(false));
     dispatch(showMessage('Succesfully sended ✓', false));
     dispatch(_submitReset());
   })
@@ -32,7 +30,7 @@ function _submitData(data, getState, dispatch) {
     // save locally on connection error
     _saveLocally(data, dispatch);
     dispatch(showMessage('Something went wrong. Your data saved locally.', true));
-    dispatch(_setLoaderState(false));
+    dispatch(setLoaderState(false));
   });
 }
 
@@ -41,7 +39,7 @@ function _saveLocally(data, dispatch) {
 
   dataToSave.id = `${data.name}_${data.license}_${data.imei}`;
 
-  save(LOCAL_STORAGE_DATA_KEY, dataToSave)
+  return localStorage.save(constants.LOCAL_STORAGE_DATA_KEY, dataToSave)
     .then(response => {
       dispatch(showMessage('Saved locally ✓', false));
       dispatch(updateDataOffline(response));
@@ -54,8 +52,7 @@ function _saveLocally(data, dispatch) {
     });
 }
 
-function _sendData(data, getState) {
-  const fleet = getState().getIn(['global', 'fleet']);
+function _sendData(fleet, data) {
   const devicesUrl = `${fleet}/devices`;
   const vehiceslUrl = `${fleet}/vehicles`;
   const createDevicePayload = {
@@ -92,15 +89,10 @@ function _sendData(data, getState) {
   return request;
 }
 
-const _setLoaderState = (nextState) => ({
-  type: FORM_SET_LOADER_STATE,
-  nextState,
-});
-
 const _submitSuccess = () => ({
-  type: FORM_SUBMIT_SUCCESS,
+  type: INSTALLER_FORM_SUBMIT_SUCCESS,
 });
 
 const _submitReset = () => ({
-  type: FORM_SUBMIT_RESET,
+  type: INSTALLER_FORM_SUBMIT_RESET,
 });

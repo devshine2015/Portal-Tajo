@@ -2,11 +2,16 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import createBaseUrl from 'utils/createBaseUrl';
+import { createBaseUrl } from 'utils';
 import { AppBar, FlatButton } from 'material-ui';
-import { logout } from 'containers/App/actions';
+import { authActions } from 'containers/App/actions';
+import { getFleetName } from 'containers/App/reducer';
 
 class Dashboard extends React.Component {
+
+  onLogoutClick = () => {
+    this.props.logout(this.props.fleet);
+  }
 
   render() {
     const baseUrl = `${createBaseUrl(this.props.fleet)}/dashboard`;
@@ -19,7 +24,7 @@ class Dashboard extends React.Component {
           iconElementRight={
             <FlatButton
               label="Logout"
-              onClick={this.props.logout}
+              onClick={this.onLogoutClick}
             />
           }
         />
@@ -42,10 +47,10 @@ Dashboard.propTypes = {
 const PureDashboard = pure(Dashboard);
 
 const mapState = (state) => ({
-  fleet: state.getIn(['global', 'fleet']),
+  fleet: getFleetName(state),
 });
 const mapDispatch = {
-  logout,
+  logout: authActions.logout,
 };
 
 export default connect(mapState, mapDispatch)(PureDashboard);

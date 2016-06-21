@@ -1,32 +1,19 @@
-import { fromJS } from 'immutable';
-import {
-  GLOBAL_SET_FLEET,
-  GLOBAL_SET_USER_AUTHENTICATION,
-  GLOBAL_CHANGE_ONLINE_STATE,
-} from './actions';
+import { combineReducers } from 'redux-immutable';
+import fleetReducer, * as fromFleetReducer from './reducers/fleetReducer';
+import authReducer, * as fromAuthReducer from './reducers/authReducer';
+import onlineStateReducer, * as fromOnlineStateReducer from './reducers/onlineStateReducer';
 
-const initialState = fromJS({
-  user: {
-    isAuthenticated: false,
-  },
-  fleet: null,
-  isOnline: navigator.onLine,
+const globalReducer = combineReducers({
+  onlineState: onlineStateReducer,
+  auth: authReducer,
+  fleet: fleetReducer,
 });
 
-export default function rootReducer(state = initialState, action) {
-  switch (action.type) {
-    case GLOBAL_SET_FLEET: {
-      return state.set('fleet', action.fleet);
-    }
-    case GLOBAL_SET_USER_AUTHENTICATION: {
-      return state.setIn(['user', 'isAuthenticated'], action.isAuthenticated);
-    }
-    case GLOBAL_CHANGE_ONLINE_STATE: {
-      const nextState = state.set('isOnline', action.onLine);
+export default globalReducer;
 
-      return nextState;
-    }
-    default:
-      return state;
-  }
-}
+export const getFleetName = (state) =>
+  fromFleetReducer.getFleetName(state.getIn(['global', 'fleet']));
+export const getIsUserAuthenticated = (state) =>
+  fromAuthReducer.getIsAuthenticated(state.getIn(['global', 'auth']));
+export const getAppOnlineState = (state) =>
+  fromOnlineStateReducer.getOnlineStatus(state.getIn(['global', 'onlineState']));

@@ -10,6 +10,7 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import { subscribeToData } from './actions';
+import { getPromoData } from './reducer';
 
 class PromoTrackingScreen extends React.Component {
 
@@ -98,7 +99,7 @@ PromoTrackingScreen.propTypes = {
 const PurePromoTrackingScreen = pure(PromoTrackingScreen);
 
 const mapState = (state) => ({
-  data: state.getIn(['promos', 'data']),
+  data: getPromoData(state),
 });
 const mapDispatch = {
   subscribeToData,

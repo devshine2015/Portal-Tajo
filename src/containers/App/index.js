@@ -3,15 +3,15 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import createBaseUrl from 'utils/createBaseUrl';
+import { createBaseUrl } from 'utils';
 import {
   deepOrange500,
   grey300,
 } from 'material-ui/styles/colors';
 import {
-  changeOnlineState,
-  checkUserAuthentication,
-  setFleet,
+  fleetActions,
+  authActions,
+  onlineStateActions,
 } from './actions';
 
 const muiTheme = getMuiTheme({
@@ -24,7 +24,7 @@ const muiTheme = getMuiTheme({
 class App extends React.Component {
 
   componentWillMount() {
-    this.props.setFleet(this.props.fleet);
+    this.props.setFleetName(this.props.fleet);
   }
 
   componentDidMount() {
@@ -39,9 +39,7 @@ class App extends React.Component {
   }
 
   handleOnlineState = (e) => {
-    const isOnline = e.type === 'online';
-
-    this.props.changeOnlineState(isOnline);
+    this.props.changeOnlineState(e.type === 'online');
   }
 
   render() {
@@ -66,14 +64,14 @@ App.propTypes = {
     dashboard: React.PropTypes.string.isRequired,
     login: React.PropTypes.string.isRequired,
   }).isRequired,
-  setFleet: React.PropTypes.func.isRequired,
+  setFleetName: React.PropTypes.func.isRequired,
 };
 
-const mapState = (state, ownProps) => {
-  const base = createBaseUrl(ownProps.params.fleet);
+const mapState = (state, { params }) => {
+  const base = createBaseUrl(params.fleet);
 
   return {
-    fleet: ownProps.params.fleet,
+    fleet: params.fleet,
     urls: {
       dashboard: `${base}/dashboard`,
       login: `${base}/login`,
@@ -81,9 +79,9 @@ const mapState = (state, ownProps) => {
   };
 };
 const mapDispatch = {
-  changeOnlineState,
-  checkUserAuthentication,
-  setFleet,
+  changeOnlineState: onlineStateActions.changeOnlineState,
+  checkUserAuthentication: authActions.checkUserAuthentication,
+  setFleetName: fleetActions.setFleetName,
 };
 
 const PureApp = pure(App);

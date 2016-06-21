@@ -7,11 +7,9 @@ import Checkbox from 'material-ui/Checkbox';
 import DatePicker from 'material-ui/DatePicker';
 import Form from 'components/Form';
 import InputFieldWrapper from 'components/InputFieldWrapper';
-import {
-  generateReport,
-  saveGenerated,
-  resetReportData,
-} from './actions';
+import { dataActions } from './actions';
+import { getFleetName } from 'containers/App/reducer';
+import { appHasStoredReport, getReportLoadingState } from './reducer';
 
 const FORM_NAME = 'reports';
 
@@ -46,7 +44,7 @@ class ReportsScreen extends React.Component {
     });
 
     if (this.props.hasReport) {
-      this.props.resetReportData();
+      this.props.removeReportData();
     }
   }
 
@@ -63,7 +61,11 @@ class ReportsScreen extends React.Component {
       toTs: new Date(to).getTime(),
     };
 
-    this.props.generateReport(data, this.state.isOneDay);
+    this.props.generateReport({
+      fleet: this.props.fleet,
+      isOneDay: this.state.isOneDay,
+      timePeriod: data,
+    });
   }
 
   onOneDayToggle = (event, isInputChecked) => {
@@ -124,23 +126,23 @@ class ReportsScreen extends React.Component {
 }
 
 ReportsScreen.propTypes = {
-  saveGenerated: React.PropTypes.func.isRequired,
+  fleet: React.PropTypes.string.isRequired,
   generateReport: React.PropTypes.func.isRequired,
-  resetReportData: React.PropTypes.func.isRequired,
   hasReport: React.PropTypes.bool.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
+  removeReportData: React.PropTypes.func.isRequired,
+  saveGenerated: React.PropTypes.func.isRequired,
 };
 
 const PureReportsScreen = pure(ReportsScreen);
 
 const mapState = (state) => ({
-  isLoading: state.getIn(['reports', 'isLoading']),
-  hasReport: state.getIn(['reports', 'reportData']).size !== 0,
+  fleet: getFleetName(state),
+  isLoading: getReportLoadingState(state),
+  hasReport: appHasStoredReport(state),
 });
 const mapDispatch = {
-  saveGenerated,
-  generateReport,
-  resetReportData,
+  ...dataActions,
 };
 
 export default connect(mapState, mapDispatch)(PureReportsScreen);

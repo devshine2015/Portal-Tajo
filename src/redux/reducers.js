@@ -5,7 +5,7 @@
 
 import { fromJS } from 'immutable';
 import { combineReducers } from 'redux-immutable';
-import globalReducer from 'containers/App/reducer';
+import rootReducer from 'containers/App/reducer';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 const routeInitialState = fromJS({
@@ -28,7 +28,7 @@ function routerReducer(state = routeInitialState, action) {
  */
 export default function createReducer(asyncReducers) {
   return combineReducers({
-    global: globalReducer,
+    global: rootReducer,
     route: routerReducer,
     ...asyncReducers,
   });

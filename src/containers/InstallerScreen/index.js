@@ -8,10 +8,12 @@ import Form from 'components/Form';
 import Message from 'containers/Message';
 import OfflineData from 'containers/OfflineData';
 import Notification from 'containers/Notification';
-import { submitData, saveLocally } from './actions';
+import { formActions } from './actions';
 import { sendFromStorage, checkStorage } from 'containers/OfflineData/actions';
 import { showNotification, hideNotification } from 'containers/Notification/actions';
 import { validateForm } from 'utils/forms';
+import { getAppOnlineState, getFleetName } from 'containers/App/reducer';
+import { getLoaderState, getFormSubmissionState } from './reducer';
 
 import styles from './styles.css';
 
@@ -60,9 +62,9 @@ class InstallerScreen extends React.Component {
 
     if (!validateForm(this.state.fields)) {
       if (this.props.isOnline) {
-        this.props.submitData(this.state.fields);
+        this.props.submitData(this.props.fleet, this.state.fields);
       } else {
-        this.props.saveLocally(this.state.fields);
+        this.props.saveLocally(this.props.fleet, this.state.fields);
       }
     }
   }
@@ -149,6 +151,7 @@ class InstallerScreen extends React.Component {
 }
 
 InstallerScreen.propTypes = {
+  fleet: React.PropTypes.string.isRequired,
   checkStorage: React.PropTypes.func.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
   isOnline: React.PropTypes.bool.isRequired,
@@ -163,16 +166,19 @@ InstallerScreen.propTypes = {
 
 const mapState = (state) => ({
   ...state.get('installer'),
-  isOnline: state.getIn(['global', 'isOnline']),
+  submittedSuccessfully: getFormSubmissionState(state),
+  fleet: getFleetName(state),
+  isLoading: getLoaderState(state),
+  isOnline: getAppOnlineState(state),
   hasOfflineData: state.getIn(['offlineData', 'hasOfflineData']),
 });
 const mapDispatch = {
   checkStorage,
   hideNotification,
-  saveLocally,
+  saveLocally: formActions.saveLocally,
   sendFromStorage,
   showNotification,
-  submitData,
+  submitData: formActions.submitData,
 };
 
 const PureInstallerScreen = pure(InstallerScreen);

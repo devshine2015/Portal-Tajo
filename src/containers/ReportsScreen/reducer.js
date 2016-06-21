@@ -1,27 +1,43 @@
+import { combineReducers } from 'redux-immutable';
 import { fromJS, List } from 'immutable';
-import {
-  REPORT_SCREEN_SET_LOADER,
-  REPORT_SCREEN_SET_REPORT_DATA,
-  REPORT_SCREEN_RESET_REPORT_DATA,
-} from './actions';
+import { loaderActions, dataActions } from './actions/index';
 
-const initialState = fromJS({
+const loaderInitialState = fromJS({
   isLoading: false,
-  reportData: new List(),
 });
+const dataInitialState = new List();
 
-export default function reportsReducer(state = initialState, action) {
+function loaderReducer(state = loaderInitialState, action) {
   switch (action.type) {
-    case REPORT_SCREEN_SET_LOADER: {
+    case loaderActions.REPORT_SCREEN_LOADER_SET: {
       return state.set('isLoading', action.nextState);
-    }
-    case REPORT_SCREEN_SET_REPORT_DATA: {
-      return state.set('reportData', new List(action.reportData));
-    }
-    case REPORT_SCREEN_RESET_REPORT_DATA: {
-      return state.set('reportData', new List());
     }
     default:
       return state;
   }
 }
+
+function dataReducer(state = dataInitialState, action) {
+  switch (action.type) {
+    case dataActions.REPORT_SCREEN_DATA_SAVE: {
+      return new List(action.reportData);
+    }
+    case dataActions.REPORT_SCREEN_DATA_REMOVE: {
+      return new List();
+    }
+    default:
+      return state;
+  }
+}
+
+export default combineReducers({
+  loader: loaderReducer,
+  data: dataReducer,
+});
+
+export const getSavedReportData = (state) =>
+  state.getIn(['reports', 'data']);
+export const appHasStoredReport = (state) =>
+  state.getIn(['reports', 'data']).size !== 0;
+export const getReportLoadingState = (state) =>
+  state.getIn(['reports', 'loader', 'isLoading']);

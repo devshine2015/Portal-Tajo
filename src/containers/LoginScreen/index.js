@@ -5,7 +5,8 @@ import Form from 'components/Form';
 import Button from 'components/Button';
 import InputField from 'components/InputField';
 import InputFieldWrapper from 'components/InputFieldWrapper';
-import { login } from './actions';
+import { authActions } from 'containers/App/actions';
+import { getFleetName } from 'containers/App/reducer';
 
 const FORM_NAME = 'login';
 
@@ -67,11 +68,11 @@ LoginScreen.propTypes = {
 
 const PureLoginScreen = pure(LoginScreen);
 
-const mapState = (state, ownProps) => ({
-  fleet: ownProps.params.fleet,
+const mapState = (state) => ({
+  fleet: getFleetName(state),
 });
 const mapDispatch = {
-  login,
+  login: authActions.login,
 };
 
 export default connect(mapState, mapDispatch)(PureLoginScreen);

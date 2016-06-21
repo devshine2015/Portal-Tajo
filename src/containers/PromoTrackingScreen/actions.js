@@ -1,18 +1,17 @@
-import firebase from 'firebase/app';
-import {
-  FIREBASE_CONFIG,
-  FIREBASE_SUBSCRIBTIONS_REF,
-} from './constants';
 require('firebase/database');
+import firebase from 'firebase/app';
+import { FIREBASE_CONFIG } from 'configs';
+import { FIREBASE_SUBSCRIBTIONS_REF } from './constants';
+import { getFirebaseStatus } from './reducer';
 
 let database;
 let SUBSCRIBTION_REF;
 
-export const PROMO_TRACKING_UPDATE_DATA = 'portal/PromoTrackingScreen/PROMO_TRACKING_UPDATE_DATA';
-export const PROMO_TRACKING_FIREBASE_INITIATED = 'portal/PromoTrackingScreen/PROMO_TRACKING_FIREBASE_INITIATED';
+export const PROMO_DATA_UPDATE = 'portal/PromoTrackingScreen/PROMO_DATA_UPDATE';
+export const PROMO_FIREBASE_INITIATED = 'portal/PromoTrackingScreen/PROMO_FIREBASE_INITIATED';
 
 export const subscribeToData = () => (dispatch, getState) => {
-  const firebaseInitiated = getState().getIn(['promos', 'firebaseInitiated']);
+  const firebaseInitiated = getFirebaseStatus(getState());
 
   if (!firebaseInitiated) {
     firebase.initializeApp(FIREBASE_CONFIG);
@@ -31,11 +30,11 @@ export const getDataFromFirebase = () => (dispatch) => {
 };
 
 const _updateData = (data) => ({
-  type: PROMO_TRACKING_UPDATE_DATA,
+  type: PROMO_DATA_UPDATE,
   data,
 });
 
 const _setFirebaseInitiated = (initiated) => ({
-  type: PROMO_TRACKING_FIREBASE_INITIATED,
+  type: PROMO_FIREBASE_INITIATED,
   initiated,
 });
