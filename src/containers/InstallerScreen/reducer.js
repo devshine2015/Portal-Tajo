@@ -1,13 +1,11 @@
 import { combineReducers } from 'redux-immutable';
-import { fromJS } from 'immutable';
-import { loaderActions, formActions } from './actions';
+import { fromJS, List } from 'immutable';
+import { loaderActions, offlineDataActions } from './actions';
 
 const loaderInitialState = fromJS({
   isLoading: false,
 });
-const formInitialState = fromJS({
-  submittedSuccessfully: false,
-});
+const offlineDataInitialState = new List();
 
 function loaderReducer(state = loaderInitialState, action) {
   switch (action.type) {
@@ -19,25 +17,23 @@ function loaderReducer(state = loaderInitialState, action) {
   }
 }
 
-function formReducer(state = formInitialState, action) {
+function offlineDataReducer(state = offlineDataInitialState, action) {
   switch (action.type) {
-    case formActions.INSTALLER_FORM_SUBMIT_SUCCESS: {
-      return state.set('submittedSuccessfully', true);
-    }
-    case formActions.INSTALLER_FORM_SUBMIT_RESET: {
-      return state.set('submittedSuccessfully', false);
-    }
+    case offlineDataActions.INSTALLER_OFFLINE_DATA_CASHED:
+      return new List(action.data);
     default:
       return state;
   }
 }
 
 export default combineReducers({
-  form: formReducer,
   loader: loaderReducer,
+  offlineData: offlineDataReducer,
 });
 
 export const getLoaderState = (state) =>
   state.getIn(['installer', 'loader', 'isLoading']);
-export const getFormSubmissionState = (state) =>
-  state.getIn(['installer', 'form', 'submittedSuccessfully']);
+export const getOfflineData = (state) =>
+  state.getIn(['installer', 'offlineData']);
+export const installerHasOfflineData = (state) =>
+  state.getIn(['installer', 'offlineData']).size !== 0;

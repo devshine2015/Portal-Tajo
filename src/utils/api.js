@@ -20,18 +20,13 @@ function sendRequest({ endpoint, options }) {
 }
 
 function getSessionId() {
-  return localStorage.read(LOCAL_STORAGE_SESSION_KEY);
+  return localStorage.read(LOCAL_STORAGE_SESSION_KEY)
+    .then(sessionId => sessionId[0]);
 }
 
-function invoke(method, url, { payload, optionalHeaders = {} } = {}) {
+function prepareRequest(method, url, headers, payload) {
   let query;
   let body;
-  const headers = Object.assign({}, {
-    'content-type': 'application/json',
-    'DRVR-SESSION': getSessionId(),
-  }, {
-    ...optionalHeaders,
-  });
 
   if (method === 'get' || method === 'head') {
     const string = JSON.stringify(payload);
@@ -50,6 +45,20 @@ function invoke(method, url, { payload, optionalHeaders = {} } = {}) {
   };
 
   return sendRequest({ endpoint, options });
+}
+
+function invoke(method, url, { payload, optionalHeaders = {} } = {}) {
+  const headers = Object.assign({}, {
+    'content-type': 'application/json',
+  }, {
+    ...optionalHeaders,
+  });
+
+  return getSessionId().then(ssId => {
+    headers['DRVR-SESSION'] = ssId;
+
+    return prepareRequest(method, url, headers, payload);
+  }, () => prepareRequest(method, url, headers, payload));
 }
 
 function api(url, payload) {

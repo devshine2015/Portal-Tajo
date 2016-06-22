@@ -3,7 +3,7 @@ import pure from 'recompose/pure';
 
 import styles from './styles.css';
 
-class OfflineDataItem extends React.Component {
+class InstallerOfflineDataItem extends React.Component {
 
   onClick = (e) => {
     this.props.onChange(e.target.checked, this.props.index);
@@ -49,13 +49,14 @@ class OfflineDataItem extends React.Component {
   }
 }
 
-OfflineDataItem.propTypes = {
-  index: React.PropTypes.string.isRequired,
+InstallerOfflineDataItem.propTypes = {
+  index: React.PropTypes.number.isRequired,
+  id: React.PropTypes.string.isRequired,
   imei: React.PropTypes.string.isRequired,
   license: React.PropTypes.string.isRequired,
-  odometer: React.PropTypes.number.isRequired,
+  odometer: React.PropTypes.string.isRequired,
   name: React.PropTypes.string.isRequired,
   onChange: React.PropTypes.func.isRequired,
 };
 
-export default pure(OfflineDataItem);
+export default pure(InstallerOfflineDataItem);

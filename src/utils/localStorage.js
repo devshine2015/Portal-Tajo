@@ -13,23 +13,20 @@ function _checkIfValueExist(val, list) {
 }
 
 export function read(key) {
-  if (!window.localStorage) {
-    console.warn('I cannot read from your browser`s local storage');
-    return false;
-  }
-  const savedData = window.localStorage.getItem(key);
+  try {
+    const savedData = window.localStorage.getItem(key);
 
-  return JSON.parse(savedData);
+    return Promise.resolve(JSON.parse(savedData));
+  } catch (e) {
+    return Promise.resolve(false);
+  }
 }
 
 // save just unique data
 export function save(key, value) {
-  return new Promise((resolve, reject) => {
-    if (!window.localStorage) {
-      console.warn('I cannot write to your browser`s local storage');
-      reject();
-    } else {
-      const savedData = read(key) || [];
+  try {
+    return read(key).then((data) => {
+      const savedData = data || [];
 
       // don't save same value one more time
       if (!_checkIfValueExist(value, savedData)) {
@@ -37,45 +34,46 @@ export function save(key, value) {
         window.localStorage.setItem(key, JSON.stringify(savedData));
       }
 
-      resolve(savedData);
-    }
-  });
+      return savedData;
+    });
+  } catch (e) {
+    return Promise.resolve(false);
+  }
 }
 
 export function clean(key) {
-  return new Promise((resolve, reject) => {
-    if (!window.localStorage) {
-      console.warn('I cannot clean from your browser`s local storage');
-      reject();
-    } else {
-      window.localStorage.removeItem(key);
-      resolve();
-    }
-  });
+  try {
+    window.localStorage.removeItem(key);
+    return Promise.resolve(true);
+  } catch (e) {
+    return Promise.resolve(false);
+  }
 }
 
 export function cleanExact(key, indexesToRemove) {
-  const savedData = read(key) || [];
-  let needCleanEverything = false;
+  return read(key).then((savedData = []) => {
+    let needCleanEverything = false;
 
-  indexesToRemove.forEach(i => {
-    savedData.splice(i, 1);
-  });
+    indexesToRemove.forEach(i => {
+      savedData.splice(i, 1);
+    });
 
-  // clean up localStorage item
-  if (savedData.length === 0) {
-    needCleanEverything = true;
-  }
+    // clean up localStorage item
+    if (savedData.length === 0) {
+      needCleanEverything = true;
+    }
 
-  return new Promise((resolve) => {
     if (needCleanEverything) {
-      clean(key)
-        .then(() => resolve(savedData));
-    } else {
+      return clean(key).then(() => Promise.resolve(savedData));
+    }
+
+    try {
       // replace existing values
       window.localStorage.setItem(key, JSON.stringify(savedData));
 
-      resolve(savedData);
+      return savedData;
+    } catch (e) {
+      return false;
     }
   });
 }

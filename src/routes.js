@@ -58,6 +58,7 @@ export default function createRoutes(store) {
     injectReducer,
     errorHandler,
     loadModule,
+    dispatch: store.dispatch,
   });
 
   const dashboardRoute = require('containers/Dashboard/route')({
