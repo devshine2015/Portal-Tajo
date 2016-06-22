@@ -82,7 +82,7 @@ export default function createRoutes(store) {
     dashboardRoute,
     loginRoute,
   );
-  
+
   return (
     <Router
       history={history}
