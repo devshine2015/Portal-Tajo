@@ -5,7 +5,7 @@ import { sidebarActions, pagesActions } from './actions';
 const pagesInitialState = new List();
 
 const sidebarInitialState = fromJS({
-  opened: true,
+  opened: false,
 });
 
 function pagesReducer(state = pagesInitialState, action) {
