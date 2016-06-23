@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:clean": "rimraf ./build/* ./tajo/*",
+    "build:clean": "rimraf ./build/* ./escape/* ./customer/*",
+    "build:clean:escape": "rimraf ./build/* ./escape/*",
+    "build:clean:portal": "rimraf ./build/* ./customer/*",
     "build:escape": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.escape.babel.js --color -p",
     "build:portal": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.portal.babel.js --color -p",
     "escape": "npm run start:tunnel:escape",

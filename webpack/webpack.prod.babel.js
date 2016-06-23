@@ -1,5 +1,4 @@
 // Important modules this config uses
-const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -10,10 +9,10 @@ const cssnext = require('postcss-cssnext');
 const postcssFocus = require('postcss-focus');
 const postcssReporter = require('postcss-reporter');
 
-module.exports = require('./webpack.base.babel')({
+module.exports = (options) => require('./webpack.base.babel')({
   // In production, we skip all hot-reloading stuff
   entry: [
-    path.join(process.cwd(), 'src/app.js'),
+    options.entryPoint,
   ],
 
   // Utilize long-term caching by adding content hashes (not compilation hashes) to compiled assets
@@ -22,6 +21,8 @@ module.exports = require('./webpack.base.babel')({
     chunkFilename: '[name]_[chunkhash].chunk.js',
     publicPath: '/assets/common-portal/tajo/',
   },
+
+  outputFolder: options.outputFolder,
 
   // We use ExtractTextPlugin so we get a seperate CSS file instead
   // of the CSS being in the JS and injected as a style tag
