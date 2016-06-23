@@ -5,6 +5,8 @@
 # project relate
 build/
 tajo/
+escape/
+customer/
 
 # node.js
 #

@@ -30,11 +30,11 @@ const initialState = {};
 const store = configureStore(initialState, browserHistory);
 
 // Set up the router, wrapping all Routes in the App component
-import { createEscapeRoutes } from './routes';
+import createRoutes from './routes/escapeRoutes';
 
 ReactDOM.render(
   <Provider store={store}>
-    {createEscapeRoutes(store)}
+    {createRoutes(store)}
   </Provider>,
   document.getElementById('app')
 );
