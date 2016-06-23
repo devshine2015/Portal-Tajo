@@ -1,12 +1,16 @@
+const NAME = 'reports';
+
 const createRoute = ({
   path,
-  name = 'reports',
+  name = NAME,
+  niceName = NAME,
   errorHandler,
   injectReducer,
   loadModule,
 }) => ({
   path,
   name,
+  niceName,
   getComponent: (location, cb) => {
     require.ensure([], require => {
       const importModules = Promise.all([
@@ -17,7 +21,7 @@ const createRoute = ({
       const renderModule = loadModule(cb);
 
       importModules.then(([reducer, component]) => {
-        injectReducer('reports', reducer.default);
+        injectReducer(NAME, reducer.default);
         renderModule(component);
       });
 

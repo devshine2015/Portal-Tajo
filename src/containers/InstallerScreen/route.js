@@ -1,8 +1,11 @@
 import { offlineDataActions } from './actions';
 
+const NAME = 'installer';
+
 const createRoute = ({
   path,
-  name = 'installer',
+  name = NAME,
+  niceName = NAME,
   errorHandler,
   injectReducer,
   loadModule,
@@ -10,6 +13,7 @@ const createRoute = ({
 }) => ({
   path,
   name,
+  niceName,
   getComponent: (location, cb) => {
     require.ensure([], require => {
       const importModules = Promise.all([
@@ -23,7 +27,7 @@ const createRoute = ({
         installerReducer,
         installerScreenComponent,
       ]) => {
-        injectReducer('installer', installerReducer.default);
+        injectReducer(NAME, installerReducer.default);
         renderModule(installerScreenComponent);
       });
 

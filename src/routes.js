@@ -51,6 +51,7 @@ export default function createRoutes(store) {
     injectReducer,
     errorHandler,
     loadModule,
+    niceName: 'Promo Subscribtions',
   });
 
   const installerRoute = require('containers/InstallerScreen/route')({
@@ -67,6 +68,10 @@ export default function createRoutes(store) {
 
   const dashboardRoute = require('containers/Dashboard/route')({
     path: 'dashboard',
+    injectReducer,
+    errorHandler,
+    loadModule,
+    dispatch: store.dispatch,
   });
 
   dashboardRoute.childRoutes.push(
