@@ -1,0 +1,7 @@
+@media screen and (min-width: 100px) {
+  .menu {}
+
+  .menu__tem {
+    text-transform: capitalize;
+  }
+}
