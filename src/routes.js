@@ -58,6 +58,7 @@ export default function createRoutes(store) {
     injectReducer,
     errorHandler,
     loadModule,
+    dispatch: store.dispatch,
   });
 
   const mapAndListRoute = require('containers/MapAndListScreen/route')({

@@ -2,8 +2,9 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { createBaseUrl } from 'utils';
+import createBaseUrl from 'utils/createBaseUrl';
 import { AppBar, FlatButton } from 'material-ui';
+import SnackbarNotification from 'containers/Snackbar';
 import { authActions } from 'containers/App/actions';
 import { getFleetName } from 'containers/App/reducer';
 import styles from './styles.css';
@@ -34,6 +35,7 @@ class Dashboard extends React.Component {
         <Link to={`${baseUrl}/promos`}>Promos</Link> <wbr />
 
         <div className={styles.content}>{this.props.children}</div>
+        <SnackbarNotification />
       </div>
     );
   }

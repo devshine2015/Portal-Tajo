@@ -5,16 +5,17 @@ import { fromJS } from 'immutable';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Form from 'components/Form';
-import Message from 'containers/Message';
-import OfflineData from 'containers/OfflineData';
-import Notification from 'containers/Notification';
-import { formActions } from './actions';
-import { sendFromStorage, checkStorage } from 'containers/OfflineData/actions';
-import { showNotification, hideNotification } from 'containers/Notification/actions';
+import InstallerOfflineData from 'containers/InstallerOfflineData';
+import InstallerDialog from 'components/InstallerDialog';
+import { formActions, offlineDataActions } from './actions';
 import { validateForm } from 'utils/forms';
 import { getAppOnlineState, getFleetName } from 'containers/App/reducer';
-import { getLoaderState, getFormSubmissionState } from './reducer';
-
+import {
+  getLoaderState,
+  installerHasOfflineData,
+  getOfflineData,
+} from './reducer';
+import { showSnackbar } from 'containers/Snackbar/actions';
 import styles from './styles.css';
 
 const initialFields = fromJS({
@@ -32,6 +33,7 @@ class InstallerScreen extends React.Component {
     this.state = {
       fields: initialFields.toJS(),
       cannotSubmit: true,
+      dialogIsOpen: this.dialogIsOpen(props),
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -42,7 +44,6 @@ class InstallerScreen extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.resetForm(nextProps);
     this.notify(nextProps);
   }
 
@@ -62,32 +63,75 @@ class InstallerScreen extends React.Component {
 
     if (!validateForm(this.state.fields)) {
       if (this.props.isOnline) {
-        this.props.submitData(this.props.fleet, this.state.fields);
+        this.submitForm(this.props.fleet, this.state.fields);
       } else {
-        this.props.saveLocally(this.props.fleet, this.state.fields);
+        this.saveLocally(this.state.fields);
       }
     }
+  }
+
+  dialogIsOpen(props) {
+    return props.hasOfflineData && props.isOnline;
+  }
+
+  submitForm = (fleet, fields) => {
+    this.props.submitForm(fleet, fields).then(() => {
+      this.props.showSnackbar('Succesfully sended ✓', 2000);
+      this.resetForm();
+    }, () => {
+      this.saveLocally(fields);
+    });
+  }
+
+  saveLocally = (fields) => {
+    this.props.saveLocally(fields).then(() => {
+      this.props.showSnackbar('Saved locally ✓', 2000);
+      this.resetForm();
+    }, error => {
+      console.error(error);
+      this.props.showSnackbar('Cannot save to your device store', 2000);
+    });
   }
 
   notify = (nextProps) => {
     // show/hide notifiation only navigator.onLine changed
     if (nextProps.hasOfflineData && (!this.props.isOnline && nextProps.isOnline)) {
-      this.props.showNotification();
+      this.setState({
+        dialogIsOpen: true,
+      });
     } else if (nextProps.hasOfflineData && (this.props.isOnline && !nextProps.isOnline)) {
-      this.props.hideNotification();
+      this.setState({
+        dialogIsOpen: false,
+      });
     }
   }
 
-  resetForm = (nextProps) => {
-    if (!this.props.submittedSuccessfully && nextProps.submittedSuccessfully) {
-      const formNode = document.forms.bounder;
+  resetForm() {
+    const formNode = document.forms.bounder;
 
-      this.setState({
-        fields: initialFields.toJS(),
-      });
+    this.setState({
+      fields: initialFields.toJS(),
+    });
 
-      formNode.reset();
-    }
+    formNode.reset();
+  }
+
+  sendFromDialog = (e) => {
+    e.preventDefault();
+
+    this.props.sendFromStorage().catch(() => {
+      this.closeDialog();
+    });
+
+    this.setState({
+      dialogIsOpen: this.dialogIsOpen(this.props),
+    });
+  }
+
+  closeDialog = () => {
+    this.setState({
+      dialogIsOpen: false,
+    });
   }
 
   render() {
@@ -106,7 +150,6 @@ class InstallerScreen extends React.Component {
           refs="form"
           className={styles.form}
         >
-          <Message />
           <TextField
             fullWidth
             name="name"
@@ -143,42 +186,50 @@ class InstallerScreen extends React.Component {
             type="submit"
           />
         </Form>
-        { this.props.hasOfflineData && <OfflineData /> }
-        <Notification />
+        <InstallerOfflineData
+          sendData={this.props.sendFromStorage}
+          cleanData={this.props.cleanOfflineData}
+          data={this.props.data}
+          isOnline={this.props.isOnline}
+        />
+        <InstallerDialog
+          open={this.state.dialogIsOpen}
+          handleSend={this.sendFromDialog}
+          handleClose={this.closeDialog}
+        />
       </div>
     );
   }
 }
 
 InstallerScreen.propTypes = {
-  fleet: React.PropTypes.string.isRequired,
   checkStorage: React.PropTypes.func.isRequired,
+  cleanOfflineData: React.PropTypes.func.isRequired,
+  data: React.PropTypes.array,
+  fleet: React.PropTypes.string.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
   isOnline: React.PropTypes.bool.isRequired,
   hasOfflineData: React.PropTypes.bool.isRequired,
-  hideNotification: React.PropTypes.func.isRequired,
   saveLocally: React.PropTypes.func.isRequired,
   sendFromStorage: React.PropTypes.func.isRequired,
-  showNotification: React.PropTypes.func.isRequired,
-  submitData: React.PropTypes.func.isRequired,
-  submittedSuccessfully: React.PropTypes.bool.isRequired,
+  showSnackbar: React.PropTypes.func.isRequired,
+  submitForm: React.PropTypes.func.isRequired,
 };
 
 const mapState = (state) => ({
-  ...state.get('installer'),
-  submittedSuccessfully: getFormSubmissionState(state),
+  data: getOfflineData(state).toArray(),
   fleet: getFleetName(state),
   isLoading: getLoaderState(state),
   isOnline: getAppOnlineState(state),
-  hasOfflineData: state.getIn(['offlineData', 'hasOfflineData']),
+  hasOfflineData: installerHasOfflineData(state),
 });
 const mapDispatch = {
-  checkStorage,
-  hideNotification,
-  saveLocally: formActions.saveLocally,
-  sendFromStorage,
-  showNotification,
-  submitData: formActions.submitData,
+  checkStorage: offlineDataActions.checkStorage,
+  cleanOfflineData: offlineDataActions.cleanOfflineData,
+  saveLocally: offlineDataActions.saveLocally,
+  sendFromStorage: offlineDataActions.sendFromStorage,
+  showSnackbar,
+  submitForm: formActions.submitForm,
 };
 
 const PureInstallerScreen = pure(InstallerScreen);
