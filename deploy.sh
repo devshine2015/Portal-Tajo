@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-DIR='build'
+DIR='escape'
 TARGET_FOLDER='~/driver-server/static-root/public/common-portal/'
 FOLDER_NAME='tajo'
 
