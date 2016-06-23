@@ -1,36 +1,14 @@
 import React from 'react';
-import { getHooks } from './utils/hooks';
+import { getHooks } from 'utils/hooks';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
+import {
+  errorHandler,
+  loadModule,
+  selectLocationState,
+} from './helpers';
 
 const ROOT = '/portal/:fleet/tajo/';
-
-// load module only if it is necessary
-// see https://blog.mxstbr.com/2016/01/react-apps-with-pages/
-// for details
-const loadModule = (cb) => (componentModule) => {
-  cb(null, componentModule.default);
-};
-
-function errorHandler(error) {
-  console.error(error);
-}
-
-const selectLocationState = () => {
-  let prevRoutingState;
-  let prevRoutingStateJS;
-
-  return (state) => {
-    const routingState = state.get('route');
-
-    if (!routingState.equals(prevRoutingState)) {
-      prevRoutingState = routingState;
-      prevRoutingStateJS = routingState.toJS();
-    }
-
-    return prevRoutingStateJS;
-  };
-};
 
 export default function createRoutes(store) {
   const { injectReducer } = getHooks(store);
@@ -62,10 +40,6 @@ export default function createRoutes(store) {
     dispatch: store.dispatch,
   });
 
-  const mapAndListRoute = require('containers/MapAndListScreen/route')({
-    path: 'map',
-  });
-
   const dashboardRoute = require('containers/Dashboard/route')({
     path: 'dashboard',
     injectReducer,
@@ -78,7 +52,6 @@ export default function createRoutes(store) {
     installerRoute,
     reportsRoute,
     promoRoute,
-    mapAndListRoute,
   );
 
   const loginRoute = require('containers/LoginScreen/route')({

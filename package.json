@@ -4,10 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:clean": "rimraf ./build/*",
-    "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.babel.js --color -p",
-    "start": "npm run start:tunnel",
-    "start:tunnel": "cross-env NODE_ENV=development node server",
+    "build:clean": "rimraf ./build/* ./tajo/*",
+    "build:escape": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.escape.babel.js --color -p",
+    "build:portal": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.portal.babel.js --color -p",
+    "escape": "npm run start:tunnel:escape",
+    "portal": "npm run start:tunnel:portal",
+    "start:tunnel:escape": "cross-env NODE_ENV=development DRVR_PORTAL=escape node server",
+    "start:tunnel:portal": "cross-env NODE_ENV=development DRVR_PORTAL=portal node server",
     "start:prod": "cross-env NODE_ENV=production node server"
   },
   "author": "Maksim Orlov",

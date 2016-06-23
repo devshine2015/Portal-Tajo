@@ -6,6 +6,7 @@ const ngrok = require('ngrok');
 
 const frontend = require('./middlewares/frontendMiddleware');
 const isDev = process.env.NODE_ENV !== 'production';
+const portal = process.env.DRVR_PORTAL;
 
 const app = express();
 
@@ -13,9 +14,17 @@ const app = express();
 // app.use('/api', myApi);
 
 // Initialize frontend middleware that will serve your JS app
-const webpackConfig = isDev
-  ? require('../webpack/webpack.dev.babel')
-  : require('../webpack/webpack.prod.babel');
+var webpackConfig;
+
+if (isDev) {
+  if (portal === 'escape') {
+    webpackConfig = require('../webpack/webpack.dev.escape.babel.js');
+  } else {
+    webpackConfig = require('../webpack/webpack.dev.portal.babel.js');
+  }
+} else {
+  webpackConfig = require('../webpack/webpack.prod.babel');
+}
 
 app.use(frontend(webpackConfig));
 

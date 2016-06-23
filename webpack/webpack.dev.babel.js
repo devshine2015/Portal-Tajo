@@ -2,7 +2,6 @@
  * DEVELOPMENT WEBPACK CONFIGURATION
  */
 
-const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -11,11 +10,11 @@ const cssnext = require('postcss-cssnext');
 const postcssFocus = require('postcss-focus');
 const postcssReporter = require('postcss-reporter');
 
-module.exports = require('./webpack.base.babel')({
+module.exports = (options) => require('./webpack.base.babel')({
   // Add hot reloading in development
   entry: [
     'webpack-hot-middleware/client',
-    path.join(process.cwd(), 'src/app.js'), // Start with src/app.js
+    options.entryPoint,
   ],
 
   // Don't use hashes in dev mode for better performance
