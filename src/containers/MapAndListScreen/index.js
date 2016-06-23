@@ -6,8 +6,8 @@ import styles from './styles.css';
 class MapAndList extends React.Component {
   render() {
     return (
-      <div>
-        <div className={styles.mapAndListContainer}> THE map goes HERE </div>
+      <div className={styles.mapAndListContainer}>
+       THE map goes HERE
       </div>
     );
   }

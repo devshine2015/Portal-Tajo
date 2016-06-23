@@ -60,6 +60,10 @@ export default function createRoutes(store) {
     loadModule,
   });
 
+  const mapAndListRoute = require('containers/MapAndListScreen/route')({
+    path: 'map',
+  });
+
   const dashboardRoute = require('containers/Dashboard/route')({
     path: 'dashboard',
   });
@@ -68,6 +72,7 @@ export default function createRoutes(store) {
     installerRoute,
     reportsRoute,
     promoRoute,
+    mapAndListRoute,
   );
 
   const loginRoute = require('containers/LoginScreen/route')({
