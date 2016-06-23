@@ -6,6 +6,7 @@ import { createBaseUrl } from 'utils';
 import { AppBar, FlatButton } from 'material-ui';
 import { authActions } from 'containers/App/actions';
 import { getFleetName } from 'containers/App/reducer';
+import styles from './styles.css';
 
 class Dashboard extends React.Component {
 
@@ -17,7 +18,7 @@ class Dashboard extends React.Component {
     const baseUrl = `${createBaseUrl(this.props.fleet)}/dashboard`;
 
     return (
-      <div>
+      <div className={styles.appContent}>
         <AppBar
           title="Dashboard"
           showMenuIconButton={false}
@@ -32,7 +33,7 @@ class Dashboard extends React.Component {
         <Link to={`${baseUrl}/installer`}>Installer</Link> <wbr />
         <Link to={`${baseUrl}/promos`}>Promos</Link> <wbr />
 
-        <div className="content">{this.props.children}</div>
+        <div className={styles.content}>{this.props.children}</div>
       </div>
     );
   }
