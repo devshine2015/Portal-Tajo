@@ -2,6 +2,16 @@ import { pagesActions } from './actions';
 
 const NAME = 'dashboard';
 
+function getChilds(nextLocation, path) {
+  let childRoutes = [];
+
+  if (nextLocation.routes[1] && nextLocation.routes[1].path === path) {
+    childRoutes = nextLocation.routes[1].childRoutes;
+  }
+
+  return childRoutes;
+}
+
 const createRoute = ({
   path,
   name = NAME,
@@ -29,21 +39,14 @@ const createRoute = ({
       ]) => {
         injectReducer(NAME, dashboardReducer.default);
         renderModule(dashboardComponent);
+
+        const childRoutes = getChilds(location, path);
+
+        dispatch(pagesActions.setDashboardPages(childRoutes));
       });
 
       importModules.catch(errorHandler);
     }, 'dashboard');
-  },
-  onEnter: (nextLocation) => {
-    // git child routes to build
-    // links for MainSidebar dynamically
-    let childRoutes = [];
-
-    if (nextLocation.routes[1] && nextLocation.routes[1].path === path) {
-      childRoutes = nextLocation.routes[1].childRoutes;
-    }
-
-    dispatch(pagesActions.setDashboardPages(childRoutes));
   },
   childRoutes: [],
 });
