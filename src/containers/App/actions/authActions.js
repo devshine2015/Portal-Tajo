@@ -22,7 +22,7 @@ export const setUserAuthentication = (isAuthenticated) => ({
 
 function _checkUserAuthentication(urls, dispatch) {
   return localStorage.read(constants.LOCAL_STORAGE_SESSION_KEY)
-  .then(([ssid]) => {
+  .then((ssid) => {
     if (Boolean(ssid)) {
       dispatch(setUserAuthentication(true));
       // got to {ROOT}/dashboard
