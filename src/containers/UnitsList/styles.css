@@ -6,37 +6,4 @@
     height: 100%;
     display: flex;
     }
-
-  .button_main {
-    background-color: #3eb6aa;
-    text-transform: uppercase;
-    border: 1px solid #fff;
-  }
-
-  .button_transparent {
-    background-color: transparent;
-    border: 1px solid #fff;
-  }
-
-  .button_small {
-    padding: 0 20px;
-    line-height: 35px;
-    text-transform: capitalize;
-    font-size: 14px;
-    display: inherit;
-    min-width: auto;
-  }
-
-  .button_disabled {
-    background-color: #ccc;
-    color: #e6e6e6;
-    border-color: #ddd;
-  }
-
-  .loaderWrapper {
-    width: 20px;
-    height: 20px;
-    display: inline-flex;
-    margin-left: 5px;
-  }
 }

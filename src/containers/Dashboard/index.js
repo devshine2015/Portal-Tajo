@@ -17,8 +17,9 @@ class Dashboard extends React.Component {
     return (
       <div className={styles.appContent}>
 
-        <ApplicationBar fleet={this.props.fleet} />
-
+        <div className={styles.topBarContainer}>
+          <ApplicationBar fleet={this.props.fleet} />
+        </div>
         <MainSidebar baseUrl={baseUrl} />
 
         <div className={styles.content}>{this.props.children}</div>
