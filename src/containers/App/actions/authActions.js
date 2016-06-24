@@ -21,20 +21,19 @@ export const setUserAuthentication = (isAuthenticated) => ({
 });
 
 function _checkUserAuthentication(urls, dispatch) {
-  const ssid = localStorage.read(constants.LOCAL_STORAGE_SESSION_KEY);
-
-  if (Boolean(ssid)) {
-    dispatch(setUserAuthentication(true));
-    // got to {ROOT}/dashboard
-    if (!/dashboard/.test(location.pathname)) {
-      dispatch(replace(urls.dashboard));
+  return localStorage.read(constants.LOCAL_STORAGE_SESSION_KEY)
+  .then(([ssid]) => {
+    if (Boolean(ssid)) {
+      dispatch(setUserAuthentication(true));
+      // got to {ROOT}/dashboard
+      if (!/dashboard/.test(location.pathname)) {
+        dispatch(replace(urls.dashboard));
+      }
+    } else {
+      dispatch(setUserAuthentication(false));
+      dispatch(replace(urls.login));
     }
-  } else {
-    dispatch(setUserAuthentication(false));
-    dispatch(replace(urls.login));
-  }
-
-  return Promise.resolve();
+  });
 }
 
 function _login(fleet, data, dispatch) {
