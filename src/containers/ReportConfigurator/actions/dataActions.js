@@ -6,15 +6,15 @@ import getReportParams from 'utils/reports/formatPeriodURL';
 import { setLoader } from './loaderActions';
 import { getSavedReportData } from '../reducer';
 
-export const REPORT_SCREEN_DATA_SAVE = 'portal/ReportsScreen/REPORT_SCREEN_DATA_SAVE';
-export const REPORT_SCREEN_DATA_REMOVE = 'portal/ReportsScreen/REPORT_SCREEN_DATA_REMOVE';
+export const REPORT_DATA_SAVE = 'portal/ReportConfigurator/REPORT_DATA_SAVE';
+export const REPORT_DATA_REMOVE = 'portal/ReportConfigurator/REPORT_DATA_REMOVE';
 
 export const generateReport = (params) => (dispatch) =>
   _generateReport(params, dispatch);
 export const saveGenerated = () => (dispatch, getState) =>
   _saveGenerated(dispatch, getState);
 export const removeReportData = () => ({
-  type: REPORT_SCREEN_DATA_REMOVE,
+  type: REPORT_DATA_REMOVE,
 });
 
 function _generateReport({ timePeriod, isOneDay, fleet }, dispatch) {
@@ -58,7 +58,7 @@ function _saveGenerated(dispatch, getState) {
 }
 
 const _saveReportData = (reportData) => ({
-  type: REPORT_SCREEN_DATA_SAVE,
+  type: REPORT_DATA_SAVE,
   reportData,
 });
 

@@ -1,148 +1,86 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import Checkbox from 'material-ui/Checkbox';
-import DatePicker from 'material-ui/DatePicker';
-import Form from 'components/Form';
-import InputFieldWrapper from 'components/InputFieldWrapper';
-import { dataActions } from './actions';
-import { getFleetName } from 'containers/App/reducer';
-import { appHasStoredReport, getReportLoadingState } from './reducer';
+import ReportConfigurator from 'containers/ReportConfigurator';
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
+import * as fromConfiguratorReducer from 'containers/ReportConfigurator/reducer';
 
-const FORM_NAME = 'reports';
+const PreviewTable = ({
+  headers = [],
+  data = [],
+}) => {
+  const headerCells = headers.map(h => (
+    <TableHeaderColumn key={h}>
+      { h }
+    </TableHeaderColumn>
+  ));
+  return (
+    <Table>
+      <TableHeader
+        displaySelectAll={false}
+        adjustForCheckbox={false}
+      >
+        <TableRow>
+          { headerCells }
+        </TableRow>
+      </TableHeader>
+      <TableBody />
+    </Table>
+  );
+};
+
+PreviewTable.propTypes = {
+  headers: React.PropTypes.arrayOf(
+    React.PropTypes.string
+  ).isRequired,
+};
 
 class ReportsScreen extends React.Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      from: null,
-      to: null,
-      isOneDay: false,
-    };
-
-    this.onOneDayToggle = this.onOneDayToggle.bind(this);
-  }
-
-  onFromDateChange = (event = undefined, date) => {
-    this.onChange(date, 'from');
-  }
-
-  onToDateChange = (event = undefined, date) => {
-    this.onChange(date, 'to');
-  }
-
-  onChange = (date, field) => {
-    // do nothing if field doesn't change
-    if (this.state[field] === date) return;
-
-    this.setState({
-      [field]: date,
-    });
-
-    if (this.props.hasReport) {
-      this.props.removeReportData();
-    }
-  }
-
-  onSubmit = (e) => {
-    e.preventDefault();
-
-    const fields = document.forms[FORM_NAME].elements;
-
-    const from = fields.from.value.trim();
-    const to = fields.to.value ? fields.to.value.trim() : null;
-
-    const data = {
-      fromTs: new Date(from).getTime(),
-      toTs: new Date(to).getTime(),
-    };
-
-    this.props.generateReport({
-      fleet: this.props.fleet,
-      isOneDay: this.state.isOneDay,
-      timePeriod: data,
-    });
-  }
-
-  onOneDayToggle = (event, isInputChecked) => {
-    this.setState({
-      isOneDay: isInputChecked,
-    });
-  }
-
-  saveGenerated = () => {
-    this.props.saveGenerated();
-  }
-
   render() {
+    const headers = this.props.selectedFields.map(sf => (
+      this.props.availableFields[sf].label
+    ));
     return (
-      <Form
-        name={FORM_NAME}
-        refs={FORM_NAME}
-        onSubmit={this.onSubmit}
-      >
-        <DatePicker
-          autoOk
-          hintText="Start time interval"
-          container="inline"
-          name="from"
-          onChange={this.onFromDateChange}
+      <div className="configurator">
+        <ReportConfigurator />
+        <PreviewTable
+          headers={headers}
+          data={[]}
         />
-        <DatePicker
-          autoOk
-          container="inline"
-          disabled={this.state.isOneDay}
-          hintText="End time interval"
-          name="to"
-          onChange={this.onToDateChange}
-        />
-        <Checkbox
-          checked={this.state.isOneDay}
-          label="One-day report"
-          onCheck={this.onOneDayToggle}
-        />
-        <InputFieldWrapper>
-          <RaisedButton
-            label="Generate report"
-            onClick={this.onSubmit}
-            disabled={this.props.isLoading}
-            primary
-          />
-          { this.props.hasReport && (
-              <FlatButton
-                label="Save Generated"
-                onClick={this.saveGenerated}
-              />
-            )
-          }
-        </InputFieldWrapper>
-      </Form>
+      </div>
     );
   }
 }
 
 ReportsScreen.propTypes = {
-  fleet: React.PropTypes.string.isRequired,
-  generateReport: React.PropTypes.func.isRequired,
-  hasReport: React.PropTypes.bool.isRequired,
+  availableFields: React.PropTypes.arrayOf(
+    React.PropTypes.shape({
+      label: React.PropTypes.string.isRequired,
+      name: React.PropTypes.string.isRequired,
+      order: React.PropTypes.number.isRequired,
+    })
+  ).isRequired,
   isLoading: React.PropTypes.bool.isRequired,
-  removeReportData: React.PropTypes.func.isRequired,
-  saveGenerated: React.PropTypes.func.isRequired,
+  selectedFields: React.PropTypes.arrayOf(
+    React.PropTypes.number
+  ).isRequired,
 };
 
 const PureReportsScreen = pure(ReportsScreen);
 
 const mapState = (state) => ({
-  fleet: getFleetName(state),
-  isLoading: getReportLoadingState(state),
-  hasReport: appHasStoredReport(state),
+  isLoading: fromConfiguratorReducer.getReportLoadingState(state),
+  selectedFields: fromConfiguratorReducer.getSelectedFields(state).toArray(),
+  availableFields: fromConfiguratorReducer.getAvailableFields(state).toArray(),
 });
-const mapDispatch = {
-  ...dataActions,
-};
+const mapDispatch = {};
 
 export default connect(mapState, mapDispatch)(PureReportsScreen);

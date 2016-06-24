@@ -14,7 +14,7 @@ const createRoute = ({
   getComponent: (location, cb) => {
     require.ensure([], require => {
       const importModules = Promise.all([
-        require('./reducer'),
+        require('containers/ReportConfigurator/reducer'),
         require('./index'),
       ]);
 
