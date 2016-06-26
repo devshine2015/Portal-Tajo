@@ -10,11 +10,72 @@ const configuratorInitialState = fromJS({
   available: new List([{
     label: 'Vehicle Name',
     name: 'name',
+    reportType: 'vehicles',
     order: 0,
+    calc: (vehicles = []) => vehicles.map(v => ({
+      vehicleId: v.id,
+      name: v.name,
+    })),
   }, {
     label: 'License Plate',
     name: 'license',
+    reportType: 'license',
     order: 1,
+    calc: (vehicles = []) => vehicles.map(v => ({
+      vehicleId: v.id,
+      license: v.licensePlate,
+    })),
+  }, {
+    label: 'Driving Distance',
+    name: 'mileage',
+    reportType: 'mileage',
+    endpoint: 'mileage',
+    order: 2,
+    calc: (records = []) => records.map(({ reportRecords, vehicle }) => {
+      let result = {
+        vehicleId: vehicle.id,
+      };
+
+      reportRecords.forEach(rr => {
+        result = Object.assign({}, result, rr);
+      });
+
+      return result;
+    }),
+  }, {
+    label: 'Min. Temperature',
+    name: 'minTemp',
+    endpoint: 'temperature',
+    reportType: 'minTemp',
+    order: 3,
+    query: 'downsampleSec=0',
+    calc: (records = []) => records.map(({ reportRecords, vehicle }) => {
+      const result = {};
+
+      if (reportRecords.length === 0) return result;
+
+
+      reportRecords.forEach(rr => {
+        const curDate = new Date(rr.time);
+        const formattedDate = `${curDate.getUTCMonth() + 1}/${curDate.getUTCDate()}/${curDate.getUTCFullYear()}`;
+
+        if (result.hasOwnProperty(formattedDate)) {
+          if (rr.temp < result[formattedDate]) {
+            result[formattedDate] = {
+              ...rr,
+              vehicleId: vehicle.id,
+            };
+          }
+        } else {
+          result[formattedDate] = {
+            ...rr,
+            vehicleId: vehicle.id,
+          };
+        }
+      });
+
+      return result;
+    }),
   }]),
   selected: new List(),
 });

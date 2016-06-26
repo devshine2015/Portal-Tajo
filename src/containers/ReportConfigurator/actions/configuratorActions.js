@@ -6,8 +6,8 @@ export const REPORT_CONFIGURATOR_SELECTED_REMOVE = 'portal/ReportConfigurator/RE
 export const updateSelected = (field) => (dispatch, getState) =>
   _updateSelected(field, dispatch, getState);
 
-function _updateSelected({ field, value }, dispatch, getState) {
-  const selectedFieldIndex = getSelectedFieldIndex(getState(), field);
+function _updateSelected({ field, value, index }, dispatch, getState) {
+  const selectedFieldIndex = getSelectedFieldIndex(getState(), index);
 
   // add selected field if its value is true
   // and if state doesn't have such field yet;

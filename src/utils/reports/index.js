@@ -1,31 +1,28 @@
 import Book from './spreadsheetGenerator';
 
-export function prepareDataForReport([mileageData, tempData, daysCount] = []) {
+export function prepareDataForReport({ reports, vehiclesCount, daysCount }) {
   const result = [];
-  const vehiclesCount = mileageData.length;
 
-  return new Promise((resolve) => {
-    for (let i = 0; i < vehiclesCount; i++) {
-      for (let j = 0; j < daysCount; j++) {
-        const vehiceMileage = mileageData[i];
-        const date = new Date(vehiceMileage.reportRecords[j].time).toLocaleDateString();
+  for (let i = 0; i < vehiclesCount; i++) {
+    for (let j = 0; j < daysCount; j++) {
+      const vehiceMileage = mileageData[i];
+      const date = new Date(vehiceMileage.reportRecords[j].time).toLocaleDateString();
 
-        let recordRow = [
-          vehiceMileage.vehicle.name, // vehicle name
-          date, // date
-          vehiceMileage.reportRecords[j].distance.toFixed(4), // distance for the date
-        ];
+      let recordRow = [
+        vehiceMileage.vehicle.name, // vehicle name
+        date, // date
+        vehiceMileage.reportRecords[j].distance.toFixed(4), // distance for the date
+      ];
 
-        const vehicleTempColumns = _computeTemperatureForDate(tempData[i].reportRecords, date);
+      const vehicleTempColumns = _computeTemperatureForDate(tempData[i].reportRecords, date);
 
-        recordRow = recordRow.concat(vehicleTempColumns);
+      recordRow = recordRow.concat(vehicleTempColumns);
 
-        result.push(recordRow);
-      }
+      result.push(recordRow);
     }
+  }
 
-    resolve(result);
-  });
+  return Promise.resolve(result);
 }
 
 export function createReport(vehiclesReportData) {
@@ -42,7 +39,7 @@ export function createReport(vehiclesReportData) {
   const b = new Book(headers, vehiclesReportData);
   b.createBook();
 
-  return new Promise(resolve => resolve(vehiclesReportData));
+  return Promise.resolve(vehiclesReportData);
 }
 
 /**

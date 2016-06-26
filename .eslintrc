@@ -15,6 +15,7 @@
       'ignoreComments': false,
       'tabWidth': 2,
     }],
+    "no-param-reassign": 1,
   },
   "plugins": [
     "react"

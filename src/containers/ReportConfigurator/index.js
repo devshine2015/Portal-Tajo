@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import Checkbox from 'material-ui/Checkbox';
 import Form from 'components/Form';
 import InputFieldWrapper from 'components/InputFieldWrapper';
 import ReportsPeriod from 'components/Period';
+import AvailableFields from './components/AvailableFields';
 import { dataActions, configuratorActions } from './actions';
 import { getFleetName } from 'containers/App/reducer';
 import {
@@ -14,40 +14,6 @@ import {
   getReportLoadingState,
   getAvailableFields,
 } from './reducer';
-
-const ReportAvailableFields = ({
-  fields,
-  checkedFields,
-  onChange,
-}) => (
-  <div className="availableFields">
-    {fields.map(f => {
-      const isChecked = Boolean(checkedFields[f.name]);
-
-      return (
-        <Checkbox
-          checked={isChecked}
-          label={f.label}
-          key={f.name}
-          name={f.name}
-          onCheck={onChange}
-        />
-      );
-    })}
-  </div>
-);
-
-ReportAvailableFields.propTypes = {
-  checkedFields: React.PropTypes.object.isRequired,
-  fields: React.PropTypes.arrayOf(
-    React.PropTypes.shape({
-      label: React.PropTypes.string.isRequired,
-      name: React.PropTypes.string.isRequired,
-      order: React.PropTypes.number.isRequired,
-    })
-  ).isRequired,
-  onChange: React.PropTypes.func.isRequired,
-};
 
 class ReportConfigurator extends React.Component {
 
@@ -67,10 +33,10 @@ class ReportConfigurator extends React.Component {
     this.onChange(field, value);
   }
 
-  onSelectedFieldsChange = (event, value) => {
+  onSelectedFieldsChange = (event, value, index) => {
     const field = event.target.name;
 
-    this.props.updateSelectedFields({ field, value })
+    this.props.updateSelectedFields({ field, value, index })
     .then(() => {
       this.onChange(field, value);
     });
@@ -100,7 +66,7 @@ class ReportConfigurator extends React.Component {
 
     this.props.generateReport({
       fleet: this.props.fleet,
-      isOneDay: this.state.isOneDay,
+      isOneDay: this.state.oneDay,
       timePeriod: data,
     }).then(() => {
       this.props.removeReportData();
@@ -120,7 +86,7 @@ class ReportConfigurator extends React.Component {
           refs={this.FORM_NAME}
           onSubmit={this.onSubmit}
         >
-          <ReportAvailableFields
+          <AvailableFields
             checkedFields={this.state}
             onChange={this.onSelectedFieldsChange}
             fields={this.props.availableFields}
@@ -129,6 +95,11 @@ class ReportConfigurator extends React.Component {
           <ReportsPeriod
             isOneDay={this.state.oneDay}
             handlePeriodChange={this.onPeriodChange}
+            names={{
+              start: 'from',
+              end: 'to',
+              oneDay: 'oneDay',
+            }}
           />
 
           <InputFieldWrapper>

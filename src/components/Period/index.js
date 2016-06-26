@@ -13,7 +13,9 @@ class Period extends React.Component {
     this.onChange('to', value);
   }
 
-  onChange = (field, value) => {
+  onChange = (event, value) => {
+    const field = typeof event === 'string' ? event : event.target.name;
+
     this.props.handlePeriodChange(field, value);
   }
 
@@ -24,7 +26,7 @@ class Period extends React.Component {
           autoOk
           hintText="Start time interval"
           container="inline"
-          name="from"
+          name={this.props.names.start}
           onChange={this.onFromDateChange}
         />
         <DatePicker
@@ -32,13 +34,13 @@ class Period extends React.Component {
           container="inline"
           disabled={this.props.isOneDay}
           hintText="End time interval"
-          name="to"
+          name={this.props.names.end}
           onChange={this.onToDateChange}
         />
         <Checkbox
           checked={this.props.isOneDay}
           label="One-day report"
-          name="oneDay"
+          name={this.props.names.oneDay}
           onCheck={this.onChange}
         />
       </div>
@@ -49,6 +51,11 @@ class Period extends React.Component {
 Period.propTypes = {
   handlePeriodChange: React.PropTypes.func.isRequired,
   isOneDay: React.PropTypes.bool.isRequired,
+  names: React.PropTypes.shape({
+    start: React.PropTypes.string.isRequired,
+    end: React.PropTypes.string.isRequired,
+    oneDay: React.PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default pure(Period);
