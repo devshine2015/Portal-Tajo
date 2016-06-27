@@ -57,7 +57,7 @@ class ReportConfigurator extends React.Component {
     const fields = document.forms[this.FORM_NAME].elements;
 
     const from = fields.from.value.trim();
-    const to = fields.to.value ? fields.to.value.trim() : null;
+    const to = fields.to.value ? fields.to.value.trim() : from;
 
     const data = {
       fromTs: new Date(from).getTime(),
@@ -68,8 +68,6 @@ class ReportConfigurator extends React.Component {
       fleet: this.props.fleet,
       isOneDay: this.state.oneDay,
       timePeriod: data,
-    }).then(() => {
-      this.props.removeReportData();
     });
   }
 

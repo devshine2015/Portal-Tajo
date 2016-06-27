@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux-immutable';
 import { fromJS, List } from 'immutable';
+import moment from 'moment';
 import { loaderActions, dataActions, configuratorActions } from './actions/index';
 
 const loaderInitialState = fromJS({
@@ -12,36 +13,24 @@ const configuratorInitialState = fromJS({
     name: 'name',
     reportType: 'vehicles',
     order: 0,
-    calc: (vehicles = []) => vehicles.map(v => ({
-      vehicleId: v.id,
-      name: v.name,
-    })),
+    calc: (vehicles) => vehicles.map(v => v.name),
   }, {
     label: 'License Plate',
     name: 'license',
     reportType: 'license',
     order: 1,
-    calc: (vehicles = []) => vehicles.map(v => ({
-      vehicleId: v.id,
-      license: v.licensePlate,
-    })),
+    calc: (vehicles) => vehicles.map(v => v.licensePlate),
   }, {
     label: 'Driving Distance',
     name: 'mileage',
     reportType: 'mileage',
     endpoint: 'mileage',
     order: 2,
-    calc: (records = []) => records.map(({ reportRecords, vehicle }) => {
-      let result = {
-        vehicleId: vehicle.id,
-      };
-
-      reportRecords.forEach(rr => {
-        result = Object.assign({}, result, rr);
-      });
-
-      return result;
-    }),
+    calc: (records = [], date) => records.map(({ reportRecords }) => (
+      reportRecords.filter(rec => (
+        moment(date).isSame(moment(rec.time).toISOString(), 'day')
+      )).map(result => result.distance)[0]
+    )),
   }, {
     label: 'Min. Temperature',
     name: 'minTemp',
@@ -49,32 +38,74 @@ const configuratorInitialState = fromJS({
     reportType: 'minTemp',
     order: 3,
     query: 'downsampleSec=0',
-    calc: (records = []) => records.map(({ reportRecords, vehicle }) => {
-      const result = {};
+    calc: (records = [], date) => records.map(({ reportRecords }) => {
+      const filtered = reportRecords.filter(rec => (
+        moment(date).isSame(moment(rec.time).toISOString(), 'day')
+      ));
 
-      if (reportRecords.length === 0) return result;
+      if (filtered.length === 0) {
+        return 'n/a';
+      }
 
+      let minTemp = filtered[0].temp;
 
-      reportRecords.forEach(rr => {
-        const curDate = new Date(rr.time);
-        const formattedDate = `${curDate.getUTCMonth() + 1}/${curDate.getUTCDate()}/${curDate.getUTCFullYear()}`;
-
-        if (result.hasOwnProperty(formattedDate)) {
-          if (rr.temp < result[formattedDate]) {
-            result[formattedDate] = {
-              ...rr,
-              vehicleId: vehicle.id,
-            };
-          }
-        } else {
-          result[formattedDate] = {
-            ...rr,
-            vehicleId: vehicle.id,
-          };
+      for (let i = 0; i < filtered.length; i++) {
+        if (filtered[i].temp < minTemp) {
+          minTemp = filtered[i].temp;
         }
-      });
+      }
 
-      return result;
+      return minTemp;
+    }),
+  }, {
+    label: 'Max. Temperature',
+    name: 'maxTemp',
+    endpoint: 'temperature',
+    reportType: 'maxTemp',
+    order: 4,
+    query: 'downsampleSec=0',
+    calc: (records = [], date) => records.map(({ reportRecords }) => {
+      const filtered = reportRecords.filter(rec => (
+        moment(date).isSame(moment(rec.time).toISOString(), 'day')
+      ));
+
+      if (filtered.length === 0) {
+        return 'n/a';
+      }
+
+      let maxTemp = filtered[0].temp;
+
+      for (let i = 0; i < filtered.length; i++) {
+        if (filtered[i].temp > maxTemp) {
+          maxTemp = filtered[i].temp;
+        }
+      }
+
+      return maxTemp;
+    }),
+  }, {
+    label: 'Average Temperature',
+    name: 'avgTemp',
+    endpoint: 'temperature',
+    reportType: 'avgTemp',
+    order: 5,
+    query: 'downsampleSec=0',
+    calc: (records = [], date) => records.map(({ reportRecords }) => {
+      const filtered = reportRecords.filter(rec => (
+        moment(date).isSame(moment(rec.time).toISOString(), 'day')
+      ));
+
+      if (filtered.length === 0) {
+        return 'n/a';
+      }
+
+      let tempSum = 0;
+
+      for (let i = 0; i < filtered.length; i++) {
+        tempSum += filtered[i].temp;
+      }
+
+      return tempSum / filtered.length;
     }),
   }]),
   selected: new List(),

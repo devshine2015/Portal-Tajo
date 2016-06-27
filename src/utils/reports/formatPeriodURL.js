@@ -1,23 +1,12 @@
-function periodForReport({ fromTs, toTs } = {}, isOneDay = false) {
-  const toPlusTs = _generateToDate(fromTs, toTs, isOneDay);
-  const dt = (toPlusTs - fromTs) / (1000 * 60 * 60 * 24);
+function periodForReport({ fromTs, toTs } = {}, datesCount) {
+  const toPlusTs = _generateToDate(fromTs, toTs, datesCount);
   const offsetInMinutes = new Date().getTimezoneOffset();
   const offsetInMilliseconds = 1000 * 60 * offsetInMinutes;
-  let daysCount;
-
-  if (dt < 1) {
-    daysCount = 1;
-  } else {
-    daysCount = parseInt(dt, 10) + 1;
-  }
 
   const toFormatted = _formateDate(toPlusTs, offsetInMilliseconds);
   const fromFormatted = _formateDate(fromTs);
 
-  return {
-    daysCount,
-    periodQueryString: `from=${fromFormatted}&to=${toFormatted}&tzoffset=${0}`,
-  };
+  return `from=${fromFormatted}&to=${toFormatted}&tzoffset=${0}`;
 }
 
 // Just formatting to ISO string. Keep actual date and time values
@@ -27,10 +16,10 @@ function _formateDate(dateTs, offsetInMilliseconds = 0) {
   return `${dateISO.slice(0, -1)}+0000`;
 }
 
-function _generateToDate(fromTs, toTs, isOneDay = false) {
+function _generateToDate(fromTs, toTs, daysCount) {
   let result;
 
-  if (isOneDay) {
+  if (daysCount === 1) {
     result = new Date(fromTs);
     result.setHours(23);
     result.setMinutes(59);
