@@ -1,25 +1,29 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import pure from 'recompose/pure';
-//import classnames from 'classnames';
 import styles from './styles.css';
-
-
-const dbgFooterStyle = {
-  width: '100%',
-  backgroundColor: 'orange',
-  position: 'absolute',
-  bottom: '0px',
-};
+require('mapbox.js'); // <-- auto-attaches to window.L
+require('leaflet/dist/leaflet.css');
 
 
 class Map extends React.Component {
+  componentDidMount() {
+    let theMap = null;
+
+    const domNode = ReactDOM.findDOMNode(this);
+    window.L.mapbox.accessToken =
+    'pk.eyJ1IjoiZHJ2ciIsImEiOiI3NWM4ZWE1MWEyOTVmZTQ0ZDU2OTE5OGIwNzRlMWY2NyJ9.ybLA6tItFcbyAQyxRq3Pog';
+    theMap = window.L.mapbox.map(domNode, 'mapbox.streets');
+    theMap.setView([40, -74.50], 12);
+
+    window.setTimeout(function () {
+      theMap.invalidateSize(true);
+    }, 500);
+  }
+
   render() {
     return (
       <div className = {styles.mapContainer}>
-      THE map goes HERE
-        <div style={dbgFooterStyle}>
-        BOTTOM
-        </div>
       </div>
     );
   }

@@ -2,7 +2,6 @@
   .mapContainer {
     background-color: #77b63e;
     height: 100%;
-    flex: 1;
-    display: flex-inline;
+    width: 100%;
     }
 }
