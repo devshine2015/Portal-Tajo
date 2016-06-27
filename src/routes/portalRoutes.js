@@ -17,7 +17,7 @@ export default function createRoutes(store) {
     selectLocationState: selectLocationState(),
   });
 
-  const mapAndListRoute = require('containers/MapAndListScreen/route')({
+  const mapAndListRoute = require('screens/MapAndList/route')({
     path: 'map',
   });
 
