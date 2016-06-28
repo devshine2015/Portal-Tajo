@@ -1,15 +1,17 @@
 import moment from 'moment';
-import {
-  api,
-  reporter,
-} from 'utils';
-import getReportParams from 'utils/reports/formatPeriodURL';
+import api from 'utils/api';
+import reporter from 'utils/reports';
 import { setLoader } from './loaderActions';
 import {
   getSavedReportData,
   getSelectedFields,
   getAvailableFields,
 } from '../reducer';
+import {
+  prepareDataForReport,
+  createReportTable,
+  getReportParams,
+} from '../utils/prepareReport';
 
 export const REPORT_DATA_SAVE = 'portal/ReportConfigurator/REPORT_DATA_SAVE';
 export const REPORT_DATA_REMOVE = 'portal/ReportConfigurator/REPORT_DATA_REMOVE';
@@ -18,9 +20,6 @@ export const generateReport = (params) => (dispatch, getState) =>
   _generateReport(params, dispatch, getState);
 export const saveGenerated = () => (dispatch, getState) =>
   _saveGenerated(dispatch, getState);
-export const removeReportData = () => ({
-  type: REPORT_DATA_REMOVE,
-});
 
 // TODO -- save report on disk
 // TODO -- don't perform requests with same endpoint (i.e. for temperature)
@@ -28,7 +27,7 @@ export const removeReportData = () => ({
 
 function _generateReport({ timePeriod, fleet }, dispatch, getState) {
   dispatch(setLoader(true));
-  dispatch(removeReportData());
+  dispatch(_removeReportData());
 
   const baseVehiclesUrl = `${fleet}/vehicles`;
   const dates = _getDates(timePeriod);
@@ -58,38 +57,27 @@ function _generateReport({ timePeriod, fleet }, dispatch, getState) {
       })
     ))
     .then(prepareDataForReport(selectedReports, dates))
-    .then(_createReportTable)
+    .then(createReportTable)
     .then(table => {
       dispatch(setLoader(false));
       dispatch(_saveReportData(table));
     });
 }
 
-const prepareDataForReport = (selectedReports = {}, dates = []) => (reports = {}) => {
-  const result = [];
-
-  console.time('time');
-  dates.forEach((date, i) => {
-    const row = result[i] = [];
-    row.push(date);
-    Object.entries(reports).forEach(([reportType, records]) => {
-      row.push(selectedReports[reportType].calc(records, date));
-    });
-  });
-  console.timeEnd('time');
-  // const calculated = [];
-  return Promise.resolve(result);
-};
-
 function _saveGenerated(dispatch, getState) {
   const reportData = getSavedReportData(getState()).toArray();
+  const headers = ['Date'].concat(_getHeaders(getState));
 
-  return reporter.createReport(reportData);
+  return reporter(reportData, headers);
 }
 
 const _saveReportData = (reportData) => ({
   type: REPORT_DATA_SAVE,
   reportData,
+});
+
+const _removeReportData = () => ({
+  type: REPORT_DATA_REMOVE,
 });
 
 function _reportRequest(baseVehiclesUrl, vehicles = [], {
@@ -98,8 +86,6 @@ function _reportRequest(baseVehiclesUrl, vehicles = [], {
   queryString,
 } = {}) {
   const pathname = `report/${endpoint}`;
-
-  console.log(reportType);
 
   return Promise.all(
     vehicles.map(v => (
@@ -155,47 +141,14 @@ function _getDates({ fromTs, toTs }) {
   return dates;
 }
 
-function _createReportTable(reportData) {
-  const table = [];
-  let totalRowsCount = 0;
-  let maxRowsCount = 0;
+function _getHeaders(getState) {
+  const selectedReportsIndexes = getSelectedFields(getState()).toArray();
+  const availableFields = getAvailableFields(getState()).toArray();
+  const result = [];
 
-  for (let i = 0; i < reportData.length; i++) {
-    const columns = reportData[i];
-    const date = columns[0];
-    let rowNumber = totalRowsCount;
+  selectedReportsIndexes.forEach((index) => {
+    result.push(availableFields[index].label);
+  });
 
-    // start with column next to dates
-    for (let k = 1; k < columns.length; k++) {
-      const dataType = columns[k];
-
-      for (let j = 0; j < dataType.length; j++, rowNumber++) {
-        // create new if such row not exists
-        if (!table[rowNumber]) {
-          table[rowNumber] = [];
-          table[rowNumber][0] = moment(date).format('L');
-        }
-
-        // place report value to table
-        table[rowNumber][k] = dataType[j];
-      }
-
-      // save maximum rows count from each report
-      maxRowsCount = dataType.length > maxRowsCount ? dataType.length : maxRowsCount;
-      // reset rows for current date
-      rowNumber = totalRowsCount;
-    }
-
-    // increase table count for start looping over next day
-    // i.e. next day data will start from this row number;
-    totalRowsCount += maxRowsCount;
-  }
-
-  return Promise.resolve(table);
-}
-
-function _createHeaders(selectedReports) {
-  return Object.values(selectedReports).map(sr => ({
-    label: sr.label,
-  }));
+  return result;
 }

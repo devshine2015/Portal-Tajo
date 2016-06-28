@@ -10,7 +10,9 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import RaisedButton from 'material-ui/RaisedButton';
 import * as fromConfiguratorReducer from 'containers/ReportConfigurator/reducer';
+import { dataActions } from 'containers/ReportConfigurator/actions';
 
 const PreviewTable = ({
   headers = [],
@@ -69,7 +71,8 @@ PreviewTable.propTypes = {
 const ReportsScreen = ({
   availableFields,
   data,
-  // isLoading,
+  hasReport,
+  saveGenerated,
   selectedFields,
 }) => {
   const headers = selectedFields.map(sf => (
@@ -79,6 +82,13 @@ const ReportsScreen = ({
   return (
     <div className="configurator">
       <ReportConfigurator />
+      { hasReport && (
+          <RaisedButton
+            label="Save Generated"
+            onClick={saveGenerated}
+            primary
+          />
+      )}
       <PreviewTable
         headers={headers}
         data={data}
@@ -96,7 +106,8 @@ ReportsScreen.propTypes = {
     })
   ).isRequired,
   data: React.PropTypes.array.isRequired,
-  // isLoading: React.PropTypes.bool.isRequired,
+  hasReport: React.PropTypes.bool.isRequired,
+  saveGenerated: React.PropTypes.func.isRequired,
   selectedFields: React.PropTypes.arrayOf(
     React.PropTypes.number
   ).isRequired,
@@ -106,10 +117,12 @@ const PureReportsScreen = pure(ReportsScreen);
 
 const mapState = (state) => ({
   data: fromConfiguratorReducer.getSavedReportData(state).toArray(),
-  // isLoading: fromConfiguratorReducer.getReportLoadingState(state),
+  hasReport: fromConfiguratorReducer.appHasStoredReport(state),
   selectedFields: fromConfiguratorReducer.getSelectedFields(state).toArray(),
   availableFields: fromConfiguratorReducer.getAvailableFields(state).toArray(),
 });
-const mapDispatch = {};
+const mapDispatch = {
+  saveGenerated: dataActions.saveGenerated,
+};
 
 export default connect(mapState, mapDispatch)(PureReportsScreen);

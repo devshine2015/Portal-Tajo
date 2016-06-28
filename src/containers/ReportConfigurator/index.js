@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
-import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Form from 'components/Form';
 import InputFieldWrapper from 'components/InputFieldWrapper';
@@ -10,7 +9,6 @@ import AvailableFields from './components/AvailableFields';
 import { dataActions, configuratorActions } from './actions';
 import { getFleetName } from 'containers/App/reducer';
 import {
-  appHasStoredReport,
   getReportLoadingState,
   getAvailableFields,
 } from './reducer';
@@ -20,9 +18,7 @@ class ReportConfigurator extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      oneDay: false,
-    };
+    this.state = {};
 
     this.FORM_NAME = 'configurator';
 
@@ -66,13 +62,8 @@ class ReportConfigurator extends React.Component {
 
     this.props.generateReport({
       fleet: this.props.fleet,
-      isOneDay: this.state.oneDay,
       timePeriod: data,
     });
-  }
-
-  saveGenerated = () => {
-    this.props.saveGenerated();
   }
 
   render() {
@@ -91,12 +82,10 @@ class ReportConfigurator extends React.Component {
           />
 
           <ReportsPeriod
-            isOneDay={this.state.oneDay}
             handlePeriodChange={this.onPeriodChange}
             names={{
               start: 'from',
               end: 'to',
-              oneDay: 'oneDay',
             }}
           />
 
@@ -107,12 +96,6 @@ class ReportConfigurator extends React.Component {
               disabled={this.props.isLoading}
               primary
             />
-            { this.props.hasReport && (
-                <FlatButton
-                  label="Save Generated"
-                  onClick={this.saveGenerated}
-                />
-            )}
           </InputFieldWrapper>
         </Form>
       </div>
@@ -130,10 +113,7 @@ ReportConfigurator.propTypes = {
   ).isRequired,
   fleet: React.PropTypes.string.isRequired,
   generateReport: React.PropTypes.func.isRequired,
-  hasReport: React.PropTypes.bool.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
-  removeReportData: React.PropTypes.func.isRequired,
-  saveGenerated: React.PropTypes.func.isRequired,
   updateSelectedFields: React.PropTypes.func.isRequired,
 };
 
@@ -141,10 +121,9 @@ const mapState = (state) => ({
   availableFields: getAvailableFields(state).toArray(),
   fleet: getFleetName(state),
   isLoading: getReportLoadingState(state),
-  hasReport: appHasStoredReport(state),
 });
 const mapDispatch = {
-  ...dataActions,
+  generateReport: dataActions.generateReport,
   updateSelectedFields: configuratorActions.updateSelected,
 };
 

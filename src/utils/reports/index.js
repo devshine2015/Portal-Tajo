@@ -1,16 +1,8 @@
 import Book from './spreadsheetGenerator';
 
-export function createReport(vehiclesReportData) {
+export function createReport(vehiclesReportData, headers) {
   // Here the data we can output now
   // Presented in order of vehiclesReportData data
-  const headers = [
-    'Vehicle name',
-    'Date',
-    'Driving Distance',
-    'Max Temp.',
-    'Min Temp.',
-    'Average Temp.',
-  ];
   const b = new Book(headers, vehiclesReportData);
   b.createBook();
 
