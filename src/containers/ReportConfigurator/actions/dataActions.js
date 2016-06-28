@@ -21,9 +21,9 @@ export const generateReport = (params) => (dispatch, getState) =>
 export const saveGenerated = () => (dispatch, getState) =>
   _saveGenerated(dispatch, getState);
 
-// TODO -- save report on disk
 // TODO -- don't perform requests with same endpoint (i.e. for temperature)
 // TODO -- make similar calculations in single loop (i.e. min/max/avg temperature)
+// TODO -- make configuratorAvailableFields truly flexible
 
 function _generateReport({ timePeriod, fleet }, dispatch, getState) {
   dispatch(setLoader(true));
@@ -46,10 +46,20 @@ function _generateReport({ timePeriod, fleet }, dispatch, getState) {
             queryString: `${periodQueryString}&${query}`,
           })
         )),
-      ).then(reports => {
+      ).then((reports = []) => {
         const result = {};
 
+        // we need to inject all data
+        // user chose to result
+        Object.keys(selectedReports).forEach(reportType => {
+          if (reportType === 'vehicles' || reportType === 'license') {
+            result[reportType] = vehicles;
+          }
+        });
+
         reports.forEach(r => {
+          if (!selectedReports[r.reportType]) return;
+
           result[r.reportType] = r.report;
         });
 

@@ -12,7 +12,6 @@ export const prepareDataForReport = (selectedReports = {}, dates = []) => (repor
     });
   });
   console.timeEnd('time');
-  // const calculated = [];
   return Promise.resolve(result);
 };
 
