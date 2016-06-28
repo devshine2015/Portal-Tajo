@@ -60,8 +60,8 @@ function _generateReport({ timePeriod, fleet }, dispatch, getState) {
     .then(prepareDataForReport(selectedReports, dates))
     .then(_createReportTable)
     .then(table => {
-      dispatch(_saveReportData(table));
       dispatch(setLoader(false));
+      dispatch(_saveReportData(table));
     });
 }
 
@@ -163,27 +163,27 @@ function _createReportTable(reportData) {
   for (let i = 0; i < reportData.length; i++) {
     const columns = reportData[i];
     const date = columns[0];
-    let rowsCount = totalRowsCount;
+    let rowNumber = totalRowsCount;
 
     // start with column next to dates
     for (let k = 1; k < columns.length; k++) {
       const dataType = columns[k];
 
-      for (let j = 0; j < dataType.length; j++, rowsCount++) {
+      for (let j = 0; j < dataType.length; j++, rowNumber++) {
         // create new if such row not exists
-        if (!table[rowsCount]) {
-          table[rowsCount] = [];
-          table[rowsCount][0] = moment(date).format('L');
+        if (!table[rowNumber]) {
+          table[rowNumber] = [];
+          table[rowNumber][0] = moment(date).format('L');
         }
 
         // place report value to table
-        table[rowsCount][k] = dataType[j];
+        table[rowNumber][k] = dataType[j];
       }
 
       // save maximum rows count from each report
-      maxRowsCount = rowsCount > maxRowsCount ? rowsCount : maxRowsCount;
+      maxRowsCount = dataType.length > maxRowsCount ? dataType.length : maxRowsCount;
       // reset rows for current date
-      rowsCount = totalRowsCount;
+      rowNumber = totalRowsCount;
     }
 
     // increase table count for start looping over next day
