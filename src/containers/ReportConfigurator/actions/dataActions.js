@@ -22,7 +22,6 @@ export const saveGenerated = () => (dispatch, getState) =>
   _saveGenerated(dispatch, getState);
 
 // TODO -- don't perform requests with same endpoint (i.e. for temperature)
-// TODO -- make similar calculations in single loop (i.e. min/max/avg temperature)
 // TODO -- make configuratorAvailableFields truly flexible
 
 function _generateReport({ timePeriod, fleet }, dispatch, getState) {
@@ -45,7 +44,7 @@ function _generateReport({ timePeriod, fleet }, dispatch, getState) {
             endpoint,
             queryString: `${periodQueryString}&${query}`,
           })
-        )),
+        ))
       ).then((reports = []) => {
         const result = {};
 

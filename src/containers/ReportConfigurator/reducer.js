@@ -2,6 +2,7 @@ import { combineReducers } from 'redux-immutable';
 import { fromJS, List } from 'immutable';
 import moment from 'moment';
 import { loaderActions, dataActions, configuratorActions } from './actions/index';
+import tempSpecs from './specs/temperature';
 
 const loaderInitialState = fromJS({
   isLoading: false,
@@ -31,83 +32,8 @@ const configuratorInitialState = fromJS({
         moment(date).isSame(moment(rec.time).toISOString(), 'day')
       )).map(result => result.distance)[0]
     )),
-  }, {
-    label: 'Min. Temperature',
-    name: 'minTemp',
-    endpoint: 'temperature',
-    reportType: 'minTemp',
-    order: 3,
-    query: 'downsampleSec=0',
-    calc: (records = [], date) => records.map(({ reportRecords }) => {
-      const filtered = reportRecords.filter(rec => (
-        moment(date).isSame(moment(rec.time).toISOString(), 'day')
-      ));
-
-      if (filtered.length === 0) {
-        return 'n/a';
-      }
-
-      let minTemp = filtered[0].temp;
-
-      for (let i = 0; i < filtered.length; i++) {
-        if (filtered[i].temp < minTemp) {
-          minTemp = filtered[i].temp;
-        }
-      }
-
-      return minTemp;
-    }),
-  }, {
-    label: 'Max. Temperature',
-    name: 'maxTemp',
-    endpoint: 'temperature',
-    reportType: 'maxTemp',
-    order: 4,
-    query: 'downsampleSec=0',
-    calc: (records = [], date) => records.map(({ reportRecords }) => {
-      const filtered = reportRecords.filter(rec => (
-        moment(date).isSame(moment(rec.time).toISOString(), 'day')
-      ));
-
-      if (filtered.length === 0) {
-        return 'n/a';
-      }
-
-      let maxTemp = filtered[0].temp;
-
-      for (let i = 0; i < filtered.length; i++) {
-        if (filtered[i].temp > maxTemp) {
-          maxTemp = filtered[i].temp;
-        }
-      }
-
-      return maxTemp;
-    }),
-  }, {
-    label: 'Average Temperature',
-    name: 'avgTemp',
-    endpoint: 'temperature',
-    reportType: 'avgTemp',
-    order: 5,
-    query: 'downsampleSec=0',
-    calc: (records = [], date) => records.map(({ reportRecords }) => {
-      const filtered = reportRecords.filter(rec => (
-        moment(date).isSame(moment(rec.time).toISOString(), 'day')
-      ));
-
-      if (filtered.length === 0) {
-        return 'n/a';
-      }
-
-      let tempSum = 0;
-
-      for (let i = 0; i < filtered.length; i++) {
-        tempSum += filtered[i].temp;
-      }
-
-      return tempSum / filtered.length;
-    }),
-  }]),
+  }].concat(tempSpecs())
+  ),
   selected: new List(),
 });
 
