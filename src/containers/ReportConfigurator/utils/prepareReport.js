@@ -1,19 +1,37 @@
 import moment from 'moment';
 
-export const prepareDataForReport = (selectedReports = {}, dates = []) => (reports = {}) => {
-  const result = [];
+export const prepareDataForReport = (selectedReports = {}, dates = [], isNewData = true) =>
+  (reports = {}) => {
+    const result = [];
+    let useSaved = !isNewData;
 
-  console.time('time');
-  dates.forEach((date, i) => {
-    const row = result[i] = [];
-    row.push(date);
-    Object.entries(reports).forEach(([reportType, records]) => {
-      row.push(selectedReports[reportType].calc(records, date));
+    console.time('time');
+
+    dates.forEach((date, i) => {
+      const row = result[i] = [];
+
+      row.push(date);
+
+      Object.entries(reports).forEach(([reportType, records]) => {
+        row.push(selectedReports[reportType].calc({ records, useSaved, date }));
+        useSaved = true;
+      });
+
+      useSaved = false;
+
+      result.push(row);
     });
-  });
-  console.timeEnd('time');
-  return Promise.resolve(result);
-};
+
+    console.timeEnd('time');
+
+    return Promise.resolve(result);
+  };
+
+/**
+ *
+ * reportData = [[date, <mileage_data>, <minTemp_data>, ...], [date, ...], ...]
+ *
+ **/
 
 export const createReportTable = (reportData) => {
   const table = [];

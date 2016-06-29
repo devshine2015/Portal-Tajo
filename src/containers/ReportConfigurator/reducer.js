@@ -32,7 +32,7 @@ const configuratorInitialState = fromJS({
         moment(date).isSame(moment(rec.time).toISOString(), 'day')
       )).map(result => result.distance)[0]
     )),
-  }].concat(tempSpecs())
+  }].concat(tempSpecs)
   ),
   selected: new List(),
 });
