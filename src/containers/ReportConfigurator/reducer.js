@@ -14,23 +14,23 @@ const configuratorInitialState = fromJS({
     name: 'name',
     reportType: 'vehicles',
     order: 0,
-    calc: (vehicles) => vehicles.map(v => v.name),
+    calc: ({ records }) => records.map(v => v.name),
   }, {
     label: 'License Plate',
     name: 'license',
     reportType: 'license',
     order: 1,
-    calc: (vehicles) => vehicles.map(v => v.licensePlate),
+    calc: ({ records }) => records.map(v => v.licensePlate),
   }, {
     label: 'Driving Distance',
     name: 'mileage',
     reportType: 'mileage',
     endpoint: 'mileage',
     order: 2,
-    calc: (records = [], date) => records.map(({ reportRecords }) => (
+    calc: ({ records, date }) => records.map(({ reportRecords }) => (
       reportRecords.filter(rec => (
         moment(date).isSame(moment(rec.time).toISOString(), 'day')
-      )).map(result => result.distance)[0]
+      )).map(result => result.distance.toFixed(3, 10))[0]
     )),
   }].concat(tempSpecs)
   ),

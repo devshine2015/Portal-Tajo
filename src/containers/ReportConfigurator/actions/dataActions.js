@@ -21,7 +21,6 @@ export const generateReport = (params) => (dispatch, getState) =>
 export const saveGenerated = () => (dispatch, getState) =>
   _saveGenerated(dispatch, getState);
 
-// TODO -- don't perform requests with same endpoint (i.e. for temperature)
 // TODO -- make configuratorAvailableFields truly flexible
 
 function _generateReport({ timePeriod, fleet }, dispatch, getState) {
@@ -33,11 +32,21 @@ function _generateReport({ timePeriod, fleet }, dispatch, getState) {
   const periodQueryString = getReportParams(timePeriod, dates.length);
   const selectedReports = getSelectedReportsTypes(getState);
 
+  const filteredFields = Object.values(selectedReports)
+    .filter(sr => sr.hasOwnProperty('endpoint'));
+
+  const fieldsToCall = {};
+  filteredFields.forEach((ff) => {
+    if (!fieldsToCall[ff.endpoint]) {
+      fieldsToCall[ff.endpoint] = ff;
+    }
+  });
+
   return api(baseVehiclesUrl)
     .then(toJson)
     .then(vehicles => (
       Promise.all(
-        Object.values(selectedReports).filter(sr => sr.hasOwnProperty('endpoint'))
+        Object.values(fieldsToCall)
         .map(({ reportType, query = '', endpoint = '' }) => (
           _reportRequest(baseVehiclesUrl, vehicles, {
             reportType,
@@ -48,18 +57,27 @@ function _generateReport({ timePeriod, fleet }, dispatch, getState) {
       ).then((reports = []) => {
         const result = {};
 
-        // we need to inject all data
-        // user chose to result
-        Object.keys(selectedReports).forEach(reportType => {
-          if (reportType === 'vehicles' || reportType === 'license') {
+        /**
+         *
+         * we need to inject all data
+         * user chose for report
+         *
+         * and create report for each report type,
+         * i.e. if needed minTemp and maxTemp in report
+         * but _reportRequest was called only for firstOne,
+         * then create maxTemp: [data] from its result
+         *
+         **/
+        Object.values(selectedReports).forEach(({ reportType, endpoint }) => {
+          if (!endpoint) {
             result[reportType] = vehicles;
           }
-        });
 
-        reports.forEach(r => {
-          if (!selectedReports[r.reportType]) return;
+          reports.forEach(r => {
+            if (endpoint !== r.endpoint) return;
 
-          result[r.reportType] = r.report;
+            result[reportType] = r.report;
+          });
         });
 
         return result;
@@ -91,10 +109,12 @@ const _removeReportData = () => ({
 
 function _reportRequest(baseVehiclesUrl, vehicles = [], {
   endpoint,
-  reportType,
+  // reportType,
   queryString,
 } = {}) {
   const pathname = `report/${endpoint}`;
+
+  console.log(endpoint);
 
   return Promise.all(
     vehicles.map(v => (
@@ -102,7 +122,7 @@ function _reportRequest(baseVehiclesUrl, vehicles = [], {
       .then(toJson)
     )),
   ).then(res => ({
-    reportType,
+    endpoint,
     report: res,
   }));
 }

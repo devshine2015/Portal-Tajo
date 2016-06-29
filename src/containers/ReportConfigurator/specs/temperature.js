@@ -2,8 +2,17 @@ import moment from 'moment';
 
 const calculatedRecords = {};
 
+/**
+ *
+ * try get saved value by date and type
+ *
+ **/
 function getFromSaved(date, tempType) {
-  return tempType ? calculatedRecords[date][tempType] : calculatedRecords;
+  if (calculatedRecords[date] && calculatedRecords[date][tempType]) {
+    return calculatedRecords[date][tempType];
+  }
+
+  return undefined;
 }
 
 /**
@@ -98,9 +107,10 @@ function calcTemperature(vehiclesReports, date, typeToReturn) {
 /**
  * we can get calculated data for same date
  **/
-const getTemperature = ({ records, useSaved, date }, tempType) => {
-  if (useSaved) {
-    return getFromSaved(date, tempType);
+const getTemperature = ({ records, date }, tempType) => {
+  const res = getFromSaved(date, tempType);
+  if (res) {
+    return res;
   }
 
   return calcTemperature(records, date, tempType);

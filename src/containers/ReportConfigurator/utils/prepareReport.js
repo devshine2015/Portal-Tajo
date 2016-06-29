@@ -1,9 +1,8 @@
 import moment from 'moment';
 
-export const prepareDataForReport = (selectedReports = {}, dates = [], isNewData = true) =>
+export const prepareDataForReport = (selectedReports = {}, dates = []) =>
   (reports = {}) => {
     const result = [];
-    let useSaved = !isNewData;
 
     console.time('time');
 
@@ -13,11 +12,8 @@ export const prepareDataForReport = (selectedReports = {}, dates = [], isNewData
       row.push(date);
 
       Object.entries(reports).forEach(([reportType, records]) => {
-        row.push(selectedReports[reportType].calc({ records, useSaved, date }));
-        useSaved = true;
+        row.push(selectedReports[reportType].calc({ records, date }));
       });
-
-      useSaved = false;
 
       result.push(row);
     });
