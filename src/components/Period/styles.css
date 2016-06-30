@@ -1,0 +1,12 @@
+@media screen and (min-width: 100px) {
+  .intervals {
+    display: flex;
+  }
+
+  .interval-col {
+    margin-right: 50px;
+  }
+  .interval-col:last-child {
+    margin-right: 0;
+  }
+}

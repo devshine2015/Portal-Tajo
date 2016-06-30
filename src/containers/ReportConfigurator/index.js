@@ -84,9 +84,12 @@ class ReportConfigurator extends React.Component {
             handlePeriodChange={this.onChange}
             handleFrequencyChange={this.props.changeFrequency}
             frequency={this.props.frequency}
+            withTime
             names={{
               start: 'from',
               end: 'to',
+              startTime: 'timeFrom',
+              endTime: 'timeTo',
             }}
           />
 
