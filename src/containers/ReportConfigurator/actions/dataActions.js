@@ -9,7 +9,6 @@ import {
 } from '../reducer';
 import {
   prepareDataForReport,
-  createReportTable,
   getReportParams,
 } from '../utils/prepareReport';
 
@@ -21,35 +20,34 @@ export const generateReport = (params) => (dispatch, getState) =>
 export const saveGenerated = () => (dispatch, getState) =>
   _saveGenerated(dispatch, getState);
 
-// TODO -- make configuratorAvailableFields truly flexible
+// TODO -- make configuratorAvailableFields truly flexible (depends on screen)
 
-function _generateReport({ timePeriod, fleet }, dispatch, getState) {
+function _generateReport({ timePeriod, fleet, frequency }, dispatch, getState) {
   dispatch(setLoader(true));
   dispatch(_removeReportData());
 
   const baseVehiclesUrl = `${fleet}/vehicles`;
-  const dates = _getDates(timePeriod);
-  const periodQueryString = getReportParams(timePeriod, dates.length);
+  const { periods, daysCount } = _getPeriods(timePeriod, frequency);
+  const periodQueryString = getReportParams(timePeriod, daysCount);
   const selectedReports = getSelectedReportsTypes(getState);
-
-  const filteredFields = Object.values(selectedReports)
-    .filter(sr => sr.hasOwnProperty('endpoint'));
-
   const fieldsToCall = {};
-  filteredFields.forEach((ff) => {
-    if (!fieldsToCall[ff.endpoint]) {
-      fieldsToCall[ff.endpoint] = ff;
-    }
-  });
+
+  Object.values(selectedReports)
+    .filter(sr => sr.hasOwnProperty('endpoint'))
+    .forEach((ff) => {
+      if (!fieldsToCall[ff.endpoint]) {
+        fieldsToCall[ff.endpoint] = ff;
+      }
+    });
 
   return api(baseVehiclesUrl)
     .then(toJson)
     .then(vehicles => (
       Promise.all(
         Object.values(fieldsToCall)
-        .map(({ reportType, query = '', endpoint = '' }) => (
+        .map(({ domain, query = '', endpoint = '' }) => (
           _reportRequest(baseVehiclesUrl, vehicles, {
-            reportType,
+            domain,
             endpoint,
             queryString: `${periodQueryString}&${query}`,
           })
@@ -68,23 +66,20 @@ function _generateReport({ timePeriod, fleet }, dispatch, getState) {
          * then create maxTemp: [data] from its result
          *
          **/
-        Object.values(selectedReports).forEach(({ reportType, endpoint }) => {
-          if (!endpoint) {
-            result[reportType] = vehicles;
+        Object.values(selectedReports).forEach(({ domain }) => {
+          if (domain === 'base' && !result[domain]) {
+            result[domain] = vehicles;
           }
+        });
 
-          reports.forEach(r => {
-            if (endpoint !== r.endpoint) return;
-
-            result[reportType] = r.report;
-          });
+        reports.forEach(r => {
+          result[r.domain] = r.report;
         });
 
         return result;
       })
     ))
-    .then(prepareDataForReport(selectedReports, dates))
-    .then(createReportTable)
+    .then(prepareDataForReport(selectedReports, periods, frequency))
     .then(table => {
       dispatch(setLoader(false));
       dispatch(_saveReportData(table));
@@ -109,12 +104,10 @@ const _removeReportData = () => ({
 
 function _reportRequest(baseVehiclesUrl, vehicles = [], {
   endpoint,
-  // reportType,
+  domain,
   queryString,
 } = {}) {
   const pathname = `report/${endpoint}`;
-
-  console.log(endpoint);
 
   return Promise.all(
     vehicles.map(v => (
@@ -122,7 +115,7 @@ function _reportRequest(baseVehiclesUrl, vehicles = [], {
       .then(toJson)
     )),
   ).then(res => ({
-    endpoint,
+    domain,
     report: res,
   }));
 }
@@ -146,28 +139,32 @@ function getSelectedReportsTypes(getState) {
 }
 
 // compose array of dates presented in period fromTs to toTs
-// toTs equeal fromTs if not defined in UI
-// result = ['MM/DD/YYYY']
-function _getDates({ fromTs, toTs }) {
+// result = [<date_as_ISO_string>]
+function _getPeriods({ fromTs, toTs }, frequency) {
+  const differ = frequency === 'daily' ? 'days' : 'hours';
   const momentFrom = moment(fromTs);
-  const momentTo = moment(toTs);
-  const daysCount = momentTo.diff(momentFrom, 'days') + 1;
-  const dates = [momentFrom.toISOString()];
+  const momentTo = toTs === undefined ? moment(fromTs) : moment(toTs);
 
-  if (daysCount !== 1) {
-    for (let i = 0; i < daysCount; i++) {
-      momentFrom.add(1, 'days');
+  momentTo.add(1, 'days');
+
+  const periodsCount = momentTo.diff(momentFrom, differ);
+  const daysCount = momentTo.diff(momentFrom, 'days');
+  const periods = [momentFrom.toISOString()];
+
+  if (periodsCount !== 1) {
+    for (let i = 0; i < periodsCount; i++) {
+      momentFrom.add(1, differ);
 
       if (momentFrom.isBefore(momentTo)) {
-        dates.push(momentFrom.toISOString());
-      } else if (momentFrom.isSame(momentTo)) {
-        dates.push(momentFrom.toISOString());
-        break;
+        periods.push(momentFrom.toISOString());
       }
     }
   }
 
-  return dates;
+  return {
+    periods,
+    daysCount,
+  };
 }
 
 function _getHeaders(getState) {

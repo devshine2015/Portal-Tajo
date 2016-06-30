@@ -11,6 +11,7 @@ import { getFleetName } from 'containers/App/reducer';
 import {
   getReportLoadingState,
   getAvailableFields,
+  getReportFrequency,
 } from './reducer';
 
 class ReportConfigurator extends React.Component {
@@ -18,15 +19,12 @@ class ReportConfigurator extends React.Component {
   constructor(props) {
     super(props);
 
+    // keep states for available checkboxes
     this.state = {};
 
     this.FORM_NAME = 'configurator';
 
     this.onChange = this.onChange.bind(this);
-  }
-
-  onPeriodChange = (field, value) => {
-    this.onChange(field, value);
   }
 
   onSelectedFieldsChange = (event, value, index) => {
@@ -53,16 +51,17 @@ class ReportConfigurator extends React.Component {
     const fields = document.forms[this.FORM_NAME].elements;
 
     const from = fields.from.value.trim();
-    const to = fields.to.value ? fields.to.value.trim() : from;
+    const to = fields.to.value !== '' ? fields.to.value.trim() : undefined;
 
     const data = {
       fromTs: new Date(from).getTime(),
-      toTs: new Date(to).getTime(),
+      toTs: to && new Date(to).getTime(),
     };
 
     this.props.generateReport({
       fleet: this.props.fleet,
       timePeriod: data,
+      frequency: this.props.frequency,
     });
   }
 
@@ -82,7 +81,9 @@ class ReportConfigurator extends React.Component {
           />
 
           <ReportsPeriod
-            handlePeriodChange={this.onPeriodChange}
+            handlePeriodChange={this.onChange}
+            handleFrequencyChange={this.props.changeFrequency}
+            frequency={this.props.frequency}
             names={{
               start: 'from',
               end: 'to',
@@ -111,7 +112,9 @@ ReportConfigurator.propTypes = {
       order: React.PropTypes.number.isRequired,
     })
   ).isRequired,
+  changeFrequency: React.PropTypes.func.isRequired,
   fleet: React.PropTypes.string.isRequired,
+  frequency: React.PropTypes.string.isRequired,
   generateReport: React.PropTypes.func.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
   updateSelectedFields: React.PropTypes.func.isRequired,
@@ -121,10 +124,12 @@ const mapState = (state) => ({
   availableFields: getAvailableFields(state).toArray(),
   fleet: getFleetName(state),
   isLoading: getReportLoadingState(state),
+  frequency: getReportFrequency(state),
 });
 const mapDispatch = {
   generateReport: dataActions.generateReport,
   updateSelectedFields: configuratorActions.updateSelected,
+  changeFrequency: configuratorActions.changeFrequency,
 };
 
 const PureReportConfigurator = pure(ReportConfigurator);

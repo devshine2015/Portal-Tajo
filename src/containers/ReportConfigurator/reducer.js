@@ -1,44 +1,26 @@
 import { combineReducers } from 'redux-immutable';
 import { fromJS, List } from 'immutable';
-import moment from 'moment';
 import { loaderActions, dataActions, configuratorActions } from './actions/index';
 import tempSpecs from './specs/temperature';
+import baseSpecs from './specs/base';
+import mileageSpecs from './specs/mileage';
 
 const loaderInitialState = fromJS({
   isLoading: false,
 });
 const dataInitialState = new List();
+
+const specs = baseSpecs.concat(mileageSpecs, tempSpecs);
 const configuratorInitialState = fromJS({
-  available: new List([{
-    label: 'Vehicle Name',
-    name: 'name',
-    reportType: 'vehicles',
-    order: 0,
-    calc: ({ records }) => records.map(v => v.name),
-  }, {
-    label: 'License Plate',
-    name: 'license',
-    reportType: 'license',
-    order: 1,
-    calc: ({ records }) => records.map(v => v.licensePlate),
-  }, {
-    label: 'Driving Distance',
-    name: 'mileage',
-    reportType: 'mileage',
-    endpoint: 'mileage',
-    order: 2,
-    calc: ({ records, date }) => records.map(({ reportRecords }) => (
-      reportRecords.filter(rec => (
-        moment(date).isSame(moment(rec.time).toISOString(), 'day')
-      )).map(result => result.distance.toFixed(3, 10))[0]
-    )),
-  }].concat(tempSpecs)
-  ),
+  available: new List(specs),
   selected: new List(),
+  frequency: 'daily',
 });
 
 function configuratorReducer(state = configuratorInitialState, action) {
   switch (action.type) {
+    case configuratorActions.REPORT_CONFIGURATOR_FREQUENCY_CHANGE:
+      return state.set('frequency', action.nextState);
     case configuratorActions.REPORT_CONFIGURATOR_SELECTED_ADD:
       return state.updateIn(['selected'], selected =>
         selected.push(action.index)
@@ -97,3 +79,5 @@ export const getSelectedFields = (state) =>
   state.getIn(['reports', 'configurator', 'selected']);
 export const getSelectedFieldIndex = (state, value) =>
   getSelectedFields(state).indexOf(value);
+export const getReportFrequency = (state) =>
+  state.getIn(['reports', 'configurator', 'frequency']);

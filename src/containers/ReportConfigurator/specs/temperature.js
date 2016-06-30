@@ -1,49 +1,5 @@
 import moment from 'moment';
 
-const calculatedRecords = {};
-
-/**
- *
- * try get saved value by date and type
- *
- **/
-function getFromSaved(date, tempType) {
-  if (calculatedRecords[date] && calculatedRecords[date][tempType]) {
-    return calculatedRecords[date][tempType];
-  }
-
-  return undefined;
-}
-
-/**
- *
- * save values into map:
- * <date_as_ISO_string> : <type_of_value> : [values]
- *
- * Example:
- * 2016-06-06T00:00:00.000+0000: {
- *  minTemp: [-0.2, 3, -87, ...],
- *  maxTemp: [22, 11, 33, ...],
- *  avgTemp: [...],
- * }
- *
- * Amount of <values> equal to vehicles count in <vehiclesReports>.
- * Thus, lengths of minTemp, maxTemp, and avgTemp arrays are equal;
- *
- **/
-function saveResult(date, values = {}) {
-  Object.keys(values).forEach(type => {
-    if (!calculatedRecords[date]) {
-      calculatedRecords[date] = {};
-    }
-    if (!calculatedRecords[date][type]) {
-      calculatedRecords[date][type] = [];
-    }
-
-    calculatedRecords[date][type].push(values[type]);
-  });
-}
-
 /**
  *
  * Calculate min/max/avg temperature for given date at once
@@ -51,70 +7,67 @@ function saveResult(date, values = {}) {
  *
  * saves results for each vehicle for futher reusing
  *
- * return array of values for given typeToReturn
+ * return array of values for given selectedTypes
  *
  **/
-function calcTemperature(vehiclesReports, date, typeToReturn) {
-  const r = vehiclesReports.map(({ reportRecords }) => {
-    let resultTemps = {
-      minTemp: 'n/a',
-      maxTemp: 'n/a',
-      avgTemp: 'n/a',
-    };
+function calcTemperature({ records, frequency, selectedTypes, period }) {
+  const calcToReturn = (resultTemps) => (
+    selectedTypes.map((key) => resultTemps[key])
+  );
 
-    if (reportRecords.length === 0) {
-      saveResult(date, resultTemps);
-      return resultTemps[typeToReturn];
-    }
+  const isSamePeriod = (time) => {
+    const differ = frequency === 'daily' ? 'day' : 'hour';
 
+    return moment(period).isSame(moment(time), differ);
+  };
 
-    let minTemp = reportRecords[0].temp;
-    let maxTemp = reportRecords[0].temp;
-    let temps = 0;
-    let tempsCounter = 0;
+  let resultTemps = {
+    minTemp: 'n/a',
+    maxTemp: 'n/a',
+    avgTemp: 'n/a',
+  };
 
-    for (let i = 0; i < reportRecords.length; i++) {
-      const record = reportRecords[i];
-
-      if (!moment(date).isSame(moment(record.time), 'day')) continue;
-
-      temps += record.temp;
-      tempsCounter++;
-
-      if (record.temp < minTemp) {
-        minTemp = record.temp;
-      } else {
-        maxTemp = record.temp;
-      }
-    }
-
-    const avgTemp = temps / tempsCounter;
-
-    resultTemps = {
-      minTemp,
-      maxTemp,
-      avgTemp,
-    };
-
-    saveResult(date, resultTemps);
-
-    return resultTemps[typeToReturn];
-  });
-
-  return r;
-}
-
-/**
- * we can get calculated data for same date
- **/
-const getTemperature = ({ records, date }, tempType) => {
-  const res = getFromSaved(date, tempType);
-  if (res) {
-    return res;
+  if (records.length === 0) {
+    return calcToReturn(resultTemps);
   }
 
-  return calcTemperature(records, date, tempType);
-};
+
+  let minTemp = records[0].temp;
+  let maxTemp = records[0].temp;
+  let temps = 0;
+  let tempsCounter = 0;
+
+  for (let i = 0; i < records.length; i++) {
+    const record = records[i];
+
+    if (!isSamePeriod(record.time)) continue;
+
+    temps += record.temp;
+    tempsCounter++;
+
+    if (record.temp < minTemp) {
+      minTemp = record.temp;
+    } else {
+      maxTemp = record.temp;
+    }
+  }
+
+  const avgTemp = (temps / tempsCounter).toFixed(4, 10);
+
+  resultTemps = {
+    minTemp,
+    maxTemp,
+    avgTemp,
+  };
+
+  return calcToReturn(resultTemps);
+}
+
+function filterSimilar(allSelectedReportTypes) {
+  const similarTypes = ['minTemp', 'maxTemp', 'avgTemp'];
+
+  return allSelectedReportTypes.filter(type => similarTypes.indexOf(type) !== -1);
+}
 
 const fields = [{
   label: 'Min. Temperature',
@@ -123,8 +76,9 @@ const fields = [{
   reportType: 'minTemp',
   order: 3,
   query: 'downsampleSec=0',
-  calc: (params = {}) =>
-    getTemperature(params, 'minTemp'),
+  domain: 'temperature',
+  filterSimilar,
+  calc: calcTemperature,
 }, {
   label: 'Max. Temperature',
   name: 'maxTemp',
@@ -132,8 +86,9 @@ const fields = [{
   reportType: 'maxTemp',
   order: 4,
   query: 'downsampleSec=0',
-  calc: (params = {}) =>
-    getTemperature(params, 'maxTemp'),
+  domain: 'temperature',
+  filterSimilar,
+  calc: calcTemperature,
 }, {
   label: 'Average Temperature',
   name: 'avgTemp',
@@ -141,8 +96,9 @@ const fields = [{
   reportType: 'avgTemp',
   order: 5,
   query: 'downsampleSec=0',
-  calc: (params = {}) =>
-    getTemperature(params, 'avgTemp'),
+  domain: 'temperature',
+  filterSimilar,
+  calc: calcTemperature,
 }];
 
 export default fields;

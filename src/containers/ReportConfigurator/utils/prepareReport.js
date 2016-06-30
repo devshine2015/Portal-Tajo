@@ -1,72 +1,66 @@
 import moment from 'moment';
 
-export const prepareDataForReport = (selectedReports = {}, dates = []) =>
+export const prepareDataForReport = (selectedReports = {}, periods = [], frequency) =>
   (reports = {}) => {
     const result = [];
+    const selectedTypes = Object.keys(selectedReports);
+    const filteredTypesByDomain = {};
+    const format = frequency === 'daily' ? 'L' : 'L LTS';
 
-    console.time('time');
+    for (let i = 0; i < selectedTypes.length; i++) {
+      const domain = selectedReports[selectedTypes[i]].domain;
 
-    dates.forEach((date, i) => {
-      const row = result[i] = [];
+      if (filteredTypesByDomain[domain]) continue;
 
-      row.push(date);
+      filteredTypesByDomain[domain] = selectedReports[selectedTypes[i]];
+    }
 
-      Object.entries(reports).forEach(([reportType, records]) => {
-        row.push(selectedReports[reportType].calc({ records, date }));
+    let rowNumber = 0;
+    let totalRowsCount = 0;
+    let maxRowsCount = 0;
+
+    periods.forEach((period) => {
+      Object.entries(reports).forEach(([domain, recordsForAllVehicles]) => {
+        if (recordsForAllVehicles.length === 0) return;
+
+        let filteredTypesToCalc = selectedTypes;
+
+        rowNumber = totalRowsCount;
+
+        if (typeof filteredTypesByDomain[domain].filterSimilar === 'function') {
+          filteredTypesToCalc = filteredTypesByDomain[domain].filterSimilar(selectedTypes);
+        }
+
+        for (let i = 0; i < recordsForAllVehicles.length; i++, rowNumber++) {
+          if (!result[rowNumber]) {
+            result[rowNumber] = [];
+            result[rowNumber].push(moment(period).format(format));
+          }
+
+          let recordsToCalc = recordsForAllVehicles[i];
+
+          if (recordsForAllVehicles[i].hasOwnProperty('reportRecords')) {
+            recordsToCalc = recordsForAllVehicles[i].reportRecords;
+          }
+
+          const calculatedRow = filteredTypesByDomain[domain].calc({
+            period,
+            frequency,
+            records: recordsToCalc,
+            selectedTypes: filteredTypesToCalc,
+          });
+
+          result[rowNumber] = result[rowNumber].concat(calculatedRow);
+        }
+
+        maxRowsCount = recordsForAllVehicles.length;
       });
 
-      result.push(row);
+      totalRowsCount += maxRowsCount;
     });
-
-    console.timeEnd('time');
 
     return Promise.resolve(result);
   };
-
-/**
- *
- * reportData = [[date, <mileage_data>, <minTemp_data>, ...], [date, ...], ...]
- *
- **/
-
-export const createReportTable = (reportData) => {
-  const table = [];
-  let totalRowsCount = 0;
-  let maxRowsCount = 0;
-
-  for (let i = 0; i < reportData.length; i++) {
-    const columns = reportData[i];
-    const date = columns[0];
-    let rowNumber = totalRowsCount;
-
-    // start with column next to dates
-    for (let k = 1; k < columns.length; k++) {
-      const dataType = columns[k];
-
-      for (let j = 0; j < dataType.length; j++, rowNumber++) {
-        // create new if such row not exists
-        if (!table[rowNumber]) {
-          table[rowNumber] = [];
-          table[rowNumber][0] = moment(date).format('L');
-        }
-
-        // place report value to table
-        table[rowNumber][k] = dataType[j];
-      }
-
-      // save maximum rows count from each report
-      maxRowsCount = dataType.length > maxRowsCount ? dataType.length : maxRowsCount;
-      // reset rows for current date
-      rowNumber = totalRowsCount;
-    }
-
-    // increase table count for start looping over next day
-    // i.e. next day data will start from this row number;
-    totalRowsCount += maxRowsCount;
-  }
-
-  return Promise.resolve(table);
-};
 
 export const getReportParams = ({ fromTs, toTs } = {}, datesCount) => {
   const toPlusTs = _generateToDate(fromTs, toTs, datesCount);
