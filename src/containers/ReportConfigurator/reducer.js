@@ -11,10 +11,12 @@ const loaderInitialState = fromJS({
 const dataInitialState = new List();
 
 const specs = baseSpecs.concat(mileageSpecs, tempSpecs);
+const checkedSpecs = specs.filter(({ checkedByDefault }) => checkedByDefault)
+  .map((spec, i) => i);
 const configuratorInitialState = fromJS({
   available: new List(specs),
-  selected: new List(),
-  frequency: 'daily',
+  selected: new List(checkedSpecs),
+  frequency: undefined,
 });
 
 function configuratorReducer(state = configuratorInitialState, action) {

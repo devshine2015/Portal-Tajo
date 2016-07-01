@@ -40,16 +40,9 @@ export const sendData = (fleet, data) => {
   };
 
   const request = api.post(devicesUrl, createDevicePayload)
-    .then(() => {
-      debugger;
-      return api.post(vehiceslUrl, createVehiclePayload);
-    })
-    .then(response => {
-      debugger;
-      return response.json();
-    })
+    .then(api.post(vehiceslUrl, createVehiclePayload))
+    .then(response => response.json())
     .then(vehicle => {
-      debugger;
       const attachDeviceUrl = `${vehiceslUrl}/${vehicle.id}/device`;
 
       return api.post(attachDeviceUrl, {

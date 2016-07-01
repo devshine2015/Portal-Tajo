@@ -2,6 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import RaisedButton from 'material-ui/RaisedButton';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import moment from 'moment';
 import Form from 'components/Form';
 import InputFieldWrapper from 'components/InputFieldWrapper';
 import ReportsPeriod from 'components/Period';
@@ -14,17 +17,77 @@ import {
   getReportFrequency,
 } from './reducer';
 
+function calcStartTime() {
+  const t = moment().set({
+    hour: 0,
+    minute: 0,
+    second: 0,
+    millisecond: 0,
+  });
+  return t.toDate();
+}
+
+function calcEndTime() {
+  const t = moment().set({
+    hour: 23,
+    minute: 59,
+    second: 59,
+    millisecond: 999,
+  });
+
+  return t.toDate();
+}
+
+function getDefaultCheckedFields(fields) {
+  const result = {};
+
+  fields.forEach(f => {
+    if (!f.checkedByDefault) return;
+
+    result[f.name] = f.checkedByDefault;
+  });
+
+  return result;
+}
+
 class ReportConfigurator extends React.Component {
 
   constructor(props) {
     super(props);
 
-    // keep states for available checkboxes
-    this.state = {};
-
     this.FORM_NAME = 'configurator';
+    this.defaultStartTime = calcStartTime();
+    this.defaultEndTime = calcEndTime();
+    this.defaultStartDate = moment().subtract(1, 'days').toDate();
+    this.periodFields = {
+      start: {
+        name: 'start',
+        default: this.defaultStartDate,
+      },
+      end: {
+        name: 'end',
+        default: undefined,
+      },
+      startTime: {
+        name: 'startTime',
+        default: this.defaultStartTime,
+      },
+      endTime: {
+        name: 'endTime',
+        default: this.defaultEndTime,
+      },
+    };
+
+    this.state = {
+      ...getDefaultCheckedFields(props.availableFields),
+      [this.periodFields.start.name]: this.periodFields.start.default,
+      [this.periodFields.end.name]: this.periodFields.end.default,
+      [this.periodFields.startTime.name]: this.periodFields.startTime.default,
+      [this.periodFields.endTime.name]: this.periodFields.endTime.default,
+    };
 
     this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   onSelectedFieldsChange = (event, value, index) => {
@@ -45,17 +108,18 @@ class ReportConfigurator extends React.Component {
     });
   }
 
+  onFrequencyChange = (event, key, value) => {
+    this.props.changeFrequency(value);
+  }
+
   onSubmit = (e) => {
     e.preventDefault();
 
-    const fields = document.forms[this.FORM_NAME].elements;
-
-    const from = fields.from.value.trim();
-    const to = fields.to.value !== '' ? fields.to.value.trim() : undefined;
-
     const data = {
-      fromTs: new Date(from).getTime(),
-      toTs: to && new Date(to).getTime(),
+      start: this.state[this.periodFields.start.name],
+      end: this.state[this.periodFields.end.name],
+      startTime: this.state[this.periodFields.startTime.name],
+      endTime: this.state[this.periodFields.endTime.name],
     };
 
     this.props.generateReport({
@@ -63,6 +127,25 @@ class ReportConfigurator extends React.Component {
       timePeriod: data,
       frequency: this.props.frequency,
     });
+  }
+
+  renderSplitter() {
+    return (
+      <SelectField
+        value={this.props.frequency}
+        onChange={this.onFrequencyChange}
+        floatingLabelText="Split report"
+      >
+        <MenuItem
+          value="daily"
+          primaryText="Daily"
+        />
+        <MenuItem
+          value="hourly"
+          primaryText="Hourly"
+        />
+      </SelectField>
+    );
   }
 
   render() {
@@ -82,16 +165,11 @@ class ReportConfigurator extends React.Component {
 
           <ReportsPeriod
             handlePeriodChange={this.onChange}
-            handleFrequencyChange={this.props.changeFrequency}
-            frequency={this.props.frequency}
+            fields={this.periodFields}
             withTime
-            names={{
-              start: 'from',
-              end: 'to',
-              startTime: 'timeFrom',
-              endTime: 'timeTo',
-            }}
           />
+
+          { !this.props.hideSplitter && this.renderSplitter() }
 
           <InputFieldWrapper>
             <RaisedButton
@@ -117,9 +195,10 @@ ReportConfigurator.propTypes = {
   ).isRequired,
   changeFrequency: React.PropTypes.func.isRequired,
   fleet: React.PropTypes.string.isRequired,
-  frequency: React.PropTypes.string.isRequired,
+  frequency: React.PropTypes.string,
   generateReport: React.PropTypes.func.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
+  hideSplitter: React.PropTypes.bool.isRequired,
   updateSelectedFields: React.PropTypes.func.isRequired,
 };
 

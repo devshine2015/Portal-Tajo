@@ -10,16 +10,12 @@ import moment from 'moment';
  * return array of values for given selectedTypes
  *
  **/
-function calcTemperature({ records, frequency, selectedTypes, period }) {
-  const calcToReturn = (resultTemps) => (
-    selectedTypes.map((key) => resultTemps[key])
-  );
+function calcTemperature(records, { selectedTypes, period }) {
+  const calcToReturn = (resultTemps) =>
+    selectedTypes.map((key) => resultTemps[key]);
 
-  const isSamePeriod = (time) => {
-    const differ = frequency === 'daily' ? 'day' : 'hour';
-
-    return moment(period).isSame(moment(time), differ);
-  };
+  const withinPeriod = (time) =>
+    moment(time).isBetween(period.start, period.end);
 
   let resultTemps = {
     minTemp: 'n/a',
@@ -40,7 +36,7 @@ function calcTemperature({ records, frequency, selectedTypes, period }) {
   for (let i = 0; i < records.length; i++) {
     const record = records[i];
 
-    if (!isSamePeriod(record.time)) continue;
+    if (!withinPeriod(record.time)) continue;
 
     temps += record.temp;
     tempsCounter++;
@@ -69,36 +65,35 @@ function filterSimilar(allSelectedReportTypes) {
   return allSelectedReportTypes.filter(type => similarTypes.indexOf(type) !== -1);
 }
 
+const commonProps = {
+  endpoint: 'temperature',
+  query: {
+    downsampleSec: 30,
+  },
+  domain: 'temperature',
+  checkedByDefault: false,
+  filterSimilar,
+  calc: calcTemperature,
+};
+
 const fields = [{
+  ...commonProps,
   label: 'Min. Temperature',
   name: 'minTemp',
-  endpoint: 'temperature',
   reportType: 'minTemp',
-  order: 3,
-  query: 'downsampleSec=0',
-  domain: 'temperature',
-  filterSimilar,
-  calc: calcTemperature,
+  order: 4,
 }, {
+  ...commonProps,
   label: 'Max. Temperature',
   name: 'maxTemp',
-  endpoint: 'temperature',
   reportType: 'maxTemp',
-  order: 4,
-  query: 'downsampleSec=0',
-  domain: 'temperature',
-  filterSimilar,
-  calc: calcTemperature,
+  order: 5,
 }, {
+  ...commonProps,
   label: 'Average Temperature',
   name: 'avgTemp',
-  endpoint: 'temperature',
   reportType: 'avgTemp',
-  order: 5,
-  query: 'downsampleSec=0',
-  domain: 'temperature',
-  filterSimilar,
-  calc: calcTemperature,
+  order: 6,
 }];
 
 export default fields;

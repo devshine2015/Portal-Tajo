@@ -2,52 +2,25 @@ import React from 'react';
 import pure from 'recompose/pure';
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import moment from 'moment';
+
 import styles from './styles.css';
-
-function calcStartTime() {
-  const t = moment().set({
-    hour: 0,
-    minute: 0,
-    second: 0,
-    millisecond: 0,
-  });
-  return t.toDate();
-}
-
-function calcEndTime() {
-  const t = moment().set({
-    hour: 23,
-    minute: 59,
-    second: 59,
-    millisecond: 999,
-  });
-
-  return t.toDate();
-}
 
 class Period extends React.Component {
 
-  constructor(props) {
-    super(props);
-
-    this.defaultStartTime = calcStartTime();
-    this.defaultEndTime = calcEndTime();
-    this.defaultStartDate = moment().subtract(1, 'days').toDate();
+  onStartDateChange = (event = undefined, value) => {
+    this.onChange(this.props.fields.start.name, value);
   }
 
-  onFromDateChange = (event = undefined, value) => {
-    this.onChange(this.props.names.start, value);
+  onEndDateChange = (event = undefined, value) => {
+    this.onChange(this.props.fields.end.name, value);
   }
 
-  onToDateChange = (event = undefined, value) => {
-    this.onChange(this.props.names.end, value);
+  onStartTimeChange = (event = undefined, value) => {
+    this.onChange(this.props.fields.startTime.name, value);
   }
 
-  onFrequencyChange = (event, key, value) => {
-    this.props.handleFrequencyChange(value);
+  onEndTimeChange = (event = undefined, value) => {
+    this.onChange(this.props.fields.endTime.name, value);
   }
 
   onChange = (field, value) => {
@@ -59,15 +32,15 @@ class Period extends React.Component {
       <DatePicker
         autoOk
         hintText="Start date interval"
-        defaultDate={this.defaultStartDate}
-        name={this.props.names.start}
-        onChange={this.onFromDateChange}
+        defaultDate={this.props.fields.start.default}
+        name={this.props.fields.start.name}
+        onChange={this.onStartDateChange}
       />
       <DatePicker
         autoOk
         hintText="End date interval"
-        name={this.props.names.end}
-        onChange={this.onToDateChange}
+        name={this.props.fields.end.name}
+        onChange={this.onEndDateChange}
       />
     </div>
   )
@@ -77,20 +50,20 @@ class Period extends React.Component {
       <TimePicker
         autoOk
         container="inline"
-        defaultTime={this.defaultStartTime}
+        defaultTime={this.props.fields.startTime.default}
         format="24hr"
         hintText="Start time interval"
-        name={this.props.names.startTime}
-        onChange={this.onFromDateChange}
+        name={this.props.fields.startTime.name}
+        onChange={this.onStartTimeChange}
       />
       <TimePicker
         autoOk
         container="inline"
-        defaultTime={this.defaultEndTime}
+        defaultTime={this.props.fields.endTime.default}
         format="24hr"
         hintText="End time interval"
-        name={this.props.names.end}
-        onChange={this.onToDateChange}
+        name={this.props.fields.endTime.name}
+        onChange={this.onEndTimeChange}
       />
     </div>
   )
@@ -102,34 +75,30 @@ class Period extends React.Component {
           { this.renderDate() }
           { this.props.withTime && this.renderTime() }
         </div>
-        <SelectField
-          value={this.props.frequency}
-          onChange={this.onFrequencyChange}
-          floatingLabelText="Split report"
-        >
-          <MenuItem
-            value="daily"
-            primaryText="Daily"
-          />
-          <MenuItem
-            value="hourly"
-            primaryText="Hourly"
-          />
-        </SelectField>
       </div>
     );
   }
 }
 
 Period.propTypes = {
-  frequency: React.PropTypes.string.isRequired,
-  handleFrequencyChange: React.PropTypes.func.isRequired,
   handlePeriodChange: React.PropTypes.func.isRequired,
-  names: React.PropTypes.shape({
-    start: React.PropTypes.string.isRequired,
-    end: React.PropTypes.string.isRequired,
-    startTime: React.PropTypes.string,
-    endTime: React.PropTypes.string,
+  fields: React.PropTypes.shape({
+    start: React.PropTypes.shape({
+      name: React.PropTypes.string.isRequired,
+      default: React.PropTypes.any.isRequired,
+    }).isRequired,
+    end: React.PropTypes.shape({
+      name: React.PropTypes.string.isRequired,
+      default: React.PropTypes.any,
+    }).isRequired,
+    startTime: React.PropTypes.shape({
+      name: React.PropTypes.string.isRequired,
+      default: React.PropTypes.any.isRequired,
+    }),
+    endTime: React.PropTypes.shape({
+      name: React.PropTypes.string.isRequired,
+      default: React.PropTypes.any.isRequired,
+    }),
   }).isRequired,
   withTime: React.PropTypes.bool,
 };

@@ -5,7 +5,6 @@ export const prepareDataForReport = (selectedReports = {}, periods = [], frequen
     const result = [];
     const selectedTypes = Object.keys(selectedReports);
     const filteredTypesByDomain = {};
-    const format = frequency === 'daily' ? 'L' : 'L LTS';
 
     for (let i = 0; i < selectedTypes.length; i++) {
       const domain = selectedReports[selectedTypes[i]].domain;
@@ -19,13 +18,29 @@ export const prepareDataForReport = (selectedReports = {}, periods = [], frequen
     let totalRowsCount = 0;
     let maxRowsCount = 0;
 
-    periods.forEach((period) => {
+    periods.forEach((momentDate, j, a) => {
+      const isLastDate = j === a.length - 1;
+
+      // don't calculate for last period
+      // if splitting not defined (frequency == undefined)
+      if (!frequency && isLastDate) return;
+
+      const period = {};
+
+      if (!isLastDate) {
+        period.start = momentDate;
+        period.end = a[j + 1];
+      } else {
+        period.start = a[j - 1];
+        period.end = momentDate;
+      }
+
       Object.entries(reports).forEach(([domain, recordsForAllVehicles]) => {
         if (recordsForAllVehicles.length === 0) return;
 
-        let filteredTypesToCalc = selectedTypes;
-
         rowNumber = totalRowsCount;
+
+        let filteredTypesToCalc = selectedTypes;
 
         if (typeof filteredTypesByDomain[domain].filterSimilar === 'function') {
           filteredTypesToCalc = filteredTypesByDomain[domain].filterSimilar(selectedTypes);
@@ -34,23 +49,17 @@ export const prepareDataForReport = (selectedReports = {}, periods = [], frequen
         for (let i = 0; i < recordsForAllVehicles.length; i++, rowNumber++) {
           if (!result[rowNumber]) {
             result[rowNumber] = [];
-            result[rowNumber].push(moment(period).format(format));
           }
 
-          let recordsToCalc = recordsForAllVehicles[i];
-
-          if (recordsForAllVehicles[i].hasOwnProperty('reportRecords')) {
-            recordsToCalc = recordsForAllVehicles[i].reportRecords;
-          }
-
-          const calculatedRow = filteredTypesByDomain[domain].calc({
-            period,
+          const column = _calculateColumn({
+            filteredTypesToCalc,
             frequency,
-            records: recordsToCalc,
-            selectedTypes: filteredTypesToCalc,
+            period,
+            calculate: filteredTypesByDomain[domain].calc,
+            record: recordsForAllVehicles[i],
           });
 
-          result[rowNumber] = result[rowNumber].concat(calculatedRow);
+          result[rowNumber] = result[rowNumber].concat(column);
         }
 
         maxRowsCount = recordsForAllVehicles.length;
@@ -62,37 +71,46 @@ export const prepareDataForReport = (selectedReports = {}, periods = [], frequen
     return Promise.resolve(result);
   };
 
-export const getReportParams = ({ fromTs, toTs } = {}, datesCount) => {
-  const toPlusTs = _generateToDate(fromTs, toTs, datesCount);
-  const offsetInMinutes = new Date().getTimezoneOffset();
-  const offsetInMilliseconds = 1000 * 60 * offsetInMinutes;
+export const getReportParams = ({
+  start,
+  end = undefined,
+  startTime = undefined,
+  endTime = undefined,
+} = {}) => {
+  const endDate = end || start;
 
-  const toFormatted = _formateDate(toPlusTs, offsetInMilliseconds);
-  const fromFormatted = _formateDate(fromTs);
+  const fromFormatted = _formateDateForRequest(start, startTime);
+  const toFormatted = _formateDateForRequest(endDate, endTime);
 
   return `from=${fromFormatted}&to=${toFormatted}&tzoffset=${0}`;
 };
 
-// Just formatting to ISO string. Keep actual date and time values
-function _formateDate(dateTs, offsetInMilliseconds = 0) {
-  const dateISO = new Date(dateTs - offsetInMilliseconds).toISOString();
+function _calculateColumn({
+  filteredTypesToCalc,
+  calculate,
+  frequency,
+  period,
+  record,
+}) {
+  let recordsToCalc = record;
 
-  return `${dateISO.slice(0, -1)}+0000`;
-}
-
-function _generateToDate(fromTs, toTs, daysCount) {
-  let result;
-
-  if (daysCount === 1) {
-    result = new Date(fromTs);
-    result.setHours(23);
-    result.setMinutes(59);
-    result.setSeconds(59);
-  } else {
-    // add one second to count day amount
-    result = new Date(toTs);
-    result.setSeconds(1);
+  if (record.hasOwnProperty('reportRecords')) {
+    recordsToCalc = record.reportRecords;
   }
 
-  return result.getTime();
+  return calculate(recordsToCalc, {
+    frequency,
+    period,
+    selectedTypes: filteredTypesToCalc,
+  });
+}
+
+// Just formatting to ISO string. Keep actual date and time values
+function _formateDateForRequest(date, time) {
+  const result = moment(date).utcOffset(0).set({
+    hour: time.getHours(),
+    minute: time.getMinutes(),
+    second: time.getSeconds(),
+  }).toISOString();
+  return `${result.slice(0, -1)}+0000`;
 }
