@@ -4,13 +4,14 @@ import { loaderActions, dataActions, configuratorActions } from './actions/index
 import tempSpecs from './specs/temperature';
 import baseSpecs from './specs/base';
 import mileageSpecs from './specs/mileage';
+import eventsSpecs from './specs/events';
 
 const loaderInitialState = fromJS({
   isLoading: false,
 });
 const dataInitialState = new List();
 
-const specs = baseSpecs.concat(mileageSpecs, tempSpecs);
+const specs = baseSpecs.concat(mileageSpecs, tempSpecs, eventsSpecs);
 const checkedSpecs = specs.filter(({ checkedByDefault }) => checkedByDefault)
   .map((spec, i) => i);
 const configuratorInitialState = fromJS({

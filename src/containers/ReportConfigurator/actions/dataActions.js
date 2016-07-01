@@ -108,11 +108,9 @@ function _reportRequest(baseVehiclesUrl, vehicles = [], {
   domain,
   queryString,
 } = {}) {
-  const pathname = `report/${endpoint}`;
-
   return Promise.all(
     vehicles.map(v => (
-      api(`${baseVehiclesUrl}/${v.id}/${pathname}?${queryString}`)
+      api(`${baseVehiclesUrl}/${v.id}/${endpoint}?${queryString}`)
       .then(toJson)
     )),
   ).then(res => ({

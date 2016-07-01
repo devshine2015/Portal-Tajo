@@ -2,7 +2,7 @@ const fields = [{
   label: 'Driving Distance',
   name: 'mileage',
   reportType: 'mileage',
-  endpoint: 'mileage',
+  endpoint: 'report/mileage',
   domain: 'mileage',
   checkedByDefault: false,
   order: 3,

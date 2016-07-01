@@ -10,7 +10,7 @@ import moment from 'moment';
  * return array of values for given selectedTypes
  *
  **/
-function calcTemperature(records, { selectedTypes, period }) {
+function calcTemperature(records, { selectedTypes, period, frequency }) {
   const calcToReturn = (resultTemps) =>
     selectedTypes.map((key) => resultTemps[key]);
 
@@ -36,7 +36,9 @@ function calcTemperature(records, { selectedTypes, period }) {
   for (let i = 0; i < records.length; i++) {
     const record = records[i];
 
-    if (!withinPeriod(record.time)) continue;
+    if (frequency && !withinPeriod(record.time)) {
+      continue;
+    }
 
     temps += record.temp;
     tempsCounter++;
@@ -66,7 +68,7 @@ function filterSimilar(allSelectedReportTypes) {
 }
 
 const commonProps = {
-  endpoint: 'temperature',
+  endpoint: 'report/temperature',
   query: {
     downsampleSec: 30,
   },
