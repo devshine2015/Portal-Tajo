@@ -17,33 +17,38 @@ function _calculate(events, { selectedTypes }) {
   const calcToReturn = (result) =>
     selectedTypes.map((key) => result[key]);
 
-  const isNeeded = (type) =>
-    selectedTypes.indexOf(type) !== -1;
+  const isNeeded = (eventType, neededEventType, neededType) =>
+    eventType === neededEventType && selectedTypes.indexOf(neededType) !== -1;
 
   const result = {};
+
   const ignitionOnType = 'timeIgnitionOn';
+  const idlingTimeType = 'idlingTime';
 
-  if (isNeeded(ignitionOnType)) {
-    const ignitionOffEvent = 'vehicle-ign-off';
+  const ignitionOffEvent = 'vehicle-ign-off';
+  const idlingTimeEvent = 'vehicle-stop-stats';
 
-    const ignitionOffEvents = events.filter(e => e.type === ignitionOffEvent);
+  let totalTimeIgnitionOn = 0;
+  let totalIdlingTime = 0;
 
-    let timeIgnitionOn = 0;
+  events.forEach(event => {
+    if (isNeeded(event.type, ignitionOffEvent, ignitionOnType)) {
+      totalTimeIgnitionOn += event.ev.ignitionOnPeriod;
+    }
 
-    ignitionOffEvents.forEach(({ ev }) => {
-      if (!ev.hasOwnProperty('ignitionOnPeriod')) return;
+    if (isNeeded(event.type, idlingTimeEvent, idlingTimeType)) {
+      totalIdlingTime += event.ev.ignitionOnPeriod;
+    }
+  });
 
-      timeIgnitionOn += ev.ignitionOnPeriod;
-    });
-
-    result[ignitionOnType] = _getTime(timeIgnitionOn);
-  }
+  result[ignitionOnType] = _getTime(totalTimeIgnitionOn);
+  result[idlingTimeType] = _getTime(totalIdlingTime);
 
   return calcToReturn(result);
 }
 
 function filterSimilar(allSelectedReportTypes) {
-  const similarTypes = ['timeIgnitionOn'];
+  const similarTypes = ['timeIgnitionOn', 'idlingTime'];
 
   return allSelectedReportTypes.filter(type => similarTypes.indexOf(type) !== -1);
 }
@@ -52,6 +57,16 @@ const fields = [{
   label: 'Ignition on Time',
   name: 'timeIgnitionOn',
   reportType: 'timeIgnitionOn',
+  checkedByDefault: false,
+  domain: 'ignition',
+  endpoint: 'events',
+  order: 0,
+  filterSimilar,
+  calc: _calculate,
+}, {
+  label: 'Idling Time',
+  name: 'idlingTime',
+  reportType: 'idlingTime',
   checkedByDefault: false,
   domain: 'ignition',
   endpoint: 'events',
