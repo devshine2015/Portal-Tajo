@@ -12,10 +12,7 @@ class InstallerOfflineDataItem extends React.Component {
   render() {
     const {
       index,
-      imei,
-      license,
-      name,
-      odometer,
+      data,
     } = this.props;
 
     return (
@@ -34,13 +31,13 @@ class InstallerOfflineDataItem extends React.Component {
               Vehicle name: <span className={styles.info__detail}>{name}</span>
             </li>
             <li className={styles.info__item}>
-              License: <span className={styles.info__detail}>{license}</span>
+              License: <span className={styles.info__detail}>{data.license}</span>
             </li>
             <li className={styles.info__item}>
-              IMEI: <span className={styles.info__detail}>{imei}</span>
+              IMEI: <span className={styles.info__detail}>{data.imei}</span>
             </li>
             <li className={styles.info__item}>
-              Odometer: <span className={styles.info__detail}>{odometer}</span>
+              Odometer: <span className={styles.info__detail}>{data.odometer}</span>
             </li>
           </ul>
         </label>
@@ -50,12 +47,14 @@ class InstallerOfflineDataItem extends React.Component {
 }
 
 InstallerOfflineDataItem.propTypes = {
+  data: React.PropTypes.shape({
+    id: React.PropTypes.string.isRequired,
+    imei: React.PropTypes.string.isRequired,
+    license: React.PropTypes.string.isRequired,
+    odometer: React.PropTypes.string.isRequired,
+    name: React.PropTypes.string.isRequired,
+  }).isRequired,
   index: React.PropTypes.number.isRequired,
-  id: React.PropTypes.string.isRequired,
-  imei: React.PropTypes.string.isRequired,
-  license: React.PropTypes.string.isRequired,
-  odometer: React.PropTypes.string.isRequired,
-  name: React.PropTypes.string.isRequired,
   onChange: React.PropTypes.func.isRequired,
 };
 

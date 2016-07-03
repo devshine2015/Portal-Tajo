@@ -19,10 +19,10 @@ const InstallerOfflineData = ({
   const list = data.map((d, i) => (
     <li
       className={styles.offline__item}
-      key={d.id}
+      key={d.get('id')}
     >
       <InstallerOfflineDataItem
-        {...d}
+        data={d.toObject()}
         index={i}
         onChange={toggleSaving}
       />
@@ -57,7 +57,7 @@ const InstallerOfflineData = ({
 
 InstallerOfflineData.propTypes = {
   cleanData: React.PropTypes.func.isRequired,
-  data: React.PropTypes.array.isRequired,
+  data: React.PropTypes.object.isRequired,
   isOnline: React.PropTypes.bool.isRequired,
   sendData: React.PropTypes.func.isRequired,
   indexes: React.PropTypes.arrayOf(

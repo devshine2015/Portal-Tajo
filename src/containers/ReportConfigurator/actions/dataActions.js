@@ -8,6 +8,7 @@ import {
   getSelectedFields,
   getAvailableFields,
 } from '../reducer';
+import { getFleetName } from 'containers/App/reducer';
 import {
   prepareDataForReport,
   getReportParams,
@@ -23,10 +24,11 @@ export const saveGenerated = () => (dispatch, getState) =>
 
 // TODO -- make configuratorAvailableFields truly flexible (depends on screen)
 
-function _generateReport({ timePeriod, fleet, frequency }, dispatch, getState) {
+function _generateReport({ timePeriod, frequency }, dispatch, getState) {
   dispatch(setLoader(true));
   dispatch(_removeReportData());
 
+  const fleet = getFleetName(getState);
   const baseVehiclesUrl = `${fleet}/vehicles`;
   const periods = _getPeriods(timePeriod, frequency);
   const periodQueryString = getReportParams(timePeriod);

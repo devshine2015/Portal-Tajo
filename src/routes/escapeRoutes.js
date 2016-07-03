@@ -60,6 +60,7 @@ export default function createRoutes(store) {
 
   const rootRoute = require('containers/App/route')({
     path: ROOT,
+    dispatch: store.dispatch,
   });
 
   rootRoute.childRoutes.push(

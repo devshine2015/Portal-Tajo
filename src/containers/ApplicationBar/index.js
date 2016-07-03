@@ -10,7 +10,7 @@ import styles from './styles.css';
 class ApplicationBar extends React.Component {
 
   onLogoutClick = () => {
-    this.props.logout(this.props.fleet);
+    this.props.logout();
   }
 
   render() {
@@ -32,7 +32,6 @@ class ApplicationBar extends React.Component {
 }
 
 ApplicationBar.propTypes = {
-  fleet: React.PropTypes.string.isRequired,
   logout: React.PropTypes.func.isRequired,
   toggleSidebar: React.PropTypes.func.isRequired,
 };

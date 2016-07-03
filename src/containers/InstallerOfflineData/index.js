@@ -4,6 +4,7 @@ import { List } from 'immutable';
 import pure from 'recompose/pure';
 import { showSnackbar } from 'containers/Snackbar/actions';
 import InstallerOfflineData from 'components/InstallerOfflineData';
+import { getOfflineData } from 'containers/InstallerScreen/reducer';
 
 class OfflineData extends React.Component {
 
@@ -75,13 +76,15 @@ class OfflineData extends React.Component {
 
 OfflineData.propTypes = {
   cleanData: React.PropTypes.func.isRequired,
-  data: React.PropTypes.array.isRequired,
+  data: React.PropTypes.object.isRequired,
   isOnline: React.PropTypes.bool.isRequired,
   sendData: React.PropTypes.func.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,
 };
 
-const mapState = () => ({});
+const mapState = (state) => ({
+  data: getOfflineData(state),
+});
 const mapDispatch = {
   showSnackbar,
 };

@@ -10,7 +10,6 @@ import InputFieldWrapper from 'components/InputFieldWrapper';
 import ReportsPeriod from 'components/Period';
 import AvailableFields from './components/AvailableFields';
 import { dataActions, configuratorActions } from './actions';
-import { getFleetName } from 'containers/App/reducer';
 import {
   getReportLoadingState,
   getAvailableFields,
@@ -123,7 +122,6 @@ class ReportConfigurator extends React.Component {
     };
 
     this.props.generateReport({
-      fleet: this.props.fleet,
       timePeriod: data,
       frequency: this.props.frequency,
     });
@@ -186,15 +184,8 @@ class ReportConfigurator extends React.Component {
 }
 
 ReportConfigurator.propTypes = {
-  availableFields: React.PropTypes.arrayOf(
-    React.PropTypes.shape({
-      label: React.PropTypes.string.isRequired,
-      name: React.PropTypes.string.isRequired,
-      order: React.PropTypes.number.isRequired,
-    })
-  ).isRequired,
+  availableFields: React.PropTypes.object.isRequired,
   changeFrequency: React.PropTypes.func.isRequired,
-  fleet: React.PropTypes.string.isRequired,
   frequency: React.PropTypes.string,
   generateReport: React.PropTypes.func.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
@@ -203,8 +194,7 @@ ReportConfigurator.propTypes = {
 };
 
 const mapState = (state) => ({
-  availableFields: getAvailableFields(state).toArray(),
-  fleet: getFleetName(state),
+  availableFields: getAvailableFields(state),
   isLoading: getReportLoadingState(state),
   frequency: getReportFrequency(state),
 });

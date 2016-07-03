@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
-import { fromJS } from 'immutable';
+import { Map } from 'immutable';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Form from 'components/Form';
@@ -13,12 +13,11 @@ import { getAppOnlineState, getFleetName } from 'containers/App/reducer';
 import {
   getLoaderState,
   installerHasOfflineData,
-  getOfflineData,
 } from './reducer';
 import { showSnackbar } from 'containers/Snackbar/actions';
 import styles from './styles.css';
 
-const initialFields = fromJS({
+const initialFields = new Map({
   name: null,
   imei: null,
   license: null,
@@ -31,7 +30,7 @@ class InstallerScreen extends React.Component {
     super(props);
 
     this.state = {
-      fields: initialFields.toJS(),
+      fields: initialFields,
       cannotSubmit: true,
       dialogIsOpen: this.dialogIsOpen(props),
     };
@@ -50,9 +49,10 @@ class InstallerScreen extends React.Component {
   onChange = (e) => {
     const { name, value } = e.target;
     const nextState = Object.assign({}, {
-      fields: this.state.fields,
+      fields: new Map(this.state.fields),
     });
-    nextState.fields[name] = value.trim();
+
+    nextState.fields = nextState.fields.set(name, value.trim());
     nextState.cannotSubmit = validateForm(nextState.fields);
 
     this.setState(nextState);
@@ -110,7 +110,7 @@ class InstallerScreen extends React.Component {
     const formNode = document.forms.bounder;
 
     this.setState({
-      fields: initialFields.toJS(),
+      fields: initialFields,
     });
 
     formNode.reset();
@@ -189,7 +189,6 @@ class InstallerScreen extends React.Component {
         <InstallerOfflineData
           sendData={this.props.sendFromStorage}
           cleanData={this.props.cleanOfflineData}
-          data={this.props.data}
           isOnline={this.props.isOnline}
         />
         <InstallerDialog
@@ -205,7 +204,6 @@ class InstallerScreen extends React.Component {
 InstallerScreen.propTypes = {
   checkStorage: React.PropTypes.func.isRequired,
   cleanOfflineData: React.PropTypes.func.isRequired,
-  data: React.PropTypes.array,
   fleet: React.PropTypes.string.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
   isOnline: React.PropTypes.bool.isRequired,
@@ -217,7 +215,6 @@ InstallerScreen.propTypes = {
 };
 
 const mapState = (state) => ({
-  data: getOfflineData(state).toArray(),
   fleet: getFleetName(state),
   isLoading: getLoaderState(state),
   isOnline: getAppOnlineState(state),

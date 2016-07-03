@@ -8,25 +8,26 @@ import { sidebarActions } from 'containers/Dashboard/actions';
 
 import styles from './styles.css';
 
-class MainSidebar extends React.Component {
-  render() {
-    return (
-      <Drawer
-        docked={false}
-        open={this.props.open}
-        containerClassName={styles.drawer}
-        zDepth={1}
-        onRequestChange={this.props.toggleSidebar}
-      >
-        <MainMenu
-          baseUrl={this.props.baseUrl}
-          pages={this.props.pages}
-          closeSidebar={this.props.toggleSidebar}
-        />
-      </Drawer>
-    );
-  }
-}
+const MainSidebar = ({
+  baseUrl,
+  open,
+  pages,
+  toggleSidebar,
+}) => (
+  <Drawer
+    docked={false}
+    open={open}
+    containerClassName={styles.drawer}
+    zDepth={1}
+    onRequestChange={toggleSidebar}
+  >
+    <MainMenu
+      baseUrl={baseUrl}
+      pages={pages}
+      closeSidebar={toggleSidebar}
+    />
+  </Drawer>
+);
 
 MainSidebar.propTypes = {
   baseUrl: React.PropTypes.string.isRequired,

@@ -54,13 +54,7 @@ const AvailableFields = ({
 
 AvailableFields.propTypes = {
   checkedFields: React.PropTypes.object.isRequired,
-  fields: React.PropTypes.arrayOf(
-    React.PropTypes.shape({
-      label: React.PropTypes.string.isRequired,
-      name: React.PropTypes.string.isRequired,
-      order: React.PropTypes.number.isRequired,
-    })
-  ).isRequired,
+  fields: React.PropTypes.object.isRequired,
   onChange: React.PropTypes.func.isRequired,
 };
 

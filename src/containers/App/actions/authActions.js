@@ -5,13 +5,14 @@ import {
   constants,
   localStorage,
 } from 'utils';
+import { getFleetName } from '../reducer';
 
 export const GLOBAL_AUTH_SET = 'portal/App/GLOBAL_AUTH_SET';
 
-export const login = (fleet, data) => (dispatch) =>
-  _login(fleet, data, dispatch);
-export const logout = (fleet) => (dispatch) =>
-  _logout(fleet, dispatch);
+export const login = (data) => (dispatch, getState) =>
+  _login(data, dispatch, getState);
+export const logout = () => (dispatch, getState) =>
+  _logout(dispatch, getState);
 export const checkUserAuthentication = (urls) => (dispatch) =>
   _checkUserAuthentication(urls, dispatch);
 
@@ -27,16 +28,17 @@ function _checkUserAuthentication(urls, dispatch) {
       dispatch(setUserAuthentication(true));
       // got to {ROOT}/dashboard
       if (!/dashboard/.test(location.pathname)) {
-        dispatch(replace(urls.dashboard));
+        dispatch(replace(urls.success));
       }
     } else {
       dispatch(setUserAuthentication(false));
-      dispatch(replace(urls.login));
+      dispatch(replace(urls.failure));
     }
   });
 }
 
-function _login(fleet, data, dispatch) {
+function _login(data, dispatch, getState) {
+  const fleet = getFleetName(getState());
   const loginUrl = `${fleet}/login`;
 
   const options = {
@@ -54,7 +56,8 @@ function _login(fleet, data, dispatch) {
     });
 }
 
-function _logout(fleet, dispatch) {
+function _logout(dispatch, getState) {
+  const fleet = getFleetName(getState());
   const url = `${fleet}/login`;
 
   return api.delete(url).then(() => {

@@ -6,7 +6,6 @@ import Button from 'components/Button';
 import InputField from 'components/InputField';
 import InputFieldWrapper from 'components/InputFieldWrapper';
 import { authActions } from 'containers/App/actions';
-import { getFleetName } from 'containers/App/reducer';
 
 const FORM_NAME = 'login';
 
@@ -24,7 +23,7 @@ class LoginScreen extends React.Component {
       data[fields[i].name] = fields[i].value.trim();
     }
 
-    this.props.login(this.props.fleet, data);
+    this.props.login(data);
   }
 
   render() {
@@ -62,15 +61,12 @@ class LoginScreen extends React.Component {
 }
 
 LoginScreen.propTypes = {
-  fleet: React.PropTypes.string.isRequired,
   login: React.PropTypes.func.isRequired,
 };
 
 const PureLoginScreen = pure(LoginScreen);
 
-const mapState = (state) => ({
-  fleet: getFleetName(state),
-});
+const mapState = () => ({});
 const mapDispatch = {
   login: authActions.login,
 };

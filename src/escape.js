@@ -1,5 +1,5 @@
 /**
- * app.js
+ * escape.js
  *
  * This is the entry file for the application, only setup and boilerplate
  * code.
@@ -19,6 +19,11 @@ import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import configureStore from './redux/store';
+import whyDidYouUpdate from 'why-did-you-update';
+
+if (process.env.NODE_ENV !== 'production') {
+  whyDidYouUpdate(React, { include: /AvailableFields/ });
+}
 
 injectTapEventPlugin();
 
