@@ -12,7 +12,6 @@ import {
 } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
 import * as fromConfiguratorReducer from 'containers/ReportConfigurator/reducer';
-import { getFleetName } from 'containers/App/reducer';
 import { dataActions } from 'containers/ReportConfigurator/actions';
 
 const PreviewTable = ({
@@ -72,7 +71,6 @@ const ReportsScreen = ({
   hasReport,
   saveGenerated,
   selectedFields,
-  fleet,
 }) => {
   const headers = selectedFields.map(sf => (
     availableFields[sf].label
@@ -81,7 +79,7 @@ const ReportsScreen = ({
   return (
     <div className="configurator">
       <ReportConfigurator
-        hideSplitter={fleet === 'psl' || true}
+        hideSplitter
       />
       { hasReport && (
           <RaisedButton
@@ -107,7 +105,6 @@ ReportsScreen.propTypes = {
     })
   ).isRequired,
   data: React.PropTypes.array.isRequired,
-  fleet: React.PropTypes.string.isRequired,
   hasReport: React.PropTypes.bool.isRequired,
   saveGenerated: React.PropTypes.func.isRequired,
   selectedFields: React.PropTypes.arrayOf(
@@ -118,7 +115,6 @@ ReportsScreen.propTypes = {
 const PureReportsScreen = pure(ReportsScreen);
 
 const mapState = (state) => ({
-  fleet: getFleetName(state),
   data: fromConfiguratorReducer.getSavedReportData(state).toArray(),
   hasReport: fromConfiguratorReducer.appHasStoredReport(state),
   selectedFields: fromConfiguratorReducer.getSelectedFields(state).toArray(),

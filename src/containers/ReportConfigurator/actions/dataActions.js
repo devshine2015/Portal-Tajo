@@ -28,7 +28,7 @@ function _generateReport({ timePeriod, frequency }, dispatch, getState) {
   dispatch(setLoader(true));
   dispatch(_removeReportData());
 
-  const fleet = getFleetName(getState);
+  const fleet = getFleetName(getState());
   const baseVehiclesUrl = `${fleet}/vehicles`;
   const periods = _getPeriods(timePeriod, frequency);
   const periodQueryString = getReportParams(timePeriod);
