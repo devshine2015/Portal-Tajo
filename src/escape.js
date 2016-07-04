@@ -19,10 +19,10 @@ import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import configureStore from './redux/store';
-import whyDidYouUpdate from 'why-did-you-update';
+// import whyDidYouUpdate from 'why-did-you-update';
 
 if (process.env.NODE_ENV !== 'production') {
-  whyDidYouUpdate(React, { include: /AvailableFields/ });
+  // whyDidYouUpdate(React, {include: /^Promo/});
 }
 
 injectTapEventPlugin();

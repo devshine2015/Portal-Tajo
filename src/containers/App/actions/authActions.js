@@ -13,26 +13,24 @@ export const login = (data) => (dispatch, getState) =>
   _login(data, dispatch, getState);
 export const logout = () => (dispatch, getState) =>
   _logout(dispatch, getState);
-export const checkUserAuthentication = (urls) => (dispatch) =>
-  _checkUserAuthentication(urls, dispatch);
+export const checkUserAuthentication = (urls) => (dispatch, getState) =>
+  _checkUserAuthentication(urls, dispatch, getState);
 
 export const setUserAuthentication = (isAuthenticated) => ({
   type: GLOBAL_AUTH_SET,
   isAuthenticated,
 });
 
-function _checkUserAuthentication(urls, dispatch) {
+function _checkUserAuthentication(urls, dispatch, getState) {
+  const fleet = getFleetName(getState());
+
   return localStorage.read(constants.LOCAL_STORAGE_SESSION_KEY)
   .then((ssid) => {
     if (Boolean(ssid)) {
       dispatch(setUserAuthentication(true));
-      // got to {ROOT}/dashboard
-      if (!/dashboard/.test(location.pathname)) {
-        dispatch(replace(urls.success));
-      }
     } else {
       dispatch(setUserAuthentication(false));
-      dispatch(replace(urls.failure));
+      dispatch(replace(`${createBaseUrl(fleet)}/${urls.failure}`));
     }
   });
 }
@@ -50,7 +48,7 @@ function _login(data, dispatch, getState) {
     .then(token => {
       localStorage.save(constants.LOCAL_STORAGE_SESSION_KEY, token);
       setUserAuthentication(true);
-      dispatch(push(`${createBaseUrl(fleet)}/dashboard`));
+      dispatch(push(`${createBaseUrl(fleet)}/`));
     }, (error) => {
       console.error(error);
     });

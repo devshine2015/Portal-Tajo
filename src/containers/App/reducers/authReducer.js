@@ -2,7 +2,7 @@ import { fromJS } from 'immutable';
 import { authActions } from '../actions';
 
 const initialState = fromJS({
-  isAuthenticated: false,
+  isAuthenticated: undefined,
 });
 
 function authReducer(state = initialState, action) {
