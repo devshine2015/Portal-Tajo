@@ -60,12 +60,13 @@ class Installer extends React.Component {
 
   onSubmit = (e) => {
     e.preventDefault();
+    const fields = this.state.fields.toObject();
 
-    if (!validateForm(this.state.fields.toObject())) {
+    if (!validateForm(fields)) {
       if (this.props.isOnline) {
-        this.submitForm(this.state.fields);
+        this.submitForm(fields);
       } else {
-        this.saveLocally(this.state.fields);
+        this.saveLocally(fields);
       }
     }
   }
@@ -75,7 +76,7 @@ class Installer extends React.Component {
   }
 
   submitForm = (fields) => {
-    this.props.submitForm(fields.toObject()).then(() => {
+    this.props.submitForm(fields).then(() => {
       this.props.showSnackbar('Succesfully sended ✓', 2000);
       this.resetForm();
     }, () => {
@@ -100,9 +101,9 @@ class Installer extends React.Component {
         dialogIsOpen: true,
       });
     } else if (nextProps.hasOfflineData && (this.props.isOnline && !nextProps.isOnline)) {
-      this.setState({
-        dialogIsOpen: false,
-      });
+      this.closeDialog();
+    } else if (!nextProps.hasOfflineData) {
+      this.closeDialog();
     }
   }
 

@@ -28,7 +28,7 @@ class InstallerOfflineDataItem extends React.Component {
           </div>
           <ul className={styles.info}>
             <li className={styles.info__item}>
-              Vehicle name: <span className={styles.info__detail}>{name}</span>
+              Vehicle name: <span className={styles.info__detail}>{data.name}</span>
             </li>
             <li className={styles.info__item}>
               License: <span className={styles.info__detail}>{data.license}</span>
@@ -48,7 +48,6 @@ class InstallerOfflineDataItem extends React.Component {
 
 InstallerOfflineDataItem.propTypes = {
   data: React.PropTypes.shape({
-    id: React.PropTypes.string.isRequired,
     imei: React.PropTypes.string.isRequired,
     license: React.PropTypes.string.isRequired,
     odometer: React.PropTypes.string.isRequired,

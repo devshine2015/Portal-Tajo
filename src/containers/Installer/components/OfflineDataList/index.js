@@ -19,10 +19,10 @@ const InstallerOfflineData = ({
   const list = data.map((d, i) => (
     <li
       className={styles.offline__item}
-      key={d.get('id')}
+      key={d.id}
     >
       <InstallerOfflineDataItem
-        data={d.toObject()}
+        data={d}
         index={i}
         onChange={toggleSaving}
       />

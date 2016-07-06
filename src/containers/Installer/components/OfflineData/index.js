@@ -59,7 +59,7 @@ class OfflineData extends React.Component {
   }
 
   render() {
-    if (!this.props.data.length) return null;
+    if (this.props.data.size === 0) return null;
 
     return (
       <OfflineDataList

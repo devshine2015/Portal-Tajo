@@ -1,15 +1,16 @@
+import { List } from 'immutable';
 import {
   constants,
   storage,
 } from 'utils';
 import { sendData } from './formActions';
 
-export const INSTALLER_OFFLINE_DATA_CASHED = 'portal/OfflineData/INSTALLER_OFFLINE_DATA_CASHED';
+export const INSTALLER_OFFLINE_DATA_CACHED_SAVE = 'portal/installer/INSTALLER_OFFLINE_DATA_CACHED_SAVE';
 
 export const saveLocally = (data) => (dispatch) =>
   _saveLocally(data, dispatch);
-const _cacheSavedOfflineData = (data) => ({
-  type: INSTALLER_OFFLINE_DATA_CASHED,
+const _offlineDataCacheSave = (data) => ({
+  type: INSTALLER_OFFLINE_DATA_CACHED_SAVE,
   data,
 });
 export const checkStorage = () => (dispatch) =>
@@ -25,14 +26,18 @@ function _saveLocally(data, dispatch) {
   dataToSave.id = `${data.name}_${data.license}_${data.imei}`;
 
   return storage.save(constants.LOCAL_STORAGE_INSTALLER_KEY, dataToSave)
-  .then(savedData => dispatch(_cacheSavedOfflineData(savedData)));
+  .then(savedData => {
+    if (typeof savedData === 'object') {
+      dispatch(_offlineDataCacheSave(savedData));
+    }
+  });
 }
 
 function _checkStorage(dispatch) {
   return storage.read(constants.LOCAL_STORAGE_INSTALLER_KEY)
   .then(data => {
-    if (data) {
-      return dispatch(_cacheSavedOfflineData(data));
+    if (typeof data === 'object') {
+      return dispatch(_offlineDataCacheSave(data));
     }
 
     return Promise.resolve(false);
@@ -42,7 +47,9 @@ function _checkStorage(dispatch) {
 function _cleanOfflineData(indexesToRemove = [], dispatch) {
   return storage.cleanExactIndexies(constants.LOCAL_STORAGE_INSTALLER_KEY, indexesToRemove)
   .then(updatedData => {
-    dispatch(_cacheSavedOfflineData(updatedData));
+    if (typeof updatedData === 'object') {
+      dispatch(_offlineDataCacheSave(updatedData));
+    }
   });
 }
 
@@ -69,6 +76,10 @@ function _sendFromStorage(indexesToSend = [], dispatch, getState) {
     return storage.clean(constants.LOCAL_STORAGE_INSTALLER_KEY);
   })
   .then(updatedData => {
-    dispatch(_cacheSavedOfflineData(updatedData));
+    if (typeof updatedData === 'object') {
+      dispatch(_offlineDataCacheSave(updatedData));
+    } else if (updatedData === true) {
+      dispatch(_offlineDataCacheSave(new List()));
+    }
   });
 }

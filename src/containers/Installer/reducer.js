@@ -19,7 +19,7 @@ function loaderReducer(state = loaderInitialState, action) {
 
 function offlineDataReducer(state = offlineDataInitialState, action) {
   switch (action.type) {
-    case offlineDataActions.INSTALLER_OFFLINE_DATA_CASHED:
+    case offlineDataActions.INSTALLER_OFFLINE_DATA_CACHED_SAVE:
       return new List(action.data);
     default:
       return state;
