@@ -53,7 +53,7 @@ class InstallerScreen extends React.Component {
     });
 
     nextState.fields = nextState.fields.set(name, value.trim());
-    nextState.cannotSubmit = validateForm(nextState.fields);
+    nextState.cannotSubmit = validateForm(nextState.fields.toObject());
 
     this.setState(nextState);
   }
@@ -61,7 +61,7 @@ class InstallerScreen extends React.Component {
   onSubmit = (e) => {
     e.preventDefault();
 
-    if (!validateForm(this.state.fields)) {
+    if (!validateForm(this.state.fields.toObject())) {
       if (this.props.isOnline) {
         this.submitForm(this.props.fleet, this.state.fields);
       } else {
@@ -184,6 +184,7 @@ class InstallerScreen extends React.Component {
             onClick={this.onSubmit}
             label={mainButtonText}
             type="submit"
+            primary
           />
         </Form>
         <OfflineData
