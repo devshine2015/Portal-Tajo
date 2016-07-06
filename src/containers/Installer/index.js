@@ -24,7 +24,7 @@ const initialFields = new Map({
   odometer: null,
 });
 
-class InstallerScreen extends React.Component {
+class Installer extends React.Component {
 
   constructor(props) {
     super(props);
@@ -202,7 +202,7 @@ class InstallerScreen extends React.Component {
   }
 }
 
-InstallerScreen.propTypes = {
+Installer.propTypes = {
   checkStorage: React.PropTypes.func.isRequired,
   cleanOfflineData: React.PropTypes.func.isRequired,
   fleet: React.PropTypes.string.isRequired,
@@ -230,6 +230,6 @@ const mapDispatch = {
   submitForm: formActions.submitForm,
 };
 
-const PureInstallerScreen = pure(InstallerScreen);
+const PureInstaller = pure(Installer);
 
-export default connect(mapState, mapDispatch)(PureInstallerScreen);
+export default connect(mapState, mapDispatch)(PureInstaller);
