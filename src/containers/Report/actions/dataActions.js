@@ -8,7 +8,7 @@ import {
   getSelectedFields,
   getAvailableFields,
 } from '../reducer';
-import { getFleetName } from 'containers/App/reducer';
+import { getFleetName, getAuthenticationSession } from 'containers/App/reducer';
 import {
   prepareDataForReport,
   getReportParams,
@@ -34,6 +34,10 @@ function _generateReport({ timePeriod, frequency }, dispatch, getState) {
   const periodQueryString = getReportParams(timePeriod);
   const selectedReports = getSelectedReportsTypes(getState);
   const fieldsToCall = {};
+  const sessionId = getAuthenticationSession(getState());
+  const optionalHeaders = {
+    ['DRVR-SESSION']: sessionId,
+  };
 
   Object.values(selectedReports)
     .filter(sr => sr.hasOwnProperty('endpoint'))
@@ -43,13 +47,13 @@ function _generateReport({ timePeriod, frequency }, dispatch, getState) {
       }
     });
 
-  return api(baseVehiclesUrl)
+  return api(baseVehiclesUrl, { optionalHeaders })
     .then(toJson)
     .then(vehicles => (
       Promise.all(
         Object.values(fieldsToCall)
         .map(({ domain, query = {}, endpoint = '' }) => (
-          _reportRequest(baseVehiclesUrl, vehicles, {
+          _reportRequest(baseVehiclesUrl, vehicles, optionalHeaders, {
             domain,
             endpoint,
             queryString: `${periodQueryString}&${qs.stringify(query)}`,
@@ -105,16 +109,17 @@ const _removeReportData = () => ({
   type: REPORT_DATA_REMOVE,
 });
 
-function _reportRequest(baseVehiclesUrl, vehicles = [], {
+function _reportRequest(baseVehiclesUrl, vehicles = [], optionalHeaders, {
   endpoint,
   domain,
   queryString,
 } = {}) {
   return Promise.all(
-    vehicles.map(v => (
-      api(`${baseVehiclesUrl}/${v.id}/${endpoint}?${queryString}`)
-      .then(toJson)
-    )),
+    vehicles.map(v => {
+      const url = `${baseVehiclesUrl}/${v.id}/${endpoint}?${queryString}`;
+      return api(url, { optionalHeaders })
+        .then(toJson);
+    }),
   ).then(res => ({
     domain,
     report: res,

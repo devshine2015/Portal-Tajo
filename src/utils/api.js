@@ -1,9 +1,5 @@
 import 'whatwg-fetch';
-import {
-  HOST_BASE,
-  LOCAL_STORAGE_SESSION_KEY,
-} from './constants';
-import localStorage from './localStorage';
+import { HOST_BASE } from './constants';
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -17,11 +13,6 @@ function checkStatus(response) {
 function sendRequest({ endpoint, options }) {
   return fetch(endpoint, options)
     .then(checkStatus);
-}
-
-function getSessionId() {
-  return localStorage.read(LOCAL_STORAGE_SESSION_KEY)
-    .then(sessionId => sessionId[0]);
 }
 
 function prepareRequest(method, url, headers, payload) {
@@ -54,11 +45,7 @@ function invoke(method, url, { payload, optionalHeaders = {} } = {}) {
     ...optionalHeaders,
   });
 
-  return getSessionId().then(ssId => {
-    headers['DRVR-SESSION'] = ssId;
-
-    return prepareRequest(method, url, headers, payload);
-  }, () => prepareRequest(method, url, headers, payload));
+  return prepareRequest(method, url, headers, payload);
 }
 
 function api(url, payload) {

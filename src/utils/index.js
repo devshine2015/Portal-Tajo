@@ -6,4 +6,4 @@ export { default as cookies } from './cookies';
 export { default as createBaseUrl } from './createBaseUrl';
 export * as forms from './forms';
 export * as hooks from './hooks';
-export { default as localStorage } from './localStorage';
+export { default as storage } from './localStorage';

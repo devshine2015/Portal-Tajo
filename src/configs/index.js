@@ -7,3 +7,6 @@ export const FIREBASE_CONFIG = {
   databaseURL: 'https://drvr.firebaseio.com',
   storageBucket: 'project-7060603335742899024.appspot.com',
 };
+export const VERSION = {
+  storage: 2,
+};

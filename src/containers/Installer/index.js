@@ -9,7 +9,7 @@ import Dialog from './components/Dialog';
 import OfflineData from './components/OfflineData';
 import { formActions, offlineDataActions } from './actions';
 import { validateForm } from 'utils/forms';
-import { getAppOnlineState, getFleetName } from 'containers/App/reducer';
+import { getAppOnlineState } from 'containers/App/reducer';
 import {
   getLoaderState,
   installerHasOfflineData,
@@ -63,7 +63,7 @@ class Installer extends React.Component {
 
     if (!validateForm(this.state.fields.toObject())) {
       if (this.props.isOnline) {
-        this.submitForm(this.props.fleet, this.state.fields);
+        this.submitForm(this.state.fields);
       } else {
         this.saveLocally(this.state.fields);
       }
@@ -74,8 +74,8 @@ class Installer extends React.Component {
     return props.hasOfflineData && props.isOnline;
   }
 
-  submitForm = (fleet, fields) => {
-    this.props.submitForm(fleet, fields).then(() => {
+  submitForm = (fields) => {
+    this.props.submitForm(fields.toObject()).then(() => {
       this.props.showSnackbar('Succesfully sended ✓', 2000);
       this.resetForm();
     }, () => {
@@ -205,7 +205,6 @@ class Installer extends React.Component {
 Installer.propTypes = {
   checkStorage: React.PropTypes.func.isRequired,
   cleanOfflineData: React.PropTypes.func.isRequired,
-  fleet: React.PropTypes.string.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
   isOnline: React.PropTypes.bool.isRequired,
   hasOfflineData: React.PropTypes.bool.isRequired,
@@ -216,7 +215,6 @@ Installer.propTypes = {
 };
 
 const mapState = (state) => ({
-  fleet: getFleetName(state),
   isLoading: getLoaderState(state),
   isOnline: getAppOnlineState(state),
   hasOfflineData: installerHasOfflineData(state),

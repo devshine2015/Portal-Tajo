@@ -3,11 +3,12 @@ import {
   api,
   createBaseUrl,
   constants,
-  localStorage,
+  storage,
 } from 'utils';
-import { getFleetName } from '../reducer';
+import { getFleetName, getAuthenticationSession } from '../reducer';
 
 export const GLOBAL_AUTH_SET = 'portal/App/GLOBAL_AUTH_SET';
+export const GLOBAL_AUTH_RESET = 'portal/App/GLOBAL_AUTH_RESET';
 
 export const login = (data) => (dispatch, getState) =>
   _login(data, dispatch, getState);
@@ -16,20 +17,30 @@ export const logout = () => (dispatch, getState) =>
 export const checkUserAuthentication = (urls) => (dispatch, getState) =>
   _checkUserAuthentication(urls, dispatch, getState);
 
-export const setUserAuthentication = (isAuthenticated) => ({
+export const setUserAuthentication = (sessionId) => ({
   type: GLOBAL_AUTH_SET,
-  isAuthenticated,
+  sessionId,
+});
+export const resetUserAuthentication = () => ({
+  type: GLOBAL_AUTH_RESET,
 });
 
 function _checkUserAuthentication(urls, dispatch, getState) {
   const fleet = getFleetName(getState());
 
-  return localStorage.read(constants.LOCAL_STORAGE_SESSION_KEY)
-  .then((ssid) => {
-    if (Boolean(ssid)) {
-      dispatch(setUserAuthentication(true));
+  return storage.read(constants.LOCAL_STORAGE_SESSION_KEY)
+  .then((sessions = []) => {
+    if (sessions) {
+      const fleetSession = sessions.filter(session => session.fleet === fleet);
+
+      if (fleetSession.length !== 0) {
+        dispatch(setUserAuthentication(fleetSession[0]['session-id']));
+      } else {
+        dispatch(resetUserAuthentication());
+        dispatch(replace(`${createBaseUrl(fleet)}/${urls.failure}`));
+      }
     } else {
-      dispatch(setUserAuthentication(false));
+      dispatch(resetUserAuthentication());
       dispatch(replace(`${createBaseUrl(fleet)}/${urls.failure}`));
     }
   });
@@ -46,8 +57,14 @@ function _login(data, dispatch, getState) {
   return api.post(loginUrl, options)
     .then(response => response.text())
     .then(token => {
-      localStorage.save(constants.LOCAL_STORAGE_SESSION_KEY, token);
-      setUserAuthentication(true);
+      const fleetToken = {
+        fleet,
+        'session-id': token,
+        id: token,
+      };
+
+      storage.save(constants.LOCAL_STORAGE_SESSION_KEY, fleetToken);
+      dispatch(setUserAuthentication(token));
       dispatch(push(`${createBaseUrl(fleet)}/`));
     }, (error) => {
       console.error(error);
@@ -57,12 +74,19 @@ function _login(data, dispatch, getState) {
 function _logout(dispatch, getState) {
   const fleet = getFleetName(getState());
   const url = `${fleet}/login`;
+  const sessionId = getAuthenticationSession(getState());
+  const optionalHeaders = {
+    ['DRVR-SESSION']: sessionId,
+  };
 
-  return api.delete(url).then(() => {
+  return api.delete(url, { optionalHeaders }).then(() => {
     const loginUrl = `${createBaseUrl(fleet)}/login`;
+    const toDelete = [{
+      id: sessionId,
+    }];
 
-    localStorage.clean(constants.LOCAL_STORAGE_SESSION_KEY);
-    dispatch(setUserAuthentication(false));
+    storage.cleanExactValues(constants.LOCAL_STORAGE_SESSION_KEY, toDelete);
+    dispatch(resetUserAuthentication());
     dispatch(replace(loginUrl));
   }, (error) => {
     console.error(error);
