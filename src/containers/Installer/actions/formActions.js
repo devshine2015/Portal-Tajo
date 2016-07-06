@@ -11,7 +11,8 @@ function _submitForm(data, dispatch, getState) {
   return sendData(data, getState).then(() => {
     dispatch(setLoaderState(false));
     return Promise.resolve();
-  }, () => {
+  }, (error) => {
+    console.error(error);
     dispatch(setLoaderState(false));
     return Promise.reject();
   });
@@ -48,8 +49,8 @@ export const sendData = (data, getState) => {
   };
 
   const request = api.post(devicesUrl, createDevicePayload)
-    .then(api.post(vehiceslUrl, createVehiclePayload))
-    // .then(response => response.json())
+    .then(() => api.post(vehiceslUrl, createVehiclePayload))
+    .then(res => res.json())
     .then(vehicle => {
       const attachDeviceUrl = `${vehiceslUrl}/${vehicle.id}/device`;
 

@@ -41,6 +41,7 @@ function prepareRequest(method, url, headers, payload) {
 function invoke(method, url, { payload, optionalHeaders = {} } = {}) {
   const headers = Object.assign({}, {
     'content-type': 'application/json',
+    accept: 'application/json',
   }, {
     ...optionalHeaders,
   });
