@@ -1,3 +1,12 @@
+import React from 'react';
+import pure from 'recompose/pure';
 import PortalReports from 'containers/Report';
+import InnerPortal from 'containers/InnerPortal';
 
-export default PortalReports;
+const ReportsScreen = () => (
+  <InnerPortal>
+    <PortalReports />
+  </InnerPortal>
+);
+
+export default pure(ReportsScreen);

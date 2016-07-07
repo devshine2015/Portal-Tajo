@@ -45,14 +45,24 @@ export function read(key) {
 }
 
 // save just unique data
-export function save(key, value) {
+export function save(key, value, version = undefined) {
   try {
     return read(key).then((data) => {
-      const savedData = data || [];
+      const savedData = data || {};
+
+      if (!savedData.hasOwnProperty('values')) {
+        savedData.values = [];
+      }
+
+      // update version if specified
+      if (version !== undefined) {
+        savedData.ver = version;
+      }
 
       // don't save same value one more time
-      if (_checkIfValueExist(value, savedData) === false) {
-        savedData.push(value);
+      if (_checkIfValueExist(value, savedData.values) === false) {
+        savedData.values.push(value);
+
         window.localStorage.setItem(key, JSON.stringify(savedData));
       }
 
@@ -73,9 +83,9 @@ export function clean(key) {
 }
 
 export function cleanExactValues(key, values = []) {
-  return read(key).then((savedData = []) => {
+  return read(key).then((savedData = {}) => {
     values.forEach(value => {
-      const indexToDelete = _checkIfValueExist(value, savedData);
+      const indexToDelete = _checkIfValueExist(value, savedData.values);
 
       if (indexToDelete !== false) {
         savedData.splice(indexToDelete, 1);

@@ -10,33 +10,18 @@ export const FIREBASE_CONFIG = {
 export const VERSIONS = {
   authentication: {
     ver: 2,
-    verify: (sessions) => {
-      let verified = true;
-
+    verify: function (savedData) {
       // if no any session data
-      if (!sessions) {
-        return verified;
+      if (!savedData) {
+        return true;
       }
 
-      if (typeof sessions === 'string') {
-        return false;
+      // if same version
+      if ((savedData && savedData.hasOwnProperty('ver')) && (savedData.ver === this.ver)) {
+        return true;
       }
 
-      // authentication ver 2 session object
-      // must have fleet, session-id and id props
-      if (sessions.hasOwnProperty('length')) {
-        for (let i = 0; i < sessions.length; i++) {
-          const s = sessions[i];
-          if (!s.hasOwnProperty('fleet') ||
-              !s.hasOwnProperty('session-id') ||
-              !s.hasOwnProperty('id')) {
-            verified = false;
-            break;
-          }
-        }
-      }
-
-      return verified;
+      return false;
     },
   },
 };

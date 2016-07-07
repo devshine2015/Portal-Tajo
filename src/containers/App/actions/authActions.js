@@ -84,7 +84,7 @@ function _login(data, dispatch, getState) {
         id: token,
       };
 
-      storage.save(constants.LOCAL_STORAGE_SESSION_KEY, fleetToken);
+      storage.save(constants.LOCAL_STORAGE_SESSION_KEY, fleetToken, VERSIONS.authentication.ver);
       dispatch(setUserAuthentication(token, fleet));
       dispatch(push(`${createBaseUrl(fleet)}/`));
     }, (error) => {
@@ -113,9 +113,10 @@ function _logout(dispatch, getState) {
     console.error(error);
   });
 }
-function _checkVersion(sessions) {
-  if (VERSIONS.authentication.verify(sessions)) {
-    return Promise.resolve(sessions);
+function _checkVersion(savedData) {
+  if (VERSIONS.authentication.verify(savedData)) {
+    const toReturn = savedData && savedData.hasOwnProperty('values') ? savedData.values : savedData;
+    return Promise.resolve(toReturn);
   }
   return Promise.reject({ message: 'wrong version' });
 }
