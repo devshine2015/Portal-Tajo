@@ -5,7 +5,12 @@ import {
   constants,
   storage,
 } from 'utils';
-import { getFleetName, getAuthenticationSession } from '../reducer';
+import { VERSIONS } from 'configs';
+import {
+  getFleetName,
+  getAuthenticationSession,
+  getAuthenticatedFleet,
+} from '../reducer';
 
 export const GLOBAL_AUTH_SET = 'portal/App/GLOBAL_AUTH_SET';
 export const GLOBAL_AUTH_RESET = 'portal/App/GLOBAL_AUTH_RESET';
@@ -17,9 +22,10 @@ export const logout = () => (dispatch, getState) =>
 export const checkUserAuthentication = (urls) => (dispatch, getState) =>
   _checkUserAuthentication(urls, dispatch, getState);
 
-export const setUserAuthentication = (sessionId) => ({
+export const setUserAuthentication = (sessionId, fleet) => ({
   type: GLOBAL_AUTH_SET,
   sessionId,
+  fleet,
 });
 export const resetUserAuthentication = () => ({
   type: GLOBAL_AUTH_RESET,
@@ -28,13 +34,20 @@ export const resetUserAuthentication = () => ({
 function _checkUserAuthentication(urls, dispatch, getState) {
   const fleet = getFleetName(getState());
 
+  // for case when no auth data was saved in localStorage
+  if (getAuthenticatedFleet(getState()) === fleet) {
+    return Promise.resolve();
+  }
+
   return storage.read(constants.LOCAL_STORAGE_SESSION_KEY)
+  .then(_checkVersion)
   .then((sessions = []) => {
     if (sessions) {
       const fleetSession = sessions.filter(session => session.fleet === fleet);
 
       if (fleetSession.length !== 0) {
-        dispatch(setUserAuthentication(fleetSession[0]['session-id']));
+        dispatch(replace(`${createBaseUrl(fleet)}/${urls.success}`));
+        dispatch(setUserAuthentication(fleetSession[0]['session-id'], fleet));
       } else {
         dispatch(resetUserAuthentication());
         dispatch(replace(`${createBaseUrl(fleet)}/${urls.failure}`));
@@ -42,6 +55,14 @@ function _checkUserAuthentication(urls, dispatch, getState) {
     } else {
       dispatch(resetUserAuthentication());
       dispatch(replace(`${createBaseUrl(fleet)}/${urls.failure}`));
+    }
+  }, (error) => {
+    if (error.message && error.message === 'wrong version') {
+      const loginUrl = `${createBaseUrl(fleet)}/login`;
+
+      storage.clean(constants.LOCAL_STORAGE_SESSION_KEY);
+      dispatch(resetUserAuthentication());
+      dispatch(replace(loginUrl));
     }
   });
 }
@@ -64,7 +85,7 @@ function _login(data, dispatch, getState) {
       };
 
       storage.save(constants.LOCAL_STORAGE_SESSION_KEY, fleetToken);
-      dispatch(setUserAuthentication(token));
+      dispatch(setUserAuthentication(token, fleet));
       dispatch(push(`${createBaseUrl(fleet)}/`));
     }, (error) => {
       console.error(error);
@@ -91,4 +112,10 @@ function _logout(dispatch, getState) {
   }, (error) => {
     console.error(error);
   });
+}
+function _checkVersion(sessions) {
+  if (VERSIONS.authentication.verify(sessions)) {
+    return Promise.resolve(sessions);
+  }
+  return Promise.reject({ message: 'wrong version' });
 }

@@ -7,6 +7,36 @@ export const FIREBASE_CONFIG = {
   databaseURL: 'https://drvr.firebaseio.com',
   storageBucket: 'project-7060603335742899024.appspot.com',
 };
-export const VERSION = {
-  storage: 2,
+export const VERSIONS = {
+  authentication: {
+    ver: 2,
+    verify: (sessions) => {
+      let verified = true;
+
+      // if no any session data
+      if (!sessions) {
+        return verified;
+      }
+
+      if (typeof sessions === 'string') {
+        return false;
+      }
+
+      // authentication ver 2 session object
+      // must have fleet, session-id and id props
+      if (sessions.hasOwnProperty('length')) {
+        for (let i = 0; i < sessions.length; i++) {
+          const s = sessions[i];
+          if (!s.hasOwnProperty('fleet') ||
+              !s.hasOwnProperty('session-id') ||
+              !s.hasOwnProperty('id')) {
+            verified = false;
+            break;
+          }
+        }
+      }
+
+      return verified;
+    },
+  },
 };

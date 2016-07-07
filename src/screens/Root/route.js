@@ -1,5 +1,5 @@
 import { fleetActions } from 'containers/App/actions';
-import { setDashboardPages } from 'containers/InnerPortal/actions';
+import { setInnerPortalPages } from 'containers/InnerPortal/actions';
 import createBaseUrl from 'utils/createBaseUrl';
 
 const NAME = 'root';
@@ -35,7 +35,7 @@ const createRoute = ({
     const { params, routes } = location;
     const patchedMenu = patchMenuPaths(mainMenu, routes[0], params.fleet);
 
-    dispatch(setDashboardPages(patchedMenu));
+    dispatch(setInnerPortalPages(patchedMenu));
     dispatch(fleetActions.setFleetName(params.fleet));
   },
 });

@@ -1,13 +1,31 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
+import createBaseUrl from 'utils/createBaseUrl';
 import Form from 'components/Form';
 import Button from 'components/Button';
 import InputField from 'components/InputField';
 import InputFieldWrapper from 'components/InputFieldWrapper';
 import { authActions } from 'containers/App/actions';
+import { PORTALS } from './constants';
 
 const FORM_NAME = 'login';
+
+const URLSList = () => (
+  <ul>
+    {
+      PORTALS.map(p => {
+        const link = `${createBaseUrl(p.fleet)}/`;
+        return (
+          <li key={p.fleet}>
+            <Link to={link}>{p.niceName}</Link>
+          </li>
+        );
+      })
+    }
+  </ul>
+);
 
 class LoginForm extends React.Component {
 
@@ -55,6 +73,7 @@ class LoginForm extends React.Component {
             />
           </InputFieldWrapper>
         </Form>
+        <URLSList />
       </div>
     );
   }

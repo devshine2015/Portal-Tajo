@@ -7,9 +7,7 @@ import {
   deepOrange500,
   grey300,
 } from 'material-ui/styles/colors';
-import InnerPortal from 'containers/InnerPortal';
 import { onlineStateActions, authActions } from './actions';
-import { getIsUserAuthenticated } from './reducer';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -41,23 +39,11 @@ class App extends React.Component {
   }
 
   render() {
-    if (this.props.isAuthenticated === true) {
-      return (
-        <MuiThemeProvider muiTheme={muiTheme}>
-          <InnerPortal>
-            {this.props.children}
-          </InnerPortal>
-        </MuiThemeProvider>
-      );
-    } else if (this.props.isAuthenticated === false) {
-      return (
-        <MuiThemeProvider muiTheme={muiTheme}>
-          {this.props.children}
-        </MuiThemeProvider>
-      );
-    }
-
-    return null;
+    return (
+      <MuiThemeProvider muiTheme={muiTheme}>
+        {this.props.children}
+      </MuiThemeProvider>
+    );
   }
 }
 
@@ -69,12 +55,9 @@ App.propTypes = {
   changeOnlineState: React.PropTypes.func.isRequired,
   checkUserAuthentication: React.PropTypes.func.isRequired,
   children: React.PropTypes.node,
-  isAuthenticated: React.PropTypes.bool,
 };
 
-const mapState = (state) => ({
-  isAuthenticated: getIsUserAuthenticated(state),
-});
+const mapState = () => ({});
 const mapDispatch = {
   changeOnlineState: onlineStateActions.changeOnlineState,
   checkUserAuthentication: authActions.checkUserAuthentication,
