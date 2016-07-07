@@ -88,11 +88,11 @@ export function cleanExactValues(key, values = []) {
       const indexToDelete = _checkIfValueExist(value, savedData.values);
 
       if (indexToDelete !== false) {
-        savedData.splice(indexToDelete, 1);
+        savedData.values.splice(indexToDelete, 1);
       }
     });
 
-    return _cleanExact(key, savedData);
+    return _cleanExact(key, savedData.values);
   });
 }
 
