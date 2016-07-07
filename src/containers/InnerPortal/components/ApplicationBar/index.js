@@ -16,7 +16,7 @@ class ApplicationBar extends React.Component {
   render() {
     return (
       <AppBar
-        title="Dashboard"
+        title={this.props.title}
         iconElementRight={
           <FlatButton
             label="Logout"
@@ -33,6 +33,7 @@ class ApplicationBar extends React.Component {
 
 ApplicationBar.propTypes = {
   logout: React.PropTypes.func.isRequired,
+  title: React.PropTypes.string.isRequired,
   toggleSidebar: React.PropTypes.func.isRequired,
 };
 

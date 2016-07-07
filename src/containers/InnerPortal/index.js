@@ -1,13 +1,13 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import SnackbarNotification from 'containers/Snackbar';
 import styles from './styles.css';
 import ApplicationBar from './components/ApplicationBar';
 import MainSidebar from './components/MainSidebar';
 import { getIsUserAuthenticated, getFleetName } from 'containers/App/reducer';
 import { authActions } from 'containers/App/actions';
+import PortalsList from 'components/PortalsLinks';
 
 const URLS = {
   success: 'dashboard',
@@ -17,10 +17,13 @@ const URLS = {
 class InnerPortal extends React.Component {
 
   componentDidMount() {
-    // console.log(this.props.fleet, nextProps.fleet);
-    // if (!this.props.isAuthenticated) {
     this.props.checkUserAuthentication(URLS);
-    // }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.fleet !== this.props.fleet) {
+      this.props.checkUserAuthentication(URLS);
+    }
   }
 
   render() {
@@ -29,10 +32,11 @@ class InnerPortal extends React.Component {
         <div className={styles.appContent}>
 
           <div className={styles.topBarContainer}>
-            <ApplicationBar />
+            <ApplicationBar title={this.props.fleet} />
+            <PortalsList currentFleet={this.props.fleet} />
           </div>
           <MainSidebar />
-          <Link to={'/portal/test/tajo/login'}>Login</Link>
+
           <div className={styles.content}>{this.props.children}</div>
           <SnackbarNotification />
         </div>
