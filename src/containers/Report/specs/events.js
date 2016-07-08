@@ -1,3 +1,5 @@
+import { isDev } from 'configs';
+
 const h = 1000 * 60 * 60;
 const m = 1000 * 60;
 const s = 1000;
@@ -53,26 +55,28 @@ function filterSimilar(allSelectedReportTypes) {
   return allSelectedReportTypes.filter(type => similarTypes.indexOf(type) !== -1);
 }
 
+const commonProps = {
+  domain: 'ignition',
+  endpoint: 'events',
+  filterSimilar,
+  calc: _calculate,
+  available: isDev,
+};
+
 const fields = [{
+  ...commonProps,
   label: 'Ignition on Time',
   name: 'timeIgnitionOn',
   reportType: 'timeIgnitionOn',
   checkedByDefault: false,
-  domain: 'ignition',
-  endpoint: 'events',
   order: 0,
-  filterSimilar,
-  calc: _calculate,
 }, {
+  ...commonProps,
   label: 'Idling Time',
   name: 'idlingTime',
   reportType: 'idlingTime',
   checkedByDefault: false,
-  domain: 'ignition',
-  endpoint: 'events',
   order: 0,
-  filterSimilar,
-  calc: _calculate,
 }];
 
 export default fields;

@@ -46,7 +46,6 @@ function _checkUserAuthentication(urls, dispatch, getState) {
       const fleetSession = sessions.filter(session => session.fleet === fleet);
 
       if (fleetSession.length !== 0) {
-        dispatch(replace(`${createBaseUrl(fleet)}/${urls.success}`));
         dispatch(setUserAuthentication(fleetSession[0]['session-id'], fleet));
       } else {
         dispatch(resetUserAuthentication());
