@@ -13,7 +13,15 @@ export default globalReducer;
 
 export const getFleetName = (state) =>
   fromFleetReducer.getFleetName(state.getIn(['global', 'fleet']));
+
 export const getIsUserAuthenticated = (state) =>
   fromAuthReducer.getIsAuthenticated(state.getIn(['global', 'auth']));
+export const getAuthenticationData = (state) =>
+  fromAuthReducer.getAuthenticationData(state.getIn(['global', 'auth']));
+export const getAuthenticationSession = (state) =>
+  fromAuthReducer.getAuthenticationSession(state.getIn(['global', 'auth']));
+export const getAuthenticatedFleet = (state) =>
+  fromAuthReducer.getAuthenticatedFleet(state.getIn(['global', 'auth']));
+
 export const getAppOnlineState = (state) =>
   fromOnlineStateReducer.getOnlineStatus(state.getIn(['global', 'onlineState']));

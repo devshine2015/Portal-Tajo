@@ -3,42 +3,71 @@ import {
   api,
   createBaseUrl,
   constants,
-  localStorage,
+  storage,
 } from 'utils';
-import * as fleetModelAction from 'services/FleetModel/actions';
+import { VERSIONS } from 'configs';
+import {
+  getFleetName,
+  getAuthenticationSession,
+  getAuthenticatedFleet,
+} from '../reducer';
 
 export const GLOBAL_AUTH_SET = 'portal/App/GLOBAL_AUTH_SET';
+export const GLOBAL_AUTH_RESET = 'portal/App/GLOBAL_AUTH_RESET';
 
-export const login = (fleet, data) => (dispatch) =>
-  _login(fleet, data, dispatch);
-export const logout = (fleet) => (dispatch) =>
-  _logout(fleet, dispatch);
-export const checkUserAuthentication = (urls) => (dispatch) =>
-  _checkUserAuthentication(urls, dispatch);
+export const login = (data) => (dispatch, getState) =>
+  _login(data, dispatch, getState);
+export const logout = () => (dispatch, getState) =>
+  _logout(dispatch, getState);
+export const checkUserAuthentication = (urls) => (dispatch, getState) =>
+  _checkUserAuthentication(urls, dispatch, getState);
 
-export const setUserAuthentication = (isAuthenticated) => ({
+export const setUserAuthentication = (sessionId, fleet) => ({
   type: GLOBAL_AUTH_SET,
-  isAuthenticated,
+  sessionId,
+  fleet,
+});
+export const resetUserAuthentication = () => ({
+  type: GLOBAL_AUTH_RESET,
 });
 
-function _checkUserAuthentication(urls, dispatch) {
-  return localStorage.read(constants.LOCAL_STORAGE_SESSION_KEY)
-  .then((ssid) => {
-    if (Boolean(ssid)) {
-      dispatch(setUserAuthentication(true));
-      // got to {ROOT}/dashboard
-      dispatch(fleetModelAction.getFleet('test'));
-      if (!/dashboard/.test(location.pathname)) {
-        dispatch(replace(urls.dashboard));
+function _checkUserAuthentication(urls, dispatch, getState) {
+  const fleet = getFleetName(getState());
+
+  // for case when no auth data was saved in localStorage
+  if (getAuthenticatedFleet(getState()) === fleet) {
+    return Promise.resolve();
+  }
+
+  return storage.read(constants.LOCAL_STORAGE_SESSION_KEY)
+  .then(_checkVersion)
+  .then((sessions = []) => {
+    if (sessions) {
+      const fleetSession = sessions.filter(session => session.fleet === fleet);
+
+      if (fleetSession.length !== 0) {
+        dispatch(setUserAuthentication(fleetSession[0]['session-id'], fleet));
+      } else {
+        dispatch(resetUserAuthentication());
+        dispatch(replace(`${createBaseUrl(fleet)}/${urls.failure}`));
       }
     } else {
-      dispatch(setUserAuthentication(false));
-      dispatch(replace(urls.login));
+      dispatch(resetUserAuthentication());
+      dispatch(replace(`${createBaseUrl(fleet)}/${urls.failure}`));
+    }
+  }, (error) => {
+    if (error.message && error.message === 'wrong version') {
+      const loginUrl = `${createBaseUrl(fleet)}/login`;
+
+      storage.clean(constants.LOCAL_STORAGE_SESSION_KEY);
+      dispatch(resetUserAuthentication());
+      dispatch(replace(loginUrl));
     }
   });
 }
 
-function _login(fleet, data, dispatch) {
+function _login(data, dispatch, getState) {
+  const fleet = getFleetName(getState());
   const loginUrl = `${fleet}/login`;
 
   const options = {
@@ -48,25 +77,45 @@ function _login(fleet, data, dispatch) {
   return api.post(loginUrl, options)
     .then(response => response.text())
     .then(token => {
-      localStorage.save(constants.LOCAL_STORAGE_SESSION_KEY, token);
-      setUserAuthentication(true);
-      dispatch(push(`${createBaseUrl(fleet)}/dashboard`));
-      dispatch(fleetModelAction.getFleet('test'));
+      const fleetToken = {
+        fleet,
+        'session-id': token,
+        id: token,
+      };
+
+      storage.save(constants.LOCAL_STORAGE_SESSION_KEY, fleetToken, VERSIONS.authentication.ver);
+      dispatch(setUserAuthentication(token, fleet));
+      dispatch(push(`${createBaseUrl(fleet)}/`));
     }, (error) => {
       console.error(error);
     });
 }
 
-function _logout(fleet, dispatch) {
+function _logout(dispatch, getState) {
+  const fleet = getFleetName(getState());
   const url = `${fleet}/login`;
+  const sessionId = getAuthenticationSession(getState());
+  const optionalHeaders = {
+    ['DRVR-SESSION']: sessionId,
+  };
 
-  return api.delete(url).then(() => {
+  return api.delete(url, { optionalHeaders }).then(() => {
     const loginUrl = `${createBaseUrl(fleet)}/login`;
+    const toDelete = [{
+      id: sessionId,
+    }];
 
-    localStorage.clean(constants.LOCAL_STORAGE_SESSION_KEY);
-    dispatch(setUserAuthentication(false));
+    storage.cleanExactValues(constants.LOCAL_STORAGE_SESSION_KEY, toDelete);
+    dispatch(resetUserAuthentication());
     dispatch(replace(loginUrl));
   }, (error) => {
     console.error(error);
   });
+}
+function _checkVersion(savedData) {
+  if (VERSIONS.authentication.verify(savedData)) {
+    const toReturn = savedData && savedData.hasOwnProperty('values') ? savedData.values : savedData;
+    return Promise.resolve(toReturn);
+  }
+  return Promise.reject({ message: 'wrong version' });
 }

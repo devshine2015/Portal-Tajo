@@ -4,12 +4,34 @@ function _checkIfValueExist(val, list) {
 
   for (let i = 0; i < list.length; i++) {
     if (list[i].id === val.id) {
-      exist = true;
+      exist = i;
       break;
     }
   }
 
   return exist;
+}
+
+function _cleanExact(key, newData = []) {
+  let needCleanEverything = false;
+
+  // clean up localStorage item
+  if (newData.length === 0) {
+    needCleanEverything = true;
+  }
+
+  if (needCleanEverything) {
+    return clean(key).then(() => Promise.resolve(newData));
+  }
+
+  try {
+    // replace existing values
+    window.localStorage.setItem(key, JSON.stringify(newData));
+
+    return newData;
+  } catch (e) {
+    return false;
+  }
 }
 
 export function read(key) {
@@ -23,14 +45,24 @@ export function read(key) {
 }
 
 // save just unique data
-export function save(key, value) {
+export function save(key, value, version = undefined) {
   try {
     return read(key).then((data) => {
-      const savedData = data || [];
+      const savedData = data || {};
+
+      if (!savedData.hasOwnProperty('values')) {
+        savedData.values = [];
+      }
+
+      // update version if specified
+      if (version !== undefined) {
+        savedData.ver = version;
+      }
 
       // don't save same value one more time
-      if (!_checkIfValueExist(value, savedData)) {
-        savedData.push(value);
+      if (_checkIfValueExist(value, savedData.values) === false) {
+        savedData.values.push(value);
+
         window.localStorage.setItem(key, JSON.stringify(savedData));
       }
 
@@ -50,31 +82,27 @@ export function clean(key) {
   }
 }
 
-export function cleanExact(key, indexesToRemove) {
-  return read(key).then((savedData = []) => {
-    let needCleanEverything = false;
+export function cleanExactValues(key, values = []) {
+  return read(key).then((savedData = {}) => {
+    values.forEach(value => {
+      const indexToDelete = _checkIfValueExist(value, savedData.values);
 
+      if (indexToDelete !== false) {
+        savedData.values.splice(indexToDelete, 1);
+      }
+    });
+
+    return _cleanExact(key, savedData.values);
+  });
+}
+
+export function cleanExactIndexies(key, indexesToRemove = []) {
+  return read(key).then((savedData = []) => {
     indexesToRemove.forEach(i => {
       savedData.splice(i, 1);
     });
 
-    // clean up localStorage item
-    if (savedData.length === 0) {
-      needCleanEverything = true;
-    }
-
-    if (needCleanEverything) {
-      return clean(key).then(() => Promise.resolve(savedData));
-    }
-
-    try {
-      // replace existing values
-      window.localStorage.setItem(key, JSON.stringify(savedData));
-
-      return savedData;
-    } catch (e) {
-      return false;
-    }
+    return _cleanExact(key, savedData);
   });
 }
 
@@ -82,5 +110,6 @@ export default {
   read,
   save,
   clean,
-  cleanExact,
+  cleanExactIndexies,
+  cleanExactValues,
 };

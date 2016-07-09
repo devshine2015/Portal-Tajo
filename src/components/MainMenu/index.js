@@ -6,7 +6,6 @@ import styles from './styles.css';
 
 const MainMenu = ({
   pages,
-  baseUrl,
   closeSidebar,
 }) => {
   const links = pages.map(page => (
@@ -15,7 +14,7 @@ const MainMenu = ({
       key={page.path}
     >
       <Link
-        to={`${baseUrl}/${page.path}`}
+        to={page.path}
         onClick={closeSidebar}
       >
         {page.text}
@@ -32,11 +31,11 @@ const MainMenu = ({
 
 MainMenu.propTypes = {
   closeSidebar: React.PropTypes.func.isRequired,
-  baseUrl: React.PropTypes.string.isRequired,
   pages: React.PropTypes.arrayOf(
     React.PropTypes.shape({
       text: React.PropTypes.string.isRequired,
       path: React.PropTypes.string.isRequired,
+      order: React.PropTypes.number.isRequired,
     })
   ).isRequired,
 };

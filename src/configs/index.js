@@ -7,3 +7,21 @@ export const FIREBASE_CONFIG = {
   databaseURL: 'https://drvr.firebaseio.com',
   storageBucket: 'project-7060603335742899024.appspot.com',
 };
+export const VERSIONS = {
+  authentication: {
+    ver: 2,
+    verify: function (savedData) {
+      // if no any session data
+      if (!savedData) {
+        return true;
+      }
+
+      // if same version
+      if ((savedData && savedData.hasOwnProperty('ver')) && (savedData.ver === this.ver)) {
+        return true;
+      }
+
+      return false;
+    },
+  },
+};

@@ -1,0 +1,16 @@
+@media screen and (min-width: 100px) {
+  .list {
+    list-style-type: none;
+    border-bottom: 1px solid #ccc;
+    padding: 5px;
+  }
+
+  .list__item {
+    display: inline-block;
+    margin-right: 15px;
+  }
+
+  .list__item:last-child {
+    margin-right: 0;
+  }
+}

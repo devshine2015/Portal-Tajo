@@ -4,16 +4,12 @@ import pure from 'recompose/pure';
 import Snackbar from 'material-ui/Snackbar';
 import { getSnackbarState } from './reducer';
 
-class SnackbarNotification extends React.Component {
-  render() {
-    return (
-      <Snackbar
-        {...this.props}
-        open={this.props.show}
-      />
-    );
-  }
-}
+const SnackbarNotification = (props) => (
+  <Snackbar
+    {...props}
+    open={props.show}
+  />
+);
 
 SnackbarNotification.propTypes = {
   action: React.PropTypes.string,

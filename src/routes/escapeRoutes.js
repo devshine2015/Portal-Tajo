@@ -10,6 +10,24 @@ import {
 
 const ROOT = '/portal/:fleet/tajo/';
 
+const MAIN_MENU = [{
+  niceName: 'dashboard',
+  path: 'dashboard',
+  order: 0,
+}, {
+  niceName: 'installer',
+  path: 'installer',
+  order: 1,
+}, {
+  niceName: 'Promo Subscribtions',
+  path: 'promos',
+  order: 2,
+}, {
+  niceName: 'Reports',
+  path: 'reports',
+  order: 3,
+}];
+
 export default function createRoutes(store) {
   const { injectReducer } = getHooks(store);
 
@@ -17,54 +35,51 @@ export default function createRoutes(store) {
     selectLocationState: selectLocationState(),
   });
 
-  const reportsRoute = require('containers/ReportsScreen/route')({
+  const reportsRoute = require('screens/ReportsScreen/route')({
     path: 'reports',
     injectReducer,
     errorHandler,
     loadModule,
   });
 
-  const promoRoute = require('containers/PromoTrackingScreen/route')({
+  const promoRoute = require('screens/PromoTrackingScreen/route')({
     path: 'promos',
     injectReducer,
     errorHandler,
     loadModule,
-    niceName: 'Promo Subscribtions',
   });
 
-  const installerRoute = require('containers/InstallerScreen/route')({
+  const installerRoute = require('screens/InstallerScreen/route')({
     path: 'installer',
     injectReducer,
     errorHandler,
     loadModule,
-    dispatch: store.dispatch,
   });
 
-  const dashboardRoute = require('containers/Dashboard/route')({
-    path: 'dashboard',
-    injectReducer,
-    errorHandler,
-    loadModule,
-    dispatch: store.dispatch,
-  });
-
-  dashboardRoute.childRoutes.push(
-    installerRoute,
-    reportsRoute,
-    promoRoute,
-  );
-
-  const loginRoute = require('containers/LoginScreen/route')({
+  const loginRoute = require('screens/LoginScreen/route')({
     path: 'login',
   });
 
-  const rootRoute = require('containers/App/route')({
-    path: ROOT,
+  const dashboardRoute = require('screens/DashboardScreen/route')({
+    path: 'dashboard',
   });
 
+  const rootRoute = require('screens/Root/route')({
+    path: ROOT,
+    dispatch: store.dispatch,
+    mainMenu: MAIN_MENU,
+  });
+
+  rootRoute.indexRoute = {
+    component: require('screens/DashboardScreen').default,
+  };
+
   rootRoute.childRoutes.push(
-    dashboardRoute,
     loginRoute,
+    dashboardRoute,
+    installerRoute,
+    promoRoute,
+    reportsRoute,
   );
 
   return (
