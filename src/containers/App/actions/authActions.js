@@ -5,6 +5,7 @@ import {
   constants,
   localStorage,
 } from 'utils';
+import * as fleetModelAction from 'services/FleetModel/actions';
 
 export const GLOBAL_AUTH_SET = 'portal/App/GLOBAL_AUTH_SET';
 
@@ -26,6 +27,7 @@ function _checkUserAuthentication(urls, dispatch) {
     if (Boolean(ssid)) {
       dispatch(setUserAuthentication(true));
       // got to {ROOT}/dashboard
+      dispatch(fleetModelAction.getFleet('test'));
       if (!/dashboard/.test(location.pathname)) {
         dispatch(replace(urls.dashboard));
       }
@@ -49,6 +51,7 @@ function _login(fleet, data, dispatch) {
       localStorage.save(constants.LOCAL_STORAGE_SESSION_KEY, token);
       setUserAuthentication(true);
       dispatch(push(`${createBaseUrl(fleet)}/dashboard`));
+      dispatch(fleetModelAction.getFleet('test'));
     }, (error) => {
       console.error(error);
     });

@@ -7,6 +7,7 @@ import { fromJS } from 'immutable';
 import { combineReducers } from 'redux-immutable';
 import rootReducer from 'containers/App/reducer';
 import snackbarReducer from 'containers/Snackbar/reducer';
+import fleetModel from 'services/FleetModel/reducer';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 const routeInitialState = fromJS({
@@ -32,6 +33,7 @@ export default function createReducer(asyncReducers) {
     global: rootReducer,
     route: routerReducer,
     snackbar: snackbarReducer,
+    fleetModel,
     ...asyncReducers,
   });
 }
