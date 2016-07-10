@@ -71,6 +71,7 @@ export const prepareDataForReport = (selectedReports = {}, periods = [], frequen
     return Promise.resolve(result);
   };
 
+// TODO -- check how request MUST be sent: as utc or local time?
 export const getReportParams = ({
   start,
   end = undefined,
@@ -107,7 +108,7 @@ function _calculateColumn({
 
 // Just formatting to ISO string. Keep actual date and time values
 function _formateDateForRequest(date, time) {
-  const result = moment(date).utcOffset(0).set({
+  const result = moment(date).set({
     hour: time.getHours(),
     minute: time.getMinutes(),
     second: time.getSeconds(),
