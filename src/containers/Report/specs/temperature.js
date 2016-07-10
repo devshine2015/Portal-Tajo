@@ -71,6 +71,7 @@ const commonProps = {
   endpoint: 'report/temperature',
   query: {
     downsampleSec: 30,
+    tzoffset: new Date().getTimezoneOffset(),
   },
   domain: 'temperature',
   checkedByDefault: false,

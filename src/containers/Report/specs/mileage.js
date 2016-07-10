@@ -21,6 +21,9 @@ const fields = [{
   domain: 'mileage',
   checkedByDefault: false,
   order: 3,
+  query: {
+    tzoffset: new Date().getTimezoneOffset(),
+  },
   calc: _calc,
 }];
 

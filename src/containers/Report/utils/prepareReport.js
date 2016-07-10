@@ -83,7 +83,7 @@ export const getReportParams = ({
   const fromFormatted = _formateDateForRequest(start, startTime);
   const toFormatted = _formateDateForRequest(endDate, endTime);
 
-  return `from=${fromFormatted}&to=${toFormatted}&tzoffset=${0}`;
+  return `from=${fromFormatted}&to=${toFormatted}`;
 };
 
 function _calculateColumn({
@@ -108,10 +108,13 @@ function _calculateColumn({
 
 // Just formatting to ISO string. Keep actual date and time values
 function _formateDateForRequest(date, time) {
-  const result = moment(date).set({
-    hour: time.getHours(),
-    minute: time.getMinutes(),
-    second: time.getSeconds(),
+  const result = moment.utc({
+    y: date.getFullYear(),
+    M: date.getMonth(),
+    d: date.getDate(),
+    h: time.getHours(),
+    m: time.getMinutes(),
+    s: time.getSeconds(),
   }).toISOString();
   return `${result.slice(0, -1)}+0000`;
 }
