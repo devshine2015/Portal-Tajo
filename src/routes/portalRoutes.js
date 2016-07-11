@@ -14,6 +14,10 @@ const MAIN_MENU = [{
   niceName: 'dashboard',
   path: 'dashboard',
   order: 0,
+}, {
+  niceName: 'map',
+  path: 'map',
+  order: 1,
 }];
 
 export default function createRoutes(store) {
@@ -35,10 +39,6 @@ export default function createRoutes(store) {
     dispatch: store.dispatch,
   });
 
-  dashboardRoute.childRoutes.push(
-    mapAndListRoute,
-  );
-
   const loginRoute = require('screens/LoginScreen/route')({
     path: 'login',
   });
@@ -54,8 +54,9 @@ export default function createRoutes(store) {
   };
 
   rootRoute.childRoutes.push(
-    dashboardRoute,
     loginRoute,
+    dashboardRoute,
+    mapAndListRoute,
   );
 
   return (
