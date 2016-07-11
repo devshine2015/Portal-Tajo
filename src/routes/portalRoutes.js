@@ -21,7 +21,7 @@ export default function createRoutes(store) {
     path: 'map',
   });
 
-  const dashboardRoute = require('containers/Dashboard/route')({
+  const dashboardRoute = require('screens/DashboardScreen/route')({
     path: 'dashboard',
     injectReducer,
     errorHandler,
@@ -33,11 +33,11 @@ export default function createRoutes(store) {
     mapAndListRoute,
   );
 
-  const loginRoute = require('containers/LoginScreen/route')({
+  const loginRoute = require('screens/LoginScreen/route')({
     path: 'login',
   });
 
-  const rootRoute = require('containers/App/route')({
+  const rootRoute = require('screens/Root/route')({
     path: ROOT,
   });
 
