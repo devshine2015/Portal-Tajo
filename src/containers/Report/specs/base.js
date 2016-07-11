@@ -18,8 +18,8 @@ function _calculate(vehicle, { selectedTypes, period, frequency }) {
 
   const result = {
     date: _formateDateForTable(period, frequency),
-    vehicles: vehicle.name,
-    license: vehicle.licensePlate,
+    vehicles: JSON.stringify(vehicle.name),
+    license: JSON.stringify(vehicle.licensePlate),
   };
 
   return calcToReturn(result);
