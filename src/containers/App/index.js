@@ -3,6 +3,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import styles from './styles.css';
 import {
   deepOrange500,
   grey300,
