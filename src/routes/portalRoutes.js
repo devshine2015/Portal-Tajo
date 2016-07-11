@@ -10,6 +10,12 @@ import {
 
 const ROOT = '/portal/:fleet/tajo/';
 
+const MAIN_MENU = [{
+  niceName: 'dashboard',
+  path: 'dashboard',
+  order: 0,
+}];
+
 export default function createRoutes(store) {
   const { injectReducer } = getHooks(store);
 
@@ -39,7 +45,13 @@ export default function createRoutes(store) {
 
   const rootRoute = require('screens/Root/route')({
     path: ROOT,
+    dispatch: store.dispatch,
+    mainMenu: MAIN_MENU,
   });
+
+  rootRoute.indexRoute = {
+    component: require('screens/DashboardScreen').default,
+  };
 
   rootRoute.childRoutes.push(
     dashboardRoute,
