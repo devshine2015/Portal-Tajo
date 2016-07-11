@@ -1,0 +1,8 @@
+@media screen and (min-width: 100px) {
+  .PoverListContainer {
+    background-color: #3eb6aa;
+    color: #fff;
+    width: 350px;
+    height: 100%;
+    }
+}

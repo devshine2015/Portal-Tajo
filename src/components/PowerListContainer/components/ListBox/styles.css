@@ -1,0 +1,10 @@
+@media screen and (min-width: 100px) {
+  .listBox {
+    background-color: #b0bd1e;
+    color: #fff;
+    width: 100%;
+    border-color: #259417;
+    border-width: 1px;
+    overflow: scroll;
+      }
+}
