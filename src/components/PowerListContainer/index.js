@@ -10,8 +10,11 @@ class UnitsList extends React.Component {
   render() {
     return (
         <div className={styles.PoverListContainer}>
-        <Tabs>
-          <Tab label="Vehicles" >
+        <Tabs
+          style={ { height: '100%' } }
+          contentContainerClassName={styles.FullHeight}
+        >
+          <Tab label="Vehicles" className={styles.FullHeight} style={ { height: '100%' } } >
             <ListBox title="CAR" />
           </Tab>
           <Tab label="Locations" >
