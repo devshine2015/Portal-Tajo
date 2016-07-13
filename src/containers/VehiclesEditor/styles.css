@@ -1,0 +1,19 @@
+@media screen and (min-width: 100px) {
+  .editor {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+  }
+
+  .listContainer {
+    width: 10%;
+    min-width: 250px;
+    border-right: 1px solid #ccc;
+    padding: 0 15px;
+  }
+
+  .detailsContainer {
+    width: 100%;
+    padding: 0 15px;
+  }
+}

@@ -28,7 +28,7 @@ const MAIN_MENU = [{
   order: 3,
 }, {
   niceName: 'Vehicles Editor',
-  path: 'v-editor',
+  path: 'vehicles',
   order: 4,
 }];
 
@@ -61,7 +61,7 @@ export default function createRoutes(store) {
   });
 
   const vehiclesEditorRoute = require('screens/VehiclesManagerScreen/route')({
-    path: 'v-editor',
+    path: 'vehicles',
     injectReducer,
     errorHandler,
     loadModule,

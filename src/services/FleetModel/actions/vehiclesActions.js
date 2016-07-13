@@ -9,7 +9,9 @@ export const FLEET_MODEL_VEHICLES_SET = 'portal/services/FLEET_MODEL_VEHICLES_SE
 export const fetchVehicles = (fleet = undefined) => (dispatch, getState) =>
   _fetchVehicles(dispatch, getState, fleet);
 
-
+/**
+ * fleet is optional
+ **/
 function _fetchVehicles(dispatch, getState, fleetName = undefined) {
   const fleet = fleetName || getFleetName(getState());
   const url = `${fleet}/vehicles`;
