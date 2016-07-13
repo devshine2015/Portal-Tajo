@@ -1,5 +1,14 @@
 @media screen and (min-width: 100px) {
-  .listBox {
+  .listBoxTopContainer {
+    background-color: #1e54bd;
+    color: #fff;
+    width: 100%;
+    height: 100%;
+    border-color: #94177c;
+    border-width: 1px;
+    overflow: hidden;
+      }
+  .listBoxList {
     background-color: #b0bd1e;
     color: #fff;
     width: 100%;
@@ -8,4 +17,5 @@
     border-width: 1px;
     overflow: scroll;
       }
+
 }
