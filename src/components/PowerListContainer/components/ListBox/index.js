@@ -12,6 +12,7 @@ class ListBox extends React.Component {
   render() {
     return (
       <div className={styles.listBoxTopContainer}>
+        <PowerFilter />
         <div className={styles.listBoxList}>
           <ListItem title= { this.props.title + " 01"} />
           <ListItem title= { this.props.title + " 02"} />
