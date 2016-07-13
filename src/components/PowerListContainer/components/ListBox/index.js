@@ -5,12 +5,13 @@ import ListItem from './../ListItem';
 import PowerFilter from './../PowerFilter';
 import styles from './styles.css';
 
+//        <PowerFilter />
+
 
 class ListBox extends React.Component {
   render() {
     return (
       <div className={styles.listBoxTopContainer}>
-        <PowerFilter />
         <div className={styles.listBoxList}>
           <ListItem title= { this.props.title + " 01"} />
           <ListItem title= { this.props.title + " 02"} />
