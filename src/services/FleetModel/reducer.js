@@ -1,21 +1,11 @@
-// import { createReducer } from 'redux';
-import { fromJS, Map } from 'immutable';
-import { SERVICE_FLEET_MODEL_SET } from './actions';
+import { combineReducers } from 'redux-immutable';
+import vehiclesReducer, * as fromVehiclesReducer from './reducers/vehiclesReducer';
 
-const initialVehiclesMap = fromJS({
-  vehiclesMap: new Map(),
+export default combineReducers({
+  vehicles: vehiclesReducer,
 });
 
-function vehiclesMapReducer(state = initialVehiclesMap, action) {
-  switch (action.type) {
-    case SERVICE_FLEET_MODEL_SET:
-      return state.set('vehiclesMap', new Map(action.backendData));
-    default:
-      return state;
-  }
-}
-
-export default vehiclesMapReducer;
-
 export const getFleetData = (state) =>
-  state.getIn(['fleetModel', 'vehiclesMap']);
+  state.get('fleet');
+export const getVehicles = (state) =>
+  fromVehiclesReducer.getVehicles(state.getIn(['fleet', 'vehicles']));

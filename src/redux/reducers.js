@@ -8,6 +8,7 @@ import { combineReducers } from 'redux-immutable';
 import rootReducer from 'containers/App/reducer';
 import snackbarReducer from 'containers/Snackbar/reducer';
 import innerPortalReducer from 'containers/InnerPortal/reducer';
+import fleetReducer from 'services/FleetModel/reducer';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 const routeInitialState = fromJS({
@@ -34,6 +35,7 @@ export default function createReducer(asyncReducers) {
     route: routerReducer,
     inner: innerPortalReducer,
     snackbar: snackbarReducer,
+    fleet: fleetReducer,
     ...asyncReducers,
   });
 }

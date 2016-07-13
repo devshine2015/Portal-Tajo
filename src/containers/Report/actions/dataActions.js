@@ -9,6 +9,7 @@ import {
   getAvailableFields,
 } from '../reducer';
 import { getFleetName, getAuthenticationSession } from 'containers/App/reducer';
+import { getVehicles } from 'services/FleetModel/reducer';
 import {
   prepareDataForReport,
   getReportParams,
@@ -32,7 +33,9 @@ function _generateReport({ timePeriod, frequency }, dispatch, getState) {
   const baseVehiclesUrl = `${fleet}/vehicles`;
   const periods = _getPeriods(timePeriod, frequency);
   const periodQueryString = getReportParams(timePeriod);
-  const selectedReports = getSelectedReportsTypes(getState);
+  const selectedReports = getSelectedReportsTypes(getState());
+  const vehicles = getVehicles(getState()).toArray();
+
   const fieldsToCall = {};
   const sessionId = getAuthenticationSession(getState());
   const optionalHeaders = {
@@ -47,46 +50,41 @@ function _generateReport({ timePeriod, frequency }, dispatch, getState) {
       }
     });
 
-  return api(baseVehiclesUrl, { optionalHeaders })
-    .then(toJson)
-    .then(vehicles => (
-      Promise.all(
-        Object.values(fieldsToCall)
-        .map(({ domain, query = {}, endpoint = '' }) => (
-          _reportRequest(baseVehiclesUrl, vehicles, optionalHeaders, {
-            domain,
-            endpoint,
-            queryString: `${periodQueryString}&${qs.stringify(query)}`,
-          })
-        ))
-      ).then((reports = []) => {
-        const result = {};
+  return Promise.all(
+    Object.values(fieldsToCall)
+      .map(({ domain, query = {}, endpoint = '' }) => (
+        _reportRequest(baseVehiclesUrl, vehicles, optionalHeaders, {
+          domain,
+          endpoint,
+          queryString: `${periodQueryString}&${qs.stringify(query)}`,
+        })
+      ))
+    ).then((reports = []) => {
+      const result = {};
 
-        /**
-         *
-         * we need to inject all data
-         * user chose for report
-         *
-         * and create report for each report type,
-         * i.e. if needed minTemp and maxTemp in report
-         * but _reportRequest was called only for firstOne,
-         * then create maxTemp: [data] from its result
-         *
-         **/
-        Object.values(selectedReports).forEach(({ domain }) => {
-          if (domain === 'base' && !result[domain]) {
-            result[domain] = vehicles;
-          }
-        });
+      /**
+       *
+       * we need to inject all data
+       * user chose for report
+       *
+       * and create report for each report type,
+       * i.e. if needed minTemp and maxTemp in report
+       * but _reportRequest was called only for firstOne,
+       * then create maxTemp: [data] from its result
+       *
+       **/
+      Object.values(selectedReports).forEach(({ domain }) => {
+        if (domain === 'base' && !result[domain]) {
+          result[domain] = vehicles;
+        }
+      });
 
-        reports.forEach(r => {
-          result[r.domain] = r.report;
-        });
+      reports.forEach(r => {
+        result[r.domain] = r.report;
+      });
 
-        return result;
-      })
-    ))
-    .then(prepareDataForReport(selectedReports, periods, frequency))
+      return result;
+    }).then(prepareDataForReport(selectedReports, periods, frequency))
     .then(table => {
       dispatch(setLoader(false));
       dispatch(_saveReportData(table));
@@ -130,9 +128,9 @@ function toJson(response) {
   return response.json();
 }
 
-function getSelectedReportsTypes(getState) {
-  const selectedReportsIndexes = getSelectedFields(getState()).toArray();
-  const availableFields = getAvailableFields(getState()).toArray();
+function getSelectedReportsTypes(state) {
+  const selectedReportsIndexes = getSelectedFields(state).toArray();
+  const availableFields = getAvailableFields(state).toArray();
   const result = {};
 
   availableFields.forEach((field, i) => {

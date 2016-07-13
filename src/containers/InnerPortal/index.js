@@ -8,6 +8,7 @@ import MainSidebar from './components/MainSidebar';
 import { getIsUserAuthenticated, getFleetName } from 'containers/App/reducer';
 import { authActions } from 'containers/App/actions';
 import PortalsList from 'components/PortalsLinks';
+import { commonFleetActions } from 'services/FleetModel/actions';
 
 const URLS = {
   success: 'dashboard',
@@ -16,14 +17,22 @@ const URLS = {
 
 class InnerPortal extends React.Component {
 
+  // TODO -- InnerPortal mounts each time screen change
   componentDidMount() {
-    this.props.checkUserAuthentication(URLS);
+    this.checkUserAuthentication();
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.fleet !== this.props.fleet) {
-      this.props.checkUserAuthentication(URLS);
+      this.checkUserAuthentication();
     }
+  }
+
+  checkUserAuthentication() {
+    this.props.checkUserAuthentication(URLS)
+      .then(() => {
+        this.props.fetchFleet();
+      });
   }
 
   render() {
@@ -50,6 +59,7 @@ class InnerPortal extends React.Component {
 InnerPortal.propTypes = {
   checkUserAuthentication: React.PropTypes.func.isRequired,
   children: React.PropTypes.node,
+  fetchFleet: React.PropTypes.func.isRequired,
   fleet: React.PropTypes.string.isRequired,
   isAuthenticated: React.PropTypes.bool.isRequired,
 };
@@ -62,6 +72,7 @@ const mapState = (state) => ({
 });
 const mapDispatch = {
   checkUserAuthentication: authActions.checkUserAuthentication,
+  fetchFleet: commonFleetActions.fetchFleet,
 };
 
 export default connect(mapState, mapDispatch)(PureInnerPortal);
