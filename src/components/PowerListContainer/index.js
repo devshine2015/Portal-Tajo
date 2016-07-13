@@ -9,9 +9,9 @@ import styles from './styles.css';
 class PowerListContainer extends React.Component {
 
   render() {
-    const theTabs = this.props.children.map(aObj => {
+    const theTabs = this.props.children.map((aObj, idx) => {
       return (
-          <Tab label={aObj.title} >
+          <Tab label={aObj.title} key={idx}>
             {aObj.element}
           </Tab>
       );
