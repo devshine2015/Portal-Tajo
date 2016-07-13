@@ -1,5 +1,9 @@
 @media screen and (min-width: 100px) {
-  .details {}
+  .details {
+    flex: 1;
+    min-height: 1px;
+    overflow-y: auto;
+  }
 
   .buttons {
     text-align: center;

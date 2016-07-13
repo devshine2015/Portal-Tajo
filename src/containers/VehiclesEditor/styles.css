@@ -3,6 +3,7 @@
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+    width: 100%;
   }
 
   .listContainer {
@@ -13,7 +14,7 @@
   }
 
   .detailsContainer {
-    width: 100%;
+    margin-left: 250px;
     padding: 0 15px;
   }
 }

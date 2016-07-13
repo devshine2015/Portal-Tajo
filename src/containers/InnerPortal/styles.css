@@ -1,11 +1,14 @@
-.appContent{
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-.topBarContainer{
-}
-.content{
-  flex: 1;
-  overflow: hidden;
+@media screen and (min-width: 100px) {
+  .appContent{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .topBarContainer{}
+
+  .content{
+    display: flex;
+    flex: 1;
+  }
 }

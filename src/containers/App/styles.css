@@ -3,7 +3,6 @@ html {
 }
 body {
   height: 100%;
-  overflow: hidden;
 }
 :global(#app){
   height: 100%;

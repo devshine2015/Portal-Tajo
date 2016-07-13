@@ -1,0 +1,10 @@
+@media screen and (min-width: 100px) {
+
+  .fixedContent {
+    min-width: 1px;
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+  }
+}

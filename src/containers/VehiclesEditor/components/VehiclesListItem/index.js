@@ -1,6 +1,8 @@
 import React from 'react';
 import pure from 'recompose/pure';
 
+import styles from './styles.css';
+
 class VehicleDetails extends React.Component {
 
   onClick = () => {
@@ -9,8 +11,13 @@ class VehicleDetails extends React.Component {
 
   render() {
     return (
-      <div onClick={this.onClick}>
-        {`${this.props.index} – ${this.props.name}`}
+      <div
+        className={styles.item}
+        onClick={this.onClick}
+      >
+        <span className={styles.link}>
+          {`${this.props.index} – ${this.props.name}`}
+        </span>
       </div>
     );
   }

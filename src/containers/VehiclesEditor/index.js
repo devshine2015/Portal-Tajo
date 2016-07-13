@@ -3,6 +3,8 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import VehiclesList from './components/VehiclesList';
 import VehicleDetails from './components/VehicleDetails';
+import FixedColumn from 'components/FixedColumn';
+import FixedContent from 'components/FixedContent';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { getLoaderState } from './reducer';
 import { detailsActions } from './actions';
@@ -78,7 +80,7 @@ class VehiclesEditor extends React.Component {
     };
 
     return (
-      <div className={styles.detailsContainer}>
+      <FixedContent containerClassName={styles.detailsContainer}>
         <VehicleDetails
           details={data}
           id={origins.id}
@@ -86,7 +88,7 @@ class VehiclesEditor extends React.Component {
           onCancel={this.closeEditor}
           disabled={this.props.isLoading}
         />
-      </div>
+      </FixedContent>
     );
   }
 
@@ -98,12 +100,12 @@ class VehiclesEditor extends React.Component {
     return (
       <div className={styles.editor}>
 
-        <div className={styles.listContainer}>
+        <FixedColumn containerClassName={styles.listContainer}>
           <VehiclesList
             onItemClick={this.onItemClick}
             vehicles={this.props.vehicles}
           />
-        </div>
+        </FixedColumn>
 
         {this.renderDetails()}
 
