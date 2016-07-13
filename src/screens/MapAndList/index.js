@@ -4,7 +4,7 @@ import styles from './styles.css';
 import InnerPortal from 'containers/InnerPortal';
 import SplitContainer from 'containers/SplitContainer';
 // import TheMap from 'components/Map';
-import UnitsList from 'components/PowerListContainer';
+import PowerListContainer from 'components/PowerListContainer';
 // import UnitsList from './../../components/UnitsList';
 
 class MapAndList extends React.Component {
@@ -12,7 +12,7 @@ class MapAndList extends React.Component {
     return (
       <InnerPortal>
       <div className={styles.mapAndListContainer}>
-        <UnitsList />
+        <PowerListContainer />
         <SplitContainer />
       </div>
       </InnerPortal>

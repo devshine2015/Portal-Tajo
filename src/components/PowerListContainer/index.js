@@ -6,7 +6,7 @@ import ListBox from './components/ListBox';
 import styles from './styles.css';
 // import { getFleetData } from 'services/FleetModel/reducer';
 
-class UnitsList extends React.Component {
+class PowerListContainer extends React.Component {
   render() {
     return (
         <div className={styles.PoverListContainer}>
@@ -14,7 +14,7 @@ class UnitsList extends React.Component {
           className={styles.FullHeight}
           contentContainerClassName={styles.FullHeightScroll}
         >
-          <Tab label="Vehicles"  >
+          <Tab label="Vehicles" >
             <ListBox title="CAR" />
           </Tab>
           <Tab label="Locations" >
@@ -29,5 +29,5 @@ class UnitsList extends React.Component {
   }
 }
 
-const PureUnitsList = pure(UnitsList);
-export default PureUnitsList;
+const PurePowerListContainer = pure(PowerListContainer);
+export default PurePowerListContainer;
