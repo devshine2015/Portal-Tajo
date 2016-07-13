@@ -2,6 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import Form from 'components/Form';
 import styles from './styles.css';
 
@@ -11,27 +12,43 @@ class VehicleDetails extends React.Component {
   constructor(props) {
     super(props);
 
+    /**
+     * Initial values for controlled inputs
+     **/
     this.state = { ...props.details };
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.id !== this.props.id) {
-      this.setState({ ...nextProps.details });
-    }
+    this.checkIfVehicleChanged(nextProps);
   }
 
+  /**
+   * Just send state as data
+   **/
   onSubmit = (e) => {
     e.preventDefault();
 
     this.props.onSave(this.state);
   }
 
+  /**
+   * Update state[field] with value
+   **/
   onChange = (e, value) => {
     const field = e.target.name;
 
     this.setState({
       [field]: value.trim(),
     });
+  }
+
+  /**
+   * Update state if another vehicle has been chosen
+   **/
+  checkIfVehicleChanged(nextProps) {
+    if (nextProps.id !== this.props.id) {
+      this.setState({ ...nextProps.details });
+    }
   }
 
   render() {
@@ -77,12 +94,21 @@ class VehicleDetails extends React.Component {
             floatingLabelText="Year of Manufacture"
             value={this.state.year}
           />
-          <RaisedButton
-            onClick={this.onSubmit}
-            label="Save"
-            type="submit"
-            primary
-          />
+          <div className={styles.buttons}>
+            <RaisedButton
+              className={styles.buttons__button}
+              disabled={this.props.disabled}
+              onClick={this.onSubmit}
+              label="Save"
+              type="submit"
+              primary
+            />
+            <FlatButton
+              className={styles.buttons__button}
+              onClick={this.props.onCancel}
+              label="Cancel"
+            />
+          </div>
         </Form>
       </div>
     );
@@ -90,7 +116,9 @@ class VehicleDetails extends React.Component {
 }
 
 VehicleDetails.propTypes = {
+  // Id for detecting if vehicle and its details has been changed
   id: React.PropTypes.string.isRequired,
+  disabled: React.PropTypes.bool.isRequired,
   details: React.PropTypes.shape({
     name: React.PropTypes.string.isRequired,
     make: React.PropTypes.string.isRequired,
@@ -99,6 +127,7 @@ VehicleDetails.propTypes = {
     licensePlate: React.PropTypes.string.isRequired,
   }).isRequired,
   onSave: React.PropTypes.func.isRequired,
+  onCancel: React.PropTypes.func.isRequired,
 };
 
 export default pure(VehicleDetails);

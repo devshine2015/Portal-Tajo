@@ -1,11 +1,11 @@
-const NAME = 'vehiclesEditor';
+const NAME = 'vehicleEditor';
 
 const createRoute = ({
   path,
   name = NAME,
   niceName = NAME,
   loadModule,
-  // injectReducer,
+  injectReducer,
   errorHandler,
 }) => ({
   path,
@@ -14,19 +14,19 @@ const createRoute = ({
   getComponent: (location, cb) => {
     require.ensure([], require => {
       const importModules = Promise.all([
-        // require('containers/PromoSubscribtions/reducer'),
+        require('containers/VehiclesEditor/reducer'),
         require('./index'),
       ]);
 
       const renderModule = loadModule(cb);
 
-      importModules.then(([/*reducer, */component]) => {
-        // injectReducer(NAME, reducer.default);
+      importModules.then(([reducer, component]) => {
+        injectReducer(NAME, reducer.default);
         renderModule(component);
       });
 
       importModules.catch(errorHandler);
-    }, 'vehiclesEditor');
+    }, 'vehicleEditor');
   },
 });
 

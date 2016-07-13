@@ -11,6 +11,8 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
   switch (action.type) {
     case vehiclesActions.FLEET_MODEL_VEHICLES_SET:
       return state.set('list', new List(action.vehicles));
+    case vehiclesActions.FLEET_MODEL_VEHICLE_UPDATE:
+      return state.setIn(['list', action.index], action.details);
     default:
       return state;
   }
