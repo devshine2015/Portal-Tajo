@@ -7,27 +7,32 @@ import styles from './styles.css';
 // import { getFleetData } from 'services/FleetModel/reducer';
 
 class PowerListContainer extends React.Component {
+
   render() {
+    const theTabs = this.props.children.map(aObj => {
+      return (
+          <Tab label={aObj.title} >
+            {aObj.element}
+          </Tab>
+      );
+    });
+
     return (
         <div className={styles.PoverListContainer}>
-        <Tabs
-          className={styles.FullHeight}
-          contentContainerClassName={styles.FullHeightScroll}
-        >
-          <Tab label="Vehicles" >
-            <ListBox title="CAR" />
-          </Tab>
-          <Tab label="Locations" >
-            <ListBox title="GF" />
-          </Tab>
-          <Tab label="Drivers" >
-            <ListBox title="DRIVER" />
-          </Tab>
-        </Tabs>
+          <Tabs
+            className={styles.FullHeight}
+            contentContainerClassName={styles.FullHeightScroll}
+          >
+          { theTabs }
+          </Tabs>
         </div>
       );
   }
 }
+
+PowerListContainer.propTypes = {
+  children: React.PropTypes.object.isRequired,
+};
 
 const PurePowerListContainer = pure(PowerListContainer);
 export default PurePowerListContainer;
