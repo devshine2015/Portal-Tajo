@@ -1,6 +1,5 @@
 import React from 'react';
 import pure from 'recompose/pure';
-import TextField from 'material-ui/TextField';
 import ListItem from './../ListItem';
 import PowerFilter from './../PowerFilter';
 import styles from './styles.css';
