@@ -2,7 +2,6 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { Tabs, Tab } from 'material-ui/Tabs';
 // import { connect } from 'react-redux';
-import ListBox from './components/ListBox';
 import styles from './styles.css';
 // import { getFleetData } from 'services/FleetModel/reducer';
 
