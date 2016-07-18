@@ -2,6 +2,8 @@ import React from 'react';
 import pure from 'recompose/pure';
 import ListItem from './../ListItem';
 import PowerFilter from './../PowerFilter';
+import { connect } from 'react-redux';
+import * as fromFleetReducer from 'services/FleetModel/reducer';
 import styles from './styles.css';
 
 //        <PowerFilter />
@@ -9,23 +11,34 @@ import styles from './styles.css';
 
 class ListBox extends React.Component {
   render() {
+    if (this.props.vehicles.size === 0) {
+      return null;
+    }
+
+    const items = this.props.vehicles.map((v) => (
+      <li key={v.id}>
+        <ListItem title= { v.name} />
+      </li>
+    ));
     return (
       <div className={styles.listBoxTopContainer}>
         <PowerFilter />
-        <div className={styles.listBoxList}>
-          <ListItem title= { this.props.title + " 01"} />
-          <ListItem title= { this.props.title + " 02"} />
-          <ListItem title= { this.props.title + " 03"} />
-          <ListItem title= { this.props.title + " 04"} />
-          <ListItem title= { this.props.title + " 05"} />
-          <ListItem title= { this.props.title + " 06"} />
-          <ListItem title= { this.props.title + " 07"} />
-        </div>
+        <ul className={styles.listBoxList}>
+          {items}
+        </ul>
       </div>
     );
   }
 }
 
+ListBox.propTypes = {
+  vehicles: React.PropTypes.object.isRequired,
+};
+
+const mapState = (state) => ({
+  vehicles: fromFleetReducer.getVehicles(state),
+});
+
 const PureListBox = pure(ListBox);
 
-export default PureListBox;
+export default connect(mapState)(PureListBox);
