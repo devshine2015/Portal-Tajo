@@ -11,5 +11,7 @@ export const getFleetData = (state) =>
   state.get('fleet');
 export const getVehicles = (state) =>
   fromVehiclesReducer.getVehicles(state.getIn(['fleet', 'vehicles']));
+export const getVehiclesEx = (state) =>
+  fromVehiclesReducer.getVehiclesEx(state.getIn(['fleet', 'vehicles']));
 export const getLocations = (state) =>
   fromLocationsReducer.getLocations(state.getIn(['fleet', 'locations']));

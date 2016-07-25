@@ -3,6 +3,8 @@ import {
   getFleetName,
   getAuthenticationSession,
 } from 'containers/App/reducer';
+//import DdcVehicleMaster from 'utils/model/ddcVehicleMaster';
+import processVehicels from 'utils/model/vehicleHelpers';
 
 export const FLEET_MODEL_VEHICLES_SET = 'portal/services/FLEET_MODEL_VEHICLES_SET';
 export const FLEET_MODEL_VEHICLE_UPDATE = 'portal/services/FLEET_MODEL_VEHICLE_UPDATE';
@@ -26,7 +28,12 @@ function _fetchVehicles(dispatch, getState, fleetName = undefined) {
   return api(url, { optionalHeaders })
     .then(toJson)
     .then(vehicles => {
-      dispatch(_vehiclesSet(vehicles));
+      // const vehiclesContainer = new DdcVehicleMaster();
+      // vehicles.forEach((inVehicle) => {
+      //   vehiclesContainer.add(inVehicle);
+      // });
+      const localHehicles = processVehicels(vehicles);
+      dispatch(_vehiclesSet(vehicles, localHehicles));
     });
 }
 
@@ -53,9 +60,10 @@ function toJson(response) {
   return response.json();
 }
 
-const _vehiclesSet = (vehicles) => ({
+const _vehiclesSet = (vehicles, localVehicles) => ({
   type: FLEET_MODEL_VEHICLES_SET,
   vehicles,
+  localVehicles,
 });
 
 const _vehicleUpdate = (details, index) => ({

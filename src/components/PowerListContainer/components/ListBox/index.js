@@ -2,8 +2,6 @@ import React from 'react';
 import pure from 'recompose/pure';
 import ListItem from './../ListItem';
 import PowerFilter from './../PowerFilter';
-import { connect } from 'react-redux';
-import * as fromFleetReducer from 'services/FleetModel/reducer';
 import styles from './styles.css';
 
 //        <PowerFilter />
@@ -11,11 +9,14 @@ import styles from './styles.css';
 
 class ListBox extends React.Component {
   render() {
-    if (this.props.vehicles.size === 0) {
+
+//debugger
+
+    if (this.props.items.size === 0) {
       return null;
     }
 
-    const items = this.props.vehicles.map((v) => (
+    const items = this.props.items.map((v) => (
       <li key={v.id}>
         <ListItem title= { v.name} />
       </li>
@@ -32,13 +33,9 @@ class ListBox extends React.Component {
 }
 
 ListBox.propTypes = {
-  vehicles: React.PropTypes.object.isRequired,
+  items: React.PropTypes.object.isRequired,
 };
-
-const mapState = (state) => ({
-  vehicles: fromFleetReducer.getVehicles(state),
-});
 
 const PureListBox = pure(ListBox);
 
-export default connect(mapState)(PureListBox);
+export default PureListBox;
