@@ -3,14 +3,7 @@
  * NOT USED FREQUENCY CONCEPTION.
  */
 function _calc(records) {
-  let totalDistance = 0;
-
-  for (let i = 0; i < records.length; i++) {
-    const record = records[i];
-    totalDistance += parseFloat(record.distance, 10);
-  }
-
-  return totalDistance.toFixed(3);
+  return records.distance !== undefined ? records.distance : 0;
 }
 
 const fields = [{
