@@ -6,7 +6,7 @@ import {
 const vehiclesInitialState = fromJS({
   list: new List(),
   devNumber: 23,
-  devDummy: {init:'none'},
+  devDummy: { init: 'none' },
   processedList: {},
 });
 

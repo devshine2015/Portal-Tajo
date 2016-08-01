@@ -36,7 +36,7 @@ const mapState = (state) => ({
 });
 
 MapAndList.propTypes = {
-  vehicles: React.PropTypes.object.isRequired,
+  vehicles: React.PropTypes.array.isRequired,
   locations: React.PropTypes.object.isRequired,
 };
 

@@ -30,7 +30,7 @@ class PowerListContainer extends React.Component {
 }
 
 PowerListContainer.propTypes = {
-  children: React.PropTypes.object.isRequired,
+  children: React.PropTypes.array.isRequired,
 };
 
 const PurePowerListContainer = pure(PowerListContainer);

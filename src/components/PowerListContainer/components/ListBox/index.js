@@ -9,9 +9,6 @@ import styles from './styles.css';
 
 class ListBox extends React.Component {
   render() {
-
-//debugger
-
     if (this.props.items.size === 0) {
       return null;
     }
@@ -33,7 +30,7 @@ class ListBox extends React.Component {
 }
 
 ListBox.propTypes = {
-  items: React.PropTypes.object.isRequired,
+  items: React.PropTypes.array.isRequired,
 };
 
 const PureListBox = pure(ListBox);
