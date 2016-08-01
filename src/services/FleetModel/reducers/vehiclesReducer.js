@@ -2,14 +2,12 @@ import { List, Map, fromJS } from 'immutable';
 import {
   vehiclesActions,
 } from '../actions';
-import DdcVehicleMaster from 'utils/model/ddcVehicleMaster';
 
 const vehiclesInitialState = fromJS({
   list: new List(),
   devNumber: 23,
   devDummy: {init:'none'},
   processedList: {},
-  container: new DdcVehicleMaster(),
 });
 
 function vehiclesReducer(state = vehiclesInitialState, action) {
