@@ -1,7 +1,7 @@
 import { List, fromJS } from 'immutable';
 import {
   vehiclesActions,
-//  webSocketActions,
+  socketActions,
 } from '../actions';
 
 const vehiclesInitialState = fromJS({
@@ -16,7 +16,7 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
               .set('processedList', fromJS(action.localVehicles));
     case vehiclesActions.FLEET_MODEL_VEHICLE_UPDATE:
       return state.setIn(['list', action.index], action.details);
-    case 'asdf': {  // webSocketActions.FLEET_MODEL_SOCKET_SET: {
+    case '_FIXME_FIX_ME_notGOOD_': {  // webSocketActions.FLEET_MODEL_SOCKET_SET: {
       const inStatus = action.statusObj;
       return state.setIn(['processedList', inStatus.id, 'pos'],
                       [inStatus.pos.latlon.lat, inStatus.pos.latlon.lng]);

@@ -1,5 +1,5 @@
 import api from 'utils/api';
-import { openFleetSocket } from './webSocketActions';
+import { openFleetSocket } from './socketActions';
 import {
   getFleetName,
   getAuthenticationSession,

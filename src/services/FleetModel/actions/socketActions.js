@@ -14,25 +14,26 @@ export const openFleetSocket = (fleet = undefined) => (dispatch, getState) =>
  **/
 function _openFleetSocket(dispatch, getState, fleetName = undefined) {
   const fleet = fleetName || getFleetName(getState());
-  const url = `${fleet}/location`;
+  const url = `${fleet}/status/monitor`;
+//    const base = `${HOST_BASE}/${url}`;
   const sessionId = getAuthenticationSession(getState());
   const optionalHeaders = {
     ['DRVR-SESSION']: sessionId,
   };
-
-  const fleetSocket = new WebSocket('ws://ddsdev.cloudapp.net:8080/engine/test/status/monitor');
+  // FIXME
+  // TODO:
+  // generate URL properly
+  const socketURL = 'ws://ddsdev.cloudapp.net:8080/engine/test/status/monitor';
+  const fleetSocket = new WebSocket(socketURL);
   fleetSocket.onmessage = (inEvent) => {
     const data = JSON.parse(inEvent.data);
     dispatch(_updateStatus(data.status[0]));
   };
-  // return api(url, { optionalHeaders })
-  //   .then(toJson)
-  //   .then(locations => {
-  //     dispatch(_locationsSet(locations));
-  //   });
 }
 
 const _updateStatus = (statusObj) => ({
-  type: 'asdf', // FLEET_MODEL_SOCKET_SET,
+  // FIXME
+  // TODO:
+  type: '_FIXME_FIX_ME_notGOOD_', // FLEET_MODEL_SOCKET_SET,
   statusObj,
 });
