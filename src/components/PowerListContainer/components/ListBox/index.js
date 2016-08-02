@@ -5,8 +5,12 @@ import ListItemVehicle from './../ListItemVehicle';
 import PowerFilter from './../PowerFilter';
 import styles from './styles.css';
 import * as ListEvents from 'components/PowerListContainer/events';
+import * as MapEvents from 'containers/MapFleet/events';
 //        <PowerFilter />
 
+const selectForMe = (meThis) => (id) => {
+  meThis.onSelect(id);
+};
 
 class ListBox extends React.Component {
   constructor(props) {
@@ -18,18 +22,20 @@ class ListBox extends React.Component {
   }
 
   onSelect(id) {
-    if(this.state.selectedItemId === id) {
-      return;
-    }
+    // if(this.state.selectedItemId === id) {
+    //   return;
+    // }
     this.props.hooks(ListEvents.LIST_ITEM_SELECTED, id);
     this.setState({ selectedItemId: id });
+
+    console.log('    >>>>>   ......   '+id);
   }
 
   render() {
     if (this.props.items.size === 0) {
       return null;
     }
-
+    this.props.setUpHooks(MapEvents.MAP_ITEM_SELECTED, selectForMe(this));
     const items = this.props.items.map((v) => (
       <li key={v.id}>
         <ListItemVehicle
@@ -38,7 +44,7 @@ class ListBox extends React.Component {
           isSelected={this.state.selectedItemId === v.id}
         />
       </li>
-    ));
+    ), this);
     return (
       <div className={styles.listBoxTopContainer}>
         <PowerFilter />
@@ -53,6 +59,7 @@ class ListBox extends React.Component {
 ListBox.propTypes = {
   items: React.PropTypes.array.isRequired,
   hooks: React.PropTypes.func.isRequired,
+  setUpHooks: React.PropTypes.func.isRequired,
 };
 
 const PureListBox = pure(ListBox);

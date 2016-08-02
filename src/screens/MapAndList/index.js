@@ -6,13 +6,12 @@ import SplitContainer from 'containers/SplitContainer';
 // import TheMap from 'components/Map';
 import PowerListContainer from 'components/PowerListContainer';
 import ListBox from 'components/PowerListContainer/components/ListBox/';
-import * as ListEvents from 'components/PowerListContainer/events';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 
 const setUpHooksForMe = function (meThis) {
-  return (inHook) => {
-    meThis.hooks[ListEvents.LIST_ITEM_SELECTED] = inHook;
+  return (hookId, inHook) => {
+    meThis.hooks[hookId] = inHook;
   };
 };
 const execHooksForMe = function (meThis) {
@@ -28,17 +27,21 @@ class MapAndList extends React.Component {
     this.hooks = {};
     this.selectedListHook = null;
   }
+  // { title: 'Locations', element: <ListBox title="GF" items={this.props.vehicles} hooks={execHooksForMe(this)} setUpHooks={setUpHooksForMe(this)} /> },
+  // { title: 'Drvrs', element: <ListBox title="DRIVER" items={this.props.vehicles} hooks={execHooksForMe(this)} setUpHooks={setUpHooksForMe(this)} /> }] }
 
   render() {
     return (
       <InnerPortal>
       <div className={styles.mapAndListContainer}>
         <PowerListContainer >
-        { [{ title: 'Vehicles', element: <ListBox title="CAR" items={this.props.vehicles} hooks={execHooksForMe(this)} /> },
-          { title: 'Locations', element: <ListBox title="GF" items={this.props.vehicles} hooks={execHooksForMe(this)} /> },
-          { title: 'Drvrs', element: <ListBox title="DRIVER" items={this.props.vehicles} hooks={execHooksForMe(this)} /> }] }
+        { [{ title: 'Vehicles', element:
+          <ListBox title="CAR" items={this.props.vehicles}
+            hooks={execHooksForMe(this)}
+            setUpHooks={setUpHooksForMe(this)}
+          /> }]}
         </PowerListContainer>
-        <SplitContainer setUpHooks={setUpHooksForMe(this)} />
+        <SplitContainer setUpHooks={setUpHooksForMe(this)} hooks={execHooksForMe(this)} />
       </div>
       </InnerPortal>
     );

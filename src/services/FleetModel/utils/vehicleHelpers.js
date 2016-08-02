@@ -8,6 +8,12 @@ function makeLocalVehicle(backEndObject) {
   const ln = -74.70 + Math.random() * 0.5;
   theVehicle.pos = [lt, ln];
   theVehicle.speed = 0;
+  // dist
+  theVehicle.dist = { total: 0, lastTrip: 0 };
+  //
+  theVehicle.temp = undefined;
+  //
+  theVehicle.lastUpdateTS = new Date(0, 0, 0);
   return theVehicle;
 }
 

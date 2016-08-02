@@ -15,4 +15,12 @@
     border-color: #259417;
     border-width: 1px;
       }
+  .listItem:hover .link{
+    color: rgb(0, 188, 212);
+  }
+  .link {
+    transition: color .2s;
+    color: #777;
+    font-size: 14px;
+  }
 }

@@ -18,9 +18,21 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
       return state.setIn(['list', action.index], action.details);
     case '_FIXME_FIX_ME_notGOOD_': {  // webSocketActions.FLEET_MODEL_SOCKET_SET: {
       const inStatus = action.statusObj;
-      return state.setIn(['processedList', inStatus.id, 'pos'],
-                      [inStatus.pos.latlon.lat, inStatus.pos.latlon.lng]);
-//      return state.setIn(['processedList', inStatus.id, 'name'], 'isUpdated');
+      let newState = state;
+      if (inStatus.temp !== undefined) {
+        newState = newState.setIn(['processedList', inStatus.id, 'temp'],
+          inStatus.temp.temperature);
+      }
+      if (inStatus.dist !== undefined) {
+        newState = newState.setIn(['processedList', inStatus.id, 'dist', 'total'],
+          inStatus.dist.total);
+        newState = newState.setIn(['processedList', inStatus.id, 'dist', 'lastTrip'],
+          inStatus.dist.lastTrip);
+      }
+      return newState.setIn(['processedList', inStatus.id, 'pos'],
+                      [inStatus.pos.latlon.lat, inStatus.pos.latlon.lng])
+                  .setIn(['processedList', inStatus.id, 'speed'],
+                                  inStatus.pos.speed);
     }
     default:
       return state;
@@ -39,17 +51,26 @@ export const getVehiclesEx = (state) => {
   }
   const jsObj = theObj.toJS();
   const aList = Object.values(jsObj);
-  return aList;
-};
-export const getVehicleByIdFunc = (state) => {
-  return function (id) {
-    const theObj = state.get('processedList');
-    if (theObj.size === 0) {
-      return null;
+  return aList.sort((a, b) => {
+    const nameA = a.name.toUpperCase(); // ignore upper and lowercase
+    const nameB = b.name.toUpperCase(); // ignore upper and lowercase
+    if (nameA < nameB) {
+      return -1;
     }
-    const jsObj = theObj.get(id).toJS();
-    return jsObj;
-  };
+    if (nameA > nameB) {
+      return 1;
+    }
+    return 0;
+  });
+//  return aList;
+};
+export const getVehicleByIdFunc = (state) => (id) => {
+  const theObj = state.get('processedList');
+  if (theObj.size === 0) {
+    return null;
+  }
+  const jsObj = theObj.get(id).toJS();
+  return jsObj;
 };
 
 // export const getVehiclesEx = (state) =>

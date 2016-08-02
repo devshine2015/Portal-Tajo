@@ -37,7 +37,7 @@ class SplitContainer extends React.Component {
         <SplitSwitch clickCallback={this.onSwithClick} />
         <SplitBox
           mySplitState = {this._getSplitStateForBox(0)}
-          content = {<TheMap setUpHooks={this.props.setUpHooks} />}
+          content = {<TheMap setUpHooks={this.props.setUpHooks} hooks={this.props.hooks} />}
         />
         <SplitBox
           mySplitState = {this._getSplitStateForBox(1)}
@@ -50,6 +50,7 @@ class SplitContainer extends React.Component {
 
 SplitContainer.propTypes = {
   setUpHooks: React.PropTypes.func.isRequired,
+  hooks: React.PropTypes.func.isRequired,
 };
 
 const PureSplitContainer = pure(SplitContainer);

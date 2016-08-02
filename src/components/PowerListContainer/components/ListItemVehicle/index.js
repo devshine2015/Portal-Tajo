@@ -7,12 +7,30 @@ class ListItemVehicle extends React.Component {
     this.props.onClick(this.props.vehicleObj.id);
   }
   render() {
+    // collapsed view
+    if (!this.props.isSelected) {
+      return (
+        <div
+          className={styles.listItem}
+          onClick={this.onClick}
+        >
+          <div > {this.props.vehicleObj.name} </div>
+        </div>
+      );
+    }
+    // selected/exapnded view
     return (
       <div
         className={ this.props.isSelected ? styles.listItemSelected : styles.listItem}
         onClick={this.onClick}
       >
         <div > {this.props.vehicleObj.name} </div>
+        <div className={styles.link}>
+          {`speed: ${this.props.vehicleObj.speed.toFixed(2)}`}
+        </div>
+        <div className={styles.link}>
+          {`dist: ${this.props.vehicleObj.dist.lastTrip.toFixed(2)}`}
+        </div>
       </div>
     );
   }
