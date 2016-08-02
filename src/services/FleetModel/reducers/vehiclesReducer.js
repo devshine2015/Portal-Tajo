@@ -1,31 +1,27 @@
-import { List, Map, fromJS } from 'immutable';
+import { List, fromJS } from 'immutable';
 import {
   vehiclesActions,
+//  webSocketActions,
 } from '../actions';
 
 const vehiclesInitialState = fromJS({
   list: new List(),
-  devNumber: 23,
-  devDummy: { init: 'none' },
   processedList: {},
 });
 
 function vehiclesReducer(state = vehiclesInitialState, action) {
   switch (action.type) {
     case vehiclesActions.FLEET_MODEL_VEHICLES_SET:
-//      state.set('container', action.vehiclesContainer);
-      // const aMap = new Map(action.localVehicles);
-      // const locaDD = { asdf: 'qwert', srt01: 'zxcvbn' };
-      // let aState=state.set('devDummy', locaDD);
-      // aState = aState.set('devNumber', 61);
-      //
-      // aState = aState.set('processedList', action.localVehicles);
-      // const aList = Object.values(action.localVehicles);
-      // debugger;
       return state.set('list', new List(action.vehicles))
-              .set('processedList', action.localVehicles);
+              .set('processedList', fromJS(action.localVehicles));
     case vehiclesActions.FLEET_MODEL_VEHICLE_UPDATE:
       return state.setIn(['list', action.index], action.details);
+    case 'asdf': {  // webSocketActions.FLEET_MODEL_SOCKET_SET: {
+      const inStatus = action.statusObj;
+      return state.setIn(['processedList', inStatus.id, 'pos'],
+                      [inStatus.pos.latlon.lat, inStatus.pos.latlon.lng]);
+//      return state.setIn(['processedList', inStatus.id, 'name'], 'isUpdated');
+    }
     default:
       return state;
   }
@@ -37,16 +33,24 @@ export const getVehicles = (state) =>
   state.get('list');
 
 export const getVehiclesEx = (state) => {
-  const derList = state.get('list');
-  const ddd = state.get('devDummy');
-  const ddN = state.get('devNumber');
-  const ddV = state.get('devNone');
   const theObj = state.get('processedList');
   if (theObj.size === 0) {
     return [];
   }
-  const aList = Object.values(theObj);
+  const jsObj = theObj.toJS();
+  const aList = Object.values(jsObj);
   return aList;
 };
+export const getVehicleByIdFunc = (state) => {
+  return function (id) {
+    const theObj = state.get('processedList');
+    if (theObj.size === 0) {
+      return null;
+    }
+    const jsObj = theObj.get(id).toJS();
+    return jsObj;
+  };
+};
+
 // export const getVehiclesEx = (state) =>
 //     Object.values(state.get('processedList'));

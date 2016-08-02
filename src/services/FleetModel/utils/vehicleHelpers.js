@@ -3,6 +3,11 @@ function makeLocalVehicle(backEndObject) {
   const theVehicle = {};
   theVehicle.name = backEndObject.name;
   theVehicle.id = backEndObject.id;
+  // latlng
+  const lt = 39.75 + Math.random() * 0.5;
+  const ln = -74.70 + Math.random() * 0.5;
+  theVehicle.pos = [lt, ln];
+  theVehicle.speed = 0;
   return theVehicle;
 }
 

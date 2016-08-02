@@ -5,22 +5,48 @@ import InnerPortal from 'containers/InnerPortal';
 import SplitContainer from 'containers/SplitContainer';
 // import TheMap from 'components/Map';
 import PowerListContainer from 'components/PowerListContainer';
-import PowerListBox from 'components/PowerListContainer/components/ListBox/';
+import ListBox from 'components/PowerListContainer/components/ListBox/';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 
+const setUpHooksForMe = function (meThis) {
+  return (inHook) => {
+    meThis.selectedListHook = inHook;
+  };
+};
+const execHooksForMe = function (meThis) {
+  return (id) => {
+    meThis.selectedListHook(id);
+  };
+};
 
 class MapAndList extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.selectedListHook = null;
+  }
+
+  setListSelectHook(mapObj) {
+    debugger
+    this.selectedListHook = mapObj;
+  }
+
+  listItemSelected(itemId) {
+    debugger
+    this.selectedListHook(itemId);
+  }
+
   render() {
     return (
       <InnerPortal>
       <div className={styles.mapAndListContainer}>
         <PowerListContainer >
-        { [{ title: 'Vehicles', element: <PowerListBox title="CAR" items={this.props.vehicles} /> },
-          { title: 'Locations', element: <PowerListBox title="GF" items={this.props.locations} /> },
-          { title: 'Drvrs', element: <PowerListBox title="DRIVER" items={this.props.vehicles} /> }] }
+        { [{ title: 'Vehicles', element: <ListBox title="CAR" items={this.props.vehicles} onSelect={execHooksForMe(this)} /> },
+          { title: 'Locations', element: <ListBox title="GF" items={this.props.vehicles} onSelect={this.listItemSelected} /> },
+          { title: 'Drvrs', element: <ListBox title="DRIVER" items={this.props.vehicles} onSelect={this.listItemSelected} /> }] }
         </PowerListContainer>
-        <SplitContainer />
+        <SplitContainer setUpHooks={setUpHooksForMe(this)} />
       </div>
       </InnerPortal>
     );

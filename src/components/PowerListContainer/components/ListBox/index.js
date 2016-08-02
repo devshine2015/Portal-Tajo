@@ -1,6 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
-import ListItem from './../ListItem';
+// import ListItem from './../ListItem';
+import ListItemVehicle from './../ListItemVehicle';
 import PowerFilter from './../PowerFilter';
 import styles from './styles.css';
 
@@ -15,7 +16,7 @@ class ListBox extends React.Component {
 
     const items = this.props.items.map((v) => (
       <li key={v.id}>
-        <ListItem title= { v.name} />
+        <ListItemVehicle vehicleObj={v} onClick={this.props.onSelect} />
       </li>
     ));
     return (
@@ -31,6 +32,7 @@ class ListBox extends React.Component {
 
 ListBox.propTypes = {
   items: React.PropTypes.array.isRequired,
+  onSelect: React.PropTypes.func.isRequired,
 };
 
 const PureListBox = pure(ListBox);

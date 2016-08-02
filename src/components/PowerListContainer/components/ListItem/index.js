@@ -4,6 +4,9 @@ import styles from './styles.css';
 
 
 class ListItem extends React.Component {
+  onClick = () => {
+//    this.props.onClick(this.props.index);
+  }
   render() {
     return (
       <div className={styles.listItem}>

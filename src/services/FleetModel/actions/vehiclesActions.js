@@ -1,10 +1,10 @@
 import api from 'utils/api';
+import { openFleetSocket } from './webSocketActions';
 import {
   getFleetName,
   getAuthenticationSession,
 } from 'containers/App/reducer';
-//import DdcVehicleMaster from 'utils/model/ddcVehicleMaster';
-import processVehicels from 'utils/model/vehicleHelpers';
+import processVehicels from '../utils/vehicleHelpers';
 
 export const FLEET_MODEL_VEHICLES_SET = 'portal/services/FLEET_MODEL_VEHICLES_SET';
 export const FLEET_MODEL_VEHICLE_UPDATE = 'portal/services/FLEET_MODEL_VEHICLE_UPDATE';
@@ -33,6 +33,7 @@ function _fetchVehicles(dispatch, getState, fleetName = undefined) {
       //   vehiclesContainer.add(inVehicle);
       // });
       const localHehicles = processVehicels(vehicles);
+      dispatch(openFleetSocket(fleet));
       dispatch(_vehiclesSet(vehicles, localHehicles));
     });
 }

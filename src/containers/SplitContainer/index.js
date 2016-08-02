@@ -3,7 +3,7 @@ import pure from 'recompose/pure';
 import styles from './styles.css';
 import SplitSwitch from './components/SplitSwitch';
 import SplitBox from './components/SplitBox';
-import TheMap from 'components/Map';
+import TheMap from 'containers/MapFleet';
 
 
 class SplitContainer extends React.Component {
@@ -21,7 +21,7 @@ class SplitContainer extends React.Component {
     this.setState({ splitState: selectIdx });
   };
 
-  _getSplitStateForBox = function (boxIdx) {
+  _getSplitStateForBox = (boxIdx) => {
     if (boxIdx === 0) {
       return this.state.splitState;
     }
@@ -37,7 +37,7 @@ class SplitContainer extends React.Component {
         <SplitSwitch clickCallback={this.onSwithClick} />
         <SplitBox
           mySplitState = {this._getSplitStateForBox(0)}
-          content = {<TheMap />}
+          content = {<TheMap setUpHooks={this.props.setUpHooks} />}
         />
         <SplitBox
           mySplitState = {this._getSplitStateForBox(1)}
@@ -47,6 +47,10 @@ class SplitContainer extends React.Component {
     );
   }
 }
+
+SplitContainer.propTypes = {
+  setUpHooks: React.PropTypes.func.isRequired,
+};
 
 const PureSplitContainer = pure(SplitContainer);
 
