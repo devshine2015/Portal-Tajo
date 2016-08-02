@@ -6,17 +6,18 @@ import SplitContainer from 'containers/SplitContainer';
 // import TheMap from 'components/Map';
 import PowerListContainer from 'components/PowerListContainer';
 import ListBox from 'components/PowerListContainer/components/ListBox/';
+import * as ListEvents from 'components/PowerListContainer/events';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 
 const setUpHooksForMe = function (meThis) {
   return (inHook) => {
-    meThis.selectedListHook = inHook;
+    meThis.hooks[ListEvents.LIST_ITEM_SELECTED] = inHook;
   };
 };
 const execHooksForMe = function (meThis) {
-  return (id) => {
-    meThis.selectedListHook(id);
+  return (hookId, id) => {
+    meThis.hooks[hookId](id);
   };
 };
 
@@ -24,17 +25,8 @@ class MapAndList extends React.Component {
 
   constructor(props) {
     super(props);
+    this.hooks = {};
     this.selectedListHook = null;
-  }
-
-  setListSelectHook(mapObj) {
-    debugger
-    this.selectedListHook = mapObj;
-  }
-
-  listItemSelected(itemId) {
-    debugger
-    this.selectedListHook(itemId);
   }
 
   render() {
@@ -42,9 +34,9 @@ class MapAndList extends React.Component {
       <InnerPortal>
       <div className={styles.mapAndListContainer}>
         <PowerListContainer >
-        { [{ title: 'Vehicles', element: <ListBox title="CAR" items={this.props.vehicles} onSelect={execHooksForMe(this)} /> },
-          { title: 'Locations', element: <ListBox title="GF" items={this.props.vehicles} onSelect={this.listItemSelected} /> },
-          { title: 'Drvrs', element: <ListBox title="DRIVER" items={this.props.vehicles} onSelect={this.listItemSelected} /> }] }
+        { [{ title: 'Vehicles', element: <ListBox title="CAR" items={this.props.vehicles} hooks={execHooksForMe(this)} /> },
+          { title: 'Locations', element: <ListBox title="GF" items={this.props.vehicles} hooks={execHooksForMe(this)} /> },
+          { title: 'Drvrs', element: <ListBox title="DRIVER" items={this.props.vehicles} hooks={execHooksForMe(this)} /> }] }
         </PowerListContainer>
         <SplitContainer setUpHooks={setUpHooksForMe(this)} />
       </div>

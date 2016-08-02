@@ -4,11 +4,27 @@ import pure from 'recompose/pure';
 import ListItemVehicle from './../ListItemVehicle';
 import PowerFilter from './../PowerFilter';
 import styles from './styles.css';
-
+import * as ListEvents from 'components/PowerListContainer/events';
 //        <PowerFilter />
 
 
 class ListBox extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedItemId: undefined,
+    };
+    this.onSelectCallback = this.onSelect.bind(this);
+  }
+
+  onSelect(id) {
+    if(this.state.selectedItemId === id) {
+      return;
+    }
+    this.props.hooks(ListEvents.LIST_ITEM_SELECTED, id);
+    this.setState({ selectedItemId: id });
+  }
+
   render() {
     if (this.props.items.size === 0) {
       return null;
@@ -16,7 +32,11 @@ class ListBox extends React.Component {
 
     const items = this.props.items.map((v) => (
       <li key={v.id}>
-        <ListItemVehicle vehicleObj={v} onClick={this.props.onSelect} />
+        <ListItemVehicle
+          vehicleObj={v}
+          onClick={this.onSelectCallback}
+          isSelected={this.state.selectedItemId === v.id}
+        />
       </li>
     ));
     return (
@@ -32,7 +52,7 @@ class ListBox extends React.Component {
 
 ListBox.propTypes = {
   items: React.PropTypes.array.isRequired,
-  onSelect: React.PropTypes.func.isRequired,
+  hooks: React.PropTypes.func.isRequired,
 };
 
 const PureListBox = pure(ListBox);
