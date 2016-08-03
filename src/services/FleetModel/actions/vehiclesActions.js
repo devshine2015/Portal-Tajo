@@ -32,9 +32,9 @@ function _fetchVehicles(dispatch, getState, fleetName = undefined) {
       // vehicles.forEach((inVehicle) => {
       //   vehiclesContainer.add(inVehicle);
       // });
-      const localHehicles = processVehicels(vehicles);
+      const localVehicles = processVehicels(vehicles);
+      dispatch(_vehiclesSet(vehicles, localVehicles));
       dispatch(openFleetSocket(fleet));
-      dispatch(_vehiclesSet(vehicles, localHehicles));
     });
 }
 

@@ -6,6 +6,7 @@ require('mapbox.js'); // <-- auto-attaches to window.L
 require('leaflet/dist/leaflet.css');
 
 import MapVehicle from './components/MapVehicle';
+import MapLocation from './components/MapLocation';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { ZERO_LOCATION } from './../../utils/constants';
@@ -16,8 +17,8 @@ import * as MapEvents from './events';
 const highLightForMe = (meThis) => (id) => {
   meThis.highLightMarker(id);
 };
-const selectForMe = (meThis) => (id) => {
-  meThis.selectMarker(id);
+const selectForMe = (meThis, hookId) => (id) => {
+  meThis.selectMarker(hookId, id);
 };
 
 class MapFleet extends React.Component {
@@ -54,19 +55,23 @@ class MapFleet extends React.Component {
     this.theMap.panTo(theVehicle.pos);
   }
 // when clicked
-  selectMarker(selectedId) {
-    this.props.hooks(MapEvents.MAP_ITEM_SELECTED, selectedId);
+  selectMarker(hookId, selectedId) {
+    this.props.hooks(hookId, selectedId);
   }
 
   render() {
-    this.props.setUpHooks(ListEvents.LIST_ITEM_SELECTED, highLightForMe(this));
+    this.props.setUpHooks(ListEvents.LIST_VEHICLE_SELECTED, highLightForMe(this));
     const vehicles = this.props.vehicles.map((v) => (
-      <MapVehicle key={v.id} theMap={this.theMap} theVehicle={v} onClick={selectForMe(this)} />
+      <MapVehicle key={v.id} theMap={this.theMap} theVehicle={v} onClick={selectForMe(this, MapEvents.MAP_VEHICLE_SELECTED)} />
+    ));
+    const locations = this.props.locations.map((v) => (
+      <MapLocation key={v.id} theMap={this.theMap} theLocation={v} onClick={selectForMe(this, MapEvents.MAP_LOCATION_SELECTED)} />
     ));
 
     return (
       <div className = {styles.mapContainer}>
       {vehicles}
+      {locations}
       </div>
     );
   }
@@ -76,13 +81,13 @@ const PureMapFleet = pure(MapFleet);
 
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesEx(state),
-  locations: fromFleetReducer.getLocations(state),
+  locations: fromFleetReducer.getLocationsEx(state),
   vehicleById: fromFleetReducer.getVehicleByIdFunc(state),
 });
 
 MapFleet.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
-  locations: React.PropTypes.object.isRequired,
+  locations: React.PropTypes.array.isRequired,
   setUpHooks: React.PropTypes.func.isRequired,
   hooks: React.PropTypes.func.isRequired,
   vehicleById: React.PropTypes.func.isRequired,

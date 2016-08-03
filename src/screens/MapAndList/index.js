@@ -5,6 +5,7 @@ import InnerPortal from 'containers/InnerPortal';
 import SplitContainer from 'containers/SplitContainer';
 // import TheMap from 'components/Map';
 import PowerListContainer from 'components/PowerListContainer';
+import * as ListTypes from 'components/PowerListContainer/types';
 import ListBox from 'components/PowerListContainer/components/ListBox/';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
@@ -16,7 +17,9 @@ const setUpHooksForMe = function (meThis) {
 };
 const execHooksForMe = function (meThis) {
   return (hookId, id) => {
-    meThis.hooks[hookId](id);
+    if (meThis.hooks[hookId] !== undefined && meThis.hooks[hookId] !== null) {
+      meThis.hooks[hookId](id);
+    }
   };
 };
 
@@ -29,17 +32,18 @@ class MapAndList extends React.Component {
   }
   // { title: 'Locations', element: <ListBox title="GF" items={this.props.vehicles} hooks={execHooksForMe(this)} setUpHooks={setUpHooksForMe(this)} /> },
   // { title: 'Drvrs', element: <ListBox title="DRIVER" items={this.props.vehicles} hooks={execHooksForMe(this)} setUpHooks={setUpHooksForMe(this)} /> }] }
+  // { [{ listType: ListTypes.LIST_VEHICLES, items: this.props.vehicles },
+  //     { listType: ListTypes.LIST_LOCATIONS, items: this.props.locations }]
+  // }
 
   render() {
     return (
       <InnerPortal>
       <div className={styles.mapAndListContainer}>
-        <PowerListContainer >
-        { [{ title: 'Vehicles', element:
-          <ListBox title="CAR" items={this.props.vehicles}
-            hooks={execHooksForMe(this)}
-            setUpHooks={setUpHooksForMe(this)}
-          /> }]}
+        <PowerListContainer hooks={execHooksForMe(this)} setUpHooks={setUpHooksForMe(this)}>
+        { [{ listType: ListTypes.LIST_VEHICLES, items: this.props.vehicles },
+            { listType: ListTypes.LIST_LOCATIONS, items: this.props.locations }]
+        }
         </PowerListContainer>
         <SplitContainer setUpHooks={setUpHooksForMe(this)} hooks={execHooksForMe(this)} />
       </div>
@@ -53,12 +57,12 @@ class MapAndList extends React.Component {
 
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesEx(state),
-  locations: fromFleetReducer.getLocations(state),
+  locations: fromFleetReducer.getLocationsEx(state),
 });
 
 MapAndList.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
-  locations: React.PropTypes.object.isRequired,
+  locations: React.PropTypes.array.isRequired,
 };
 
 const PureMapAndList = pure(MapAndList);
