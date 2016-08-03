@@ -4,9 +4,9 @@ import styles from './styles.css';
 import InnerPortal from 'containers/InnerPortal';
 import SplitContainer from 'containers/SplitContainer';
 // import TheMap from 'components/Map';
-import PowerListContainer from 'components/PowerListContainer';
-import * as ListTypes from 'components/PowerListContainer/types';
-import ListBox from 'components/PowerListContainer/components/ListBox/';
+import PowerListContainer from 'containers/PowerList';
+import * as ListTypes from 'containers/PowerList/types';
+import ListBox from 'containers/PowerList/components/ListBox/';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 
@@ -30,11 +30,6 @@ class MapAndList extends React.Component {
     this.hooks = {};
     this.selectedListHook = null;
   }
-  // { title: 'Locations', element: <ListBox title="GF" items={this.props.vehicles} hooks={execHooksForMe(this)} setUpHooks={setUpHooksForMe(this)} /> },
-  // { title: 'Drvrs', element: <ListBox title="DRIVER" items={this.props.vehicles} hooks={execHooksForMe(this)} setUpHooks={setUpHooksForMe(this)} /> }] }
-  // { [{ listType: ListTypes.LIST_VEHICLES, items: this.props.vehicles },
-  //     { listType: ListTypes.LIST_LOCATIONS, items: this.props.locations }]
-  // }
 
   render() {
     return (
@@ -42,7 +37,7 @@ class MapAndList extends React.Component {
       <div className={styles.mapAndListContainer}>
         <PowerListContainer hooks={execHooksForMe(this)} setUpHooks={setUpHooksForMe(this)}>
         { [{ listType: ListTypes.LIST_VEHICLES, items: this.props.vehicles },
-            { listType: ListTypes.LIST_LOCATIONS, items: this.props.locations }]
+           { listType: ListTypes.LIST_LOCATIONS, items: this.props.locations }]
         }
         </PowerListContainer>
         <SplitContainer setUpHooks={setUpHooksForMe(this)} hooks={execHooksForMe(this)} />

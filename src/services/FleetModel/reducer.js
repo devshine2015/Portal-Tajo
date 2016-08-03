@@ -19,3 +19,5 @@ export const getLocations = (state) =>
   fromLocationsReducer.getLocations(state.getIn(['fleet', 'locations']));
 export const getLocationsEx = (state) =>
   fromLocationsReducer.getLocationsEx(state.getIn(['fleet', 'locations']));
+export const getLocationByIdFunc = (state) =>
+  fromLocationsReducer.getLocationByIdFunc(state.getIn(['fleet', 'locations']));

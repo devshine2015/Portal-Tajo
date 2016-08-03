@@ -14,12 +14,21 @@ class MapVehicle extends React.Component {
 
   componentDidMount() {
     this.theMap = this.props.theMap;
-    this.theMarker = window.L.marker(this.props.theVehicle.pos);
+    this.theMarker = window.L.marker(this.props.theVehicle.pos,
+      { title: this.props.theVehicle.name });
     const clickHandle = ((inThis) => (e) => {
       inThis.props.onClick(inThis.props.theVehicle.id);
 //      console.log('MARKER clicked ' + inThis.props.theVehicle.id);
     })(this);
     this.theMarker.on('click', clickHandle);
+//    this.theMarker.bindPopup('the CAR');
+
+    // const hoverHandle = ((inThis) => (e) => {
+    //   inThis.theMarker.openPopup();
+    // })(this);
+    // this.theMarker.on('mouseover', hoverHandle);
+    // // this.theMarker.on('mouseout', (e) => {
+    // // });
     this.theMarker.addTo(this.theMap);
   }
 

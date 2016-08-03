@@ -5,7 +5,7 @@ import ListItemVehicle from './../ListItemVehicle';
 import ListItemLocation from './../ListItemLocation';
 import PowerFilter from './../PowerFilter';
 import styles from './styles.css';
-import * as ListEvents from 'components/PowerListContainer/events';
+import * as ListEvents from 'containers/PowerList/events';
 import * as MapEvents from 'containers/MapFleet/events';
 import * as ListTypes from './../../types';
 //        <PowerFilter />

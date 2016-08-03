@@ -1,5 +1,5 @@
 import React from 'react';
-import ListBox from 'components/PowerListContainer/components/ListBox/';
+import ListBox from 'containers/PowerList/components/ListBox/';
 
 export const LIST_VEHICLES = 'list.type.vehicels';
 export const LIST_LOCATIONS = 'list.type.locations';

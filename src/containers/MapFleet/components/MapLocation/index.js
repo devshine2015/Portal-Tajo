@@ -14,7 +14,8 @@ class MapLocation extends React.Component {
 
   componentDidMount() {
     this.theMap = this.props.theMap;
-    this.theMarker = window.L.circleMarker(this.props.theLocation.pos);
+    this.theMarker = window.L.circleMarker(this.props.theLocation.pos,
+      { title: this.props.theLocation.name });
     const clickHandle = ((inThis) => (e) => {
       inThis.props.onClick(inThis.props.theLocation.id);
 //      console.log('MARKER clicked ' + inThis.props.theVehicle.id);
@@ -39,6 +40,7 @@ MapLocation.propTypes = {
   theMap: React.PropTypes.object,
   theLocation: React.PropTypes.object,
   onClick: React.PropTypes.func.isRequired,
+  isSelected: React.PropTypes.bool.isRequired,
 };
 const PureMapLocation = pure(MapLocation);
 

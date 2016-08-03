@@ -32,3 +32,15 @@ export const getLocationsEx = (state) => {
   const aList = Object.values(jsObj);
   return aList;
 };
+
+export const getLocationByIdFunc = (state) => (id) => {
+  const theObj = state.get('processedList');
+  if (theObj.size === 0) {
+    return null;
+  }
+  const jsObj = theObj.get(id);
+  if (jsObj === undefined) {
+    return null;
+  }
+  return jsObj.toJS();
+};

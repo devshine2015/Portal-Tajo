@@ -69,8 +69,11 @@ export const getVehicleByIdFunc = (state) => (id) => {
   if (theObj.size === 0) {
     return null;
   }
-  const jsObj = theObj.get(id).toJS();
-  return jsObj;
+  const jsObj = theObj.get(id);
+  if (jsObj === undefined) {
+    return null;
+  }
+  return jsObj.toJS();
 };
 
 // export const getVehiclesEx = (state) =>
