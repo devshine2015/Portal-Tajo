@@ -25,6 +25,9 @@ class ListItemLocation extends React.Component {
         onClick={this.onClick}
       >
         <div > {this.props.locationObj.name} </div>
+        <div className={styles.link}>
+          {`Radius: ${this.props.locationObj.radius.toFixed(0)} m`}
+        </div>
       </div>
     );
   }

@@ -10,6 +10,7 @@ class MapLocation extends React.Component {
     super(props);
     this.theMap = null;
     this.theMarker = null;
+    this.theCircle = null;
   }
 
   componentDidMount() {
@@ -22,6 +23,8 @@ class MapLocation extends React.Component {
     })(this);
     this.theMarker.on('click', clickHandle);
     this.theMarker.addTo(this.theMap);
+
+    this.theCircle = window.L.circle(this.props.theLocation.pos, this.props.theLocation.radius);
   }
 
   setPosition(latLng) {
@@ -31,6 +34,13 @@ class MapLocation extends React.Component {
   render() {
     if (this.theMarker !== null) {
       this.setPosition(this.props.theLocation.pos);
+      if (this.props.isSelected) {
+        this.theMap.addLayer(this.theCircle);
+      } else {
+        if (this.theMap.hasLayer(this.theCircle)) {
+          this.theMap.removeLayer(this.theCircle);
+        }
+      }
     }
     return false;
   }

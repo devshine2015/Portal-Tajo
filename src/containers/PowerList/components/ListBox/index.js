@@ -28,8 +28,6 @@ class ListBox extends React.Component {
     // }
     this.props.hooks(hookId, id);
     this.setState({ selectedItemId: id });
-
-//    console.log('    >>>>>   ......   '+id);
   }
   render() {
     if (this.props.items.size === 0) {

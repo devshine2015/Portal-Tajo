@@ -26,10 +26,10 @@ class ListItemVehicle extends React.Component {
       >
         <div > {this.props.vehicleObj.name} </div>
         <div className={styles.link}>
-          {`speed: ${this.props.vehicleObj.speed.toFixed(2)}`}
+          {`Speed: ${this.props.vehicleObj.speed.toFixed(2)} km/h`}
         </div>
         <div className={styles.link}>
-          {`dist: ${this.props.vehicleObj.dist.lastTrip.toFixed(2)}`}
+          {`Trip dist: ${(this.props.vehicleObj.dist.lastTrip / 1000).toFixed(2)} km`}
         </div>
       </div>
     );

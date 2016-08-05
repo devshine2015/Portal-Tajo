@@ -14,9 +14,6 @@ import { ZERO_LOCATION } from './../../utils/constants';
 import * as ListEvents from 'containers/PowerList/events';
 import * as MapEvents from './events';
 
-const highLightForMe = (meThis) => (id) => {
-  meThis.highLightMarker(id);
-};
 const selectForMe = (meThis, hookId) => (id) => {
   meThis.selectMarker(hookId, id);
 };
@@ -43,19 +40,21 @@ class MapFleet extends React.Component {
     this.forceUpdate();
 
     window.setTimeout(
-     (function (map) {
-       return () => {
-         map.invalidateSize(true);
-       };
-     }(this.theMap)),
+     (((map) => () => {
+       map.invalidateSize(true);
+     })(this.theMap)),
       500);
   }
+
 
 // when selected from the list
   highLightMarker(selectedId) {
     let theSelectedObj = this.props.vehicleById(selectedId);
     if (theSelectedObj === null) {
       theSelectedObj = this.props.locationById(selectedId);
+      this.setState({ selectedLocationId: selectedId });
+    } else {
+      this.setState({ selectedVehicleId: selectedId });
     }
     this.theMap.panTo(theSelectedObj.pos);
   }
@@ -70,10 +69,21 @@ class MapFleet extends React.Component {
     this.props.setUpHooks(ListEvents.LIST_LOC_SELECTED,
       ((meThis) => (id) => { meThis.highLightMarker(id); })(this));
     const vehicles = this.props.vehicles.map((v) => (
-      <MapVehicle key={v.id} theMap={this.theMap} theVehicle={v} onClick={selectForMe(this, MapEvents.MAP_VEHICLE_SELECTED)} />
+      <MapVehicle
+        key={v.id}
+        theMap={this.theMap}
+        theVehicle={v}
+        onClick={selectForMe(this, MapEvents.MAP_VEHICLE_SELECTED)}
+      />
     ));
     const locations = this.props.locations.map((v) => (
-      <MapLocation key={v.id} theMap={this.theMap} theLocation={v} onClick={selectForMe(this, MapEvents.MAP_LOCATION_SELECTED)} />
+      <MapLocation
+        key={v.id}
+        isSelected={this.state.selectedLocationId === v.id}
+        theMap={this.theMap}
+        theLocation={v}
+        onClick={selectForMe(this, MapEvents.MAP_LOCATION_SELECTED)}
+      />
     ));
 
     return (

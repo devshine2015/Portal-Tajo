@@ -1,8 +1,6 @@
 import { List, fromJS } from 'immutable';
-import {
-  vehiclesActions,
-  socketActions,
-} from '../actions';
+import * as vehiclesActions from '../actions/vehiclesActions';
+import * as socketActions from '../actions/socketActions';
 
 const vehiclesInitialState = fromJS({
   list: new List(),
@@ -11,12 +9,24 @@ const vehiclesInitialState = fromJS({
 
 function vehiclesReducer(state = vehiclesInitialState, action) {
   switch (action.type) {
-    case vehiclesActions.FLEET_MODEL_VEHICLES_SET:
+    case vehiclesActions.FLEET_MODEL_VEHICLES_SET: {
+      const immtbl = fromJS(action.localVehicles);
+      const sorted = immtbl.sort((a, b) => {
+        const nameA = a.toJS().name.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.toJS().name.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+      });
       return state.set('list', new List(action.vehicles))
-              .set('processedList', fromJS(action.localVehicles));
+              .set('processedList', sorted);}
     case vehiclesActions.FLEET_MODEL_VEHICLE_UPDATE:
       return state.setIn(['list', action.index], action.details);
-    case '_FIXME_FIX_ME_notGOOD_': {  // webSocketActions.FLEET_MODEL_SOCKET_SET: {
+    case socketActions.FLEET_MODEL_SOCKET_SET: {
       const inStatus = action.statusObj;
       let newState = state;
       if (inStatus.temp !== undefined) {
@@ -51,18 +61,18 @@ export const getVehiclesEx = (state) => {
   }
   const jsObj = theObj.toJS();
   const aList = Object.values(jsObj);
-  return aList.sort((a, b) => {
-    const nameA = a.name.toUpperCase(); // ignore upper and lowercase
-    const nameB = b.name.toUpperCase(); // ignore upper and lowercase
-    if (nameA < nameB) {
-      return -1;
-    }
-    if (nameA > nameB) {
-      return 1;
-    }
-    return 0;
-  });
-//  return aList;
+  // return aList.sort((a, b) => {
+  //   const nameA = a.name.toUpperCase(); // ignore upper and lowercase
+  //   const nameB = b.name.toUpperCase(); // ignore upper and lowercase
+  //   if (nameA < nameB) {
+  //     return -1;
+  //   }
+  //   if (nameA > nameB) {
+  //     return 1;
+  //   }
+  //   return 0;
+  // });
+  return aList;
 };
 export const getVehicleByIdFunc = (state) => (id) => {
   const theObj = state.get('processedList');

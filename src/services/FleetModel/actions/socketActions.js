@@ -27,13 +27,15 @@ function _openFleetSocket(dispatch, getState, fleetName = undefined) {
   const fleetSocket = new WebSocket(socketURL);
   fleetSocket.onmessage = (inEvent) => {
     const data = JSON.parse(inEvent.data);
-    dispatch(_updateStatus(data.status[0]));
+    if (data.status.lengh === 1) {
+      dispatch(_updateStatus(data.status[0]));
+    } else {
+      data.status.forEach((inSt) => {dispatch(_updateStatus(inSt));});
+    }
   };
 }
 
 const _updateStatus = (statusObj) => ({
-  // FIXME
-  // TODO:
-  type: '_FIXME_FIX_ME_notGOOD_', // FLEET_MODEL_SOCKET_SET,
+  type: FLEET_MODEL_SOCKET_SET,
   statusObj,
 });
