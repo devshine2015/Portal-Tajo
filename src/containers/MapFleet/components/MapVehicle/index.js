@@ -14,6 +14,14 @@ class MapVehicle extends React.Component {
 
   componentDidMount() {
     this.theMap = this.props.theMap;
+    this.createMarker();
+    // this.theMarker.addTo(this.theMap);
+  }
+
+  setPosition(latLng) {
+    this.theMarker.setLatLng(latLng);
+  }
+  createMarker() {
     this.theMarker = window.L.marker(this.props.theVehicle.pos,
       { title: this.props.theVehicle.name });
     const clickHandle = ((inThis) => (e) => {
@@ -29,16 +37,23 @@ class MapVehicle extends React.Component {
     // this.theMarker.on('mouseover', hoverHandle);
     // // this.theMarker.on('mouseout', (e) => {
     // // });
-    this.theMarker.addTo(this.theMap);
   }
-
-  setPosition(latLng) {
-    this.theMarker.setLatLng(latLng);
+  toggle(doShow) {
+    if (doShow) {
+      if (!this.theMap.hasLayer(this.theMarker)) {
+        this.theMap.addLayer(this.theMarker);
+      }
+    } else {
+      if (this.theMap.hasLayer(this.theMarker)) {
+        this.theMap.removeLayer(this.theMarker);
+      }
+    }
   }
 
   render() {
     if (this.theMarker !== null) {
       this.setPosition(this.props.theVehicle.pos);
+      this.toggle(!this.props.theVehicle.filteredOut);
     }
     return false;
     // return (

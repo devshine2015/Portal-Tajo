@@ -37,7 +37,7 @@ class MapFleet extends React.Component {
     this.theMap.setView(ZERO_LOCATION, 12);
 
     // retrigger render to apply the MAP prop for markers
-    this.forceUpdate();
+//    this.forceUpdate();
 
     window.setTimeout(
      (((map) => () => {
@@ -45,7 +45,6 @@ class MapFleet extends React.Component {
      })(this.theMap)),
       500);
   }
-
 
 // when selected from the list
   highLightMarker(selectedId) {

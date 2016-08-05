@@ -8,6 +8,7 @@ function makeLocalLocation(backEndObject) {
   const theLocation = {};
   theLocation.name = backEndObject.name;
   theLocation.id = backEndObject.id;
+  theLocation.filteredOut = false;
   // latlng
   theLocation.pos = [backEndObject.center.lat, backEndObject.center.lng];
   theLocation.radius = backEndObject.radius;

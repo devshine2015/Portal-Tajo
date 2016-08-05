@@ -3,17 +3,29 @@ import pure from 'recompose/pure';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 import styles from './styles.css';
+import { commonFleetActions } from 'services/FleetModel/actions';
+import { connect } from 'react-redux';
 
-import { red500, yellow500, blue100} from 'material-ui/styles/colors';
+import { red500, yellow500, blue100 } from 'material-ui/styles/colors';
 import ActionHome from 'material-ui/svg-icons/action/home';
 import ActionDrvr from 'material-ui/svg-icons/social/person';
 import FltrDrvr from 'material-ui/svg-icons/alert/warning';
 
+const changeForMe = (meThis) => (ev) => {
+  meThis.updateTextFilter(ev);
+};
+
 class PowerFilter extends React.Component {
+
+  updateTextFilter(event) {
+    console.log('filter string  $event.target.value');
+    this.props.filterVehFunc(event.target.value);
+  }
   render() {
     return (
       <div className={styles.searchBoxContainer}>
         <TextField
+          onChange={changeForMe(this)}
           hintText="Search"
         />
         <div className={styles.presetBtnsArea}>
@@ -32,6 +44,17 @@ class PowerFilter extends React.Component {
   }
 }
 
+PowerFilter.propTypes = {
+  type: React.PropTypes.string.isRequired,
+  items: React.PropTypes.array.isRequired,
+  filterVehFunc: React.PropTypes.func.isRequired,
+};
+const mapState = () => ({
+});
+const mapDispatch = {
+  filterVehFunc: commonFleetActions.filterVehiclesDo,
+};
+
 const PurePowerFilter = pure(PowerFilter);
 
-export default PurePowerFilter;
+export default connect(mapState, mapDispatch)(PurePowerFilter);

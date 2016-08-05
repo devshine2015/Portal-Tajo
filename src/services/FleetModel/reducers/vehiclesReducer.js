@@ -26,6 +26,20 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
               .set('processedList', sorted);}
     case vehiclesActions.FLEET_MODEL_VEHICLE_UPDATE:
       return state.setIn(['list', action.index], action.details);
+    case vehiclesActions.FLEET_MODEL_VEHICLES_FILTER: {
+      const checkName = action.nameFilter.toLowerCase();
+      let newState = state;
+      state.get('processedList').forEach((v) => {
+        const theName = v.get('name').toLowerCase();
+        if (theName.search(checkName) === -1) {
+          newState = newState.setIn(['processedList', v.get('id'), 'filteredOut'], true);
+        } else {
+          newState = newState.setIn(['processedList', v.get('id'), 'filteredOut'], false);
+        }
+        return true;
+      });
+      return newState;
+    }
     case socketActions.FLEET_MODEL_SOCKET_SET: {
       const inStatus = action.statusObj;
       let newState = state;

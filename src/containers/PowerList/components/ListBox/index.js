@@ -38,20 +38,29 @@ class ListBox extends React.Component {
       case ListTypes.LIST_VEHICLES:
         this.props.setUpHooks(MapEvents.MAP_VEHICLE_SELECTED,
           selectForMe(this, ListEvents.LIST_VEHICLE_SELECTED));
-        mapFunc = (v) => (
-          <li key={v.id}>
-            <ListItemVehicle
-              vehicleObj={v}
-              onClick={selectForMe(this, ListEvents.LIST_VEHICLE_SELECTED)}
-              isSelected={this.state.selectedItemId === v.id}
-            />
-          </li>
-        );
+        mapFunc = (v) => {
+            if (v.filteredOut) {
+              return false;
+            }
+            return (
+            <li key={v.id}>
+              <ListItemVehicle
+                vehicleObj={v}
+                onClick={selectForMe(this, ListEvents.LIST_VEHICLE_SELECTED)}
+                isSelected={this.state.selectedItemId === v.id}
+              />
+            </li>
+          );
+          };
         break;
       case ListTypes.LIST_LOCATIONS:
         this.props.setUpHooks(MapEvents.MAP_LOCATION_SELECTED,
           selectForMe(this, ListEvents.LIST_LOC_SELECTED));
-        mapFunc = (v) => (
+        mapFunc = (v) => {
+          if (v.filteredOut) {
+            return false;
+          }
+          return (
             <li key={v.id}>
               <ListItemLocation
                 locationObj={v}
@@ -60,6 +69,7 @@ class ListBox extends React.Component {
               />
             </li>
           );
+        };
         break;
       default:
     }
@@ -69,7 +79,7 @@ class ListBox extends React.Component {
     const items = this.props.items.map(mapFunc, this);
     return (
       <div className={styles.listBoxTopContainer}>
-        <PowerFilter />
+        <PowerFilter type={this.props.type} items={this.props.items} />
         <ul className={styles.listBoxList}>
           {items}
         </ul>
