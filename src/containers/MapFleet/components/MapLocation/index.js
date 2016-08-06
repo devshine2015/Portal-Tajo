@@ -29,18 +29,35 @@ class MapLocation extends React.Component {
 
   setPosition(latLng) {
     this.theMarker.setLatLng(latLng);
+    this.theCircle.setLatLng(latLng);
+  }
+  expand(doExpand) {
+    if (doExpand) {
+      this.theMap.addLayer(this.theCircle);
+    } else {
+      if (this.theMap.hasLayer(this.theCircle)) {
+        this.theMap.removeLayer(this.theCircle);
+      }
+    }
+  }
+  toggle(doShow) {
+    if (doShow) {
+      if (!this.theMap.hasLayer(this.theMarker)) {
+        this.theMap.addLayer(this.theMarker);
+      }
+    } else {
+      if (this.theMap.hasLayer(this.theMarker)) {
+        this.theMap.removeLayer(this.theMarker);
+      }
+      this.expand(false);
+    }
   }
 
   render() {
     if (this.theMarker !== null) {
+      this.toggle(!this.props.theLocation.filteredOut);
       this.setPosition(this.props.theLocation.pos);
-      if (this.props.isSelected) {
-        this.theMap.addLayer(this.theCircle);
-      } else {
-        if (this.theMap.hasLayer(this.theCircle)) {
-          this.theMap.removeLayer(this.theCircle);
-        }
-      }
+      this.expand(this.props.isSelected);
     }
     return false;
   }

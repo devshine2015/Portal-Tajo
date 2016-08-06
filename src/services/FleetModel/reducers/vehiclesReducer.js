@@ -1,6 +1,7 @@
 import { List, fromJS } from 'immutable';
 import * as vehiclesActions from '../actions/vehiclesActions';
 import * as socketActions from '../actions/socketActions';
+import { filterByName } from '../utils/filtering';
 
 const vehiclesInitialState = fromJS({
   list: new List(),
@@ -10,36 +11,12 @@ const vehiclesInitialState = fromJS({
 function vehiclesReducer(state = vehiclesInitialState, action) {
   switch (action.type) {
     case vehiclesActions.FLEET_MODEL_VEHICLES_SET: {
-      const immtbl = fromJS(action.localVehicles);
-      const sorted = immtbl.sort((a, b) => {
-        const nameA = a.toJS().name.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.toJS().name.toUpperCase(); // ignore upper and lowercase
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-        return 0;
-      });
       return state.set('list', new List(action.vehicles))
-              .set('processedList', sorted);}
+              .set('processedList', fromJS(action.localVehicles));}
     case vehiclesActions.FLEET_MODEL_VEHICLE_UPDATE:
       return state.setIn(['list', action.index], action.details);
-    case vehiclesActions.FLEET_MODEL_VEHICLES_FILTER: {
-      const checkName = action.nameFilter.toLowerCase();
-      let newState = state;
-      state.get('processedList').forEach((v) => {
-        const theName = v.get('name').toLowerCase();
-        if (theName.search(checkName) === -1) {
-          newState = newState.setIn(['processedList', v.get('id'), 'filteredOut'], true);
-        } else {
-          newState = newState.setIn(['processedList', v.get('id'), 'filteredOut'], false);
-        }
-        return true;
-      });
-      return newState;
-    }
+    case vehiclesActions.FLEET_MODEL_VEHICLES_FILTER:
+      return filterByName(state, action.nameFilter);
     case socketActions.FLEET_MODEL_SOCKET_SET: {
       const inStatus = action.statusObj;
       let newState = state;
@@ -88,17 +65,5 @@ export const getVehiclesEx = (state) => {
   // });
   return aList;
 };
-export const getVehicleByIdFunc = (state) => (id) => {
-  const theObj = state.get('processedList');
-  if (theObj.size === 0) {
-    return null;
-  }
-  const jsObj = theObj.get(id);
-  if (jsObj === undefined) {
-    return null;
-  }
-  return jsObj.toJS();
-};
-
 // export const getVehiclesEx = (state) =>
 //     Object.values(state.get('processedList'));

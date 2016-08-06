@@ -6,9 +6,12 @@ import {
 import processLocations from '../utils/locationsHelpers';
 
 export const FLEET_MODEL_LOCATIONS_SET = 'portal/services/FLEET_MODEL_LOCATIONS_SET';
+export const FLEET_MODEL_LOCATIONS_FILTER = 'portal/services/FLEET_MODEL_LOCATIONS_FILTER';
 
 export const fetchLocations = (fleet = undefined) => (dispatch, getState) =>
   _fetchLocations(dispatch, getState, fleet);
+export const filterLocations = (filterName) => (dispatch) =>
+  dispatch(_locationsFilter(filterName));
 
 /**
  * fleet is optional
@@ -42,4 +45,9 @@ const _locationsSet = (locations, localLocs) => ({
   type: FLEET_MODEL_LOCATIONS_SET,
   locations,
   localLocs,
+});
+
+const _locationsFilter = (nameFilter) => ({
+  type: FLEET_MODEL_LOCATIONS_FILTER,
+  nameFilter,
 });

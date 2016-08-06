@@ -24,7 +24,7 @@ class PowerFilter extends React.Component {
         this.props.filterVehFunc(event.target.value);
         break;
       case ListTypes.LIST_LOCATIONS:
-        this.props.filterVehFunc(event.target.value);
+        this.props.filterLocFunc(event.target.value);
         break;
       default:
     }
@@ -56,11 +56,13 @@ PowerFilter.propTypes = {
   type: React.PropTypes.string.isRequired,
   items: React.PropTypes.array.isRequired,
   filterVehFunc: React.PropTypes.func.isRequired,
+  filterLocFunc: React.PropTypes.func.isRequired,
 };
 const mapState = () => ({
 });
 const mapDispatch = {
   filterVehFunc: commonFleetActions.filterVehiclesDo,
+  filterLocFunc: commonFleetActions.filterLocationsDo,
 };
 
 const PurePowerFilter = pure(PowerFilter);

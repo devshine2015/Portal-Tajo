@@ -7,6 +7,18 @@ export default combineReducers({
   locations: locationsReducer,
 });
 
+const getByIdFunc = (state) => (id) => {
+  const theMapObj = state.get('processedList');
+  if (theMapObj.size === 0) {
+    return null;
+  }
+  const theObj = theMapObj.get(id);
+  if (theObj === undefined) {
+    return null;
+  }
+  return theObj.toJS();
+};
+
 export const getFleetData = (state) =>
   state.get('fleet');
 export const getVehicles = (state) =>
@@ -14,10 +26,11 @@ export const getVehicles = (state) =>
 export const getVehiclesEx = (state) =>
   fromVehiclesReducer.getVehiclesEx(state.getIn(['fleet', 'vehicles']));
 export const getVehicleByIdFunc = (state) =>
-  fromVehiclesReducer.getVehicleByIdFunc(state.getIn(['fleet', 'vehicles']));
+  getByIdFunc(state.getIn(['fleet', 'vehicles']));
+//  fromVehiclesReducer.getVehicleByIdFunc(state.getIn(['fleet', 'vehicles']));
 export const getLocations = (state) =>
   fromLocationsReducer.getLocations(state.getIn(['fleet', 'locations']));
 export const getLocationsEx = (state) =>
   fromLocationsReducer.getLocationsEx(state.getIn(['fleet', 'locations']));
 export const getLocationByIdFunc = (state) =>
-  fromLocationsReducer.getLocationByIdFunc(state.getIn(['fleet', 'locations']));
+  getByIdFunc(state.getIn(['fleet', 'locations']));

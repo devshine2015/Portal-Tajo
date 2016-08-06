@@ -2,6 +2,7 @@ import { List, fromJS } from 'immutable';
 import {
   locationsActions,
 } from '../actions';
+import { filterByName } from '../utils/filtering';
 
 const locationsInitialState = fromJS({
   list: new List(),
@@ -13,6 +14,8 @@ function locationsReducer(state = locationsInitialState, action) {
     case locationsActions.FLEET_MODEL_LOCATIONS_SET:
       return state.set('list', new List(action.locations))
           .set('processedList', fromJS(action.localLocs));
+    case locationsActions.FLEET_MODEL_LOCATIONS_FILTER:
+      return filterByName(state, action.nameFilter);
     default:
       return state;
   }
@@ -31,16 +34,4 @@ export const getLocationsEx = (state) => {
   const jsObj = theObj.toJS();
   const aList = Object.values(jsObj);
   return aList;
-};
-
-export const getLocationByIdFunc = (state) => (id) => {
-  const theObj = state.get('processedList');
-  if (theObj.size === 0) {
-    return null;
-  }
-  const jsObj = theObj.get(id);
-  if (jsObj === undefined) {
-    return null;
-  }
-  return jsObj.toJS();
 };

@@ -13,6 +13,10 @@
 
 
 function makeLocalVehicle(backEndObject) {
+  if (backEndObject.status !== 'active'
+    || !backEndObject.name) {
+    return null;
+  }
   const theVehicle = {};
   theVehicle.name = backEndObject.name;
   theVehicle.id = backEndObject.id;
@@ -41,7 +45,9 @@ function MakeLocalVehicles(backEndVehiclesList) {
 
   backEndVehiclesList.forEach((aVehicle) => {
     const localVehicleObj = makeLocalVehicle(aVehicle);
-    theVechicles[aVehicle.id] = localVehicleObj;
+    if (localVehicleObj !== null) {
+      theVechicles[aVehicle.id] = localVehicleObj;
+    }
   });
 
   return theVechicles;

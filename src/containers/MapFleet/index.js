@@ -30,12 +30,7 @@ class MapFleet extends React.Component {
   }
 
   componentDidMount() {
-    const domNode = ReactDOM.findDOMNode(this);
-    window.L.mapbox.accessToken =
-    'pk.eyJ1IjoiZHJ2ciIsImEiOiI3NWM4ZWE1MWEyOTVmZTQ0ZDU2OTE5OGIwNzRlMWY2NyJ9.ybLA6tItFcbyAQyxRq3Pog';
-    this.theMap = window.L.mapbox.map(domNode, 'mapbox.streets');
-    this.theMap.setView(ZERO_LOCATION, 12);
-
+    this.createMapboxMap();
     // retrigger render to apply the MAP prop for markers
 //    this.forceUpdate();
 
@@ -44,6 +39,37 @@ class MapFleet extends React.Component {
        map.invalidateSize(true);
      })(this.theMap)),
       500);
+  }
+
+  createMapboxMap() {
+    // if already existing
+    if (this.theMap !== null) {
+      return;
+    }
+    const domNode = ReactDOM.findDOMNode(this);
+    window.L.mapbox.accessToken =
+    'pk.eyJ1IjoiZHJ2ciIsImEiOiI3NWM4ZWE1MWEyOTVmZTQ0ZDU2OTE5OGIwNzRlMWY2NyJ9.ybLA6tItFcbyAQyxRq3Pog';
+    this.theMap = window.L.mapbox.map(domNode);
+    this.theMap.setView(ZERO_LOCATION, 12);
+
+    const tilesOSM = window.L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+    });
+    window.L.control.layers({
+      StreetsDef: window.L.mapbox.tileLayer('mapbox.streets'),
+      Streets: tilesOSM.addTo(this.theMap),
+      Satelite: window.L.mapbox.tileLayer('mapbox.streets-satellite'),
+      Emerald: window.L.mapbox.tileLayer('mapbox.emerald'),
+      Run: window.L.mapbox.tileLayer('mapbox.run-bike-hike'),
+      Light: window.L.mapbox.tileLayer('mapbox.light'),
+      Dark: window.L.mapbox.tileLayer('mapbox.dark'),
+      Wheat: window.L.mapbox.tileLayer('mapbox.wheatpaste'),
+      Basic: window.L.mapbox.tileLayer('mapbox.streets-basic'),
+      Outdoors: window.L.mapbox.tileLayer('mapbox.outdoors'),
+      Pencil: window.L.mapbox.tileLayer('mapbox.pencil'),
+    },
+    {},
+    { position: 'topleft' }).addTo(this.theMap);
   }
 
 // when selected from the list

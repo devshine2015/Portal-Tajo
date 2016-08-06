@@ -14,8 +14,8 @@ export const fetchVehicles = (fleet = undefined) => (dispatch, getState) =>
   _fetchVehicles(dispatch, getState, fleet);
 export const updateDetails = (details = {}, index) => (dispatch, getState) =>
   makeUpdateVehicleRequest(details, index, dispatch, getState);
-export const filterVehicles = (filterName) => (dispatch, getState) =>
-  _filterVehicles(dispatch, getState, filterName);
+export const filterVehicles = (filterName) => (dispatch) =>
+  dispatch(_vehiclesFilter(filterName));
 
 /**
  * fleet is optional
@@ -31,18 +31,10 @@ function _fetchVehicles(dispatch, getState, fleetName = undefined) {
   return api(url, { optionalHeaders })
     .then(toJson)
     .then(vehicles => {
-      // const vehiclesContainer = new DdcVehicleMaster();
-      // vehicles.forEach((inVehicle) => {
-      //   vehiclesContainer.add(inVehicle);
-      // });
       const localVehicles = processVehicels(vehicles);
       dispatch(_vehiclesSet(vehicles, localVehicles));
       dispatch(openFleetSocket(fleet));
     });
-}
-
-function _filterVehicles(dispatch, getState, nameFilter) {
-  dispatch(_vehiclesFilter(nameFilter));
 }
 
 /**
