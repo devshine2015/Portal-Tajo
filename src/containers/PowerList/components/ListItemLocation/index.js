@@ -1,5 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import ItemProperty from './../ItemProperty';
+
 import styles from './styles.css';
 
 class ListItemLocation extends React.Component {
@@ -25,9 +27,9 @@ class ListItemLocation extends React.Component {
         onClick={this.onClick}
       >
         <div > {this.props.locationObj.name} </div>
-        <div className={styles.link}>
-          {`Radius: ${this.props.locationObj.radius.toFixed(0)} m`}
-        </div>
+        <hr />
+        <ItemProperty title="Address" value={`${this.props.locationObj.address}`} />
+        <ItemProperty title="Radius" value={`${this.props.locationObj.radius.toFixed(0)} m`} />
       </div>
     );
   }

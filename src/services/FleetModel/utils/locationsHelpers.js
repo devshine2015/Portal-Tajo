@@ -9,6 +9,8 @@ function makeLocalLocation(backEndObject) {
   theLocation.name = backEndObject.name;
   theLocation.id = backEndObject.id;
   theLocation.filteredOut = false;
+  //
+  theLocation.address = backEndObject.address;
   // latlng
   theLocation.pos = [backEndObject.center.lat, backEndObject.center.lng];
   theLocation.radius = backEndObject.radius;

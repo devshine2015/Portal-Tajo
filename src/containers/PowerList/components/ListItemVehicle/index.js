@@ -1,5 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import ItemProperty from './../ItemProperty';
+
 import styles from './styles.css';
 
 class ListItemVehicle extends React.Component {
@@ -25,12 +27,14 @@ class ListItemVehicle extends React.Component {
         onClick={this.onClick}
       >
         <div > {this.props.vehicleObj.name} </div>
-        <div className={styles.link}>
-          {`Speed: ${this.props.vehicleObj.speed.toFixed(2)} km/h`}
-        </div>
-        <div className={styles.link}>
-          {`Trip dist: ${(this.props.vehicleObj.dist.lastTrip / 1000).toFixed(2)} km`}
-        </div>
+        <hr />
+        <ItemProperty title="Speed" value={`${this.props.vehicleObj.speed.toFixed(2)} km/h`} />
+        <ItemProperty title="Trip dist" value={`${(this.props.vehicleObj.dist.lastTrip / 1000).toFixed(2)} km`} />
+        <hr />
+        <ItemProperty title="license Plate" value={`${this.props.vehicleObj.licensePlate}`} />
+        <ItemProperty title="Make" value={`${this.props.vehicleObj.make}`} />
+        <ItemProperty title="Model" value={`${this.props.vehicleObj.model}`} />
+        <ItemProperty title="Year" value={`${this.props.vehicleObj.year}`} />
       </div>
     );
   }
