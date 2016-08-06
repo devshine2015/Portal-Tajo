@@ -5,6 +5,7 @@ import IconButton from 'material-ui/IconButton';
 import styles from './styles.css';
 import { commonFleetActions } from 'services/FleetModel/actions';
 import { connect } from 'react-redux';
+import * as ListTypes from './../../types';
 
 import { red500, yellow500, blue100 } from 'material-ui/styles/colors';
 import ActionHome from 'material-ui/svg-icons/action/home';
@@ -18,8 +19,15 @@ const changeForMe = (meThis) => (ev) => {
 class PowerFilter extends React.Component {
 
   updateTextFilter(event) {
-    console.log('filter string  $event.target.value');
-    this.props.filterVehFunc(event.target.value);
+    switch (this.props.type) {
+      case ListTypes.LIST_VEHICLES:
+        this.props.filterVehFunc(event.target.value);
+        break;
+      case ListTypes.LIST_LOCATIONS:
+        this.props.filterVehFunc(event.target.value);
+        break;
+      default:
+    }
   }
   render() {
     return (

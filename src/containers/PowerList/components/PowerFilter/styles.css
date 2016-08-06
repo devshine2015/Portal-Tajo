@@ -1,9 +1,9 @@
 @media screen and (min-width: 100px) {
   .searchBoxContainer {
-    position: fixed;
+//    position: fixed;
     background-color: #10ac8b;
     color: #fff;
-//    width: 100%;
+    width: 100%;
     height: 128px;
     border-color: #94177c;
     border-width: 1px;

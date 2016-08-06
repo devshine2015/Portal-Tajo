@@ -8,7 +8,6 @@ import styles from './styles.css';
 import * as ListEvents from 'containers/PowerList/events';
 import * as MapEvents from 'containers/MapFleet/events';
 import * as ListTypes from './../../types';
-//        <PowerFilter />
 
 const selectForMe = (meThis, hookId) => (id) => {
   meThis.onSelect(hookId, id);
@@ -30,53 +29,39 @@ class ListBox extends React.Component {
     this.setState({ selectedItemId: id });
   }
   render() {
-    if (this.props.items.size === 0) {
-      return null;
-    }
-    let mapFunc = null;
+    if (this.props.items.size === 0) return null;
+
+    let itemCreator = null;
     switch (this.props.type) {
       case ListTypes.LIST_VEHICLES:
         this.props.setUpHooks(MapEvents.MAP_VEHICLE_SELECTED,
           selectForMe(this, ListEvents.LIST_VEHICLE_SELECTED));
-        mapFunc = (v) => {
-            if (v.filteredOut) {
-              return false;
-            }
-            return (
-            <li key={v.id}>
-              <ListItemVehicle
-                vehicleObj={v}
-                onClick={selectForMe(this, ListEvents.LIST_VEHICLE_SELECTED)}
-                isSelected={this.state.selectedItemId === v.id}
-              />
-            </li>
-          );
-          };
+        itemCreator = (v) => (
+          <li key={v.id}>
+            <ListItemVehicle
+              vehicleObj={v}
+              onClick={selectForMe(this, ListEvents.LIST_VEHICLE_SELECTED)}
+              isSelected={this.state.selectedItemId === v.id}
+            />
+          </li>);
         break;
       case ListTypes.LIST_LOCATIONS:
         this.props.setUpHooks(MapEvents.MAP_LOCATION_SELECTED,
           selectForMe(this, ListEvents.LIST_LOC_SELECTED));
-        mapFunc = (v) => {
-          if (v.filteredOut) {
-            return false;
-          }
-          return (
-            <li key={v.id}>
-              <ListItemLocation
-                locationObj={v}
-                onClick={selectForMe(this, ListEvents.LIST_LOC_SELECTED)}
-                isSelected={this.state.selectedItemId === v.id}
-              />
-            </li>
-          );
-        };
+        itemCreator = (v) => (
+          <li key={v.id}>
+            <ListItemLocation
+              locationObj={v}
+              onClick={selectForMe(this, ListEvents.LIST_LOC_SELECTED)}
+              isSelected={this.state.selectedItemId === v.id}
+            />
+          </li>);
         break;
       default:
     }
-    if (mapFunc === null) {
-      return false;
-    }
-    const items = this.props.items.map(mapFunc, this);
+    if (itemCreator === null) return false;
+
+    const items = this.props.items.map((v) => (v.filteredOut ? false : itemCreator(v)), this);
     return (
       <div className={styles.listBoxTopContainer}>
         <PowerFilter type={this.props.type} items={this.props.items} />

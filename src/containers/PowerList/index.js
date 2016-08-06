@@ -21,14 +21,6 @@ class PowerListContainer extends React.Component {
           </Tab>
       ));
 
-    // const theTabs = this.props.children.map((aObj, idx) => {
-    //   return (
-    //       <Tab label={aObj.title} key={idx}>
-    //         {aObj.element}
-    //       </Tab>
-    //   );
-    // });
-
     return (
         <div className={styles.PoverListContainer}>
           <Tabs
