@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import pure from 'recompose/pure';
 // import ListItem from './../ListItem';
 import ListItemVehicle from './../ListItemVehicle';
@@ -28,6 +29,11 @@ class ListBox extends React.Component {
     this.props.hooks(hookId, id);
     this.setState({ selectedItemId: id });
   }
+  itemSelectedCallback(itemNode) {
+    const listDOMNode = ReactDOM.findDOMNode(this);
+    // console.log('selected callback LIST '+listDOMNode.scrollTop);
+    // console.log('selected callback ITEM '+itemNode.offsetTop);
+  }
   render() {
     if (this.props.items.size === 0) return null;
 
@@ -42,6 +48,8 @@ class ListBox extends React.Component {
               vehicleObj={v}
               onClick={selectForMe(this, ListEvents.LIST_VEHICLE_SELECTED)}
               isSelected={this.state.selectedItemId === v.id}
+              onSelectedCallback=
+               {((meThis) => (element) => meThis.itemSelectedCallback(element))(this)}
             />
           </li>);
         break;

@@ -81,7 +81,10 @@ class MapFleet extends React.Component {
     } else {
       this.setState({ selectedVehicleId: selectedId });
     }
-    this.theMap.panTo(theSelectedObj.pos);
+    const bounds = this.theMap.getBounds();
+    if (!bounds.contains(theSelectedObj.pos)) {
+      this.theMap.panTo(theSelectedObj.pos);
+    }
   }
 // when clicked
   selectMarker(hookId, selectedId) {
@@ -96,6 +99,7 @@ class MapFleet extends React.Component {
     const vehicles = this.props.vehicles.map((v) => (
       <MapVehicle
         key={v.id}
+        isSelected={this.state.selectedVehicleId === v.id}
         theMap={this.theMap}
         theVehicle={v}
         onClick={selectForMe(this, MapEvents.MAP_VEHICLE_SELECTED)}
