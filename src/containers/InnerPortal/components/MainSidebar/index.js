@@ -12,20 +12,26 @@ const MainSidebar = ({
   open,
   pages,
   toggleSidebar,
-}) => (
-  <Drawer
-    docked={false}
-    open={open}
-    containerClassName={styles.drawer}
-    zDepth={1}
-    onRequestChange={toggleSidebar}
-  >
-    <MainMenu
-      pages={pages}
-      closeSidebar={toggleSidebar}
-    />
-  </Drawer>
-);
+}) => {
+  if (pages.length === 0) {
+    return null;
+  }
+
+  return (
+    <Drawer
+      docked={false}
+      open={open}
+      containerClassName={styles.drawer}
+      zDepth={1}
+      onRequestChange={toggleSidebar}
+    >
+      <MainMenu
+        pages={pages}
+        closeSidebar={toggleSidebar}
+      />
+    </Drawer>
+  );
+};
 
 MainSidebar.propTypes = {
   open: React.PropTypes.bool.isRequired,
@@ -34,7 +40,7 @@ MainSidebar.propTypes = {
       text: React.PropTypes.string.isRequired,
       path: React.PropTypes.string.isRequired,
     })
-  ).isRequired,
+  ),
   toggleSidebar: React.PropTypes.func.isRequired,
 };
 

@@ -31,6 +31,8 @@ class InnerPortal extends React.Component {
   checkUserAuthentication() {
     this.props.checkUserAuthentication(URLS)
       .then(() => {
+        // TODO -- find the way to open socket
+        // only if needed
         this.props.fetchFleet(true);
       });
   }

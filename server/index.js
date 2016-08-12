@@ -17,10 +17,19 @@ const app = express();
 var webpackConfig;
 
 if (isDev) {
-  if (portal === 'escape') {
-    webpackConfig = require('../webpack/webpack.dev.escape.babel.js');
-  } else {
-    webpackConfig = require('../webpack/webpack.dev.portal.babel.js');
+  switch (portal) {
+    case 'escape':
+      webpackConfig = require('../webpack/webpack.dev.escape.babel.js');
+      break;
+    case 'portal':
+      webpackConfig = require('../webpack/webpack.dev.portal.babel.js');
+      break;
+    case 'demo':
+      webpackConfig = require('../webpack/webpack.dev.mapViewDemo.babel.js');
+      break;
+    default:
+      webpackConfig = require('../webpack/webpack.dev.escape.babel.js');
+      break;
   }
 } else {
   webpackConfig = require('../webpack/webpack.prod.babel');

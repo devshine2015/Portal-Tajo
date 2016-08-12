@@ -18,7 +18,7 @@ const muiTheme = getMuiTheme({
 });
 
 const URLS = {
-  success: 'dashboard',
+  success: 'map',
   failure: 'login',
 };
 

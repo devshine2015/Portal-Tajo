@@ -16,3 +16,7 @@ deployment:
     branch: dev-release
     commands:
       - ./deploy.sh 'ddsdev@ddsdev.cloudapp.net'
+  demo:
+    branch: map-demo
+    commands:
+      - ./deployDemo.sh 'ddsdev@ddsdev.cloudapp.net'

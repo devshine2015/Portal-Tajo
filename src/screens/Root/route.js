@@ -24,7 +24,7 @@ const createRoute = ({
   path,
   name = NAME,
   dispatch,
-  mainMenu,
+  mainMenu = [],
 }) => ({
   path,
   name,
@@ -33,10 +33,13 @@ const createRoute = ({
   childRoutes: [],
   onEnter: (location) => {
     const { params, routes } = location;
+    dispatch(fleetActions.setFleetName(params.fleet));
+
+    if (mainMenu.length === 0) return;
+
     const patchedMenu = patchMenuPaths(mainMenu, routes[0], params.fleet);
 
     dispatch(setInnerPortalPages(patchedMenu));
-    dispatch(fleetActions.setFleetName(params.fleet));
   },
 });
 
