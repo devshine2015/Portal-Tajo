@@ -3,7 +3,7 @@ import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { selectLocationState } from './helpers';
 
-const ROOT = '/portal/:fleet/tajo/';
+const ROOT = '/portal/:fleet/mapViewDemo/';
 
 export default function createRoutes(store) {
   const history = syncHistoryWithStore(browserHistory, store, {

@@ -19,7 +19,7 @@ module.exports = (options) => require('./webpack.base.babel')({
   output: {
     filename: '[name]_[chunkhash].js',
     chunkFilename: '[name]_[chunkhash].chunk.js',
-    publicPath: '/assets/common-portal/tajo/',
+    publicPath: `/assets/common-portal/${options.projectFolder}/`,
   },
 
   outputFolder: options.outputFolder,
