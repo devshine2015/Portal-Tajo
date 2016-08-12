@@ -12,7 +12,7 @@
     "escape": "npm run start:tunnel:escape",
     "portal": "npm run start:tunnel:portal",
     "start:tunnel:escape": "cross-env NODE_ENV=development DRVR_PORTAL=escape node server",
-    "start:tunnel:portal": "cross-env NODE_ENV=development DRVR_PORTAL=portal node server",
+    "start:tunnel:portal": "cross-env NODE_ENV=development DRVR_PORTAL=portal node server"
   },
   "author": "Maksim Orlov",
   "license": "ISC",
