@@ -13,7 +13,7 @@ export const VERSIONS = {
   authentication: {
     ver: 2,
     // Don't use arrow shorthand (=>) to keep context for this
-    verify: function(savedData) {
+    verify: function (savedData) {
       // if no any session data
       if (!savedData) {
         return true;
