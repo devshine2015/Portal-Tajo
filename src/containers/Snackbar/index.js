@@ -4,10 +4,13 @@ import pure from 'recompose/pure';
 import Snackbar from 'material-ui/Snackbar';
 import { getSnackbarState } from './reducer';
 
-const SnackbarNotification = (props) => (
+const SnackbarNotification = ({
+  show,
+  ...rest,
+}) => (
   <Snackbar
-    {...props}
-    open={props.show}
+    {...rest}
+    open={show}
   />
 );
 

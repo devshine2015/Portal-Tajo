@@ -18,6 +18,8 @@ const selectForMe = (meThis, hookId) => (id) => {
   meThis.selectMarker(hookId, id);
 };
 
+const EMPTY_ARRAY = [];
+
 class MapFleet extends React.Component {
 
   constructor(props) {
@@ -96,29 +98,35 @@ class MapFleet extends React.Component {
       ((meThis) => (id) => { meThis.highLightMarker(id); })(this));
     this.props.setUpHooks(ListEvents.LIST_LOC_SELECTED,
       ((meThis) => (id) => { meThis.highLightMarker(id); })(this));
-    const vehicles = this.props.vehicles.map((v) => (
-      <MapVehicle
-        key={v.id}
-        isSelected={this.state.selectedVehicleId === v.id}
-        theMap={this.theMap}
-        theVehicle={v}
-        onClick={selectForMe(this, MapEvents.MAP_VEHICLE_SELECTED)}
-      />
-    ));
-    const locations = this.props.locations.map((v) => (
-      <MapLocation
-        key={v.id}
-        isSelected={this.state.selectedLocationId === v.id}
-        theMap={this.theMap}
-        theLocation={v}
-        onClick={selectForMe(this, MapEvents.MAP_LOCATION_SELECTED)}
-      />
-    ));
+
+    let vehicles = EMPTY_ARRAY;
+    let locations = EMPTY_ARRAY;
+
+    if (this.theMap !== null) {
+      vehicles = this.props.vehicles.map((v) => (
+        <MapVehicle
+          key={v.id}
+          isSelected={this.state.selectedVehicleId === v.id}
+          theMap={this.theMap}
+          theVehicle={v}
+          onClick={selectForMe(this, MapEvents.MAP_VEHICLE_SELECTED)}
+        />
+      ));
+      locations = this.props.locations.map((v) => (
+        <MapLocation
+          key={v.id}
+          isSelected={this.state.selectedLocationId === v.id}
+          theMap={this.theMap}
+          theLocation={v}
+          onClick={selectForMe(this, MapEvents.MAP_LOCATION_SELECTED)}
+        />
+      ));
+    }
 
     return (
       <div className = {styles.mapContainer}>
-      {vehicles}
-      {locations}
+        {vehicles}
+        {locations}
       </div>
     );
   }

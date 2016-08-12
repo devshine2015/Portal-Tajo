@@ -48,8 +48,7 @@ class ListBox extends React.Component {
               vehicleObj={v}
               onClick={selectForMe(this, ListEvents.LIST_VEHICLE_SELECTED)}
               isSelected={this.state.selectedItemId === v.id}
-              onSelectedCallback=
-               {((meThis) => (element) => meThis.itemSelectedCallback(element))(this)}
+              onSelectedCallback={this.itemSelectedCallback}
             />
           </li>);
         break;
@@ -65,8 +64,9 @@ class ListBox extends React.Component {
             />
           </li>);
         break;
-      default:
+      default: return null;
     }
+
     if (itemCreator === null) return false;
 
     const items = this.props.items.map((v) => (v.filteredOut ? false : itemCreator(v)), this);

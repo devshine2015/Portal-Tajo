@@ -32,8 +32,7 @@ class ListItemVehicle extends React.Component {
         </div>
       );
     }
-    // selected/exapnded view
-    this.props.onSelectedCallback(this.myDOMNode);
+
     return (
       <div
         className={ this.props.isSelected ? styles.listItemSelected : styles.listItem}
