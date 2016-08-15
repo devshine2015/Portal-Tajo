@@ -37,12 +37,14 @@ class InnerPortal extends React.Component {
 
   render() {
     if (this.props.isAuthenticated) {
+      const showPortals = this.props.showPortalsList === undefined ? true : this.props.showPortalsList;
+
       return (
         <div className={styles.appContent}>
 
           <div className={styles.topBarContainer}>
             <ApplicationBar title={this.props.fleet} />
-            <PortalsList currentFleet={this.props.fleet} />
+            { showPortals && <PortalsList currentFleet={this.props.fleet} /> }
           </div>
           <MainSidebar />
 
@@ -62,6 +64,7 @@ InnerPortal.propTypes = {
   fetchFleet: React.PropTypes.func.isRequired,
   fleet: React.PropTypes.string.isRequired,
   isAuthenticated: React.PropTypes.bool.isRequired,
+  showPortalsList: React.PropTypes.bool,
 };
 
 const PureInnerPortal = pure(InnerPortal);

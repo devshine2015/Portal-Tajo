@@ -9,7 +9,6 @@ const Form = ({
   className,
   name,
   onSubmit,
-  refs,
   ...rest,
 }) => {
   const formClassName = classnames(styles.form, className);
@@ -19,20 +18,18 @@ const Form = ({
       className={formClassName}
       name={name}
       onSubmit={onSubmit}
-      refs={refs}
       {...rest}
     >
       {children}
     </form>
   );
-}
+};
 
 Form.propTypes = {
   className: React.PropTypes.string,
   children: React.PropTypes.node.isRequired,
   name: React.PropTypes.string.isRequired,
   onSubmit: React.PropTypes.func.isRequired,
-  refs: React.PropTypes.string.isRequired,
 };
 
 export default pure(Form);

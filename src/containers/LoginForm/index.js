@@ -5,7 +5,6 @@ import Form from 'components/Form';
 import Button from 'components/Button';
 import InputField from 'components/InputField';
 import InputFieldWrapper from 'components/InputFieldWrapper';
-import PortalsList from 'components/PortalsLinks';
 import { authActions } from 'containers/App/actions';
 
 const FORM_NAME = 'login';
@@ -29,35 +28,31 @@ class LoginForm extends React.Component {
 
   render() {
     return (
-      <div>
-        <Form
-          name={FORM_NAME}
-          refs={FORM_NAME}
-          onSubmit={this.onSubmit}
-        >
-          <InputFieldWrapper>
-            <InputField
-              name="username"
-              placeholder="Username"
-            />
-          </InputFieldWrapper>
-          <InputFieldWrapper>
-            <InputField
-              name="password"
-              placeholder="Password"
-              type="password"
-            />
-          </InputFieldWrapper>
-          <InputFieldWrapper>
-            <Button
-              type="submit"
-              text="Sign In"
-              onClick={this.onSubmit}
-            />
-          </InputFieldWrapper>
-        </Form>
-        <PortalsList />
-      </div>
+      <Form
+        name={FORM_NAME}
+        onSubmit={this.onSubmit}
+      >
+        <InputFieldWrapper>
+          <InputField
+            name="username"
+            placeholder="Username"
+          />
+        </InputFieldWrapper>
+        <InputFieldWrapper>
+          <InputField
+            name="password"
+            placeholder="Password"
+            type="password"
+          />
+        </InputFieldWrapper>
+        <InputFieldWrapper>
+          <Button
+            type="submit"
+            text="Sign In"
+            onClick={this.onSubmit}
+          />
+        </InputFieldWrapper>
+      </Form>
     );
   }
 }
