@@ -31,7 +31,7 @@ class InnerPortal extends React.Component {
   checkUserAuthentication() {
     this.props.checkUserAuthentication(URLS)
       .then(() => {
-        this.props.fetchFleet();
+        this.props.fetchFleet(false);
       });
   }
 
@@ -46,10 +46,13 @@ class InnerPortal extends React.Component {
             <ApplicationBar title={this.props.fleet} />
             { showPortals && <PortalsList currentFleet={this.props.fleet} /> }
           </div>
+
           <MainSidebar />
 
           <div className={styles.content}>{this.props.children}</div>
+
           <SnackbarNotification />
+
         </div>
       );
     }

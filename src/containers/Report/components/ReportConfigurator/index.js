@@ -152,7 +152,6 @@ class Report extends React.Component {
         Report for all fleet's vehicles
         <Form
           name={this.FORM_NAME}
-          refs={this.FORM_NAME}
           onSubmit={this.onSubmit}
         >
           <AvailableFields

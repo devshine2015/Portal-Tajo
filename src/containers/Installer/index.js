@@ -148,7 +148,6 @@ class Installer extends React.Component {
         <Form
           name="bounder"
           onSubmit={this.onSubmit}
-          refs="form"
           className={styles.form}
         >
           <TextField

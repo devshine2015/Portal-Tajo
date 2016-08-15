@@ -57,7 +57,6 @@ class VehicleDetails extends React.Component {
         <Form
           name={FORM}
           onSubmit={this.onSubmit}
-          refs={FORM}
         >
           <TextField
             fullWidth

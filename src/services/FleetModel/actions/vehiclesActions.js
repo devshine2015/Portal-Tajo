@@ -10,8 +10,8 @@ export const FLEET_MODEL_VEHICLES_SET = 'portal/services/FLEET_MODEL_VEHICLES_SE
 export const FLEET_MODEL_VEHICLES_FILTER = 'portal/services/FLEET_MODEL_VEHICLES_FILTER';
 export const FLEET_MODEL_VEHICLE_UPDATE = 'portal/services/FLEET_MODEL_VEHICLE_UPDATE';
 
-export const fetchVehicles = (fleet = undefined) => (dispatch, getState) =>
-  _fetchVehicles(dispatch, getState, fleet);
+export const fetchVehicles = (fleet, openWebSocket) => (dispatch, getState) =>
+  _fetchVehicles(fleet, openWebSocket, dispatch, getState);
 export const updateDetails = (details = {}, index) => (dispatch, getState) =>
   makeUpdateVehicleRequest(details, index, dispatch, getState);
 export const filterVehicles = (filterName) => (dispatch) =>
@@ -20,7 +20,7 @@ export const filterVehicles = (filterName) => (dispatch) =>
 /**
  * fleet is optional
  **/
-function _fetchVehicles(dispatch, getState, fleetName = undefined) {
+function _fetchVehicles(fleetName, openWebSocket, dispatch, getState) {
   const fleet = fleetName || getFleetName(getState());
   const url = `${fleet}/vehicles`;
   const sessionId = getAuthenticationSession(getState());
@@ -33,7 +33,10 @@ function _fetchVehicles(dispatch, getState, fleetName = undefined) {
     .then(vehicles => {
       const localVehicles = processVehicels(vehicles);
       dispatch(_vehiclesSet(vehicles, localVehicles));
-      dispatch(openFleetSocket(fleet));
+
+      if (openWebSocket) {
+        dispatch(openFleetSocket(fleet));
+      }
     });
 }
 

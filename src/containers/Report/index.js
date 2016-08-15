@@ -4,6 +4,8 @@ import pure from 'recompose/pure';
 import RaisedButton from 'material-ui/RaisedButton';
 import ReportConfigurator from './components/ReportConfigurator';
 import PreviewTable from './components/PreviewTable';
+import FixedColumn from 'components/FixedColumn';
+import FixedContent from 'components/FixedContent';
 import * as fromConfigReducer from './reducers/configuratorReducer';
 import { getSavedReportData, appHasStoredReport } from './reducer';
 import { dataActions } from './actions';
@@ -21,20 +23,29 @@ const ReportsScreen = ({
 
   return (
     <div className="configurator">
-      <ReportConfigurator
-        hideSplitter
-      />
-      { hasReport && (
-          <RaisedButton
-            label="Save Generated"
-            onClick={saveGenerated}
-            primary
-          />
-      )}
-      <PreviewTable
-        headers={headers}
-        data={data}
-      />
+      <FixedColumn>
+        {/*<VehiclesList
+          onItemClick={this.onItemClick}
+          vehicles={this.props.vehicles}
+        />*/}
+      </FixedColumn>
+
+      <FixedContent>
+        <ReportConfigurator
+          hideSplitter
+        />
+        { hasReport && (
+            <RaisedButton
+              label="Save Generated"
+              onClick={saveGenerated}
+              primary
+            />
+        )}
+        <PreviewTable
+          headers={headers}
+          data={data}
+        />
+      </FixedContent>
     </div>
   );
 };
