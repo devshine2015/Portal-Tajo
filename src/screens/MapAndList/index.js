@@ -3,10 +3,8 @@ import pure from 'recompose/pure';
 import styles from './styles.css';
 import InnerPortal from 'containers/InnerPortal';
 import SplitContainer from 'containers/SplitContainer';
-// import TheMap from 'components/Map';
 import PowerListContainer from 'containers/PowerList';
 import * as ListTypes from 'containers/PowerList/types';
-import ListBox from 'containers/PowerList/components/ListBox/';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 
