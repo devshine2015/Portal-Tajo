@@ -1,6 +1,8 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import TextField from 'material-ui/TextField';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Form from 'components/Form';
@@ -65,6 +67,13 @@ class VehicleDetails extends React.Component {
             floatingLabelText="Vehicle Name"
             value={this.state.name}
           />
+          <SelectField value={this.state.value} onChange={this.handleChange}>
+            <MenuItem value={1} primaryText="Never" />
+            <MenuItem value={2} primaryText="Every Night" />
+            <MenuItem value={3} primaryText="Weeknights" />
+            <MenuItem value={4} primaryText="Weekends" />
+            <MenuItem value={5} primaryText="Weekly" />
+          </SelectField>
           <TextField
             fullWidth
             name="licensePlate"
