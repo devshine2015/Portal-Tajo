@@ -6,9 +6,16 @@ import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Form from 'components/Form';
+import { VEHICLE_KINDS, getByValue } from 'utils/vehiclesMap';
 import styles from './styles.css';
 
 const FORM = 'editor';
+const STYLES = {
+  menuItem: {
+    paddingTop: 5,
+    paddingBottom: 5,
+  },
+};
 
 class VehicleDetails extends React.Component {
   constructor(props) {
@@ -44,6 +51,12 @@ class VehicleDetails extends React.Component {
     });
   }
 
+  onKindChange = (e, key, value) => {
+    this.setState({
+      kind: value,
+    });
+  }
+
   /**
    * Update state if another vehicle has been chosen
    **/
@@ -53,7 +66,32 @@ class VehicleDetails extends React.Component {
     }
   }
 
+  renderKindMenuItems() {
+    return VEHICLE_KINDS.map(kind => {
+      const Icon = () => React.cloneElement(kind.icon, {
+        className: styles.vehicleIcon,
+      });
+
+      return (
+        <MenuItem
+          key={kind.value}
+          value={kind.value}
+          primaryText={kind.text}
+          leftIcon={<Icon />}
+          style={STYLES.menuItem}
+        />
+      );
+    });
+  }
+
   render() {
+    const selectedKind = getByValue(this.state.kind);
+    let SelectedKindIcon = () => null;
+
+    if (selectedKind) {
+      SelectedKindIcon = () => selectedKind.icon;
+    }
+
     return (
       <div className={styles.details}>
         <Form
@@ -67,13 +105,22 @@ class VehicleDetails extends React.Component {
             floatingLabelText="Vehicle Name"
             value={this.state.name}
           />
-          <SelectField value={this.state.value} onChange={this.handleChange}>
-            <MenuItem value={1} primaryText="Never" />
-            <MenuItem value={2} primaryText="Every Night" />
-            <MenuItem value={3} primaryText="Weeknights" />
-            <MenuItem value={4} primaryText="Weekends" />
-            <MenuItem value={5} primaryText="Weekly" />
-          </SelectField>
+
+          <div>
+            <SelectField
+              autoWidth
+              hintText="Kind of Vehicle"
+              name="kind"
+              value={this.state.kind}
+              onChange={this.onKindChange}
+            >
+              {this.renderKindMenuItems()}
+            </SelectField>
+            <span className={styles.selectedKindIcon}>
+              <SelectedKindIcon />
+            </span>
+          </div>
+
           <TextField
             fullWidth
             name="licensePlate"
@@ -128,6 +175,7 @@ VehicleDetails.propTypes = {
   id: React.PropTypes.string.isRequired,
   disabled: React.PropTypes.bool.isRequired,
   details: React.PropTypes.shape({
+    kind: React.PropTypes.string.isRequired,
     name: React.PropTypes.string.isRequired,
     make: React.PropTypes.string.isRequired,
     model: React.PropTypes.string.isRequired,

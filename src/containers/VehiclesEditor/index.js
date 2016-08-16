@@ -72,6 +72,7 @@ class VehiclesEditor extends React.Component {
      **/
     const origins = this.props.vehicles.get(selectedVehicleIndex);
     const data = {
+      kind: origins.kind || '',
       name: origins.name,
       year: origins.year,
       model: origins.model,

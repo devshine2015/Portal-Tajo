@@ -15,6 +15,3 @@ ssh $1 "cd $TARGET_FOLDER && rm -r $FOLDER_NAME"
 
 echo "upload $FOLDER_NAME to $1"
 scp -r $FOLDER_NAME $1:$TARGET_FOLDER
-
-echo "copy assets"
-scp -r $ASSETS $1:$TARGET_FOLDER

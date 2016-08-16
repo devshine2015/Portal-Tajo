@@ -32,7 +32,7 @@ module.exports = (options) => ({
       include: /node_modules/,
       loaders: ['style-loader', 'css-loader'],
     }, {
-      test: /\.jpe?g$|\.gif$|\.png$|\.svg$/i,
+      test: /\.jpe?g$|\.gif$|\.png$/i,
       loader: 'url-loader?limit=10000',
     }, {
       test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
@@ -52,6 +52,9 @@ module.exports = (options) => ({
     }, {
       test: /\.json$/,
       loader: 'json-loader',
+    }, {
+      test: /\.svg$/,
+      loader: 'babel!svg-react',
     }],
   },
   plugins: options.plugins.concat([
