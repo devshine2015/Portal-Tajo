@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="47px" height="77px" viewBox="0 0 47 77" style="enable-background:new 0 0 47 77;" xml:space="preserve">
+<g id="New_Pin">
+	
+		<line id="Leg" style="fill:none;stroke:#555555;stroke-width:1.5;stroke-linecap:round;stroke-miterlimit:10;" x1="23.6" y1="44.5" x2="23.6" y2="76.2"/>
+	<g id="Circle">
+		<path id="XMLID_16_" style="opacity:0.8;fill:#FFFFFF;" d="M23.5,45C11.6,45,2,35.4,2,23.5S11.6,2,23.5,2C35.4,2,45,11.6,45,23.5
+			S35.4,45,23.5,45z"/>
+		<path id="XMLID_13_" style="fill:#FF9E80;" d="M23.5,4C34.3,4,43,12.7,43,23.5S34.3,43,23.5,43S4,34.3,4,23.5S12.7,4,23.5,4
+			 M23.5,0C10.5,0,0,10.5,0,23.5S10.5,47,23.5,47S47,36.5,47,23.5S36.5,0,23.5,0L23.5,0z"/>
+	</g>
+</g>
+<g id="Minibus2">
+	<path id="Chassis_1_" style="fill:#FF9E80;" d="M8.7,29.3c0,0.3,0.2,0.5,0.5,0.5h1.6c0.2,1,1.1,1.7,2.1,1.7s1.9-0.7,2.1-1.7h1.2
+		l14.6,0c0.2,1,1.1,1.7,2.1,1.7c1.1,0,1.9-0.7,2.1-1.7h2.2c0.3,0,0.5-0.2,0.5-0.5V17.9c0-0.3-0.2-0.5-0.5-0.5c0,0-15.5,0-18.6,0
+		c-2,0-6,1.3-9.7,7.8C8.5,26,8.7,28.3,8.7,29.3z M31.9,29.5c0-0.6,0.5-1,1.1-1c0.6,0,1.1,0.4,1.1,1s-0.5,1-1.1,1
+		C32.4,30.5,31.9,30,31.9,29.5z M11.9,29.5c0-0.6,0.5-1,1.1-1c0.6,0,1.1,0.4,1.1,1s-0.5,1-1.1,1C12.4,30.5,11.9,30,11.9,29.5z
+		 M15,28.8c-0.3-0.8-1.1-1.3-2-1.3s-1.7,0.6-2,1.3c0,0,0,0-1,0c-0.2,0-0.2-2.5,0.2-3.1c1.4-2.4,3.6-6.1,8-7.3c0.3-0.1,18.6,0,18.6,0
+		v10.4H35c-0.3-0.8-1.1-1.3-2-1.3c-0.9,0-1.7,0.6-2,1.3L15,28.8z"/>
+	<g id="Window">
+		<path id="XMLID_100_" style="fill:#FF9E80;" d="M27.7,20.9h-7c-0.2,0-0.4,0.2-0.4,0.4v1c0,1.4,0.7,1.9,2.4,2.2l5.1,0.1V20.9z"/>
+		<path id="XMLID_99_" style="fill:#FF9E80;" d="M34,20.9h-5.8v3.7l6.8,0.1c0.2,0,0.4-0.2,0.4-0.4v-2C35.4,21.3,34.4,20.9,34,20.9z"
+			/>
+	</g>
+	<g id="Door_1_" style="display:none;">
+		<path id="XMLID_33_" style="display:inline;fill:#FF9E80;" d="M27.8,28.3h-6.9c-0.3,0-0.5-0.2-0.5-0.5v-7.7c0-0.3,0.2-0.5,0.5-0.5
+			h6.9V28.3z"/>
+		
+			<line id="XMLID_32_" style="display:inline;fill:none;stroke:#FF9E80;stroke-width:0.2;stroke-miterlimit:10;" x1="25.5" y1="19.9" x2="31" y2="19.9"/>
+		
+			<line id="XMLID_31_" style="display:inline;fill:none;stroke:#FF9E80;stroke-width:0.2;stroke-miterlimit:10;" x1="25.5" y1="28.1" x2="31" y2="28.1"/>
+		<path id="XMLID_30_" style="display:inline;fill:#FF9E80;" d="M29.3,28.3h-5.7c-0.2,0-0.4-0.2-0.4-0.4l0-7.7
+			c0-0.2,0.2-0.4,0.4-0.4h5.7c0.3,0,0.5,0.2,0.5,0.5l0,7.7C29.8,28.1,29.6,28.3,29.3,28.3z"/>
+		<path id="XMLID_29_" style="display:inline;fill:#FFFFFF;" d="M28.8,27.7h-5.1c-0.3,0-0.5-0.2-0.5-0.5l0-6.4
+			c0-0.3,0.2-0.5,0.5-0.5h5.1c0.3,0,0.5,0.2,0.5,0.5l0,6.4C29.3,27.5,29.1,27.7,28.8,27.7z"/>
+	</g>
+</g>
+</svg>

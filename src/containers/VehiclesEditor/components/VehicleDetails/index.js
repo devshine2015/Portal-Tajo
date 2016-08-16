@@ -85,10 +85,10 @@ class VehicleDetails extends React.Component {
   }
 
   render() {
-    const selectedKind = getByValue(this.state.kind);
     let SelectedKindIcon = () => null;
 
-    if (selectedKind) {
+    if (this.state.kind) {
+      const selectedKind = getByValue(this.state.kind);
       SelectedKindIcon = () => selectedKind.icon;
     }
 
