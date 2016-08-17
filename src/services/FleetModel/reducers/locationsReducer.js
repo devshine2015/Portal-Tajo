@@ -1,7 +1,5 @@
 import { List, fromJS } from 'immutable';
-import {
-  locationsActions,
-} from '../actions';
+import { locationsActions } from '../actions';
 import { filterByName } from '../utils/filtering';
 
 const locationsInitialState = fromJS({

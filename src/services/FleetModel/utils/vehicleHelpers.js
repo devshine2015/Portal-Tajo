@@ -54,3 +54,33 @@ function MakeLocalVehicles(backEndVehiclesList) {
 }
 
 export default MakeLocalVehicles;
+
+/**
+ * Filter vehicles by name
+ **/
+export function filterByName(searchString, allVehicles = []) {
+  return allVehicles.filter(v =>
+    v.name.toLowerCase().search(searchString) !== -1
+  );
+}
+
+/**
+ * Find vehicle by id and return its instance and index
+ **/
+export function getVehicleById(id, allVehicles = []) {
+  let vehicleIndex;
+
+  const vehicle = allVehicles.filter((v, i) => {
+    if (v.id === id) {
+      vehicleIndex = i;
+      return true;
+    }
+
+    return false;
+  });
+
+  return {
+    vehicle,
+    vehicleIndex,
+  };
+}

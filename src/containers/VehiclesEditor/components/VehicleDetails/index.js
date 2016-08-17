@@ -6,7 +6,7 @@ import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Form from 'components/Form';
-import { VEHICLE_KINDS, getByValue } from 'utils/vehiclesMap';
+import { VEHICLE_KINDS, getVehicleByValue } from 'services/FleetModel/utils/vehiclesMap';
 import styles from './styles.css';
 
 const FORM = 'editor';
@@ -88,7 +88,7 @@ class VehicleDetails extends React.Component {
     let SelectedKindIcon = () => null;
 
     if (this.state.kind) {
-      const selectedKind = getByValue(this.state.kind);
+      const selectedKind = getVehicleByValue(this.state.kind);
       SelectedKindIcon = () => selectedKind.icon;
     }
 

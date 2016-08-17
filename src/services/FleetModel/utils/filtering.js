@@ -1,5 +1,3 @@
-
-
 export const filterByName = (state, filterString) => {
   const checkName = filterString.toLowerCase();
   let newState = state;

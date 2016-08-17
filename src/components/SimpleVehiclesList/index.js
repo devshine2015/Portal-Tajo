@@ -1,6 +1,6 @@
 import React from 'react';
 import pure from 'recompose/pure';
-import VehiclesListItem from '../VehiclesListItem';
+import VehiclesListItem from './VehiclesListItem';
 
 import styles from './styles.css';
 

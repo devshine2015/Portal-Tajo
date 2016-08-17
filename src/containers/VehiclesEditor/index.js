@@ -1,41 +1,18 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import VehiclesList from './components/VehiclesList';
+import VehiclesList from 'components/SimpleVehiclesList';
 import VehicleDetails from './components/VehicleDetails';
 import PowerList from 'components/PowerListRefactored';
-import Filter from 'containers/Filter';
+import Filter from 'components/Filter';
 import FixedContent from 'components/FixedContent';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
+import { filterByName, getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
 import { getLoaderState } from './reducer';
 import { detailsActions } from './actions';
 import { showSnackbar } from 'containers/Snackbar/actions';
 
 import styles from './styles.css';
-
-function filterByName(searchString, allVehicles = []) {
-  return allVehicles.filter(v =>
-    v.name.toLowerCase().search(searchString) !== -1
-  );
-}
-
-function getVehicleById(id, allVehicles = []) {
-  let vehicleIndex;
-
-  const vehicle = allVehicles.filter((v, i) => {
-    if (v.id === id) {
-      vehicleIndex = i;
-      return true;
-    }
-
-    return false;
-  }).get(0);
-
-  return {
-    vehicle,
-    vehicleIndex,
-  };
-}
 
 class VehiclesEditor extends React.Component {
 
@@ -65,10 +42,12 @@ class VehiclesEditor extends React.Component {
   onItemClick = (id) => {
     const v = getVehicleById(id, this.props.vehicles);
 
-    this.setState({
-      selectedVehicle: v.vehicle,
-      selectedVehicleOriginalIndex: v.vehicleIndex,
-    });
+    if (v !== undefined) {
+      this.setState({
+        selectedVehicle: v.vehicle.get(0),
+        selectedVehicleOriginalIndex: v.vehicleIndex,
+      });
+    }
   }
 
   /**
@@ -111,7 +90,7 @@ class VehiclesEditor extends React.Component {
    * and update its details
    **/
   updateFilteredVehicles(updatedDetails) {
-    const v = getVehicleById(updatedDetails.id, this.state.filteredVehicles);
+    const v = getVehicleById(updatedDetails.id, this.state.filteredVehicles.toArray());
     const updatedFilteredVehicles = this.state.filteredVehicles.set(v.vehicleIndex, updatedDetails);
 
     this.setState({

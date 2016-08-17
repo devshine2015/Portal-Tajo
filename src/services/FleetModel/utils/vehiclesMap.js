@@ -94,6 +94,6 @@ export const VEHICLE_KINDS = [
   },
 ];
 
-export function getByValue(value) {
+export function getVehicleByValue(value) {
   return VEHICLE_KINDS.filter(kind => kind.value === value)[0];
 }
