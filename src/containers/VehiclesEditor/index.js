@@ -102,7 +102,7 @@ class VehiclesEditor extends React.Component {
    **/
   closeEditor = () => {
     this.setState({
-      selectedVehicle: undefined,
+      selectedVehicleOriginalIndex: undefined,
     });
   }
 
