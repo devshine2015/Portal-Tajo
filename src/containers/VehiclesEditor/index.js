@@ -3,7 +3,8 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import VehiclesList from './components/VehiclesList';
 import VehicleDetails from './components/VehicleDetails';
-import FixedColumn from 'components/FixedColumn';
+import PowerList from 'components/PowerListRefactored';
+import Filter from 'containers/Filter';
 import FixedContent from 'components/FixedContent';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { getLoaderState } from './reducer';
@@ -12,22 +13,61 @@ import { showSnackbar } from 'containers/Snackbar/actions';
 
 import styles from './styles.css';
 
+function filterByName(searchString, allVehicles = []) {
+  return allVehicles.filter(v =>
+    v.name.toLowerCase().search(searchString) !== -1
+  );
+}
+
+function getVehicleById(id, allVehicles = []) {
+  let vehicleIndex;
+
+  const vehicle = allVehicles.filter((v, i) => {
+    if (v.id === id) {
+      vehicleIndex = i;
+      return true;
+    }
+
+    return false;
+  }).get(0);
+
+  return {
+    vehicle,
+    vehicleIndex,
+  };
+}
+
 class VehiclesEditor extends React.Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      selectedVehicleIndex: undefined,
+      selectedVehicle: undefined,
+      selectedVehicleOriginalIndex: undefined,
+      filteredVehicles: props.vehicles,
     };
+
+    this.onItemClick = this.onItemClick.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.vehicles.size !== nextProps.vehicles.size) {
+      this.setState({
+        filteredVehicles: nextProps.vehicles,
+      });
+    }
   }
 
   /**
-   * Choose vehicle by index
+   * Choose vehicle by id
    **/
-  onItemClick = (index) => {
+  onItemClick = (id) => {
+    const v = getVehicleById(id, this.props.vehicles);
+
     this.setState({
-      selectedVehicleIndex: index,
+      selectedVehicle: v.vehicle,
+      selectedVehicleOriginalIndex: v.vehicleIndex,
     });
   }
 
@@ -36,19 +76,25 @@ class VehiclesEditor extends React.Component {
    * since server requiring all details to be sent
    **/
   onDetailsSave = (data) => {
-    const { selectedVehicleIndex } = this.state;
-    const origins = this.props.vehicles.get(selectedVehicleIndex);
+    const { selectedVehicle, selectedVehicleOriginalIndex } = this.state;
     const updatedDetails = {
-      ...origins,
+      ...selectedVehicle,
       ...data,
     };
 
-    this.props.updateDetails(updatedDetails, selectedVehicleIndex)
+    this.props.updateDetails(updatedDetails, selectedVehicleOriginalIndex)
       .then(() => {
         this.props.showSnackbar('Succesfully sended ✓', 3000);
+        this.updateFilteredVehicles(updatedDetails);
       }, () => {
         this.props.showSnackbar('Something went wrong. Try later. ✓', 5000);
       });
+  }
+
+  onFilter = (value) => {
+    this.setState({
+      filteredVehicles: filterByName(value, this.props.vehicles),
+    });
   }
 
   /**
@@ -56,21 +102,34 @@ class VehiclesEditor extends React.Component {
    **/
   closeEditor = () => {
     this.setState({
-      selectedVehicleIndex: undefined,
+      selectedVehicle: undefined,
+    });
+  }
+
+  /**
+   * Find changed vehicle in filteredVehicles array
+   * and update its details
+   **/
+  updateFilteredVehicles(updatedDetails) {
+    const v = getVehicleById(updatedDetails.id, this.state.filteredVehicles);
+    const updatedFilteredVehicles = this.state.filteredVehicles.set(v.vehicleIndex, updatedDetails);
+
+    this.setState({
+      filteredVehicles: updatedFilteredVehicles,
     });
   }
 
   renderDetails() {
-    const { selectedVehicleIndex } = this.state;
+    const { selectedVehicleOriginalIndex } = this.state;
 
-    if (selectedVehicleIndex === undefined) {
+    if (selectedVehicleOriginalIndex === undefined) {
       return null;
     }
 
     /**
      * Provide data required by component
      **/
-    const origins = this.props.vehicles.get(selectedVehicleIndex);
+    const origins = this.state.selectedVehicle;
     const data = {
       kind: origins.kind || '',
       name: origins.name,
@@ -101,12 +160,13 @@ class VehiclesEditor extends React.Component {
     return (
       <div className={styles.editor}>
 
-        <FixedColumn containerClassName={styles.listContainer}>
+        <PowerList>
+          <Filter onTextChange={this.onFilter} />
           <VehiclesList
             onItemClick={this.onItemClick}
-            vehicles={this.props.vehicles}
+            vehicles={this.state.filteredVehicles}
           />
-        </FixedColumn>
+        </PowerList>
 
         {this.renderDetails()}
 

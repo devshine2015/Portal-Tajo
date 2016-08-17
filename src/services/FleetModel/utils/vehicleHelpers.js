@@ -35,8 +35,8 @@ function makeLocalVehicle(backEndObject) {
   theVehicle.dist = { total: 0, lastTrip: 0 };
   //
   theVehicle.temp = undefined;
-  //
-  theVehicle.lastUpdateTS = new Date(0, 0, 0);
+  // wrong format or date: 1899-12-30T17:00:00.000Z
+  // theVehicle.lastUpdateTS = new Date(0, 0, 0);
   return theVehicle;
 }
 

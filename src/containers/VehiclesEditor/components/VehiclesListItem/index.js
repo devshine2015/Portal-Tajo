@@ -6,7 +6,7 @@ import styles from './styles.css';
 class VehicleDetails extends React.Component {
 
   onClick = () => {
-    this.props.onClick(this.props.index);
+    this.props.onClick(this.props.id);
   }
 
   render() {
@@ -16,7 +16,7 @@ class VehicleDetails extends React.Component {
         onClick={this.onClick}
       >
         <span className={styles.link}>
-          {`${this.props.index} – ${this.props.name}`}
+          {this.props.name}
         </span>
       </div>
     );
@@ -24,7 +24,7 @@ class VehicleDetails extends React.Component {
 }
 
 VehicleDetails.propTypes = {
-  index: React.PropTypes.number.isRequired,
+  id: React.PropTypes.string.isRequired,
   name: React.PropTypes.string.isRequired,
   onClick: React.PropTypes.func.isRequired,
 };

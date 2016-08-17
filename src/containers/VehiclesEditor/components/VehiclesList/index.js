@@ -8,11 +8,10 @@ const VehiclesList = ({
   vehicles,
   onItemClick,
 }) => {
-  const items = vehicles.map((v, i) => (
+  const items = vehicles.map(v => (
     <li key={v.id}>
       <VehiclesListItem
         {...v}
-        index={i}
         onClick={onItemClick}
       />
     </li>
