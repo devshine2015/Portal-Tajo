@@ -1,0 +1,18 @@
+@media screen and (min-width: 100px) {
+  .list {
+    list-style: none;
+    padding: 0 15px;
+  }
+
+  :global(.vehicles-list_item) {
+    padding: 5px 0;
+    cursor: pointer;
+    transition: color .2s;
+    color: #777;
+    font-size: 14px;
+  }
+
+  :global(.vehicles-list_item):hover {
+    color: rgb(0, 188, 212);
+  }
+}

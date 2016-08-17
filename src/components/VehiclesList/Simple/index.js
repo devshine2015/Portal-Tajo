@@ -2,7 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import VehiclesListItem from './VehiclesListItem';
 
-import styles from './styles.css';
+import styles from '../styles.css';
 
 const VehiclesList = ({
   vehicles,

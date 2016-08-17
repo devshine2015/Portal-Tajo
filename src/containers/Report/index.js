@@ -4,18 +4,21 @@ import pure from 'recompose/pure';
 import RaisedButton from 'material-ui/RaisedButton';
 import ReportConfigurator from './components/ReportConfigurator';
 import PreviewTable from './components/PreviewTable';
-import FixedColumn from 'components/FixedColumn';
+import VehiclesList from './components/VehiclesList';
 import FixedContent from 'components/FixedContent';
 import * as fromConfigReducer from './reducers/configuratorReducer';
 import { getSavedReportData, appHasStoredReport } from './reducer';
-import { dataActions } from './actions';
+import * as fromFleetReducer from 'services/FleetModel/reducer';
+import { dataActions, vehiclesActions } from './actions';
 
 const ReportsScreen = ({
   availableFields,
+  changeVehiclesForReport,
   data,
   hasReport,
   saveGenerated,
   selectedFields,
+  vehicles,
 }) => {
   const headers = selectedFields.map(index => (
     availableFields[index].label
@@ -23,13 +26,10 @@ const ReportsScreen = ({
 
   return (
     <div className="configurator">
-      <FixedColumn>
-        {/*<VehiclesList
-          onItemClick={this.onItemClick}
-          vehicles={this.props.vehicles}
-        />*/}
-      </FixedColumn>
-
+      <VehiclesList
+        vehicles={vehicles}
+        changeVehiclesForReport={changeVehiclesForReport}
+      />
       <FixedContent>
         <ReportConfigurator
           hideSplitter
@@ -52,10 +52,12 @@ const ReportsScreen = ({
 
 ReportsScreen.propTypes = {
   availableFields: React.PropTypes.array.isRequired,
+  changeVehiclesForReport: React.PropTypes.func.isRequired,
   data: React.PropTypes.object.isRequired,
   hasReport: React.PropTypes.bool.isRequired,
   saveGenerated: React.PropTypes.func.isRequired,
   selectedFields: React.PropTypes.object.isRequired,
+  vehicles: React.PropTypes.object.isRequired,
 };
 
 const PureReportsScreen = pure(ReportsScreen);
@@ -65,9 +67,11 @@ const mapState = (state) => ({
   hasReport: appHasStoredReport(state),
   selectedFields: fromConfigReducer.getSelectedFields(state),
   availableFields: fromConfigReducer.getAvailableFields(state).toArray(),
+  vehicles: fromFleetReducer.getVehicles(state),
 });
 const mapDispatch = {
   saveGenerated: dataActions.saveGenerated,
+  changeVehiclesForReport: vehiclesActions.changeVehiclesForReport,
 };
 
 export default connect(mapState, mapDispatch)(PureReportsScreen);

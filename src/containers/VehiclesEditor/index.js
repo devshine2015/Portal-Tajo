@@ -1,7 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import VehiclesList from 'components/SimpleVehiclesList';
+import VehiclesList from 'components/VehiclesList/Simple';
 import VehicleDetails from './components/VehicleDetails';
 import PowerList from 'components/PowerListRefactored';
 import Filter from 'components/Filter';

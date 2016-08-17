@@ -7,9 +7,10 @@ import {
   getSavedReportData,
   getSelectedFields,
   getAvailableFields,
+  getSelectedVehicles,
 } from '../reducer';
 import { getFleetName, getAuthenticationSession } from 'containers/App/reducer';
-import { getVehicles } from 'services/FleetModel/reducer';
+import { getVehicles, getVehiclesById } from 'services/FleetModel/reducer';
 import {
   prepareDataForReport,
   getReportParams,
@@ -34,7 +35,10 @@ function _generateReport({ timePeriod, frequency }, dispatch, getState) {
   const periods = _getPeriods(timePeriod, frequency);
   const periodQueryString = getReportParams(timePeriod);
   const selectedReports = getSelectedReportsTypes(getState());
-  const vehicles = getVehicles(getState()).toArray();
+  const selectedVehicles = getSelectedVehicles(getState()).toArray();
+  const vehiclesList = selectedVehicles.size === 0 ? getVehicles(getState()) : getVehiclesById(getState(), selectedVehicles);
+
+  const vehicles = vehiclesList.toArray();
 
   const fieldsToCall = {};
   const sessionId = getAuthenticationSession(getState());

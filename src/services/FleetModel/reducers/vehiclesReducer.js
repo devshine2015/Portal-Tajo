@@ -44,7 +44,8 @@ export default vehiclesReducer;
 
 export const getVehicles = (state) =>
   state.get('list');
-
+export const getVehiclesById = (state, ids = []) =>
+  state.get('list').filter(v => ids.indexOf(v.id) !== -1);
 export const getVehiclesEx = (state) => {
   const theObj = state.get('processedList');
   if (theObj.size === 0) {

@@ -1,9 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
 
-import styles from './styles.css';
-
-class VehicleDetails extends React.Component {
+class SimpleListItem extends React.Component {
 
   onClick = () => {
     this.props.onClick(this.props.id);
@@ -12,21 +10,19 @@ class VehicleDetails extends React.Component {
   render() {
     return (
       <div
-        className={styles.item}
+        className="vehicles-list_item"
         onClick={this.onClick}
       >
-        <span className={styles.link}>
-          {this.props.name}
-        </span>
+        {this.props.name}
       </div>
     );
   }
 }
 
-VehicleDetails.propTypes = {
+SimpleListItem.propTypes = {
   id: React.PropTypes.string.isRequired,
   name: React.PropTypes.string.isRequired,
   onClick: React.PropTypes.func.isRequired,
 };
 
-export default pure(VehicleDetails);
+export default pure(SimpleListItem);

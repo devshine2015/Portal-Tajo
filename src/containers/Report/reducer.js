@@ -2,6 +2,7 @@ import { combineReducers } from 'redux-immutable';
 import { fromJS, List } from 'immutable';
 import { loaderActions, dataActions } from './actions';
 import configuratorReducer, * as fromConfigReducer from './reducers/configuratorReducer';
+import availableVehiclesReducer, * as fromVehiclesReducer from './reducers/vehiclesReducer';
 
 const loaderInitialState = fromJS({
   isLoading: false,
@@ -33,6 +34,7 @@ function dataReducer(state = dataInitialState, action) {
 
 export default combineReducers({
   configurator: configuratorReducer,
+  vehicles: availableVehiclesReducer,
   data: dataReducer,
   loader: loaderReducer,
 });
@@ -54,3 +56,8 @@ export const getSelectedFieldIndex = (state, value) =>
   fromConfigReducer.getSelectedFieldIndex(state, value);
 export const getReportFrequency = (state) =>
   fromConfigReducer.getReportFrequency(state);
+
+export const getSelectedVehicles = (state) =>
+  state.getIn(['reports', 'vehicles']);
+export const isVehicleAlreadyAdded = (state, id) =>
+  fromVehiclesReducer.findIndexById(state.getIn(['reports', 'vehicles']), id);
