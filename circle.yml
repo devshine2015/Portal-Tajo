@@ -19,4 +19,4 @@ deployment:
   demo:
     branch: demo-map
     commands:
-      - ./deployDemo.sh 'ddsdev@ddsdev.cloudapp.net'
+      - ./deployDemo.sh 'drvrappbeta@drvrappbeta.cloudapp.net'
