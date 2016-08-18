@@ -13,7 +13,7 @@ export const openFleetSocket = (fleet = undefined) => (dispatch, getState) =>
 function _openFleetSocket(dispatch, getState, fleetName = undefined) {
   const fleet = fleetName || getFleetName(getState());
   const socketProtocol = isSecure ? 'wss' : 'ws';
-  const socketURL = `${socketProtocol}://${HOST_BASE}/engine/${fleet}/status/monitor`;
+  const socketURL = `${socketProtocol}://${HOST_BASE}/${fleet}/status/monitor`;
   const fleetSocket = new WebSocket(socketURL);
 
   fleetSocket.onmessage = (inEvent) => {
