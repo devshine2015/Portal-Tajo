@@ -1,20 +1,16 @@
 import React from 'react';
 import pure from 'recompose/pure';
-// import styles from './styles.css';
-// require('mapbox.js'); // <-- auto-attaches to window.L
-// require('leaflet/dist/leaflet.css');
-
 
 class MapLocation extends React.Component {
   constructor(props) {
     super(props);
-    this.theMap = null;
+    this.containerLayer = null;
     this.theMarker = null;
     this.theCircle = null;
   }
 
   componentDidMount() {
-    this.theMap = this.props.theMap;
+    this.containerLayer = this.props.theLayer;
     this.theMarker = window.L.circleMarker(this.props.theLocation.pos,
       { title: this.props.theLocation.name });
     const clickHandle = ((inThis) => (e) => {
@@ -22,9 +18,10 @@ class MapLocation extends React.Component {
 //      console.log('MARKER clicked ' + inThis.props.theVehicle.id);
     })(this);
     this.theMarker.on('click', clickHandle);
-    this.theMarker.addTo(this.theMap);
+    this.theMarker.addTo(this.containerLayer);
 
     this.theCircle = window.L.circle(this.props.theLocation.pos, this.props.theLocation.radius);
+//    this.theCircle.editing.enable();
   }
 
   setPosition(latLng) {
@@ -33,21 +30,21 @@ class MapLocation extends React.Component {
   }
   expand(doExpand) {
     if (doExpand) {
-      this.theMap.addLayer(this.theCircle);
+      this.containerLayer.addLayer(this.theCircle);
     } else {
-      if (this.theMap.hasLayer(this.theCircle)) {
-        this.theMap.removeLayer(this.theCircle);
+      if (this.containerLayer.hasLayer(this.theCircle)) {
+        this.containerLayer.removeLayer(this.theCircle);
       }
     }
   }
   toggle(doShow) {
     if (doShow) {
-      if (!this.theMap.hasLayer(this.theMarker)) {
-        this.theMap.addLayer(this.theMarker);
+      if (!this.containerLayer.hasLayer(this.theMarker)) {
+        this.containerLayer.addLayer(this.theMarker);
       }
     } else {
-      if (this.theMap.hasLayer(this.theMarker)) {
-        this.theMap.removeLayer(this.theMarker);
+      if (this.containerLayer.hasLayer(this.theMarker)) {
+        this.containerLayer.removeLayer(this.theMarker);
       }
       this.expand(false);
     }
@@ -64,7 +61,7 @@ class MapLocation extends React.Component {
 }
 
 MapLocation.propTypes = {
-  theMap: React.PropTypes.object,
+  theLayer: React.PropTypes.object,
   theLocation: React.PropTypes.object,
   onClick: React.PropTypes.func.isRequired,
   isSelected: React.PropTypes.bool.isRequired,

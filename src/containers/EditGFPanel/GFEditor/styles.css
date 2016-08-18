@@ -1,0 +1,16 @@
+@media screen and (min-width: 100px) {
+  .details {
+    flex: 1;
+    min-height: 1px;
+    overflow-y: auto;
+  }
+
+  .buttons {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .buttons__button {
+    margin: 0 5px;
+  }
+}

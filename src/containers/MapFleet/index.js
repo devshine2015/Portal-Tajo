@@ -4,15 +4,20 @@ import pure from 'recompose/pure';
 import styles from './styles.css';
 require('mapbox.js'); // <-- auto-attaches to window.L
 require('leaflet/dist/leaflet.css');
+// require('leaflet-editable/handler/Edit.SimpleShape');
+// require('leaflet-editable/handler/Edit.Circle');
+require('leaflet-draw');
+
 
 import MapVehicle from './components/MapVehicle';
 import MapLocation from './components/MapLocation';
+import EditGF from './components/EditGF';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
-import { ZERO_LOCATION } from './../../utils/constants';
+import { MAPBOX_KEY, ZERO_LOCATION, ZERO_ZOOM, NEW_GF_REQUIRED_ZOOM_LEVEL } from 'utils/constants';
 
-import * as ListEvents from 'containers/PowerList/events';
-import * as MapEvents from './events';
+import * as listEvents from 'containers/PowerList/events';
+import * as mapEvents from './events';
 
 const selectForMe = (meThis, hookId) => (id) => {
   meThis.selectMarker(hookId, id);
@@ -25,14 +30,29 @@ class MapFleet extends React.Component {
   constructor(props) {
     super(props);
     this.theMap = null;
+    this.clickPos = window.L.latLng(ZERO_LOCATION);
+
     this.state = {
+//      gfEditMode: false,
       selectedVehicleId: undefined,
       selectedLocationId: undefined,
     };
+
+    this.props.setUpHooks(listEvents.LIST_VEHICLE_SELECTED,
+      ((meThis) => (id) => { meThis.highLightMarker(id); })(this));
+    this.props.setUpHooks(listEvents.LIST_LOC_SELECTED,
+      ((meThis) => (id) => { meThis.highLightMarker(id); })(this));
   }
 
   componentDidMount() {
     this.createMapboxMap();
+    this.vehicleMarkersLayer = window.L.layerGroup();
+    this.theMap.addLayer(this.vehicleMarkersLayer);
+    this.gfMarkersLayer = window.L.layerGroup();
+    this.theMap.addLayer(this.gfMarkersLayer);
+    this.gfEditLayer = window.L.layerGroup();
+    this.theMap.addLayer(this.gfEditLayer);
+
     // retrigger render to apply the MAP prop for markers
 //    this.forceUpdate();
 
@@ -49,10 +69,20 @@ class MapFleet extends React.Component {
       return;
     }
     const domNode = ReactDOM.findDOMNode(this);
-    window.L.mapbox.accessToken =
-    'pk.eyJ1IjoiZHJ2ciIsImEiOiI3NWM4ZWE1MWEyOTVmZTQ0ZDU2OTE5OGIwNzRlMWY2NyJ9.ybLA6tItFcbyAQyxRq3Pog';
+    window.L.mapbox.accessToken = MAPBOX_KEY;
     this.theMap = window.L.mapbox.map(domNode);
-    this.theMap.setView(ZERO_LOCATION, 12);
+    this.theMap.setView(ZERO_LOCATION, ZERO_ZOOM);
+
+    this.theMap.on('contextmenu', (e) => ((inThis) => {
+      if (inThis.props.gfEditMode) { // already editing?
+        return;
+      }
+      inThis.clickPos = e.latlng;
+      inThis.props.hooks(mapEvents.MAP_LOCATION_ADD, { pos: inThis.clickPos });
+      if (inThis.theMap.getZoom() < NEW_GF_REQUIRED_ZOOM_LEVEL) {
+        inThis.theMap.setZoomAround(inThis.clickPos, NEW_GF_REQUIRED_ZOOM_LEVEL);
+      }
+    })(this));
 
     const tilesOSM = window.L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -93,11 +123,23 @@ class MapFleet extends React.Component {
     this.props.hooks(hookId, selectedId);
   }
 
+  hideLayer(theLayer, doHide) {
+    if (this.theMap === null) return;
+    if (doHide) {
+      if (this.theMap.hasLayer(theLayer)) {
+        this.theMap.removeLayer(theLayer);
+      }
+    } else {
+      if (!this.theMap.hasLayer(theLayer)) {
+        this.theMap.addLayer(theLayer);
+      }
+    }
+  }
+
   render() {
-    this.props.setUpHooks(ListEvents.LIST_VEHICLE_SELECTED,
-      ((meThis) => (id) => { meThis.highLightMarker(id); })(this));
-    this.props.setUpHooks(ListEvents.LIST_LOC_SELECTED,
-      ((meThis) => (id) => { meThis.highLightMarker(id); })(this));
+    this.hideLayer(this.vehicleMarkersLayer, this.props.gfEditMode);
+    this.hideLayer(this.gfMarkersLayer, this.props.gfEditMode);
+    this.hideLayer(this.gfEditLayer, !this.props.gfEditMode);
 
     let vehicles = EMPTY_ARRAY;
     let locations = EMPTY_ARRAY;
@@ -107,39 +149,41 @@ class MapFleet extends React.Component {
         <MapVehicle
           key={v.id}
           isSelected={this.state.selectedVehicleId === v.id}
-          theMap={this.theMap}
+          theLayer={this.vehicleMarkersLayer}
           theVehicle={v}
-          onClick={selectForMe(this, MapEvents.MAP_VEHICLE_SELECTED)}
+          onClick={selectForMe(this, mapEvents.MAP_VEHICLE_SELECTED)}
         />
       ));
       locations = this.props.locations.map((v) => (
         <MapLocation
           key={v.id}
           isSelected={this.state.selectedLocationId === v.id}
-          theMap={this.theMap}
+          theLayer={this.gfMarkersLayer}
           theLocation={v}
-          onClick={selectForMe(this, MapEvents.MAP_LOCATION_SELECTED)}
+          onClick={selectForMe(this, mapEvents.MAP_LOCATION_SELECTED)}
         />
       ));
     }
+    const editGF = this.theMap === null ? false :
+     (<EditGF
+       key="gfEditHelper"
+       theLayer={this.gfEditLayer}
+       hooks={this.props.hooks}
+       setUpHooks={this.props.setUpHooks}
+       spawnPos={this.clickPos}
+     />);
 
     return (
       <div className = {styles.mapContainer}>
-        {vehicles}
-        {locations}
+      {locations}
+      {vehicles}
+      {editGF}
       </div>
     );
   }
 }
 
 const PureMapFleet = pure(MapFleet);
-
-const mapState = (state) => ({
-  vehicles: fromFleetReducer.getVehiclesEx(state),
-  locations: fromFleetReducer.getLocationsEx(state),
-  vehicleById: fromFleetReducer.getVehicleByIdFunc(state),
-  locationById: fromFleetReducer.getLocationByIdFunc(state),
-});
 
 MapFleet.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
@@ -148,6 +192,12 @@ MapFleet.propTypes = {
   hooks: React.PropTypes.func.isRequired,
   vehicleById: React.PropTypes.func.isRequired,
   locationById: React.PropTypes.func.isRequired,
+  gfEditMode: React.PropTypes.bool.isRequired,
 };
-
+const mapState = (state) => ({
+  vehicles: fromFleetReducer.getVehiclesEx(state),
+  locations: fromFleetReducer.getLocationsEx(state),
+  vehicleById: fromFleetReducer.getVehicleByIdFunc(state),
+  locationById: fromFleetReducer.getLocationByIdFunc(state),
+});
 export default connect(mapState)(PureMapFleet);
