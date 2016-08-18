@@ -30,10 +30,14 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
         newState = newState.setIn(['processedList', inStatus.id, 'dist', 'lastTrip'],
           inStatus.dist.lastTrip);
       }
-      return newState.setIn(['processedList', inStatus.id, 'pos'],
-                      [inStatus.pos.latlon.lat, inStatus.pos.latlon.lng])
-                  .setIn(['processedList', inStatus.id, 'speed'],
-                                  inStatus.pos.speed);
+      if (inStatus.pos !== undefined) {
+        newState = newState.setIn(['processedList', inStatus.id, 'pos'],
+              [inStatus.pos.latlon.lat, inStatus.pos.latlon.lng])
+          .setIn(['processedList', inStatus.id, 'speed'],
+                          inStatus.pos.speed);
+      }
+
+      return newState;
     }
     default:
       return state;
@@ -45,7 +49,8 @@ export default vehiclesReducer;
 export const getVehicles = (state) =>
   state.get('list');
 export const getVehiclesById = (state, ids = []) =>
-  state.get('list').filter(v => ids.indexOf(v.id) !== -1);
+ state.get('list').filter(v => ids.indexOf(v.id) !== -1);
+
 export const getVehiclesEx = (state) => {
   const theObj = state.get('processedList');
   if (theObj.size === 0) {

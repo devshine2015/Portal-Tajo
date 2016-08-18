@@ -1,5 +1,6 @@
 import 'whatwg-fetch';
 import { HOST_BASE } from './constants';
+import { protocol } from 'configs';
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -26,7 +27,7 @@ function prepareRequest(method, url, headers, payload) {
     body = JSON.stringify(payload);
   }
 
-  const base = `${HOST_BASE}/${url}`;
+  const base = `${protocol}//${HOST_BASE}/${url}`;
   const endpoint = query ? `${base}/${query}` : base;
 
   const options = {

@@ -36,7 +36,7 @@ function _generateReport({ timePeriod, frequency }, dispatch, getState) {
   const periodQueryString = getReportParams(timePeriod);
   const selectedReports = getSelectedReportsTypes(getState());
   const selectedVehicles = getSelectedVehicles(getState()).toArray();
-  const vehiclesList = selectedVehicles.size === 0 ? getVehicles(getState()) : getVehiclesById(getState(), selectedVehicles);
+  const vehiclesList = selectedVehicles.length === 0 ? getVehicles(getState()) : getVehiclesById(getState(), selectedVehicles);
 
   const vehicles = vehiclesList.toArray();
 

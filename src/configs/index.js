@@ -12,7 +12,8 @@ export const FIREBASE_CONFIG = {
 export const VERSIONS = {
   authentication: {
     ver: 2,
-    verify: (savedData) => {
+    // Don't use arrow shorthand (=>) to keep context for this
+    verify: function(savedData) {
       // if no any session data
       if (!savedData) {
         return true;
