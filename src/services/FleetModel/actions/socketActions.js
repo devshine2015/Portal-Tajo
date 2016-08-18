@@ -1,4 +1,5 @@
 import { getFleetName } from 'containers/App/reducer';
+import { isSecure } from 'configs';
 
 export const FLEET_MODEL_SOCKET_SET = 'portal/services/FLEET_MODEL_SOCKET_SET';
 
@@ -10,17 +11,11 @@ export const openFleetSocket = (fleet = undefined) => (dispatch, getState) =>
  **/
 function _openFleetSocket(dispatch, getState, fleetName = undefined) {
   const fleet = fleetName || getFleetName(getState());
-  // const url = `${fleet}/status/monitor`;
-//    const base = `${HOST_BASE}/${url}`;
-  // const sessionId = getAuthenticationSession(getState());
-  // const optionalHeaders = {
-  //   ['DRVR-SESSION']: sessionId,
-  // };
-  // FIXME
-  // TODO:
-  // generate URL properly
-  const socketURL = `ws://ddsdev.cloudapp.net:8080/engine/${fleet}/status/monitor`;
+  const socketProtocol = isSecure ? 'wss' : 'ws';
+  const hostname = 'ddsdev.cloudapp.net:8080';
+  const socketURL = `${socketProtocol}://${hostname}/engine/${fleet}/status/monitor`;
   const fleetSocket = new WebSocket(socketURL);
+
   fleetSocket.onmessage = (inEvent) => {
     const data = JSON.parse(inEvent.data);
     if (data.status.lengh === 1) {

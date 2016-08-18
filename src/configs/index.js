@@ -1,5 +1,6 @@
 export const isDev = process.env.NODE_ENV !== 'production';
 export const protocol = document.location.protocol;
+export const isSecure = protocol === 'https';
 export const onProduction = location.hostname === 'drvrapp.net' && !isDev;
 export const serverFolder = 'tajo';
 export const FIREBASE_CONFIG = {
@@ -11,7 +12,7 @@ export const FIREBASE_CONFIG = {
 export const VERSIONS = {
   authentication: {
     ver: 2,
-    verify: function (savedData) {
+    verify: (savedData) => {
       // if no any session data
       if (!savedData) {
         return true;
