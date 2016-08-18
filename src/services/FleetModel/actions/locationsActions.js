@@ -3,7 +3,7 @@ import {
   getFleetName,
   getAuthenticationSession,
 } from 'containers/App/reducer';
-import processLocations from '../utils/locationsHelpers';
+import { makeLocalLocations } from '../utils/locationsHelpers';
 
 export const FLEET_MODEL_LOCATIONS_SET = 'portal/services/FLEET_MODEL_LOCATIONS_SET';
 export const FLEET_MODEL_LOCATIONS_FILTER = 'portal/services/FLEET_MODEL_LOCATIONS_FILTER';
@@ -12,6 +12,8 @@ export const fetchLocations = (fleet = undefined) => (dispatch, getState) =>
   _fetchLocations(dispatch, getState, fleet);
 export const filterLocations = (filterName) => (dispatch) =>
   dispatch(_locationsFilter(filterName));
+export const createGF = (newGF, idx) => (dispatch, getState) =>
+  _createGFRequest(newGF, idx, dispatch, getState);
 
 /**
  * fleet is optional
@@ -27,14 +29,29 @@ function _fetchLocations(dispatch, getState, fleetName = undefined) {
   return api(url, { optionalHeaders })
     .then(toJson)
     .then(locations => {
-      const localLocs = processLocations(locations);
+      const localLocs = makeLocalLocations(locations);
       dispatch(_locationsSet(locations, localLocs));
     });
 }
 
 /**
- * PUT new updated details to the server
+ * POST - new GF details to the server
  **/
+function _createGFRequest(gfObject, index, dispatch, getState) {
+  const fleet = getFleetName(getState());
+  const url = `${fleet}/location`;
+  const optionalHeaders = {
+    ['DRVR-SESSION']: getAuthenticationSession(getState()),
+  };
+
+  return api.post(url, {
+    optionalHeaders,
+    payload: gfObject,
+  }).then(() => {
+    _fetchLocations(dispatch, getState);
+    return Promise.resolve();
+  }, error => Promise.reject(error));
+}
 
 function toJson(response) {
   return response.json();

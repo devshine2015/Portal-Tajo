@@ -9,7 +9,7 @@ const iconSelected = require('./images/markers/truckIcon.png');
 class MapVehicle extends React.Component {
   constructor(props) {
     super(props);
-    this.theMap = null;
+    this.theLayer = null;
     this.theMarker = null;
     this.markerIcon = null;
     this.markerIconSelected = null;
@@ -17,9 +17,9 @@ class MapVehicle extends React.Component {
   }
 
   componentDidMount() {
-    this.theMap = this.props.theMap;
+    this.theLayer = this.props.theLayer;
     this.createMarker();
-    // this.theMarker.addTo(this.theMap);
+    // this.theMarker.addTo(this.theLayer);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -75,12 +75,12 @@ class MapVehicle extends React.Component {
   }
   toggle(doShow) {
     if (doShow) {
-      if (!this.theMap.hasLayer(this.theMarker)) {
-        this.theMap.addLayer(this.theMarker);
+      if (!this.theLayer.hasLayer(this.theMarker)) {
+        this.theLayer.addLayer(this.theMarker);
       }
     } else {
-      if (this.theMap.hasLayer(this.theMarker)) {
-        this.theMap.removeLayer(this.theMarker);
+      if (this.theLayer.hasLayer(this.theMarker)) {
+        this.theLayer.removeLayer(this.theMarker);
       }
     }
   }
@@ -107,7 +107,7 @@ class MapVehicle extends React.Component {
 }
 
 MapVehicle.propTypes = {
-  theMap: React.PropTypes.object,
+  theLayer: React.PropTypes.object,
   theVehicle: React.PropTypes.object,
   onClick: React.PropTypes.func.isRequired,
   isSelected: React.PropTypes.bool.isRequired,

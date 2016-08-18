@@ -1,0 +1,15 @@
+@media screen and (min-width: 100px) {
+  .EditorContainer {
+    background-color: #3eb6aa;
+    color: #fff;
+    width: 350px;
+    height: 100%;
+    }
+  .FullHeight {
+    height: 100%;
+    }
+  .FullHeightScroll {
+    height: 100%;
+    overflow-y: scroll;
+    }
+}
