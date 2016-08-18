@@ -1,6 +1,6 @@
 export const isDev = process.env.NODE_ENV !== 'production';
 export const protocol = document.location.protocol;
-export const isSecure = protocol === 'https';
+export const isSecure = protocol.search('https') !== -1;
 export const onProduction = location.hostname === 'drvrapp.net' && !isDev;
 export const serverFolder = 'tajo';
 export const FIREBASE_CONFIG = {
