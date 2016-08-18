@@ -1,5 +1,6 @@
 import { getFleetName } from 'containers/App/reducer';
 import { isSecure } from 'configs';
+import { HOST_BASE } from 'utils/constants';
 
 export const FLEET_MODEL_SOCKET_SET = 'portal/services/FLEET_MODEL_SOCKET_SET';
 
@@ -12,8 +13,7 @@ export const openFleetSocket = (fleet = undefined) => (dispatch, getState) =>
 function _openFleetSocket(dispatch, getState, fleetName = undefined) {
   const fleet = fleetName || getFleetName(getState());
   const socketProtocol = isSecure ? 'wss' : 'ws';
-  const hostname = 'ddsdev.cloudapp.net:8080';
-  const socketURL = `${socketProtocol}://${hostname}/engine/${fleet}/status/monitor`;
+  const socketURL = `${socketProtocol}://${HOST_BASE}/engine/${fleet}/status/monitor`;
   const fleetSocket = new WebSocket(socketURL);
 
   fleetSocket.onmessage = (inEvent) => {
