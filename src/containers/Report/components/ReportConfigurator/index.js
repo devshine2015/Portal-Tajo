@@ -16,6 +16,8 @@ import {
   getReportFrequency,
 } from 'containers/Report/reducer';
 
+import styles from './styles.css';
+
 function calcStartTime() {
   const t = moment().set({
     hour: 0,
@@ -170,11 +172,20 @@ class Report extends React.Component {
 
           <InputFieldWrapper>
             <RaisedButton
+              className={styles.button}
               label="Generate report"
               onClick={this.onSubmit}
               disabled={this.props.isLoading}
               primary
             />
+            { this.props.hasReport && (
+              <RaisedButton
+                className={styles.button}
+                label="Save Generated"
+                onClick={this.props.saveReport}
+                primary
+              />
+            )}
           </InputFieldWrapper>
         </Form>
       </div>
@@ -188,7 +199,9 @@ Report.propTypes = {
   frequency: React.PropTypes.string,
   generateReport: React.PropTypes.func.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
+  hasReport: React.PropTypes.bool.isRequired,
   hideSplitter: React.PropTypes.bool.isRequired,
+  saveReport: React.PropTypes.func.isRequired,
   updateSelectedFields: React.PropTypes.func.isRequired,
 };
 

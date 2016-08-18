@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
-import RaisedButton from 'material-ui/RaisedButton';
 import ReportConfigurator from './components/ReportConfigurator';
 import PreviewTable from './components/PreviewTable';
 import VehiclesList from './components/VehiclesList';
@@ -33,14 +32,10 @@ const ReportsScreen = ({
       <FixedContent>
         <ReportConfigurator
           hideSplitter
+          hasReport={hasReport}
+          saveReport={saveGenerated}
         />
-        { hasReport && (
-            <RaisedButton
-              label="Save Generated"
-              onClick={saveGenerated}
-              primary
-            />
-        )}
+
         <PreviewTable
           headers={headers}
           data={data}
