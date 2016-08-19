@@ -2,8 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import pure from 'recompose/pure';
 import ItemProperty from './../ItemProperty';
+import SvgIcon from 'material-ui/SvgIcon';
 
 import styles from './styles.css';
+import stylesBasic from './../styles.css';
+
+const   vehicleIconStyle =  {
+    position: 'absolute',
+    left: '15px',
+    width: '32px',
+    height: '32px',
+  }
 
 class ListItemVehicle extends React.Component {
   constructor(props) {
@@ -25,7 +34,7 @@ class ListItemVehicle extends React.Component {
     if (!this.props.isSelected) {
       return (
         <div
-          className={styles.listItem}
+          className={stylesBasic.listItem}
           onClick={this.onClick}
         >
           <div > {this.props.vehicleObj.name} </div>
@@ -35,7 +44,7 @@ class ListItemVehicle extends React.Component {
 
     return (
       <div
-        className={ this.props.isSelected ? styles.listItemSelected : styles.listItem}
+        className={stylesBasic.listItemSelected}
         onClick={this.onClick}
       >
         <div > {this.props.vehicleObj.name} </div>
@@ -43,6 +52,7 @@ class ListItemVehicle extends React.Component {
         <ItemProperty title="Speed" value={`${this.props.vehicleObj.speed.toFixed(1)} km/h`} />
         <ItemProperty title="Trip dist" value={`${(this.props.vehicleObj.dist.lastTrip / 1000).toFixed(2)} km`} />
         <hr />
+        <ItemProperty title="Kind" value={this.props.vehicleObj.kindData.text} />
         <ItemProperty title="license Plate" value={`${this.props.vehicleObj.licensePlate}`} />
         <ItemProperty title="Make" value={`${this.props.vehicleObj.make}`} />
         <ItemProperty title="Model" value={`${this.props.vehicleObj.model}`} />

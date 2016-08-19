@@ -10,7 +10,7 @@ require('leaflet-draw');
 
 
 import MapVehicle from './components/MapVehicle';
-import MapLocation from './components/MapLocation';
+import MapGF from './components/MapGF';
 import EditGF from './components/EditGF';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
@@ -155,7 +155,7 @@ class MapFleet extends React.Component {
         />
       ));
       locations = this.props.locations.map((v) => (
-        <MapLocation
+        <MapGF
           key={v.id}
           isSelected={this.state.selectedLocationId === v.id}
           theLayer={this.gfMarkersLayer}

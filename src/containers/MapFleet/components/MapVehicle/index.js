@@ -3,7 +3,9 @@ import pure from 'recompose/pure';
 // import styles from './styles.css';
 // require('mapbox.js'); // <-- auto-attaches to window.L
 // require('leaflet/dist/leaflet.css');
-const icon = require('./images/markers/truckIconIdle.png');
+// const icon = require('./images/markers/truckIconIdle.png');
+// const icon = require('components/icons/minibus_pin.svg');
+const icon = require('assets/images/v_icons/minibus.png');
 const iconSelected = require('./images/markers/truckIcon.png');
 
 class MapVehicle extends React.Component {
@@ -19,7 +21,9 @@ class MapVehicle extends React.Component {
   componentDidMount() {
     this.theLayer = this.props.theLayer;
     this.createMarker();
-    // this.theMarker.addTo(this.theLayer);
+    this.setPosition(this.props.theVehicle.pos);
+    this.toggle(!this.props.theVehicle.filteredOut);
+    this.expand(this.props.isSelected);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -99,10 +103,6 @@ class MapVehicle extends React.Component {
       this.expand(this.props.isSelected);
     }
     return false;
-    // return (
-    //   <div className = {styles.mapContainer}>
-    //   </div>
-    // );
   }
 }
 

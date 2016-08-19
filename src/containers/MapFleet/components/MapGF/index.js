@@ -1,7 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
 
-class MapLocation extends React.Component {
+class MapGF extends React.Component {
   constructor(props) {
     super(props);
     this.containerLayer = null;
@@ -22,6 +22,9 @@ class MapLocation extends React.Component {
 
     this.theCircle = window.L.circle(this.props.theLocation.pos, this.props.theLocation.radius);
 //    this.theCircle.editing.enable();
+  }
+  componentWillUnmount() {
+    this.toggle(false);
   }
 
   setPosition(latLng) {
@@ -60,12 +63,13 @@ class MapLocation extends React.Component {
   }
 }
 
-MapLocation.propTypes = {
+
+MapGF.propTypes = {
   theLayer: React.PropTypes.object,
   theLocation: React.PropTypes.object,
   onClick: React.PropTypes.func.isRequired,
   isSelected: React.PropTypes.bool.isRequired,
 };
-const PureMapLocation = pure(MapLocation);
+const PureMapGF = pure(MapGF);
 
-export default PureMapLocation;
+export default PureMapGF;
