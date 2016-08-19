@@ -4,11 +4,18 @@ import pure from 'recompose/pure';
 import ItemProperty from './../ItemProperty';
 import { deleteGF } from 'services/FleetModel/actions/locationsActions';
 import { showSnackbar } from 'containers/Snackbar/actions';
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
+// import RaisedButton from 'material-ui/RaisedButton';
+// import FlatButton from 'material-ui/FlatButton';
+import DeletIcon from 'material-ui/svg-icons/action/delete';
+import EditIcon from 'material-ui/svg-icons/maps/edit-location';
+import IconButton from 'material-ui/IconButton';
+
+import { red900, teal900 } from 'material-ui/styles/colors';
+
 
 import stylesBasic from './../styles.css';
 import styles from './styles.css';
+
 
 class ListItemGF extends React.Component {
   onClick = () => {
@@ -46,12 +53,13 @@ class ListItemGF extends React.Component {
         <hr />
         <ItemProperty title="Address" value={`${this.props.locationObj.address}`} />
         <ItemProperty title="Radius" value={`${this.props.locationObj.radius.toFixed(0)} m`} />
-        <RaisedButton
-          label="Remove"
-          onClick={this.onDelete}
-          primary
-        />
-
+        <hr />
+        <IconButton tooltip="Edit" onClick={this.onDelete}>
+          <EditIcon color={teal900} />
+        </IconButton>
+        <IconButton tooltip="Delete" onClick={this.onDelete}>
+          <DeletIcon color={red900} />
+        </IconButton>
       </div>
     );
   }
