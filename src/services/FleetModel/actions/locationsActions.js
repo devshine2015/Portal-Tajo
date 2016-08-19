@@ -14,6 +14,8 @@ export const filterLocations = (filterName) => (dispatch) =>
   dispatch(_locationsFilter(filterName));
 export const createGF = (newGF, idx) => (dispatch, getState) =>
   _createGFRequest(newGF, idx, dispatch, getState);
+export const deleteGF = (id) => (dispatch, getState) =>
+  _deleteGFRequest(id, dispatch, getState);
 
 /**
  * fleet is optional
@@ -47,6 +49,23 @@ function _createGFRequest(gfObject, index, dispatch, getState) {
   return api.post(url, {
     optionalHeaders,
     payload: gfObject,
+  }).then(() => {
+    _fetchLocations(dispatch, getState);
+    return Promise.resolve();
+  }, error => Promise.reject(error));
+}
+/**
+ * DELETE - new GF details to the server
+ **/
+function _deleteGFRequest(id, dispatch, getState) {
+  const fleet = getFleetName(getState());
+  const url = `${fleet}/location/${id}`;
+  const optionalHeaders = {
+    ['DRVR-SESSION']: getAuthenticationSession(getState()),
+  };
+
+  return api.delete(url, {
+    optionalHeaders,
   }).then(() => {
     _fetchLocations(dispatch, getState);
     return Promise.resolve();
