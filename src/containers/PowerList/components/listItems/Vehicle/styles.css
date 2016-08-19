@@ -1,0 +1,8 @@
+@media screen and (min-width: 100px) {
+  .vehicleIcon {
+    position: absolute;
+    left: 15px;
+    width: 32px;
+    height: 32px;
+  }
+}

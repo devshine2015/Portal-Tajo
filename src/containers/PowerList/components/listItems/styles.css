@@ -18,12 +18,4 @@
     padding: 3px 3px 3px 16px;
     font-size: 18px;
       }
-  .listItem:hover .link{
-    color: rgb(0, 188, 212);
-  }
-  .link {
-    transition: color .2s;
-    color: #FFFFFF;
-    font-size: 14px;
-  }
 }
