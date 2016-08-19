@@ -1,13 +1,9 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import styles from './styles.css';
-// require('mapbox.js'); // <-- auto-attaches to window.L
-// require('leaflet/dist/leaflet.css');
-// const icon = require('./images/markers/truckIconIdle.png');
-// const icon = require('components/icons/minibus_pin.svg');
-// const icon = require('assets/images/v_icons_combi/minibus@3x.png');
-const iconPin = require('assets/images/v_icons_combi/pin.png');
-// const iconSelected = require('./images/markers/truckIcon.png');
+// const iconPin = require('assets/images/v_icons_combi/pin.png');
+// const iconPin = require('assets/images/v_icons_combi/pointer.png');
+const iconPin = require('assets/images/v_icons_combi/pointerRightTilt.png');
 
 class MapVehicle extends React.Component {
   constructor(props) {
@@ -43,9 +39,18 @@ class MapVehicle extends React.Component {
 
     const iScale = 0.25;
     const headSz = 152 * iScale;
-    const pinW = 56 * iScale;
+    // const pinW = 56 * iScale;
+    // const pinH = 119 * iScale;
+    // const pinAnchorW = pinW/2;
+    // const pinAnchorH = 95 * iScale;
+    // const headAnchorW =[headSz / 2;
+    // const headAnchorH = headSz + pinAnchorH * 0.75;
+    const pinW = 112 * iScale;
     const pinH = 119 * iScale;
+    const pinAnchorW = 38 * iScale;
     const pinAnchorH = 95 * iScale;
+    const headAnchorW = pinW - headSz * 0.75;
+    const headAnchorH = headSz + pinAnchorH * 0.65;
 
     const iconImg = this.props.theVehicle.kindData.pic;
 
@@ -57,10 +62,10 @@ class MapVehicle extends React.Component {
     this.markerIconSelected = window.L.icon({
       iconUrl: iconImg,
       iconSize: [headSz, headSz],
-      iconAnchor: [headSz / 2, headSz + pinAnchorH],
+      iconAnchor: [headAnchorW, headAnchorH],
       shadowUrl: iconPin,
       shadowSize: [pinW, pinH],
-      shadowAnchor: [pinW / 2, pinAnchorH],
+      shadowAnchor: [pinAnchorW, pinAnchorH],
       className: styles.animatedS,
     });
     this.theMarker = window.L.marker(this.props.theVehicle.pos,
