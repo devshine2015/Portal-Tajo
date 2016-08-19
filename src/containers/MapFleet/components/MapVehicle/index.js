@@ -1,12 +1,13 @@
 import React from 'react';
 import pure from 'recompose/pure';
-// import styles from './styles.css';
+import styles from './styles.css';
 // require('mapbox.js'); // <-- auto-attaches to window.L
 // require('leaflet/dist/leaflet.css');
 // const icon = require('./images/markers/truckIconIdle.png');
 // const icon = require('components/icons/minibus_pin.svg');
-const icon = require('assets/images/v_icons/minibus.png');
-const iconSelected = require('./images/markers/truckIcon.png');
+// const icon = require('assets/images/v_icons_combi/minibus@3x.png');
+const iconPin = require('assets/images/v_icons_combi/pin.png');
+// const iconSelected = require('./images/markers/truckIcon.png');
 
 class MapVehicle extends React.Component {
   constructor(props) {
@@ -36,18 +37,31 @@ class MapVehicle extends React.Component {
     this.theMarker.setLatLng(latLng);
   }
   createMarker() {
-    const iconH = 240 / 2;
-    const iconW = 80 / 2;
-    const iconSz = 32;
+    // const iconH = 240 / 2;
+    // const iconW = 80 / 2;
+    // const iconSz = 32;
+
+    const iScale = 0.25;
+    const headSz = 152 * iScale;
+    const pinW = 56 * iScale;
+    const pinH = 119 * iScale;
+    const pinAnchorH = 95 * iScale;
+
+    const iconImg = this.props.theVehicle.kindData.pic;
+
     this.markerIcon = window.L.icon({
-      iconUrl: icon,
-      iconSize: [iconW, iconH],
-      iconAnchor: [iconW / 2, iconH / 2],
+      iconUrl: iconImg,
+      iconSize: [headSz, headSz],
+      iconAnchor: [headSz / 2, headSz / 2],
     });
     this.markerIconSelected = window.L.icon({
-      iconUrl: iconSelected,
-      iconSize: [iconW, iconH],
-      iconAnchor: [iconW / 2, iconH / 2],
+      iconUrl: iconImg,
+      iconSize: [headSz, headSz],
+      iconAnchor: [headSz / 2, headSz + pinAnchorH],
+      shadowUrl: iconPin,
+      shadowSize: [pinW, pinH],
+      shadowAnchor: [pinW / 2, pinAnchorH],
+      className: styles.animatedS,
     });
     this.theMarker = window.L.marker(this.props.theVehicle.pos,
       { title: this.props.theVehicle.name,
@@ -90,7 +104,7 @@ class MapVehicle extends React.Component {
   }
   expand(doExpand) {
     if (doExpand) {
-      this.theMarker.setIcon(this.markerIconSelected).setZIndexOffset(200);
+      this.theMarker.setIcon(this.markerIconSelected).setZIndexOffset(20000);
     } else {
       this.theMarker.setIcon(this.markerIcon).setZIndexOffset(0);
     }

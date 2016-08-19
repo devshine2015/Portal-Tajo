@@ -39,7 +39,6 @@ function makeLocalVehicle(backEndObject) {
   theVehicle.temp = undefined;
   // wrong format or date: 1899-12-30T17:00:00.000Z
   // theVehicle.lastUpdateTS = new Date(0, 0, 0);
-
   theVehicle.kindData = getVehicleByValue(backEndObject.kind || 'SGV');
   return theVehicle;
 }

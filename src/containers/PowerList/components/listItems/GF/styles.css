@@ -1,34 +1,5 @@
 @media screen and (min-width: 100px) {
-  .listItem {
-    background-color: #30bd1e;
-    color: #fff;
-    width: 100%;
-    min-height: 48px;
-    border-color: #259417;
-    border-width: 1px;
+  .iconDelBtn {
+    float: right;
       }
-  .listItemSelected {
-    background-color: #ccca28;
-    color: #fff;
-    width: 100%;
-    border-color: #259417;
-    border-width: 1px;
-      }
-  .listItem:hover .link{
-    color: rgb(0, 188, 212);
-  }
-  .link {
-    transition: color .2s;
-    color: #777;
-    font-size: 14px;
-  }
-  hr {
-    display: block;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-    margin-left: auto;
-    margin-right: auto;
-    border-style: solid;
-    border-width: 1px;
-}
 }

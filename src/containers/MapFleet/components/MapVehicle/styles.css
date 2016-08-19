@@ -1,0 +1,82 @@
+@media screen and (min-width: 100px) {
+  .huerotate {
+    -webkit-filter: hue-rotate(180deg);
+    filter: hue-rotate(180deg);
+  }
+
+  .highlight {
+    -webkit-filter: saturate(20);
+    filter: saturate(20);
+
+  }
+
+.animatedHue {
+  -webkit-animation: hueAnimation 4.2s infinite linear;
+          animation: hueAnimation 4.2s infinite linear;
+}
+.animatedS {
+  -webkit-animation: sAnimation 0.75s infinite linear;
+          animation: sAnimation 0.75s infinite linear;
+}
+
+.animatedInv {
+  -webkit-animation: invAnimation 3.2s infinite;
+          animation: invAnimation 3.2s infinite;
+}
+
+@keyframes hueAnimation {
+  0% {
+    -webkit-filter: hue-rotate(0deg) saturate(20);
+  }
+  25% {
+    -webkit-filter: hue-rotate(90deg) saturate(20);
+  }
+  50% {
+    -webkit-filter: hue-rotate(180deg) saturate(20);
+  }
+  75% {
+    -webkit-filter: hue-rotate(270deg) saturate(20);
+  }
+  100% {
+    -webkit-filter: hue-rotate(360deg) saturate(20);
+  }
+}
+
+@keyframes sAnimation {
+  0% {
+    -webkit-filter: saturate(1);
+  }
+  5% {
+    -webkit-filter: saturate(5);
+  }
+  50% {
+    -webkit-filter: saturate(20);
+  }
+  85% {
+    -webkit-filter: saturate(5);
+  }
+  100% {
+    -webkit-filter: saturate(1);
+  }
+}
+
+
+@keyframes invAnimation {
+  0% {
+    -webkit-filter: invert(0%) saturate(1);
+  }
+  25% {
+    -webkit-filter: invert(25%) saturate(1);
+  }
+  50% {
+    -webkit-filter: invert(50%) saturate(1);
+  }
+  75% {
+    -webkit-filter: invert(75%) saturate(1);
+  }
+  100% {
+    -webkit-filter: invert(1000%) saturate(1);
+  }
+}
+
+}
