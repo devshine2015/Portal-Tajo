@@ -7,7 +7,8 @@ import PowerListContainer from 'containers/PowerList';
 import LocationEditPanel from 'containers/EditGFPanel';
 
 import * as listTypes from 'containers/PowerList/types';
-import * as mapEvents from 'containers/MapFleet/events';
+import { MAP_GF_ADD } from 'containers/MapFleet/events';
+import { LIST_GF_EDIT } from 'containers/PowerList/events';
 import * as locationEditEvents from 'containers/EditGFPanel/GFEditor/events';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
@@ -18,7 +19,7 @@ const MD_GF_EDIT = 'md_gfedit';
 
 const setUpHooksForMe = function (meThis) {
   return (hookId, inHook) => {
-    meThis.hooks[hookId] = inHook;
+    meThis.addHook(hookId, inHook);
   };
 };
 const execHooksForMe = function (meThis) {
@@ -40,14 +41,18 @@ class MapAndList extends React.Component {
       mode: MD_LIST,
     };
 
-    this.hooks[mapEvents.MAP_LOCATION_ADD] = this.openGFEditor.bind(this);
-    this.hooks[locationEditEvents.GF_EDITOR_CLOSE] = this.closeGFEditor.bind(this);
+    this.addHook(MAP_GF_ADD, this.openGFEditor.bind(this));
+    this.addHook(LIST_GF_EDIT, this.openGFEditor.bind(this));
+    this.addHook(locationEditEvents.GF_EDITOR_CLOSE, this.closeGFEditor.bind(this));
 
     this.subjGFContext = { obj: null };
   }
-
+  addHook(hookId, hookFunc) {
+    console.log('hook++  '+ hookId + (this.hooks[hookId]===undefined ? ' add' : ' replace'));
+    this.hooks[hookId] = hookFunc;
+  }
   openGFEditor(editFGCtx) {
-    this.subjGFContext = { obj: null, pos: editFGCtx.pos };
+    this.subjGFContext = { obj: editFGCtx.obj, pos: editFGCtx.pos };
     this.setState({ mode: MD_GF_EDIT });
   }
   closeGFEditor() {

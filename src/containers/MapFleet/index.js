@@ -30,7 +30,7 @@ class MapFleet extends React.Component {
   constructor(props) {
     super(props);
     this.theMap = null;
-    this.clickPos = window.L.latLng(ZERO_LOCATION);
+    this.refPos = window.L.latLng(ZERO_LOCATION);
 
     this.state = {
 //      gfEditMode: false,
@@ -40,8 +40,10 @@ class MapFleet extends React.Component {
 
     this.props.setUpHooks(listEvents.LIST_VEHICLE_SELECTED,
       ((meThis) => (id) => { meThis.highLightMarker(id); })(this));
-    this.props.setUpHooks(listEvents.LIST_LOC_SELECTED,
+    this.props.setUpHooks(listEvents.LIST_GF_SELECTED,
       ((meThis) => (id) => { meThis.highLightMarker(id); })(this));
+    // this.props.setUpHooks(listEvents.LIST_GF_EDIT,
+    //   ((meThis) => (editGfCtx) => { meThis.setRefPos(editGfCtx.obj.pos); })(this));
   }
 
   componentDidMount() {
@@ -63,6 +65,10 @@ class MapFleet extends React.Component {
       500);
   }
 
+  setRefPos(pos) {
+    this.refPos = pos;
+  }
+
   createMapboxMap() {
     // if already existing
     if (this.theMap !== null) {
@@ -77,10 +83,10 @@ class MapFleet extends React.Component {
       if (inThis.props.gfEditMode) { // already editing?
         return;
       }
-      inThis.clickPos = e.latlng;
-      inThis.props.hooks(mapEvents.MAP_LOCATION_ADD, { pos: inThis.clickPos });
+      inThis.setRefPos(e.latlng);
+      inThis.props.hooks(mapEvents.MAP_GF_ADD, { obj: null, pos: e.latlng });
       if (inThis.theMap.getZoom() < NEW_GF_REQUIRED_ZOOM_LEVEL) {
-        inThis.theMap.setZoomAround(inThis.clickPos, NEW_GF_REQUIRED_ZOOM_LEVEL);
+        inThis.theMap.setZoomAround(e.latlng, NEW_GF_REQUIRED_ZOOM_LEVEL);
       }
     })(this));
 
@@ -160,7 +166,7 @@ class MapFleet extends React.Component {
           isSelected={this.state.selectedLocationId === v.id}
           theLayer={this.gfMarkersLayer}
           theLocation={v}
-          onClick={selectForMe(this, mapEvents.MAP_LOCATION_SELECTED)}
+          onClick={selectForMe(this, mapEvents.MAP_GF_SELECTED)}
         />
       ));
     }
@@ -170,7 +176,7 @@ class MapFleet extends React.Component {
        theLayer={this.gfEditLayer}
        hooks={this.props.hooks}
        setUpHooks={this.props.setUpHooks}
-       spawnPos={this.clickPos}
+       spawnPos={this.refPos}
      />);
 
     return (

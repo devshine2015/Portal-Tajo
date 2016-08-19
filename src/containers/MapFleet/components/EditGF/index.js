@@ -9,6 +9,8 @@ class EditGF extends React.Component {
     super(props);
     this.theLayer = null;
     this.theCircle = null;
+    this.props.setUpHooks(editorEvents.GF_EDITOR_RADIUS,
+      ((meThis) => (newR) => { meThis.setRadius(newR); })(this));
   }
 
   componentDidMount() {
@@ -22,8 +24,6 @@ class EditGF extends React.Component {
       this.props.hooks(editEvents.MAP_EDITGF_MOVE, this.theCircle.getLatLng());
     });
     this.theLayer.addLayer(this.theCircle);
-    this.props.setUpHooks(editorEvents.GF_EDITOR_RADIUS,
-      ((meThis) => (newR) => { meThis.setRadius(newR); })(this));
   }
 
   setPosition(latLng) {

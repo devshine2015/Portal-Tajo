@@ -20,6 +20,17 @@ class ListBox extends React.Component {
     this.state = {
       selectedItemId: undefined,
     };
+    switch (props.type) {
+      case ListTypes.LIST_VEHICLES:
+        props.setUpHooks(MapEvents.MAP_VEHICLE_SELECTED,
+          selectForMe(this, ListEvents.LIST_VEHICLE_SELECTED));
+        break;
+      case ListTypes.LIST_LOCATIONS:
+        props.setUpHooks(MapEvents.MAP_GF_SELECTED,
+          selectForMe(this, ListEvents.LIST_GF_SELECTED));
+        break;
+      default:
+    }
   }
 
   onSelect(hookId, id) {
@@ -40,8 +51,6 @@ class ListBox extends React.Component {
     let itemCreator = null;
     switch (this.props.type) {
       case ListTypes.LIST_VEHICLES:
-        this.props.setUpHooks(MapEvents.MAP_VEHICLE_SELECTED,
-          selectForMe(this, ListEvents.LIST_VEHICLE_SELECTED));
         itemCreator = (v) => (
           <li key={v.id}>
             <ListItemVehicle
@@ -53,13 +62,12 @@ class ListBox extends React.Component {
           </li>);
         break;
       case ListTypes.LIST_LOCATIONS:
-        this.props.setUpHooks(MapEvents.MAP_LOCATION_SELECTED,
-          selectForMe(this, ListEvents.LIST_LOC_SELECTED));
         itemCreator = (v) => (
           <li key={v.id}>
             <ListItemLocation
               locationObj={v}
-              onClick={selectForMe(this, ListEvents.LIST_LOC_SELECTED)}
+              hooks={this.props.hooks}
+              onClick={selectForMe(this, ListEvents.LIST_GF_SELECTED)}
               isSelected={this.state.selectedItemId === v.id}
             />
           </li>);

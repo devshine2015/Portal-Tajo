@@ -2,17 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import pure from 'recompose/pure';
 import ItemProperty from './../ItemProperty';
-import SvgIcon from 'material-ui/SvgIcon';
 
-import styles from './styles.css';
 import stylesBasic from './../styles.css';
-
-const   vehicleIconStyle =  {
-    position: 'absolute',
-    left: '15px',
-    width: '32px',
-    height: '32px',
-  }
 
 class ListItemVehicle extends React.Component {
   constructor(props) {
