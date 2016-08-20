@@ -5,12 +5,13 @@ import styles from './styles.css';
 
 class ItemProperty extends React.Component {
 
+//           {`${this.props.title}:`}
 
   render() {
     return (
       <div className={styles.propContainer}>
         <span className={styles.propTitle}>
-          {`${this.props.title}:`}
+          {this.props.title === '' ? this.props.icon : `${this.props.title}:`}
         </span>
         <span className={styles.propValue}>
           {this.props.value}
@@ -22,6 +23,7 @@ class ItemProperty extends React.Component {
 
 ItemProperty.propTypes = {
   title: React.PropTypes.string.isRequired,
+  icon: React.PropTypes.obj,
   value: React.PropTypes.string.isRequired,
 };
 

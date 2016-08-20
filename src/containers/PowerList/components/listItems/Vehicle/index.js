@@ -2,6 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import pure from 'recompose/pure';
 import ItemProperty from './../ItemProperty';
+import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
+import { red500 } from 'material-ui/styles/colors';
+
 
 import stylesBasic from './../styles.css';
 
@@ -15,10 +18,30 @@ class ListItemVehicle extends React.Component {
   }
   shouldComponentUpdate(nextProps) {
     return this.props.isSelected !== nextProps.isSelected
-    || this.props.vehicleObj.speed.toFixed(1) !== nextProps.vehicleObj.speed.toFixed(1);
+    || this.props.vehicleObj.speed.toFixed(1) !== nextProps.vehicleObj.speed.toFixed(1)
+    || this.props.vehicleObj.isZombie !== nextProps.vehicleObj.isZombie
+    || this.props.vehicleObj.isDead !== nextProps.vehicleObj.isDead
+    ;
   }
   onClick = () => {
     this.props.onClick(this.props.vehicleObj.id);
+  }
+  inActivityIndicator(expanded) {
+    if (!this.props.vehicleObj.isZombie && !this.props.vehicleObj.isDead) return null;
+    const updateTime = new Date(this.props.vehicleObj.lastUpdateSinceEpoch);
+    let infoStr = 'newer reported - check device';
+    if (!this.props.vehicleObj.isDead) {
+      infoStr = expanded ?
+        'updated ' + updateTime.toLocaleString()
+        :
+        'last update ' + updateTime.toDateString();
+    }
+  //        value={`updated ${updateTime.toLocaleString()}`}
+    return (
+      <ItemProperty title="" icon={<AlertIcon color={red500} />}
+        value={infoStr}
+      />
+    );
   }
   render() {
     // collapsed view
@@ -29,6 +52,7 @@ class ListItemVehicle extends React.Component {
           onClick={this.onClick}
         >
           <div > {this.props.vehicleObj.name} </div>
+          {this.inActivityIndicator(false)}
         </div>
       );
     }
@@ -39,6 +63,7 @@ class ListItemVehicle extends React.Component {
         onClick={this.onClick}
       >
         <div > {this.props.vehicleObj.name} </div>
+        {this.inActivityIndicator(true)}
         <hr />
         <ItemProperty title="Speed" value={`${this.props.vehicleObj.speed.toFixed(1)} km/h`} />
         <ItemProperty title="Trip dist" value={`${(this.props.vehicleObj.dist.lastTrip / 1000).toFixed(2)} km`} />

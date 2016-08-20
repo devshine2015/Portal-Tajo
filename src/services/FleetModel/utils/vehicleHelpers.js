@@ -13,6 +13,7 @@
 // "kind":    //optional
 
 import { getVehicleByValue } from './vehiclesMap';
+import { ZOMBIE_TIME_TRH_MINUTES } from 'utils/constants';
 
 function makeLocalVehicle(backEndObject) {
   if (backEndObject.status !== 'active'
@@ -37,13 +38,24 @@ function makeLocalVehicle(backEndObject) {
   theVehicle.dist = { total: 0, lastTrip: 0 };
   //
   theVehicle.temp = undefined;
-  // wrong format or date: 1899-12-30T17:00:00.000Z
-  // theVehicle.lastUpdateTS = new Date(0, 0, 0);
+  //
+  theVehicle.lastUpdateSinceEpoch = 0;
+  theVehicle.isZombie = true; // reported more the ZOMBIE_TIME_TRH_MINUTES ago
+  theVehicle.isDead = true;   // never updated/reported
+
   theVehicle.kindData = getVehicleByValue(backEndObject.kind || 'SGV');
   return theVehicle;
 }
 
-function MakeLocalVehicles(backEndVehiclesList) {
+//
+// inactive/not updated vehicle - device failure?
+export function checkZombieVehicle(lastUpdate) {
+  const nowSinceEpoch = (new Date()).getTime();
+  const deltaTMinutes = (nowSinceEpoch - lastUpdate) / 1000 / 60;
+  return deltaTMinutes > ZOMBIE_TIME_TRH_MINUTES;
+}
+
+export default function MakeLocalVehicles(backEndVehiclesList) {
   const theVechicles = {};
 
   backEndVehiclesList.forEach((aVehicle) => {
@@ -55,8 +67,6 @@ function MakeLocalVehicles(backEndVehiclesList) {
 
   return theVechicles;
 }
-
-export default MakeLocalVehicles;
 
 /**
  * Filter vehicles by name
