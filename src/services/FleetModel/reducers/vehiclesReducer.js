@@ -2,6 +2,7 @@ import { List, fromJS } from 'immutable';
 import * as vehiclesActions from '../actions/vehiclesActions';
 import * as socketActions from '../actions/socketActions';
 import { filterByName } from '../utils/filtering';
+import { checkZombieVehicle } from '../utils/vehicleHelpers';
 
 const vehiclesInitialState = fromJS({
   list: new List(),
@@ -20,6 +21,12 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
     case socketActions.FLEET_MODEL_SOCKET_SET: {
       const inStatus = action.statusObj;
       let newState = state;
+//      const tsDate = new Date(inStatus.ts);
+      const sinceEpoch = (new Date(inStatus.ts)).getTime();
+      const isZombie = checkZombieVehicle(sinceEpoch);
+      newState = newState.setIn(['processedList', inStatus.id, 'lastUpdateSinceEpoch'], sinceEpoch);
+      newState = newState.setIn(['processedList', inStatus.id, 'isZombie'], isZombie);
+      newState = newState.setIn(['processedList', inStatus.id, 'isDead'], false);
       if (inStatus.temp !== undefined) {
         newState = newState.setIn(['processedList', inStatus.id, 'temp'],
           inStatus.temp.temperature);
