@@ -4,12 +4,12 @@ import styles from './styles.css';
 import InnerPortal from 'containers/InnerPortal';
 import SplitContainer from 'containers/SplitContainer';
 import PowerListContainer from 'containers/PowerList';
-import LocationEditPanel from 'containers/EditGFPanel';
+import GFEditPanel from 'containers/EditGFPanel';
 
 import * as listTypes from 'containers/PowerList/types';
 import { MAP_GF_ADD } from 'containers/MapFleet/events';
 import { LIST_GF_EDIT } from 'containers/PowerList/events';
-import * as locationEditEvents from 'containers/EditGFPanel/GFEditor/events';
+import * as gfEditEvents from 'containers/EditGFPanel/GFEditor/events';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 
@@ -43,7 +43,7 @@ class MapAndList extends React.Component {
 
     this.addHook(MAP_GF_ADD, this.openGFEditor.bind(this));
     this.addHook(LIST_GF_EDIT, this.openGFEditor.bind(this));
-    this.addHook(locationEditEvents.GF_EDITOR_CLOSE, this.closeGFEditor.bind(this));
+    this.addHook(gfEditEvents.GF_EDITOR_CLOSE, this.closeGFEditor.bind(this));
 
     this.subjGFContext = { obj: null };
   }
@@ -66,12 +66,12 @@ class MapAndList extends React.Component {
         { this.state.mode !== MD_LIST ? null :
           <PowerListContainer hooks={execHooksForMe(this)} setUpHooks={setUpHooksForMe(this)}>
           { [{ listType: listTypes.LIST_VEHICLES, items: this.props.vehicles },
-             { listType: listTypes.LIST_LOCATIONS, items: this.props.locations }]
+             { listType: listTypes.LIST_GF, items: this.props.gfs }]
           }
           </PowerListContainer>
         }
         { this.state.mode !== MD_GF_EDIT ? null :
-          <LocationEditPanel
+          <GFEditPanel
             hooks={execHooksForMe(this)}
             setUpHooks={setUpHooksForMe(this)}
             subjectContext={this.subjGFContext}
@@ -94,14 +94,12 @@ class MapAndList extends React.Component {
 
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesEx(state),
-  locations: fromFleetReducer.getLocationsEx(state),
+  gfs: fromFleetReducer.getGFsEx(state),
 });
-
 MapAndList.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
-  locations: React.PropTypes.array.isRequired,
+  gfs: React.PropTypes.array.isRequired,
 };
-
 const PureMapAndList = pure(MapAndList);
 
 export default connect(mapState)(PureMapAndList);

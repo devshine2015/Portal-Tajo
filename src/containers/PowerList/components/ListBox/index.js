@@ -25,7 +25,7 @@ class ListBox extends React.Component {
         props.setUpHooks(MapEvents.MAP_VEHICLE_SELECTED,
           selectForMe(this, ListEvents.LIST_VEHICLE_SELECTED));
         break;
-      case ListTypes.LIST_LOCATIONS:
+      case ListTypes.LIST_GF:
         props.setUpHooks(MapEvents.MAP_GF_SELECTED,
           selectForMe(this, ListEvents.LIST_GF_SELECTED));
         break;
@@ -61,7 +61,7 @@ class ListBox extends React.Component {
             />
           </li>);
         break;
-      case ListTypes.LIST_LOCATIONS:
+      case ListTypes.LIST_GF:
         itemCreator = (v) => (
           <li key={v.id}>
             <ListItemLocation

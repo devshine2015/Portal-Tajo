@@ -1,30 +1,30 @@
 import { List, fromJS } from 'immutable';
-import { locationsActions } from '../actions';
+import { gfActions } from '../actions';
 import { filterByName } from '../utils/filtering';
 
-const locationsInitialState = fromJS({
+const gfsInitialState = fromJS({
   list: new List(),
   processedList: {},
 });
 
-function locationsReducer(state = locationsInitialState, action) {
+function gfReducer(state = gfsInitialState, action) {
   switch (action.type) {
-    case locationsActions.FLEET_MODEL_LOCATIONS_SET:
+    case gfActions.FLEET_MODEL_GF_SET:
       return state.set('list', new List(action.locations))
-          .set('processedList', fromJS(action.localLocs));
-    case locationsActions.FLEET_MODEL_LOCATIONS_FILTER:
+          .set('processedList', fromJS(action.localGFs));
+    case gfActions.FLEET_MODEL_GF_FILTER:
       return filterByName(state, action.nameFilter);
     default:
       return state;
   }
 }
 
-export default locationsReducer;
+export default gfReducer;
 
-export const getLocations = (state) =>
+export const getGFs = (state) =>
   state.get('list');
 
-export const getLocationsEx = (state) => {
+export const getGFsEx = (state) => {
   const theObj = state.get('processedList');
   if (theObj.size === 0) {
     return [];

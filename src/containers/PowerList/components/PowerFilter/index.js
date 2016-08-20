@@ -23,7 +23,7 @@ class PowerFilter extends React.Component {
       case ListTypes.LIST_VEHICLES:
         this.props.filterVehFunc(event.target.value);
         break;
-      case ListTypes.LIST_LOCATIONS:
+      case ListTypes.LIST_GF:
         this.props.filterLocFunc(event.target.value);
         break;
       default:
@@ -62,7 +62,7 @@ const mapState = () => ({
 });
 const mapDispatch = {
   filterVehFunc: commonFleetActions.filterVehiclesDo,
-  filterLocFunc: commonFleetActions.filterLocationsDo,
+  filterLocFunc: commonFleetActions.filterGFsDo,
 };
 
 const PurePowerFilter = pure(PowerFilter);

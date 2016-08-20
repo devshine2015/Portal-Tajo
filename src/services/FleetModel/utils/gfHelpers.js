@@ -23,38 +23,38 @@ export function makeBackendGF(inData) {
     status: 'active',
   };
 }
-export function makeLocalLocation(latLng) {
-  const theLocation = {};
-  theLocation.name = '';
-  theLocation.filteredOut = false;
+export function makeLocalGF(latLng) {
+  const theGF = {};
+  theGF.name = '';
+  theGF.filteredOut = false;
   //
-  theLocation.address = '';
+  theGF.address = '';
   // latlng
-  theLocation.pos = latLng;
-  theLocation.radius = 100;
-  return theLocation;
+  theGF.pos = latLng;
+  theGF.radius = 100;
+  return theGF;
 }
 
-function _makeLocalLocation(backEndObject) {
+function _makeLocalGF(backEndObject) {
   if (backEndObject.status !== 'active'
     || !backEndObject.name) {
     return null;
   }
 
-  const theLocation = {};
-  theLocation.name = backEndObject.name;
-  theLocation.id = backEndObject.id;
-  theLocation.filteredOut = false;
+  const theGF = {};
+  theGF.name = backEndObject.name;
+  theGF.id = backEndObject.id;
+  theGF.filteredOut = false;
   //
-  theLocation.address = backEndObject.address;
+  theGF.address = backEndObject.address;
   // latlng
-  theLocation.pos = [backEndObject.center.lat, backEndObject.center.lng];
-  theLocation.radius = backEndObject.radius;
-  return theLocation;
+  theGF.pos = [backEndObject.center.lat, backEndObject.center.lng];
+  theGF.radius = backEndObject.radius;
+  return theGF;
 }
 
-export function makeLocalLocations(backEndLocationsList) {
-  const theLocations = {};
+export function makeLocalGFs(backEndLocationsList) {
+  const theGFs = {};
   backEndLocationsList
   // .sort((a, b) => {
   //   const nameA = a.name.toUpperCase(); // ignore upper and lowercase
@@ -68,12 +68,12 @@ export function makeLocalLocations(backEndLocationsList) {
   //   return 0;
   // })
   .forEach((aLoc) => {
-    const localLocObj = _makeLocalLocation(aLoc);
+    const localLocObj = _makeLocalGF(aLoc);
     if (localLocObj !== null) {
-      theLocations[aLoc.id] = localLocObj;
+      theGFs[aLoc.id] = localLocObj;
     }
   });
-  return theLocations;
+  return theGFs;
 }
 
-// export default MakeLocalLocations;
+// export default makeLocalGFs;

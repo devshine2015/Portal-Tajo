@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux-immutable';
 import vehiclesReducer, * as fromVehiclesReducer from './reducers/vehiclesReducer';
-import locationsReducer, * as fromLocationsReducer from './reducers/locationsReducer';
+import gfReducer, * as fromgfReducer from './reducers/gfReducer';
 
 export default combineReducers({
   vehicles: vehiclesReducer,
-  locations: locationsReducer,
+  locations: gfReducer,
 });
 
 const getByIdFunc = (state) => (id) => {
@@ -30,9 +30,9 @@ export const getVehiclesEx = (state) =>
 export const getVehicleByIdFunc = (state) =>
   getByIdFunc(state.getIn(['fleet', 'vehicles']));
 //  fromVehiclesReducer.getVehicleByIdFunc(state.getIn(['fleet', 'vehicles']));
-export const getLocations = (state) =>
-  fromLocationsReducer.getLocations(state.getIn(['fleet', 'locations']));
-export const getLocationsEx = (state) =>
-  fromLocationsReducer.getLocationsEx(state.getIn(['fleet', 'locations']));
-export const getLocationByIdFunc = (state) =>
+export const getGFs = (state) =>
+  fromgfReducer.getGFs(state.getIn(['fleet', 'locations']));
+export const getGFsEx = (state) =>
+  fromgfReducer.getGFsEx(state.getIn(['fleet', 'locations']));
+export const getGFByIdFunc = (state) =>
   getByIdFunc(state.getIn(['fleet', 'locations']));

@@ -5,10 +5,10 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Form from 'components/Form';
-import * as locationEditEvents from './events';
+import * as gfEditEvents from './events';
 import * as mapEditEvents from 'containers/MapFleet/components/EditGF/events';
-import { makeLocalLocation, makeBackendGF } from 'services/FleetModel/utils/locationsHelpers';
-import { createGF } from 'services/FleetModel/actions/locationsActions';
+import { makeLocalGF, makeBackendGF } from 'services/FleetModel/utils/gfHelpers';
+import { createGF } from 'services/FleetModel/actions/gfActions';
 import { showSnackbar } from 'containers/Snackbar/actions';
 
 import styles from './styles.css';
@@ -21,7 +21,7 @@ class GFEditor extends React.Component {
     super(props);
 
     if (props.subjectContext.obj === null) {
-      this.subjectGF = makeLocalLocation(props.subjectContext.pos);
+      this.subjectGF = makeLocalGF(props.subjectContext.pos);
     } else {
       this.subjectGF = props.subjectContext.obj;
     }
@@ -42,7 +42,7 @@ class GFEditor extends React.Component {
   }
   //
   // componentDidMount() {
-  //   this.theLocation = makeLocalLocation();
+  //   this.theLocation = makeLocalGF();
   // }
 
   // componentWillReceiveProps(nextProps) {
@@ -53,7 +53,7 @@ class GFEditor extends React.Component {
    **/
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.hooks(locationEditEvents.GF_EDITOR_CLOSE, null);
+    this.props.hooks(gfEditEvents.GF_EDITOR_CLOSE, null);
 //    this.props.onSave(this.state);
     const gfObj = makeBackendGF({ ...this.state });
     this.props.createGF(gfObj, 1)
@@ -66,7 +66,7 @@ class GFEditor extends React.Component {
 
   onCancel = (e) => {
     e.preventDefault();
-    this.props.hooks(locationEditEvents.GF_EDITOR_CLOSE, null);
+    this.props.hooks(gfEditEvents.GF_EDITOR_CLOSE, null);
   }
   /**
    * Update state[field] with value
@@ -77,7 +77,7 @@ class GFEditor extends React.Component {
       [field]: value, // .trim(),
     });
     if (field === 'radius') {
-      this.props.hooks(locationEditEvents.GF_EDITOR_RADIUS, value);
+      this.props.hooks(gfEditEvents.GF_EDITOR_RADIUS, value);
     }
   }
   setRadius(newR) {

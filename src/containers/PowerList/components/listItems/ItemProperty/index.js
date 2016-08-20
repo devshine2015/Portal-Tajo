@@ -23,7 +23,7 @@ class ItemProperty extends React.Component {
 
 ItemProperty.propTypes = {
   title: React.PropTypes.string.isRequired,
-  icon: React.PropTypes.obj,
+  icon: React.PropTypes.object,
   value: React.PropTypes.string.isRequired,
 };
 

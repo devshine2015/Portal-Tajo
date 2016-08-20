@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import ItemProperty from './../ItemProperty';
-import { deleteGF } from 'services/FleetModel/actions/locationsActions';
+import { deleteGF } from 'services/FleetModel/actions/gfActions';
 import { showSnackbar } from 'containers/Snackbar/actions';
 import { LIST_GF_EDIT } from './../../../events';
 // import RaisedButton from 'material-ui/RaisedButton';

@@ -3,15 +3,15 @@ import {
   getFleetName,
   getAuthenticationSession,
 } from 'containers/App/reducer';
-import { makeLocalLocations } from '../utils/locationsHelpers';
+import { makeLocalGFs } from '../utils/gfHelpers';
 
-export const FLEET_MODEL_LOCATIONS_SET = 'portal/services/FLEET_MODEL_LOCATIONS_SET';
-export const FLEET_MODEL_LOCATIONS_FILTER = 'portal/services/FLEET_MODEL_LOCATIONS_FILTER';
+export const FLEET_MODEL_GF_SET = 'portal/services/FLEET_MODEL_GF_SET';
+export const FLEET_MODEL_GF_FILTER = 'portal/services/FLEET_MODEL_GF_FILTER';
 
-export const fetchLocations = (fleet = undefined) => (dispatch, getState) =>
-  _fetchLocations(dispatch, getState, fleet);
-export const filterLocations = (filterName) => (dispatch) =>
-  dispatch(_locationsFilter(filterName));
+export const fetchGFs = (fleet = undefined) => (dispatch, getState) =>
+  _fetchGFs(dispatch, getState, fleet);
+export const filterGFs = (filterName) => (dispatch) =>
+  dispatch(_gfFilter(filterName));
 export const createGF = (newGF, idx) => (dispatch, getState) =>
   _createGFRequest(newGF, idx, dispatch, getState);
 export const updateGF = (theGF, id, idx) => (dispatch, getState) =>
@@ -22,7 +22,7 @@ export const deleteGF = (id) => (dispatch, getState) =>
 /**
  * fleet is optional
  **/
-function _fetchLocations(dispatch, getState, fleetName = undefined) {
+function _fetchGFs(dispatch, getState, fleetName = undefined) {
   const fleet = fleetName || getFleetName(getState());
   const url = `${fleet}/location`;
   const sessionId = getAuthenticationSession(getState());
@@ -32,9 +32,9 @@ function _fetchLocations(dispatch, getState, fleetName = undefined) {
 
   return api(url, { optionalHeaders })
     .then(toJson)
-    .then(locations => {
-      const localLocs = makeLocalLocations(locations);
-      dispatch(_locationsSet(locations, localLocs));
+    .then(gfs => {
+      const localGFs = makeLocalGFs(gfs);
+      dispatch(_gfSet(gfs, localGFs));
     });
 }
 
@@ -52,7 +52,7 @@ function _createGFRequest(gfObject, index, dispatch, getState) {
     optionalHeaders,
     payload: gfObject,
   }).then(() => {
-    _fetchLocations(dispatch, getState);
+    _fetchGFs(dispatch, getState);
     return Promise.resolve();
   }, error => Promise.reject(error));
 }
@@ -74,7 +74,7 @@ function _deleteGFRequest(id, dispatch, getState) {
   return api.delete(url, {
     optionalHeaders,
   }).then(() => {
-    _fetchLocations(dispatch, getState);
+    _fetchGFs(dispatch, getState);
     return Promise.resolve();
   }, error => Promise.reject(error));
 }
@@ -84,13 +84,13 @@ function toJson(response) {
 }
 //
 
-const _locationsSet = (locations, localLocs) => ({
-  type: FLEET_MODEL_LOCATIONS_SET,
-  locations,
-  localLocs,
+const _gfSet = (gfs, localGFs) => ({
+  type: FLEET_MODEL_GF_SET,
+  gfs,
+  localGFs,
 });
 
-const _locationsFilter = (nameFilter) => ({
-  type: FLEET_MODEL_LOCATIONS_FILTER,
+const _gfFilter = (nameFilter) => ({
+  type: FLEET_MODEL_GF_FILTER,
   nameFilter,
 });
