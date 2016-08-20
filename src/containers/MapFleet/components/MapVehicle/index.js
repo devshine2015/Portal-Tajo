@@ -2,8 +2,8 @@ import React from 'react';
 import pure from 'recompose/pure';
 import styles from './styles.css';
 // const iconPin = require('assets/images/v_icons_combi/pin.png');
-// const iconPin = require('assets/images/v_icons_combi/pointer.png');
-const iconPin = require('assets/images/v_icons_combi/pointerRightTilt.png');
+const iconPin = require('assets/images/v_icons_combi/pointer.png');
+// const iconPin = require('assets/images/v_icons_combi/pointerRightTilt.png');
 
 class MapVehicle extends React.Component {
   constructor(props) {
@@ -39,18 +39,18 @@ class MapVehicle extends React.Component {
 
     const iScale = 0.25;
     const headSz = 152 * iScale;
-    // const pinW = 56 * iScale;
-    // const pinH = 119 * iScale;
-    // const pinAnchorW = pinW/2;
-    // const pinAnchorH = 95 * iScale;
-    // const headAnchorW =[headSz / 2;
-    // const headAnchorH = headSz + pinAnchorH * 0.75;
-    const pinW = 112 * iScale;
+    const pinW = 56 * iScale;
     const pinH = 119 * iScale;
-    const pinAnchorW = 38 * iScale;
+    const pinAnchorW = pinW / 2;
     const pinAnchorH = 95 * iScale;
-    const headAnchorW = pinW - headSz * 0.75;
-    const headAnchorH = headSz + pinAnchorH * 0.65;
+    const headAnchorW = headSz / 2;
+    const headAnchorH = headSz + pinAnchorH * 0.75;
+    // const pinW = 112 * iScale;
+    // const pinH = 119 * iScale;
+    // const pinAnchorW = 38 * iScale;
+    // const pinAnchorH = 95 * iScale;
+    // const headAnchorW = pinW - headSz * 0.75;
+    // const headAnchorH = headSz + pinAnchorH * 0.65;
 
     const iconImg = this.props.theVehicle.kindData.pic;
 
