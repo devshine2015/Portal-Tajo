@@ -1,7 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
-import SimpleListItem from './Simple/VehiclesListItem';
-import CheckboxListItem from './WithCheckboxes/VehiclesListItem';
+import SimpleListItem from './Simple';
+import CheckboxListItem from './WithCheckboxes';
 
 import styles from './styles.css';
 

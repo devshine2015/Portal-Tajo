@@ -11,14 +11,15 @@ const PowerList = ({
   filter = null,
 }) => {
   const columnClassName = classnames(styles.columnContainer, className);
-  const child = children || ([
-    filter || null,
-    content,
-  ]);
 
   return (
     <FixedColumn containerClassName={columnClassName}>
-      { child }
+      { children || (
+        <div>
+          {filter || null}
+          {content}
+        </div>
+      )}
     </FixedColumn>
   );
 };

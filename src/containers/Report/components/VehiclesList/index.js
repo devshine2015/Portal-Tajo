@@ -3,35 +3,20 @@ import pure from 'recompose/pure';
 import PowerList from 'components/PowerListRefactored';
 import VehiclesList from 'components/VehiclesList';
 import Filter from 'components/Filter';
-import { filterByName } from 'services/FleetModel/utils/vehicleHelpers';
 
 class ReportsVehiclesList extends React.Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      filteredList: props.vehicles,
-    };
-  }
-
-  onVehicleCheck = (name, isInputChecked) => {
-    this.props.changeVehiclesForReport(name, isInputChecked);
-  }
-
-  updateFilteredList = (newList) => {
-    this.setState({
-      filteredList: newList,
-    });
+  onVehicleCheck = (id, isInputChecked) => {
+    this.props.chooseVehiclesForReport(id, isInputChecked);
   }
 
   renderList() {
     return (
       <VehiclesList
         onItemClick={this.onVehicleCheck}
-        vehicles={this.state.filteredList}
+        vehicles={this.props.vehicles}
         withCheckboxes
-        uncheckOnUnmount
+        // uncheckOnUnmount
       />
     );
   }
@@ -40,10 +25,7 @@ class ReportsVehiclesList extends React.Component {
     return (
       <PowerList
         filter={
-          <Filter
-            filterFunc={filterByName(this.state.filteredList, this.props.vehicles)}
-            onFilterFinish={this.updateFilteredList}
-          />
+          <Filter filterFunc={this.props.filterFunc} />
         }
         content={this.renderList()}
       />
@@ -53,7 +35,8 @@ class ReportsVehiclesList extends React.Component {
 
 ReportsVehiclesList.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
-  changeVehiclesForReport: React.PropTypes.func.isRequired,
+  filterFunc: React.PropTypes.func.isRequired,
+  chooseVehiclesForReport: React.PropTypes.func.isRequired,
 };
 
 export default pure(ReportsVehiclesList);

@@ -25,9 +25,7 @@ class Filter extends React.Component {
     const value = e.target.value.trim().toLowerCase();
 
     const isClearing = value.length < this.state.previousValueLength;
-    const newList = this.props.filterFunc(value, isClearing);
-
-    this.props.onFilterFinish(newList);
+    this.props.filterFunc(value, isClearing);
 
     this.setState({
       previousValueLength: value.length,
@@ -50,7 +48,6 @@ class Filter extends React.Component {
 }
 
 Filter.propTypes = {
-  onFilterFinish: React.PropTypes.func.isRequired,
   filterFunc: React.PropTypes.func.isRequired,
 
   // TODO -- think about presets

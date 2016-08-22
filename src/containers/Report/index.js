@@ -6,29 +6,41 @@ import PreviewTable from './components/PreviewTable';
 import VehiclesList from './components/VehiclesList';
 import FixedContent from 'components/FixedContent';
 import * as fromConfigReducer from './reducers/configuratorReducer';
-import { getSavedReportData, appHasStoredReport } from './reducer';
+import {
+  getSavedReportData,
+  appHasStoredReport,
+  getFilteredVehicles,
+  isFiltering,
+} from './reducer';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { dataActions, vehiclesActions } from './actions';
+// import { filterByName } from 'services/FleetModel/utils/vehicleHelpers';
 
 const ReportsScreen = ({
   availableFields,
-  changeVehiclesForReport,
+  chooseVehiclesForReport,
   data,
+  // filteredVehicles,
+  filterFunc,
+  filtering,
   hasReport,
+  originVehicles,
   saveGenerated,
   selectedFields,
-  vehicles,
+  filteredVehicles,
 }) => {
   const headers = selectedFields.map(index => (
     availableFields[index].label
   ));
+  const vToDisplay = filtering ? filteredVehicles : originVehicles;
 
   return (
     <div className="configurator">
-      { vehicles.length !== 0 && (
+      { originVehicles.length !== 0 && (
         <VehiclesList
-          vehicles={vehicles}
-          changeVehiclesForReport={changeVehiclesForReport}
+          vehicles={vToDisplay}
+          chooseVehiclesForReport={chooseVehiclesForReport}
+          filterFunc={filterFunc}
         />
       )}
       <FixedContent>
@@ -49,26 +61,32 @@ const ReportsScreen = ({
 
 ReportsScreen.propTypes = {
   availableFields: React.PropTypes.array.isRequired,
-  changeVehiclesForReport: React.PropTypes.func.isRequired,
+  chooseVehiclesForReport: React.PropTypes.func.isRequired,
   data: React.PropTypes.object.isRequired,
+  filtering: React.PropTypes.bool.isRequired,
+  filterFunc: React.PropTypes.func.isRequired,
   hasReport: React.PropTypes.bool.isRequired,
+  originVehicles: React.PropTypes.array.isRequired,
   saveGenerated: React.PropTypes.func.isRequired,
   selectedFields: React.PropTypes.object.isRequired,
-  vehicles: React.PropTypes.array.isRequired,
+  filteredVehicles: React.PropTypes.array.isRequired,
 };
 
 const PureReportsScreen = pure(ReportsScreen);
 
 const mapState = (state) => ({
+  availableFields: fromConfigReducer.getAvailableFields(state).toArray(),
   data: getSavedReportData(state),
   hasReport: appHasStoredReport(state),
+  originVehicles: fromFleetReducer.getVehicles(state).toArray(),
   selectedFields: fromConfigReducer.getSelectedFields(state),
-  availableFields: fromConfigReducer.getAvailableFields(state).toArray(),
-  vehicles: fromFleetReducer.getVehicles(state).toArray(),
+  filteredVehicles: getFilteredVehicles(state).toArray(),
+  filtering: isFiltering(state),
 });
 const mapDispatch = {
   saveGenerated: dataActions.saveGenerated,
-  changeVehiclesForReport: vehiclesActions.changeVehiclesForReport,
+  chooseVehiclesForReport: vehiclesActions.chooseVehiclesForReport,
+  filterFunc: vehiclesActions.filterVehicles,
 };
 
 export default connect(mapState, mapDispatch)(PureReportsScreen);
