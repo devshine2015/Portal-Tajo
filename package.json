@@ -7,16 +7,12 @@
     "build:clean": "rimraf ./build/* ./escape/* ./customer/*",
     "build:clean:escape": "rimraf ./build/* ./escape/*",
     "build:clean:portal": "rimraf ./build/* ./customer/*",
-    "build:clean:demo": "rimraf ./build/* ./demo/*",
     "build:escape": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.escape.babel.js --color -p",
     "build:portal": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.portal.babel.js --color -p",
-    "build:demo": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.mapViewDemo.babel.js --color -p",
     "escape": "npm run start:tunnel:escape",
     "portal": "npm run start:tunnel:portal",
-    "demo": "npm run start:tunnel:demo",
     "start:tunnel:escape": "cross-env NODE_ENV=development DRVR_PORTAL=escape node server",
-    "start:tunnel:portal": "cross-env NODE_ENV=development DRVR_PORTAL=portal node server",
-    "start:tunnel:demo": "cross-env NODE_ENV=development DRVR_PORTAL=demo node server"
+    "start:tunnel:portal": "cross-env NODE_ENV=development DRVR_PORTAL=portal node server"
   },
   "author": "Maksim Orlov",
   "license": "ISC",
