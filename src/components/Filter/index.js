@@ -13,10 +13,26 @@ const STYLES = {
 
 class Filter extends React.Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      previousValueLength: null,
+    };
+  }
+
   onTextChange = (e) => {
+    console.time('filtering');
+
     const value = e.target.value.trim().toLowerCase();
 
-    this.props.onTextChange(value);
+    const isClearing = value.length < this.state.previousValueLength;
+
+    this.props.onFilterFinish(value, isClearing);
+
+    this.setState({
+      previousValueLength: value.length,
+    });
   }
 
   render() {
@@ -35,7 +51,11 @@ class Filter extends React.Component {
 }
 
 Filter.propTypes = {
-  onTextChange: React.PropTypes.func.isRequired,
+  onFilterFinish: React.PropTypes.func.isRequired,
+  // filterFunc: React.PropTypes.func.isRequired,
+
+  // TODO -- think about presets
+  presets: React.PropTypes.shape({}),
 };
 
 export default pure(Filter);

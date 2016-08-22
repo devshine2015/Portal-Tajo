@@ -58,11 +58,16 @@ export default MakeLocalVehicles;
 /**
  * Filter vehicles by name
  **/
-export function filterByName(searchString, allVehicles = []) {
-  return allVehicles.filter(v =>
-    v.name.toLowerCase().search(searchString) !== -1
-  );
-}
+export const filterByName = (filteredList = [], vehicles = [], searchString, isClearing) => {
+  if (searchString === '') {
+    return vehicles;
+  }
+
+  if (!isClearing) {
+    return executeFilterByName(filteredList, searchString);
+  }
+  return executeFilterByName(vehicles, searchString);
+};
 
 /**
  * Find vehicle by id and return its instance and index
@@ -83,4 +88,10 @@ export function getVehicleById(id, allVehicles = []) {
     vehicle,
     vehicleIndex,
   };
+}
+
+function executeFilterByName(array, searchString) {
+  return array.filter(v =>
+    v.name.toLowerCase().search(searchString) !== -1
+  );
 }

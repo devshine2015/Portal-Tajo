@@ -1,7 +1,8 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import PowerList from 'components/PowerListRefactored';
-import VehiclesList from 'components/VehiclesList/WithCheckboxes';
+import VehiclesListItem from 'components/VehiclesList/WithCheckboxes/VehiclesListItem';
+import { filterByName } from 'services/FleetModel/utils/vehicleHelpers';
 
 class ReportsVehiclesList extends React.Component {
 
@@ -11,18 +12,21 @@ class ReportsVehiclesList extends React.Component {
 
   render() {
     return (
-      <PowerList>
-        <VehiclesList
-          vehicles={this.props.vehicles}
-          onItemClick={this.onVehicleCheck}
-        />
-      </PowerList>
+      <PowerList
+        dataList={this.props.vehicles}
+        filterFunc={filterByName}
+        contentItem={
+          <VehiclesListItem
+            onClick={this.onVehicleCheck}
+          />
+        }
+      />
     );
   }
 }
 
 ReportsVehiclesList.propTypes = {
-  vehicles: React.PropTypes.object.isRequired,
+  vehicles: React.PropTypes.array.isRequired,
   changeVehiclesForReport: React.PropTypes.func.isRequired,
 };
 

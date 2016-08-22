@@ -52,7 +52,7 @@ ReportsScreen.propTypes = {
   hasReport: React.PropTypes.bool.isRequired,
   saveGenerated: React.PropTypes.func.isRequired,
   selectedFields: React.PropTypes.object.isRequired,
-  vehicles: React.PropTypes.object.isRequired,
+  vehicles: React.PropTypes.array.isRequired,
 };
 
 const PureReportsScreen = pure(ReportsScreen);
@@ -62,7 +62,7 @@ const mapState = (state) => ({
   hasReport: appHasStoredReport(state),
   selectedFields: fromConfigReducer.getSelectedFields(state),
   availableFields: fromConfigReducer.getAvailableFields(state).toArray(),
-  vehicles: fromFleetReducer.getVehicles(state),
+  vehicles: fromFleetReducer.getVehicles(state).toArray(),
 });
 const mapDispatch = {
   saveGenerated: dataActions.saveGenerated,
