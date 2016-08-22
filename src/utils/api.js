@@ -1,6 +1,6 @@
 import 'whatwg-fetch';
 import { HOST_BASE } from './constants';
-import { protocol } from 'configs';
+import { protocol, isSecure } from 'configs';
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -59,3 +59,10 @@ function api(url, payload) {
 });
 
 export default api;
+
+export const socket = (url) => {
+  const socketProtocol = isSecure ? 'wss' : 'ws';
+  const socketURL = `${socketProtocol}://${HOST_BASE}/${url}`;
+
+  return new WebSocket(socketURL);
+};

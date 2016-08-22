@@ -1,20 +1,17 @@
-import LocationEditPanel from 'containers/EditGFPanel';
-
-import { MAP_GF_ADD } from 'containers/MapFleet/events';
-import { LIST_GF_EDIT } from 'containers/PowerList/events';
-
-import * as locationEditEvents from 'containers/EditGFPanel/GFEditor/events';
-import * as fromFleetReducer from 'services/FleetModel/reducer';
-
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import InnerPortal from 'containers/InnerPortal';
+import LocationEditPanel from 'containers/EditGFPanel';
 import SplitContainer from 'containers/SplitContainer';
 import InstancesColumn from 'containers/MapFleet/components/InstancesColumn';
 import FixedContent from 'components/FixedContent';
-// import * as fromFleetReducer from 'services/FleetModel/reducer';
+import * as fromFleetReducer from 'services/FleetModel/reducer';
 import hooks from 'containers/MapFleet/hooks';
+
+import { MAP_GF_ADD } from 'containers/MapFleet/events';
+import { LIST_GF_EDIT } from 'containers/PowerList/events';
+import * as gfEditEvents from 'containers/EditGFPanel/GFEditor/events';
 
 import styles from './styles.css';
 
@@ -34,7 +31,7 @@ class MapFleetScreen extends React.Component {
 
     this.addHook(MAP_GF_ADD, this.openGFEditor.bind(this));
     this.addHook(LIST_GF_EDIT, this.openGFEditor.bind(this));
-    this.addHook(locationEditEvents.GF_EDITOR_CLOSE, this.closeGFEditor.bind(this));
+    this.addHook(gfEditEvents.GF_EDITOR_CLOSE, this.closeGFEditor.bind(this));
 
     this.subjGFContext = { obj: null };
   }
@@ -53,7 +50,7 @@ class MapFleetScreen extends React.Component {
 
   render() {
     const displayColumn = this.props.vehicles.length !== 0 &&
-      this.props.locations.length !== 0 && this.state.mode === MD_LIST;
+      this.props.gfs.length !== 0 && this.state.mode === MD_LIST;
 
     return (
       <InnerPortal>
@@ -62,7 +59,7 @@ class MapFleetScreen extends React.Component {
             <InstancesColumn
               hooks={hooks.execHooksForMe(this)}
               setUpHooks={hooks.setUpHooksForMe(this)}
-              locations={this.props.locations}
+              locations={this.props.gfs}
               vehicles={this.props.vehicles}
             />
           )}
@@ -92,12 +89,12 @@ class MapFleetScreen extends React.Component {
 
 MapFleetScreen.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
-  locations: React.PropTypes.array.isRequired,
+  gfs: React.PropTypes.array.isRequired,
 };
 
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesEx(state),
-  locations: fromFleetReducer.getLocationsEx(state),
+  gfs: fromFleetReducer.getGFsEx(state),
 });
 
 const PureMapFleetScreen = pure(MapFleetScreen);

@@ -33,7 +33,7 @@ class InnerPortal extends React.Component {
       .then(() => {
         // TODO -- find the way to open socket
         // only if needed
-        this.props.fetchFleet(true);
+        this.props.fetchFleet(this.props.hasRealTimeData);
       });
   }
 
@@ -68,6 +68,7 @@ InnerPortal.propTypes = {
   children: React.PropTypes.node,
   fetchFleet: React.PropTypes.func.isRequired,
   fleet: React.PropTypes.string.isRequired,
+  hasRealTimeData: React.PropTypes.bool,
   isAuthenticated: React.PropTypes.bool.isRequired,
   showPortalsList: React.PropTypes.bool,
 };
