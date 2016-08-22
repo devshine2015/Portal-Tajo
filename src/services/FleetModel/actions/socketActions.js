@@ -1,29 +1,37 @@
 import { getFleetName } from 'containers/App/reducer';
-import { isSecure } from 'configs';
-import { HOST_BASE } from 'utils/constants';
+import { socket } from 'utils/api';
 
 export const FLEET_MODEL_SOCKET_SET = 'portal/services/FLEET_MODEL_SOCKET_SET';
 
 export const openFleetSocket = (fleet = undefined) => (dispatch, getState) =>
-  _openFleetSocket(dispatch, getState, fleet);
+  _openFleetSocket(fleet, dispatch, getState);
+export const closeFleetSocket = closeSocket;
+
+let fleetSocket;
 
 /**
- * fleet is optional
+ * fleetName is optional
  **/
-function _openFleetSocket(dispatch, getState, fleetName = undefined) {
+function _openFleetSocket(fleetName, dispatch, getState) {
   const fleet = fleetName || getFleetName(getState());
-  const socketProtocol = isSecure ? 'wss' : 'ws';
-  const socketURL = `${socketProtocol}://${HOST_BASE}/${fleet}/status/monitor`;
-  const fleetSocket = new WebSocket(socketURL);
+  const url = `${fleet}/status/monitor`;
+  fleetSocket = socket(url);
 
-  fleetSocket.onmessage = (inEvent) => {
-    const data = JSON.parse(inEvent.data);
-    if (data.status.lengh === 1) {
-      dispatch(_updateStatus(data.status[0]));
-    } else {
-      data.status.forEach((inSt) => {dispatch(_updateStatus(inSt));});
-    }
-  };
+  fleetSocket.onmessage = inEvent => onMessage(inEvent, dispatch);
+}
+
+function onMessage(inEvent, dispatch) {
+  const data = JSON.parse(inEvent.data);
+
+  if (data.status.lengh === 1) {
+    dispatch(_updateStatus(data.status[0]));
+  } else {
+    data.status.forEach((inSt) => {dispatch(_updateStatus(inSt));});
+  }
+}
+
+function closeSocket() {
+  fleetSocket.close();
 }
 
 const _updateStatus = (statusObj) => ({

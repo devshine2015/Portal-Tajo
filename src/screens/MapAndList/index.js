@@ -61,7 +61,7 @@ class MapAndList extends React.Component {
 
   render() {
     return (
-      <InnerPortal>
+      <InnerPortal hasRealTimeData>
       <div className={styles.mapAndListContainer}>
         { this.state.mode !== MD_LIST ? null :
           <PowerListContainer hooks={execHooksForMe(this)} setUpHooks={setUpHooksForMe(this)}>
