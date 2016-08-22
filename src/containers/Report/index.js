@@ -25,10 +25,12 @@ const ReportsScreen = ({
 
   return (
     <div className="configurator">
-      <VehiclesList
-        vehicles={vehicles}
-        changeVehiclesForReport={changeVehiclesForReport}
-      />
+      { vehicles.length !== 0 && (
+        <VehiclesList
+          vehicles={vehicles}
+          changeVehiclesForReport={changeVehiclesForReport}
+        />
+      )}
       <FixedContent>
         <ReportConfigurator
           hideSplitter

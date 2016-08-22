@@ -1,7 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import VehiclesList from 'components/VehiclesList/Simple';
+import VehiclesList from 'components/VehiclesList';
 import VehicleDetails from './components/VehicleDetails';
 import PowerList from 'components/PowerListRefactored';
 import Filter from 'components/Filter';
@@ -29,7 +29,7 @@ class VehiclesEditor extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.vehicles.size !== nextProps.vehicles.size) {
+    if (this.props.vehicles.length !== nextProps.vehicles.length) {
       this.setState({
         filteredVehicles: nextProps.vehicles,
       });
@@ -84,6 +84,7 @@ class VehiclesEditor extends React.Component {
   }
 
   /**
+   * Show changes instantly.
    * Find changed vehicle in filteredVehicles array
    * and update its details
    **/
@@ -130,23 +131,27 @@ class VehiclesEditor extends React.Component {
   }
 
   render() {
-    if (this.props.vehicles.size === 0) {
+    if (this.props.vehicles.length === 0) {
       return null;
     }
 
     return (
       <div className={styles.editor}>
 
-        <PowerList>
-          <Filter
-            filterFunc={filterByName(this.props.vehicles)}
-            onFilterFinish={this.onFilter}
-          />
-          <VehiclesList
-            onItemClick={this.onItemClick}
-            vehicles={this.state.filteredVehicles}
-          />
-        </PowerList>
+        <PowerList
+          filter={
+            <Filter
+              filterFunc={filterByName(this.state.filteredVehicles, this.props.vehicles)}
+              onFilterFinish={this.onFilter}
+            />
+          }
+          content={
+            <VehiclesList
+              onItemClick={this.onItemClick}
+              vehicles={this.state.filteredVehicles}
+            />
+          }
+        />
 
         {this.renderDetails()}
 
@@ -158,12 +163,12 @@ class VehiclesEditor extends React.Component {
 VehiclesEditor.propTypes = {
   isLoading: React.PropTypes.bool.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,
-  vehicles: React.PropTypes.object.isRequired,
+  vehicles: React.PropTypes.array.isRequired,
   updateDetails: React.PropTypes.func.isRequired,
 };
 
 const mapState = (state) => ({
-  vehicles: fromFleetReducer.getVehicles(state),
+  vehicles: fromFleetReducer.getVehicles(state).toArray(),
   isLoading: getLoaderState(state),
 });
 const mapDispatch = {

@@ -21,14 +21,13 @@ class Filter extends React.Component {
     };
   }
 
-  onTextChange = (e) => {
-    console.time('filtering');
-
+  onFiltering = (e) => {
     const value = e.target.value.trim().toLowerCase();
 
     const isClearing = value.length < this.state.previousValueLength;
+    const newList = this.props.filterFunc(value, isClearing);
 
-    this.props.onFilterFinish(value, isClearing);
+    this.props.onFilterFinish(newList);
 
     this.setState({
       previousValueLength: value.length,
@@ -42,7 +41,7 @@ class Filter extends React.Component {
           fullWidth
           inputStyle={STYLES.inputStyle}
           hintStyle={STYLES.inputStyle}
-          onChange={this.onTextChange}
+          onChange={this.onFiltering}
           hintText="Search"
         />
       </div>
@@ -52,7 +51,7 @@ class Filter extends React.Component {
 
 Filter.propTypes = {
   onFilterFinish: React.PropTypes.func.isRequired,
-  // filterFunc: React.PropTypes.func.isRequired,
+  filterFunc: React.PropTypes.func.isRequired,
 
   // TODO -- think about presets
   presets: React.PropTypes.shape({}),

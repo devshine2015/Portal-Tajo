@@ -1,25 +1,51 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import PowerList from 'components/PowerListRefactored';
-import VehiclesListItem from 'components/VehiclesList/WithCheckboxes/VehiclesListItem';
+import VehiclesList from 'components/VehiclesList';
+import Filter from 'components/Filter';
 import { filterByName } from 'services/FleetModel/utils/vehicleHelpers';
 
 class ReportsVehiclesList extends React.Component {
 
-  onVehicleCheck = (e, isInputChecked) => {
-    this.props.changeVehiclesForReport(e.target.name, isInputChecked);
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      filteredList: props.vehicles,
+    };
+  }
+
+  onVehicleCheck = (name, isInputChecked) => {
+    this.props.changeVehiclesForReport(name, isInputChecked);
+  }
+
+  updateFilteredList = (newList) => {
+    this.setState({
+      filteredList: newList,
+    });
+  }
+
+  renderList() {
+    return (
+      <VehiclesList
+        onItemClick={this.onVehicleCheck}
+        vehicles={this.state.filteredList}
+        withCheckboxes
+        uncheckOnUnmount
+      />
+    );
   }
 
   render() {
     return (
       <PowerList
-        dataList={this.props.vehicles}
-        filterFunc={filterByName}
-        contentItem={
-          <VehiclesListItem
-            onClick={this.onVehicleCheck}
+        filter={
+          <Filter
+            filterFunc={filterByName(this.state.filteredList, this.props.vehicles)}
+            onFilterFinish={this.updateFilteredList}
           />
         }
+        content={this.renderList()}
       />
     );
   }
