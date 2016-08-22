@@ -7,7 +7,7 @@ import {
   getSavedReportData,
   getSelectedFields,
   getAvailableFields,
-  getVehicelsForReport,
+  getVehiclesForReport,
 } from '../reducer';
 import { getFleetName, getAuthenticationSession } from 'containers/App/reducer';
 import { getVehicles, getVehiclesById } from 'services/FleetModel/reducer';
@@ -35,7 +35,7 @@ function _generateReport({ timePeriod, frequency }, dispatch, getState) {
   const periods = _getPeriods(timePeriod, frequency);
   const periodQueryString = getReportParams(timePeriod);
   const selectedReports = getSelectedReportsTypes(getState());
-  const selectedVehicles = getVehicelsForReport(getState()).toArray();
+  const selectedVehicles = getVehiclesForReport(getState()).toArray();
 
   // generate report for all vehicles if no vehicles selected
   const vehiclesList = selectedVehicles.length === 0 ?

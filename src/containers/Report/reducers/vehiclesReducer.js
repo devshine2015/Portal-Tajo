@@ -46,7 +46,7 @@ export const getSelectedVehicles = (state) =>
 export const isFiltering = (state) =>
   state.get('isFiltering');
 
-export const getVehicelsForReport = (state) => {
+export const getVehiclesForReport = (state) => {
   let result;
 
   // if no filtering than just return

@@ -67,5 +67,5 @@ export const getFilteredVehicles = (state) =>
 export const isFiltering = (state) =>
   fromVehiclesReducer.isFiltering(state.getIn(['reports', 'vehicles']));
 
-export const getVehicelsForReport = (state) =>
-  fromVehiclesReducer.getVehicelsForReport(state.getIn(['reports', 'vehicles']));
+export const getVehiclesForReport = (state) =>
+  fromVehiclesReducer.getVehiclesForReport(state.getIn(['reports', 'vehicles']));
