@@ -8,7 +8,7 @@ class ListItemWithCheckbox extends React.Component {
     super(props);
 
     this.state = {
-      isChecked: false,
+      isChecked: props.isChecked || false,
     };
   }
 
@@ -18,7 +18,7 @@ class ListItemWithCheckbox extends React.Component {
     }
   }
 
-  onClick = (e) => {
+  onChange = (e) => {
     const isChecked = e.target.checked;
 
     this.setState({ isChecked }, () => {
@@ -34,7 +34,11 @@ class ListItemWithCheckbox extends React.Component {
     return (
       <div className="vehicles-list_item">
         <label>
-          <input type="checkbox" onClick={this.onClick} />
+          <input
+            type="checkbox"
+            onChange={this.onChange}
+            checked={this.state.isChecked}
+          />
           {this.props.name}
         </label>
       </div>
@@ -44,6 +48,7 @@ class ListItemWithCheckbox extends React.Component {
 
 ListItemWithCheckbox.propTypes = {
   id: React.PropTypes.string.isRequired,
+  isChecked: React.PropTypes.bool.isRequired,
   name: React.PropTypes.string.isRequired,
   onClick: React.PropTypes.func.isRequired,
   uncheckOnUnmount: React.PropTypes.bool,

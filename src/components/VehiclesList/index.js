@@ -9,23 +9,29 @@ const VehiclesList = ({
   onItemClick,
   vehicles,
   withCheckboxes = false,
+  selectedItems = [],
   ...rest,
 }) => {
   const ListItem = withCheckboxes ? CheckboxListItem : SimpleListItem;
 
-  const items = vehicles.map(v => (
-    <li
-      className={styles.list__item}
-      key={v.id}
-    >
-      <ListItem
-        id={v.id}
-        name={v.name}
-        onClick={onItemClick}
-        {...rest}
-      />
-    </li>
-  ));
+  const items = vehicles.map(v => {
+    const isChecked = selectedItems.indexOf(v.id) !== -1;
+
+    return (
+      <li
+        className={styles.list__item}
+        key={v.id}
+      >
+        <ListItem
+          id={v.id}
+          name={v.name}
+          onClick={onItemClick}
+          isChecked={isChecked}
+          {...rest}
+        />
+      </li>
+    );
+  });
 
   return (
     <ul className={styles.list}>
@@ -38,6 +44,7 @@ VehiclesList.propTypes = {
   onItemClick: React.PropTypes.func.isRequired,
   vehicles: React.PropTypes.array.isRequired,
   withCheckboxes: React.PropTypes.bool,
+  selectedItems: React.PropTypes.array,
 
   // Pass to CheckboxListItem
   uncheckOnUnmount: React.PropTypes.bool,

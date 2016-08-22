@@ -6,7 +6,11 @@ import VehiclesList from 'components/VehiclesList';
 import Filter from 'components/Filter';
 import { vehiclesActions } from '../../actions';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
-import { isFiltering, getFilteredVehicles } from '../../reducer';
+import {
+  isFiltering,
+  getFilteredVehicles,
+  getSelectedVehicles,
+} from '../../reducer';
 
 class ReportsVehiclesList extends React.Component {
 
@@ -22,6 +26,7 @@ class ReportsVehiclesList extends React.Component {
       <VehiclesList
         onItemClick={this.onVehicleCheck}
         vehicles={vToDisplay}
+        selectedItems={this.props.selectedVehicles}
         withCheckboxes
       />
     );
@@ -45,12 +50,14 @@ ReportsVehiclesList.propTypes = {
   chooseVehiclesForReport: React.PropTypes.func.isRequired,
   originVehicles: React.PropTypes.array.isRequired,
   filteredVehicles: React.PropTypes.array.isRequired,
+  selectedVehicles: React.PropTypes.array.isRequired,
 };
 
 const mapState = (state) => ({
   originVehicles: fromFleetReducer.getVehicles(state).toArray(),
   filtering: isFiltering(state),
   filteredVehicles: getFilteredVehicles(state).toArray(),
+  selectedVehicles: getSelectedVehicles(state).toArray(),
 });
 const mapDispatch = {
   chooseVehiclesForReport: vehiclesActions.chooseVehiclesForReport,
