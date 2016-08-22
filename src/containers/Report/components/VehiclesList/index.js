@@ -1,8 +1,12 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import { connect } from 'react-redux';
 import PowerList from 'components/PowerListRefactored';
 import VehiclesList from 'components/VehiclesList';
 import Filter from 'components/Filter';
+import { vehiclesActions } from '../../actions';
+import * as fromFleetReducer from 'services/FleetModel/reducer';
+import { isFiltering, getFilteredVehicles } from '../../reducer';
 
 class ReportsVehiclesList extends React.Component {
 
@@ -11,12 +15,14 @@ class ReportsVehiclesList extends React.Component {
   }
 
   renderList() {
+    const vToDisplay = this.props.filtering ?
+      this.props.filteredVehicles : this.props.originVehicles;
+
     return (
       <VehiclesList
         onItemClick={this.onVehicleCheck}
-        vehicles={this.props.vehicles}
+        vehicles={vToDisplay}
         withCheckboxes
-        // uncheckOnUnmount
       />
     );
   }
@@ -34,9 +40,24 @@ class ReportsVehiclesList extends React.Component {
 }
 
 ReportsVehiclesList.propTypes = {
-  vehicles: React.PropTypes.array.isRequired,
   filterFunc: React.PropTypes.func.isRequired,
+  filtering: React.PropTypes.bool.isRequired,
   chooseVehiclesForReport: React.PropTypes.func.isRequired,
+  originVehicles: React.PropTypes.array.isRequired,
+  filteredVehicles: React.PropTypes.array.isRequired,
 };
 
-export default pure(ReportsVehiclesList);
+const mapState = (state) => ({
+  originVehicles: fromFleetReducer.getVehicles(state).toArray(),
+  filtering: isFiltering(state),
+  filteredVehicles: getFilteredVehicles(state).toArray(),
+});
+const mapDispatch = {
+  chooseVehiclesForReport: vehiclesActions.chooseVehiclesForReport,
+  filterFunc: vehiclesActions.filterVehicles,
+};
+
+const PureReportVehiclesList = pure(ReportsVehiclesList);
+
+export default connect(mapState, mapDispatch)(PureReportVehiclesList);
+
