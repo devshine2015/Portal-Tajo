@@ -5,7 +5,7 @@ export const FLEET_MODEL_SOCKET_SET = 'portal/services/FLEET_MODEL_SOCKET_SET';
 
 export const openFleetSocket = (fleet = undefined) => (dispatch, getState) =>
   _openFleetSocket(fleet, dispatch, getState);
-export const closeFleetSocket = closeSocket;
+export const closeFleetSocket = () => _closeSocket;
 
 let fleetSocket;
 
@@ -30,7 +30,7 @@ function onMessage(inEvent, dispatch) {
   }
 }
 
-function closeSocket() {
+function _closeSocket() {
   fleetSocket.close();
 }
 

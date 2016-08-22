@@ -33,6 +33,7 @@ export default function createRoutes(store) {
 
   const mapAndListRoute = require('screens/MapFleetScreen/route')({
     path: 'map',
+    dispatch: store.dispatch,
   });
 
   const dashboardRoute = require('screens/DashboardScreen/route')({

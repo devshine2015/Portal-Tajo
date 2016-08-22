@@ -62,27 +62,27 @@ class MapAndList extends React.Component {
   render() {
     return (
       <InnerPortal hasRealTimeData>
-      <div className={styles.mapAndListContainer}>
-        { this.state.mode !== MD_LIST ? null :
-          <PowerListContainer hooks={execHooksForMe(this)} setUpHooks={setUpHooksForMe(this)}>
-          { [{ listType: listTypes.LIST_VEHICLES, items: this.props.vehicles },
-             { listType: listTypes.LIST_GF, items: this.props.gfs }]
+        <div className={styles.mapAndListContainer}>
+          { this.state.mode !== MD_LIST ? null :
+            <PowerListContainer hooks={execHooksForMe(this)} setUpHooks={setUpHooksForMe(this)}>
+            { [{ listType: listTypes.LIST_VEHICLES, items: this.props.vehicles },
+               { listType: listTypes.LIST_GF, items: this.props.gfs }]
+            }
+            </PowerListContainer>
           }
-          </PowerListContainer>
-        }
-        { this.state.mode !== MD_GF_EDIT ? null :
-          <GFEditPanel
-            hooks={execHooksForMe(this)}
+          { this.state.mode !== MD_GF_EDIT ? null :
+            <GFEditPanel
+              hooks={execHooksForMe(this)}
+              setUpHooks={setUpHooksForMe(this)}
+              subjectContext={this.subjGFContext}
+            />
+          }
+          <SplitContainer
             setUpHooks={setUpHooksForMe(this)}
-            subjectContext={this.subjGFContext}
+            hooks={execHooksForMe(this)}
+            gfEditMode={this.state.mode === MD_GF_EDIT}
           />
-        }
-        <SplitContainer
-          setUpHooks={setUpHooksForMe(this)}
-          hooks={execHooksForMe(this)}
-          gfEditMode={this.state.mode === MD_GF_EDIT}
-        />
-      </div>
+        </div>
       </InnerPortal>
     );
   }
