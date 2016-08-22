@@ -45,3 +45,23 @@ export const getSelectedVehicles = (state) =>
   state.get('selectedVehicles');
 export const isFiltering = (state) =>
   state.get('isFiltering');
+
+export const getVehicelsForReport = (state) => {
+  // if no filtering than just return
+  // all selected vehicles
+  if (!state.get('isFiltering')) {
+    return state.get('selectedVehicles');
+  }
+
+  // find selected vehicles
+  // among filtered
+  const f = state.get('filteredVehicles').filter(fv => {
+    const k = state.get('selectedVehicles').findKey(sf =>
+      fv.id === sf
+    );
+
+    return k !== undefined;
+  });
+
+  return f;
+};
