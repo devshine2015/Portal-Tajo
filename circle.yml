@@ -16,7 +16,7 @@ deployment:
     branch: dev-release
     commands:
       - ./deploy.sh 'ddsdev@ddsdev.cloudapp.net'
-  demo:
-    branch: demo-map
-    commands:
-      - ./deployDemo.sh 'drvrappbeta@drvrappbeta.cloudapp.net'
+  # demo:
+  #   branch: demo
+  #   commands:
+  #     - ./deployDemo.sh 'drvrappbeta@drvrappbeta.cloudapp.net'
