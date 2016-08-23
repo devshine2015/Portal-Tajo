@@ -27,7 +27,7 @@ export default function createRoutes(store) {
     selectLocationState: selectLocationState(),
   });
 
-  const mapAndListRoute = require('screens/MapAndList/route')({
+  const mapAndListRoute = require('screens/MapFleetScreen/route')({
     path: 'map',
   });
 
