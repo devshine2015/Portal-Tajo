@@ -16,8 +16,7 @@ import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { MAPBOX_KEY, ZERO_LOCATION, ZERO_ZOOM, NEW_GF_REQUIRED_ZOOM_LEVEL } from 'utils/constants';
 
-import * as listEvents from 'containers/PowerList/events';
-import * as mapEvents from './events';
+import * as events from './events';
 
 const selectForMe = (meThis, hookId) => (id) => {
   meThis.selectMarker(hookId, id);
@@ -38,11 +37,11 @@ class MapFleet extends React.Component {
       selectedLocationId: undefined,
     };
 
-    this.props.setUpHooks(listEvents.LIST_VEHICLE_SELECTED,
+    this.props.setUpHooks(events.LIST_VEHICLE_SELECTED,
       ((meThis) => (id) => { meThis.highLightMarker(id); })(this));
-    this.props.setUpHooks(listEvents.LIST_GF_SELECTED,
+    this.props.setUpHooks(events.LIST_GF_SELECTED,
       ((meThis) => (id) => { meThis.highLightMarker(id); })(this));
-    // this.props.setUpHooks(listEvents.LIST_GF_EDIT,
+    // this.props.setUpHooks(events.LIST_GF_EDIT,
     //   ((meThis) => (editGfCtx) => { meThis.setRefPos(editGfCtx.obj.pos); })(this));
   }
 
@@ -84,7 +83,7 @@ class MapFleet extends React.Component {
         return;
       }
       inThis.setRefPos(e.latlng);
-      inThis.props.hooks(mapEvents.MAP_GF_ADD, { obj: null, pos: e.latlng });
+      inThis.props.hooks(events.MAP_GF_ADD, { obj: null, pos: e.latlng });
       if (inThis.theMap.getZoom() < NEW_GF_REQUIRED_ZOOM_LEVEL) {
         inThis.theMap.setZoomAround(e.latlng, NEW_GF_REQUIRED_ZOOM_LEVEL);
       }
@@ -157,7 +156,7 @@ class MapFleet extends React.Component {
           isSelected={this.state.selectedVehicleId === v.id}
           theLayer={this.vehicleMarkersLayer}
           theVehicle={v}
-          onClick={selectForMe(this, mapEvents.MAP_VEHICLE_SELECTED)}
+          onClick={selectForMe(this, events.MAP_VEHICLE_SELECTED)}
         />
       ));
       gfs = this.props.gfs.map((v) => (
@@ -166,7 +165,7 @@ class MapFleet extends React.Component {
           isSelected={this.state.selectedLocationId === v.id}
           theLayer={this.gfMarkersLayer}
           theGF={v}
-          onClick={selectForMe(this, mapEvents.MAP_GF_SELECTED)}
+          onClick={selectForMe(this, events.MAP_GF_SELECTED)}
         />
       ));
     }

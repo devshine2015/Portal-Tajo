@@ -2,7 +2,6 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import InnerPortal from 'containers/InnerPortal';
-import LocationEditPanel from 'containers/EditGFPanel';
 import SplitContainer from 'containers/SplitContainer';
 import GFEditPanel from 'containers/EditGFPanel';
 import InstancesColumn from 'containers/MapFleet/components/InstancesColumn';
@@ -10,8 +9,7 @@ import FixedContent from 'components/FixedContent';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import hooks from 'containers/MapFleet/hooks';
 
-import { MAP_GF_ADD } from 'containers/MapFleet/events';
-import { LIST_GF_EDIT } from 'containers/PowerList/events';
+import { MAP_GF_ADD, LIST_GF_EDIT } from 'containers/MapFleet/events';
 import * as gfEditEvents from 'containers/EditGFPanel/GFEditor/events';
 
 import styles from './styles.css';
