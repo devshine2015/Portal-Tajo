@@ -70,7 +70,14 @@ class VehiclesEditor extends React.Component {
       });
   }
 
-  onFilter = (filteredVehicles) => {
+  onFilter = (filterString, isClearing) => {
+    const filteredVehicles = filterByName(
+      this.state.filteredVehicles,
+      this.props.vehicles,
+      filterString,
+      isClearing
+    );
+
     this.setState({ filteredVehicles });
   }
 
@@ -140,10 +147,7 @@ class VehiclesEditor extends React.Component {
 
         <PowerList
           filter={
-            <Filter
-              filterFunc={filterByName(this.state.filteredVehicles, this.props.vehicles)}
-              onFilterFinish={this.onFilter}
-            />
+            <Filter filterFunc={this.onFilter} />
           }
           content={
             <VehiclesList
