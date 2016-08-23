@@ -1,6 +1,8 @@
 import React from 'react';
 import pure from 'recompose/pure';
 
+import styles from '../styles.css';
+
 class SimpleListItem extends React.Component {
 
   onClick = () => {
@@ -10,7 +12,7 @@ class SimpleListItem extends React.Component {
   render() {
     return (
       <div
-        className="vehicles-list_item"
+        className={styles.listItemInn}
         onClick={this.onClick}
       >
         {this.props.name}

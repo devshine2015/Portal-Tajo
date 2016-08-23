@@ -1,0 +1,9 @@
+@media screen and (min-width: 100px) {
+  .propContainer{
+    width: 100%;
+    color: #FFFFFF;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+  }
+}

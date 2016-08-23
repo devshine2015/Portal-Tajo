@@ -5,4 +5,8 @@
     background-color: #898c89;
     display: flex;
  }
+
+ .fixedContent {
+  padding: 0;
+ }
 }

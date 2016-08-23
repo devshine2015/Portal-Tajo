@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import InnerPortal from 'containers/InnerPortal';
 import SplitContainer from 'containers/SplitContainer';
 import InstancesColumn from 'containers/MapFleet/components/InstancesColumn';
+import FixedContent from 'components/FixedContent';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import hooks from 'containers/MapFleet/hooks';
 
@@ -19,19 +20,30 @@ class MapFleetScreen extends React.Component {
   }
 
   render() {
+    const displayColumn = this.props.vehicles.length !== 0 &&
+      this.props.locations.length !== 0;
+
     return (
       <InnerPortal>
         <div className={styles.mapAndListContainer}>
-          <InstancesColumn
-            hooks={hooks.execHooksForMe(this)}
-            setUpHooks={hooks.setUpHooksForMe(this)}
-            locations={this.props.locations}
-            vehicles={this.props.vehicles}
-          />
-          <SplitContainer
-            hooks={hooks.execHooksForMe(this)}
-            setUpHooks={hooks.setUpHooksForMe(this)}
-          />
+
+          { displayColumn && (
+            <InstancesColumn
+              hooks={hooks.execHooksForMe(this)}
+              setUpHooks={hooks.setUpHooksForMe(this)}
+              locations={this.props.locations}
+              vehicles={this.props.vehicles}
+            />
+          )}
+
+          <FixedContent
+            containerClassName={styles.fixedContent}
+          >
+            <SplitContainer
+              hooks={hooks.execHooksForMe(this)}
+              setUpHooks={hooks.setUpHooksForMe(this)}
+            />
+          </FixedContent>
         </div>
       </InnerPortal>
     );

@@ -1,6 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
 
+import styles from '../styles.css';
 
 class ListItemWithCheckbox extends React.Component {
 
@@ -32,7 +33,7 @@ class ListItemWithCheckbox extends React.Component {
      * lags while filtering
      **/
     return (
-      <div className="vehicles-list_item">
+      <div className={styles.listItemInn}>
         <label>
           <input
             type="checkbox"

@@ -2,8 +2,9 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import PowerList from 'components/PowerListRefactored';
-import VehiclesList from 'components/VehiclesList';
 import Filter from 'components/Filter';
+import VehiclesList from 'components/InstancesList';
+import listTypes from 'components/InstancesList/types';
 import { vehiclesActions } from '../../actions';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import {
@@ -25,9 +26,9 @@ class ReportsVehiclesList extends React.Component {
     return (
       <VehiclesList
         onItemClick={this.onVehicleCheck}
-        vehicles={vToDisplay}
+        data={vToDisplay}
         selectedItems={this.props.selectedVehicles}
-        withCheckboxes
+        type={listTypes.withCheckboxes}
       />
     );
   }

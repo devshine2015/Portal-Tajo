@@ -1,7 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import VehiclesList from 'components/VehiclesList';
+import VehiclesList from 'components/InstancesList';
 import VehicleDetails from './components/VehicleDetails';
 import PowerList from 'components/PowerListRefactored';
 import Filter from 'components/Filter';
@@ -152,7 +152,7 @@ class VehiclesEditor extends React.Component {
           content={
             <VehiclesList
               onItemClick={this.onItemClick}
-              vehicles={this.state.filteredVehicles}
+              data={this.state.filteredVehicles}
             />
           }
         />

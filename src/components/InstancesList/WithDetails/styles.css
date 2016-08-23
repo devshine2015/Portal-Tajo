@@ -1,0 +1,11 @@
+@media screen and (min-width: 100px) {
+  .listItemInn_expanded:hover {
+    color: #777;
+  }
+
+  .line {
+    height: 1px;
+    background-color: #ccc;
+    margin: 5px 0;
+  }
+}

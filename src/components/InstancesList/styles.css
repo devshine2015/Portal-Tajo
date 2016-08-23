@@ -8,30 +8,30 @@
     margin: 5px 0;
   }
 
-  :global(.vehicles-list_item) {
+  .listItemInn {
     cursor: pointer;
     transition: color .2s;
     color: #777;
     font-size: 14px;
   }
 
-  :global(.vehicles-list_item),
-  :global(.vehicles-list_item) label {
+  .listItemInn,
+  .listItemInn label {
     cursor: pointer;
   }
 
-  :global(.vehicles-list_item):hover {
+  .listItemInn:hover {
     color: rgb(0, 188, 212);
   }
 
-  :global(.vehicles-list_item) label {
+  .listItemInn label {
     vertical-align: middle;
     display: inline-block;
     width: 100%;
   }
 
-  :global(.vehicles-list_item) input[type="checkbox"],
-  :global(.vehicles-list_item) input[type="radio"] {
+  .listItemInn input[type="checkbox"],
+  .listItemInn input[type="radio"] {
     margin-right: 5px;
     vertical-align: 1px;
   }
