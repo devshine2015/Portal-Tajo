@@ -4,13 +4,14 @@ import styles from './styles.css';
 
 const DetailItemProperty = ({
   title,
+  icon,
   value,
 }) => (
   <div className={styles.propContainer}>
-    <span className={styles.propTitle}>
-      {`${title}:`}
+    <span >
+      {title === '' ? icon : `${title}:`}
     </span>
-    <span className={styles.propValue}>
+    <span >
       {value}
     </span>
   </div>
@@ -21,6 +22,7 @@ DetailItemProperty.propTypes = {
     React.PropTypes.string,
     React.PropTypes.number,
   ]).isRequired,
+  icon: React.PropTypes.object,
   value: React.PropTypes.oneOfType([
     React.PropTypes.string,
     React.PropTypes.number,

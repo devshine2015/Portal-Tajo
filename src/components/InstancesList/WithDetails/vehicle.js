@@ -2,26 +2,50 @@ import React from 'react';
 import pure from 'recompose/pure';
 import classnames from 'classnames';
 import ItemProperty from '../DetailItemProperty';
+import Divider from 'material-ui/Divider';
+import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
+import { red500 } from 'material-ui/styles/colors';
+
 
 import styles from '../styles.css';
 import styles2 from './styles.css';
 
-class ListItemWithDetails extends React.Component {
+// import stylesBasic from './../styles.css';
 
+class ListItemVehicle extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    return this.props.isExpanded !== nextProps.isExpanded
+    || this.props.speed.toFixed(1) !== nextProps.speed.toFixed(1)
+    || this.props.isZombie !== nextProps.isZombie
+    || this.props.isDead !== nextProps.isDead
+    ;
+  }
   onClick = () => {
     this.props.onClick(this.props.id, !this.props.isExpanded);
+  }
+
+  inActivityIndicator(expanded) {
+    if (!this.props.isZombie && !this.props.isDead) return null;
+    const updateTime = new Date(this.props.lastUpdateSinceEpoch);
+    let infoStr = 'newer reported - check device';
+    if (!this.props.isDead) {
+      infoStr = expanded ?
+        'updated ' + updateTime.toLocaleString()
+        :
+        'last update ' + updateTime.toDateString();
+    }
+  //        value={`updated ${updateTime.toLocaleString()}`}
+    return (
+      <ItemProperty title="" icon={<AlertIcon color={red500} />}
+        value={infoStr}
+      />
+    );
   }
 
   renderDetails() {
     if (this.props.isExpanded) {
       return [
-        <div key="name">
-          {this.props.name}
-        </div>,
-        <hr
-          className={styles2.line}
-          key="line1"
-        />,
+        <Divider key="line01" />,
         <ItemProperty
           key="speed"
           title="Speed"
@@ -32,10 +56,7 @@ class ListItemWithDetails extends React.Component {
           title="Trip dist"
           value={`${(this.props.dist.lastTrip / 1000).toFixed(2)} km`}
         />,
-        <hr
-          className={styles2.line}
-          key="line2"
-        />,
+        <Divider key="line02" />,
         <ItemProperty
           key="license"
           title="license Plate"
@@ -58,31 +79,35 @@ class ListItemWithDetails extends React.Component {
         />,
       ];
     }
-
-    return this.props.name;
+    return false;
   }
 
   render() {
     const className = classnames(styles.listItemInn, {
       [styles2.listItemInn_expanded]: this.props.isExpanded,
     });
-
     return (
       <div
         className={className}
         onClick={this.onClick}
       >
-        { this.renderDetails() }
+        <div > {this.props.name} </div>
+        {this.inActivityIndicator(this.props.isExpanded)}
+        {this.renderDetails()}
       </div>
     );
   }
 }
 
-ListItemWithDetails.propTypes = {
+ListItemVehicle.propTypes = {
+  onClick: React.PropTypes.func.isRequired,
+//  onSelectedCallback: React.PropTypes.func.isRequired,
   id: React.PropTypes.string.isRequired,
   isExpanded: React.PropTypes.bool,
+  isZombie: React.PropTypes.bool.isRequired,
+  isDead: React.PropTypes.bool.isRequired,
+  lastUpdateSinceEpoch: React.PropTypes.number.isRequired,
   name: React.PropTypes.string.isRequired,
-  onClick: React.PropTypes.func.isRequired,
   speed: React.PropTypes.number,
   dist: React.PropTypes.object,
   licensePlate: React.PropTypes.string,
@@ -91,4 +116,6 @@ ListItemWithDetails.propTypes = {
   year: React.PropTypes.string,
 };
 
-export default pure(ListItemWithDetails);
+const PureListItemVehicle = pure(ListItemVehicle);
+
+export default PureListItemVehicle;
