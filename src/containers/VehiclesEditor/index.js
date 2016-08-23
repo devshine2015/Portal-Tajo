@@ -3,7 +3,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import VehiclesList from 'components/InstancesList';
 import VehicleDetails from './components/VehicleDetails';
-import PowerList from 'components/PowerListRefactored';
+import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import FixedContent from 'components/FixedContent';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
@@ -44,7 +44,7 @@ class VehiclesEditor extends React.Component {
 
     if (v !== undefined) {
       this.setState({
-        selectedVehicle: v.vehicle.get(0),
+        selectedVehicle: v.vehicle[0],
         selectedVehicleOriginalIndex: v.vehicleIndex,
       });
     }

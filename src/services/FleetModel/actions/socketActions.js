@@ -8,6 +8,7 @@ export const openFleetSocket = (fleet = undefined) => (dispatch, getState) =>
 export const closeFleetSocket = () => _closeSocket;
 
 let fleetSocket;
+let socketIsOpened = false;
 
 /**
  * fleetName is optional
@@ -16,6 +17,8 @@ function _openFleetSocket(fleetName, dispatch, getState) {
   const fleet = fleetName || getFleetName(getState());
   const url = `${fleet}/status/monitor`;
   fleetSocket = socket(url);
+
+  socketIsOpened = true;
 
   fleetSocket.onmessage = inEvent => onMessage(inEvent, dispatch);
 }
@@ -31,7 +34,9 @@ function onMessage(inEvent, dispatch) {
 }
 
 function _closeSocket() {
-  fleetSocket.close();
+  if (socketIsOpened) {
+    fleetSocket.close();
+  }
 }
 
 const _updateStatus = (statusObj) => ({

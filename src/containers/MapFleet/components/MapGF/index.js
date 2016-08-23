@@ -11,16 +11,16 @@ class MapGF extends React.Component {
 
   componentDidMount() {
     this.containerLayer = this.props.theLayer;
-    this.theMarker = window.L.circleMarker(this.props.theLocation.pos,
-      { title: this.props.theLocation.name });
+    this.theMarker = window.L.circleMarker(this.props.theGF.pos,
+      { title: this.props.theGF.name });
     const clickHandle = ((inThis) => (e) => {
-      inThis.props.onClick(inThis.props.theLocation.id);
+      inThis.props.onClick(inThis.props.theGF.id);
 //      console.log('MARKER clicked ' + inThis.props.theVehicle.id);
     })(this);
     this.theMarker.on('click', clickHandle);
     this.theMarker.addTo(this.containerLayer);
 
-    this.theCircle = window.L.circle(this.props.theLocation.pos, this.props.theLocation.radius);
+    this.theCircle = window.L.circle(this.props.theGF.pos, this.props.theGF.radius);
 //    this.theCircle.editing.enable();
   }
   componentWillUnmount() {
@@ -55,8 +55,8 @@ class MapGF extends React.Component {
 
   render() {
     if (this.theMarker !== null) {
-      this.toggle(!this.props.theLocation.filteredOut);
-      this.setPosition(this.props.theLocation.pos);
+      this.toggle(!this.props.theGF.filteredOut);
+      this.setPosition(this.props.theGF.pos);
       this.expand(this.props.isSelected);
     }
     return false;
@@ -66,7 +66,7 @@ class MapGF extends React.Component {
 
 MapGF.propTypes = {
   theLayer: React.PropTypes.object,
-  theLocation: React.PropTypes.object,
+  theGF: React.PropTypes.object,
   onClick: React.PropTypes.func.isRequired,
   isSelected: React.PropTypes.bool.isRequired,
 };

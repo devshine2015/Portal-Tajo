@@ -2,7 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { Tabs, Tab } from 'material-ui/Tabs';
 // import PowerListContainer from 'containers/PowerList';
-import PowerList from 'components/PowerListRefactored';
+import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import VehiclesList from 'components/InstancesList';
 import listTypes from 'components/InstancesList/types';

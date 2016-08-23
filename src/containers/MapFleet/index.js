@@ -114,7 +114,7 @@ class MapFleet extends React.Component {
   highLightMarker(selectedId) {
     let theSelectedObj = this.props.vehicleById(selectedId);
     if (theSelectedObj === null) {
-      theSelectedObj = this.props.locationById(selectedId);
+      theSelectedObj = this.props.gfById(selectedId);
       this.setState({ selectedLocationId: selectedId });
     } else {
       this.setState({ selectedVehicleId: selectedId });
@@ -148,7 +148,7 @@ class MapFleet extends React.Component {
     this.hideLayer(this.gfEditLayer, !this.props.gfEditMode);
 
     let vehicles = EMPTY_ARRAY;
-    let locations = EMPTY_ARRAY;
+    let gfs = EMPTY_ARRAY;
 
     if (this.theMap !== null) {
       vehicles = this.props.vehicles.map((v) => (
@@ -160,12 +160,12 @@ class MapFleet extends React.Component {
           onClick={selectForMe(this, mapEvents.MAP_VEHICLE_SELECTED)}
         />
       ));
-      locations = this.props.locations.map((v) => (
+      gfs = this.props.gfs.map((v) => (
         <MapGF
           key={v.id}
           isSelected={this.state.selectedLocationId === v.id}
           theLayer={this.gfMarkersLayer}
-          theLocation={v}
+          theGF={v}
           onClick={selectForMe(this, mapEvents.MAP_GF_SELECTED)}
         />
       ));
@@ -181,7 +181,7 @@ class MapFleet extends React.Component {
 
     return (
       <div className = {styles.mapContainer}>
-      {locations}
+      {gfs}
       {vehicles}
       {editGF}
       </div>
@@ -193,17 +193,17 @@ const PureMapFleet = pure(MapFleet);
 
 MapFleet.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
-  locations: React.PropTypes.array.isRequired,
+  gfs: React.PropTypes.array.isRequired,
   setUpHooks: React.PropTypes.func.isRequired,
   hooks: React.PropTypes.func.isRequired,
   vehicleById: React.PropTypes.func.isRequired,
-  locationById: React.PropTypes.func.isRequired,
+  gfById: React.PropTypes.func.isRequired,
   gfEditMode: React.PropTypes.bool.isRequired,
 };
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesEx(state),
-  locations: fromFleetReducer.getLocationsEx(state),
+  gfs: fromFleetReducer.getGFsEx(state),
   vehicleById: fromFleetReducer.getVehicleByIdFunc(state),
-  locationById: fromFleetReducer.getLocationByIdFunc(state),
+  gfById: fromFleetReducer.getGFByIdFunc(state),
 });
 export default connect(mapState)(PureMapFleet);

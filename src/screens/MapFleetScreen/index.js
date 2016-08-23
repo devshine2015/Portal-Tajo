@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import InnerPortal from 'containers/InnerPortal';
 import LocationEditPanel from 'containers/EditGFPanel';
 import SplitContainer from 'containers/SplitContainer';
+import GFEditPanel from 'containers/EditGFPanel';
 import InstancesColumn from 'containers/MapFleet/components/InstancesColumn';
 import FixedContent from 'components/FixedContent';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
@@ -65,7 +66,7 @@ class MapFleetScreen extends React.Component {
           )}
 
           { this.state.mode !== MD_GF_EDIT ? null :
-            <LocationEditPanel
+            <GFEditPanel
               hooks={hooks.execHooksForMe(this)}
               setUpHooks={hooks.setUpHooksForMe(this)}
               subjectContext={this.subjGFContext}
