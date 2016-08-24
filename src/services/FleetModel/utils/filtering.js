@@ -1,14 +1,24 @@
-export const filterByName = (state, filterString) => {
-  const checkName = filterString.toLowerCase();
-  let newState = state;
-  state.get('processedList').forEach((v) => {
-    const theName = v.get('name').toLowerCase();
-    if (theName.search(checkName) === -1) {
-      newState = newState.setIn(['processedList', v.get('id'), 'filteredOut'], true);
-    } else {
-      newState = newState.setIn(['processedList', v.get('id'), 'filteredOut'], false);
+// export const filterByName = (state, filterString) => {
+//   const checkName = filterString.toLowerCase();
+//   let newState = state;
+//   state.get('processedList').forEach((v) => {
+//     const theName = v.get('name').toLowerCase();
+//     if (theName.search(checkName) === -1) {
+//       newState = newState.setIn(['processedList', v.get('id'), 'filteredOut'], true);
+//     } else {
+//       newState = newState.setIn(['processedList', v.get('id'), 'filteredOut'], false);
+//     }
+//     return true;
+//   });
+//   return newState;
+// };
+
+export const filterProcessedListByName = (origin = {}, searchString) => {
+  for (const k in origin) {
+    if (origin.hasOwnProperty(k)) {
+      origin[k].filteredOut = origin[k].name.toLowerCase().search(searchString) === -1;
     }
-    return true;
-  });
-  return newState;
+  }
+
+  return origin;
 };

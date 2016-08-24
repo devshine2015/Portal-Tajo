@@ -1,6 +1,5 @@
-import { List, fromJS } from 'immutable';
+import { Map, List, fromJS } from 'immutable';
 import { gfActions } from '../actions';
-import { filterByName } from '../utils/filtering';
 
 const gfsInitialState = fromJS({
   list: new List(),
@@ -13,7 +12,7 @@ function gfReducer(state = gfsInitialState, action) {
       return state.set('list', new List(action.locations))
           .set('processedList', fromJS(action.localGFs));
     case gfActions.FLEET_MODEL_GF_FILTER:
-      return filterByName(state, action.nameFilter);
+      return state.set('processedList', new Map(action.gfs));
     default:
       return state;
   }
@@ -33,3 +32,6 @@ export const getGFsEx = (state) => {
   const aList = Object.values(jsObj);
   return aList;
 };
+
+export const getProcessedGFs = (state) =>
+  state.get('processedList');

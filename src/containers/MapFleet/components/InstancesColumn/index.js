@@ -1,13 +1,13 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import { connect } from 'react-redux';
 import { Tabs, Tab } from 'material-ui/Tabs';
 // import PowerListContainer from 'containers/PowerList';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import VehiclesList from 'components/InstancesList';
 import listTypes from 'components/InstancesList/types';
-import { filterByName } from 'services/FleetModel/utils/vehicleHelpers';
-// import * as ListTypes from 'containers/PowerList/types';
+import { vehiclesActions, gfActions } from 'services/FleetModel/actions';
 
 class InstancesColumn extends React.Component {
 
@@ -15,33 +15,29 @@ class InstancesColumn extends React.Component {
     super(props);
 
     this.state = {
-      filteredVehicles: props.vehicles,
-      filteredLocations: props.locations,
       currentExpandedVehicle: undefined,
       currentExpandedLocation: undefined,
     };
   }
 
-  onFilterVehicles = (filterString, isClearing) => {
-    const filteredVehicles = filterByName(
-      this.state.filteredVehicles,
-      this.props.vehicles,
-      filterString,
-      isClearing,
-    );
+  // onFilterVehicles = (filterString, isClearing) => {
+  //   const filteredVehicles = this.props.filterFunc(fil)
+  //     filterString,
+  //     isClearing,
+  //   );
 
-    this.setState({ filteredVehicles });
-  }
+  //   this.setState({ filteredVehicles });
+  // }
 
   onFilterLocations = (filterString, isClearing) => {
-    const filteredLocations = filterByName(
-      this.state.filteredLocations,
-      this.props.locations,
-      filterString,
-      isClearing,
-    );
+    // const filteredLocations = filterByName(
+    //   this.state.filteredLocations,
+    //   this.props.gfs,
+    //   filterString,
+    //   isClearing,
+    // );
 
-    this.setState({ filteredLocations });
+    // this.setState({ filteredLocations });
   }
 
   onLocationClick = (itemId, isExpanded) => {
@@ -77,20 +73,20 @@ class InstancesColumn extends React.Component {
       <PowerList>
         <Tabs>
           <Tab label="Vehicles">
-            <Filter filterFunc={this.onFilterVehicles} />
+            <Filter filterFunc={this.props.filterVehiclesFunc} />
             <VehiclesList
               currentExpandedItem={this.state.currentExpandedVehicle}
               onItemClick={this.onVehicleClick}
-              data={this.state.filteredVehicles}
+              data={this.props.vehicles}
               type={listTypes.withVehicleDetails}
             />
           </Tab>
           <Tab label="Locations">
-            <Filter filterFunc={this.onFilterLocations} />
+            <Filter filterFunc={this.props.filterGFsFunc} />
             <VehiclesList
               currentExpandedItem={this.state.currentExpandedLocation}
               onItemClick={this.onLocationClick}
-              data={this.state.filteredLocations}
+              data={this.props.gfs}
               type={listTypes.withLocationDetails}
             />
           </Tab>
@@ -101,10 +97,22 @@ class InstancesColumn extends React.Component {
 }
 
 InstancesColumn.propTypes = {
-  vehicles: React.PropTypes.array.isRequired,
-  locations: React.PropTypes.array.isRequired,
+  vehicles: React.PropTypes.object.isRequired,
   hooks: React.PropTypes.func.isRequired,
+  gfs: React.PropTypes.array.isRequired,
   setUpHooks: React.PropTypes.func.isRequired,
+  filterVehiclesFunc: React.PropTypes.func.isRequired,
+  filterGFsFunc: React.PropTypes.func.isRequired,
 };
 
-export default pure(InstancesColumn);
+InstancesColumn.propTypes = {};
+
+const mapDispatch = {
+  filterVehiclesFunc: vehiclesActions.filterVehicles,
+  filterGFsFunc: gfActions.filterGFs,
+};
+
+const PureComponent = pure(InstancesColumn);
+
+export default connect(null, mapDispatch)(PureComponent);
+

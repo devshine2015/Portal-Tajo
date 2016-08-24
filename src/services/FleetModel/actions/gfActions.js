@@ -4,14 +4,16 @@ import {
   getAuthenticationSession,
 } from 'containers/App/reducer';
 import { makeLocalGFs } from '../utils/gfHelpers';
+import { getProcessedGFs } from '../reducer';
+import { filterProcessedListByName } from '../utils/filtering';
 
 export const FLEET_MODEL_GF_SET = 'portal/services/FLEET_MODEL_GF_SET';
 export const FLEET_MODEL_GF_FILTER = 'portal/services/FLEET_MODEL_GF_FILTER';
 
 export const fetchGFs = (fleet = undefined) => (dispatch, getState) =>
   _fetchGFs(dispatch, getState, fleet);
-export const filterGFs = (filterName) => (dispatch) =>
-  dispatch(_gfFilter(filterName));
+export const filterGFs = (searchString) => (dispatch, getState) =>
+  _filterGf({ searchString }, dispatch, getState);
 export const createGF = (newGF, idx) => (dispatch, getState) =>
   _createGFRequest(newGF, idx, dispatch, getState);
 export const updateGF = (theGF, id, idx) => (dispatch, getState) =>
@@ -82,7 +84,13 @@ function _deleteGFRequest(id, dispatch, getState) {
 function toJson(response) {
   return response.json();
 }
-//
+
+function _filterGf({ searchString }, dispatch, getState) {
+  const originGFs = getProcessedGFs(getState()).toJS();
+  const filteredVehicles = filterProcessedListByName(originGFs, searchString);
+
+  dispatch(_gfsFilterUpdate(filteredVehicles));
+}
 
 const _gfSet = (gfs, localGFs) => ({
   type: FLEET_MODEL_GF_SET,
@@ -90,7 +98,7 @@ const _gfSet = (gfs, localGFs) => ({
   localGFs,
 });
 
-const _gfFilter = (nameFilter) => ({
+const _gfsFilterUpdate = (gfs) => ({
   type: FLEET_MODEL_GF_FILTER,
-  nameFilter,
+  gfs,
 });

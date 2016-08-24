@@ -52,14 +52,16 @@ class MapFleetScreen extends React.Component {
       this.props.gfs.length !== 0 && this.state.mode === MD_LIST;
 
     return (
-      <InnerPortal hasRealTimeData>
+      <InnerPortal>
         <div className={styles.mapAndListContainer}>
           { displayColumn && (
             <InstancesColumn
               hooks={hooks.execHooksForMe(this)}
               setUpHooks={hooks.setUpHooksForMe(this)}
-              locations={this.props.gfs}
+              gfs={this.props.gfs}
               vehicles={this.props.vehicles}
+              // filteredVehicles={this.props.filteredVehicles}
+              // filterFunc={this.props.filterFunc}
             />
           )}
 

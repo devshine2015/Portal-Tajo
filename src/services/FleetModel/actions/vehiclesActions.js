@@ -5,6 +5,8 @@ import {
   getAuthenticationSession,
 } from 'containers/App/reducer';
 import processVehicels from '../utils/vehicleHelpers';
+import { filterProcessedListByName } from '../utils/filtering';
+import { getProcessedVehicles } from '../reducer';
 
 export const FLEET_MODEL_VEHICLES_SET = 'portal/services/FLEET_MODEL_VEHICLES_SET';
 export const FLEET_MODEL_VEHICLES_FILTER = 'portal/services/FLEET_MODEL_VEHICLES_FILTER';
@@ -14,8 +16,8 @@ export const fetchVehicles = (fleet, openWebSocket) => (dispatch, getState) =>
   _fetchVehicles(fleet, openWebSocket, dispatch, getState);
 export const updateDetails = (details = {}, index) => (dispatch, getState) =>
   makeUpdateVehicleRequest(details, index, dispatch, getState);
-export const filterVehicles = (filterName) => (dispatch) =>
-  dispatch(_vehiclesFilter(filterName));
+export const filterVehicles = (searchString) => (dispatch, getState) =>
+  _filterVehicles({ searchString }, dispatch, getState);
 
 /**
  * fleet is optional
@@ -38,6 +40,13 @@ function _fetchVehicles(fleetName, openWebSocket, dispatch, getState) {
         dispatch(openFleetSocket(fleet));
       }
     });
+}
+
+function _filterVehicles({ searchString }, dispatch, getState) {
+  const originVehicles = getProcessedVehicles(getState()).toJS();
+  const filteredVehicles = filterProcessedListByName(originVehicles, searchString);
+
+  dispatch(_vehiclesFilterUpdate(filteredVehicles));
 }
 
 /**
@@ -75,7 +84,7 @@ const _vehicleUpdate = (details, index) => ({
   index,
 });
 
-const _vehiclesFilter = (nameFilter) => ({
+const _vehiclesFilterUpdate = (vehicles) => ({
   type: FLEET_MODEL_VEHICLES_FILTER,
-  nameFilter,
+  vehicles,
 });

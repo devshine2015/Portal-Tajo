@@ -1,12 +1,12 @@
-import { List, fromJS } from 'immutable';
+import { List, Map, fromJS } from 'immutable';
 import * as vehiclesActions from '../actions/vehiclesActions';
 import * as socketActions from '../actions/socketActions';
-import { filterByName } from '../utils/filtering';
+// import { filterByName } from '../utils/filtering';
 import { checkZombieVehicle } from '../utils/vehicleHelpers';
 
 const vehiclesInitialState = fromJS({
   list: new List(),
-  processedList: {},
+  processedList: new Map(),
 });
 
 function vehiclesReducer(state = vehiclesInitialState, action) {
@@ -17,7 +17,7 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
     case vehiclesActions.FLEET_MODEL_VEHICLE_UPDATE:
       return state.setIn(['list', action.index], action.details);
     case vehiclesActions.FLEET_MODEL_VEHICLES_FILTER:
-      return filterByName(state, action.nameFilter);
+      return state.set('processedList', new Map(action.vehicles));
     case socketActions.FLEET_MODEL_SOCKET_SET: {
       const inStatus = action.statusObj;
       let newState = state;
@@ -78,5 +78,5 @@ export const getVehiclesEx = (state) => {
   // });
   return aList;
 };
-// export const getVehiclesEx = (state) =>
-//     Object.values(state.get('processedList'));
+export const getProcessedVehicles = (state) =>
+  state.get('processedList');

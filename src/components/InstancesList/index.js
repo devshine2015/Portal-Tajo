@@ -68,20 +68,26 @@ const InstancesList = ({
   currentExpandedItem,
   ...rest,
 }) => {
-  const items = data.map(item => (
-    <li
-      className={styles.list__item}
-      key={item.id}
-    >
-      {chooseItem(type, {
-        onItemClick,
-        item,
-        selectedItems,
-        currentExpandedItem,
-        ...rest,
-      })}
-    </li>
-  ));
+  const items = data.map(item => {
+    if (item.filteredOut) {
+      return null;
+    }
+
+    return (
+      <li
+        className={styles.list__item}
+        key={item.id}
+      >
+        {chooseItem(type, {
+          onItemClick,
+          item,
+          selectedItems,
+          currentExpandedItem,
+          ...rest,
+        })}
+      </li>
+    );
+  });
 
   return (
     <ul className={styles.list}>

@@ -29,10 +29,14 @@ export const getVehiclesEx = (state) =>
   fromVehiclesReducer.getVehiclesEx(state.getIn(['fleet', 'vehicles']));
 export const getVehicleByIdFunc = (state) =>
   getByIdFunc(state.getIn(['fleet', 'vehicles']));
-//  fromVehiclesReducer.getVehicleByIdFunc(state.getIn(['fleet', 'vehicles']));
+export const getProcessedVehicles = (state) =>
+  fromVehiclesReducer.getProcessedVehicles(state.getIn(['fleet', 'vehicles']));
+
 export const getGFs = (state) =>
   fromgfReducer.getGFs(state.getIn(['fleet', 'locations']));
 export const getGFsEx = (state) =>
   fromgfReducer.getGFsEx(state.getIn(['fleet', 'locations']));
 export const getGFByIdFunc = (state) =>
   getByIdFunc(state.getIn(['fleet', 'locations']));
+export const getProcessedGFs = (state) =>
+  fromgfReducer.getProcessedGFs(state.getIn(['fleet', 'locations']));

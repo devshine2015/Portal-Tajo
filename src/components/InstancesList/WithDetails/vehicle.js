@@ -13,31 +13,36 @@ import styles2 from './styles.css';
 // import stylesBasic from './../styles.css';
 
 class ListItemVehicle extends React.Component {
-  shouldComponentUpdate(nextProps) {
-    return this.props.isExpanded !== nextProps.isExpanded
-    || this.props.speed.toFixed(1) !== nextProps.speed.toFixed(1)
-    || this.props.isZombie !== nextProps.isZombie
-    || this.props.isDead !== nextProps.isDead
-    ;
-  }
+  // shouldComponentUpdate(nextProps) {
+  //   return this.props.isExpanded !== nextProps.isExpanded
+  //   || this.props.speed.toFixed(1) !== nextProps.speed.toFixed(1)
+  //   || this.props.isZombie !== nextProps.isZombie
+  //   || this.props.isDead !== nextProps.isDead
+  //   ;
+  // }
   onClick = () => {
     this.props.onClick(this.props.id, !this.props.isExpanded);
   }
 
-  inActivityIndicator(expanded) {
-    if (!this.props.isZombie && !this.props.isDead) return null;
+  inActivityIndicator() {
+    if (!this.props.isZombie && !this.props.isDead) {
+      return null;
+    }
+
     const updateTime = new Date(this.props.lastUpdateSinceEpoch);
     let infoStr = 'newer reported - check device';
+
     if (!this.props.isDead) {
-      infoStr = expanded ?
-        'updated ' + updateTime.toLocaleString()
-        :
-        'last update ' + updateTime.toDateString();
+      infoStr = this.props.isExpanded ?
+        `updated ${updateTime.toLocaleString()}` :
+        `last update ${updateTime.toDateString()}`;
     }
   //        value={`updated ${updateTime.toLocaleString()}`}
     return (
-      <ItemProperty title="" icon={<AlertIcon color={red500} />}
+      <ItemProperty
+        title=""
         value={infoStr}
+        icon={<AlertIcon color={red500} />}
       />
     );
   }
@@ -91,8 +96,10 @@ class ListItemVehicle extends React.Component {
         className={className}
         onClick={this.onClick}
       >
-        <div > {this.props.name} </div>
-        {this.inActivityIndicator(this.props.isExpanded)}
+        <div>
+          {this.props.name}
+        </div>
+        {this.inActivityIndicator()}
         {this.renderDetails()}
       </div>
     );
