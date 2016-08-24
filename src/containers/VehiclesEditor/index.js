@@ -29,7 +29,7 @@ class VehiclesEditor extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.vehicles.length !== nextProps.vehicles.length) {
+    if (this.props.vehicles.size !== nextProps.vehicles.size) {
       this.setState({
         filteredVehicles: nextProps.vehicles,
       });
@@ -44,7 +44,7 @@ class VehiclesEditor extends React.Component {
 
     if (v !== undefined) {
       this.setState({
-        selectedVehicle: v.vehicle[0],
+        selectedVehicle: v.vehicle.get(0),
         selectedVehicleOriginalIndex: v.vehicleIndex,
       });
     }
@@ -96,7 +96,7 @@ class VehiclesEditor extends React.Component {
    * and update its details
    **/
   updateFilteredVehicles(updatedDetails) {
-    const v = getVehicleById(updatedDetails.id, this.state.filteredVehicles.toArray());
+    const v = getVehicleById(updatedDetails.id, this.state.filteredVehicles);
     const updatedFilteredVehicles = this.state.filteredVehicles.set(v.vehicleIndex, updatedDetails);
 
     this.setState({
@@ -138,7 +138,7 @@ class VehiclesEditor extends React.Component {
   }
 
   render() {
-    if (this.props.vehicles.length === 0) {
+    if (this.props.vehicles.size === 0) {
       return null;
     }
 
@@ -152,7 +152,7 @@ class VehiclesEditor extends React.Component {
           content={
             <VehiclesList
               onItemClick={this.onItemClick}
-              data={this.state.filteredVehicles}
+              data={this.state.filteredVehicles.toArray()}
             />
           }
         />
@@ -167,12 +167,12 @@ class VehiclesEditor extends React.Component {
 VehiclesEditor.propTypes = {
   isLoading: React.PropTypes.bool.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,
-  vehicles: React.PropTypes.array.isRequired,
+  vehicles: React.PropTypes.object.isRequired,
   updateDetails: React.PropTypes.func.isRequired,
 };
 
 const mapState = (state) => ({
-  vehicles: fromFleetReducer.getVehicles(state).toArray(),
+  vehicles: fromFleetReducer.getVehicles(state),
   isLoading: getLoaderState(state),
 });
 const mapDispatch = {
