@@ -7,7 +7,8 @@ import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import FixedContent from 'components/FixedContent';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
-import { filterByName, getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
+import { getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
+import { vehiclesActions } from 'services/FleetModel/actions';
 import { getLoaderState } from './reducer';
 import { detailsActions } from './actions';
 import { showSnackbar } from 'containers/Snackbar/actions';
@@ -22,14 +23,14 @@ class VehiclesEditor extends React.Component {
     this.state = {
       selectedVehicle: undefined,
       selectedVehicleOriginalIndex: undefined,
-      filteredVehicles: props.vehicles,
+      // filteredVehicles: props.vehicles,
     };
 
     this.onItemClick = this.onItemClick.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.vehicles.size !== nextProps.vehicles.size) {
+    if (this.props.vehicles.length !== nextProps.vehicles.length) {
       this.setState({
         filteredVehicles: nextProps.vehicles,
       });
@@ -44,7 +45,7 @@ class VehiclesEditor extends React.Component {
 
     if (v !== undefined) {
       this.setState({
-        selectedVehicle: v.vehicle.get(0),
+        selectedVehicle: v.vehicle[0],
         selectedVehicleOriginalIndex: v.vehicleIndex,
       });
     }
@@ -70,16 +71,16 @@ class VehiclesEditor extends React.Component {
       });
   }
 
-  onFilter = (filterString, isClearing) => {
-    const filteredVehicles = filterByName(
-      this.state.filteredVehicles,
-      this.props.vehicles,
-      filterString,
-      isClearing
-    );
+  // onFilter = (filterString, isClearing) => {
+  //   const filteredVehicles = filterByName(
+  //     this.state.filteredVehicles,
+  //     this.props.vehicles,
+  //     filterString,
+  //     isClearing
+  //   );
 
-    this.setState({ filteredVehicles });
-  }
+  //   this.setState({ filteredVehicles });
+  // }
 
   /**
    * Close editor
@@ -96,7 +97,7 @@ class VehiclesEditor extends React.Component {
    * and update its details
    **/
   updateFilteredVehicles(updatedDetails) {
-    const v = getVehicleById(updatedDetails.id, this.state.filteredVehicles);
+    const v = getVehicleById(updatedDetails.id, this.props.vehicles);
     const updatedFilteredVehicles = this.state.filteredVehicles.set(v.vehicleIndex, updatedDetails);
 
     this.setState({
@@ -138,7 +139,7 @@ class VehiclesEditor extends React.Component {
   }
 
   render() {
-    if (this.props.vehicles.size === 0) {
+    if (this.props.vehicles.length === 0) {
       return null;
     }
 
@@ -147,12 +148,12 @@ class VehiclesEditor extends React.Component {
 
         <PowerList
           filter={
-            <Filter filterFunc={this.onFilter} />
+            <Filter filterFunc={this.props.filterFunc} />
           }
           content={
             <VehiclesList
               onItemClick={this.onItemClick}
-              data={this.state.filteredVehicles.toArray()}
+              data={this.props.vehicles}
             />
           }
         />
@@ -167,15 +168,17 @@ class VehiclesEditor extends React.Component {
 VehiclesEditor.propTypes = {
   isLoading: React.PropTypes.bool.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,
-  vehicles: React.PropTypes.object.isRequired,
+  vehicles: React.PropTypes.array.isRequired,
   updateDetails: React.PropTypes.func.isRequired,
+  filterFunc: React.PropTypes.func.isRequired,
 };
 
 const mapState = (state) => ({
-  vehicles: fromFleetReducer.getVehicles(state),
+  vehicles: fromFleetReducer.getVehiclesEx(state),
   isLoading: getLoaderState(state),
 });
 const mapDispatch = {
+  filterFunc: vehiclesActions.filterVehicles,
   updateDetails: detailsActions.updateDetails,
   showSnackbar,
 };
