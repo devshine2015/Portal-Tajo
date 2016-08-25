@@ -4,18 +4,10 @@ import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import styles from './styles.css';
-import {
-  deepOrange500,
-  grey300,
-} from 'material-ui/styles/colors';
 import { onlineStateActions, authActions } from './actions';
+import drvrDevTheme from 'themes/theme';
 
-const muiTheme = getMuiTheme({
-  palette: {
-    accent1Color: deepOrange500,
-    disabledColor: grey300,
-  },
-});
+const muiTheme = getMuiTheme(drvrDevTheme);
 
 const URLS = {
   success: 'map',
