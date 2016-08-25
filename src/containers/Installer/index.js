@@ -175,7 +175,7 @@ class Installer extends React.Component {
             fullWidth
             name="odometer"
             onChange={this.onChange}
-            floatingLabelText="Odometer value (not implemented on backend)"
+            floatingLabelText="Current Odometer value"
             required
             type="number"
           />

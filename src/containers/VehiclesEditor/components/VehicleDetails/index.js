@@ -37,7 +37,14 @@ class VehicleDetails extends React.Component {
   onSubmit = (e) => {
     e.preventDefault();
 
-    this.props.onSave(this.state);
+    const toSave = Object.assign({}, this.state, {
+      odometer: {
+        value: parseInt(this.state.odometer, 10),
+      },
+    });
+    debugger;
+
+    this.props.onSave(toSave);
   }
 
   /**
@@ -149,6 +156,13 @@ class VehicleDetails extends React.Component {
             floatingLabelText="Year of Manufacture"
             value={this.state.year}
           />
+          <TextField
+            fullWidth
+            name="odometer"
+            onChange={this.onChange}
+            floatingLabelText="Odometer"
+            value={this.state.odometer}
+          />
           <div className={styles.buttons}>
             <RaisedButton
               className={styles.buttons__button}
@@ -175,12 +189,16 @@ VehicleDetails.propTypes = {
   id: React.PropTypes.string.isRequired,
   disabled: React.PropTypes.bool.isRequired,
   details: React.PropTypes.shape({
-    kind: React.PropTypes.string.isRequired,
+    kind: React.PropTypes.string,
     name: React.PropTypes.string.isRequired,
     make: React.PropTypes.string.isRequired,
     model: React.PropTypes.string.isRequired,
     year: React.PropTypes.string.isRequired,
     licensePlate: React.PropTypes.string.isRequired,
+    odometer: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.number,
+    ]).isRequired,
   }).isRequired,
   onSave: React.PropTypes.func.isRequired,
   onCancel: React.PropTypes.func.isRequired,

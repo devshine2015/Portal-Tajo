@@ -14,8 +14,8 @@ export const FLEET_MODEL_VEHICLE_UPDATE = 'portal/services/FLEET_MODEL_VEHICLE_U
 
 export const fetchVehicles = (fleet, openWebSocket) => (dispatch, getState) =>
   _fetchVehicles(fleet, openWebSocket, dispatch, getState);
-export const updateDetails = (details = {}, index) => (dispatch, getState) =>
-  makeUpdateVehicleRequest(details, index, dispatch, getState);
+export const updateDetails = (details = {}) => (dispatch, getState) =>
+  makeUpdateVehicleRequest(details, dispatch, getState);
 export const filterVehicles = (searchString) => (dispatch, getState) =>
   _filterVehicles({ searchString }, dispatch, getState);
 
@@ -52,7 +52,7 @@ function _filterVehicles({ searchString }, dispatch, getState) {
 /**
  * PUT new updated details to the server
  **/
-export function makeUpdateVehicleRequest(details, index, dispatch, getState) {
+export function makeUpdateVehicleRequest(details, dispatch, getState) {
   const fleet = getFleetName(getState());
   const url = `${fleet}/vehicles/${details.id}`;
   const optionalHeaders = {
@@ -63,7 +63,7 @@ export function makeUpdateVehicleRequest(details, index, dispatch, getState) {
     optionalHeaders,
     payload: details,
   }).then(() => {
-    dispatch(_vehicleUpdate(details, index));
+    dispatch(_vehicleUpdate(details, details.id));
     return Promise.resolve();
   }, error => Promise.reject(error));
 }
@@ -78,10 +78,10 @@ const _vehiclesSet = (vehicles, localVehicles) => ({
   localVehicles,
 });
 
-const _vehicleUpdate = (details, index) => ({
+const _vehicleUpdate = (details, id) => ({
   type: FLEET_MODEL_VEHICLE_UPDATE,
   details,
-  index,
+  id,
 });
 
 const _vehiclesFilterUpdate = (vehicles) => ({

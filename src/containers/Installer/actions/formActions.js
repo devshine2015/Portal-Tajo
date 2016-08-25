@@ -45,6 +45,9 @@ export const sendData = (data, getState) => {
       name: data.name,
       status: 'active',
       year: 'fill_me',
+      odometer: {
+        value: parseInt(data.odometer, 10),
+      },
     },
   };
 

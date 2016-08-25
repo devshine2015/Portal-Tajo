@@ -7,7 +7,7 @@ import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import FixedContent from 'components/FixedContent';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
-import { getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
+import { getVehicleById, cleanVehicle } from 'services/FleetModel/utils/vehicleHelpers';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import { getLoaderState } from './reducer';
 import { detailsActions } from './actions';
@@ -23,18 +23,9 @@ class VehiclesEditor extends React.Component {
     this.state = {
       selectedVehicle: undefined,
       selectedVehicleOriginalIndex: undefined,
-      // filteredVehicles: props.vehicles,
     };
 
     this.onItemClick = this.onItemClick.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.vehicles.length !== nextProps.vehicles.length) {
-      this.setState({
-        filteredVehicles: nextProps.vehicles,
-      });
-    }
   }
 
   /**
@@ -56,31 +47,20 @@ class VehiclesEditor extends React.Component {
    * since server requiring all details to be sent
    **/
   onDetailsSave = (data) => {
-    const { selectedVehicle, selectedVehicleOriginalIndex } = this.state;
+    const { selectedVehicle } = this.state;
     const updatedDetails = {
       ...selectedVehicle,
       ...data,
     };
+    const details = cleanVehicle(updatedDetails);
 
-    this.props.updateDetails(updatedDetails, selectedVehicleOriginalIndex)
+    this.props.updateDetails(details)
       .then(() => {
         this.props.showSnackbar('Succesfully sended ✓', 3000);
-        this.updateFilteredVehicles(updatedDetails);
       }, () => {
         this.props.showSnackbar('Something went wrong. Try later. ✓', 5000);
       });
   }
-
-  // onFilter = (filterString, isClearing) => {
-  //   const filteredVehicles = filterByName(
-  //     this.state.filteredVehicles,
-  //     this.props.vehicles,
-  //     filterString,
-  //     isClearing
-  //   );
-
-  //   this.setState({ filteredVehicles });
-  // }
 
   /**
    * Close editor
@@ -88,20 +68,6 @@ class VehiclesEditor extends React.Component {
   closeEditor = () => {
     this.setState({
       selectedVehicleOriginalIndex: undefined,
-    });
-  }
-
-  /**
-   * Show changes instantly.
-   * Find changed vehicle in filteredVehicles array
-   * and update its details
-   **/
-  updateFilteredVehicles(updatedDetails) {
-    const v = getVehicleById(updatedDetails.id, this.props.vehicles);
-    const updatedFilteredVehicles = this.state.filteredVehicles.set(v.vehicleIndex, updatedDetails);
-
-    this.setState({
-      filteredVehicles: updatedFilteredVehicles,
     });
   }
 
@@ -117,12 +83,13 @@ class VehiclesEditor extends React.Component {
      **/
     const origins = this.state.selectedVehicle;
     const data = {
-      kind: origins.kind || '',
+      kind: origins.kind,
       name: origins.name,
       year: origins.year,
       model: origins.model,
       make: origins.make,
       licensePlate: origins.licensePlate,
+      odometer: origins.odometer.value,
     };
 
     return (

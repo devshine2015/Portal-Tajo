@@ -20,30 +20,23 @@ function makeLocalVehicle(backEndObject) {
     || !backEndObject.name) {
     return null;
   }
-  const theVehicle = {};
-  theVehicle.name = backEndObject.name;
-  theVehicle.id = backEndObject.id;
-  theVehicle.filteredOut = false;
-  // ----
-  theVehicle.licensePlate = backEndObject.licensePlate;
-  theVehicle.make = backEndObject.make;
-  theVehicle.model = backEndObject.model;
-  theVehicle.year = backEndObject.year;
-  // latlng
+
   const lt = 39.75 + Math.random() * 0.5;
   const ln = -74.70 + Math.random() * 0.5;
-  theVehicle.pos = [lt, ln];
-  theVehicle.speed = 0;
-  // dist
-  theVehicle.dist = { total: 0, lastTrip: 0 };
-  //
-  theVehicle.temp = undefined;
-  //
-  theVehicle.lastUpdateSinceEpoch = 0;
-  theVehicle.isZombie = true; // reported more the ZOMBIE_TIME_TRH_MINUTES ago
-  theVehicle.isDead = true;   // never updated/reported
 
-  theVehicle.kindData = getVehicleByValue(backEndObject.kind || 'SGV');
+  const theVehicle = Object.assign({}, backEndObject, {
+    filteredOut: false,
+    odometer: backEndObject.hasOwnProperty('odometer') ?
+      backEndObject.odometer : { value: 0 },
+    pos: [lt, ln],
+    speed: 0,
+    dist: { total: 0, lastTrip: 0 },
+    temp: undefined,
+    lastUpdateSinceEpoch: 0,
+    isZombie: true, // reported more the ZOMBIE_TIME_TRH_MINUTES ago
+    isDead: true,   // never updated/reported
+  });
+
   return theVehicle;
 }
 
@@ -68,20 +61,20 @@ export default function MakeLocalVehicles(backEndVehiclesList) {
   return theVechicles;
 }
 
-/**
- * Filter vehicles by name
- **/
-export const filterByName = (filteredList = [], vehicles = [], searchString, isClearing) => {
-  if (searchString === '') {
-    return vehicles;
-  }
+export function cleanVehicle(vehicle) {
+  const newVehicle = Object.assign({}, vehicle);
 
-  if (!isClearing) {
-    const list = filteredList.size !== 0 ? filteredList : vehicles;
-    return executeFilterByName(list, searchString);
-  }
-  return executeFilterByName(vehicles, searchString);
-};
+  delete newVehicle.dist;
+  delete newVehicle.filteredOut;
+  delete newVehicle.isDead;
+  delete newVehicle.isZombie;
+  delete newVehicle.lastUpdateSinceEpoch;
+  delete newVehicle.pos;
+  delete newVehicle.speed;
+  delete newVehicle.temp;
+
+  return newVehicle;
+}
 
 /**
  * Find vehicle by id and return its instance and index
@@ -102,10 +95,4 @@ export function getVehicleById(id, allVehicles = []) {
     vehicle,
     vehicleIndex,
   };
-}
-
-function executeFilterByName(array, searchString) {
-  return array.filter(v =>
-    v.name.toLowerCase().search(searchString) !== -1
-  );
 }
