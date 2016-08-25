@@ -23,6 +23,7 @@ class VehiclesEditor extends React.Component {
     this.state = {
       selectedVehicle: undefined,
       selectedVehicleOriginalIndex: undefined,
+      selectedVehicelId: undefined,
     };
 
     this.onItemClick = this.onItemClick.bind(this);
@@ -36,6 +37,7 @@ class VehiclesEditor extends React.Component {
 
     if (v !== undefined) {
       this.setState({
+        selectedVehicelId: id,
         selectedVehicle: v.vehicle[0],
         selectedVehicleOriginalIndex: v.vehicleIndex,
       });
@@ -121,6 +123,7 @@ class VehiclesEditor extends React.Component {
             <VehiclesList
               onItemClick={this.onItemClick}
               data={this.props.vehicles}
+              currentExpandedItem={this.state.selectedVehicelId}
             />
           }
         />
