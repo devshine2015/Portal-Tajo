@@ -38,6 +38,7 @@ import { white, darkBlack,
   brown500,
   lime500, lime300,
   green500,
+  lightGreenA400, lightGreenA700,
  } from 'material-ui/styles/colors';
 
 const drvrDevTheme = {
@@ -45,7 +46,7 @@ const drvrDevTheme = {
     primary1Color: teal500,
     primary2Color: teal700,
     // primary3Color: grey400,
-    // accent1Color: pinkA200,
+    accent1Color: lightGreenA700,
     // accent2Color: grey100,
     // accent3Color: grey500,
     PLItemBackgroundColor: cyan700,

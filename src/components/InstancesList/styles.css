@@ -5,10 +5,8 @@
   }
 
   .list__item {
-//    margin: 5px 0;
     transition: all .25s;
-//    background-color: rgb(20, 161, 175);
-//    color: #fff;
+    position: relative; /*need this to ceate stacking context*/
     padding: 0 15px;
     min-height: 64px;
     /*border-right: 3px solid #BF360C;*/
@@ -18,16 +16,15 @@
   }
   .list__item h1 {
     font-weight: bold;
-    font-size: 16px;
-
   }
-  /*.list__item:hover {
-    background-color: rgba(20, 161, 175, 0.65);
-//    color: rgb(0, 188, 212);
-  }*/
-  /*.list__item_expanded{
-    border-right: 3px solid  #006064;// #fd9e83;
-  }*/
+  .list__item:hover {
+    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, .5);
+    z-index: 1;
+  }
+  .list__item_expanded, .list__item_expanded:hover{
+    box-shadow: 0px 1px 5px 2px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+  }
   /*.list__item_expanded:hover {
     background-color: rgba(108, 124, 154, 0.85);
   }*/
