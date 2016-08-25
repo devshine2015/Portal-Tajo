@@ -15,13 +15,11 @@ function _formateDateForTable({ start, end }, frequency) {
 function _calculate(vehicle, { selectedTypes, period, frequency }) {
   const calcToReturn = (resultTemps) =>
     selectedTypes.map((key) => resultTemps[key]);
-  const hasOdo = vehicle.odometer && vehicle.odometer.value !== '';
 
   return calcToReturn({
     date: _formateDateForTable(period, frequency),
     vehicles: JSON.stringify(vehicle.name),
     license: JSON.stringify(vehicle.licensePlate),
-    odometer: hasOdo ? vehicle.odometer.value : 'n/a',
   });
 }
 
@@ -56,15 +54,6 @@ const fields = [{
   checkedByDefault: false,
   domain: 'base',
   order: 2,
-  filterSimilar,
-  calc: _calculate,
-}, {
-  label: 'ODO',
-  name: 'odometer',
-  reportType: 'odometer',
-  checkedByDefault: false,
-  domain: 'base',
-  order: 9,
   filterSimilar,
   calc: _calculate,
 }];
