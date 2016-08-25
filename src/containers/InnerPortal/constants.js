@@ -1,4 +1,4 @@
-import { isDev } from 'configs';
+import { onProduction } from 'configs';
 
 /**
  * Reflect this table
@@ -59,4 +59,4 @@ const PROD_PORTALS = [{
   niceName: 'Demo',
 }];
 
-export const PORTALS = isDev ? DEV_PORTALS : PROD_PORTALS;
+export const PORTALS = onProduction ? PROD_PORTALS : DEV_PORTALS;
