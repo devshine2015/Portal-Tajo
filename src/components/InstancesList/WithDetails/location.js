@@ -15,9 +15,6 @@ class LocationWithDetails extends React.Component {
   renderDetails() {
     if (this.props.isExpanded) {
       return [
-        <h1 key="name">
-          {this.props.name}
-        </h1>,
         <hr
           className={styles2.line}
           key="line1"
@@ -34,8 +31,7 @@ class LocationWithDetails extends React.Component {
         />,
       ];
     }
-
-    return this.props.name;
+    return false;
   }
 
   render() {
@@ -47,6 +43,9 @@ class LocationWithDetails extends React.Component {
       <div
         className={className}
       >
+        <h1 key="name">
+          {this.props.name}
+        </h1>
         { this.renderDetails() }
       </div>
     );
