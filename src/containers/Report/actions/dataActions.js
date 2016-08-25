@@ -7,10 +7,11 @@ import {
   getSavedReportData,
   getSelectedFields,
   getAvailableFields,
-  getVehiclesForReport,
+  getIsFiltering,
+  getSelectedVehicles,
 } from '../reducer';
 import { getFleetName, getAuthenticationSession } from 'containers/App/reducer';
-import { getVehicles, getVehiclesById } from 'services/FleetModel/reducer';
+import { getVehiclesEx } from 'services/FleetModel/reducer';
 import {
   prepareDataForReport,
   getReportParams,
@@ -35,13 +36,7 @@ function _generateReport({ timePeriod, frequency }, dispatch, getState) {
   const periods = _getPeriods(timePeriod, frequency);
   const periodQueryString = getReportParams(timePeriod);
   const selectedReports = getSelectedReportsTypes(getState());
-  const selectedVehicles = getVehiclesForReport(getState()).toArray();
-
-  // generate report for all vehicles if no vehicles selected
-  const vehiclesList = selectedVehicles.length === 0 ?
-    getVehicles(getState()) : getVehiclesById(getState(), selectedVehicles);
-
-  const vehicles = vehiclesList.toArray();
+  const vehicles = _getVehiclesForReport(getState());
 
   const fieldsToCall = {};
   const sessionId = getAuthenticationSession(getState());
@@ -96,6 +91,35 @@ function _generateReport({ timePeriod, frequency }, dispatch, getState) {
       dispatch(setLoader(false));
       dispatch(_saveReportData(table));
     });
+}
+
+function _getVehiclesForReport(state) {
+  const selectedVehicles = getSelectedVehicles(state).toArray();
+  const vehicles = getVehiclesEx(state);
+  const isFiltering = getIsFiltering(state);
+
+  const takeSelected = () => vehicles.filter(v => selectedVehicles.indexOf(v.id) !== -1);
+  const takeFiltered = () => vehicles.filter(v => !v.filteredOut);
+  const takeFilteredAndSelected = () => vehicles.filter(v => (
+    selectedVehicles.indexOf(v.id) !== -1 && !v.filteredOut
+  ));
+
+  let vehiclesToReport = [];
+
+  // take only selected from filtered vehicles
+  if (isFiltering && selectedVehicles.length) {
+    vehiclesToReport = takeFilteredAndSelected();
+  } else if (!isFiltering && selectedVehicles.length) {
+  // take only selected vehicles
+    vehiclesToReport = takeSelected();
+  }
+
+  // take filtered
+  if (vehiclesToReport.length === 0) {
+    vehiclesToReport = takeFiltered();
+  }
+
+  return vehiclesToReport;
 }
 
 function _saveGenerated(dispatch, getState) {

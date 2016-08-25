@@ -1,21 +1,20 @@
 import { fromJS, List } from 'immutable';
-import { vehiclesActions } from '../actions';
+import { reportVehiclesActions } from '../actions';
 
 const initialState = fromJS({
   selectedVehicles: new List(),
-  filteredVehicles: new List(),
   isFiltering: false,
 });
 
 function selectedVehiclesReducer(state = initialState, action) {
   switch (action.type) {
-    case vehiclesActions.REPORT_VEHICLES_ADD: {
+    case reportVehiclesActions.REPORT_VEHICLES_ADD: {
       const sv = state.get('selectedVehicles');
       const nextSv = sv.push(action.id);
 
       return state.set('selectedVehicles', nextSv);
     }
-    case vehiclesActions.REPORT_VEHICLES_REMOVE: {
+    case reportVehiclesActions.REPORT_VEHICLES_REMOVE: {
       const index = findIndexById(state, action.id);
 
       if (index !== -1) {
@@ -27,11 +26,11 @@ function selectedVehiclesReducer(state = initialState, action) {
 
       return state;
     }
-    case vehiclesActions.REPORT_VEHICLES_FILTER:
-      return state.set('filteredVehicles', action.list)
-              .set('isFiltering', action.isFiltering);
+    case reportVehiclesActions.REPORT_VEHICLES_FILTERING:
+      return state.set('isFiltering', action.isFiltering);
 
-    default: return state;
+    default:
+      return state;
   }
 }
 
@@ -39,39 +38,39 @@ export default selectedVehiclesReducer;
 
 export const findIndexById = (state, id) =>
   state.get('selectedVehicles').findIndex(item => item === id);
-export const getFilteredVehicles = (state) =>
-  state.get('filteredVehicles');
+// export const getFilteredVehicles = (state) =>
+//   state.get('filteredVehicles');
 export const getSelectedVehicles = (state) =>
   state.get('selectedVehicles');
 export const isFiltering = (state) =>
   state.get('isFiltering');
 
-export const getVehiclesForReport = (state) => {
-  let result;
+// export const getVehiclesForReport = (state) => {
+//   let result;
 
-  // if no filtering than just return
-  // all selected vehicles
-  if (!state.get('isFiltering')) {
-    return state.get('selectedVehicles');
-  }
+//   // if no filtering than just return
+//   // all selected vehicles
+//   if (!state.get('isFiltering')) {
+//     return state.get('selectedVehicles');
+//   }
 
-  // find selected vehicles
-  // among filtered
-  const selected = state.get('selectedVehicles').filter(sv => {
-    const k = state.get('filteredVehicles').findKey(fv =>
-      sv === fv.id
-    );
+//   // find selected vehicles
+//   // among filtered
+//   const selected = state.get('selectedVehicles').filter(sv => {
+//     const k = state.get('filteredVehicles').findKey(fv =>
+//       sv === fv.id
+//     );
 
-    return k !== undefined;
-  });
+//     return k !== undefined;
+//   });
 
-  if (selected.size === 0) {
-    // if nothing selected in filtered list,
-    // than generate report for all filtered
-    result = state.get('filteredVehicles').map(v => v.id);
-  } else {
-    result = selected;
-  }
+//   if (selected.size === 0) {
+//     // if nothing selected in filtered list,
+//     // than generate report for all filtered
+//     result = state.get('filteredVehicles').map(v => v.id);
+//   } else {
+//     result = selected;
+//   }
 
-  return result;
-};
+//   return result;
+// };

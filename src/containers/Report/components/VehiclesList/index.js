@@ -5,13 +5,10 @@ import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import VehiclesList from 'components/InstancesList';
 import listTypes from 'components/InstancesList/types';
-import { vehiclesActions } from '../../actions';
+import { reportVehiclesActions } from '../../actions';
+import { vehiclesActions } from 'services/FleetModel/actions';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
-import {
-  isFiltering,
-  getFilteredVehicles,
-  getSelectedVehicles,
-} from '../../reducer';
+import { getSelectedVehicles } from '../../reducer';
 
 class ReportsVehiclesList extends React.Component {
 
@@ -19,14 +16,16 @@ class ReportsVehiclesList extends React.Component {
     this.props.chooseVehiclesForReport(id, isInputChecked);
   }
 
-  renderList() {
-    const vToDisplay = this.props.filtering ?
-      this.props.filteredVehicles : this.props.originVehicles;
+  onFilter = (filterString) => {
+    this.props.setFiltering(filterString);
+    this.props.filterFunc(filterString);
+  }
 
+  renderList() {
     return (
       <VehiclesList
         onItemClick={this.onVehicleCheck}
-        data={vToDisplay}
+        data={this.props.vehicles}
         selectedItems={this.props.selectedVehicles}
         type={listTypes.withCheckboxes}
       />
@@ -37,7 +36,7 @@ class ReportsVehiclesList extends React.Component {
     return (
       <PowerList
         filter={
-          <Filter filterFunc={this.props.filterFunc} />
+          <Filter filterFunc={this.onFilter} />
         }
         content={this.renderList()}
       />
@@ -47,21 +46,19 @@ class ReportsVehiclesList extends React.Component {
 
 ReportsVehiclesList.propTypes = {
   filterFunc: React.PropTypes.func.isRequired,
-  filtering: React.PropTypes.bool.isRequired,
+  setFiltering: React.PropTypes.func.isRequired,
   chooseVehiclesForReport: React.PropTypes.func.isRequired,
-  originVehicles: React.PropTypes.array.isRequired,
-  filteredVehicles: React.PropTypes.array.isRequired,
+  vehicles: React.PropTypes.array.isRequired,
   selectedVehicles: React.PropTypes.array.isRequired,
 };
 
 const mapState = (state) => ({
-  originVehicles: fromFleetReducer.getVehicles(state).toArray(),
-  filtering: isFiltering(state),
-  filteredVehicles: getFilteredVehicles(state).toArray(),
+  vehicles: fromFleetReducer.getVehiclesEx(state),
   selectedVehicles: getSelectedVehicles(state).toArray(),
 });
 const mapDispatch = {
-  chooseVehiclesForReport: vehiclesActions.chooseVehiclesForReport,
+  chooseVehiclesForReport: reportVehiclesActions.chooseVehiclesForReport,
+  setFiltering: reportVehiclesActions.setFiltering,
   filterFunc: vehiclesActions.filterVehicles,
 };
 

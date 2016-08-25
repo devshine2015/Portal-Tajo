@@ -61,11 +61,11 @@ export const getSelectedVehicles = (state) =>
   fromVehiclesReducer.getSelectedVehicles(state.getIn(['reports', 'vehicles']));
 export const isVehicleAlreadyAdded = (state, id) =>
   fromVehiclesReducer.findIndexById(state.getIn(['reports', 'vehicles']), id);
-export const getFilteredVehicles = (state) =>
-  fromVehiclesReducer.getFilteredVehicles(state.getIn(['reports', 'vehicles']));
+// export const getFilteredVehicles = (state) =>
+//   fromVehiclesReducer.getFilteredVehicles(state.getIn(['reports', 'vehicles']));
 
-export const isFiltering = (state) =>
+export const getIsFiltering = (state) =>
   fromVehiclesReducer.isFiltering(state.getIn(['reports', 'vehicles']));
 
-export const getVehiclesForReport = (state) =>
-  fromVehiclesReducer.getVehiclesForReport(state.getIn(['reports', 'vehicles']));
+// export const getVehiclesForReport = (state) =>
+// fromVehiclesReducer.getVehiclesForReport(state.getIn(['reports', 'vehicles']));
