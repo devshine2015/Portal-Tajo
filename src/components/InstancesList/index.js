@@ -3,7 +3,7 @@ import pure from 'recompose/pure';
 import classnames from 'classnames';
 import SimpleItem from './Simple';
 import CheckboxItem from './WithCheckboxes';
-import DetailedLocationItem from './WithDetails/location';
+import DetailedGFItem from './WithDetails/gf';
 import DetailedVehicleItem from './WithDetails/vehicle';
 import addCSSRule from 'utils/cssRule';
 import types from './types';
@@ -43,7 +43,7 @@ function chooseItem(type, {
     }
     case types.withLocationDetails: {
       return (
-        <DetailedLocationItem
+        <DetailedGFItem
           onClick={onItemClick}
           isExpanded={isExpanded}
           {...item}

@@ -27,12 +27,13 @@ class LocationWithDetails extends React.Component {
         <ItemProperty
           key="radius"
           title="Radius"
-          value={this.props.radius}
+          value={this.props.radius.toFixed(0)}
         />,
       ];
     }
     return false;
   }
+
 
   render() {
     const className = classnames(styles.listItemInn, {
