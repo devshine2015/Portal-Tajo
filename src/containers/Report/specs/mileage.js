@@ -2,12 +2,11 @@
  * Calculate mileage for the whole period.
  * NOT USED FREQUENCY CONCEPTION.
  */
-function _calc(records) {
-  return records.distance !== undefined ? records.distance : 0;
-}
+const _calc = record =>
+  record.distance !== undefined ? record.distance.toFixed(3, 10) : 0;
 
 const fields = [{
-  label: 'Driving Distance (on daily basis)',
+  label: 'Driving Distance',
   name: 'mileage',
   reportType: 'mileage',
   endpoint: 'report/mileage',

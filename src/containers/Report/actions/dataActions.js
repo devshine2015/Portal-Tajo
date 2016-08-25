@@ -164,10 +164,8 @@ function getSelectedReportsTypes(state) {
   const availableFields = getAvailableFields(state).toArray();
   const result = {};
 
-  availableFields.forEach((field, i) => {
-    if (selectedReportsIndexes.indexOf(i) === -1) return;
-
-    result[field.reportType] = field;
+  selectedReportsIndexes.forEach(i => {
+    result[availableFields[i].reportType] = availableFields[i];
   });
 
   return result;

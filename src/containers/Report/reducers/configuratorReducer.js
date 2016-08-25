@@ -3,12 +3,12 @@ import { configuratorActions } from '../actions';
 import tempSpecs from '../specs/temperature';
 import baseSpecs from '../specs/base';
 import mileageSpecs from '../specs/mileage';
-import eventsSpecs from '../specs/events';
+import idlingSpecs from '../specs/idling';
 
 // join arrays and filter for available ones
-const specs = baseSpecs.concat(mileageSpecs, tempSpecs, eventsSpecs).filter(spec => (
+const specs = baseSpecs.concat(mileageSpecs, tempSpecs, idlingSpecs).filter(spec =>
   !spec.hasOwnProperty('available') || spec.available
-));
+);
 const checkedSpecs = specs.filter(({ checkedByDefault }) => checkedByDefault)
   .map((spec, i) => i);
 const configuratorInitialState = fromJS({

@@ -1,5 +1,6 @@
 @media screen and (min-width: 100px) {
   .installer {
     padding: 10px;
+    width: 100%;
   }  
 }
