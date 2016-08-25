@@ -7,8 +7,8 @@ import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
 import { red500 } from 'material-ui/styles/colors';
 
 
-import styles from '../styles.css';
-import styles2 from './styles.css';
+import stylesBase from '../styles.css';
+import styles from './styles.css';
 
 // import stylesBasic from './../styles.css';
 
@@ -88,8 +88,8 @@ class ListItemVehicle extends React.Component {
   }
 
   render() {
-    const className = classnames(styles.listItemInn, {
-      [styles2.listItemInn_expanded]: this.props.isExpanded,
+    const className = classnames(stylesBase.listItemInn, {
+      [styles.listItemInn_expanded]: this.props.isExpanded,
     });
     return (
       <div
