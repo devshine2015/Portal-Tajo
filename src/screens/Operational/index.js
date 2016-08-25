@@ -14,6 +14,7 @@ import * as gfEditEvents from 'containers/EditGFPanel/GFEditor/events';
 
 import styles from './styles.css';
 
+
 // mode
 const MD_LIST = 'md_list';
 const MD_GF_EDIT = 'md_gfedit';
