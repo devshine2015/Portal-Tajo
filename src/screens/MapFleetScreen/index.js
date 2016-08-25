@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import InnerPortal from 'containers/InnerPortal';
 import SplitContainer from 'containers/SplitContainer';
 import GFEditPanel from 'containers/EditGFPanel';
-import InstancesColumn from 'containers/MapFleet/components/InstancesColumn';
+import InstancesColumn from 'components/OperationalInstancesColumn';
 import FixedContent from 'components/FixedContent';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import hooks from 'containers/MapFleet/hooks';
@@ -36,7 +36,7 @@ class MapFleetScreen extends React.Component {
   }
 
   addHook(hookId, hookFunc) {
-    console.log('hook++  '+ hookId + (this.hooks[hookId]===undefined ? ' add' : ' replace'));
+//    console.log('hook++  '+ hookId + (this.hooks[hookId]===undefined ? ' add' : ' replace'));
     this.hooks[hookId] = hookFunc;
   }
   openGFEditor(editFGCtx) {
