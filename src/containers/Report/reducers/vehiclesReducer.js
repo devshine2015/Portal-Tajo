@@ -38,39 +38,7 @@ export default selectedVehiclesReducer;
 
 export const findIndexById = (state, id) =>
   state.get('selectedVehicles').findIndex(item => item === id);
-// export const getFilteredVehicles = (state) =>
-//   state.get('filteredVehicles');
 export const getSelectedVehicles = (state) =>
   state.get('selectedVehicles');
 export const isFiltering = (state) =>
   state.get('isFiltering');
-
-// export const getVehiclesForReport = (state) => {
-//   let result;
-
-//   // if no filtering than just return
-//   // all selected vehicles
-//   if (!state.get('isFiltering')) {
-//     return state.get('selectedVehicles');
-//   }
-
-//   // find selected vehicles
-//   // among filtered
-//   const selected = state.get('selectedVehicles').filter(sv => {
-//     const k = state.get('filteredVehicles').findKey(fv =>
-//       sv === fv.id
-//     );
-
-//     return k !== undefined;
-//   });
-
-//   if (selected.size === 0) {
-//     // if nothing selected in filtered list,
-//     // than generate report for all filtered
-//     result = state.get('filteredVehicles').map(v => v.id);
-//   } else {
-//     result = selected;
-//   }
-
-//   return result;
-// };
