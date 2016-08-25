@@ -31,10 +31,10 @@ import tinycolor from 'tinycolor2';
 
 import { white, darkBlack,
   indigo500, indigo300,
-  cyan500, cyan600, cyan700,
+  cyan500, cyan600, cyan700, cyan800, cyan900,
   teal500, teal700,
   blueGrey500,
-  deepOrange500,
+  deepOrange500,deepOrange700, deepOrange800, deepOrange900,
   brown500,
   lime500, lime300,
   green500,
@@ -48,12 +48,18 @@ const drvrDevTheme = {
     // accent1Color: pinkA200,
     // accent2Color: grey100,
     // accent3Color: grey500,
-    PLItemBackgroundColor: white,
-    PLItemBackgroundColorHover: tinycolor(lime300).setAlpha(0.85).toRgbString(),
-//    PLItemColor: white,
-    PLItemColor: tinycolor(darkBlack).setAlpha(0.87).toRgbString(),
-    PLItemBackgroundColorExpanded: indigo300,
-    PLItemBackgroundColorExpandedHover: tinycolor(indigo300).setAlpha(0.85).toRgbString(),
+    PLItemBackgroundColor: cyan700,
+    PLItemBackgroundColorHover: tinycolor(cyan700).setAlpha(0.85).toRgbString(),
+    // PLItemBackgroundColor: '#D0C590',  //Yuma
+    // PLItemBackgroundColorHover: tinycolor('#D0C590').setAlpha(0.85).toRgbString(),
+
+    PLItemColor: white,
+//    PLItemColor: tinycolor(darkBlack).setAlpha(0.87).toRgbString(),
+    PLItemBackgroundColorExpanded: deepOrange700, // '#fd9e83',
+    PLItemBackgroundColorExpandedHover: tinycolor(deepOrange700).setAlpha(0.85).toRgbString(),
+
+//    PLItemBackgroundColorExpanded: cyan500,
+//    PLItemBackgroundColorExpandedHover: tinycolor(cyan500).setAlpha(0.85).toRgbString(),
   },
 };
 

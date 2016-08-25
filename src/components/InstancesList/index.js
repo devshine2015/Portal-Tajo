@@ -1,12 +1,16 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import classnames from 'classnames';
 import SimpleItem from './Simple';
 import CheckboxItem from './WithCheckboxes';
 import DetailedLocationItem from './WithDetails/location';
 import DetailedVehicleItem from './WithDetails/vehicle';
+import addCSSRule from 'utils/cssRule';
 import types from './types';
 
 import styles from './styles.css';
+
+let isStyleSheetRuleAdded = false;
 
 function chooseItem(type, {
   onItemClick,
@@ -14,6 +18,7 @@ function chooseItem(type, {
   currentExpandedItem,
   item,
 }) {
+  const isExpanded = currentExpandedItem && item.id === currentExpandedItem;
   switch (type) {
     case types.withCheckboxes: {
       const isChecked = selectedItems.indexOf(item.id) !== -1;
@@ -28,8 +33,6 @@ function chooseItem(type, {
       );
     }
     case types.withVehicleDetails: {
-      const isExpanded = currentExpandedItem && item.id === currentExpandedItem;
-
       return (
         <DetailedVehicleItem
           onClick={onItemClick}
@@ -39,8 +42,6 @@ function chooseItem(type, {
       );
     }
     case types.withLocationDetails: {
-      const isExpanded = currentExpandedItem && item.id === currentExpandedItem;
-
       return (
         <DetailedLocationItem
           onClick={onItemClick}
@@ -67,33 +68,54 @@ const InstancesList = ({
   selectedItems = [],
   currentExpandedItem,
   ...rest,
-}) => {
+}, context) => {
+  if (!isStyleSheetRuleAdded) {
+    isStyleSheetRuleAdded = true;
+    addCSSRule('.listItemDynamicExpanded',
+      'background-color: ' + context.muiTheme.palette.PLItemBackgroundColorExpanded, 0);
+    addCSSRule('.listItemDynamicExpanded:hover',
+      'background-color: ' + context.muiTheme.palette.PLItemBackgroundColorExpandedHover, 0);
+    addCSSRule('.listItemDynamic',
+      'background-color: ' + context.muiTheme.palette.PLItemBackgroundColor + ';' +
+      'color: ' + context.muiTheme.palette.PLItemColor + ';' +
+      'border-right: 3px solid ' + context.muiTheme.palette.PLItemBackgroundColorExpanded, 0);
+    addCSSRule('.listItemDynamic:hover',
+      'background-color: ' + context.muiTheme.palette.PLItemBackgroundColorHover, 0);
+  //    'background-color: ${context.muiTheme.palette.PLItemBackgroundColorHover}', 0);
+  }
+
   const items = data.map(item => {
     if (item.filteredOut) {
       return null;
     }
-
-    return (
-      <li
-        className={styles.list__item}
-        key={item.id}
-      >
-        {chooseItem(type, {
-          onItemClick,
-          item,
-          selectedItems,
-          currentExpandedItem,
-          ...rest,
-        })}
-      </li>
-    );
-  });
-
+    const isExpanded = currentExpandedItem && item.id === currentExpandedItem;
+    const className = classnames(styles.list__item, 'listItemDynamic', {
+      ['listItemDynamicExpanded']: isExpanded,
+      [styles.list__item_expanded]: isExpanded,
+    });
+    // style={ { color: context.muiTheme.palette.PLItemColor } }
+    return (<li
+      className={className}
+      key={item.id}
+    >
+      {chooseItem(type, {
+        onItemClick,
+        item,
+        selectedItems,
+        currentExpandedItem,
+        ...rest,
+      })}
+    </li>
+  );});
   return (
     <ul className={styles.list}>
       {items}
     </ul>
   );
+};
+
+InstancesList.contextTypes = {
+  muiTheme: React.PropTypes.object.isRequired,
 };
 
 InstancesList.propTypes = {

@@ -11,14 +11,22 @@
 //    color: #fff;
     padding: 0 15px;
     min-height: 64px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+    /*border-right: 3px solid #BF360C;*/
+     /*#006064; cyan900*/
+    /*#fd9e83;*/
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  }
+  .list__item h1 {
+    font-weight: bold;
+    font-size: 16px;
+
   }
   /*.list__item:hover {
     background-color: rgba(20, 161, 175, 0.65);
 //    color: rgb(0, 188, 212);
   }*/
   /*.list__item_expanded{
-    background-color: rgb(108, 124, 154);
+    border-right: 3px solid  #006064;// #fd9e83;
   }*/
   /*.list__item_expanded:hover {
     background-color: rgba(108, 124, 154, 0.85);
