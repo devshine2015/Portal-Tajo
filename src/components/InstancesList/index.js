@@ -74,11 +74,13 @@ const InstancesList = ({
     addCSSRule('.listItemDynamicExpanded',
       'background-color: ' + context.muiTheme.palette.PLItemBackgroundColorExpanded, 0);
     addCSSRule('.listItemDynamicExpanded:hover',
-      'background-color: ' + context.muiTheme.palette.PLItemBackgroundColorExpandedHover, 0);
+      'background-color: ' + context.muiTheme.palette.PLItemBackgroundColorExpanded, 0);
     addCSSRule('.listItemDynamic',
       'background-color: ' + context.muiTheme.palette.PLItemBackgroundColor + ';' +
-      'color: ' + context.muiTheme.palette.PLItemColor + ';' +
-      'border-right: 3px solid ' + context.muiTheme.palette.PLItemBackgroundColorExpanded, 0);
+      'color: ' + context.muiTheme.palette.PLItemColor, 0 );
+//      'border-right: 3px solid ' + context.muiTheme.palette.PLItemBackgroundColorExpanded, 0 );
+      // + ';' +
+      // 'border-left: 3px solid ' + context.muiTheme.palette.PLItemBackgroundColor, 0);
     addCSSRule('.listItemDynamic:hover',
       'background-color: ' + context.muiTheme.palette.PLItemBackgroundColorHover, 0);
   //    'background-color: ${context.muiTheme.palette.PLItemBackgroundColorHover}', 0);
@@ -88,15 +90,20 @@ const InstancesList = ({
     if (item.filteredOut) {
       return null;
     }
+
     const isExpanded = currentExpandedItem && item.id === currentExpandedItem;
     const className = classnames(styles.list__item, 'listItemDynamic', {
       ['listItemDynamicExpanded']: isExpanded,
       [styles.list__item_expanded]: isExpanded,
     });
+    const onClick = () => {
+      onItemClick(item.id, !isExpanded);
+    };
     // style={ { color: context.muiTheme.palette.PLItemColor } }
     return (<li
       className={className}
       key={item.id}
+      onClick={onClick}
     >
       {chooseItem(type, {
         onItemClick,
