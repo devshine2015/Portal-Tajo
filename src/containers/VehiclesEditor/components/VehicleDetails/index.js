@@ -42,7 +42,6 @@ class VehicleDetails extends React.Component {
         value: parseInt(this.state.odometer, 10),
       },
     });
-    debugger;
 
     this.props.onSave(toSave);
   }
@@ -155,6 +154,7 @@ class VehicleDetails extends React.Component {
             onChange={this.onChange}
             floatingLabelText="Year of Manufacture"
             value={this.state.year}
+            type="number"
           />
           <TextField
             fullWidth
@@ -162,6 +162,7 @@ class VehicleDetails extends React.Component {
             onChange={this.onChange}
             floatingLabelText="Odometer"
             value={this.state.odometer}
+            type="number"
           />
           <div className={styles.buttons}>
             <RaisedButton

@@ -79,11 +79,14 @@ function _generateReport({ timePeriod, frequency }, dispatch, getState) {
         if (domain === 'base' && !result[domain]) {
           result[domain] = vehicles;
         }
+
+        reports.forEach(r => {
+          if (r.domain === domain) {
+            result[domain] = r.report;
+          }
+        });
       });
 
-      reports.forEach(r => {
-        result[r.domain] = r.report;
-      });
 
       return result;
     }).then(prepareDataForReport(selectedReports, periods, frequency))
@@ -160,11 +163,11 @@ function toJson(response) {
 }
 
 function getSelectedReportsTypes(state) {
-  const selectedReportsIndexes = getSelectedFields(state).toArray();
+  const selectedReports = getSelectedFields(state).toArray();
   const availableFields = getAvailableFields(state).toArray();
   const result = {};
 
-  selectedReportsIndexes.forEach(i => {
+  selectedReports.forEach(i => {
     result[availableFields[i].reportType] = availableFields[i];
   });
 
@@ -235,11 +238,11 @@ function _setTime(date, time) {
 }
 
 function _getHeaders(getState) {
-  const selectedReportsIndexes = getSelectedFields(getState()).toArray();
+  const selectedReports = getSelectedFields(getState()).toArray();
   const availableFields = getAvailableFields(getState()).toArray();
   const result = [];
 
-  selectedReportsIndexes.forEach((index) => {
+  selectedReports.forEach((index) => {
     result.push(availableFields[index].label);
   });
 

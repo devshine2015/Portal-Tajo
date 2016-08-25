@@ -27,7 +27,7 @@ function makeLocalVehicle(backEndObject) {
   const theVehicle = Object.assign({}, backEndObject, {
     filteredOut: false,
     odometer: backEndObject.hasOwnProperty('odometer') ?
-      backEndObject.odometer : { value: 0 },
+      backEndObject.odometer : { value: '' },
     pos: [lt, ln],
     speed: 0,
     dist: { total: 0, lastTrip: 0 },

@@ -15,18 +15,18 @@ function _formateDateForTable({ start, end }, frequency) {
 function _calculate(vehicle, { selectedTypes, period, frequency }) {
   const calcToReturn = (resultTemps) =>
     selectedTypes.map((key) => resultTemps[key]);
+  const hasOdo = vehicle.odometer && vehicle.odometer.value !== '';
 
-  const result = {
+  return calcToReturn({
     date: _formateDateForTable(period, frequency),
     vehicles: JSON.stringify(vehicle.name),
     license: JSON.stringify(vehicle.licensePlate),
-  };
-
-  return calcToReturn(result);
+    odometer: hasOdo ? vehicle.odometer.value : 'n/a',
+  });
 }
 
 function filterSimilar(allSelectedReportTypes) {
-  const similarTypes = ['date', 'vehicles', 'license'];
+  const similarTypes = ['date', 'vehicles', 'license', 'odometer'];
 
   return allSelectedReportTypes.filter(type => similarTypes.indexOf(type) !== -1);
 }
@@ -56,6 +56,15 @@ const fields = [{
   checkedByDefault: false,
   domain: 'base',
   order: 2,
+  filterSimilar,
+  calc: _calculate,
+}, {
+  label: 'ODO',
+  name: 'odometer',
+  reportType: 'odometer',
+  checkedByDefault: false,
+  domain: 'base',
+  order: 9,
   filterSimilar,
   calc: _calculate,
 }];
