@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import ItemProperty from '../DetailItemProperty';
 import Divider from 'material-ui/Divider';
 import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
-import { red500 } from 'material-ui/styles/colors';
+import { red500, yellow600, yellow700, } from 'material-ui/styles/colors';
 
 
 import stylesBase from '../styles.css';
@@ -34,7 +34,7 @@ class ListItemVehicle extends React.Component {
 
     if (!this.props.isDead) {
       infoStr = this.props.isExpanded ?
-        `updated ${updateTime.toLocaleString()}` :
+        `${updateTime.toLocaleString()}` :
         `last update ${updateTime.toDateString()}`;
     }
   //        value={`updated ${updateTime.toLocaleString()}`}
@@ -42,7 +42,7 @@ class ListItemVehicle extends React.Component {
       <ItemProperty
         title=""
         value={infoStr}
-        icon={<AlertIcon color={red500} />}
+        icon={<AlertIcon color={yellow700} />}
       />
     );
   }
@@ -94,11 +94,10 @@ class ListItemVehicle extends React.Component {
     return (
       <div
         className={className}
-        onClick={this.onClick}
       >
-        <div>
+        <h1>
           {this.props.name}
-        </div>
+        </h1>
         {this.inActivityIndicator()}
         {this.renderDetails()}
       </div>
