@@ -11,11 +11,11 @@ import {
 const ROOT = '/portal/:fleet/tajo/';
 
 const MAIN_MENU = [{
-  niceName: 'dashboard',
+  niceName: 'Dashboard',
   path: 'dashboard',
   order: 0,
 }, {
-  niceName: 'map',
+  niceName: 'Operational',
   path: 'map',
   order: 1,
 }, {
