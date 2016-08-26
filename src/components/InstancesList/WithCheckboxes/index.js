@@ -19,8 +19,8 @@ class ListItemWithCheckbox extends React.Component {
     }
   }
 
-  onChange = (e) => {
-    const isChecked = e.target.checked;
+  onClick = () => {
+    const isChecked = !this.state.isChecked;
 
     this.setState({ isChecked }, () => {
       this.props.onClick(this.props.id, isChecked);
@@ -33,11 +33,13 @@ class ListItemWithCheckbox extends React.Component {
      * lags while filtering
      **/
     return (
-      <div className={styles.listItemInn}>
+      <div
+        className={styles.listItemInn}
+        onClick={this.onClick}
+      >
         <label>
           <input
             type="checkbox"
-            onChange={this.onChange}
             checked={this.state.isChecked}
           />
           {this.props.name}
