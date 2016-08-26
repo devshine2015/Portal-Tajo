@@ -3,7 +3,8 @@ function _calc(record, { selectedTypes }) {
     selectedTypes.map((key) => result[key]);
 
   return calcToReturn({
-    odometer: record.dist && parseInt((record.dist.total / 1000), 10),
+    // record.dist.total in meters
+    odometer: record.dist && parseInt((record.dist.total / 1000), 10) || 'N/A',
   });
 }
 

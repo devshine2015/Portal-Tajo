@@ -8,7 +8,11 @@ const MainMenu = ({
   closeSidebar,
 }) => {
   const menuItems = pages.map(page => (
-    <MenuItem page={page} closeSidebar={closeSidebar} />
+    <MenuItem
+      key={page.path}
+      page={page}
+      closeSidebar={closeSidebar}
+    />
   ));
 
   return (
