@@ -27,8 +27,17 @@ function makeLocalVehicle(backEndObject, vehicleStats) {
   const lt = hasPos ? vehicleStats.pos.latlon.lat : 39.75 + Math.random() * 0.5;
   const ln = hasPos ? vehicleStats.pos.latlon.lng : -74.70 + Math.random() * 0.5;
 
-  const theVehicle = Object.assign({}, backEndObject, {
+  const theVehicle = {
     filteredOut: false,
+    //----
+    name: backEndObject.name,
+    id: backEndObject.id,
+    // ----
+    licensePlate: backEndObject.licensePlate,
+    make: backEndObject.make,
+    model: backEndObject.model,
+    year: backEndObject.year,
+
     pos: [lt, ln],
     speed: hasPos ? vehicleStats.pos.speed : 0,
     dist: {
