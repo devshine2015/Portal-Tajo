@@ -9,7 +9,7 @@ class ListItemWithCheckbox extends React.Component {
     super(props);
 
     this.state = {
-      isChecked: props.isChecked || false,
+      isChecked: props.isChecked,
     };
   }
 
@@ -33,18 +33,14 @@ class ListItemWithCheckbox extends React.Component {
      * lags while filtering
      **/
     return (
-      <div
-        className={styles.listItemInn}
-        onClick={this.onClick}
-      >
-        <label>
-          <input
-            type="checkbox"
-            checked={this.state.isChecked}
-          />
-          {this.props.name}
-        </label>
-      </div>
+      <label className={styles.listItemInn}>
+        <input
+          type="checkbox"
+          onChange={this.onClick}
+          checked={this.state.isChecked}
+        />
+        {this.props.name}
+      </label>
     );
   }
 }

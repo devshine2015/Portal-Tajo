@@ -96,8 +96,14 @@ class Report extends React.Component {
 
     this.props.updateSelectedFields({ field, value, index })
     .then(() => {
+      this.props.swipeGeneratedData();
       this.onChange(field, value);
     });
+  }
+
+  onPeriodChange = (field, value) => {
+    this.props.swipeGeneratedData();
+    this.onChange(field, value);
   }
 
   onChange(field, value) {
@@ -163,7 +169,7 @@ class Report extends React.Component {
           />
 
           <Period
-            handlePeriodChange={this.onChange}
+            handlePeriodChange={this.onPeriodChange}
             fields={this.periodFields}
             withTime
           />
@@ -203,6 +209,7 @@ Report.propTypes = {
   hideSplitter: React.PropTypes.bool.isRequired,
   saveReport: React.PropTypes.func.isRequired,
   updateSelectedFields: React.PropTypes.func.isRequired,
+  swipeGeneratedData: React.PropTypes.func.isRequired,
 };
 
 const mapState = (state) => ({
@@ -214,6 +221,7 @@ const mapDispatch = {
   generateReport: dataActions.generateReport,
   updateSelectedFields: configuratorActions.updateSelected,
   changeFrequency: configuratorActions.changeFrequency,
+  swipeGeneratedData: dataActions.removeReportData,
 };
 
 const PureReport = pure(Report);

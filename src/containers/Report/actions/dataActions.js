@@ -24,12 +24,15 @@ export const generateReport = (params) => (dispatch, getState) =>
   _generateReport(params, dispatch, getState);
 export const saveGenerated = () => (dispatch, getState) =>
   _saveGenerated(dispatch, getState);
+export const removeReportData = () => ({
+  type: REPORT_DATA_REMOVE,
+});
 
 // TODO -- make configuratorAvailableFields truly flexible (depends on screen)
 
 function _generateReport({ timePeriod, frequency }, dispatch, getState) {
   dispatch(setLoader(true));
-  dispatch(_removeReportData());
+  dispatch(removeReportData());
 
   const fleet = getFleetName(getState());
   const baseVehiclesUrl = `${fleet}/vehicles`;
@@ -135,10 +138,6 @@ function _saveGenerated(dispatch, getState) {
 const _saveReportData = (reportData) => ({
   type: REPORT_DATA_SAVE,
   reportData,
-});
-
-const _removeReportData = () => ({
-  type: REPORT_DATA_REMOVE,
 });
 
 function _reportRequest(baseVehiclesUrl, vehicles = [], optionalHeaders, {
