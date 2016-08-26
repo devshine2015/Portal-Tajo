@@ -31,7 +31,6 @@ class MapGF extends React.Component {
       iconAnchor: [1000 + markerR, 0] });
     this.pointerMarker = window.L.marker(this.props.theGF.pos,
         { icon: pointerIcon });
-//    this.theCircle.editing.enable();
   }
   componentWillUnmount() {
     this.toggle(false);
@@ -47,6 +46,7 @@ class MapGF extends React.Component {
         { color: this.context.muiTheme.palette.PLItemBackgroundColorExpanded });
       this.containerLayer.addLayer(this.theCircle);
       this.containerLayer.addLayer(this.pointerMarker);
+      this.pointerMarker.setZIndexOffset(20000);
     } else {
       this.theMarker.setStyle({ color: '#03f' });
       if (this.containerLayer.hasLayer(this.theCircle)) {
