@@ -19,11 +19,11 @@ deployment:
   ssreportsDev:
     branch: ssreports-dev
     commands:
-      - ./deployDemo.sh 'ddsdev@ddsdev.cloudapp.net'
+      - ./deployToOld.sh 'ddsdev@ddsdev.cloudapp.net'
   ssreportsProd:
     branch: ssreports-prod
     commands:
-      - ./deployDemo.sh 'drvrappbeta@drvrappbeta.cloudapp.net'
+      - ./deployToOld.sh 'drvrappbeta@drvrappbeta.cloudapp.net'
   # demo:
   #   branch: demo
   #   commands:
