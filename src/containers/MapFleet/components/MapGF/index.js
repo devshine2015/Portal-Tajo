@@ -1,5 +1,6 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import styles from './styles.css';
 
 class MapGF extends React.Component {
   constructor(props) {
@@ -7,21 +8,29 @@ class MapGF extends React.Component {
     this.containerLayer = null;
     this.theMarker = null;
     this.theCircle = null;
+    this.pointerMarker = null;
   }
 
   componentDidMount() {
+    const markerR = 12;
     this.containerLayer = this.props.theLayer;
     this.theMarker = window.L.circleMarker(this.props.theGF.pos,
-      { title: this.props.theGF.name });
+      { title: this.props.theGF.name })
+      .setRadius(markerR);
     const clickHandle = ((inThis) => (e) => {
       inThis.props.onClick(inThis.props.theGF.id);
 //      console.log('MARKER clicked ' + inThis.props.theVehicle.id);
     })(this);
     this.theMarker.on('click', clickHandle).addTo(this.containerLayer);
 
-    this.theCircle = window.L.circle(this.props.theGF.pos, this.props.theGF.radius).setStyle(
-      { color: this.context.muiTheme.palette.PLItemBackgroundColorExpanded });
+    this.theCircle = window.L.circle(this.props.theGF.pos, this.props.theGF.radius)
+      .setStyle({ color: this.context.muiTheme.palette.PLItemBackgroundColorExpanded });
 
+    const pointerIcon = window.L.divIcon({ className: styles.gfPointerLine,
+      iconSize: [1000, 2],
+      iconAnchor: [1000 + markerR, 0] });
+    this.pointerMarker = window.L.marker(this.props.theGF.pos,
+        { icon: pointerIcon });
 //    this.theCircle.editing.enable();
   }
   componentWillUnmount() {
@@ -37,10 +46,14 @@ class MapGF extends React.Component {
       this.theMarker.setStyle(
         { color: this.context.muiTheme.palette.PLItemBackgroundColorExpanded });
       this.containerLayer.addLayer(this.theCircle);
+      this.containerLayer.addLayer(this.pointerMarker);
     } else {
       this.theMarker.setStyle({ color: '#03f' });
       if (this.containerLayer.hasLayer(this.theCircle)) {
         this.containerLayer.removeLayer(this.theCircle);
+      }
+      if (this.containerLayer.hasLayer(this.pointerMarker)) {
+        this.containerLayer.removeLayer(this.pointerMarker);
       }
     }
   }
