@@ -9,7 +9,7 @@ class EditGF extends React.Component {
     super(props);
     this.theLayer = null;
     this.theCircle = null;
-    this.props.eventDispatcher.register(editorEvents.GF_EDITOR_RADIUS,
+    this.props.eventDispatcher.registerHandler(editorEvents.GF_EDITOR_RADIUS,
       ((meThis) => (newR) => { meThis.setRadius(newR); })(this));
   }
 

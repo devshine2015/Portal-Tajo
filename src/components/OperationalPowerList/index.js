@@ -20,8 +20,8 @@ class InstancesColumn extends React.Component {
       currentExpandedGFId: undefined,
     };
 
-    props.eventDispatcher.register(mapEvents.MAP_VEHICLE_SELECTED, this.onVehicleClick);
-    props.eventDispatcher.register(mapEvents.MAP_GF_SELECTED, this.onGFClick);
+    props.eventDispatcher.registerHandler(mapEvents.MAP_VEHICLE_SELECTED, this.onVehicleClick);
+    props.eventDispatcher.registerHandler(mapEvents.MAP_GF_SELECTED, this.onGFClick);
   }
 
   onGFClick = (itemId, isExpanded = true) => {

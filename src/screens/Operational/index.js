@@ -30,9 +30,9 @@ class MapFleetScreen extends React.Component {
 
     this.eventDispatcher = createEventDispatcher();
 
-    this.eventDispatcher.register(MAP_GF_ADD, this.openGFEditor.bind(this));
-    this.eventDispatcher.register(OPS_LIST_EDIT_GF, this.openGFEditor.bind(this));
-    this.eventDispatcher.register(GF_EDITOR_CLOSE, this.closeGFEditor.bind(this));
+    this.eventDispatcher.registerHandler(MAP_GF_ADD, this.openGFEditor.bind(this));
+    this.eventDispatcher.registerHandler(OPS_LIST_EDIT_GF, this.openGFEditor.bind(this));
+    this.eventDispatcher.registerHandler(GF_EDITOR_CLOSE, this.closeGFEditor.bind(this));
 
     // helper obj for GF editor
     // TODO ?? move this to the store?

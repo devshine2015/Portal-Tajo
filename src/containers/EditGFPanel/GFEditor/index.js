@@ -35,9 +35,9 @@ class GFEditor extends React.Component {
       radius: this.subjectGF.radius,
     };
 
-    this.props.eventDispatcher.register(mapEditEvents.MAP_EDITGF_SIZE,
+    this.props.eventDispatcher.registerHandler(mapEditEvents.MAP_EDITGF_SIZE,
       ((meThis) => (newR) => { meThis.setRadius(newR); })(this));
-    this.props.eventDispatcher.register(mapEditEvents.MAP_EDITGF_MOVE,
+    this.props.eventDispatcher.registerHandler(mapEditEvents.MAP_EDITGF_MOVE,
       ((meThis) => (newLatLng) => { meThis.setPos(newLatLng); })(this));
   }
   //

@@ -38,7 +38,7 @@ class MapFleet extends React.Component {
       selectedLocationId: undefined,
     };
 
-    this.props.eventDispatcher.register(listEvents.OPS_LIST_ITEM_SELECTED,
+    this.props.eventDispatcher.registerHandler(listEvents.OPS_LIST_ITEM_SELECTED,
       ((meThis) => (id) => { meThis.highLightMarker(id); })(this));
   }
 
