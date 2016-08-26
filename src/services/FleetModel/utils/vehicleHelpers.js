@@ -12,7 +12,6 @@
 // "status": "active"
 // "kind":    //optional
 
-import { getVehicleByValue } from './vehiclesMap';
 import { ZOMBIE_TIME_TRH_MINUTES } from 'utils/constants';
 
 function makeLocalVehicle(backEndObject, vehicleStats) {
