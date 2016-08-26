@@ -3,10 +3,8 @@
   .menu__item {
     transition: all .25s;
     padding: 20px 0 20px 12px;
-//    flex: 1;
+    /*flex: 1;*/
     display: block;
-//    display: table-cell;
-//    vertical-align: middle;
     text-align: left;
     text-transform: capitalize;
     font-weight: bold;
@@ -23,7 +21,46 @@
     box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, .5);
     z-index: 1;
   }
+  /*.menu__item:nth-child(1) {
+    background-color: #673AB7;
+  }*/
+  /*.menu__item:nth-child(1) {
+    background-color: #3F51B5;
+  }*/
   .menu__item:nth-child(1) {
+    background-color: #00BCD4;
+  }
+  .menu__item:nth-child(2) {
+    background-color: #FFB300;
+  }
+  .menu__item:nth-child(3) {
+    background-color: #009688;
+  }
+  .menu__item:nth-child(4) {
+    background-color: #2196F3;
+  }
+  /*.menu__item:nth-child(2) {
+    background-color: #2196F3;
+  }
+  /*.menu__item:nth-child(1) {
+    background-color: #03A9F4;
+  }*/
+  /*.menu__item:nth-child(3) {
+    background-color: #00BCD4;
+  }
+  .menu__item:nth-child(4) {
+    background-color: #009688;
+  }
+  .menu__item:nth-child(5) {
+    background-color: #4CAF50;
+  }
+  .menu__item:nth-child(6) {
+    background-color: #7CB342;
+  }
+  .menu__item:nth-child(7) {
+    background-color: #C0CA33;
+  }*/
+  /*.menu__item:nth-child(1) {
     background-color: #FFB300;
   }
   .menu__item:nth-child(2) {
@@ -32,23 +69,13 @@
   .menu__item:nth-child(3) {
     background-color:#009688;
   }
-  /*.menu__item:nth-child(4) {
+  .menu__item:nth-child(4) {
     background-color:#8BC34A;
   }
   .menu__item:nth-child(5) {
-    background-color:#FFC107;
-  }
-  .menu__item:nth-child(6) {
     background-color:#795548;
   }*/
   /*.menu__item:nth-child(1):hover {
     background-color:rgba(111, 17, 217, 0.85);
-  }
-  .menu__item:nth-child(2):hover {
-    background-color: rgba(17, 163, 217, 0.85);
-  }
-  .menu__item:nth-child(3):hover {
-    background-color:rgba(217, 17, 137, 0.85);
   }*/
-
 }
