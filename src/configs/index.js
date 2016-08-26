@@ -20,7 +20,7 @@ export const VERSIONS = {
         version = savedData.hasOwnProperty('ver') && savedData.ver || 1;
       }
 
-      return this.authentication[version](savedData);
+      return this[version](savedData);
     },
     1: () => false,
     2: (savedData) => {
