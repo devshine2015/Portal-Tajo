@@ -35,9 +35,9 @@ class GFEditor extends React.Component {
       radius: this.subjectGF.radius,
     };
 
-    this.props.setUpHooks(mapEditEvents.MAP_EDITGF_SIZE,
+    this.props.eventDispatcher.register(mapEditEvents.MAP_EDITGF_SIZE,
       ((meThis) => (newR) => { meThis.setRadius(newR); })(this));
-    this.props.setUpHooks(mapEditEvents.MAP_EDITGF_MOVE,
+    this.props.eventDispatcher.register(mapEditEvents.MAP_EDITGF_MOVE,
       ((meThis) => (newLatLng) => { meThis.setPos(newLatLng); })(this));
   }
   //
@@ -53,8 +53,7 @@ class GFEditor extends React.Component {
    **/
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.hooks(gfEditEvents.GF_EDITOR_CLOSE, null);
-//    this.props.onSave(this.state);
+    this.props.eventDispatcher.fireEvent(gfEditEvents.GF_EDITOR_CLOSE, null);
     const gfObj = makeBackendGF({ ...this.state });
     this.props.createGF(gfObj, 1)
       .then(() => {
@@ -66,7 +65,7 @@ class GFEditor extends React.Component {
 
   onCancel = (e) => {
     e.preventDefault();
-    this.props.hooks(gfEditEvents.GF_EDITOR_CLOSE, null);
+    this.props.eventDispatcher.fireEvent(gfEditEvents.GF_EDITOR_CLOSE, null);
   }
   /**
    * Update state[field] with value
@@ -77,7 +76,7 @@ class GFEditor extends React.Component {
       [field]: value, // .trim(),
     });
     if (field === 'radius') {
-      this.props.hooks(gfEditEvents.GF_EDITOR_RADIUS, value);
+      this.props.eventDispatcher.fireEvent(gfEditEvents.GF_EDITOR_RADIUS, value);
     }
   }
   setRadius(newR) {
@@ -140,9 +139,8 @@ class GFEditor extends React.Component {
 }
 
 GFEditor.propTypes = {
-  hooks: React.PropTypes.func.isRequired,
-  setUpHooks: React.PropTypes.func.isRequired,
-  subjectContext: React.PropTypes.object.isRequired,
+  eventDispatcher: React.PropTypes.object.isRequired,
+  subjectContext: React.PropTypes.object.isRequired,  // what are we editing/creating - passed here
   createGF: React.PropTypes.func.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,
 };

@@ -4,27 +4,11 @@ import GFEditor from './GFEditor';
 import styles from './styles.css';
 
 class GFEditorContainer extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     selectedItemId: undefined,
-  //   };
-  // }
-
-  // onSelect(hookId, id) {
-  //   // if(this.state.selectedItemId === id) {
-  //   //   return;
-  //   // }
-  //   this.props.hooks(hookId, id);
-  //   this.setState({ selectedItemId: id });
-  // }
-
   render() {
     return (
     <div className={styles.EditorContainer}>
       <GFEditor
-        hooks={this.props.hooks}
-        setUpHooks={this.props.setUpHooks}
+        eventDispatcher={this.props.eventDispatcher}
         subjectContext={this.props.subjectContext}
       />
     </div>
@@ -33,8 +17,7 @@ class GFEditorContainer extends React.Component {
 }
 
 GFEditorContainer.propTypes = {
-  hooks: React.PropTypes.func.isRequired,
-  setUpHooks: React.PropTypes.func.isRequired,
+  eventDispatcher: React.PropTypes.object.isRequired,
   subjectContext: React.PropTypes.object.isRequired,
 };
 

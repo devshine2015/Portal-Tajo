@@ -16,7 +16,8 @@ import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { MAPBOX_KEY, ZERO_LOCATION, ZERO_ZOOM, NEW_GF_REQUIRED_ZOOM_LEVEL } from 'utils/constants';
 
-import * as events from './events';
+import * as mapEvents from './events';
+import * as listEvents from 'components/OperationalPowerList/events';
 
 const selectForMe = (meThis, hookId) => (id) => {
   meThis.selectMarker(hookId, id);
@@ -37,12 +38,8 @@ class MapFleet extends React.Component {
       selectedLocationId: undefined,
     };
 
-    this.props.setUpHooks(events.LIST_VEHICLE_SELECTED,
+    this.props.eventDispatcher.register(listEvents.OPS_LIST_ITEM_SELECTED,
       ((meThis) => (id) => { meThis.highLightMarker(id); })(this));
-    this.props.setUpHooks(events.LIST_GF_SELECTED,
-      ((meThis) => (id) => { meThis.highLightMarker(id); })(this));
-    // this.props.setUpHooks(events.LIST_GF_EDIT,
-    //   ((meThis) => (editGfCtx) => { meThis.setRefPos(editGfCtx.obj.pos); })(this));
   }
 
   componentDidMount() {
@@ -54,9 +51,7 @@ class MapFleet extends React.Component {
     this.gfEditLayer = window.L.layerGroup();
     this.theMap.addLayer(this.gfEditLayer);
 
-    // retrigger render to apply the MAP prop for markers
-//    this.forceUpdate();
-
+    // do this to resize map on div
     window.setTimeout(
      (((map) => () => {
        map.invalidateSize(true);
@@ -83,7 +78,7 @@ class MapFleet extends React.Component {
         return;
       }
       inThis.setRefPos(e.latlng);
-      inThis.props.hooks(events.MAP_GF_ADD, { obj: null, pos: e.latlng });
+      inThis.props.eventDispatcher.fireEvent(mapEvents.MAP_GF_ADD, { obj: null, pos: e.latlng });
       if (inThis.theMap.getZoom() < NEW_GF_REQUIRED_ZOOM_LEVEL) {
         inThis.theMap.setZoomAround(e.latlng, NEW_GF_REQUIRED_ZOOM_LEVEL);
       }
@@ -125,7 +120,7 @@ class MapFleet extends React.Component {
   }
 // when clicked
   selectMarker(hookId, selectedId) {
-    this.props.hooks(hookId, selectedId);
+    this.props.eventDispatcher.fireEvent(hookId, selectedId);
   }
 
   hideLayer(theLayer, doHide) {
@@ -156,7 +151,7 @@ class MapFleet extends React.Component {
           isSelected={this.state.selectedVehicleId === v.id}
           theLayer={this.vehicleMarkersLayer}
           theVehicle={v}
-          onClick={selectForMe(this, events.MAP_VEHICLE_SELECTED)}
+          onClick={selectForMe(this, mapEvents.MAP_VEHICLE_SELECTED)}
         />
       ));
       gfs = this.props.gfs.map((v) => (
@@ -165,7 +160,7 @@ class MapFleet extends React.Component {
           isSelected={this.state.selectedLocationId === v.id}
           theLayer={this.gfMarkersLayer}
           theGF={v}
-          onClick={selectForMe(this, events.MAP_GF_SELECTED)}
+          onClick={selectForMe(this, mapEvents.MAP_GF_SELECTED)}
         />
       ));
     }
@@ -173,8 +168,7 @@ class MapFleet extends React.Component {
      (<EditGF
        key="gfEditHelper"
        theLayer={this.gfEditLayer}
-       hooks={this.props.hooks}
-       setUpHooks={this.props.setUpHooks}
+       eventDispatcher={this.props.eventDispatcher}
        spawnPos={this.refPos}
      />);
 
@@ -193,8 +187,7 @@ const PureMapFleet = pure(MapFleet);
 MapFleet.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
   gfs: React.PropTypes.array.isRequired,
-  setUpHooks: React.PropTypes.func.isRequired,
-  hooks: React.PropTypes.func.isRequired,
+  eventDispatcher: React.PropTypes.object.isRequired,
   vehicleById: React.PropTypes.func.isRequired,
   gfById: React.PropTypes.func.isRequired,
   gfEditMode: React.PropTypes.bool.isRequired,

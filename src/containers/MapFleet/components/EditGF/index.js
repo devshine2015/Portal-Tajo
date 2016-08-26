@@ -9,7 +9,7 @@ class EditGF extends React.Component {
     super(props);
     this.theLayer = null;
     this.theCircle = null;
-    this.props.setUpHooks(editorEvents.GF_EDITOR_RADIUS,
+    this.props.eventDispatcher.register(editorEvents.GF_EDITOR_RADIUS,
       ((meThis) => (newR) => { meThis.setRadius(newR); })(this));
   }
 
@@ -20,8 +20,8 @@ class EditGF extends React.Component {
     this.theCircle.editing.enable();
     this.theCircle.on('edit', () => {
 //     const radius = Math.round(this.theCircle.getRadius());
-      this.props.hooks(editEvents.MAP_EDITGF_SIZE, this.theCircle.getRadius());
-      this.props.hooks(editEvents.MAP_EDITGF_MOVE, this.theCircle.getLatLng());
+      this.props.eventDispatcher.fireEvent(editEvents.MAP_EDITGF_SIZE, this.theCircle.getRadius());
+      this.props.eventDispatcher.fireEvent(editEvents.MAP_EDITGF_MOVE, this.theCircle.getLatLng());
     });
     this.theLayer.addLayer(this.theCircle);
   }
@@ -48,8 +48,7 @@ class EditGF extends React.Component {
 EditGF.propTypes = {
   theLayer: React.PropTypes.object.isRequired,
   spawnPos: React.PropTypes.object.isRequired,
-  hooks: React.PropTypes.func.isRequired,
-  setUpHooks: React.PropTypes.func.isRequired,
+  eventDispatcher: React.PropTypes.object.isRequired,
 };
 const PureEditGF = pure(EditGF);
 

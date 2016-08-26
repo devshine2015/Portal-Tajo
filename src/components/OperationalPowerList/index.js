@@ -7,6 +7,8 @@ import Filter from 'components/Filter';
 import VehiclesList from 'components/InstancesList';
 import listTypes from 'components/InstancesList/types';
 import { vehiclesActions, gfActions } from 'services/FleetModel/actions';
+import * as listEvents from './events';
+import * as mapEvents from 'containers/MapFleet/events';
 
 class InstancesColumn extends React.Component {
 
@@ -17,17 +19,22 @@ class InstancesColumn extends React.Component {
       currentExpandedVehicleId: undefined,
       currentExpandedGFId: undefined,
     };
+
+    props.eventDispatcher.register(mapEvents.MAP_VEHICLE_SELECTED, this.onVehicleClick);
+    props.eventDispatcher.register(mapEvents.MAP_GF_SELECTED, this.onGFClick);
   }
 
-  onLocationClick = (itemId, isExpanded) => {
+  onGFClick = (itemId, isExpanded = true) => {
     this.onItemClick(itemId, isExpanded, 'location');
   }
 
-  onVehicleClick = (itemId, isExpanded) => {
+  onVehicleClick = (itemId, isExpanded = true) => {
     this.onItemClick(itemId, isExpanded, 'vehicle');
   }
 
   onItemClick = (itemId, isExpanded, type) => {
+    this.props.eventDispatcher.fireEvent(listEvents.OPS_LIST_ITEM_SELECTED, itemId);
+
     const value = isExpanded ? itemId : undefined;
 
     switch (type) {
@@ -64,7 +71,7 @@ class InstancesColumn extends React.Component {
             <Filter filterFunc={this.props.filterGFsFunc} />
             <VehiclesList
               currentExpandedItemId={this.state.currentExpandedGFId}
-              onItemClick={this.onLocationClick}
+              onItemClick={this.onGFClick}
               data={this.props.gfs}
               type={listTypes.withLocationDetails}
             />
@@ -77,9 +84,8 @@ class InstancesColumn extends React.Component {
 
 InstancesColumn.propTypes = {
   vehicles: React.PropTypes.object.isRequired,
-  hooks: React.PropTypes.func.isRequired,
   gfs: React.PropTypes.array.isRequired,
-  setUpHooks: React.PropTypes.func.isRequired,
+  eventDispatcher: React.PropTypes.object.isRequired,
   filterVehiclesFunc: React.PropTypes.func.isRequired,
   filterGFsFunc: React.PropTypes.func.isRequired,
 };

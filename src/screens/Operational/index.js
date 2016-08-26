@@ -4,13 +4,14 @@ import { connect } from 'react-redux';
 import InnerPortal from 'containers/InnerPortal';
 import SplitContainer from 'containers/SplitContainer';
 import GFEditPanel from 'containers/EditGFPanel';
-import InstancesColumn from 'components/OperationalInstancesColumn';
+import OperationalList from 'components/OperationalPowerList';
 import FixedContent from 'components/FixedContent';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
-import hooks from 'containers/MapFleet/hooks';
+import createEventDispatcher from 'utils/eventDispatcher';
 
-import { MAP_GF_ADD, LIST_GF_EDIT } from 'containers/MapFleet/events';
-import * as gfEditEvents from 'containers/EditGFPanel/GFEditor/events';
+import { MAP_GF_ADD } from 'containers/MapFleet/events';
+import { OPS_LIST_EDIT_GF } from 'components/OperationalPowerList/events';
+import { GF_EDITOR_CLOSE } from 'containers/EditGFPanel/GFEditor/events';
 
 import styles from './styles.css';
 
@@ -23,23 +24,21 @@ class MapFleetScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.hooks = {};
-    this.selectedListHook = null;
     this.state = {
       mode: MD_LIST,
     };
 
-    this.addHook(MAP_GF_ADD, this.openGFEditor.bind(this));
-    this.addHook(LIST_GF_EDIT, this.openGFEditor.bind(this));
-    this.addHook(gfEditEvents.GF_EDITOR_CLOSE, this.closeGFEditor.bind(this));
+    this.eventDispatcher = createEventDispatcher();
 
+    this.eventDispatcher.register(MAP_GF_ADD, this.openGFEditor.bind(this));
+    this.eventDispatcher.register(OPS_LIST_EDIT_GF, this.openGFEditor.bind(this));
+    this.eventDispatcher.register(GF_EDITOR_CLOSE, this.closeGFEditor.bind(this));
+
+    // helper obj for GF editor
+    // TODO ?? move this to the store?
     this.subjGFContext = { obj: null };
   }
 
-  addHook(hookId, hookFunc) {
-//    console.log('hook++  '+ hookId + (this.hooks[hookId]===undefined ? ' add' : ' replace'));
-    this.hooks[hookId] = hookFunc;
-  }
   openGFEditor(editFGCtx) {
     this.subjGFContext = { obj: editFGCtx.obj, pos: editFGCtx.pos };
     this.setState({ mode: MD_GF_EDIT });
@@ -56,31 +55,26 @@ class MapFleetScreen extends React.Component {
       <InnerPortal hasRealTimeData>
         <div className={styles.mapAndListContainer}>
           { displayColumn && (
-            <InstancesColumn
-              hooks={hooks.execHooksForMe(this)}
-              setUpHooks={hooks.setUpHooksForMe(this)}
+            <OperationalList
+              eventDispatcher={this.eventDispatcher}
               gfs={this.props.gfs}
               vehicles={this.props.vehicles}
               // filteredVehicles={this.props.filteredVehicles}
               // filterFunc={this.props.filterFunc}
             />
           )}
-
           { this.state.mode !== MD_GF_EDIT ? null :
             <GFEditPanel
-              hooks={hooks.execHooksForMe(this)}
-              setUpHooks={hooks.setUpHooksForMe(this)}
+              eventDispatcher={this.eventDispatcher}
               subjectContext={this.subjGFContext}
             />
           }
-
           <FixedContent
             containerClassName={styles.fixedContent}
           >
             <SplitContainer
               gfEditMode={this.state.mode === MD_GF_EDIT}
-              hooks={hooks.execHooksForMe(this)}
-              setUpHooks={hooks.setUpHooksForMe(this)}
+              eventDispatcher={this.eventDispatcher}
             />
           </FixedContent>
         </div>
