@@ -13,8 +13,8 @@
     height: 82px;
     color: white;
     background-color: #9C27B0;
-    border-bottom: 1px solid rgba(0,0,0,0.3);
-    box-shadow: inset 0px 0px 5px -1px rgba(0, 0, 0, .5);
+    /*border-bottom: 1px solid rgba(0,0,0,0.3);*/
+    box-shadow: inset 0px -4px 9px -5px rgba(0, 0, 0, .5);
   }
   .menu__item:hover {
     padding: 20px 0 20px 18px;
