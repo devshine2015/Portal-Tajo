@@ -8,7 +8,7 @@ const initialState = fromJS({
 function fleetReducer(state = initialState, action) {
   switch (action.type) {
     case fleetActions.GLOBAL_FLEET_NAME_SET:
-      return state.set('name', action.fleet);
+      return state.set('name', action.fleetName);
     default:
       return state;
   }

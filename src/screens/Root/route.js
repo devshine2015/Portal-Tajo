@@ -33,7 +33,7 @@ const createRoute = ({
   childRoutes: [],
   onEnter: (location) => {
     const { params, routes } = location;
-    dispatch(fleetActions.setFleetName(params.fleet));
+    dispatch(fleetActions.setFleet(params.fleet));
 
     if (mainMenu.length === 0) return;
 
