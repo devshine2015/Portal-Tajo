@@ -1,5 +1,6 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import { getVehicleByValue } from 'services/FleetModel/utils/vehiclesMap';
 import styles from './styles.css';
 // const iconPin = require('assets/images/v_icons_combi/pin.png');
 const iconPin = require('assets/images/v_icons_combi/pointer.png');
@@ -52,7 +53,7 @@ class MapVehicle extends React.Component {
     // const headAnchorW = pinW - headSz * 0.75;
     // const headAnchorH = headSz + pinAnchorH * 0.65;
 
-    const iconImg = this.props.theVehicle.kindData.pic;
+    const iconImg = getVehicleByValue(this.props.theVehicle.kind).pic;
 
     this.markerIcon = window.L.icon({
       iconUrl: iconImg,

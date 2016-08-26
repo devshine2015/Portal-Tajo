@@ -53,7 +53,7 @@ class MapFleetScreen extends React.Component {
       this.props.gfs.length !== 0 && this.state.mode === MD_LIST;
 
     return (
-      <InnerPortal>
+      <InnerPortal hasRealTimeData>
         <div className={styles.mapAndListContainer}>
           { displayColumn && (
             <InstancesColumn

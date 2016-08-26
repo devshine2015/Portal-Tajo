@@ -40,7 +40,8 @@ function makeLocalVehicle(backEndObject, vehicleStats) {
     lastUpdateSinceEpoch: 0,
     isZombie: true, // reported more the ZOMBIE_TIME_TRH_MINUTES ago
     isDead: true,   // never updated/reported
-  });
+    kind: backEndObject.kind || 'SGV',
+  };
 
   return theVehicle;
 }
