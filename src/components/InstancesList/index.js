@@ -15,10 +15,10 @@ let isStyleSheetRuleAdded = false;
 function chooseItem(type, {
   onItemClick,
   selectedItems,
-  currentExpandedItem,
+  currentExpandedItemId,
   item,
 }) {
-  const isExpanded = currentExpandedItem && item.id === currentExpandedItem;
+  const isExpanded = currentExpandedItemId && item.id === currentExpandedItemId;
   switch (type) {
     case types.withCheckboxes: {
       const isChecked = selectedItems.indexOf(item.id) !== -1;
@@ -66,7 +66,7 @@ const InstancesList = ({
   data,
   type,
   selectedItems = [],
-  currentExpandedItem,
+  currentExpandedItemId,
   ...rest,
 }, context) => {
   // temporary solution.
@@ -93,7 +93,7 @@ const InstancesList = ({
       return null;
     }
 
-    const isExpanded = currentExpandedItem && item.id === currentExpandedItem;
+    const isExpanded = currentExpandedItemId && item.id === currentExpandedItemId;
     const className = classnames(styles.list__item, 'listItemDynamic', {
       ['listItemDynamicExpanded']: isExpanded,
       [styles.list__item_expanded]: isExpanded,
@@ -111,7 +111,7 @@ const InstancesList = ({
         onItemClick,
         item,
         selectedItems,
-        currentExpandedItem,
+        currentExpandedItemId,
         ...rest,
       })}
     </li>
@@ -143,7 +143,7 @@ InstancesList.propTypes = {
   uncheckOnUnmount: React.PropTypes.bool,
 
   // For DetailedItem
-  currentExpandedItem: React.PropTypes.string,
+  currentExpandedItemId: React.PropTypes.string,
 };
 
 export default pure(InstancesList);

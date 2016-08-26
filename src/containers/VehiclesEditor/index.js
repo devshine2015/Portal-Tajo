@@ -123,7 +123,7 @@ class VehiclesEditor extends React.Component {
             <VehiclesList
               onItemClick={this.onItemClick}
               data={this.props.vehicles}
-              currentExpandedItem={this.state.selectedVehicelId}
+              currentExpandedItemId={this.state.selectedVehicelId}
             />
           }
         />

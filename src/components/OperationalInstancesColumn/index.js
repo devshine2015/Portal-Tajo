@@ -14,8 +14,8 @@ class InstancesColumn extends React.Component {
     super(props);
 
     this.state = {
-      currentExpandedVehicle: undefined,
-      currentExpandedLocation: undefined,
+      currentExpandedVehicleId: undefined,
+      currentExpandedGFId: undefined,
     };
   }
 
@@ -33,13 +33,13 @@ class InstancesColumn extends React.Component {
     switch (type) {
       case 'vehicle': {
         this.setState({
-          currentExpandedVehicle: value,
+          currentExpandedVehicleId: value,
         });
         break;
       }
       case 'location': {
         this.setState({
-          currentExpandedLocation: value,
+          currentExpandedGFId: value,
         });
         break;
       }
@@ -54,7 +54,7 @@ class InstancesColumn extends React.Component {
           <Tab label="Vehicles">
             <Filter filterFunc={this.props.filterVehiclesFunc} />
             <VehiclesList
-              currentExpandedItem={this.state.currentExpandedVehicle}
+              currentExpandedItemId={this.state.currentExpandedVehicleId}
               onItemClick={this.onVehicleClick}
               data={this.props.vehicles}
               type={listTypes.withVehicleDetails}
@@ -63,7 +63,7 @@ class InstancesColumn extends React.Component {
           <Tab label="Locations">
             <Filter filterFunc={this.props.filterGFsFunc} />
             <VehiclesList
-              currentExpandedItem={this.state.currentExpandedLocation}
+              currentExpandedItemId={this.state.currentExpandedGFId}
               onItemClick={this.onLocationClick}
               data={this.props.gfs}
               type={listTypes.withLocationDetails}
@@ -94,4 +94,3 @@ const mapDispatch = {
 const PureComponent = pure(InstancesColumn);
 
 export default connect(null, mapDispatch)(PureComponent);
-
