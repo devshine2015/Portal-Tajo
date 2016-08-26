@@ -16,6 +16,14 @@ deployment:
     branch: dev-release
     commands:
       - ./deploy.sh 'ddsdev@ddsdev.cloudapp.net'
+  ssreportsDev:
+    branch: ssreports-dev
+    commands:
+      - ./deployDemo.sh 'ddsdev@ddsdev.cloudapp.net'
+  ssreportsProd:
+    branch: ssreports-prod
+    commands:
+      - ./deployDemo.sh 'drvrappbeta@drvrappbeta.cloudapp.net'
   # demo:
   #   branch: demo
   #   commands:
