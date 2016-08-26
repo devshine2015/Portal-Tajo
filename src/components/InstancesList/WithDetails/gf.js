@@ -9,7 +9,7 @@ import styles2 from './styles.css';
 class LocationWithDetails extends React.Component {
 
   onClick = () => {
-    this.props.onClick(this.props.id, !this.props.isExpanded);
+    this.props.onClick(this.props.id);
   }
 
   renderDetails() {

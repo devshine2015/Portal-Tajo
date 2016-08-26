@@ -21,7 +21,7 @@ class ListItemVehicle extends React.Component {
   //   ;
   // }
   onClick = () => {
-    this.props.onClick(this.props.id, !this.props.isExpanded);
+    this.props.onClick(this.props.id);
   }
 
   inActivityIndicator() {

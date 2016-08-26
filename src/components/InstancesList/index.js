@@ -99,7 +99,7 @@ const InstancesList = ({
       [styles.list__item_expanded]: isExpanded,
     });
     const onClick = () => {
-      onItemClick(item.id, !isExpanded);
+      onItemClick(item.id);
     };
     // style={ { color: context.muiTheme.palette.PLItemColor } }
     return (<li
