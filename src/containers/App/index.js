@@ -5,6 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { onlineStateActions, authActions } from './actions';
 import drvrDevTheme from 'configs/theme';
+import styles from './styles.css';
 
 const muiTheme = getMuiTheme(drvrDevTheme);
 
