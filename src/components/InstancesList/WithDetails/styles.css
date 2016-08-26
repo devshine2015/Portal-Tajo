@@ -1,5 +1,8 @@
 @media screen and (min-width: 100px) {
 
+  .iconDelBtn {
+    float: right;
+      }
   /*.listItemInn_expanded:hover {
 //    color: rgb(255, 215, 136);
   }*/
