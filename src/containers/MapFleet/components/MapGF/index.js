@@ -17,10 +17,11 @@ class MapGF extends React.Component {
       inThis.props.onClick(inThis.props.theGF.id);
 //      console.log('MARKER clicked ' + inThis.props.theVehicle.id);
     })(this);
-    this.theMarker.on('click', clickHandle);
-    this.theMarker.addTo(this.containerLayer);
+    this.theMarker.on('click', clickHandle).addTo(this.containerLayer);
 
-    this.theCircle = window.L.circle(this.props.theGF.pos, this.props.theGF.radius);
+    this.theCircle = window.L.circle(this.props.theGF.pos, this.props.theGF.radius).setStyle(
+      { color: this.context.muiTheme.palette.PLItemBackgroundColorExpanded });
+
 //    this.theCircle.editing.enable();
   }
   componentWillUnmount() {
@@ -33,8 +34,11 @@ class MapGF extends React.Component {
   }
   expand(doExpand) {
     if (doExpand) {
+      this.theMarker.setStyle(
+        { color: this.context.muiTheme.palette.PLItemBackgroundColorExpanded });
       this.containerLayer.addLayer(this.theCircle);
     } else {
+      this.theMarker.setStyle({ color: '#03f' });
       if (this.containerLayer.hasLayer(this.theCircle)) {
         this.containerLayer.removeLayer(this.theCircle);
       }
@@ -64,6 +68,9 @@ class MapGF extends React.Component {
 }
 
 
+MapGF.contextTypes = {
+  muiTheme: React.PropTypes.object.isRequired,
+};
 MapGF.propTypes = {
   theLayer: React.PropTypes.object,
   theGF: React.PropTypes.object,
