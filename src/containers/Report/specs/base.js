@@ -24,7 +24,7 @@ function _calculate(vehicle, { selectedTypes, period, frequency }) {
 }
 
 function filterSimilar(allSelectedReportTypes) {
-  const similarTypes = ['date', 'vehicles', 'license', 'odometer'];
+  const similarTypes = ['date', 'vehicles', 'license'];
 
   return allSelectedReportTypes.filter(type => similarTypes.indexOf(type) !== -1);
 }
