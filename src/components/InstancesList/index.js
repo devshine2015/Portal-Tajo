@@ -69,6 +69,8 @@ const InstancesList = ({
   currentExpandedItem,
   ...rest,
 }, context) => {
+  // temporary solution.
+  // TODO -- use LESS/SASS for such things
   if (!isStyleSheetRuleAdded) {
     isStyleSheetRuleAdded = true;
     addCSSRule('.listItemDynamicExpanded',

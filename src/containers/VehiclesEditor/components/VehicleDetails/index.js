@@ -160,7 +160,7 @@ class VehicleDetails extends React.Component {
             fullWidth
             name="odometer"
             onChange={this.onChange}
-            floatingLabelText="Odometer"
+            floatingLabelText="Odometer (km.)"
             value={this.state.odometer}
             type="number"
           />

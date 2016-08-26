@@ -15,23 +15,28 @@
 import { getVehicleByValue } from './vehiclesMap';
 import { ZOMBIE_TIME_TRH_MINUTES } from 'utils/constants';
 
-function makeLocalVehicle(backEndObject) {
+function makeLocalVehicle(backEndObject, vehicleStats) {
   if (backEndObject.status !== 'active'
     || !backEndObject.name) {
     return null;
   }
 
-  const lt = 39.75 + Math.random() * 0.5;
-  const ln = -74.70 + Math.random() * 0.5;
+  const hasPos = vehicleStats.hasOwnProperty('pos');
+  const hasDist = vehicleStats.hasOwnProperty('dist');
+  const hasTemp = vehicleStats.hasOwnProperty('temp');
+
+  const lt = hasPos ? vehicleStats.pos.latlon.lat : 39.75 + Math.random() * 0.5;
+  const ln = hasPos ? vehicleStats.pos.latlon.lng : -74.70 + Math.random() * 0.5;
 
   const theVehicle = Object.assign({}, backEndObject, {
     filteredOut: false,
-    odometer: backEndObject.hasOwnProperty('odometer') ?
-      backEndObject.odometer : { value: '' },
     pos: [lt, ln],
-    speed: 0,
-    dist: { total: 0, lastTrip: 0 },
-    temp: undefined,
+    speed: hasPos ? vehicleStats.pos.speed : 0,
+    dist: {
+      total: hasDist && vehicleStats.dist.total || 0, // m
+      lastTrip: hasDist && vehicleStats.dist.lastTrip || 0, // m
+    },
+    temp: hasTemp ? vehicleStats.temp.temperature : undefined,
     lastUpdateSinceEpoch: 0,
     isZombie: true, // reported more the ZOMBIE_TIME_TRH_MINUTES ago
     isDead: true,   // never updated/reported
@@ -48,11 +53,13 @@ export function checkZombieVehicle(lastUpdate) {
   return deltaTMinutes > ZOMBIE_TIME_TRH_MINUTES;
 }
 
-export default function MakeLocalVehicles(backEndVehiclesList) {
+export function makeLocalVehicles(backEndVehiclesList, statsList) {
   const theVechicles = {};
 
   backEndVehiclesList.forEach((aVehicle) => {
-    const localVehicleObj = makeLocalVehicle(aVehicle);
+    const vehicleStats = getVehicleById(aVehicle.id, statsList).vehicle;
+    const localVehicleObj = makeLocalVehicle(aVehicle, vehicleStats);
+
     if (localVehicleObj !== null) {
       theVechicles[aVehicle.id] = localVehicleObj;
     }
@@ -81,15 +88,23 @@ export function cleanVehicle(vehicle) {
  **/
 export function getVehicleById(id, allVehicles = []) {
   let vehicleIndex;
+  let vehicle;
 
-  const vehicle = allVehicles.filter((v, i) => {
-    if (v.id === id) {
+  for (let i = 0; i < allVehicles.length; i++) {
+    if (allVehicles[i].id === id) {
       vehicleIndex = i;
-      return true;
+      vehicle = allVehicles[i];
+      break;
     }
+  }
+  // const vehicle = allVehicles.filter((v, i) => {
+  //   if (v.id === id) {
+  //     vehicleIndex = i;
+  //     return true;
+  //   }
 
-    return false;
-  });
+  //   return false;
+  // });
 
   return {
     vehicle,

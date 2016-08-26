@@ -4,7 +4,7 @@ import {
   getFleetName,
   getAuthenticationSession,
 } from 'containers/App/reducer';
-import processVehicels from '../utils/vehicleHelpers';
+import { makeLocalVehicles } from '../utils/vehicleHelpers';
 import { filterProcessedListByName } from '../utils/filtering';
 import { getProcessedVehicles } from '../reducer';
 
@@ -24,23 +24,26 @@ export const filterVehicles = (searchString) => (dispatch, getState) =>
  **/
 function _fetchVehicles(fleetName, openWebSocket, dispatch, getState) {
   const fleet = fleetName || getFleetName(getState());
-  const url = `${fleet}/vehicles`;
+  const urls = [`${fleet}/vehicles`, `${fleet}/status`];
   const sessionId = getAuthenticationSession(getState());
   const optionalHeaders = {
     ['DRVR-SESSION']: sessionId,
   };
 
-  return api(url, { optionalHeaders })
-    .then(toJson)
-    .then(vehicles => {
-      const localVehicles = processVehicels(vehicles);
-      dispatch(_vehiclesSet(vehicles, localVehicles));
+  return Promise.all(
+    urls.map(url =>
+      api(url, { optionalHeaders }).then(toJson)
+    )
+  ).then(([vehicles = [], { status }]) => {
+    const localVehicles = makeLocalVehicles(vehicles, status);
+    dispatch(_vehiclesSet(vehicles, localVehicles));
 
-      if (openWebSocket) {
-        dispatch(openFleetSocket(fleet));
-      }
-    });
+    if (openWebSocket) {
+      dispatch(openFleetSocket(fleet));
+    }
+  });
 }
+
 
 function _filterVehicles({ searchString }, dispatch, getState) {
   const originVehicles = getProcessedVehicles(getState()).toJS();

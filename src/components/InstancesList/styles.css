@@ -8,7 +8,6 @@
     transition: all .25s;
     position: relative; /*need this to ceate stacking context*/
     padding: 7px 15px;
-    min-height: 64px;
     /*border-right: 3px solid #BF360C;*/
      /*#006064; cyan900*/
     /*#fd9e83;*/
@@ -29,6 +28,7 @@
     background-color: rgba(108, 124, 154, 0.85);
   }*/
   .listItemInn {
+    min-height: 64px;
     cursor: pointer;
     transition: color .2s;
 //    color: #FFF;

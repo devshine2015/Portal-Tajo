@@ -3,9 +3,8 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import styles from './styles.css';
 import { onlineStateActions, authActions } from './actions';
-import drvrDevTheme from 'themes/theme';
+import drvrDevTheme from 'configs/theme';
 
 const muiTheme = getMuiTheme(drvrDevTheme);
 

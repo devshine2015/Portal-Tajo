@@ -38,7 +38,7 @@ class VehiclesEditor extends React.Component {
     if (v !== undefined) {
       this.setState({
         selectedVehicelId: id,
-        selectedVehicle: v.vehicle[0],
+        selectedVehicle: v.vehicle,
         selectedVehicleOriginalIndex: v.vehicleIndex,
       });
     }
@@ -91,7 +91,7 @@ class VehiclesEditor extends React.Component {
       model: origins.model,
       make: origins.make,
       licensePlate: origins.licensePlate,
-      odometer: origins.odometer.value,
+      odometer: parseInt(origins.dist.total / 1000, 10),
     };
 
     return (

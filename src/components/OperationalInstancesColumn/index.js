@@ -2,7 +2,6 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { Tabs, Tab } from 'material-ui/Tabs';
-// import PowerListContainer from 'containers/PowerList';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import VehiclesList from 'components/InstancesList';
@@ -18,26 +17,6 @@ class InstancesColumn extends React.Component {
       currentExpandedVehicle: undefined,
       currentExpandedLocation: undefined,
     };
-  }
-
-  // onFilterVehicles = (filterString, isClearing) => {
-  //   const filteredVehicles = this.props.filterFunc(fil)
-  //     filterString,
-  //     isClearing,
-  //   );
-
-  //   this.setState({ filteredVehicles });
-  // }
-
-  onFilterLocations = (filterString, isClearing) => {
-    // const filteredLocations = filterByName(
-    //   this.state.filteredLocations,
-    //   this.props.gfs,
-    //   filterString,
-    //   isClearing,
-    // );
-
-    // this.setState({ filteredLocations });
   }
 
   onLocationClick = (itemId, isExpanded) => {
