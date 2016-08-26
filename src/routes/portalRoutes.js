@@ -19,6 +19,10 @@ const MAIN_MENU = [{
   path: 'map',
   order: 1,
 }, {
+  niceName: 'Reports',
+  path: 'reports',
+  order: 3,
+}, {
   niceName: 'Vehicles Editor',
   path: 'vehicles',
   order: 4,
@@ -42,6 +46,13 @@ export default function createRoutes(store) {
     errorHandler,
     loadModule,
     dispatch: store.dispatch,
+  });
+
+  const reportsRoute = require('screens/ReportsScreen/route')({
+    path: 'reports',
+    injectReducer,
+    errorHandler,
+    loadModule,
   });
 
   const vehiclesEditorRoute = require('screens/VehiclesManagerScreen/route')({
@@ -69,6 +80,7 @@ export default function createRoutes(store) {
     loginRoute,
     dashboardRoute,
     mapAndListRoute,
+    reportsRoute,
     vehiclesEditorRoute,
   );
 
