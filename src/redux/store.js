@@ -6,12 +6,11 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { fromJS } from 'immutable';
 import thunk from 'redux-thunk';
 import { routerMiddleware } from 'react-router-redux';
-import createReducer from './reducers';
 
 const devtools = window.devToolsExtension || (() => noop => noop);
 const isDev = process.env.NODE_ENV !== 'production';
 
-export default function configureStore(initialState = {}, history) {
+export default function configureStore(initialState = {}, history, createReducer) {
   const enhancers = [
     devtools(),
   ];

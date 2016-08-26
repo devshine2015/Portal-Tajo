@@ -6,7 +6,7 @@ const ngrok = require('ngrok');
 
 const frontend = require('./middlewares/frontendMiddleware');
 const isDev = process.env.NODE_ENV !== 'production';
-const portal = process.env.DRVR_PORTAL;
+const portal = process.env.DRVR_PROJECT;
 
 const app = express();
 
@@ -24,8 +24,8 @@ if (isDev) {
     case 'portal':
       webpackConfig = require('../webpack/webpack.dev.portal.babel.js');
       break;
-    case 'demo':
-      webpackConfig = require('../webpack/webpack.dev.mapViewDemo.babel.js');
+    case 'ssreports':
+      webpackConfig = require('../webpack/webpack.dev.ssreports.babel.js');
       break;
     default:
       webpackConfig = require('../webpack/webpack.dev.escape.babel.js');

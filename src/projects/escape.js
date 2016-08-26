@@ -1,5 +1,5 @@
 /**
- * appPortal.js
+ * escape.js
  *
  * This is the entry file for the application, only setup and boilerplate
  * code.
@@ -8,9 +8,9 @@
 import 'babel-polyfill';
 
 // Load the favicon, the manifest.json file and the .htaccess file
-import 'file?name=[name].[ext]!./favicon.ico';
-import 'file?name=[name].[ext]!./manifest.json'; // manifest for mobile devices
-import 'file?name=[name].[ext]!./.htaccess';
+import 'file?name=[name].[ext]!../favicon.ico';
+import 'file?name=[name].[ext]!../manifest.json'; // manifest for mobile devices
+import 'file?name=[name].[ext]!../.htaccess';
 
 // Import all the third party stuff
 import React from 'react';
@@ -18,7 +18,13 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import configureStore from './redux/store';
+import configureStore from '../redux/store';
+import createReducer from '../redux/reducers';
+// import whyDidYouUpdate from 'why-did-you-update';
+
+if (process.env.NODE_ENV !== 'production') {
+  // whyDidYouUpdate(React, {include: /^Promo/});
+}
 
 injectTapEventPlugin();
 
@@ -27,10 +33,10 @@ require('sanitize.css/sanitize.css');
 // Create redux store with history
 // this uses the singleton
 const initialState = {};
-const store = configureStore(initialState, browserHistory);
+const store = configureStore(initialState, browserHistory, createReducer);
 
 // Set up the router, wrapping all Routes in the App component
-import createRoutes from './routes/portalRoutes';
+import createRoutes from '../routes/escapeRoutes';
 
 ReactDOM.render(
   <Provider store={store}>

@@ -11,20 +11,24 @@ export const FIREBASE_CONFIG = {
 };
 export const VERSIONS = {
   authentication: {
-    ver: 2,
-    // Don't use arrow shorthand (=>) to keep context for this
     verify: function (savedData) {
-      // if no any session data
+      let version;
+
+      if (savedData === null) {
+        version = 2;
+      } else {
+        version = savedData.hasOwnProperty('ver') && savedData.ver || 1;
+      }
+
+      return this.authentication[version](savedData);
+    },
+    1: () => false,
+    2: (savedData) => {
       if (!savedData) {
         return true;
       }
 
-      // if same version
-      if ((savedData && savedData.hasOwnProperty('ver')) && (savedData.ver === this.ver)) {
-        return true;
-      }
-
-      return false;
+      return true;
     },
   },
 };

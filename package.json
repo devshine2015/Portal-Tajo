@@ -4,15 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:clean": "rimraf ./build/* ./escape/* ./customer/*",
+    "build:clean": "rimraf ./build/* ./escape/* ./customer/* ./ssreports/*",
     "build:clean:escape": "rimraf ./build/* ./escape/*",
     "build:clean:portal": "rimraf ./build/* ./customer/*",
+    "build:clean:ssreports": "rimraf ./build/* ./ssreports/*",
     "build:escape": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.escape.babel.js --color -p",
     "build:portal": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.portal.babel.js --color -p",
+    "build:portal": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.ssreports.babel.js --color -p",
     "escape": "npm run start:tunnel:escape",
     "portal": "npm run start:tunnel:portal",
-    "start:tunnel:escape": "cross-env NODE_ENV=development DRVR_PORTAL=escape node server",
-    "start:tunnel:portal": "cross-env NODE_ENV=development DRVR_PORTAL=portal node server"
+    "ssreports": "npm run start:tunnel:ssreports",
+    "start:tunnel:escape": "cross-env NODE_ENV=development DRVR_PROJECT=escape node server",
+    "start:tunnel:portal": "cross-env NODE_ENV=development DRVR_PROJECT=portal node server",
+    "start:tunnel:ssreports": "cross-env NODE_ENV=development DRVR_PROJECT=ssreports node server"
   },
   "author": "Maksim Orlov",
   "license": "ISC",

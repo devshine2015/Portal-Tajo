@@ -9,6 +9,7 @@ import rootReducer from 'containers/App/reducer';
 import snackbarReducer from 'containers/Snackbar/reducer';
 import innerPortalReducer from 'containers/InnerPortal/reducer';
 import fleetReducer from 'services/FleetModel/reducer';
+import reportReducer from 'containers/Report/reducer';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 const routeInitialState = fromJS({
@@ -39,3 +40,11 @@ export default function createReducer(asyncReducers) {
     ...asyncReducers,
   });
 }
+
+export const createSelfServiceReducer = (asyncReducers) =>
+  combineReducers({
+    global: rootReducer,
+    fleet: fleetReducer,
+    reports: reportReducer,
+    ...asyncReducers,
+  });

@@ -157,7 +157,6 @@ class Report extends React.Component {
   render() {
     return (
       <div>
-        Report for all fleet's vehicles
         <Form
           name={this.FORM_NAME}
           onSubmit={this.onSubmit}

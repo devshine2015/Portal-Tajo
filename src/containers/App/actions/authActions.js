@@ -19,8 +19,8 @@ export const login = (data) => (dispatch, getState) =>
   _login(data, dispatch, getState);
 export const logout = () => (dispatch, getState) =>
   _logout(dispatch, getState);
-export const checkUserAuthentication = (urls) => (dispatch, getState) =>
-  _checkUserAuthentication(urls, dispatch, getState);
+export const checkUserAuthentication = (params) => (dispatch, getState) =>
+  _checkUserAuthentication(params, dispatch, getState);
 
 export const setUserAuthentication = (sessionId, fleet) => ({
   type: GLOBAL_AUTH_SET,
@@ -31,7 +31,7 @@ export const resetUserAuthentication = () => ({
   type: GLOBAL_AUTH_RESET,
 });
 
-function _checkUserAuthentication(urls, dispatch, getState) {
+function _checkUserAuthentication({ urls, checkVersion = true }, dispatch, getState) {
   const fleet = getFleetName(getState());
 
   // for case when no auth data was saved in localStorage
@@ -40,20 +40,28 @@ function _checkUserAuthentication(urls, dispatch, getState) {
   }
 
   return storage.read(constants.LOCAL_STORAGE_SESSION_KEY)
-  .then(_checkVersion)
+  .then(_checkVersion(checkVersion))
   .then((sessions = []) => {
-    if (sessions) {
+    if (sessions && typeof sessions === 'string') {
+      dispatch(setUserAuthentication(sessions, fleet));
+    } else if (sessions) {
       const fleetSession = sessions.filter(session => session.fleet === fleet);
 
       if (fleetSession.length !== 0) {
         dispatch(setUserAuthentication(fleetSession[0]['session-id'], fleet));
       } else {
         dispatch(resetUserAuthentication());
-        dispatch(replace(`${createBaseUrl(fleet)}/${urls.failure}`));
+
+        if (urls) {
+          dispatch(replace(`${createBaseUrl(fleet)}/${urls.failure}`));
+        }
       }
     } else {
       dispatch(resetUserAuthentication());
-      dispatch(replace(`${createBaseUrl(fleet)}/${urls.failure}`));
+
+      if (urls) {
+        dispatch(replace(`${createBaseUrl(fleet)}/${urls.failure}`));
+      }
     }
   }, (error) => {
     if (error.message && error.message === 'wrong version') {
@@ -61,7 +69,10 @@ function _checkUserAuthentication(urls, dispatch, getState) {
 
       storage.clean(constants.LOCAL_STORAGE_SESSION_KEY);
       dispatch(resetUserAuthentication());
-      dispatch(replace(loginUrl));
+
+      if (urls) {
+        dispatch(replace(loginUrl));
+      }
     }
   });
 }
@@ -112,10 +123,15 @@ function _logout(dispatch, getState) {
     console.error(error);
   });
 }
-function _checkVersion(savedData) {
+
+const _checkVersion = (needChecking) => (savedData) => {
+  if (!needChecking) {
+    return Promise.resolve(savedData);
+  }
+
   if (VERSIONS.authentication.verify(savedData)) {
     const toReturn = savedData && savedData.hasOwnProperty('values') ? savedData.values : savedData;
     return Promise.resolve(toReturn);
   }
   return Promise.reject({ message: 'wrong version' });
-}
+};

@@ -1,10 +1,11 @@
 import {
   isDev,
   onProduction,
-  protocol,
 } from 'configs';
 
-export const LOCAL_STORAGE_SESSION_KEY = onProduction ? 'ngStorage-sessionId_tajo' : 'ngStorage-sessionId';
+const portal = process.env.DRVR_PROJECT;
+
+export const LOCAL_STORAGE_SESSION_KEY = onProduction && portal !== 'ssreports' ? 'ngStorage-sessionId_tajo' : 'ngStorage-sessionId';
 export const LOCAL_STORAGE_INSTALLER_KEY = onProduction ? 'drvr_installer_tajo' : 'drvr_installer';
 export const HOST_BASE = isDev ? 'ddsdev.cloudapp.net:8080/engine' : `${window.location.host}/engine`;
 //

@@ -19,7 +19,7 @@ class App extends React.Component {
   componentDidMount() {
     window.addEventListener('offline', this.handleOnlineState);
     window.addEventListener('online', this.handleOnlineState);
-    this.props.checkUserAuthentication(URLS);
+    this.props.checkUserAuthentication({ urls: URLS });
   }
 
   componentWillUnmount() {
@@ -41,7 +41,7 @@ class App extends React.Component {
 }
 
 App.contextTypes = {
-  router: React.PropTypes.object.isRequired,
+  router: React.PropTypes.object,
 };
 
 App.propTypes = {
