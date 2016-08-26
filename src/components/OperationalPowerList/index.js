@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
-import VehiclesList from 'components/InstancesList';
+import ItemsList from 'components/InstancesList';
 import listTypes from 'components/InstancesList/types';
 import { vehiclesActions, gfActions } from 'services/FleetModel/actions';
 import * as listEvents from './events';
@@ -60,7 +60,7 @@ class InstancesColumn extends React.Component {
         <Tabs>
           <Tab label="Vehicles">
             <Filter filterFunc={this.props.filterVehiclesFunc} />
-            <VehiclesList
+            <ItemsList
               currentExpandedItemId={this.state.currentExpandedVehicleId}
               onItemClick={this.onVehicleClick}
               data={this.props.vehicles}
@@ -69,7 +69,7 @@ class InstancesColumn extends React.Component {
           </Tab>
           <Tab label="Locations">
             <Filter filterFunc={this.props.filterGFsFunc} />
-            <VehiclesList
+            <ItemsList
               currentExpandedItemId={this.state.currentExpandedGFId}
               onItemClick={this.onGFClick}
               data={this.props.gfs}
