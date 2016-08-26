@@ -16,10 +16,10 @@ class SelfServiceReport extends React.Component {
     const fleetName = 'test';
 
     this.props.setFleet(fleetName)
-      .then(this.props.checkUserAuthentication({
+      .then(() => this.props.checkUserAuthentication({
         checkVersion: false,
       }))
-      .then(this.props.fetchVehicles());
+      .then(() => this.props.fetchVehicles());
   }
 
   render() {

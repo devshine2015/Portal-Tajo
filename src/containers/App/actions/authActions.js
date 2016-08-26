@@ -43,7 +43,7 @@ function _checkUserAuthentication({ urls, checkVersion = true }, dispatch, getSt
   .then(_checkVersion(checkVersion))
   .then((sessions = []) => {
     if (sessions && typeof sessions === 'string') {
-      dispatch(setUserAuthentication(sessions, fleet));
+      return dispatch(setUserAuthentication(sessions, fleet));
     } else if (sessions) {
       const fleetSession = sessions.filter(session => session.fleet === fleet);
 
