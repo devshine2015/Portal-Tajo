@@ -6,7 +6,7 @@ import 'babel-polyfill';
 
 // Import all the third party stuff
 import React from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -23,9 +23,18 @@ require('sanitize.css/sanitize.css');
 const initialState = {};
 const store = configureStore(initialState, browserHistory, createSelfServiceReducer);
 
-ReactDOM.render(
-  <Provider store={store}>
-    <SelfServiceReport />
-  </Provider>,
-  document.getElementById('app')
-);
+class SsReports extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <SelfServiceReport fleet={this.props.fleet} />
+      </Provider>
+    );
+  }
+}
+
+SsReports.propTypes = {
+  fleet: React.PropTypes.string.isRequired,
+};
+
+window.SSREPORT = SsReports;

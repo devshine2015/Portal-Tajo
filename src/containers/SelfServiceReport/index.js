@@ -13,9 +13,7 @@ const muiTheme = getMuiTheme(drvrDevTheme);
 class SelfServiceReport extends React.Component {
 
   componentWillMount() {
-    const fleetName = 'test';
-
-    this.props.setFleet(fleetName)
+    this.props.setFleet(this.props.fleet)
       .then(() => this.props.checkUserAuthentication({
         checkVersion: false,
       }))
@@ -35,6 +33,7 @@ SelfServiceReport.propTypes = {
   checkUserAuthentication: React.PropTypes.func.isRequired,
   fetchVehicles: React.PropTypes.func.isRequired,
   setFleet: React.PropTypes.func.isRequired,
+  fleet: React.PropTypes.string.isRequired,
 };
 
 const mapDispatch = {

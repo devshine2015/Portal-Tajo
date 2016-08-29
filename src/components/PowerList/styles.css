@@ -7,4 +7,9 @@
     z-index: 1;
     border-right: 4px solid #E64A19;
   }
+
+  .likeStatic {
+    position: absolute;
+    top: 10px;
+  }
 }

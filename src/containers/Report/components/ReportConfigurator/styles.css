@@ -2,4 +2,8 @@
   .button:first-child {
     margin-right: 15px; 
   }
+  .error {
+    font-size: 14px;
+    color: red;
+  }
 }

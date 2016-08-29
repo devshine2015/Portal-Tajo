@@ -18,6 +18,7 @@ const ReportsScreen = ({
   hasReport,
   saveGenerated,
   selectedFields,
+  noMaterialUI = false,
 }) => {
   const headers = selectedFields.map(index => (
     availableFields[index].label
@@ -25,15 +26,17 @@ const ReportsScreen = ({
 
   return (
     <div className="configurator">
-      <VehiclesList />
+      <VehiclesList fixed={!noMaterialUI} />
       <FixedContent>
         <ReportConfigurator
+          noMaterialUI={noMaterialUI}
           hideSplitter
           hasReport={hasReport}
           saveReport={saveGenerated}
         />
 
         <PreviewTable
+          noMaterialUI={noMaterialUI}
           headers={headers}
           data={data}
         />
@@ -48,6 +51,7 @@ ReportsScreen.propTypes = {
   hasReport: React.PropTypes.bool.isRequired,
   saveGenerated: React.PropTypes.func.isRequired,
   selectedFields: React.PropTypes.object.isRequired,
+  noMaterialUI: React.PropTypes.bool,
 };
 
 const PureReportsScreen = pure(ReportsScreen);

@@ -1,27 +1,24 @@
 import React from 'react';
 import pure from 'recompose/pure';
-import DatePicker from 'material-ui/DatePicker';
-import TimePicker from 'material-ui/TimePicker';
-import OutdatedPeriod from './outdated';
 
 import styles from './styles.css';
 
-class Period extends React.Component {
+class OutdatedPeriod extends React.Component {
 
-  onStartDateChange = (event = undefined, value) => {
-    this.onChange(this.props.fields.start.name, value);
+  onStartDateChange = (e) => {
+    this.onChange(this.props.fields.start.name, e.target.value);
   }
 
-  onEndDateChange = (event = undefined, value) => {
-    this.onChange(this.props.fields.end.name, value);
+  onEndDateChange = (e) => {
+    this.onChange(this.props.fields.end.name, e.target.value);
   }
 
-  onStartTimeChange = (event = undefined, value) => {
-    this.onChange(this.props.fields.startTime.name, value);
+  onStartTimeChange = (e) => {
+    this.onChange(this.props.fields.startTime.name, e.target.value);
   }
 
-  onEndTimeChange = (event = undefined, value) => {
-    this.onChange(this.props.fields.endTime.name, value);
+  onEndTimeChange = (e) => {
+    this.onChange(this.props.fields.endTime.name, e.target.value);
   }
 
   onChange = (field, value) => {
@@ -30,25 +27,57 @@ class Period extends React.Component {
 
   renderDate = () => (
     <div className={styles['interval-col']}>
-      <DatePicker
-        autoOk
-        hintText="Start date interval"
-        defaultDate={this.props.fields.start.default}
-        name={this.props.fields.start.name}
-        onChange={this.onStartDateChange}
-      />
-      <DatePicker
-        autoOk
-        hintText="End date interval"
-        name={this.props.fields.end.name}
-        onChange={this.onEndDateChange}
-      />
+      <div>
+        <label>
+          Start date
+          <br />
+          <input
+            type="date"
+            name={this.props.fields.start.name}
+            onChange={this.onStartDateChange}
+            // value={this.props.fields.start.default}
+          />
+        </label>
+      </div>
+      <div>
+        <label>
+          Finish date
+          <br />
+          <input
+            type="date"
+            name={this.props.fields.end.name}
+            onChange={this.onEndDateChange}
+          />
+        </label>
+      </div>
     </div>
   )
 
   renderTime = () => (
     <div className={styles['interval-col']}>
-      <TimePicker
+      <div>
+        <label>
+          Start time
+          <br />
+          <input
+            type="time"
+            name={this.props.fields.startTime.name}
+            onChange={this.onStartTimeChange}
+          />
+        </label>
+      </div>
+      <div>
+        <label>
+          End time
+          <br />
+          <input
+            type="time"
+            name={this.props.fields.endTime.name}
+            onChange={this.onEndTimeChange}
+          />
+        </label>
+      </div>
+      {/*<TimePicker
         autoOk
         container="inline"
         defaultTime={this.props.fields.startTime.default}
@@ -65,15 +94,11 @@ class Period extends React.Component {
         hintText="End time interval"
         name={this.props.fields.endTime.name}
         onChange={this.onEndTimeChange}
-      />
+      />*/}
     </div>
   )
 
   render() {
-    if (this.props.noMaterialUI) {
-      return <OutdatedPeriod {...this.props} />;
-    }
-
     return (
       <div>
         <div className={styles.intervals}>
@@ -85,7 +110,7 @@ class Period extends React.Component {
   }
 }
 
-Period.propTypes = {
+OutdatedPeriod.propTypes = {
   handlePeriodChange: React.PropTypes.func.isRequired,
   fields: React.PropTypes.shape({
     start: React.PropTypes.shape({
@@ -106,7 +131,6 @@ Period.propTypes = {
     }),
   }).isRequired,
   withTime: React.PropTypes.bool,
-  noMaterialUI: React.PropTypes.bool,
 };
 
-export default pure(Period);
+export default pure(OutdatedPeriod);

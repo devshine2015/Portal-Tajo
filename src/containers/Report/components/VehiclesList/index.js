@@ -35,6 +35,7 @@ class ReportsVehiclesList extends React.Component {
   render() {
     return (
       <PowerList
+        fixed={this.props.fixed}
         filter={
           <Filter filterFunc={this.onFilter} />
         }
@@ -50,6 +51,7 @@ ReportsVehiclesList.propTypes = {
   chooseVehiclesForReport: React.PropTypes.func.isRequired,
   vehicles: React.PropTypes.array.isRequired,
   selectedVehicles: React.PropTypes.array.isRequired,
+  fixed: React.PropTypes.bool,
 };
 
 const mapState = (state) => ({

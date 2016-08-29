@@ -53,7 +53,7 @@ export function save(key, value, version = undefined) {
       if (!savedData.hasOwnProperty('values')) {
         savedData.values = [];
       }
-
+      
       // update version if specified
       if (version !== undefined) {
         savedData.ver = version;

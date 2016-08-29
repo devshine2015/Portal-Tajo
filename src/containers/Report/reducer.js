@@ -56,6 +56,8 @@ export const getSelectedFieldIndex = (state, value) =>
   fromConfigReducer.getSelectedFieldIndex(state, value);
 export const getReportFrequency = (state) =>
   fromConfigReducer.getReportFrequency(state);
+export const getErrorMessage = (state) =>
+  fromConfigReducer.getErrorMessage(state.getIn(['reports', 'configurator']));
 
 export const getSelectedVehicles = (state) =>
   fromVehiclesReducer.getSelectedVehicles(state.getIn(['reports', 'vehicles']));

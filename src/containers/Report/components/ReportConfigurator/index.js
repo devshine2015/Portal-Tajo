@@ -14,6 +14,7 @@ import {
   getReportLoadingState,
   getAvailableFields,
   getReportFrequency,
+  getErrorMessage,
 } from 'containers/Report/reducer';
 
 import styles from './styles.css';
@@ -155,6 +156,8 @@ class Report extends React.Component {
   }
 
   render() {
+    const noMaterialUI = this.props.noMaterialUI !== undefined ? this.props.noMaterialUI : false;
+
     return (
       <div>
         <Form
@@ -165,6 +168,7 @@ class Report extends React.Component {
             checkedFields={this.state}
             onChange={this.onSelectedFieldsChange}
             fields={this.props.availableFields}
+            noMaterialUI={noMaterialUI}
           />
 
           <Period
@@ -193,6 +197,12 @@ class Report extends React.Component {
             )}
           </InputFieldWrapper>
         </Form>
+
+        { this.props.error && (
+          <div className={styles.error}>
+            {this.props.error}
+          </div>
+        )}
       </div>
     );
   }
@@ -209,12 +219,15 @@ Report.propTypes = {
   saveReport: React.PropTypes.func.isRequired,
   updateSelectedFields: React.PropTypes.func.isRequired,
   swipeGeneratedData: React.PropTypes.func.isRequired,
+  noMaterialUI: React.PropTypes.bool,
+  error: React.PropTypes.string,
 };
 
 const mapState = (state) => ({
   availableFields: getAvailableFields(state),
   isLoading: getReportLoadingState(state),
   frequency: getReportFrequency(state),
+  error: getErrorMessage(state),
 });
 const mapDispatch = {
   generateReport: dataActions.generateReport,

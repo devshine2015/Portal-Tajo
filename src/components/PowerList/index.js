@@ -9,8 +9,11 @@ const PowerList = ({
   className,
   content = null,
   filter = null,
+  fixed = true,
 }) => {
-  const columnClassName = classnames(styles.columnContainer, className);
+  const columnClassName = classnames('powerlist', styles.columnContainer, className, {
+    [styles.likeStatic]: !fixed,
+  });
 
   return (
     <FixedColumn containerClassName={columnClassName}>
@@ -29,6 +32,7 @@ PowerList.propTypes = {
   className: React.PropTypes.string,
   content: React.PropTypes.element,
   filter: React.PropTypes.element,
+  fixed: React.PropTypes.bool,
 };
 
 export default pure(PowerList);

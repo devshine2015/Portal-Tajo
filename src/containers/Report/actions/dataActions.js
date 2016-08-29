@@ -3,6 +3,7 @@ import qs from 'query-string';
 import api from 'utils/api';
 import reporter from 'utils/reports';
 import { setLoader } from './loaderActions';
+import { setErrorMessage } from './configuratorActions';
 import {
   getSavedReportData,
   getSelectedFields,
@@ -96,6 +97,12 @@ function _generateReport({ timePeriod, frequency }, dispatch, getState) {
     .then(table => {
       dispatch(setLoader(false));
       dispatch(_saveReportData(table));
+    })
+    .catch(e => {
+      if (e && e.response && e.response.status === 500) {
+        dispatch(setLoader(false));
+        dispatch(setErrorMessage('Server error'));
+      }
     });
 }
 

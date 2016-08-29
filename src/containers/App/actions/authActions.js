@@ -41,7 +41,7 @@ function _checkUserAuthentication({ urls, checkVersion = true }, dispatch, getSt
 
   return storage.read(constants.LOCAL_STORAGE_SESSION_KEY)
   .then(_checkVersion(checkVersion))
-  .then((sessions = []) => {
+  .then((sessions) => {
     if (sessions && typeof sessions === 'string') {
       return dispatch(setUserAuthentication(sessions, fleet));
     } else if (sessions) {
@@ -63,6 +63,8 @@ function _checkUserAuthentication({ urls, checkVersion = true }, dispatch, getSt
         dispatch(replace(`${createBaseUrl(fleet)}/${urls.failure}`));
       }
     }
+
+    return Promise.resolve();
   }, (error) => {
     if (error.message && error.message === 'wrong version') {
       const loginUrl = `${createBaseUrl(fleet)}/login`;
@@ -94,7 +96,7 @@ function _login(data, dispatch, getState) {
         id: token,
       };
 
-      storage.save(constants.LOCAL_STORAGE_SESSION_KEY, fleetToken, VERSIONS.authentication.ver);
+      storage.save(constants.LOCAL_STORAGE_SESSION_KEY, fleetToken, 2);
       dispatch(setUserAuthentication(token, fleet));
       dispatch(push(`${createBaseUrl(fleet)}/`));
     }, (error) => {

@@ -16,6 +16,7 @@ const configuratorInitialState = fromJS({
   available: new List(specs),
   selected: new List(checkedSpecs),
   frequency: undefined,
+  error: undefined,
 });
 
 function configuratorReducer(state = configuratorInitialState, action) {
@@ -30,6 +31,8 @@ function configuratorReducer(state = configuratorInitialState, action) {
       return state.updateIn(['selected'], selected =>
         selected.delete(action.index)
       );
+    case configuratorActions.CONFIGURATOR_ERROR_SET:
+      return state.set('error', action.message);
     default:
       return state;
   }
@@ -49,3 +52,6 @@ export const getSelectedFieldIndex = (state, value) =>
   getSelectedFields(state).indexOf(value);
 export const getReportFrequency = (state) =>
   state.getIn(['reports', 'configurator', 'frequency']);
+
+export const getErrorMessage = (state) =>
+  state.get('error');

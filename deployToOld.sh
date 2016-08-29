@@ -4,7 +4,7 @@ TARGET_FOLDER='~/driver-server/static-root/public/common-portal/'
 FOLDER_NAME='ssreports'
 
 echo "clean and build sources"
-npm run build:clean
+rm -r $PROJECT
 npm run build:$PROJECT
 
 echo "erase $FOLDER_NAME"
