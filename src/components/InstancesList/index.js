@@ -41,7 +41,7 @@ function chooseItem(type, {
         />
       );
     }
-    case types.withLocationDetails: {
+    case types.withGFDetails: {
       return (
         <DetailedGFItem
           onClick={onItemClick}
@@ -77,6 +77,10 @@ const InstancesList = ({
       'background-color: ' + context.muiTheme.palette.PLItemBackgroundColorExpanded, 0);
     addCSSRule('.listItemDynamicExpanded:hover',
       'background-color: ' + context.muiTheme.palette.PLItemBackgroundColorExpanded, 0);
+    addCSSRule('.listItemGFDynamicExpanded',
+      'background-color: ' + context.muiTheme.palette.PLItemGFBackgroundColorExpanded, 0);
+    addCSSRule('.listItemGFDynamicExpanded:hover',
+      'background-color: ' + context.muiTheme.palette.PLItemGFBackgroundColorExpanded, 0);
     addCSSRule('.listItemDynamic',
       'background-color: ' + context.muiTheme.palette.PLItemBackgroundColor + ';' +
       'color: ' + context.muiTheme.palette.PLItemColor, 0 );
@@ -134,7 +138,7 @@ InstancesList.propTypes = {
   type: React.PropTypes.oneOf([
     types.withCheckboxes,
     types.withVehicleDetails,
-    types.withLocationDetails,
+    types.withGFDetails,
     types.simple,
   ]),
   selectedItems: React.PropTypes.array,

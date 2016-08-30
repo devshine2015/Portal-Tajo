@@ -31,19 +31,21 @@ import tinycolor from 'tinycolor2';
 
 import { white, darkBlack,
   indigo500, indigo300,
+  blue600,
+  lightBlue800,
   cyan500, cyan600, cyan700, cyan800, cyan900,
   teal500, teal700,
   blueGrey500,
   deepOrange500,deepOrange700, deepOrange800, deepOrange900,
   brown500,
   lime500, lime300,
-  green500,
+  green500, green700,
   lightGreenA400, lightGreenA700,
  } from 'material-ui/styles/colors';
 
 const drvrDevTheme = {
   palette: {
-    primary1Color: teal500,
+    primary1Color: teal500, // '#FFB300'
     primary2Color: teal700,
     // primary3Color: grey400,
     accent1Color: deepOrange700,
@@ -58,6 +60,10 @@ const drvrDevTheme = {
 //    PLItemColor: tinycolor(darkBlack).setAlpha(0.87).toRgbString(),
     PLItemBackgroundColorExpanded: deepOrange700, // '#fd9e83',
     PLItemBackgroundColorExpandedHover: tinycolor(deepOrange700).setAlpha(0.85).toRgbString(),
+
+    PLItemGFBackgroundColorExpanded: blue600,
+    PLItemGFBackgroundColorExpandedHover: tinycolor(blue600).setAlpha(0.85).toRgbString(),
+
 
 //    PLItemBackgroundColorExpanded: cyan500,
 //    PLItemBackgroundColorExpandedHover: tinycolor(cyan500).setAlpha(0.85).toRgbString(),

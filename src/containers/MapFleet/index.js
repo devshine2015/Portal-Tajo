@@ -18,6 +18,7 @@ import { MAPBOX_KEY, ZERO_LOCATION, ZERO_ZOOM, NEW_GF_REQUIRED_ZOOM_LEVEL } from
 
 import * as mapEvents from './events';
 import * as listEvents from 'components/OperationalPowerList/events';
+import listTypes from 'components/InstancesList/types';
 
 const selectForMe = (meThis, hookId) => (id) => {
   meThis.selectMarker(hookId, id);
@@ -34,12 +35,15 @@ class MapFleet extends React.Component {
 
     this.state = {
 //      gfEditMode: false,
+      detailedList: listTypes.withVehicleDetails,
       selectedVehicleId: undefined,
       selectedLocationId: undefined,
     };
 
     this.props.eventDispatcher.registerHandler(listEvents.OPS_LIST_ITEM_SELECTED,
       ((meThis) => (id) => { meThis.highLightMarker(id); })(this));
+    this.props.eventDispatcher.registerHandler(listEvents.OPS_LIST_TAB_SWITCH,
+      ((meThis) => (tabType) => { meThis.listTabChange(tabType); })(this));
   }
 
   componentDidMount() {
@@ -122,6 +126,11 @@ class MapFleet extends React.Component {
   selectMarker(hookId, selectedId) {
     this.props.eventDispatcher.fireEvent(hookId, selectedId);
   }
+  // PowerList switched (vehicles to GF, etc)
+  listTabChange(listType) {
+    this.setState({ detailedList: listType });
+    this.forceUpdate();
+  }
 
   hideLayer(theLayer, doHide) {
     if (this.theMap === null) return;
@@ -149,6 +158,7 @@ class MapFleet extends React.Component {
         <MapVehicle
           key={v.id}
           isSelected={this.state.selectedVehicleId === v.id}
+          isDetailViewActivated={this.state.detailedList === listTypes.withVehicleDetails}
           theLayer={this.vehicleMarkersLayer}
           theVehicle={v}
           onClick={selectForMe(this, mapEvents.MAP_VEHICLE_SELECTED)}
@@ -158,6 +168,7 @@ class MapFleet extends React.Component {
         <MapGF
           key={v.id}
           isSelected={this.state.selectedLocationId === v.id}
+          isDetailViewActivated={this.state.detailedList === listTypes.withGFDetails}
           theLayer={this.gfMarkersLayer}
           theGF={v}
           onClick={selectForMe(this, mapEvents.MAP_GF_SELECTED)}

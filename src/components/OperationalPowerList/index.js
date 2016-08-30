@@ -34,9 +34,7 @@ class InstancesColumn extends React.Component {
 
   onItemClick = (itemId, isExpanded, type) => {
     this.props.eventDispatcher.fireEvent(listEvents.OPS_LIST_ITEM_SELECTED, itemId);
-
     const value = isExpanded ? itemId : undefined;
-
     switch (type) {
       case 'vehicle': {
         this.setState({
@@ -54,11 +52,20 @@ class InstancesColumn extends React.Component {
     }
   }
 
+  onTabChange = (value) => {
+    this.props.eventDispatcher.fireEvent(listEvents.OPS_LIST_TAB_SWITCH, value);
+  }
+
+// style={{ backgroundColor: this.context.muiTheme.palette.PLItemBackgroundColorExpanded }}
+// style={{ backgroundColor: this.context.muiTheme.palette.PLItemGFBackgroundColorExpanded }}
+//
   render() {
     return (
       <PowerList>
-        <Tabs>
-          <Tab label="Vehicles">
+        <Tabs inkBarStyle={ { backgroundColor: 'rgba(255,255,255,0.5)' } }
+          onChange = {this.onTabChange}
+        >
+          <Tab label="Vehicles" value={listTypes.withVehicleDetails}>
             <Filter filterFunc={this.props.filterVehiclesFunc} />
             <ItemsList
               currentExpandedItemId={this.state.currentExpandedVehicleId}
@@ -67,13 +74,13 @@ class InstancesColumn extends React.Component {
               type={listTypes.withVehicleDetails}
             />
           </Tab>
-          <Tab label="Locations">
+          <Tab label="Locations" value={listTypes.withGFDetails} >
             <Filter filterFunc={this.props.filterGFsFunc} />
             <ItemsList
               currentExpandedItemId={this.state.currentExpandedGFId}
               onItemClick={this.onGFClick}
               data={this.props.gfs}
-              type={listTypes.withLocationDetails}
+              type={listTypes.withGFDetails}
             />
           </Tab>
         </Tabs>
@@ -82,6 +89,9 @@ class InstancesColumn extends React.Component {
   }
 }
 
+InstancesColumn.contextTypes = {
+  muiTheme: React.PropTypes.object.isRequired,
+};
 InstancesColumn.propTypes = {
   vehicles: React.PropTypes.object.isRequired,
   gfs: React.PropTypes.array.isRequired,
@@ -89,7 +99,6 @@ InstancesColumn.propTypes = {
   filterVehiclesFunc: React.PropTypes.func.isRequired,
   filterGFsFunc: React.PropTypes.func.isRequired,
 };
-
 InstancesColumn.propTypes = {};
 
 const mapDispatch = {

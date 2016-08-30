@@ -2,9 +2,11 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { getVehicleByValue } from 'services/FleetModel/utils/vehiclesMap';
 import styles from './styles.css';
+import { createPointerLine, showPointerLine } from './../../utils/pointerLineHelpers';
 // const iconPin = require('assets/images/v_icons_combi/pin.png');
 const iconPin = require('assets/images/v_icons_combi/pointer.png');
 // const iconPin = require('assets/images/v_icons_combi/pointerRightTilt.png');
+
 
 class MapVehicle extends React.Component {
   constructor(props) {
@@ -14,6 +16,7 @@ class MapVehicle extends React.Component {
     this.markerIcon = null;
     this.markerIconSelected = null;
     this.popUp = null;
+    this.pointerLine = null;
   }
 
   componentDidMount() {
@@ -27,11 +30,14 @@ class MapVehicle extends React.Component {
   shouldComponentUpdate(nextProps) {
     return this.props.theVehicle.pos !== nextProps.theVehicle.pos
       || this.props.theVehicle.filteredOut !== nextProps.theVehicle.filteredOut
-      || this.props.isSelected !== nextProps.isSelected;
+      || this.props.isSelected !== nextProps.isSelected
+      || (this.props.isSelected
+          && this.props.isDetailViewActivated !== nextProps.isDetailViewActivated);
   }
 
   setPosition(latLng) {
     this.theMarker.setLatLng(latLng);
+    this.pointerLine.setLatLng(latLng);
   }
   createMarker() {
     // const iconH = 240 / 2;
@@ -89,6 +95,7 @@ class MapVehicle extends React.Component {
       keepInView: false,
       zoomAnimation: true,
     }).setContent(this.props.theVehicle.name);
+
     // this.theMarker.bindPopup(this.popUp);
     // const hoverHandle = ((inThis) => (e) => {
     //   inThis.theMarker.openPopup();
@@ -96,6 +103,10 @@ class MapVehicle extends React.Component {
     // this.theMarker.on('mouseover', hoverHandle);
     // // this.theMarker.on('mouseout', (e) => {
     // // });
+    this.pointerLine = createPointerLine(this.props.theVehicle.pos,
+      [headAnchorW, headAnchorH - headSz / 2]);
+    this.theLayer.addLayer(this.pointerLine);
+    showPointerLine(this.pointerLine, false);
   }
   toggle(doShow) {
     if (doShow) {
@@ -121,6 +132,7 @@ class MapVehicle extends React.Component {
       this.setPosition(this.props.theVehicle.pos);
       this.toggle(!this.props.theVehicle.filteredOut);
       this.expand(this.props.isSelected);
+      showPointerLine(this.pointerLine, this.props.isSelected && this.props.isDetailViewActivated);
     }
     return false;
   }
@@ -131,6 +143,7 @@ MapVehicle.propTypes = {
   theVehicle: React.PropTypes.object,
   onClick: React.PropTypes.func.isRequired,
   isSelected: React.PropTypes.bool.isRequired,
+  isDetailViewActivated: React.PropTypes.bool.isRequired,
 };
 const PureMapVehicle = pure(MapVehicle);
 
