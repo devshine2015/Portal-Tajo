@@ -46,10 +46,19 @@ class LocationWithDetails extends React.Component {
           value={this.props.radius.toFixed(0)}
         />,
         <Divider key="line02" />,
-        <IconButton tooltip="Edit" onClick={this.onEdit}>
+        <IconButton
+          tooltip="Edit"
+          onClick={this.onEdit}
+          key="editBnt"
+        >
            <EditIcon color={teal200} hoverColor={teal100} />
          </IconButton>,
-        <IconButton tooltip="Delete" onClick={this.onDelete} className={styles.iconDelBtn}>
+        <IconButton
+          tooltip="Delete"
+          onClick={this.onDelete}
+          className={styles.iconDelBtn}
+          key="delBtn"
+        >
            <DeletIcon color={yellow700} hoverColor={yellow500} />
          </IconButton>,
       ];
