@@ -132,7 +132,9 @@ class MapVehicle extends React.Component {
       this.setPosition(this.props.theVehicle.pos);
       this.toggle(!this.props.theVehicle.filteredOut);
       this.expand(this.props.isSelected);
-      showPointerLine(this.pointerLine, this.props.isSelected && this.props.isDetailViewActivated);
+      showPointerLine(this.pointerLine, !this.props.theVehicle.filteredOut
+                                        && this.props.isSelected
+                                        && this.props.isDetailViewActivated);
     }
     return false;
   }

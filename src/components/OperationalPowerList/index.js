@@ -53,7 +53,10 @@ class InstancesColumn extends React.Component {
   }
 
   onTabChange = (value) => {
-    this.props.eventDispatcher.fireEvent(listEvents.OPS_LIST_TAB_SWITCH, value);
+    if (value === listTypes.withVehicleDetails
+    || value === listTypes.withGFDetails) {
+      this.props.eventDispatcher.fireEvent(listEvents.OPS_LIST_TAB_SWITCH, value);
+    }
   }
 
 // style={{ backgroundColor: this.context.muiTheme.palette.PLItemBackgroundColorExpanded }}

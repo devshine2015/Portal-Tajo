@@ -70,7 +70,9 @@ class MapGF extends React.Component {
       this.toggle(!this.props.theGF.filteredOut);
       this.setPosition(this.props.theGF.pos);
       this.expand(this.props.isSelected);
-      showPointerLine(this.pointerLine, this.props.isSelected && this.props.isDetailViewActivated);
+      showPointerLine(this.pointerLine, !this.props.theGF.filteredOut
+                                        && this.props.isSelected
+                                        && this.props.isDetailViewActivated);
     }
     return false;
   }
