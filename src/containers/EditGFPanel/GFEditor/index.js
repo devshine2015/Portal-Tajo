@@ -92,7 +92,7 @@ class GFEditor extends React.Component {
 
   render() {
     return (
-      <div className={styles.details}>
+      <div className={styles.editor}>
         <Form
           name={FORM}
           onSubmit={this.onSubmit}
