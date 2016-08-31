@@ -1,7 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { getVehicleByValue } from 'services/FleetModel/utils/vehiclesMap';
-import styles from './styles.css';
+import styles from './../styles.css';
 import { createPointerLine, showPointerLine } from './../../utils/pointerLineHelpers';
 // const iconPin = require('assets/images/v_icons_combi/pin.png');
 const iconPin = require('assets/images/v_icons_combi/pointer.png');

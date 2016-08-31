@@ -1,8 +1,4 @@
 @media screen and (min-width: 100px) {
-  .vehiclePointerLine {
-    background: #e64a19;
-    transition: width 0.5s ease-in-out;
-  }
   .huerotate {
     -webkit-filter: hue-rotate(180deg);
     filter: hue-rotate(180deg);
