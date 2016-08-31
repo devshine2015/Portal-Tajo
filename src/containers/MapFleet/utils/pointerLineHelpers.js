@@ -14,12 +14,22 @@ export function createPointerLine(pos, anchor) {
   return thePointer;
 }
 
+//
+// TODO: better way instead of accessing _icon directly?
 export function showPointerLine(theLine, doShow) {
   if (doShow) {
-    theLine._icon.style.width = _pointerLineWidth.toString() + 'px';
-    theLine._icon.style.opacity = '1';
+    //
+    // TODO: investigate why no icon when opening GF editor
+    if (theLine._icon) {
+      theLine._icon.style.width = _pointerLineWidth.toString() + 'px';
+      theLine._icon.style.opacity = '1';
+    }
   } else {
-    theLine._icon.style.width = '0px';
-    theLine._icon.style.opacity = '1';
+    //
+    // TODO: investigate why no icon when opening GF editor
+    if (theLine._icon) {
+      theLine._icon.style.width = '0px';
+      theLine._icon.style.opacity = '1';
+    }
   }
 }
