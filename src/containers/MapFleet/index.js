@@ -129,7 +129,6 @@ class MapFleet extends React.Component {
   // PowerList switched (vehicles to GF, etc)
   listTabChange(listType) {
     this.setState({ detailedList: listType });
-    this.forceUpdate();
   }
 
   hideLayer(theLayer, doHide) {
