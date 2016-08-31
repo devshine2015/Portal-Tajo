@@ -12,7 +12,7 @@ function gfReducer(state = gfsInitialState, action) {
       return state.set('list', new List(action.locations))
           .set('processedList', fromJS(action.localGFs));
     case gfActions.FLEET_MODEL_GF_FILTER:
-      return state.set('processedList', new Map(action.gfs));
+      return state.set('processedList', fromJS(action.gfs));
     default:
       return state;
   }

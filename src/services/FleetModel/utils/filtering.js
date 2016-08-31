@@ -14,11 +14,12 @@
 // };
 
 export const filterProcessedListByName = (origin = {}, searchString) => {
+  const result = Object.assign({}, origin);
   for (const k in origin) {
     if (origin.hasOwnProperty(k)) {
-      origin[k].filteredOut = origin[k].name.toLowerCase().search(searchString) === -1;
+      result[k] = Object.assign({}, origin[k]);
+      result[k].filteredOut = origin[k].name.toLowerCase().search(searchString) === -1;
     }
   }
-
-  return origin;
+  return result;
 };
