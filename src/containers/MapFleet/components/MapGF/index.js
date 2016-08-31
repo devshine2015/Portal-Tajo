@@ -20,7 +20,9 @@ class MapGF extends React.Component {
     this.createMarker();
   }
   componentWillUnmount() {
+// TODO: need to delete MapBox markers?
     this.toggle(false);
+    showPointerLine(this.pointerLine, false);
   }
   setPosition(latLng) {
     this.theMarker.setLatLng(latLng);
