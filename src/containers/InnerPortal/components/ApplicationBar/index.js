@@ -15,18 +15,20 @@ class ApplicationBar extends React.Component {
 
   render() {
     return (
-      <AppBar
-        title={this.props.title}
-        iconElementRight={
-          <FlatButton
-            label="Logout"
-            onClick={this.onLogoutClick}
-          />
-        }
-        className={styles.bar}
-        zDepth={0}
-        onLeftIconButtonTouchTap={this.props.toggleSidebar}
-      />
+      <div className={styles.barContainer}>
+        <AppBar
+          title={this.props.title}
+          iconElementRight={
+            <FlatButton
+              label="Logout"
+              onClick={this.onLogoutClick}
+            />
+          }
+          className={styles.bar}
+          zDepth={0}
+          onLeftIconButtonTouchTap={this.props.toggleSidebar}
+        />
+      </div>
     );
   }
 }

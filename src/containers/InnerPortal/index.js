@@ -36,19 +36,19 @@ class InnerPortal extends React.Component {
 
   render() {
     if (this.props.isAuthenticated) {
-      const showPortals = this.props.showPortalsList === undefined ? true : this.props.showPortalsList;
+      // const showPortals = this.props.showPortalsList === undefined ? true : this.props.showPortalsList;
 
       return (
-        <div className={styles.appContent}>
+        <div className={styles.innerPortal}>
 
-          <div className={styles.topBarContainer}>
-            <ApplicationBar title={this.props.fleet} />
-            { showPortals && <PortalsList currentFleet={this.props.fleet} /> }
-          </div>
+          <ApplicationBar title={this.props.fleet} />
 
           <MainSidebar />
 
-          <div className={styles.content}>{this.props.children}</div>
+          <div className={styles.content}>
+            { /*showPortals && <PortalsList currentFleet={this.props.fleet} /> */}
+            {this.props.children}
+          </div>
 
           <SnackbarNotification />
 

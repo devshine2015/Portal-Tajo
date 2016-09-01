@@ -1,17 +1,15 @@
 @media screen and (min-width: 100px) {
-  .appContent{
+  .innerPortal {
     height: 100%;
     display: flex;
     flex-direction: column;
-  }
-
-  .topBarContainer{
-    box-shadow: 0px 1px 6px rgba(0, 0, 0, .5);
-    z-index: 1;
+    overflow-y: hidden;
   }
 
   .content{
     display: flex;
     flex: 1;
+    overflow-y: auto;
+    margin-top: 75px;
   }
 }
