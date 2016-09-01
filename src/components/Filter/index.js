@@ -8,10 +8,6 @@ const STYLES = {
   inputStyle: {
     paddingLeft: 15,
     paddingRight: 15,
-    lineHeight: 20,
-  },
-  underline: {
-    borderBottom: '1px solid #E64A19',
   },
 };
 
@@ -46,7 +42,6 @@ class Filter extends React.Component {
           onChange={this.onFiltering}
           hintText="Search"
           underlineShow={false}
-          underlineStyle={STYLES.underline}
         />
       </div>
     );

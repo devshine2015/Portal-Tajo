@@ -106,20 +106,22 @@ const InstancesList = ({
       onItemClick(item.id);
     };
     // style={ { color: context.muiTheme.palette.PLItemColor } }
-    return (<li
-      className={className}
-      key={item.id}
-      onClick={onClick}
-    >
-      {chooseItem(type, {
-        onItemClick,
-        item,
-        selectedItems,
-        currentExpandedItemId,
-        ...rest,
-      })}
-    </li>
-  );});
+    return (
+      <li
+        className={className}
+        key={item.id}
+        onClick={onClick}
+      >
+        {chooseItem(type, {
+          onItemClick,
+          item,
+          selectedItems,
+          currentExpandedItemId,
+          ...rest,
+        })}
+      </li>
+    );
+  });
   return (
     <ul className={styles.list}>
       {items}

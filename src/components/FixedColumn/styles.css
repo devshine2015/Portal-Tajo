@@ -1,8 +1,8 @@
 @media screen and (min-width: 100px) {
   .column {
     position: fixed;
-    overflow-y: auto;
     bottom: 0;
-    top: 100px;
+    // default value, have to be redefined
+    top: 0;
   }
 }

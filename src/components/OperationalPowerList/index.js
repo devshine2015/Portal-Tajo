@@ -5,10 +5,14 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import ItemsList from 'components/InstancesList';
+import Scrollable from 'components/Scrollable';
 import listTypes from 'components/InstancesList/types';
 import { vehiclesActions, gfActions } from 'services/FleetModel/actions';
 import * as listEvents from './events';
 import * as mapEvents from 'containers/MapFleet/events';
+import { dimensions } from 'configs/theme';
+
+import styles from './styles.css';
 
 class InstancesColumn extends React.Component {
 
@@ -65,26 +69,41 @@ class InstancesColumn extends React.Component {
   render() {
     return (
       <PowerList>
-        <Tabs inkBarStyle={ { backgroundColor: 'rgba(255,255,255,0.5)' } }
-          onChange = {this.onTabChange}
+        <Tabs
+          inkBarStyle={{
+            backgroundColor: 'rgba(255,255,255,0.5)',
+          }}
+          className={styles.fullHeight}
+          contentContainerClassName={styles.contentFullHeight}
+          onChange={this.onTabChange}
         >
-          <Tab label="Vehicles" value={listTypes.withVehicleDetails}>
+          <Tab
+            label="Vehicles"
+            value={listTypes.withVehicleDetails}
+          >
             <Filter filterFunc={this.props.filterVehiclesFunc} />
-            <ItemsList
-              currentExpandedItemId={this.state.currentExpandedVehicleId}
-              onItemClick={this.onVehicleClick}
-              data={this.props.vehicles}
-              type={listTypes.withVehicleDetails}
-            />
+            <Scrollable offsetTop={dimensions.powerlistFilterHeight}>
+              <ItemsList
+                currentExpandedItemId={this.state.currentExpandedVehicleId}
+                onItemClick={this.onVehicleClick}
+                data={this.props.vehicles}
+                type={listTypes.withVehicleDetails}
+              />
+            </Scrollable>
           </Tab>
-          <Tab label="Locations" value={listTypes.withGFDetails} >
+          <Tab
+            label="Locations"
+            value={listTypes.withGFDetails}
+          >
             <Filter filterFunc={this.props.filterGFsFunc} />
-            <ItemsList
-              currentExpandedItemId={this.state.currentExpandedGFId}
-              onItemClick={this.onGFClick}
-              data={this.props.gfs}
-              type={listTypes.withGFDetails}
-            />
+            <Scrollable offsetTop={dimensions.powerlistFilterHeight}>
+              <ItemsList
+                currentExpandedItemId={this.state.currentExpandedGFId}
+                onItemClick={this.onGFClick}
+                data={this.props.gfs}
+                type={listTypes.withGFDetails}
+              />
+            </Scrollable>
           </Tab>
         </Tabs>
       </PowerList>
@@ -102,7 +121,6 @@ InstancesColumn.propTypes = {
   filterVehiclesFunc: React.PropTypes.func.isRequired,
   filterGFsFunc: React.PropTypes.func.isRequired,
 };
-InstancesColumn.propTypes = {};
 
 const mapDispatch = {
   filterVehiclesFunc: vehiclesActions.filterVehicles,

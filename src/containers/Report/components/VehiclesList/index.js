@@ -5,10 +5,12 @@ import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import VehiclesList from 'components/InstancesList';
 import listTypes from 'components/InstancesList/types';
+import Scrollable from 'components/Scrollable';
 import { reportVehiclesActions } from '../../actions';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { getSelectedVehicles } from '../../reducer';
+import { dimensions } from 'configs/theme';
 
 class ReportsVehiclesList extends React.Component {
 
@@ -23,12 +25,14 @@ class ReportsVehiclesList extends React.Component {
 
   renderList() {
     return (
-      <VehiclesList
-        onItemClick={this.onVehicleCheck}
-        data={this.props.vehicles}
-        selectedItems={this.props.selectedVehicles}
-        type={listTypes.withCheckboxes}
-      />
+      <Scrollable offsetTop={dimensions.powerlistFilterHeight}>
+        <VehiclesList
+          onItemClick={this.onVehicleCheck}
+          data={this.props.vehicles}
+          selectedItems={this.props.selectedVehicles}
+          type={listTypes.withCheckboxes}
+        />
+      </Scrollable>
     );
   }
 

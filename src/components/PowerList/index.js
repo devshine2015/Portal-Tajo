@@ -2,6 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import classnames from 'classnames';
 import FixedColumn from 'components/FixedColumn';
+
 import styles from './styles.css';
 
 const PowerList = ({
@@ -11,18 +12,18 @@ const PowerList = ({
   filter = null,
   fixed = true,
 }) => {
-  const columnClassName = classnames('powerlist', styles.columnContainer, className, {
+  const columnClassName = classnames(styles.columnContainer, className, {
     [styles.likeStatic]: !fixed,
   });
 
   return (
     <FixedColumn containerClassName={columnClassName}>
-      { children || (
-        <div>
-          {filter || null}
-          {content}
-        </div>
-      )}
+      <div className={styles.powerlist}>
+        { children || ([
+          filter || null,
+          content,
+        ])}
+      </div>
     </FixedColumn>
   );
 };

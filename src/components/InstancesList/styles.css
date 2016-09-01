@@ -1,13 +1,11 @@
 @media screen and (min-width: 100px) {
   .list {
     list-style: none;
-//    padding: 0 15px;
   }
 
   .list__item {
     transition: all .25s;
     position: relative; /*need this to ceate stacking context*/
-    padding: 7px 15px;
     /*border-right: 3px solid #BF360C;*/
      /*#006064; cyan900*/
     /*#fd9e83;*/
@@ -25,7 +23,8 @@
     z-index: 2;
   }
   .listItemInn {
-    min-height: 64px;
+    padding: 7px 15px;
+    min-height: 78px;
     cursor: pointer;
     transition: color .2s;
     display: block;

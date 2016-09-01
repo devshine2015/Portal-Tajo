@@ -6,12 +6,14 @@ import VehicleDetails from './components/VehicleDetails';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import FixedContent from 'components/FixedContent';
+import Scrollable from 'components/Scrollable';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { getVehicleById, cleanVehicle } from 'services/FleetModel/utils/vehicleHelpers';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import { getLoaderState } from './reducer';
 import { detailsActions } from './actions';
 import { showSnackbar } from 'containers/Snackbar/actions';
+import { dimensions } from 'configs/theme';
 
 import styles from './styles.css';
 
@@ -120,11 +122,13 @@ class VehiclesEditor extends React.Component {
             <Filter filterFunc={this.props.filterFunc} />
           }
           content={
-            <VehiclesList
-              onItemClick={this.onItemClick}
-              data={this.props.vehicles}
-              currentExpandedItemId={this.state.selectedVehicelId}
-            />
+            <Scrollable offsetTop={dimensions.powerlistFilterHeight}>
+              <VehiclesList
+                onItemClick={this.onItemClick}
+                data={this.props.vehicles}
+                currentExpandedItemId={this.state.selectedVehicelId}
+              />
+            </Scrollable>
           }
         />
 

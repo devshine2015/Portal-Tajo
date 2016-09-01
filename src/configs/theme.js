@@ -71,3 +71,8 @@ const drvrDevTheme = {
 };
 
 export default drvrDevTheme;
+
+export const dimensions = {
+  appBarHeigth: 64,
+  powerlistFilterHeight: 50,
+};
