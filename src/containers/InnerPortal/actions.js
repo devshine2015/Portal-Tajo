@@ -1,3 +1,11 @@
+import { replace } from 'react-router-redux';
+import { authActions } from 'containers/App/actions';
+import {
+  createBaseUrl,
+  constants,
+  storage,
+} from 'utils';
+
 export const INNER_PORTAL_PAGES_SET = 'portal/InnerPortal/INNER_PORTAL_PAGES_SET';
 export const INNER_PORTAL_SIDEBAR_CHANGE = 'portal/InnerPortal/INNER_PORTAL_SIDEBAR_CHANGE';
 
@@ -20,3 +28,20 @@ function _setInnerPortalPages(routes, dispatch) {
     pages,
   });
 }
+
+export const logout = () => dispatch =>
+  dispatch(authActions.logout())
+    .then(({
+      fleet,
+      sessionId,
+    }) => {
+      const redirectTo = `${createBaseUrl(fleet)}/login`;
+      const toDelete = [{
+        id: sessionId,
+      }];
+
+      storage.cleanExactValues(constants.LOCAL_STORAGE_SESSION_KEY, toDelete);
+      dispatch(replace(redirectTo));
+
+      return Promise.resolve();
+    });

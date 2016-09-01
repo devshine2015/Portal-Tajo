@@ -3,7 +3,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { AppBar, FlatButton } from 'material-ui';
 import { changeMainSidebarState } from 'containers/InnerPortal/actions';
-import { authActions } from 'containers/App/actions';
+import { logout } from '../../actions';
 
 import styles from './styles.css';
 
@@ -39,8 +39,8 @@ ApplicationBar.propTypes = {
 
 const mapState = () => ({});
 const mapDispatch = {
+  logout,
   toggleSidebar: changeMainSidebarState,
-  logout: authActions.logout,
 };
 
 const PureApplicationBar = pure(ApplicationBar);

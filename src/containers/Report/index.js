@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
+import cs from 'classnames';
 import ReportConfigurator from './components/ReportConfigurator';
 import PreviewTable from './components/PreviewTable';
 import VehiclesList from './components/VehiclesList';
@@ -18,25 +19,29 @@ const ReportsScreen = ({
   hasReport,
   saveGenerated,
   selectedFields,
-  noMaterialUI = false,
+  vehiclesClassName,
+  contentClassName,
 }) => {
   const headers = selectedFields.map(index => (
     availableFields[index].label
   ));
 
+  const className = cs('configurator', contentClassName);
+
   return (
-    <div className="configurator">
-      <VehiclesList fixed={!noMaterialUI} />
+    <div className={className}>
+      <VehiclesList
+        fixed
+        className={vehiclesClassName}
+      />
       <FixedContent>
         <ReportConfigurator
-          noMaterialUI={noMaterialUI}
           hideSplitter
           hasReport={hasReport}
           saveReport={saveGenerated}
         />
 
         <PreviewTable
-          noMaterialUI={noMaterialUI}
           headers={headers}
           data={data}
         />
@@ -47,11 +52,12 @@ const ReportsScreen = ({
 
 ReportsScreen.propTypes = {
   availableFields: React.PropTypes.array.isRequired,
+  vehiclesClassName: React.PropTypes.string,
+  contentClassName: React.PropTypes.string,
   data: React.PropTypes.object.isRequired,
   hasReport: React.PropTypes.bool.isRequired,
   saveGenerated: React.PropTypes.func.isRequired,
   selectedFields: React.PropTypes.object.isRequired,
-  noMaterialUI: React.PropTypes.bool,
 };
 
 const PureReportsScreen = pure(ReportsScreen);

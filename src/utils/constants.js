@@ -1,13 +1,9 @@
-import {
-  isDev,
-  onProduction,
-} from 'configs';
+import { onProduction } from 'configs';
 
 const portal = process.env.DRVR_PROJECT;
 
 export const LOCAL_STORAGE_SESSION_KEY = onProduction && portal !== 'ssreports' ? 'ngStorage-sessionId_tajo' : 'ngStorage-sessionId';
 export const LOCAL_STORAGE_INSTALLER_KEY = onProduction ? 'drvr_installer_tajo' : 'drvr_installer';
-export const HOST_BASE = isDev ? 'ddsdev.cloudapp.net:8080/engine' : `${window.location.host}/engine`;
 //
 // -- map related stuff
 export const MAPBOX_KEY = 'pk.eyJ1IjoiZHJ2ciIsImEiOiI3NWM4ZWE1MWEyOTVmZTQ0ZDU2OTE5OGIwNzRlMWY2NyJ9.ybLA6tItFcbyAQyxRq3Pog';

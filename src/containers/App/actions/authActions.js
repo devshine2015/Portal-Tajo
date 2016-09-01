@@ -17,8 +17,8 @@ export const GLOBAL_AUTH_RESET = 'portal/App/GLOBAL_AUTH_RESET';
 
 export const login = (data) => (dispatch, getState) =>
   _login(data, dispatch, getState);
-export const logout = () => (dispatch, getState) =>
-  _logout(dispatch, getState);
+export const logout = (redirectUrl = '') => (dispatch, getState) =>
+  _logout({ redirectUrl }, dispatch, getState);
 export const checkUserAuthentication = (params) => (dispatch, getState) =>
   _checkUserAuthentication(params, dispatch, getState);
 
@@ -31,7 +31,7 @@ export const resetUserAuthentication = () => ({
   type: GLOBAL_AUTH_RESET,
 });
 
-function _checkUserAuthentication({ urls, checkVersion = true }, dispatch, getState) {
+function _checkUserAuthentication(params, dispatch, getState) {
   const fleet = getFleetName(getState());
 
   // for case when no auth data was saved in localStorage
@@ -40,7 +40,7 @@ function _checkUserAuthentication({ urls, checkVersion = true }, dispatch, getSt
   }
 
   return storage.read(constants.LOCAL_STORAGE_SESSION_KEY)
-  .then(_checkVersion(checkVersion))
+  .then(_checkVersion(params.checkVersion))
   .then((sessions) => {
     if (sessions && typeof sessions === 'string') {
       return dispatch(setUserAuthentication(sessions, fleet));
@@ -52,15 +52,15 @@ function _checkUserAuthentication({ urls, checkVersion = true }, dispatch, getSt
       } else {
         dispatch(resetUserAuthentication());
 
-        if (urls) {
-          dispatch(replace(`${createBaseUrl(fleet)}/${urls.failure}`));
+        if (params.urls) {
+          dispatch(replace(`${createBaseUrl(fleet)}/${params.urls.failure}`));
         }
       }
     } else {
       dispatch(resetUserAuthentication());
 
-      if (urls) {
-        dispatch(replace(`${createBaseUrl(fleet)}/${urls.failure}`));
+      if (params.urls) {
+        dispatch(replace(`${createBaseUrl(fleet)}/${params.urls.failure}`));
       }
     }
 
@@ -72,7 +72,7 @@ function _checkUserAuthentication({ urls, checkVersion = true }, dispatch, getSt
       storage.clean(constants.LOCAL_STORAGE_SESSION_KEY);
       dispatch(resetUserAuthentication());
 
-      if (urls) {
+      if (params.urls) {
         dispatch(replace(loginUrl));
       }
     }
@@ -104,7 +104,7 @@ function _login(data, dispatch, getState) {
     });
 }
 
-function _logout(dispatch, getState) {
+function _logout({ redirectUrl }, dispatch, getState) {
   const fleet = getFleetName(getState());
   const url = `${fleet}/login`;
   const sessionId = getAuthenticationSession(getState());
@@ -112,27 +112,26 @@ function _logout(dispatch, getState) {
     ['DRVR-SESSION']: sessionId,
   };
 
-  return api.delete(url, { optionalHeaders }).then(() => {
-    const loginUrl = `${createBaseUrl(fleet)}/login`;
-    const toDelete = [{
-      id: sessionId,
-    }];
+  return api.delete(url, { optionalHeaders })
+    .then(() => {
+      dispatch(resetUserAuthentication());
 
-    storage.cleanExactValues(constants.LOCAL_STORAGE_SESSION_KEY, toDelete);
-    dispatch(resetUserAuthentication());
-    dispatch(replace(loginUrl));
-  }, (error) => {
-    console.error(error);
-  });
+      return Promise.resolve({
+        fleet,
+        sessionId,
+      });
+    });
 }
 
 const _checkVersion = (needChecking) => (savedData) => {
+  const toReturn = savedData && Object.hasOwnProperty.call(savedData, 'values') ?
+    savedData.values : savedData;
+
   if (!needChecking) {
-    return Promise.resolve(savedData);
+    return Promise.resolve(toReturn);
   }
 
   if (VERSIONS.authentication.verify(savedData)) {
-    const toReturn = savedData && savedData.hasOwnProperty('values') ? savedData.values : savedData;
     return Promise.resolve(toReturn);
   }
   return Promise.reject({ message: 'wrong version' });

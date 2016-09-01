@@ -97,7 +97,10 @@ class Report extends React.Component {
 
     this.props.updateSelectedFields({ field, value, index })
     .then(() => {
-      this.props.swipeGeneratedData();
+      if (this.props.hasReport) {
+        this.props.swipeGeneratedData();
+      }
+
       this.onChange(field, value);
     });
   }

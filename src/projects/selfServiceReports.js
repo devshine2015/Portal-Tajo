@@ -6,10 +6,11 @@ import 'babel-polyfill';
 
 // Import all the third party stuff
 import React from 'react';
-// import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import qs from 'query-string';
 import configureStore from '../redux/store';
 import { createSelfServiceReducer } from '../redux/reducers';
 import SelfServiceReport from 'containers/SelfServiceReport';
@@ -23,18 +24,15 @@ require('sanitize.css/sanitize.css');
 const initialState = {};
 const store = configureStore(initialState, browserHistory, createSelfServiceReducer);
 
-class SsReports extends React.Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <SelfServiceReport fleet={this.props.fleet} />
-      </Provider>
-    );
-  }
+function getFleetNameFromUrl() {
+  const params = qs.parse(window.location.search);
+
+  return params.fleet;
 }
 
-SsReports.propTypes = {
-  fleet: React.PropTypes.string.isRequired,
-};
-
-window.SSREPORT = SsReports;
+ReactDOM.render(
+  <Provider store={store}>
+    <SelfServiceReport fleet={getFleetNameFromUrl()} />
+  </Provider>,
+  document.getElementById('root')
+);

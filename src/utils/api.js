@@ -1,6 +1,5 @@
 import 'whatwg-fetch';
-import { HOST_BASE } from './constants';
-import { protocol, isSecure } from 'configs';
+import { protocol, isSecure, ENGINE_BASE } from 'configs';
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -27,7 +26,7 @@ function prepareRequest(method, url, headers, payload) {
     body = JSON.stringify(payload);
   }
 
-  const base = `${protocol}//${HOST_BASE}/${url}`;
+  const base = `${protocol}//${ENGINE_BASE}/${url}`;
   const endpoint = query ? `${base}/${query}` : base;
 
   const options = {
@@ -62,7 +61,7 @@ export default api;
 
 export const socket = (url) => {
   const socketProtocol = isSecure ? 'wss' : 'ws';
-  const socketURL = `${socketProtocol}://${HOST_BASE}/${url}`;
+  const socketURL = `${socketProtocol}://${ENGINE_BASE}/${url}`;
 
   return new WebSocket(socketURL);
 };

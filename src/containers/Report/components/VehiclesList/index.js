@@ -36,6 +36,7 @@ class ReportsVehiclesList extends React.Component {
     return (
       <PowerList
         fixed={this.props.fixed}
+        className={this.props.className}
         filter={
           <Filter filterFunc={this.onFilter} />
         }
@@ -46,6 +47,7 @@ class ReportsVehiclesList extends React.Component {
 }
 
 ReportsVehiclesList.propTypes = {
+  className: React.PropTypes.string,
   filterFunc: React.PropTypes.func.isRequired,
   setFiltering: React.PropTypes.func.isRequired,
   chooseVehiclesForReport: React.PropTypes.func.isRequired,

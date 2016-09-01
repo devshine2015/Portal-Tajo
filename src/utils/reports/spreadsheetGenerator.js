@@ -97,7 +97,7 @@ function _addRow(array = []) {
   let row = '';
 
   array.forEach(el => {
-    row += `${el},`;
+    row += `${JSON.stringify(el)},`;
   });
 
   // remove last comma
