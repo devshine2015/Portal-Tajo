@@ -22,6 +22,7 @@ class OperationalPowerList extends React.Component {
     this.state = {
       currentExpandedVehicleId: undefined,
       currentExpandedGFId: undefined,
+      selectedTab: listTypes.withVehicleDetails,
     };
 
     props.eventDispatcher.registerHandler(mapEvents.MAP_VEHICLE_SELECTED, this.onVehicleClick);
@@ -43,12 +44,14 @@ class OperationalPowerList extends React.Component {
       case 'vehicle': {
         this.setState({
           currentExpandedVehicleId: value,
+          selectedTab: listTypes.withVehicleDetails,
         });
         break;
       }
       case 'location': {
         this.setState({
           currentExpandedGFId: value,
+          selectedTab: listTypes.withGFDetails,
         });
         break;
       }
@@ -59,7 +62,11 @@ class OperationalPowerList extends React.Component {
   onTabChange = (value) => {
     if (value === listTypes.withVehicleDetails
     || value === listTypes.withGFDetails) {
-      this.props.eventDispatcher.fireEvent(listEvents.OPS_LIST_TAB_SWITCH, value);
+      this.setState({
+        selectedTab: value,
+      }, () => {
+        this.props.eventDispatcher.fireEvent(listEvents.OPS_LIST_TAB_SWITCH, value);
+      });
     }
   }
 
@@ -73,6 +80,7 @@ class OperationalPowerList extends React.Component {
           className={styles.fullHeight}
           contentContainerClassName={styles.contentFullHeight}
           onChange={this.onTabChange}
+          value={this.state.selectedTab}
         >
           <Tab
             label="Vehicles"
