@@ -40,32 +40,40 @@ class OperationalPowerList extends React.Component {
   onItemClick = (itemId, isExpanded, type) => {
     this.props.eventDispatcher.fireEvent(listEvents.OPS_LIST_ITEM_SELECTED, itemId);
     const value = isExpanded ? itemId : undefined;
+    let selectedTab;
+
     switch (type) {
       case 'vehicle': {
+        selectedTab = listTypes.withVehicleDetails;
+
         this.setState({
+          selectedTab,
           currentExpandedVehicleId: value,
-          selectedTab: listTypes.withVehicleDetails,
         });
         break;
       }
       case 'location': {
+        selectedTab = listTypes.withGFDetails;
+
         this.setState({
+          selectedTab,
           currentExpandedGFId: value,
-          selectedTab: listTypes.withGFDetails,
         });
         break;
       }
       default: break;
     }
+
+    this.onTabChange(selectedTab);
   }
 
   onTabChange = (value) => {
     if (value === listTypes.withVehicleDetails
     || value === listTypes.withGFDetails) {
-      this.setState({
-        selectedTab: value,
-      }, () => {
-        this.props.eventDispatcher.fireEvent(listEvents.OPS_LIST_TAB_SWITCH, value);
+      this.props.eventDispatcher.fireEvent(listEvents.OPS_LIST_TAB_SWITCH, value, () => {
+        this.setState({
+          selectedTab: value,
+        });
       });
     }
   }

@@ -11,7 +11,7 @@ import * as fromFleetReducer from 'services/FleetModel/reducer';
 import createEventDispatcher from 'utils/eventDispatcher';
 
 import { MAP_GF_ADD } from 'containers/MapFleet/events';
-import { OPS_LIST_EDIT_GF } from 'containers/Operational/components/OperationalPowerList/events';
+import { OPS_LIST_EDIT_GF } from './components/OperationalPowerList/events';
 import { GF_EDITOR_CLOSE } from 'containers/EditGFPanel/GFEditor/events';
 
 import styles from './styles.css';

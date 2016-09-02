@@ -7,9 +7,9 @@ EventDispatcher.prototype.registerHandler = function(eventId, eventHandlerFunc) 
   this.eventHandlers[eventId] = eventHandlerFunc;
 };
 
-EventDispatcher.prototype.fireEvent = function(eventId, eventData) {
+EventDispatcher.prototype.fireEvent = function(eventId, eventData, cb) {
   if (this.eventHandlers[eventId] !== undefined && this.eventHandlers[eventId] !== null) {
-    this.eventHandlers[eventId](eventData);
+    this.eventHandlers[eventId](eventData, cb);
   }
 };
 

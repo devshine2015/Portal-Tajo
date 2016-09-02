@@ -38,7 +38,7 @@ class MapFleet extends React.Component {
     this.props.eventDispatcher.registerHandler(listEvents.OPS_LIST_ITEM_SELECTED,
       ((meThis) => (id) => { meThis.highLightMarker(id); })(this));
     this.props.eventDispatcher.registerHandler(listEvents.OPS_LIST_TAB_SWITCH,
-      ((meThis) => (tabType) => { meThis.listTabChange(tabType); })(this));
+      ((meThis) => (tabType, cb) => { meThis.listTabChange(tabType, cb); })(this));
   }
 
   componentDidMount() {
@@ -92,8 +92,10 @@ class MapFleet extends React.Component {
     this.props.eventDispatcher.fireEvent(hookId, selectedId);
   }
   // PowerList switched (vehicles to GF, etc)
-  listTabChange(listType) {
-    this.setState({ detailedList: listType });
+  listTabChange(listType, cb) {
+    this.setState({ detailedList: listType }, () => {
+      cb();
+    });
   }
 
   hideLayer(theLayer, doHide) {
