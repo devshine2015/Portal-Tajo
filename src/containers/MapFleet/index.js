@@ -17,7 +17,7 @@ import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { MAPBOX_KEY, ZERO_LOCATION, ZERO_ZOOM, NEW_GF_REQUIRED_ZOOM_LEVEL } from 'utils/constants';
 
 import * as mapEvents from './events';
-import * as listEvents from 'components/OperationalPowerList/events';
+import * as listEvents from 'containers/Operational/components/OperationalPowerList/events';
 import listTypes from 'components/InstancesList/types';
 
 const selectForMe = (meThis, hookId) => (id) => {
