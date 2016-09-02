@@ -145,7 +145,7 @@ VehiclesEditor.propTypes = {
 };
 
 const mapState = (state) => ({
-  vehicles: fromFleetReducer.getVehiclesEx(state),
+  vehicles: fromFleetReducer.getVehiclesExSorted(state),
   isLoading: getLoaderState(state),
 });
 const mapDispatch = {

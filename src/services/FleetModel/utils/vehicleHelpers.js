@@ -11,7 +11,6 @@
 // "deviceId": "863286020885894",
 // "status": "active"
 // "kind":    //optional
-
 import { ZOMBIE_TIME_TRH_MINUTES } from 'utils/constants';
 
 function makeLocalVehicle(backEndObject, vehicleStats) {
@@ -63,18 +62,39 @@ export function checkZombieVehicle(lastUpdate) {
 }
 
 export function makeLocalVehicles(backEndVehiclesList, statsList) {
-  const theVechicles = {};
+  const localVehicles = {};
+  const orderedVehicles = [];
 
-  backEndVehiclesList.forEach((aVehicle) => {
+  backEndVehiclesList.sort(orderByName).forEach((aVehicle) => {
     const vehicleStats = getVehicleById(aVehicle.id, statsList).vehicle;
     const localVehicleObj = makeLocalVehicle(aVehicle, vehicleStats);
 
     if (localVehicleObj !== null) {
-      theVechicles[aVehicle.id] = localVehicleObj;
+      localVehicles[aVehicle.id] = localVehicleObj;
     }
+
+    orderedVehicles.push(aVehicle.id);
   });
 
-  return theVechicles;
+  return {
+    localVehicles,
+    orderedVehicles,
+  };
+}
+
+function orderByName(a = {}, b = {}) {
+  const nameA = a.name.trim();
+  const nameB = b.name.trim();
+
+  if (nameA < nameB) {
+    return -1;
+  }
+
+  if (nameA > nameB) {
+    return 1;
+  }
+
+  return 0;
 }
 
 export function cleanVehicle(vehicle) {
@@ -106,14 +126,6 @@ export function getVehicleById(id, allVehicles = []) {
       break;
     }
   }
-  // const vehicle = allVehicles.filter((v, i) => {
-  //   if (v.id === id) {
-  //     vehicleIndex = i;
-  //     return true;
-  //   }
-
-  //   return false;
-  // });
 
   return {
     vehicle,

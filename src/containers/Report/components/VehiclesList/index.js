@@ -58,7 +58,7 @@ ReportsVehiclesList.propTypes = {
 };
 
 const mapState = (state) => ({
-  vehicles: fromFleetReducer.getVehiclesEx(state),
+  vehicles: fromFleetReducer.getVehiclesExSorted(state),
   selectedVehicles: getSelectedVehicles(state).toArray(),
 });
 const mapDispatch = {

@@ -14,7 +14,7 @@ import { dimensions } from 'configs/theme';
 
 import styles from './styles.css';
 
-class InstancesColumn extends React.Component {
+class OperationalPowerList extends React.Component {
 
   constructor(props) {
     super(props);
@@ -111,11 +111,11 @@ class InstancesColumn extends React.Component {
   }
 }
 
-InstancesColumn.contextTypes = {
+OperationalPowerList.contextTypes = {
   muiTheme: React.PropTypes.object.isRequired,
 };
-InstancesColumn.propTypes = {
-  vehicles: React.PropTypes.object.isRequired,
+OperationalPowerList.propTypes = {
+  vehicles: React.PropTypes.array.isRequired,
   gfs: React.PropTypes.array.isRequired,
   eventDispatcher: React.PropTypes.object.isRequired,
   filterVehiclesFunc: React.PropTypes.func.isRequired,
@@ -127,6 +127,6 @@ const mapDispatch = {
   filterGFsFunc: gfActions.filterGFs,
 };
 
-const PureComponent = pure(InstancesColumn);
+const PureOperationalPowerList = pure(OperationalPowerList);
 
-export default connect(null, mapDispatch)(PureComponent);
+export default connect(null, mapDispatch)(PureOperationalPowerList);

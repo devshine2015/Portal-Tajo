@@ -35,8 +35,8 @@ function _fetchVehicles(fleetName, openWebSocket, dispatch, getState) {
       api(url, { optionalHeaders }).then(toJson)
     )
   ).then(([vehicles = [], { status }]) => {
-    const localVehicles = makeLocalVehicles(vehicles, status);
-    dispatch(_vehiclesSet(vehicles, localVehicles));
+    const { localVehicles, orderedVehicles } = makeLocalVehicles(vehicles, status);
+    dispatch(_vehiclesSet(vehicles, localVehicles, orderedVehicles));
 
     if (openWebSocket) {
       dispatch(openFleetSocket(fleet));
@@ -75,10 +75,11 @@ function toJson(response) {
   return response.json();
 }
 
-const _vehiclesSet = (vehicles, localVehicles) => ({
+const _vehiclesSet = (vehicles, localVehicles, orderedVehicles) => ({
   type: FLEET_MODEL_VEHICLES_SET,
   vehicles,
   localVehicles,
+  orderedVehicles,
 });
 
 const _vehicleUpdate = (details, id) => ({

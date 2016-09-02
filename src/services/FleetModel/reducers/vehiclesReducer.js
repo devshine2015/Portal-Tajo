@@ -7,17 +7,22 @@ import { checkZombieVehicle } from '../utils/vehicleHelpers';
 const vehiclesInitialState = fromJS({
   list: new List(),
   processedList: new Map(),
+  orderedList: new List(),
 });
 
 function vehiclesReducer(state = vehiclesInitialState, action) {
   switch (action.type) {
-    case vehiclesActions.FLEET_MODEL_VEHICLES_SET: {
+    case vehiclesActions.FLEET_MODEL_VEHICLES_SET:
       return state.set('list', new List(action.vehicles))
-              .set('processedList', fromJS(action.localVehicles));}
+              .set('processedList', fromJS(action.localVehicles))
+              .set('orderedList', new List(action.orderedVehicles));
+
     case vehiclesActions.FLEET_MODEL_VEHICLE_UPDATE:
       return state.mergeIn(['processedList', action.id], action.details);
+
     case vehiclesActions.FLEET_MODEL_VEHICLES_FILTER:
       return state.set('processedList', fromJS(action.vehicles));
+
     case socketActions.FLEET_MODEL_SOCKET_SET: {
       const inStatus = action.statusObj;
       let newState = state;
@@ -56,27 +61,26 @@ export default vehiclesReducer;
 export const getVehicles = (state) =>
   state.get('list');
 export const getVehiclesById = (state, ids = []) =>
- state.get('list').filter(v => ids.indexOf(v.id) !== -1);
+  state.get('list').filter(v => ids.indexOf(v.id) !== -1);
 
 export const getVehiclesEx = (state) => {
-  const theObj = state.get('processedList');
+  const theObj = getProcessedVehicles(state);
+
   if (theObj.size === 0) {
     return [];
   }
+
   const jsObj = theObj.toJS();
   const aList = Object.values(jsObj);
-  // return aList.sort((a, b) => {
-  //   const nameA = a.name.toUpperCase(); // ignore upper and lowercase
-  //   const nameB = b.name.toUpperCase(); // ignore upper and lowercase
-  //   if (nameA < nameB) {
-  //     return -1;
-  //   }
-  //   if (nameA > nameB) {
-  //     return 1;
-  //   }
-  //   return 0;
-  // });
+
   return aList;
+};
+export const getVehiclesExSorted = (state) => {
+  const theObj = getProcessedVehicles(state);
+  const orderedList = state.get('orderedList');
+  const jsObj = theObj.toJS();
+
+  return orderedList.map(id => jsObj[id]).toJS();
 };
 export const getProcessedVehicles = (state) =>
   state.get('processedList');

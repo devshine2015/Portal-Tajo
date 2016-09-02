@@ -20,7 +20,7 @@ import styles from './styles.css';
 const MD_LIST = 'md_list';
 const MD_GF_EDIT = 'md_gfedit';
 
-class MapFleetScreen extends React.Component {
+class OperationalScreen extends React.Component {
 
   constructor(props) {
     super(props);
@@ -69,9 +69,7 @@ class MapFleetScreen extends React.Component {
               subjectContext={this.subjGFContext}
             />
           }
-          <FixedContent
-            containerClassName={styles.fixedContent}
-          >
+          <FixedContent containerClassName={styles.fixedContent}>
             <SplitContainer
               gfEditMode={this.state.mode === MD_GF_EDIT}
               eventDispatcher={this.eventDispatcher}
@@ -83,16 +81,16 @@ class MapFleetScreen extends React.Component {
   }
 }
 
-MapFleetScreen.propTypes = {
+OperationalScreen.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
   gfs: React.PropTypes.array.isRequired,
 };
 
 const mapState = (state) => ({
-  vehicles: fromFleetReducer.getVehiclesEx(state),
+  vehicles: fromFleetReducer.getVehiclesExSorted(state),
   gfs: fromFleetReducer.getGFsEx(state),
 });
 
-const PureMapFleetScreen = pure(MapFleetScreen);
+const PureOperationalScreen = pure(OperationalScreen);
 
-export default connect(mapState)(PureMapFleetScreen);
+export default connect(mapState)(PureOperationalScreen);

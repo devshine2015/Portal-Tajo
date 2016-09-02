@@ -10,7 +10,9 @@ function renderChildrens(scrollable, filter, content) {
   const result = [];
 
   if (filter) {
-    result.push(filter);
+    result.push(React.cloneElement(filter, {
+      key: 'filter',
+    }));
   }
 
   if (scrollable && content) {
@@ -20,7 +22,9 @@ function renderChildrens(scrollable, filter, content) {
       </Scrollable>
     );
   } else if (content) {
-    result.push(content);
+    result.push(React.cloneElement(content, {
+      key: 'content',
+    }));
   }
 
   return result;
