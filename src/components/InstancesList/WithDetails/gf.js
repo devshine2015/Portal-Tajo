@@ -75,6 +75,7 @@ class LocationWithDetails extends React.Component {
     return (
       <div
         className={className}
+        onClick={this.onClick}
       >
         <h1 key="name">
           {this.props.name}

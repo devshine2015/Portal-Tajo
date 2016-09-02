@@ -91,9 +91,11 @@ class ListItemVehicle extends React.Component {
     const className = classnames(stylesBase.listItemInn, {
       [styles.listItemInn_expanded]: this.props.isExpanded,
     });
+
     return (
       <div
         className={className}
+        onClick={this.onClick}
       >
         <h1>
           {this.props.name}

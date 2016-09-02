@@ -1,10 +1,6 @@
 import React from 'react';
 import pure from 'recompose/pure';
-import classnames from 'classnames';
-import SimpleItem from './Simple';
-import CheckboxItem from './WithCheckboxes';
-import DetailedGFItem from './WithDetails/gf';
-import DetailedVehicleItem from './WithDetails/vehicle';
+import GenericListItem from './GenericListItem';
 import addCSSRule from 'utils/cssRule';
 import types from './types';
 
@@ -12,60 +8,8 @@ import styles from './styles.css';
 
 let isStyleSheetRuleAdded = false;
 
-function chooseItem(type, {
-  onItemClick,
-  selectedItems,
-  currentExpandedItemId,
-  item,
-}) {
-  const isExpanded = currentExpandedItemId && item.id === currentExpandedItemId;
-  switch (type) {
-    case types.withCheckboxes: {
-      const isChecked = selectedItems.indexOf(item.id) !== -1;
-
-      return (
-        <CheckboxItem
-          id={item.id}
-          name={item.name}
-          onClick={onItemClick}
-          isChecked={isChecked}
-        />
-      );
-    }
-    case types.withVehicleDetails: {
-      return (
-        <DetailedVehicleItem
-          onClick={onItemClick}
-          isExpanded={isExpanded}
-          {...item}
-        />
-      );
-    }
-    case types.withGFDetails: {
-      return (
-        <DetailedGFItem
-          onClick={onItemClick}
-          isExpanded={isExpanded}
-          {...item}
-        />
-      );
-    }
-    default:
-      return (
-        <SimpleItem
-          id={item.id}
-          name={item.name}
-          onClick={onItemClick}
-        />
-      );
-  }
-}
-
 const InstancesList = ({
-  onItemClick,
   data,
-  type,
-  selectedItems = [],
   currentExpandedItemId,
   ...rest,
 }, context) => {
@@ -98,30 +42,17 @@ const InstancesList = ({
     }
 
     const isExpanded = currentExpandedItemId && item.id === currentExpandedItemId;
-    const className = classnames(styles.list__item, 'listItemDynamic', {
-      ['listItemDynamicExpanded']: isExpanded,
-      [styles.list__item_expanded]: isExpanded,
-    });
-    const onClick = () => {
-      onItemClick(item.id);
-    };
-    // style={ { color: context.muiTheme.palette.PLItemColor } }
+
     return (
-      <li
-        className={className}
+      <GenericListItem
         key={item.id}
-        onClick={onClick}
-      >
-        {chooseItem(type, {
-          onItemClick,
-          item,
-          selectedItems,
-          currentExpandedItemId,
-          ...rest,
-        })}
-      </li>
+        isExpanded={Boolean(isExpanded)}
+        item={item}
+        {...rest}
+      />
     );
   });
+
   return (
     <ul className={styles.list}>
       {items}
@@ -143,13 +74,17 @@ InstancesList.propTypes = {
     types.withGFDetails,
     types.simple,
   ]),
-  selectedItems: React.PropTypes.array,
 
   // Pass to CheckboxItem
   uncheckOnUnmount: React.PropTypes.bool,
+  selectedItems: React.PropTypes.array,
 
   // For DetailedItem
   currentExpandedItemId: React.PropTypes.string,
+
+  // scroll item into view if item are selected
+  // somwhere else
+  scrollIntoView: React.PropTypes.bool,
 };
 
 export default pure(InstancesList);

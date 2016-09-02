@@ -63,9 +63,6 @@ class OperationalPowerList extends React.Component {
     }
   }
 
-// style={{ backgroundColor: this.context.muiTheme.palette.PLItemBackgroundColorExpanded }}
-// style={{ backgroundColor: this.context.muiTheme.palette.PLItemGFBackgroundColorExpanded }}
-//
   render() {
     return (
       <PowerList>
@@ -84,6 +81,7 @@ class OperationalPowerList extends React.Component {
             <Filter filterFunc={this.props.filterVehiclesFunc} />
             <Scrollable offsetTop={dimensions.powerlistFilterHeight}>
               <ItemsList
+                scrollIntoView
                 currentExpandedItemId={this.state.currentExpandedVehicleId}
                 onItemClick={this.onVehicleClick}
                 data={this.props.vehicles}
@@ -98,6 +96,7 @@ class OperationalPowerList extends React.Component {
             <Filter filterFunc={this.props.filterGFsFunc} />
             <Scrollable offsetTop={dimensions.powerlistFilterHeight}>
               <ItemsList
+                scrollIntoView
                 currentExpandedItemId={this.state.currentExpandedGFId}
                 onItemClick={this.onGFClick}
                 data={this.props.gfs}
