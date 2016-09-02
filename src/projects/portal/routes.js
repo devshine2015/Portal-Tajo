@@ -6,22 +6,18 @@ import {
   errorHandler,
   loadModule,
   selectLocationState,
-} from './helpers';
+} from 'utils/routerHelpers';
 
 const ROOT = '/portal/:fleet/tajo/';
 
 const MAIN_MENU = [{
-  niceName: 'dashboard',
+  niceName: 'Dashboard',
   path: 'dashboard',
   order: 0,
 }, {
-  niceName: 'installer',
-  path: 'installer',
+  niceName: 'Operational',
+  path: 'map',
   order: 1,
-}, {
-  niceName: 'Promo Subscribtions',
-  path: 'promos',
-  order: 2,
 }, {
   niceName: 'Reports',
   path: 'reports',
@@ -30,6 +26,10 @@ const MAIN_MENU = [{
   niceName: 'Vehicles Editor',
   path: 'vehicles',
   order: 4,
+}, {
+  niceName: 'History',
+  path: 'history',
+  order: 5,
 }];
 
 export default function createRoutes(store) {
@@ -39,22 +39,30 @@ export default function createRoutes(store) {
     selectLocationState: selectLocationState(),
   });
 
+  const mapAndListRoute = require('screens/Operational/route')({
+    path: 'map',
+    dispatch: store.dispatch,
+  });
+
+  const dashboardRoute = require('screens/DashboardScreen/route')({
+    path: 'dashboard',
+    injectReducer,
+    errorHandler,
+    loadModule,
+    dispatch: store.dispatch,
+  });
+
+  const chronicleRoute = require('screens/Chronicle/route')({
+    path: 'history',
+    injectReducer,
+    errorHandler,
+    loadModule,
+    dispatch: store.dispatch,
+  });
+
+
   const reportsRoute = require('screens/ReportsScreen/route')({
     path: 'reports',
-    injectReducer,
-    errorHandler,
-    loadModule,
-  });
-
-  const promoRoute = require('screens/PromoTrackingScreen/route')({
-    path: 'promos',
-    injectReducer,
-    errorHandler,
-    loadModule,
-  });
-
-  const installerRoute = require('screens/InstallerScreen/route')({
-    path: 'installer',
     injectReducer,
     errorHandler,
     loadModule,
@@ -71,10 +79,6 @@ export default function createRoutes(store) {
     path: 'login',
   });
 
-  const dashboardRoute = require('screens/DashboardScreen/route')({
-    path: 'dashboard',
-  });
-
   const rootRoute = require('screens/Root/route')({
     path: ROOT,
     dispatch: store.dispatch,
@@ -88,9 +92,9 @@ export default function createRoutes(store) {
   rootRoute.childRoutes.push(
     loginRoute,
     dashboardRoute,
-    installerRoute,
-    promoRoute,
+    mapAndListRoute,
     reportsRoute,
+    chronicleRoute,
     vehiclesEditorRoute,
   );
 

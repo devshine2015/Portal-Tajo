@@ -1,5 +1,5 @@
 /**
- * appPortal.js
+ * escape.js
  *
  * This is the entry file for the application, only setup and boilerplate
  * code.
@@ -18,30 +18,49 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import configureStore from '../redux/store';
-import createReducer from '../redux/reducers';
 
 injectTapEventPlugin();
 
 require('sanitize.css/sanitize.css');
-
-// Create redux store with history
-// this uses the singleton
-const initialState = {};
-const store = configureStore(initialState, browserHistory, createReducer);
-
-// Set up the router, wrapping all Routes in the App component
-import createRoutes from '../routes/portalRoutes';
-
-ReactDOM.render(
-  <Provider store={store}>
-    {createRoutes(store)}
-  </Provider>,
-  document.getElementById('app')
-);
 
 // Install ServiceWorker and AppCache in the end since
 // it's not most important operation and if main code fails,
 // we do not want it installed
 import { install } from 'offline-plugin/runtime';
 install();
+
+export const renderProject = ({
+  anchor,
+  createRoutes,
+  configureStore,
+  createReducer,
+}) => {
+  // Create redux store with history
+  // this uses the singleton
+  const initialState = {};
+  const store = configureStore(initialState, browserHistory, createReducer);
+
+  ReactDOM.render(
+    <Provider store={store}>
+      {createRoutes(store)}
+    </Provider>, anchor
+  );
+};
+
+export const renderProjectWithoutRoutes = ({
+  anchor,
+  rootNode,
+  configureStore,
+  createReducer,
+}) => {
+  // Create redux store with history
+  // this uses the singleton
+  const initialState = {};
+  const store = configureStore(initialState, browserHistory, createReducer);
+
+  ReactDOM.render(
+    <Provider store={store}>
+      {rootNode}
+    </Provider>, anchor
+  );
+};

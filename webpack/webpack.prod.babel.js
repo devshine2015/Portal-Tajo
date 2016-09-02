@@ -78,6 +78,12 @@ module.exports = (options) => require('./webpack.base.babel')({
     // Extract the CSS into a seperate file
     new ExtractTextPlugin('[name].[contenthash].css'),
 
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production'),
+        DRVR_PROJECT: JSON.stringify(process.env.DRVR_PROJECT),
+      },
+    }),
     // Put it in the end to capture all the HtmlWebpackPlugin's
     // assets manipulations and do leak its manipulations to HtmlWebpackPlugin
     // new OfflinePlugin({

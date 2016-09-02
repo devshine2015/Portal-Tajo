@@ -70,6 +70,7 @@ module.exports = (options) => ({
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+        DRVR_PROJECT: JSON.stringify(process.env.DRVR_PROJECT),
       },
     }),
   ]),
