@@ -1,11 +1,12 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import { dimensions } from 'configs/theme';
 
 import styles from './styles.css';
 
 const Scrollable = ({
   children,
-  offsetTop = 0,
+  offsetTop = dimensions.powerlistFilterHeight,
 }) => {
   const st = { top: offsetTop };
 
@@ -21,7 +22,7 @@ const Scrollable = ({
 
 Scrollable.propTypes = {
   children: React.PropTypes.node.isRequired,
-  offsetTop: React.PropTypes.number.isRequired,
+  offsetTop: React.PropTypes.number,
 };
 
 export default pure(Scrollable);
