@@ -204,7 +204,7 @@ MapFleet.propTypes = {
 };
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesEx(state),
-  gfs: fromFleetReducer.getGFsEx(state),
+  gfs: fromFleetReducer.getGFsExSorted(state),
   vehicleById: fromFleetReducer.getVehicleByIdFunc(state),
   gfById: fromFleetReducer.getGFByIdFunc(state),
 });

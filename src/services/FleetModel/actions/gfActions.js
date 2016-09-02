@@ -35,8 +35,8 @@ function _fetchGFs(dispatch, getState, fleetName = undefined) {
   return api(url, { optionalHeaders })
     .then(toJson)
     .then(gfs => {
-      const localGFs = makeLocalGFs(gfs);
-      dispatch(_gfSet(gfs, localGFs));
+      const { localGFs, sortedGFs } = makeLocalGFs(gfs);
+      dispatch(_gfSet(gfs, localGFs, sortedGFs));
     });
 }
 
@@ -92,10 +92,11 @@ function _filterGf({ searchString }, dispatch, getState) {
   dispatch(_gfsFilterUpdate(filteredVehicles));
 }
 
-const _gfSet = (gfs, localGFs) => ({
+const _gfSet = (gfs, localGFs, sortedGFs) => ({
   type: FLEET_MODEL_GF_SET,
   gfs,
   localGFs,
+  sortedGFs,
 });
 
 const _gfsFilterUpdate = (gfs) => ({

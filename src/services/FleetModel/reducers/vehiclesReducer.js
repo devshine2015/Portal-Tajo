@@ -1,7 +1,6 @@
 import { List, Map, fromJS } from 'immutable';
 import * as vehiclesActions from '../actions/vehiclesActions';
 import * as socketActions from '../actions/socketActions';
-// import { filterByName } from '../utils/filtering';
 import { checkZombieVehicle } from '../utils/vehicleHelpers';
 
 const vehiclesInitialState = fromJS({
@@ -76,11 +75,10 @@ export const getVehiclesEx = (state) => {
   return aList;
 };
 export const getVehiclesExSorted = (state) => {
-  const theObj = getProcessedVehicles(state);
+  const theObj = getProcessedVehicles(state).toJS();
   const orderedList = state.get('orderedList');
-  const jsObj = theObj.toJS();
 
-  return orderedList.map(id => jsObj[id]).toJS();
+  return orderedList.map(id => theObj[id]).toJS();
 };
 export const getProcessedVehicles = (state) =>
   state.get('processedList');

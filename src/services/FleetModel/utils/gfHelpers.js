@@ -10,6 +10,7 @@
 // }
 
 import { ZERO_LOCATION, NEW_GF_RADIUS } from 'utils/constants';
+import { sortByName } from 'utils/sorting';
 
 export function makeBackendGF(inData) {
   return {
@@ -54,26 +55,22 @@ function _makeLocalGF(backEndObject) {
 }
 
 export function makeLocalGFs(backEndLocationsList) {
-  const theGFs = {};
-  backEndLocationsList
-  // .sort((a, b) => {
-  //   const nameA = a.name.toUpperCase(); // ignore upper and lowercase
-  //   const nameB = b.name.toUpperCase(); // ignore upper and lowercase
-  //   if (nameA < nameB) {
-  //     return -1;
-  //   }
-  //   if (nameA > nameB) {
-  //     return 1;
-  //   }
-  //   return 0;
-  // })
-  .forEach((aLoc) => {
+  const localGFs = {};
+  const sortedGFs = [];
+
+  backEndLocationsList.sort(sortByName).forEach((aLoc) => {
     const localLocObj = _makeLocalGF(aLoc);
+
     if (localLocObj !== null) {
-      theGFs[aLoc.id] = localLocObj;
+      localGFs[aLoc.id] = localLocObj;
+      sortedGFs.push(localLocObj.id);
     }
   });
-  return theGFs;
+
+  return {
+    localGFs,
+    sortedGFs,
+  };
 }
 
 // export default makeLocalGFs;

@@ -12,6 +12,7 @@
 // "status": "active"
 // "kind":    //optional
 import { ZOMBIE_TIME_TRH_MINUTES } from 'utils/constants';
+import { sortByName } from 'utils/sorting';
 
 function makeLocalVehicle(backEndObject, vehicleStats) {
   if (backEndObject.status !== 'active'
@@ -65,7 +66,7 @@ export function makeLocalVehicles(backEndVehiclesList, statsList) {
   const localVehicles = {};
   const orderedVehicles = [];
 
-  backEndVehiclesList.sort(orderByName).forEach((aVehicle) => {
+  backEndVehiclesList.sort(sortByName).forEach((aVehicle) => {
     const vehicleStats = getVehicleById(aVehicle.id, statsList).vehicle;
     const localVehicleObj = makeLocalVehicle(aVehicle, vehicleStats);
 
@@ -80,21 +81,6 @@ export function makeLocalVehicles(backEndVehiclesList, statsList) {
     localVehicles,
     orderedVehicles,
   };
-}
-
-function orderByName(a = {}, b = {}) {
-  const nameA = a.name.trim();
-  const nameB = b.name.trim();
-
-  if (nameA < nameB) {
-    return -1;
-  }
-
-  if (nameA > nameB) {
-    return 1;
-  }
-
-  return 0;
 }
 
 export function cleanVehicle(vehicle) {

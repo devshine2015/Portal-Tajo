@@ -88,7 +88,7 @@ OperationalScreen.propTypes = {
 
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
-  gfs: fromFleetReducer.getGFsEx(state),
+  gfs: fromFleetReducer.getGFsExSorted(state),
 });
 
 const PureOperationalScreen = pure(OperationalScreen);

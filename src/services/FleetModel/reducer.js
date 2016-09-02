@@ -38,6 +38,8 @@ export const getGFs = (state) =>
   fromgfReducer.getGFs(state.getIn(['fleet', 'locations']));
 export const getGFsEx = (state) =>
   fromgfReducer.getGFsEx(state.getIn(['fleet', 'locations']));
+export const getGFsExSorted = (state) =>
+  fromgfReducer.getGFsExSorted(state.getIn(['fleet', 'locations']));
 export const getGFByIdFunc = (state) =>
   getByIdFunc(state.getIn(['fleet', 'locations']));
 export const getProcessedGFs = (state) =>
