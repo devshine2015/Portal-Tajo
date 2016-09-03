@@ -1,7 +1,9 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import SplitContainer from 'containers/SplitContainer';
+// import SplitContainer from 'containers/SplitContainer';
+// import TheMap from 'containers/MapFleet';
+import TheMap from 'containers/MapFleet';
 import GFEditPanel from 'containers/EditGFPanel';
 import OperationalList from './components/OperationalPowerList';
 import FixedContent from 'components/FixedContent';
@@ -67,10 +69,9 @@ class Operational extends React.Component {
           />
         }
         <FixedContent containerClassName={styles.fixedContent}>
-          <SplitContainer
-            gfEditMode={this.state.mode === MD_GF_EDIT}
-            eventDispatcher={this.eventDispatcher}
-          />
+        <TheMap eventDispatcher={this.eventDispatcher}
+          gfEditMode={this.state.mode === MD_GF_EDIT}
+        />
         </FixedContent>
       </div>
     );

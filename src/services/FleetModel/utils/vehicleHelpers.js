@@ -49,6 +49,9 @@ function makeLocalVehicle(backEndObject, vehicleStats) {
     isZombie: true, // reported more the ZOMBIE_TIME_TRH_MINUTES ago
     isDead: true,   // never updated/reported
     kind: backEndObject.kind || 'SGV',
+    // ----
+    // TODO: the history - keep it in sep
+    chronicleFrame: null,
   };
 
   return theVehicle;

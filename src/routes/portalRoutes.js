@@ -26,6 +26,10 @@ const MAIN_MENU = [{
   niceName: 'Vehicles Editor',
   path: 'vehicles',
   order: 4,
+}, {
+  niceName: 'History',
+  path: 'history',
+  order: 5,
 }];
 
 export default function createRoutes(store) {
@@ -47,6 +51,15 @@ export default function createRoutes(store) {
     loadModule,
     dispatch: store.dispatch,
   });
+
+  const chronicleRoute = require('screens/Chronicle/route')({
+    path: 'history',
+    injectReducer,
+    errorHandler,
+    loadModule,
+    dispatch: store.dispatch,
+  });
+
 
   const reportsRoute = require('screens/ReportsScreen/route')({
     path: 'reports',
@@ -81,6 +94,7 @@ export default function createRoutes(store) {
     dashboardRoute,
     mapAndListRoute,
     reportsRoute,
+    chronicleRoute,
     vehiclesEditorRoute,
   );
 

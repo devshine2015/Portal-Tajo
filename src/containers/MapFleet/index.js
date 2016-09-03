@@ -2,19 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import pure from 'recompose/pure';
 import styles from './styles.css';
-require('mapbox.js'); // <-- auto-attaches to window.L
-require('leaflet/dist/leaflet.css');
-// require('leaflet-editable/handler/Edit.SimpleShape');
-// require('leaflet-editable/handler/Edit.Circle');
-require('leaflet-draw');
-
 
 import MapVehicle from './components/MapVehicle';
 import MapGF from './components/MapGF';
 import EditGF from './components/EditGF';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
-import { MAPBOX_KEY, ZERO_LOCATION, ZERO_ZOOM, NEW_GF_REQUIRED_ZOOM_LEVEL } from 'utils/constants';
+import { ZERO_LOCATION, NEW_GF_REQUIRED_ZOOM_LEVEL } from 'utils/constants';
+
+import createMap from 'utils/mapBoxMap';
 
 import * as mapEvents from './events';
 import * as listEvents from 'containers/Operational/components/OperationalPowerList/events';
@@ -27,7 +23,6 @@ const selectForMe = (meThis, hookId) => (id) => {
 const EMPTY_ARRAY = [];
 
 class MapFleet extends React.Component {
-
   constructor(props) {
     super(props);
     this.theMap = null;
@@ -54,13 +49,6 @@ class MapFleet extends React.Component {
     this.theMap.addLayer(this.gfMarkersLayer);
     this.gfEditLayer = window.L.layerGroup();
     this.theMap.addLayer(this.gfEditLayer);
-
-    // do this to resize map on div
-    window.setTimeout(
-     (((map) => () => {
-       map.invalidateSize(true);
-     })(this.theMap)),
-      500);
   }
 
   setRefPos(pos) {
@@ -72,11 +60,7 @@ class MapFleet extends React.Component {
     if (this.theMap !== null) {
       return;
     }
-    const domNode = ReactDOM.findDOMNode(this);
-    window.L.mapbox.accessToken = MAPBOX_KEY;
-    this.theMap = window.L.mapbox.map(domNode);
-    this.theMap.setView(ZERO_LOCATION, ZERO_ZOOM);
-
+    this.theMap = createMap(ReactDOM.findDOMNode(this));
     this.theMap.on('contextmenu', (e) => ((inThis) => {
       if (inThis.props.gfEditMode) { // already editing?
         return;
@@ -87,25 +71,6 @@ class MapFleet extends React.Component {
         inThis.theMap.setZoomAround(e.latlng, NEW_GF_REQUIRED_ZOOM_LEVEL);
       }
     })(this));
-
-    const tilesOSM = window.L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-    });
-    window.L.control.layers({
-      StreetsDef: window.L.mapbox.tileLayer('mapbox.streets'),
-      Streets: tilesOSM.addTo(this.theMap),
-      Satelite: window.L.mapbox.tileLayer('mapbox.streets-satellite'),
-      Emerald: window.L.mapbox.tileLayer('mapbox.emerald'),
-      Run: window.L.mapbox.tileLayer('mapbox.run-bike-hike'),
-      Light: window.L.mapbox.tileLayer('mapbox.light'),
-      Dark: window.L.mapbox.tileLayer('mapbox.dark'),
-      Wheat: window.L.mapbox.tileLayer('mapbox.wheatpaste'),
-      Basic: window.L.mapbox.tileLayer('mapbox.streets-basic'),
-      Outdoors: window.L.mapbox.tileLayer('mapbox.outdoors'),
-      Pencil: window.L.mapbox.tileLayer('mapbox.pencil'),
-    },
-    {},
-    { position: 'topleft' }).addTo(this.theMap);
   }
 
 // when selected from the list

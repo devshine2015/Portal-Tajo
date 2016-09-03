@@ -1,6 +1,7 @@
 import { List, Map, fromJS } from 'immutable';
 import * as vehiclesActions from '../actions/vehiclesActions';
 import * as socketActions from '../actions/socketActions';
+import { CHRONICLE_NEW_FRAME } from 'containers/Chronicle/actions';
 import { checkZombieVehicle } from '../utils/vehicleHelpers';
 
 const vehiclesInitialState = fromJS({
@@ -49,6 +50,11 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
       }
 
       return newState;
+    }
+    // TODO: the history - maybe have separate reducer for this
+    case CHRONICLE_NEW_FRAME: {
+      return state.setIn(['processedList', action.vehicleId, 'chronicleFrame'],
+        action.chronicleFrame);
     }
     default:
       return state;
