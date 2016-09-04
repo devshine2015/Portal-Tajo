@@ -7,12 +7,14 @@
 function ChronicleFramePlayer(chronicleFrame) {
   this.chronicleFrame = chronicleFrame;
 
-  this.normalizedTime100 = 0;
+  this.normalizedTime100 = -1;
   this.playbackSpeed = 1;
   this.animationProc = null;
 
   this.updateCallbacks = [];
   this.loopCallbacks = [];
+
+  this.frameData = {};
 }
 
 
@@ -30,6 +32,9 @@ ChronicleFramePlayer.prototype.kill = function( ){
 //
 // FrameUpdateCallbackFunctionu( normalizedTime100, pos, speed, temperature );
 //-----------------------------------------------------------------------
+//
+//  NOTE:
+// !!!callbacks are not called now
 ChronicleFramePlayer.prototype.addUpdateCallback = function( callBack ){
   this.updateCallbacks.push(callBack);
 };
@@ -44,6 +49,7 @@ ChronicleFramePlayer.prototype.addLoopCallback = function(callBack){
 //
 //
 //-----------------------------------------------------------------------
+//
 ChronicleFramePlayer.prototype.setPlaybackSpeed = function( speed ){
   this.playbackSpeed = speed;
 };
@@ -92,6 +98,9 @@ ChronicleFramePlayer.prototype.advance = function(step){
 //
 //-----------------------------------------------------------------------
 ChronicleFramePlayer.prototype.gotoTime100 = function(time100) {
+  if (this.normalizedTime100 === time100) {
+    return;
+  }
   this.normalizedTime100 = Math.max(0, time100);
   this.update();
 };
@@ -100,17 +109,22 @@ ChronicleFramePlayer.prototype.gotoTime100 = function(time100) {
 //
 //-----------------------------------------------------------------------
 ChronicleFramePlayer.prototype.update = function( ) {
-  const curTimeMs = this.chronicleFrame.timeRangeMs * this.normalizedTime100 / 100;
-  const curPos = this.chronicleFrame.getPosAtMs(curTimeMs);
-  const curSpeed = this.chronicleFrame.getSpeedAtIdx();
-  const curTeperature = this.chronicleFrame.hasTemperature() ?
-          this.chronicleFrame.getTemperatureAtMs(curTimeMs) : null;
-  const _this = this;
+  this.frameData.timeMs = this.chronicleFrame.timeRangeMs * this.normalizedTime100 / 100;
+  this.frameData.pos = this.chronicleFrame.getPosAtMs(this.frameData.timeMs);
+  this.frameData.speed = this.chronicleFrame.getSpeedAtIdx();
+  this.frameData.teperature = this.chronicleFrame.hasTemperature() ?
+          this.chronicleFrame.getTemperatureAtMs(this.frameData.timeMs) : null;
 
-  this.updateCallbacks.forEach(function(updater){
-    updater( _this.normalizedTime100, curPos, curSpeed, curTeperature );
-  });
+  // const _this = this;
+  //
+  // this.updateCallbacks.forEach(function(updater){
+  //   updater( _this.normalizedTime100, curPos, curSpeed, curTeperature );
+  // });
 };
+
+ChronicleFramePlayer.prototype.getCurrent = function( ) {
+  return this.frameData;
+}
 
 //
 //

@@ -72,6 +72,7 @@ InstancesList.propTypes = {
     types.withCheckboxes,
     types.withVehicleDetails,
     types.withGFDetails,
+    types.vehicleChronicle,
     types.simple,
   ]),
 

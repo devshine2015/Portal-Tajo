@@ -1,94 +1,61 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import moment from 'moment';
-import Period from 'containers/Report/components/Period';
+import DatePicker from 'material-ui/DatePicker';
+// import moment from 'moment';
+// import Period from 'containers/Report/components/Period';
 import styles from './styles.css';
-import { requestHistory } from './../../actions';
-
-// import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-
+import { requestHistory, setChronicleTimeFrame,
+    validateChronicleTimeFrame } from './../../actions';
 
 class TimeFrame extends React.Component {
 
   constructor(props) {
     super(props);
-    this.defaultStartDate = moment().subtract(1, 'days').toDate();
-    this.periodFields = {
-      start: {
-        name: 'start',
-        default: this.defaultStartDate,
-      },
-      end: {
-        name: 'end',
-        default: undefined,
-      },
-      startTime: {
-        name: 'startTime',
-        default: this.defaultStartTime,
-      },
-      endTime: {
-        name: 'endTime',
-        default: this.defaultEndTime,
-      },
-    };
 
     this.state = {
-      [this.periodFields.start.name]: this.periodFields.start.default,
-      [this.periodFields.end.name]: this.periodFields.end.default,
-      [this.periodFields.startTime.name]: this.periodFields.startTime.default,
-      [this.periodFields.endTime.name]: this.periodFields.endTime.default,
+      fromDate: new Date(),
     };
 
-    this.onChange = this.onChange.bind(this);
+//    this.onChange = this.onChange.bind(this);
   }
 
-
-  onPeriodChange = (field, value) => {
-//    this.props.swipeGeneratedData();
-    this.onChange(field, value);
-  }
-
-  onChange(field, value) {
-    // do nothing if field doesn't change
-    if (this.state[field] === value) return;
-
+  fromDateChange = (event, date) => {
     this.setState({
-      [field]: value,
+      fromDate: date,
     });
-  }
-
-  getData(_this) {
-    _this.props.requestHistory(_this.props.selectedVehicleId,
-      _this.state[_this.periodFields.start.name]);
-  }
+    const toDate = new Date(date);
+    toDate.setDate(toDate.getDate() + 1);
+    this.props.setChronicleTimeFrame(date, toDate);
+    this.props.validateChronicleTimeFrame();
+  };
 
   render() {
     return (
       <div className={styles.timeFrameBox}>
-      <Period
-        handlePeriodChange={this.onPeriodChange}
-        fields={this.periodFields}
+      <DatePicker
+        autoOk
+        hintText="Controlled Date Input"
+        value={this.state.fromDate}
+        onChange={this.fromDateChange}
       />
-        <RaisedButton
-          onClick={ () => this.getData(this) }
-          label="Get Data"
-        />
-
       </div>
     );
   }
 }
 
 TimeFrame.propTypes = {
-  selectedVehicleId: React.PropTypes.string.isRequired,
+  selectedVehicleId: React.PropTypes.string,
   requestHistory: React.PropTypes.func.isRequired,
+  setChronicleTimeFrame: React.PropTypes.func.isRequired,
+  validateChronicleTimeFrame: React.PropTypes.func.isRequired,
 };
 const mapState = () => ({
 });
 const mapDispatch = {
   requestHistory,
+  setChronicleTimeFrame,
+  validateChronicleTimeFrame,
 };
 const PureTimeFrame = pure(TimeFrame);
 export default connect(mapState, mapDispatch)(PureTimeFrame);

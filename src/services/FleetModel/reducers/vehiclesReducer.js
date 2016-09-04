@@ -1,7 +1,10 @@
 import { List, Map, fromJS } from 'immutable';
 import * as vehiclesActions from '../actions/vehiclesActions';
 import * as socketActions from '../actions/socketActions';
-import { CHRONICLE_NEW_FRAME } from 'containers/Chronicle/actions';
+import { CHRONICLE_ITEM_NEW_FRAME,
+      CHRONICLE_ITEM_SET_STATE,
+      CHRONICLE_VALIDATE_TIMEFRAME,
+      CHRONICLE_LOCAL_INCTANCE_STATE_NONE } from 'containers/Chronicle/actions';
 import { checkZombieVehicle } from '../utils/vehicleHelpers';
 
 const vehiclesInitialState = fromJS({
@@ -52,9 +55,25 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
       return newState;
     }
     // TODO: the history - maybe have separate reducer for this
-    case CHRONICLE_NEW_FRAME: {
+    case CHRONICLE_ITEM_NEW_FRAME: {
       return state.setIn(['processedList', action.vehicleId, 'chronicleFrame'],
         action.chronicleFrame);
+    }
+    // TODO: move to state inside chronicleFrame (or separate reducer)
+    case CHRONICLE_ITEM_SET_STATE: {
+      return state.setIn(['processedList', action.vehicleId, 'chronicleState'],
+        action.chronicleState);
+    }
+    // TODO: quick and dirty - just reset all
+    case CHRONICLE_VALIDATE_TIMEFRAME: {
+      let newState = state;
+      const vehicles = newState.get('processedList');
+      vehicles.forEach((aValue, aKey) => {
+        newState = newState.setIn(['processedList', aKey, 'chronicleState'],
+            CHRONICLE_LOCAL_INCTANCE_STATE_NONE);
+        return true;
+      });
+      return newState;
     }
     default:
       return state;

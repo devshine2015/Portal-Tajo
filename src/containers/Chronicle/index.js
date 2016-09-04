@@ -5,15 +5,20 @@ import VehiclesList from 'components/InstancesList';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import FixedContent from 'components/FixedContent';
-import TimeFrameController from './components/TimeFrameSelector'
-import PlaybackController from './components/PlaybackController'
+import TimeFrameController from './components/TimeFrameSelector';
+import PlaybackController from './components/PlaybackController';
 import ChronicleMap from 'containers/MapFleet/chronicle';
+import { CHRONICLE_LOCAL_INCTANCE_STATE_NONE,
+  requestHistory } from 'containers/Chronicle/actions';
+import { getChronicleTimeFrame } from 'containers/Chronicle/reducer';
+
 import createEventDispatcher from 'utils/eventDispatcher';
 
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import { showSnackbar } from 'containers/Snackbar/actions';
+import listTypes from 'components/InstancesList/types';
 
 import styles from './styles.css';
 
@@ -42,6 +47,10 @@ class Chronicle extends React.Component {
         selectedVehicleId: id,
         selectedVehicle: v.vehicle,
       });
+      if (v.vehicle.chronicleState === CHRONICLE_LOCAL_INCTANCE_STATE_NONE) {
+        const currentTimeFrame = this.props.chronicleTimeFrame;
+        this.props.requestHistory(id, currentTimeFrame.fromDate, currentTimeFrame.toDate);
+      }
     }
   }
 
@@ -51,7 +60,7 @@ class Chronicle extends React.Component {
     }
 
     return (
-      <div className={styles.editor}>
+      <div className={styles.topContainer}>
 
         <PowerList
           scrollable
@@ -63,10 +72,11 @@ class Chronicle extends React.Component {
               onItemClick={this.onItemClick}
               data={this.props.vehicles}
               currentExpandedItemId={this.state.selectedVehicleId}
+              type={listTypes.vehicleChronicle}
             />
           }
         />
-        <FixedContent >
+        <FixedContent containerClassName={styles.fixedContent}>
         <TimeFrameController selectedVehicleId={this.state.selectedVehicleId} />
         <PlaybackController />
         <ChronicleMap
@@ -83,14 +93,18 @@ Chronicle.propTypes = {
   showSnackbar: React.PropTypes.func.isRequired,
   vehicles: React.PropTypes.array.isRequired,
   filterFunc: React.PropTypes.func.isRequired,
+  requestHistory: React.PropTypes.func.isRequired,
+  chronicleTimeFrame: React.PropTypes.object.isRequired,
 };
 
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
+  chronicleTimeFrame: getChronicleTimeFrame(state),
 });
 const mapDispatch = {
   filterFunc: vehiclesActions.filterVehicles,
   showSnackbar,
+  requestHistory,
 };
 
 const PureChronicle = pure(Chronicle);

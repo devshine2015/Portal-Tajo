@@ -1,30 +1,48 @@
-import moment from 'moment';
+// import moment from 'moment';
 import api from 'utils/api';
 // import { setLoader } from './loaderActions';
 import { getFleetName, getAuthenticationSession } from 'containers/App/reducer';
 import createHistoryFrame from './../utils/chronicleVehicleFrame';
 
-export const CHRONICLE_NEW_FRAME = 'chronicle/newFrame';
+export const CHRONICLE_ITEM_NEW_FRAME = 'chronicle/newFrame';
+export const CHRONICLE_ITEM_SET_STATE = 'chronicle/state';
 export const CHRONICLE_SET_T = 'chronicle/setT';
+export const CHRONICLE_SET_TIMEFRAME = 'chronicle/setTimeFrame';
+export const CHRONICLE_VALIDATE_TIMEFRAME = 'chronicle/validateTimeFrame';
 
-export const requestHistory = (inVehicleId, date) => (dispatch, getState) =>
-  _requestHistory(inVehicleId, date, dispatch, getState);
+// TODO: move to separate place, those dont really belong to actions...
+export const CHRONICLE_LOCAL_INCTANCE_STATE_NONE = 'chronLocStateNone';
+export const CHRONICLE_LOCAL_INCTANCE_STATE_LOADING = 'chronLocStateLoading';
+export const CHRONICLE_LOCAL_INCTANCE_STATE_VALID = 'chronLocStateValid';
+
+export const requestHistory = (inVehicleId, dateFrom, dateTo) => (dispatch, getState) =>
+  _requestHistory(inVehicleId, dateFrom, dateTo, dispatch, getState);
+
+export const setChronicleState = (vehicleId, chronicleState) => (dispatch) => {
+  dispatch(_chronicleSetState(vehicleId, chronicleState));
+};
 
 export const setChronicleNormalizedT = (normalized100T) => (dispatch) => {
   dispatch(_chronicleSetT(normalized100T));
 };
+export const setChronicleTimeFrame = (dateFrom, dateTo) => (dispatch) => {
+  dispatch(_chronicleSetTimeFrame(dateFrom, dateTo));
+};
+// TODO: this should be incapsulated in setTimeFrame
+export const validateChronicleTimeFrame = () => (dispatch) => {
+  dispatch(_chronicleValidateTimeFrame());
+};
 
-function _requestHistory(inVehicleId, date, dispatch, getState) {
+function _requestHistory(inVehicleId, dateFrom, dateTo, dispatch, getState) {
 //  dispatch(setLoader(true));
+  const vehicleId = inVehicleId;
+  dispatch(_chronicleSetState(vehicleId, CHRONICLE_LOCAL_INCTANCE_STATE_LOADING));
   const fleet = getFleetName(getState());
   const baseVehiclesUrl = `${fleet}/vehicles`;
-  const vehicleId = inVehicleId;
 // TODO: properly generate from and to
 //  const fromString = '2016-08-21T04:38:32.000+0000';// date.toString();
-  let fromString = date.toISOString();
+  let fromString = dateFrom.toISOString();
   fromString = fromString.slice(0,-1) + '+0000';
-  const dateTo = new Date(date);
-  dateTo.setDate(dateTo.getDate()+1);
   let toString = dateTo.toISOString();
   toString = toString.slice(0,-1) + '+0000';
 
@@ -45,8 +63,9 @@ function _requestHistory(inVehicleId, date, dispatch, getState) {
   return api(requestUrl, { optionalHeaders })
     .then(toJson)
     .then(events => {
-      const theFrame = createHistoryFrame(events, date, dateTo);
+      const theFrame = createHistoryFrame(events, dateFrom, dateTo);
       dispatch(_newVehicleChronicleFrame(vehicleId, theFrame));
+      dispatch(_chronicleSetState(vehicleId, CHRONICLE_LOCAL_INCTANCE_STATE_VALID));
     });
 }
 
@@ -55,12 +74,28 @@ function toJson(response) {
 }
 
 const _newVehicleChronicleFrame = (vehicleId, chronicleFrame) => ({
-  type: CHRONICLE_NEW_FRAME,
+  type: CHRONICLE_ITEM_NEW_FRAME,
   vehicleId,
   chronicleFrame,
+});
+
+const _chronicleSetState = (vehicleId, chronicleState) => ({
+  type: CHRONICLE_ITEM_SET_STATE,
+  vehicleId,
+  chronicleState,
 });
 
 const _chronicleSetT = (normalized100T) => ({
   type: CHRONICLE_SET_T,
   normalized100T,
+});
+
+const _chronicleSetTimeFrame = (dateFrom, dateTo) => ({
+  type: CHRONICLE_SET_TIMEFRAME,
+  dateFrom,
+  dateTo,
+});
+
+const _chronicleValidateTimeFrame = () => ({
+  type: CHRONICLE_VALIDATE_TIMEFRAME,
 });

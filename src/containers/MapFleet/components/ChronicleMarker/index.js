@@ -1,6 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
+import { CHRONICLE_LOCAL_INCTANCE_STATE_VALID } from 'containers/Chronicle/actions';
 
 import { getNormalized100T } from 'containers/Chronicle/reducer';
 
@@ -10,54 +11,90 @@ import { getNormalized100T } from 'containers/Chronicle/reducer';
 class ChronicleMarker extends React.Component {
   constructor(props) {
     super(props);
-    this.containerLayer = null;
-    this.theMarker = null;
+    this.containerLayer = props.theLayer;
+    this.createMarkers();
   }
 
   componentDidMount() {
-    this.containerLayer = this.props.theLayer;
-  }
-  componentWillUnmount() {
-// TODO: need to delete MapBox markers?
-  }
-  updateMarker() {
-    if ( this.containerLayer === null
-      || this.props.theVehicle === null
-      || this.props.theVehicle.chronicleFrame === null) {
-      return;
-    }
-    if (!this.props.theVehicle.chronicleFrame.isValid()) {
-      return;
-    }
-    const startPos = this.props.theVehicle.chronicleFrame.posData[0].pos;
-    if (this.theMarker === null) {
-      this.theMarker = window.L.marker(startPos);
-      const updater = (normalizedTime100, curPos, curSpeed, curTeperature) => {
-        this.setPosition(curPos);
-      };
-      this.props.theVehicle.chronicleFrame.player.addUpdateCallback(updater);
-    }
-//    this.setPosition(startPos);
-    if (!this.containerLayer.hasLayer(this.theMarker)) {
-      this.containerLayer.addLayer(this.theMarker);
-    }
-    this.props.theVehicle.chronicleFrame.player.gotoTime100(this.props.normalized100T);
     // const updater = (normalizedTime100, curPos, curSpeed, curTeperature) => {
     //   this.setPosition(curPos);
     // };
     // this.props.theVehicle.chronicleFrame.player.addUpdateCallback(updater);
-    // this.props.theVehicle.chronicleFrame.player.setPlaybackSpeed(1);
-    // this.props.theVehicle.chronicleFrame.player.play(true);
-//    getNormalized100T();
   }
-  // updater(normalizedTime100, curPos, curSpeed, curTeperature) {
-  //   this.setPosition(curPos);
-  // }
+
+  componentWillUnmount() {
+// TODO: need to delete MapBox markers?
+    this.removeMarker();
+  }
+
   setPosition(latLng) {
     this.theMarker.setLatLng(latLng);
+    this.theMarkerSecondary.setLatLng(latLng);
   }
+
+  createMarkers() {
+    const markerR = 5;
+    const startPos = window.L.latLng(0, 0);
+    this.theMarkerSecondary = window.L.circleMarker(startPos,
+      { title: this.props.theVehicle.name,
+        opacity: 1,
+        fillOpacity: 1,
+        color: '#0A5',
+        fillColor: '#008241',
+       })
+      .setRadius(markerR);
+    this.theMarker = window.L.marker(startPos);
+  }
+
+  update() {
+    this.props.theVehicle.chronicleFrame.player.gotoTime100(this.props.normalized100T);
+    const curData = this.props.theVehicle.chronicleFrame.player.getCurrent();
+    this.setPosition(curData.pos);
+  }
+
+  removeMarker() {
+    if (this.containerLayer === null) {
+      return;
+    }
+    if (this.containerLayer.hasLayer(this.theMarker)) {
+      this.containerLayer.removeLayer(this.theMarker);
+    }
+    if (this.containerLayer.hasLayer(this.theMarkerSecondary)) {
+      this.containerLayer.removeLayer(this.theMarkerSecondary);
+    }
+  }
+
+  hichlight(doHighlight) {
+    if (this.containerLayer === null) {
+      return;
+    }
+    if (doHighlight) {
+      if (!this.containerLayer.hasLayer(this.theMarker)) {
+        this.containerLayer.addLayer(this.theMarker);
+        //
+        // pan to me when selected
+        const bounds = this.containerLayer.getBounds();
+        if (!bounds.contains(this.theMarker.getLatLng())) {
+          this.containerLayer.panTo(this.theMarker.getLatLng());
+        }
+      }
+      if (this.containerLayer.hasLayer(this.theMarkerSecondary)) {
+        this.containerLayer.removeLayer(this.theMarkerSecondary);
+      }
+    } else {
+      if (this.containerLayer.hasLayer(this.theMarker)) {
+        this.containerLayer.removeLayer(this.theMarker);
+      }
+      if (!this.containerLayer.hasLayer(this.theMarkerSecondary)) {
+        this.containerLayer.addLayer(this.theMarkerSecondary);
+      }
+    }
+  }
+
+
   render() {
-    this.updateMarker();
+    this.update();
+    this.hichlight(this.props.isSelected);
     return false;
   }
 }

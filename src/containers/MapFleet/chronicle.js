@@ -8,6 +8,7 @@ import ChronicleMarker from './components/ChronicleMarker';
 import MapGF from './components/MapGF';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
+import { CHRONICLE_LOCAL_INCTANCE_STATE_VALID } from 'containers/Chronicle/actions';
 
 import createMap from 'utils/mapBoxMap';
 
@@ -73,22 +74,34 @@ class MapChronicle extends React.Component {
       //     onClick={ () => {} }
       //   />
       // ));
-      chronPaths = this.props.vehicles.map((v) => (
-        <ChroniclePath
-          key={v.id}
-          theLayer={this.theMap}
-          theVehicle={v}
-          isSelected={this.props.selectedVehicle !== null && this.props.selectedVehicle.id === v.id}
-        />
-      ));
-      chronMarkers = this.props.vehicles.map((v) => (
+      chronPaths = this.props.vehicles.map((v) => {
+        if (v.chronicleState !== CHRONICLE_LOCAL_INCTANCE_STATE_VALID
+          || !v.chronicleFrame.isValid()) {
+          return false;
+        }
+        return (
+          <ChroniclePath
+            key={v.id+'CrP'}
+            theLayer={this.theMap}
+            theVehicle={v}
+            isSelected={this.props.selectedVehicle !== null && this.props.selectedVehicle.id === v.id}
+          />
+        );
+      });
+      chronMarkers = this.props.vehicles.map((v) => {
+        if (v.chronicleState !== CHRONICLE_LOCAL_INCTANCE_STATE_VALID
+          || !v.chronicleFrame.isValid()) {
+          return false;
+        }
+        return (
         <ChronicleMarker
-          key={v.id}
+          key={v.id+'CrM'}
           theLayer={this.theMap}
           theVehicle={v}
           isSelected={this.props.selectedVehicle !== null && this.props.selectedVehicle.id === v.id}
         />
-      ));
+        );
+      });
     }
     return (
       <div className = {styles.mapContainer}>
@@ -106,11 +119,11 @@ const PureMapChronicle = pure(MapChronicle);
 MapChronicle.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
   gfs: React.PropTypes.array.isRequired,
-  eventDispatcher: React.PropTypes.object.isRequired,
+//  eventDispatcher: React.PropTypes.object.isRequired,
   vehicleById: React.PropTypes.func.isRequired,
   gfById: React.PropTypes.func.isRequired,
   gfEditMode: React.PropTypes.bool.isRequired,
-  selectedVehicle: React.PropTypes.object.isRequired,
+  selectedVehicle: React.PropTypes.object,
 };
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesEx(state),

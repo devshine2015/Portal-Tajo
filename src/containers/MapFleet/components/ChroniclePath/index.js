@@ -1,33 +1,24 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import { CHRONICLE_LOCAL_INCTANCE_STATE_VALID } from 'containers/Chronicle/actions';
+
 // import styles from './../styles.css';
 
 
 class ChroniclePath extends React.Component {
   constructor(props) {
     super(props);
-    this.containerLayer = null;
-    this.thePath = null;
+    this.containerLayer = this.props.theLayer;
+    this.createPath();
   }
 
   componentDidMount() {
-    this.containerLayer = this.props.theLayer;
   }
   componentWillUnmount() {
 // TODO: need to delete MapBox markers?
-  }
-  updatePath() {
-    if ( this.containerLayer === null
-      || this.props.theVehicle === null
-      || this.props.theVehicle.chronicleFrame === null
-      || this.props.theVehicle.chronicleFrame.hasMapPath) {
-      return;
-    }
     this.removePath();
-    if (!this.props.theVehicle.chronicleFrame.isValid()) {
-      return;
-    }
-    this.props.theVehicle.chronicleFrame.hasMapPath = true;
+  }
+  createPath() {
     const latLngArray = [];
     const srcPosArray = this.props.theVehicle.chronicleFrame.posData;
     for (let i = 0; i < srcPosArray.length; ++i) {
@@ -61,21 +52,22 @@ class ChroniclePath extends React.Component {
     if (doHighlight) {
       this.thePath.setStyle({
         color: '#e64a19',
-        weight: 4,
+        weight: 6,
         opacity: 0.85,
       });
 //      this.thePath.bringToFront();
+// zoom the map to the PATH
+//      this.containerLayer.fitBounds(this.thePath.getBounds());
     } else {
       this.thePath.setStyle({
         color: '#0A5',
-        weight: 4,
+        weight: 2,
         opacity: 0.75,
       });
 //    this.thePath.bringToBack();
     }
   }
   render() {
-    this.updatePath();
     this.highlight(this.props.isSelected);
     return false;
   }

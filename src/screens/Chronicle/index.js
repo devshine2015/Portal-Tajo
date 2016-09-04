@@ -4,7 +4,7 @@ import InnerPortal from 'containers/InnerPortal';
 import Chronicle from 'containers/Chronicle';
 
 const HistoryScreen = () => (
-  <InnerPortal hasRealTimeData>
+  <InnerPortal>
     <Chronicle />
   </InnerPortal>
 );
