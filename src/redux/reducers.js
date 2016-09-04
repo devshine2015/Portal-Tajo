@@ -10,6 +10,7 @@ import snackbarReducer from 'containers/Snackbar/reducer';
 import innerPortalReducer from 'containers/InnerPortal/reducer';
 import fleetReducer from 'services/FleetModel/reducer';
 import reportReducer from 'containers/Report/reducer';
+import chronicleReducer from 'containers/Chronicle/reducer';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 const routeInitialState = fromJS({
@@ -37,6 +38,7 @@ export default function createReducer(asyncReducers) {
     inner: innerPortalReducer,
     snackbar: snackbarReducer,
     fleet: fleetReducer,
+    chronicle: chronicleReducer,
     ...asyncReducers,
   });
 }

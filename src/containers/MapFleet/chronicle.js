@@ -4,6 +4,7 @@ import pure from 'recompose/pure';
 import styles from './styles.css';
 
 import ChroniclePath from './components/ChroniclePath';
+import ChronicleMarker from './components/ChronicleMarker';
 import MapGF from './components/MapGF';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
@@ -58,27 +59,42 @@ class MapChronicle extends React.Component {
     this.hideLayer(this.gfEditLayer, !this.props.gfEditMode);
 
     let gfs = EMPTY_ARRAY;
+    let chronPaths = EMPTY_ARRAY;
+    let chronMarkers = EMPTY_ARRAY;
 
     if (this.theMap !== null) {
-      gfs = this.props.gfs.map((v) => (
-        <MapGF
+      // gfs = this.props.gfs.map((v) => (
+      //   <MapGF
+      //     key={v.id}
+      //     isSelected={false}
+      //     isDetailViewActivated={false}
+      //     theLayer={this.gfMarkersLayer}
+      //     theGF={v}
+      //     onClick={ () => {} }
+      //   />
+      // ));
+      chronPaths = this.props.vehicles.map((v) => (
+        <ChroniclePath
           key={v.id}
-          isSelected={false}
-          isDetailViewActivated={false}
-          theLayer={this.gfMarkersLayer}
-          theGF={v}
-          onClick={ () => {} }
+          theLayer={this.theMap}
+          theVehicle={v}
+          isSelected={this.props.selectedVehicle !== null && this.props.selectedVehicle.id === v.id}
+        />
+      ));
+      chronMarkers = this.props.vehicles.map((v) => (
+        <ChronicleMarker
+          key={v.id}
+          theLayer={this.theMap}
+          theVehicle={v}
+          isSelected={this.props.selectedVehicle !== null && this.props.selectedVehicle.id === v.id}
         />
       ));
     }
     return (
       <div className = {styles.mapContainer}>
       {gfs}
-      {this.theMap === null ? false :
-        <ChroniclePath
-          theLayer={this.theMap}
-          selectedVehicle={this.props.selectedVehicle}
-        />
+      {chronPaths}
+      {chronMarkers}
       }
       </div>
     );
@@ -88,6 +104,7 @@ class MapChronicle extends React.Component {
 const PureMapChronicle = pure(MapChronicle);
 
 MapChronicle.propTypes = {
+  vehicles: React.PropTypes.array.isRequired,
   gfs: React.PropTypes.array.isRequired,
   eventDispatcher: React.PropTypes.object.isRequired,
   vehicleById: React.PropTypes.func.isRequired,
@@ -96,6 +113,7 @@ MapChronicle.propTypes = {
   selectedVehicle: React.PropTypes.object.isRequired,
 };
 const mapState = (state) => ({
+  vehicles: fromFleetReducer.getVehiclesEx(state),
   gfs: fromFleetReducer.getGFsExSorted(state),
   vehicleById: fromFleetReducer.getVehicleByIdFunc(state),
   gfById: fromFleetReducer.getGFByIdFunc(state),

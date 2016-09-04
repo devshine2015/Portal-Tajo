@@ -1,4 +1,6 @@
-function HistoryVehicleFrame(events, dateFrom, dateTo) {
+import createFramePlayer from './chronicleFramePlayer';
+
+function ChronicleVehicleFrame(events, dateFrom, dateTo) {
   this.dateFromDbgBackEnd = null;
   this.dateFrom = dateFrom;
   this.dateFrom00 = new Date(dateFrom.getFullYear(), dateFrom.getMonth(), dateFrom.getDate() );
@@ -18,7 +20,7 @@ function HistoryVehicleFrame(events, dateFrom, dateTo) {
   //
   this.lastFoundIdx = 0;
 //    this.indexHint = -1;
-//  this.player = new ddsHistoryFramePlayer(this);
+  this.player = createFramePlayer(this);
 
   this.parceData(events);
 }
@@ -27,7 +29,7 @@ function HistoryVehicleFrame(events, dateFrom, dateTo) {
 //
 //
 //-----------------------------------------------------------------------
-HistoryVehicleFrame.prototype.parceData = function(events) {
+ChronicleVehicleFrame.prototype.parceData = function(events) {
   if (events.length<10) {
     console.log('history frame for '+this.dateFrom+' - '+this.dateTo);
     console.log('  EMPTY '+events.length);
@@ -89,7 +91,7 @@ HistoryVehicleFrame.prototype.parceData = function(events) {
 //
 //
 //-----------------------------------------------------------------------
-HistoryVehicleFrame.prototype.kill = function( ){
+ChronicleVehicleFrame.prototype.kill = function( ){
   // if(this.player!=null)
   //   this.player.kill();
   // this.player = null;
@@ -98,7 +100,7 @@ HistoryVehicleFrame.prototype.kill = function( ){
 //
 //
 //-----------------------------------------------------------------------
-HistoryVehicleFrame.prototype.isValid = function( ){
+ChronicleVehicleFrame.prototype.isValid = function( ){
 // TODO: need more checks here - type of event, etc
   return this.posData.length > 0;
 };
@@ -106,7 +108,7 @@ HistoryVehicleFrame.prototype.isValid = function( ){
 //
 //
 //-----------------------------------------------------------------------
-HistoryVehicleFrame.prototype.isStatic = function( ){
+ChronicleVehicleFrame.prototype.isStatic = function( ){
 // TODO: need more checks here - type of event, etc
   return this.posData.length === 1;
 };
@@ -114,7 +116,7 @@ HistoryVehicleFrame.prototype.isStatic = function( ){
 //
 //
 //-----------------------------------------------------------------------
-HistoryVehicleFrame.prototype.getDateAtMs = function( timeMs ){
+ChronicleVehicleFrame.prototype.getDateAtMs = function( timeMs ){
   var aDate = new Date(timeMs + this.dateFrom00.getTime());
   return aDate;
 }
@@ -123,42 +125,42 @@ HistoryVehicleFrame.prototype.getDateAtMs = function( timeMs ){
 //
 //
 //-----------------------------------------------------------------------
-HistoryVehicleFrame.prototype.getSpeedAtMs = function( timeMs ){
+ChronicleVehicleFrame.prototype.getSpeedAtMs = function( timeMs ){
   var speedSample =this.findSample( Math.floor(timeMs), this.speedData);
   return speedSample.v;
 }
 //
 //
 //-----------------------------------------------------------------------
-HistoryVehicleFrame.prototype.getSpeedAtIdx = function( idx ){
+ChronicleVehicleFrame.prototype.getSpeedAtIdx = function( idx ){
   return this.speedData[idx===undefined ? this.lastFoundIdx : idx].v;
 }
 
 //
 //
 //-----------------------------------------------------------------------
-HistoryVehicleFrame.prototype.getPosAtMs = function( timeMs ){
+ChronicleVehicleFrame.prototype.getPosAtMs = function( timeMs ){
   var posSample =this.findSample( Math.floor(timeMs), this.posData);
   return posSample.pos;
 }
 //
 //
 //-----------------------------------------------------------------------
-HistoryVehicleFrame.prototype.getTemperatureAtMs = function( timeMs ){
+ChronicleVehicleFrame.prototype.getTemperatureAtMs = function( timeMs ){
   var tempSample =this.findSample( Math.floor(timeMs), this.temperatureData);
   return tempSample.t;
 }
 //
 //
 //-----------------------------------------------------------------------
-HistoryVehicleFrame.prototype.hasTemperature = function( ){
+ChronicleVehicleFrame.prototype.hasTemperature = function( ){
   return this.temperatureData.length>5;
 }
 
 //
 //
 //-----------------------------------------------------------------------
-HistoryVehicleFrame.prototype.findSample = function( requestMs, data ){
+ChronicleVehicleFrame.prototype.findSample = function( requestMs, data ){
 
   if( requestMs<=0 )
     return data[0];
@@ -179,5 +181,5 @@ HistoryVehicleFrame.prototype.findSample = function( requestMs, data ){
 //-----------------------------------------------------------------------
 
 export default function createHistoryFrame(events, dateFrom, dateTo) {
-  return new HistoryVehicleFrame(events, dateFrom, dateTo);
+  return new ChronicleVehicleFrame(events, dateFrom, dateTo);
 }

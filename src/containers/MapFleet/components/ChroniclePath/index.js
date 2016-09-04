@@ -17,23 +17,24 @@ class ChroniclePath extends React.Component {
 // TODO: need to delete MapBox markers?
   }
   updatePath() {
-    this.removePath();
-    if (this.props.selectedVehicle === null
-      || this.props.selectedVehicle.chronicleFrame === null) {
+    if ( this.containerLayer === null
+      || this.props.theVehicle === null
+      || this.props.theVehicle.chronicleFrame === null
+      || this.props.theVehicle.chronicleFrame.hasMapPath) {
       return;
     }
+    this.removePath();
+    if (!this.props.theVehicle.chronicleFrame.isValid()) {
+      return;
+    }
+    this.props.theVehicle.chronicleFrame.hasMapPath = true;
     const latLngArray = [];
-    const srcPosArray =  this.props.selectedVehicle.chronicleFrame.posData;
+    const srcPosArray = this.props.theVehicle.chronicleFrame.posData;
     for (let i = 0; i < srcPosArray.length; ++i) {
       latLngArray.push(srcPosArray[i].pos);
     }
 
-    this.thePath = window.L.polyline(latLngArray, {
-      color: '#0A5',
-      weight: 4,
-      opacity: 0.75,
-    //      dashArray: '5, 15'
-    });
+    this.thePath = window.L.polyline(latLngArray);
 
     if (!this.containerLayer.hasLayer(this.thePath)) {
       this.containerLayer.addLayer(this.thePath);
@@ -47,20 +48,43 @@ class ChroniclePath extends React.Component {
     if (this.thePath === null) {
       return;
     }
-    if (!this.containerLayer.hasLayer(this.thePath)) {
-      this.containerLayer.addLayer(this.thePath);
+    if (this.containerLayer.hasLayer(this.thePath)) {
+      this.containerLayer.removeLayer(this.thePath);
     }
     this.thePath = null;
   }
+  highlight(doHighlight) {
+    if (this.thePath === null) {
+      return;
+    }
+// TODO: colors from theme
+    if (doHighlight) {
+      this.thePath.setStyle({
+        color: '#e64a19',
+        weight: 4,
+        opacity: 0.85,
+      });
+//      this.thePath.bringToFront();
+    } else {
+      this.thePath.setStyle({
+        color: '#0A5',
+        weight: 4,
+        opacity: 0.75,
+      });
+//    this.thePath.bringToBack();
+    }
+  }
   render() {
     this.updatePath();
+    this.highlight(this.props.isSelected);
     return false;
   }
 }
 
 ChroniclePath.propTypes = {
   theLayer: React.PropTypes.object.isRequired,
-  selectedVehicle: React.PropTypes.object.isRequired,
+  theVehicle: React.PropTypes.object.isRequired,
+  isSelected: React.PropTypes.bool.isRequired,
 };
 const PureChroniclePath = pure(ChroniclePath);
 
