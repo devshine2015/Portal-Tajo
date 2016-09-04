@@ -14,6 +14,11 @@ class PlaybackCtr extends React.Component {
     };
     this.animationProc = null;
   }
+
+  componentWillUnmount() {
+    this.play(false);
+  }
+
   isPlaying() {
     return this.animationProc !== null;
   }
