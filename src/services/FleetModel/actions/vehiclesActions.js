@@ -1,9 +1,7 @@
 import api from 'utils/api';
 import { openFleetSocket } from './socketActions';
-import {
-  getFleetName,
-  getAuthenticationSession,
-} from 'containers/App/reducer';
+import { getFleetName } from 'services/Global/reducer';
+import { getAuthenticationSession } from 'services/Auth/reducer';
 import { makeLocalVehicles } from '../utils/vehicleHelpers';
 import { filterProcessedListByName } from '../utils/filtering';
 import { getProcessedVehicles } from '../reducer';

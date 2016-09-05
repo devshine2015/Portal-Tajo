@@ -1,6 +1,7 @@
 import api from 'utils/api';
 import { setLoaderState } from './loaderActions';
-import { getFleetName, getAuthenticationSession } from 'containers/App/reducer';
+import { getFleetName } from 'services/Global/reducer';
+import { getAuthenticationSession } from 'services/Auth/reducer';
 
 export const submitForm = (data) => (dispatch, getState) =>
   _submitForm(data, dispatch, getState);

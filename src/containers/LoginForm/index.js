@@ -5,7 +5,7 @@ import Form from 'components/Form';
 import Button from 'components/Button';
 import InputField from 'components/InputField';
 import InputFieldWrapper from 'components/InputFieldWrapper';
-import { authActions } from 'containers/App/actions';
+import { loginActions } from 'services/Auth/actions';
 
 const FORM_NAME = 'login';
 
@@ -65,7 +65,7 @@ const PureLoginForm = pure(LoginForm);
 
 const mapState = () => ({});
 const mapDispatch = {
-  login: authActions.login,
+  login: loginActions.login,
 };
 
 export default connect(mapState, mapDispatch)(PureLoginForm);

@@ -1,8 +1,6 @@
 import api from 'utils/api';
-import {
-  getFleetName,
-  getAuthenticationSession,
-} from 'containers/App/reducer';
+import { getFleetName } from 'services/Global/reducer';
+import { getAuthenticationSession } from 'services/Auth/reducer';
 import { makeLocalGFs } from '../utils/gfHelpers';
 import { getProcessedGFs } from '../reducer';
 import { filterProcessedListByName } from '../utils/filtering';

@@ -7,7 +7,11 @@ import AppBar from './components/OldPortalAppBar';
 import drvrDevTheme from 'configs/theme';
 import Report from 'containers/Report';
 import { vehiclesActions } from 'services/FleetModel/actions';
-import { authActions, fleetActions } from 'containers/App/actions';
+import { setFleet } from 'services/Global/actions';
+import {
+  localActions,
+  loginActions,
+} from 'services/Auth/actions';
 import {
   storage,
   constants,
@@ -64,10 +68,10 @@ SelfServiceReport.propTypes = {
 };
 
 const mapDispatch = {
-  checkUserAuthentication: authActions.checkUserAuthentication,
+  setFleet,
+  checkUserAuthentication: localActions.checkUserAuthentication,
   fetchVehicles: vehiclesActions.fetchVehicles,
-  setFleet: fleetActions.setFleet,
-  logout: authActions.logout,
+  logout: loginActions.logout,
   goHome: () => window.location.replace(HOME_URL),
 };
 

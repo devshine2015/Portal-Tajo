@@ -5,9 +5,10 @@ import SnackbarNotification from 'containers/Snackbar';
 import styles from './styles.css';
 import ApplicationBar from './components/ApplicationBar';
 import MainSidebar from './components/MainSidebar';
-import { getIsUserAuthenticated, getFleetName } from 'containers/App/reducer';
-import { authActions } from 'containers/App/actions';
-import PortalsList from 'components/PortalsLinks';
+import { getFleetName } from 'services/Global/reducer';
+import { getIsUserAuthenticated } from 'services/Auth/reducer';
+import { localActions } from 'services/Auth/actions';
+// import PortalsList from 'components/PortalsLinks';
 import { commonFleetActions } from 'services/FleetModel/actions';
 
 const URLS = {
@@ -77,7 +78,7 @@ const mapState = (state) => ({
   isAuthenticated: getIsUserAuthenticated(state),
 });
 const mapDispatch = {
-  checkUserAuthentication: authActions.checkUserAuthentication,
+  checkUserAuthentication: localActions.checkUserAuthentication,
   fetchFleet: commonFleetActions.fetchFleet,
 };
 

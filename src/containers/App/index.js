@@ -3,9 +3,9 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import { onlineStateActions, authActions } from './actions';
+import { changeOnlineState } from 'services/Global/actions';
+import { localActions } from 'services/Auth/actions';
 import drvrDevTheme from 'configs/theme';
-import styles from './styles.css';
 
 const muiTheme = getMuiTheme(drvrDevTheme);
 
@@ -52,8 +52,8 @@ App.propTypes = {
 
 const mapState = () => ({});
 const mapDispatch = {
-  changeOnlineState: onlineStateActions.changeOnlineState,
-  checkUserAuthentication: authActions.checkUserAuthentication,
+  changeOnlineState,
+  checkUserAuthentication: localActions.checkUserAuthentication,
 };
 
 const PureApp = pure(App);

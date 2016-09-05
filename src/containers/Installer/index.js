@@ -9,7 +9,7 @@ import Dialog from './components/Dialog';
 import OfflineData from './components/OfflineData';
 import { formActions, offlineDataActions } from './actions';
 import { validateForm } from 'utils/forms';
-import { getAppOnlineState } from 'containers/App/reducer';
+import { getAppOnlineState } from 'services/Global/reducer';
 import {
   getLoaderState,
   installerHasOfflineData,

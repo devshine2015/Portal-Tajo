@@ -11,7 +11,8 @@ import {
   getIsFiltering,
   getSelectedVehicles,
 } from '../reducer';
-import { getFleetName, getAuthenticationSession } from 'containers/App/reducer';
+import { getFleetName } from 'services/Global/reducer';
+import { getAuthenticationSession } from 'services/Auth/reducer';
 import { getVehiclesEx } from 'services/FleetModel/reducer';
 import {
   prepareDataForReport,

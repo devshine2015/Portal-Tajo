@@ -1,35 +1,19 @@
-import { replace, push } from 'react-router-redux';
-import {
-  api,
-  createBaseUrl,
-  constants,
-  storage,
-} from 'utils';
+import { replace } from 'react-router-redux';
 import { VERSIONS } from 'configs';
 import {
-  getFleetName,
-  getAuthenticationSession,
-  getAuthenticatedFleet,
-} from '../reducer';
+  storage,
+  constants,
+  createBaseUrl,
+} from 'utils';
+import { getAuthenticatedFleet } from '../reducer';
+import {
+  setUserAuthentication,
+  resetUserAuthentication,
+} from './commonActions';
+import { getFleetName } from 'services/Global/reducer';
 
-export const GLOBAL_AUTH_SET = 'portal/App/GLOBAL_AUTH_SET';
-export const GLOBAL_AUTH_RESET = 'portal/App/GLOBAL_AUTH_RESET';
-
-export const login = (data) => (dispatch, getState) =>
-  _login(data, dispatch, getState);
-export const logout = (redirectUrl = '') => (dispatch, getState) =>
-  _logout({ redirectUrl }, dispatch, getState);
 export const checkUserAuthentication = (params) => (dispatch, getState) =>
   _checkUserAuthentication(params, dispatch, getState);
-
-export const setUserAuthentication = (sessionId, fleet) => ({
-  type: GLOBAL_AUTH_SET,
-  sessionId,
-  fleet,
-});
-export const resetUserAuthentication = () => ({
-  type: GLOBAL_AUTH_RESET,
-});
 
 function _checkUserAuthentication(params, dispatch, getState) {
   const fleet = getFleetName(getState());
@@ -77,50 +61,6 @@ function _checkUserAuthentication(params, dispatch, getState) {
       }
     }
   });
-}
-
-function _login(data, dispatch, getState) {
-  const fleet = getFleetName(getState());
-  const loginUrl = `${fleet}/login`;
-
-  const options = {
-    payload: data,
-  };
-
-  return api.post(loginUrl, options)
-    .then(response => response.text())
-    .then(token => {
-      const fleetToken = {
-        fleet,
-        'session-id': token,
-        id: token,
-      };
-
-      storage.save(constants.LOCAL_STORAGE_SESSION_KEY, fleetToken, 2);
-      dispatch(setUserAuthentication(token, fleet));
-      dispatch(push(`${createBaseUrl(fleet)}/`));
-    }, (error) => {
-      console.error(error);
-    });
-}
-
-function _logout({ redirectUrl }, dispatch, getState) {
-  const fleet = getFleetName(getState());
-  const url = `${fleet}/login`;
-  const sessionId = getAuthenticationSession(getState());
-  const optionalHeaders = {
-    ['DRVR-SESSION']: sessionId,
-  };
-
-  return api.delete(url, { optionalHeaders })
-    .then(() => {
-      dispatch(resetUserAuthentication());
-
-      return Promise.resolve({
-        fleet,
-        sessionId,
-      });
-    });
 }
 
 const _checkVersion = (needChecking) => (savedData) => {

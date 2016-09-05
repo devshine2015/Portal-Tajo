@@ -1,4 +1,4 @@
-import { getFleetName } from 'containers/App/reducer';
+import { getFleetName } from 'services/Global/reducer';
 import { socket } from 'utils/api';
 
 export const FLEET_MODEL_SOCKET_SET = 'portal/services/FLEET_MODEL_SOCKET_SET';

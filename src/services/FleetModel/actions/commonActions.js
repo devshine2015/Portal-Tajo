@@ -1,4 +1,4 @@
-import { getFleetName } from 'containers/App/reducer';
+import { getFleetName } from 'services/Global/reducer';
 import { fetchVehicles } from './vehiclesActions';
 import { fetchGFs } from './gfActions';
 

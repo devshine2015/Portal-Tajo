@@ -5,12 +5,13 @@
 
 import { fromJS } from 'immutable';
 import { combineReducers } from 'redux-immutable';
-import rootReducer from 'containers/App/reducer';
 import snackbarReducer from 'containers/Snackbar/reducer';
 import innerPortalReducer from 'containers/InnerPortal/reducer';
 import fleetReducer from 'services/FleetModel/reducer';
 import reportReducer from 'containers/Report/reducer';
 import chronicleReducer from 'containers/Chronicle/reducer';
+import authReducer from 'services/Auth/reducer';
+import globalReducer from 'services/Global/reducer';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 const routeInitialState = fromJS({
@@ -33,7 +34,8 @@ function routerReducer(state = routeInitialState, action) {
  */
 export default function createReducer(asyncReducers) {
   return combineReducers({
-    global: rootReducer,
+    auth: authReducer,
+    global: globalReducer,
     route: routerReducer,
     inner: innerPortalReducer,
     snackbar: snackbarReducer,
@@ -45,7 +47,7 @@ export default function createReducer(asyncReducers) {
 
 export const createSelfServiceReducer = (asyncReducers) =>
   combineReducers({
-    global: rootReducer,
+    global: globalReducer,
     fleet: fleetReducer,
     reports: reportReducer,
     ...asyncReducers,

@@ -1,5 +1,5 @@
 import { replace } from 'react-router-redux';
-import { authActions } from 'containers/App/actions';
+import { loginActions } from 'services/Auth/actions';
 import {
   createBaseUrl,
   constants,
@@ -30,7 +30,7 @@ function _setInnerPortalPages(routes, dispatch) {
 }
 
 export const logout = () => dispatch =>
-  dispatch(authActions.logout())
+  dispatch(loginActions.logout())
     .then(({
       fleet,
       sessionId,

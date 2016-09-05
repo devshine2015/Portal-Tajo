@@ -1,7 +1,8 @@
 // import moment from 'moment';
 import api from 'utils/api';
 // import { setLoader } from './loaderActions';
-import { getFleetName, getAuthenticationSession } from 'containers/App/reducer';
+import { getAuthenticationSession } from 'services/Auth/reducer';
+import { getFleetName } from 'services/Global/reducer';
 import createHistoryFrame from './../utils/chronicleVehicleFrame';
 
 export const CHRONICLE_ITEM_NEW_FRAME = 'chronicle/newFrame';
