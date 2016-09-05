@@ -15,7 +15,6 @@ import { ZOMBIE_TIME_TRH_MINUTES } from 'utils/constants';
 import { sortByName } from 'utils/sorting';
 import { CHRONICLE_LOCAL_INCTANCE_STATE_NONE } from 'containers/Chronicle/actions';
 
-
 function makeLocalVehicle(backEndObject, vehicleStats) {
   if (backEndObject.status !== 'active'
     || !backEndObject.name) {
@@ -29,17 +28,17 @@ function makeLocalVehicle(backEndObject, vehicleStats) {
   const lt = hasPos ? vehicleStats.pos.latlon.lat : 39.75 + Math.random() * 0.5;
   const ln = hasPos ? vehicleStats.pos.latlon.lng : -74.70 + Math.random() * 0.5;
 
-  const theVehicle = {
+  /**
+   * Use Object.assign to automatically merge all backEndObject properties
+   * with custom local properties. In that case you won't need to know
+   * how exactly backEndObject changed, and still have possibility to create
+   * new custom properties. We use this model across whole applicatoin,
+   * so change it carefully.
+   *
+   * https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
+   **/
+  const theVehicle = Object.assign({}, backEndObject, {
     filteredOut: false,
-    //----
-    name: backEndObject.name,
-    id: backEndObject.id,
-    // ----
-    licensePlate: backEndObject.licensePlate,
-    make: backEndObject.make,
-    model: backEndObject.model,
-    year: backEndObject.year,
-
     pos: [lt, ln],
     speed: hasPos ? vehicleStats.pos.speed : 0,
     dist: {
@@ -50,13 +49,15 @@ function makeLocalVehicle(backEndObject, vehicleStats) {
     lastUpdateSinceEpoch: 0,
     isZombie: true, // reported more the ZOMBIE_TIME_TRH_MINUTES ago
     isDead: true,   // never updated/reported
-    kind: backEndObject.kind || 'SGV',
     // ----
     // TODO: the history - keep it in sep
     chronicleFrame: null,
     // TODO: this should be inside chronicleFrame
     chronicleState: CHRONICLE_LOCAL_INCTANCE_STATE_NONE,
-  };
+    // not sure that vehicle have to has any default value
+    // except 'unknown'. So just rely on backEndObject here.
+    // kind: 'SVG',
+  });
 
   return theVehicle;
 }
@@ -91,18 +92,19 @@ export function makeLocalVehicles(backEndVehiclesList, statsList) {
 }
 
 export function cleanVehicle(vehicle) {
-  const newVehicle = Object.assign({}, vehicle);
+  const requiredBackEndProps = [
+    'id', 'name', 'licensePlate', 'make', 'model', 'kind',
+    'odometer', 'year', 'created', 'updated', 'deviceId',
+    'status',
+  ];
 
-  delete newVehicle.dist;
-  delete newVehicle.filteredOut;
-  delete newVehicle.isDead;
-  delete newVehicle.isZombie;
-  delete newVehicle.lastUpdateSinceEpoch;
-  delete newVehicle.pos;
-  delete newVehicle.speed;
-  delete newVehicle.temp;
+  const result = {};
 
-  return newVehicle;
+  requiredBackEndProps.forEach(reqProp => {
+    result[reqProp] = vehicle[reqProp];
+  });
+
+  return result;
 }
 
 /**
