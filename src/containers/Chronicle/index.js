@@ -77,14 +77,14 @@ class Chronicle extends React.Component {
           }
         />
         <FixedContent containerClassName={styles.fixedContent}>
-        <TimeFrameController selectedVehicleId={this.state.selectedVehicleId} />
-        <PlaybackController />
-        <ChronicleMap
-          gfEditMode={false}
-          selectedVehicle={this.state.selectedVehicle}
-        />
+          <TimeFrameController selectedVehicleId={this.state.selectedVehicleId} />
+            <PlaybackController />
+            <ChronicleMap
+              gfEditMode={false}
+              selectedVehicle={this.state.selectedVehicle}
+            />
         </FixedContent>
-        </div>
+      </div>
     );
   }
 }

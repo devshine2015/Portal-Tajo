@@ -7,15 +7,13 @@ import AppBar from './components/OldPortalAppBar';
 import drvrDevTheme from 'configs/theme';
 import Report from 'containers/Report';
 import { vehiclesActions } from 'services/FleetModel/actions';
+import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
 import { setFleet } from 'services/Global/actions';
 import {
   localActions,
   loginActions,
 } from 'services/Auth/actions';
-import {
-  storage,
-  constants,
-} from 'utils';
+import storage from 'utils/localStorage';
 
 import styles from './styles.css';
 
@@ -35,7 +33,7 @@ class SelfServiceReport extends React.Component {
 
   logout = () => {
     this.props.logout(HOME_URL)
-      .then(() => storage.clean(constants.LOCAL_STORAGE_SESSION_KEY))
+      .then(() => storage.clean(LOCAL_STORAGE_SESSION_KEY))
       .then(() => window.location.replace(HOME_URL));
   }
 

@@ -1,8 +1,8 @@
 import { replace } from 'react-router-redux';
 import { loginActions } from 'services/Auth/actions';
+import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
 import {
   createBaseUrl,
-  constants,
   storage,
 } from 'utils';
 
@@ -40,7 +40,7 @@ export const logout = () => dispatch =>
         id: sessionId,
       }];
 
-      storage.cleanExactValues(constants.LOCAL_STORAGE_SESSION_KEY, toDelete);
+      storage.cleanExactValues(LOCAL_STORAGE_SESSION_KEY, toDelete);
       dispatch(replace(redirectTo));
 
       return Promise.resolve();

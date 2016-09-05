@@ -1,6 +1,6 @@
 require('firebase/database');
 import firebase from 'firebase/app';
-import { FIREBASE_CONFIG } from 'configs';
+import { FIREBASE_CONFIG } from 'utils/constants';
 import { FIREBASE_SUBSCRIBTIONS_REF } from './constants';
 import { getFirebaseStatus } from './reducer';
 

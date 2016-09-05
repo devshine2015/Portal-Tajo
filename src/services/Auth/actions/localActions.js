@@ -1,8 +1,8 @@
 import { replace } from 'react-router-redux';
-import { VERSIONS } from 'configs';
+import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
+import VERSIONS from 'configs/versions';
 import {
   storage,
-  constants,
   createBaseUrl,
 } from 'utils';
 import { getAuthenticatedFleet } from '../reducer';
@@ -23,7 +23,7 @@ function _checkUserAuthentication(params, dispatch, getState) {
     return Promise.resolve();
   }
 
-  return storage.read(constants.LOCAL_STORAGE_SESSION_KEY)
+  return storage.read(LOCAL_STORAGE_SESSION_KEY)
   .then(_checkVersion(params.checkVersion))
   .then((sessions) => {
     if (sessions && typeof sessions === 'string') {
@@ -53,7 +53,9 @@ function _checkUserAuthentication(params, dispatch, getState) {
     if (error.message && error.message === 'wrong version') {
       const loginUrl = `${createBaseUrl(fleet)}/login`;
 
-      storage.clean(constants.LOCAL_STORAGE_SESSION_KEY);
+      console.log(error.message);
+
+      storage.clean(LOCAL_STORAGE_SESSION_KEY);
       dispatch(resetUserAuthentication());
 
       if (params.urls) {
@@ -63,7 +65,7 @@ function _checkUserAuthentication(params, dispatch, getState) {
   });
 }
 
-const _checkVersion = (needChecking) => (savedData) => {
+const _checkVersion = (needChecking = true) => (savedData) => {
   const toReturn = savedData && Object.hasOwnProperty.call(savedData, 'values') ?
     savedData.values : savedData;
 
