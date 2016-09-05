@@ -49,14 +49,14 @@ function makeLocalVehicle(backEndObject, vehicleStats) {
     lastUpdateSinceEpoch: 0,
     isZombie: true, // reported more the ZOMBIE_TIME_TRH_MINUTES ago
     isDead: true,   // never updated/reported
+    // make sure we have some valid kind for vehicle
+    // posibly need different icon for this
+    kind: backEndObject.kind || 'UNDEFINED',
     // ----
     // TODO: the history - keep it in sep
     chronicleFrame: null,
     // TODO: this should be inside chronicleFrame
     chronicleState: CHRONICLE_LOCAL_INCTANCE_STATE_NONE,
-    // not sure that vehicle have to has any default value
-    // except 'unknown'. So just rely on backEndObject here.
-    // kind: 'SVG',
   });
 
   return theVehicle;
