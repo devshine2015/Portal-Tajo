@@ -7,6 +7,9 @@ import { changeOnlineState } from 'services/Global/actions';
 import { localActions } from 'services/Auth/actions';
 import drvrDevTheme from 'configs/theme';
 
+// need this for global styling
+require('./styles.css');
+
 const muiTheme = getMuiTheme(drvrDevTheme);
 
 const URLS = {
