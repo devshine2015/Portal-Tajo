@@ -36,6 +36,7 @@ import iTaxi from 'assets/images/v_icons_combi/taxi@3x.png';
 import iForklift from 'assets/images/v_icons_combi/forklift@3x.png';
 import iTractor from 'assets/images/v_icons_combi/traktor@3x.png';
 import iFarm from 'assets/images/v_icons_combi/farm@3x.png';
+import iUndefined from 'assets/images/v_icons_combi/uncknown@3x.png';
 
 export const VEHICLE_KINDS = [
   {
@@ -128,6 +129,11 @@ export const VEHICLE_KINDS = [
     text: 'Tractor',
     icon: <Tractor />,
     pic: iTractor,
+  }, {
+    value: 'UNDEFINED',
+    text: 'Undefined',
+    icon: <Suv />,  // do we need UNDEFINED icon?
+    pic: iUndefined,
   },
 ];
 
