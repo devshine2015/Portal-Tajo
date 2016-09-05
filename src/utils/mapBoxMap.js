@@ -7,7 +7,7 @@ require('leaflet-draw');
 
 import { MAPBOX_KEY, ZERO_LOCATION, ZERO_ZOOM, NEW_GF_REQUIRED_ZOOM_LEVEL } from 'utils/constants';
 
-export default function createMapboxMap(domNode) {
+export function createMapboxMap(domNode) {
   let theMap = null;
   window.L.mapbox.accessToken = MAPBOX_KEY;
   theMap = window.L.mapbox.map(domNode);
@@ -51,4 +51,16 @@ export default function createMapboxMap(domNode) {
     500);
 
   return theMap;
+}
+
+export function hideLayer(containerLayer, layer, doHide) {
+  if (doHide) {
+    if (containerLayer.hasLayer(layer)) {
+      containerLayer.removeLayer(layer);
+    }
+  } else {
+    if (!containerLayer.hasLayer(layer)) {
+      containerLayer.addLayer(layer);
+    }
+  }
 }

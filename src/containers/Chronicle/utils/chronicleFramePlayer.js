@@ -109,11 +109,12 @@ ChronicleFramePlayer.prototype.gotoTime100 = function(time100) {
 //
 //-----------------------------------------------------------------------
 ChronicleFramePlayer.prototype.update = function( ) {
-  this.frameData.timeMs = this.chronicleFrame.timeRangeMs * this.normalizedTime100 / 100;
-  this.frameData.pos = this.chronicleFrame.getPosAtMs(this.frameData.timeMs);
+  const timeMs = this.chronicleFrame.timeRangeMs * this.normalizedTime100 / 100;
+  this.frameData.time = this.chronicleFrame.getDateAtMs(timeMs);
+  this.frameData.pos = this.chronicleFrame.getPosAtMs(timeMs);
   this.frameData.speed = this.chronicleFrame.getSpeedAtIdx();
   this.frameData.teperature = this.chronicleFrame.hasTemperature() ?
-          this.chronicleFrame.getTemperatureAtMs(this.frameData.timeMs) : null;
+          this.chronicleFrame.getTemperatureAtMs(timeMs) : null;
 
   // const _this = this;
   //
@@ -122,7 +123,7 @@ ChronicleFramePlayer.prototype.update = function( ) {
   // });
 };
 
-ChronicleFramePlayer.prototype.getCurrent = function( ) {
+ChronicleFramePlayer.prototype.getCurrentMomentData = function( ) {
   return this.frameData;
 }
 

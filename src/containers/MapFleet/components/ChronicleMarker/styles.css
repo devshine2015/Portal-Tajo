@@ -1,0 +1,34 @@
+@media screen and (min-width: 100px) {
+  /*the map popups*/
+  /*#app > div > div.content__src-containers-InnerPortal-styles__mMm_v > div > div.fixedContent__src-components-FixedContent-styles__3eUbg.fixedContent__src-containers-Chronicle-styles__Ux3hv > div.mapContainer__src-containers-MapFleet-styles__I2Y2K.leaflet-container.leaflet-fade-anim >
+  div.leaflet-map-pane > div.leaflet-objects-pane > div.leaflet-popup-pane > div > div.leaflet-popup-content-wrapper
+  div.leaflet-map-pane > div.leaflet-objects-pane > div.leaflet-popup-pane > div > div.leaflet-popup-content-wrapper*/
+  /*#app > div > div.content__src-containers-InnerPortal-styles__mMm_v > div > div.fixedContent__src-components-FixedContent-styles__3eUbg.fixedContent__src-containers-Chronicle-styles__Ux3hv > div.mapContainer__src-containers-MapFleet-styles__I2Y2K.leaflet-container.leaflet-fade-anim > div.leaflet-map-pane > div.leaflet-objects-pane > div.leaflet-popup-pane > div > div.leaflet-popup-content-wrapper*/
+    :global(div.leaflet-popup-content-wrapper) {
+      background: #2c3e50;
+      padding: 0;
+      margin: 0;
+      color:#fff;
+      font-size:16px;
+      line-height:18px;
+      height: 48px;
+      border-radius: 2px;
+      }
+    :global(div.leaflet-popup-content) {
+      min-width: 100px;
+      padding: 3px;
+      margin: 0;
+      }
+    :global(div.leaflet-popup-tip-container) {
+      width:10px;
+      height:45px;
+      }
+    :global(div.leaflet-popup-tip) {
+      border-left:5px solid transparent;
+      border-right:5px solid transparent;
+      border-top:45px solid #2c3e50;
+      transform: none;
+      background: none;
+      width: 0;
+      }
+}

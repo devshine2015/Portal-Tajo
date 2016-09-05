@@ -5,7 +5,7 @@ import DatePicker from 'material-ui/DatePicker';
 // import moment from 'moment';
 // import Period from 'containers/Report/components/Period';
 import styles from './styles.css';
-import { requestHistory, setChronicleTimeFrame,
+import { setChronicleTimeFrame,
     validateChronicleTimeFrame } from './../../actions';
 
 class TimeFrame extends React.Component {
@@ -33,27 +33,29 @@ class TimeFrame extends React.Component {
   render() {
     return (
       <div className={styles.timeFrameBox}>
-      <DatePicker
-        autoOk
-        hintText="Controlled Date Input"
-        value={this.state.fromDate}
-        onChange={this.fromDateChange}
-      />
+        <div>
+          <DatePicker
+            autoOk
+            hintText="Controlled Date Input"
+            value={this.state.fromDate}
+            onChange={this.fromDateChange}
+          />
+        </div>
+        <div>
+        select date here
+        </div>
       </div>
     );
   }
 }
 
 TimeFrame.propTypes = {
-  selectedVehicleId: React.PropTypes.string,
-  requestHistory: React.PropTypes.func.isRequired,
   setChronicleTimeFrame: React.PropTypes.func.isRequired,
   validateChronicleTimeFrame: React.PropTypes.func.isRequired,
 };
 const mapState = () => ({
 });
 const mapDispatch = {
-  requestHistory,
   setChronicleTimeFrame,
   validateChronicleTimeFrame,
 };
