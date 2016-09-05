@@ -12,6 +12,7 @@ import reportReducer from 'containers/Report/reducer';
 import chronicleReducer from 'containers/Chronicle/reducer';
 import authReducer from 'services/Auth/reducer';
 import globalReducer from 'services/Global/reducer';
+import userReducer from 'services/UserModel/reducer';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 const routeInitialState = fromJS({
@@ -41,6 +42,7 @@ export default function createReducer(asyncReducers) {
     snackbar: snackbarReducer,
     fleet: fleetReducer,
     chronicle: chronicleReducer,
+    user: userReducer,
     ...asyncReducers,
   });
 }

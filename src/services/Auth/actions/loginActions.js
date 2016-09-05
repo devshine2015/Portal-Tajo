@@ -1,16 +1,21 @@
 import { push } from 'react-router-redux';
 import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
+import VERSIONS from 'configs/versions';
 import {
   api,
   createBaseUrl,
   storage,
 } from 'utils';
 import {
-  setUserAuthentication,
-  resetUserAuthentication,
+  setAuthentication,
+  resetAuthentication,
 } from './commonActions';
 import { getAuthenticationSession } from '../reducer';
 import { getFleetName } from 'services/Global/reducer';
+import {
+  setUserData,
+  resetUserData,
+} from 'services/UserModel/actions';
 
 export const login = (data) => (dispatch, getState) =>
   _login(data, dispatch, getState);
@@ -35,8 +40,11 @@ function _login(data, dispatch, getState) {
         role: 'manager',
       };
 
-      storage.save(LOCAL_STORAGE_SESSION_KEY, sessionData, 2.1);
-      dispatch(setUserAuthentication(token, fleet));
+      storage.save(LOCAL_STORAGE_SESSION_KEY, sessionData, VERSIONS.currentVersion);
+      dispatch(setAuthentication(token, fleet));
+      dispatch(setUserData({
+        role: sessionData.role,
+      }));
       dispatch(push(`${createBaseUrl(fleet)}/`));
     }, (error) => {
       console.error(error);
@@ -53,7 +61,8 @@ function _logout({ redirectUrl }, dispatch, getState) {
 
   return api.delete(url, { optionalHeaders })
     .then(() => {
-      dispatch(resetUserAuthentication());
+      dispatch(resetAuthentication());
+      dispatch(resetUserData());
 
       return Promise.resolve({
         fleet,

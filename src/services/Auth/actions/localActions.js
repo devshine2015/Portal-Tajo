@@ -1,16 +1,20 @@
 import { replace } from 'react-router-redux';
 import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
 import VERSIONS from 'configs/versions';
+import { getFleetName } from 'services/Global/reducer';
 import {
   storage,
   createBaseUrl,
 } from 'utils';
 import { getAuthenticatedFleet } from '../reducer';
 import {
-  setUserAuthentication,
-  resetUserAuthentication,
+  setAuthentication,
+  resetAuthentication,
 } from './commonActions';
-import { getFleetName } from 'services/Global/reducer';
+import {
+  setUserData,
+  resetUserData,
+} from 'services/UserModel/actions';
 
 export const checkUserAuthentication = (params) => (dispatch, getState) =>
   _checkUserAuthentication(params, dispatch, getState);
@@ -27,21 +31,26 @@ function _checkUserAuthentication(params, dispatch, getState) {
   .then(_checkVersion(params.checkVersion))
   .then((sessions) => {
     if (sessions && typeof sessions === 'string') {
-      return dispatch(setUserAuthentication(sessions, fleet));
+      return dispatch(setAuthentication(sessions, fleet));
     } else if (sessions) {
-      const fleetSession = sessions.filter(session => session.fleet === fleet);
+      const session = sessions.filter(s => s.fleet === fleet);
 
-      if (fleetSession.length !== 0) {
-        dispatch(setUserAuthentication(fleetSession[0]['session-id'], fleet));
+      if (session.length !== 0) {
+        dispatch(setUserData({
+          role: session[0].role,
+        }));
+        dispatch(setAuthentication(session[0]['session-id'], fleet));
       } else {
-        dispatch(resetUserAuthentication());
+        dispatch(resetAuthentication());
+        dispatch(resetUserData());
 
         if (params.urls) {
           dispatch(replace(`${createBaseUrl(fleet)}/${params.urls.failure}`));
         }
       }
     } else {
-      dispatch(resetUserAuthentication());
+      dispatch(resetAuthentication());
+      dispatch(resetUserData());
 
       if (params.urls) {
         dispatch(replace(`${createBaseUrl(fleet)}/${params.urls.failure}`));
@@ -56,7 +65,8 @@ function _checkUserAuthentication(params, dispatch, getState) {
       console.log(error.message);
 
       storage.clean(LOCAL_STORAGE_SESSION_KEY);
-      dispatch(resetUserAuthentication());
+      dispatch(resetAuthentication());
+      dispatch(resetUserData());
 
       if (params.urls) {
         dispatch(replace(loginUrl));
