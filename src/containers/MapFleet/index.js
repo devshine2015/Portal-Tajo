@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { ZERO_LOCATION, NEW_GF_REQUIRED_ZOOM_LEVEL } from 'utils/constants';
 
-import createMap from 'utils/mapBoxMap';
+import { createMapboxMap } from 'utils/mapBoxMap';
 
 import * as mapEvents from './events';
 import * as listEvents from 'containers/Operational/components/OperationalPowerList/events';
@@ -60,7 +60,7 @@ class MapFleet extends React.Component {
     if (this.theMap !== null) {
       return;
     }
-    this.theMap = createMap(ReactDOM.findDOMNode(this));
+    this.theMap = createMapboxMap(ReactDOM.findDOMNode(this));
     this.theMap.on('contextmenu', (e) => ((inThis) => {
       if (inThis.props.gfEditMode) { // already editing?
         return;

@@ -1,11 +1,12 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import { CHRONICLE_LOCAL_INCTANCE_STATE_VALID } from 'containers/Chronicle/actions';
+import { hideLayer } from 'utils/mapBoxMap';
+// import { CHRONICLE_LOCAL_INCTANCE_STATE_VALID } from 'containers/Chronicle/actions';
 
 import { getNormalized100T } from 'containers/Chronicle/reducer';
 
-// import styles from './../styles.css';
+import styles from './styles.css';
 
 
 class ChronicleMarker extends React.Component {
@@ -15,13 +16,6 @@ class ChronicleMarker extends React.Component {
     this.createMarkers();
   }
 
-  componentDidMount() {
-    // const updater = (normalizedTime100, curPos, curSpeed, curTeperature) => {
-    //   this.setPosition(curPos);
-    // };
-    // this.props.theVehicle.chronicleFrame.player.addUpdateCallback(updater);
-  }
-
   componentWillUnmount() {
 // TODO: need to delete MapBox markers?
     this.removeMarker();
@@ -29,6 +23,7 @@ class ChronicleMarker extends React.Component {
 
   setPosition(latLng) {
     this.theMarker.setLatLng(latLng);
+    this.popUp.setLatLng(latLng);
     this.theMarkerSecondary.setLatLng(latLng);
   }
 
@@ -43,19 +38,57 @@ class ChronicleMarker extends React.Component {
         fillColor: '#008241',
        })
       .setRadius(markerR);
-    this.theMarker = window.L.marker(startPos);
+    this.theMarker = window.L.circleMarker(startPos,
+      { title: this.props.theVehicle.name,
+        opacity: 1,
+        fillOpacity: 1,
+        color: '#2c3e50',
+        fillColor: '#2c3e50',
+        // color: '#e64a19',
+        // fillColor: '#e64a19',
+       })
+      .setRadius(markerR);
+    this.popUp = window.L.popup({
+      offset: [0, markerR],
+      className: 'ddsMapHistoryPopup', // styles.ddsMapHistoryPopup,
+      closeButton: false,
+      closeOnClick: false,
+      autoPan: false,
+      keepInView: false,
+      zoomAnimation: true,
+    })
+    .setContent('loading...');
+    this.popUp.setLatLng(startPos);
+  }
+
+  __REMOVE_THIS_ddsDateToTimeString(aDate){
+    var timeStr = (aDate.getHours()<10 ? 0 : '')
+                  + aDate.getHours()
+                  +':'
+                  + (aDate.getMinutes()<10 ? 0 : '')
+                  + aDate.getMinutes();
+    return timeStr;
   }
 
   update() {
     this.props.theVehicle.chronicleFrame.player.gotoTime100(this.props.normalized100T);
-    const curData = this.props.theVehicle.chronicleFrame.player.getCurrent();
-    this.setPosition(curData.pos);
+    const momentData = this.props.theVehicle.chronicleFrame.player.getCurrentMomentData();
+    this.setPosition(momentData.pos);
+
+    const content = '<span style="float:right">'+this.__REMOVE_THIS_ddsDateToTimeString(momentData.time)+'</span>'
+                          +'<br>'
+                          +'<span style="float:right">'+momentData.speed.toFixed(1) + 'km/h'+'</span>';
+    // if(momentData.temp!=null)
+    //   content += '<br><i class="material-icons" style="font-size:16px">invert_colors</i>'
+    //               +'<span style="float:right">'+momentData.temp.toFixed(1)+'&deg;C'+'</span>';
+    this.popUp.setContent(content);
   }
 
   removeMarker() {
     if (this.containerLayer === null) {
       return;
     }
+    hideLayer(this.containerLayer, this.popUp, true);
     if (this.containerLayer.hasLayer(this.theMarker)) {
       this.containerLayer.removeLayer(this.theMarker);
     }
@@ -69,21 +102,23 @@ class ChronicleMarker extends React.Component {
       return;
     }
     if (doHighlight) {
-      if (!this.containerLayer.hasLayer(this.theMarker)) {
-        this.containerLayer.addLayer(this.theMarker);
+      hideLayer(this.containerLayer, this.theMarker, false);
+      hideLayer(this.containerLayer, this.theMarkerSecondary, true);
+      if (!this.containerLayer.hasLayer(this.popUp)) {
+        this.containerLayer.addLayer(this.popUp);
         //
         // pan to me when selected
         const bounds = this.containerLayer.getBounds();
-        if (!bounds.contains(this.theMarker.getLatLng())) {
-          this.containerLayer.panTo(this.theMarker.getLatLng());
+        if (!bounds.contains(this.popUp.getLatLng())) {
+          this.containerLayer.panTo(this.popUp.getLatLng());
         }
-      }
-      if (this.containerLayer.hasLayer(this.theMarkerSecondary)) {
-        this.containerLayer.removeLayer(this.theMarkerSecondary);
       }
     } else {
       if (this.containerLayer.hasLayer(this.theMarker)) {
         this.containerLayer.removeLayer(this.theMarker);
+      }
+      if (this.containerLayer.hasLayer(this.popUp)) {
+        this.containerLayer.removeLayer(this.popUp);
       }
       if (!this.containerLayer.hasLayer(this.theMarkerSecondary)) {
         this.containerLayer.addLayer(this.theMarkerSecondary);

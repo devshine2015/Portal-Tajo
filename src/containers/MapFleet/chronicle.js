@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { CHRONICLE_LOCAL_INCTANCE_STATE_VALID } from 'containers/Chronicle/actions';
 
-import createMap from 'utils/mapBoxMap';
+import { createMapboxMap } from 'utils/mapBoxMap';
 
 
 const EMPTY_ARRAY = [];
@@ -37,7 +37,7 @@ class MapChronicle extends React.Component {
     if (this.theMap !== null) {
       return;
     }
-    this.theMap = createMap(ReactDOM.findDOMNode(this));
+    this.theMap = createMapboxMap(ReactDOM.findDOMNode(this));
   }
 
 
