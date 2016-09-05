@@ -6,7 +6,8 @@ import { hideLayer } from 'utils/mapBoxMap';
 
 import { getNormalized100T } from 'containers/Chronicle/reducer';
 
-import styles from './styles.css';
+// need to load those styles for leafLet popUp
+require('./styles.css');
 
 
 class ChronicleMarker extends React.Component {
