@@ -37,7 +37,7 @@ function _login(data, dispatch, getState) {
         fleet,
         'session-id': token,
         id: token,
-        role: 'manager',
+        role: 'installer',
       };
 
       storage.save(LOCAL_STORAGE_SESSION_KEY, sessionData, VERSIONS.currentVersion);

@@ -1,6 +1,6 @@
 import { portal } from 'configs';
 
-export const ABILITIES = {
+export const permissions = {
   /* user management abilities */
   USERS_SEE: 'able see list of users',
 
@@ -24,25 +24,25 @@ export const ABILITIES = {
 const rolesAbilities = {
   escape: {
     superadmin: {
-      USERS_SEE: true,
-      USERS_ADD_ANY: true,
-      USERS_EDIT_ANY: true,
-      USERS_DELETE_ANY: true,
+      [permissions.USERS_SEE]: true,
+      [permissions.USERS_ADD_ANY]: true,
+      [permissions.USERS_EDIT_ANY]: true,
+      [permissions.USERS_DELETE_ANY]: true,
     },
     admin: {
-      USERS_SEE: true,
-      USERS_ADD_MANAGER: true,
-      USERS_ADD_INSTALLER: true,
-      USERS_EDIT_MANAGER: true,
-      USERS_EDIT_INSTALLER: true,
-      USERS_DELETE_MANAGER: true,
-      USERS_DELETE_INSTALLER: true,
+      [permissions.USERS_SEE]: true,
+      [permissions.USERS_ADD_MANAGER]: true,
+      [permissions.USERS_ADD_INSTALLER]: true,
+      [permissions.USERS_EDIT_MANAGER]: true,
+      [permissions.USERS_EDIT_INSTALLER]: true,
+      [permissions.USERS_DELETE_MANAGER]: true,
+      [permissions.USERS_DELETE_INSTALLER]: true,
     },
     manager: {
-      USERS_SEE: true,
-      USERS_ADD_INSTALLER: true,
-      USERS_EDIT_INSTALLER: true,
-      USERS_DELETE_INSTALLER: true,
+      [permissions.USERS_SEE]: true,
+      [permissions.USERS_ADD_INSTALLER]: true,
+      [permissions.USERS_EDIT_INSTALLER]: true,
+      [permissions.USERS_DELETE_INSTALLER]: true,
     },
     installer: {},
   },
@@ -54,11 +54,11 @@ const rolesAbilities = {
   },
 };
 
-export function checkRoleAbility(role, ability) {
-  return rolesAbilities[portal][role][ability];
+export function checkRolePermissions(role, permission) {
+  return rolesAbilities[portal][role][permission];
 }
 
 export default {
-  ABILITIES,
-  checkRoleAbility,
+  permissions,
+  checkRolePermissions,
 };

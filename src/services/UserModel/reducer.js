@@ -24,3 +24,5 @@ export default userReducer;
 
 export const getUserData = state =>
   state.get('user');
+export const getUserRole = state =>
+  state.getIn(['user', 'role']);
