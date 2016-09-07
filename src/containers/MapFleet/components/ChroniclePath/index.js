@@ -52,7 +52,7 @@ class ChroniclePath extends React.Component {
     if (doHighlight) {
       this.thePath.setStyle({
         color: '#e64a19',
-        weight: 6,
+        weight: 3,
         opacity: 0.85,
       });
 //      this.thePath.bringToFront();
