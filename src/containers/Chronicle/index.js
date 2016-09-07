@@ -6,7 +6,7 @@ import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import FixedContent from 'components/FixedContent';
 import TimeFrameController from './components/TimeFrameSelector';
-import ChartBox from './components/Chart';
+import ChartTimeBox from './components/ChartTimeBox';
 import PlaybackController from './components/PlaybackController';
 import ChronicleMap from 'containers/MapFleet/chronicle';
 import { CHRONICLE_LOCAL_INCTANCE_STATE_NONE,
@@ -78,13 +78,13 @@ class Chronicle extends React.Component {
           }
         />
         <FixedContent containerClassName={styles.fixedContent}>
-          <TimeFrameController selectedVehicleId={this.state.selectedVehicleId} />
-          <ChartBox />
-          <PlaybackController />
-          <ChronicleMap
-            gfEditMode={false}
-            selectedVehicle={this.state.selectedVehicle}
-          />
+        <TimeFrameController selectedVehicleId={this.state.selectedVehicleId} />
+        <ChartTimeBox srcVehicle={this.state.selectedVehicle} />
+        <PlaybackController />
+        <ChronicleMap
+          gfEditMode={false}
+          selectedVehicle={this.state.selectedVehicle}
+        />
         </FixedContent>
       </div>
     );
