@@ -1,9 +1,18 @@
 @media screen and (min-width: 100px) {
-  .containerBox {
-    background-color: #CFD8DC;
-    color: #fff;
+  .chartBox {
+    background-color: #E1F5FE;
+    pointer-events: none;
     width: 100%;
-    height: 70px;
-    z-index: 100;
-    }
+    height: 100%;
+  }
+  .speedChart {
+    stroke: none;
+    fill: #2196F3;
+    pointer-events: none;
+  }
+  .tempChart {
+    stroke: #37474F;
+    fill: none;
+    pointer-events: none;
+  }
 }

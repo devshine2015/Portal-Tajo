@@ -1,5 +1,6 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import classnames from 'classnames';
 import { CHRONICLE_LOCAL_INCTANCE_STATE_NONE,
   CHRONICLE_LOCAL_INCTANCE_STATE_LOADING } from 'containers/Chronicle/actions';
 // import RefreshIcon from 'material-ui/svg-icons/navigation/refresh';
@@ -9,7 +10,8 @@ import Divider from 'material-ui/Divider';
 // import { red900, red500, teal100, teal200, yellow700, yellow500 } from 'material-ui/styles/colors';
 
 
-import styles from '../styles.css';
+import stylesTop from '../styles.css';
+import styles from './styles.css';
 
 import LinearProgress from 'material-ui/LinearProgress';
 // import RefreshIndicator from 'material-ui/RefreshIndicator';
@@ -32,25 +34,29 @@ class ChronicleListItem extends React.Component {
   getChronocle = () => {
 
   }
+  // <Divider key="line02" />
   render() {
+    const className = classnames(stylesTop.listItemInn, {
+      [styles.listItemNoChronicle]: this.props.chronicleState === CHRONICLE_LOCAL_INCTANCE_STATE_NONE,
+    });
+
     return (
       <div
-        className={styles.listItemInn}
+        className={className}
         onClick={this.onClick}
-        style={this.props.chronicleState === CHRONICLE_LOCAL_INCTANCE_STATE_NONE ?
-           { backgroundColor: 'gray' } : { } }
       >
         {this.props.name}
-        <Divider key="line02" />
         { this.props.chronicleState === CHRONICLE_LOCAL_INCTANCE_STATE_LOADING ?
           <LinearProgress mode="indeterminate" />
           : false
         }
-        { (this.props.chronicleFrame !== null
+        { (this.props.chronicleState !== CHRONICLE_LOCAL_INCTANCE_STATE_NONE
+          && this.props.chronicleState !== CHRONICLE_LOCAL_INCTANCE_STATE_LOADING
+          && this.props.chronicleFrame !== null
           && !this.props.chronicleFrame.isValid())
-          ? <span >
+          ? <div >
               No data...
-            </span>
+            </div>
           : false
         }
       </div>

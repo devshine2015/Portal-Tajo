@@ -6,4 +6,12 @@
   /*.listItemInn_expanded:hover {
 //    color: rgb(255, 215, 136);
   }*/
+  .listItemNoChronicle {
+      background-color: #757575;
+      border-bottom-color: rgb(70, 70, 70);
+    }
+  .listItemNoChronicle:hover {
+    background-color: #9E9E9E;
+    border-bottom-color: rgb(70, 70, 70);
+  }
 }
