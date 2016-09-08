@@ -10,11 +10,13 @@ import {
 
 const ROOT = '/portal/:fleet/tajo/';
 
-const MAIN_MENU = [{
-  niceName: 'Dashboard',
-  path: 'dashboard',
-  order: 0,
-}, {
+const MAIN_MENU =
+//   {
+//   niceName: 'Dashboard',
+//   path: 'dashboard',
+//   order: 0,
+// },
+[{
   niceName: 'Operational',
   path: 'map',
   order: 1,
@@ -86,12 +88,13 @@ export default function createRoutes(store) {
   });
 
   rootRoute.indexRoute = {
-    component: require('screens/DashboardScreen').default,
+    // component: require('screens/DashboardScreen').default,
+    component: require('screens/Operational').default,
   };
 
   rootRoute.childRoutes.push(
     loginRoute,
-    dashboardRoute,
+//    dashboardRoute,
     mapAndListRoute,
     reportsRoute,
     chronicleRoute,
