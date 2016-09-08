@@ -1,5 +1,7 @@
+import qs from 'query-string';
 import { getFleetName } from 'services/Global/reducer';
 import { socket } from 'utils/api';
+import { getAuthenticationSession } from 'services/Auth/reducer';
 
 export const FLEET_MODEL_SOCKET_SET = 'portal/services/FLEET_MODEL_SOCKET_SET';
 
@@ -16,7 +18,11 @@ let socketIsOpened = false;
 function _openFleetSocket(fleetName, dispatch, getState) {
   const fleet = fleetName || getFleetName(getState());
   const url = `${fleet}/status/monitor`;
-  fleetSocket = socket(url);
+  const params = {
+    ['DRVR-SESSION']: getAuthenticationSession(getState()),
+  };
+
+  fleetSocket = socket(url, qs.stringify(params));
 
   socketIsOpened = true;
 
