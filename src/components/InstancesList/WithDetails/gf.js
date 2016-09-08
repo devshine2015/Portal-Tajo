@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import ItemProperty from '../DetailItemProperty';
 import { getGFByIdFunc } from 'services/FleetModel/reducer';
 import { deleteGF } from 'services/FleetModel/actions/gfActions';
-import { gfEditUpdate } from 'containers/EditGFPanel/GFEditor/actions';
+import { gfEditUpdate } from 'containers/GFEditor/actions';
 import { showSnackbar } from 'containers/Snackbar/actions';
 import DeletIcon from 'material-ui/svg-icons/action/delete-forever';
 import EditIcon from 'material-ui/svg-icons/maps/edit-location';

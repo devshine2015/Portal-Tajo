@@ -11,8 +11,8 @@ import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { ZERO_LOCATION, NEW_GF_REQUIRED_ZOOM_LEVEL } from 'utils/constants';
 
 import { createMapboxMap } from 'utils/mapBoxMap';
-import { gfEditUpdate } from 'containers/EditGFPanel/GFEditor/actions';
-import { gfEditIsEditing } from 'containers/EditGFPanel/GFEditor/reducer';
+import { gfEditUpdate } from 'containers/GFEditor/actions';
+import { gfEditIsEditing } from 'containers/GFEditor/reducer';
 import { makeLocalGF } from 'services/FleetModel/utils/gfHelpers';
 
 import * as mapEvents from './events';
@@ -146,7 +146,6 @@ class MapFleet extends React.Component {
      (<EditGF
        key="gfEditHelper"
        theLayer={this.gfEditLayer}
-       eventDispatcher={this.props.eventDispatcher}
      />);
 
     return (

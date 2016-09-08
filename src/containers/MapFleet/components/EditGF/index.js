@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 
 import { NEW_GF_RADIUS } from 'utils/constants';
 import * as editEvents from './events';
-import * as editorEvents from 'containers/EditGFPanel/GFEditor/events';
-import { gfEditGetSubject } from 'containers/EditGFPanel/GFEditor/reducer';
-import { gfEditUpdate } from 'containers/EditGFPanel/GFEditor/actions';
+import * as editorEvents from 'containers/GFEditor/events';
+import { gfEditGetSubject } from 'containers/GFEditor/reducer';
+import { gfEditUpdate } from 'containers/GFEditor/actions';
 
 
 class EditGF extends React.Component {
@@ -14,8 +14,6 @@ class EditGF extends React.Component {
     super(props);
     this.theLayer = null;
     this.theCircle = null;
-    this.props.eventDispatcher.registerHandler(editorEvents.GF_EDITOR_RADIUS,
-      ((meThis) => (newR) => { meThis.setRadius(newR); })(this));
   }
 
   componentDidMount() {
@@ -57,7 +55,6 @@ class EditGF extends React.Component {
 
 EditGF.propTypes = {
   theLayer: React.PropTypes.object.isRequired,
-  eventDispatcher: React.PropTypes.object.isRequired,
   subjectGF: React.PropTypes.object.isRequired,
   gfEditUpdate: React.PropTypes.func.isRequired,
 };

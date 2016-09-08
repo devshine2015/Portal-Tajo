@@ -82,7 +82,6 @@ class Chronicle extends React.Component {
         <ChartTimeBox srcVehicle={this.state.selectedVehicle} />
         <PlaybackController />
         <ChronicleMap
-          gfEditMode={false}
           selectedVehicle={this.state.selectedVehicle}
         />
         </FixedContent>

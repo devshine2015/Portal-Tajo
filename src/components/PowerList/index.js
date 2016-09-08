@@ -1,5 +1,10 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import { connect } from 'react-redux';
+import { gfEditIsEditing } from 'containers/GFEditor/reducer';
+
+import GFEditPanel from 'containers/GFEditor';
+
 import classnames from 'classnames';
 import FixedColumn from 'components/FixedColumn';
 import Scrollable from 'components/Scrollable';
@@ -37,12 +42,14 @@ const PowerList = ({
   filter = null,
   fixed = true,
   scrollable = true,
+  isEditGF = false,
 }) => {
   const columnClassName = classnames(styles.columnContainer, className, {
     [styles.likeStatic]: !fixed,
   });
-  const toDisplay = children || renderChildrens(scrollable, filter, content);
-
+  const toDisplay = isEditGF ?
+            (<GFEditPanel />)
+            : (children || renderChildrens(scrollable, filter, content));
   return (
     <FixedColumn containerClassName={columnClassName}>
       <div className={styles.powerlist}>
@@ -59,6 +66,11 @@ PowerList.propTypes = {
   filter: React.PropTypes.element,
   fixed: React.PropTypes.bool,
   scrollable: React.PropTypes.bool,
+  isEditGF: React.PropTypes.bool.isRequired,
 };
+const mapState = (state) => ({
+  isEditGF: gfEditIsEditing(state),
+});
 
-export default pure(PowerList);
+const PurePowerList = pure(PowerList);
+export default connect(mapState)(PurePowerList);
