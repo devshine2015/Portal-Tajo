@@ -5,8 +5,8 @@ FOLDER_NAME='tajo'
 ASSETS='assets'
 
 echo "clean and build sources"
-rm -r tajo
-npm run build:clean:$PROJECT
+rm -r $FOLDER_NAME
+npm run clean:$PROJECT
 npm run build:$PROJECT
 mv $PROJECT $FOLDER_NAME
 
