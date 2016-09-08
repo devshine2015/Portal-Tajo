@@ -17,6 +17,7 @@ import Taxi from 'components/Icons/taxi.svg';
 import Forklift from 'components/Icons/forklift.svg';
 import Tractor from 'components/Icons/tractor.svg';
 import Farm from 'components/Icons/farm.svg';
+import Undefined from 'components/Icons/undefined.svg';
 
 import iSgv from 'assets/images/v_icons_combi/sgv@3x.png';
 import iSgvChilled from 'assets/images/v_icons_combi/sgv_chilled@3x.png';
@@ -132,7 +133,7 @@ export const VEHICLE_KINDS = [
   }, {
     value: 'UNDEFINED',
     text: 'Undefined',
-    icon: <Suv />,  // do we need UNDEFINED icon?
+    icon: <Undefined />,  // do we need UNDEFINED icon?
     pic: iUndefined,
   },
 ];
