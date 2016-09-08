@@ -59,9 +59,10 @@ function api(url, payload) {
 
 export default api;
 
-export const socket = (url) => {
+export const socket = (url, params) => {
+  const query = params ? `?${params}` : '';
   const socketProtocol = isSecure ? 'wss' : 'ws';
-  const socketURL = `${socketProtocol}://${ENGINE_BASE}/${url}`;
+  const socketURL = `${socketProtocol}://${ENGINE_BASE}/${url}${query}`;
 
   return new WebSocket(socketURL);
 };
