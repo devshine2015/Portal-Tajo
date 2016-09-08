@@ -5,6 +5,7 @@ escape/
 customer/
 ssreports/
 
+# allow all files from projects directory
 !src/projects/*
 
 # node.js
