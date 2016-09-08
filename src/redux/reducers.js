@@ -10,6 +10,7 @@ import innerPortalReducer from 'containers/InnerPortal/reducer';
 import fleetReducer from 'services/FleetModel/reducer';
 import reportReducer from 'containers/Report/reducer';
 import chronicleReducer from 'containers/Chronicle/reducer';
+import gfEditorReducer from 'containers/EditGFPanel/GFEditor/reducer';
 import authReducer from 'services/Auth/reducer';
 import globalReducer from 'services/Global/reducer';
 import { LOCATION_CHANGE } from 'react-router-redux';
@@ -41,6 +42,7 @@ export default function createReducer(asyncReducers) {
     snackbar: snackbarReducer,
     fleet: fleetReducer,
     chronicle: chronicleReducer,
+    gfEditor: gfEditorReducer,
     ...asyncReducers,
   });
 }

@@ -7,18 +7,10 @@ class GFEditorContainer extends React.Component {
   render() {
     return (
     <div className={styles.EditorContainer}>
-      <GFEditor
-        eventDispatcher={this.props.eventDispatcher}
-        subjectContext={this.props.subjectContext}
-      />
+      <GFEditor />
     </div>
     );
   }
 }
-
-GFEditorContainer.propTypes = {
-  eventDispatcher: React.PropTypes.object.isRequired,
-  subjectContext: React.PropTypes.object.isRequired,
-};
 
 export default pure(GFEditorContainer);

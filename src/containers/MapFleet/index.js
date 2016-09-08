@@ -11,6 +11,9 @@ import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { ZERO_LOCATION, NEW_GF_REQUIRED_ZOOM_LEVEL } from 'utils/constants';
 
 import { createMapboxMap } from 'utils/mapBoxMap';
+import { gfEditUpdate } from 'containers/EditGFPanel/GFEditor/actions';
+import { gfEditIsEditing } from 'containers/EditGFPanel/GFEditor/reducer';
+import { makeLocalGF } from 'services/FleetModel/utils/gfHelpers';
 
 import * as mapEvents from './events';
 import * as listEvents from 'containers/Operational/components/OperationalPowerList/events';
@@ -29,7 +32,6 @@ class MapFleet extends React.Component {
     this.refPos = window.L.latLng(ZERO_LOCATION);
 
     this.state = {
-//      gfEditMode: false,
       detailedList: listTypes.withVehicleDetails,
       selectedVehicleId: undefined,
       selectedLocationId: undefined,
@@ -65,8 +67,7 @@ class MapFleet extends React.Component {
       if (inThis.props.gfEditMode) { // already editing?
         return;
       }
-      inThis.setRefPos(e.latlng);
-      inThis.props.eventDispatcher.fireEvent(mapEvents.MAP_GF_ADD, { obj: null, pos: e.latlng });
+      inThis.props.gfEditUpdate(makeLocalGF(e.latlng));
       if (inThis.theMap.getZoom() < NEW_GF_REQUIRED_ZOOM_LEVEL) {
         inThis.theMap.setZoomAround(e.latlng, NEW_GF_REQUIRED_ZOOM_LEVEL);
       }
@@ -141,12 +142,11 @@ class MapFleet extends React.Component {
         />
       ));
     }
-    const editGF = this.theMap === null ? false :
+    const editGF = !this.props.gfEditMode ? false :
      (<EditGF
        key="gfEditHelper"
        theLayer={this.gfEditLayer}
        eventDispatcher={this.props.eventDispatcher}
-       spawnPos={this.refPos}
      />);
 
     return (
@@ -168,11 +168,16 @@ MapFleet.propTypes = {
   vehicleById: React.PropTypes.func.isRequired,
   gfById: React.PropTypes.func.isRequired,
   gfEditMode: React.PropTypes.bool.isRequired,
+  gfEditUpdate: React.PropTypes.func.isRequired,
 };
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesEx(state),
   gfs: fromFleetReducer.getGFsExSorted(state),
   vehicleById: fromFleetReducer.getVehicleByIdFunc(state),
   gfById: fromFleetReducer.getGFByIdFunc(state),
+  gfEditMode: gfEditIsEditing(state),
 });
-export default connect(mapState)(PureMapFleet);
+const mapDispatch = {
+  gfEditUpdate,
+};
+export default connect(mapState, mapDispatch)(PureMapFleet);

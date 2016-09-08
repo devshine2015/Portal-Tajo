@@ -3,7 +3,9 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import ItemProperty from '../DetailItemProperty';
+import { getGFByIdFunc } from 'services/FleetModel/reducer';
 import { deleteGF } from 'services/FleetModel/actions/gfActions';
+import { gfEditUpdate } from 'containers/EditGFPanel/GFEditor/actions';
 import { showSnackbar } from 'containers/Snackbar/actions';
 import DeletIcon from 'material-ui/svg-icons/action/delete-forever';
 import EditIcon from 'material-ui/svg-icons/maps/edit-location';
@@ -29,7 +31,7 @@ class LocationWithDetails extends React.Component {
       });
   }
   onEdit = () => {
-
+    this.props.gfEditUpdate(this.props.gfById(this.props.id));
   }
   renderDetails() {
     if (this.props.isExpanded) {
@@ -96,11 +98,16 @@ LocationWithDetails.propTypes = {
   address: React.PropTypes.string.isRequired,
   deleteGF: React.PropTypes.func.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,
+  gfEditUpdate: React.PropTypes.func.isRequired,
+  gfById: React.PropTypes.func.isRequired,
 };
-const mapState = () => ({});
+const mapState = (state) => ({
+  gfById: getGFByIdFunc(state),
+});
 const mapDispatch = {
   deleteGF,
   showSnackbar,
+  gfEditUpdate,
 };
 const PureListItemGF = pure(LocationWithDetails);
 export default connect(mapState, mapDispatch)(PureListItemGF);

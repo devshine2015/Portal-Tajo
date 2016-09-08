@@ -5,9 +5,9 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Form from 'components/Form';
-import * as gfEditEvents from './events';
-import * as mapEditEvents from 'containers/MapFleet/components/EditGF/events';
-import { makeLocalGF, makeBackendGF } from 'services/FleetModel/utils/gfHelpers';
+import { makeBackendGF } from 'services/FleetModel/utils/gfHelpers';
+import { gfEditGetSubject } from './reducer';
+import { gfEditClose, gfEditUpdate } from './actions';
 import { createGF } from 'services/FleetModel/actions/gfActions';
 import { showSnackbar } from 'containers/Snackbar/actions';
 
@@ -20,52 +20,47 @@ class GFEditor extends React.Component {
   constructor(props) {
     super(props);
 
-    if (props.subjectContext.obj === null) {
-      this.subjectGF = makeLocalGF(props.subjectContext.pos);
-    } else {
-      this.subjectGF = props.subjectContext.obj;
-    }
     /**
      * Initial values for controlled inputs
      **/
     this.state = {
-      name: this.subjectGF.name,
-      address: this.subjectGF.address,
-      pos: this.subjectGF.pos,
-      radius: this.subjectGF.radius,
+      name: props.subjectGF.name,
+      address: props.subjectGF.address,
+      pos: props.subjectGF.pos,
+      radius: props.subjectGF.radius,
     };
-
-    this.props.eventDispatcher.registerHandler(mapEditEvents.MAP_EDITGF_SIZE,
-      ((meThis) => (newR) => { meThis.setRadius(newR); })(this));
-    this.props.eventDispatcher.registerHandler(mapEditEvents.MAP_EDITGF_MOVE,
-      ((meThis) => (newLatLng) => { meThis.setPos(newLatLng); })(this));
   }
   //
   // componentDidMount() {
   //   this.theLocation = makeLocalGF();
   // }
 
-  // componentWillReceiveProps(nextProps) {
-  // }
+  componentWillReceiveProps(nextProps) {
+    // TODO: not good
+    // do we need state here at all? - just use props.subjectGF
+    this.setState({ radius: nextProps.subjectGF.radius });
+  }
 
+  componentDidUpdate() {
+  }
   /**
    * Just send state as data
    **/
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.eventDispatcher.fireEvent(gfEditEvents.GF_EDITOR_CLOSE, null);
-    const gfObj = makeBackendGF({ ...this.state });
+    const gfObj = makeBackendGF({ ...this.props.subjectGF });
     this.props.createGF(gfObj, 1)
       .then(() => {
         this.props.showSnackbar('Succesfully sended ✓', 3000);
       }, () => {
         this.props.showSnackbar('Something went wrong. Try later. ✓', 5000);
       });
+    this.props.gfEditClose();
   }
 
   onCancel = (e) => {
     e.preventDefault();
-    this.props.eventDispatcher.fireEvent(gfEditEvents.GF_EDITOR_CLOSE, null);
+    this.props.gfEditClose();
   }
   /**
    * Update state[field] with value
@@ -75,19 +70,10 @@ class GFEditor extends React.Component {
     this.setState({
       [field]: value, // .trim(),
     });
-    if (field === 'radius') {
-      this.props.eventDispatcher.fireEvent(gfEditEvents.GF_EDITOR_RADIUS, value);
-    }
-  }
-  setRadius(newR) {
-    this.setState({
-      radius: Math.round(newR),
-    });
-  }
-  setPos(latLng) {
-    this.setState({
-      pos: latLng,
-    });
+    // TODO: not good
+    // do we need state here at all?
+    this.props.subjectGF[field] = value;
+    this.props.gfEditUpdate(this.props.subjectGF);
   }
 
   render() {
@@ -139,16 +125,21 @@ class GFEditor extends React.Component {
 }
 
 GFEditor.propTypes = {
-  eventDispatcher: React.PropTypes.object.isRequired,
-  subjectContext: React.PropTypes.object.isRequired,  // what are we editing/creating - passed here
   createGF: React.PropTypes.func.isRequired,
+  gfEditClose: React.PropTypes.func.isRequired,
+  gfEditUpdate: React.PropTypes.func.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,
+  subjectGF: React.PropTypes.object.isRequired,
 };
 
-const mapState = () => ({});
+const mapState = (state) => ({
+  subjectGF: gfEditGetSubject(state),
+});
 const mapDispatch = {
   createGF,
   showSnackbar,
+  gfEditClose,
+  gfEditUpdate,
 };
 
 const PureGFEditor = pure(GFEditor);
