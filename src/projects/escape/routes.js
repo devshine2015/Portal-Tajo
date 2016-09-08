@@ -106,7 +106,7 @@ export default function createRoutes(store) {
   return (
     <Router
       history={history}
-      // routes={rootRoute}
+      routes={rootRoute}
     />
   );
 }
