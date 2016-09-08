@@ -1196,6 +1196,56 @@
       "from": "d@>=0.1.1 <0.2.0",
       "resolved": "https://registry.npmjs.org/d/-/d-0.1.1.tgz"
     },
+    "d3-array": {
+      "version": "1.0.1",
+      "from": "d3-array@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/d3-array/-/d3-array-1.0.1.tgz"
+    },
+    "d3-collection": {
+      "version": "1.0.1",
+      "from": "d3-collection@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/d3-collection/-/d3-collection-1.0.1.tgz"
+    },
+    "d3-color": {
+      "version": "1.0.1",
+      "from": "d3-color@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/d3-color/-/d3-color-1.0.1.tgz"
+    },
+    "d3-format": {
+      "version": "1.0.2",
+      "from": "d3-format@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/d3-format/-/d3-format-1.0.2.tgz"
+    },
+    "d3-interpolate": {
+      "version": "1.1.1",
+      "from": "d3-interpolate@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/d3-interpolate/-/d3-interpolate-1.1.1.tgz"
+    },
+    "d3-path": {
+      "version": "1.0.1",
+      "from": "d3-path@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/d3-path/-/d3-path-1.0.1.tgz"
+    },
+    "d3-scale": {
+      "version": "1.0.3",
+      "from": "d3-scale@>=1.0.3 <2.0.0",
+      "resolved": "https://registry.npmjs.org/d3-scale/-/d3-scale-1.0.3.tgz"
+    },
+    "d3-shape": {
+      "version": "1.0.3",
+      "from": "d3-shape@>=1.0.3 <2.0.0",
+      "resolved": "https://registry.npmjs.org/d3-shape/-/d3-shape-1.0.3.tgz"
+    },
+    "d3-time": {
+      "version": "1.0.2",
+      "from": "d3-time@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/d3-time/-/d3-time-1.0.2.tgz"
+    },
+    "d3-time-format": {
+      "version": "2.0.2",
+      "from": "d3-time-format@>=2.0.0 <3.0.0",
+      "resolved": "https://registry.npmjs.org/d3-time-format/-/d3-time-format-2.0.2.tgz"
+    },
     "dashdash": {
       "version": "1.14.0",
       "from": "dashdash@>=1.12.0 <2.0.0",
@@ -3629,6 +3679,11 @@
       "version": "0.3.0",
       "from": "postcss-apply@>=0.3.0 <0.4.0",
       "resolved": "https://registry.npmjs.org/postcss-apply/-/postcss-apply-0.3.0.tgz"
+    },
+    "postcss-attribute-case-insensitive": {
+      "version": "1.0.1",
+      "from": "postcss-attribute-case-insensitive@>=1.0.1 <2.0.0",
+      "resolved": "https://registry.npmjs.org/postcss-attribute-case-insensitive/-/postcss-attribute-case-insensitive-1.0.1.tgz"
     },
     "postcss-calc": {
       "version": "5.3.0",
