@@ -8,12 +8,13 @@ import MapGF from './components/MapGF';
 import EditGF from './components/EditGF';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
-import { ZERO_LOCATION, NEW_GF_REQUIRED_ZOOM_LEVEL } from 'utils/constants';
 
 import { createMapboxMap } from 'utils/mapBoxMap';
+import { initiateGfEditingCallback } from 'containers/GFEditor/utils';
+import { mapStoreSetView, mapStoreGetView } from './reducerAction';
+
 import { gfEditUpdate } from 'containers/GFEditor/actions';
 import { gfEditIsEditing } from 'containers/GFEditor/reducer';
-import { makeLocalGF } from 'services/FleetModel/utils/gfHelpers';
 
 import * as mapEvents from './events';
 import * as listEvents from 'containers/Operational/components/OperationalPowerList/events';
@@ -29,7 +30,6 @@ class MapFleet extends React.Component {
   constructor(props) {
     super(props);
     this.theMap = null;
-    this.refPos = window.L.latLng(ZERO_LOCATION);
 
     this.state = {
       detailedList: listTypes.withVehicleDetails,
@@ -53,8 +53,9 @@ class MapFleet extends React.Component {
     this.theMap.addLayer(this.gfEditLayer);
   }
 
-  setRefPos(pos) {
-    this.refPos = pos;
+  componentWillUnmount() {
+    // TODO: need to shutdown the mapbox object?
+    this.props.mapStoreSetView(this.theMap.getCenter(), this.theMap.getZoom());
   }
 
   createMapboxMap() {
@@ -62,16 +63,8 @@ class MapFleet extends React.Component {
     if (this.theMap !== null) {
       return;
     }
-    this.theMap = createMapboxMap(ReactDOM.findDOMNode(this));
-    this.theMap.on('contextmenu', (e) => ((inThis) => {
-      if (inThis.props.gfEditMode) { // already editing?
-        return;
-      }
-      inThis.props.gfEditUpdate(makeLocalGF(e.latlng));
-      if (inThis.theMap.getZoom() < NEW_GF_REQUIRED_ZOOM_LEVEL) {
-        inThis.theMap.setZoomAround(e.latlng, NEW_GF_REQUIRED_ZOOM_LEVEL);
-      }
-    })(this));
+    this.theMap = createMapboxMap(ReactDOM.findDOMNode(this), this.props.mapStoreGetView);
+    this.theMap.on('contextmenu', initiateGfEditingCallback(this.theMap, this.props.gfEditUpdate));
   }
 
 // when selected from the list
@@ -168,6 +161,8 @@ MapFleet.propTypes = {
   gfById: React.PropTypes.func.isRequired,
   gfEditMode: React.PropTypes.bool.isRequired,
   gfEditUpdate: React.PropTypes.func.isRequired,
+  mapStoreSetView: React.PropTypes.func.isRequired,
+  mapStoreGetView: React.PropTypes.object.isRequired,
 };
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesEx(state),
@@ -175,8 +170,10 @@ const mapState = (state) => ({
   vehicleById: fromFleetReducer.getVehicleByIdFunc(state),
   gfById: fromFleetReducer.getGFByIdFunc(state),
   gfEditMode: gfEditIsEditing(state),
+  mapStoreGetView: mapStoreGetView(state),
 });
 const mapDispatch = {
   gfEditUpdate,
+  mapStoreSetView,
 };
 export default connect(mapState, mapDispatch)(PureMapFleet);

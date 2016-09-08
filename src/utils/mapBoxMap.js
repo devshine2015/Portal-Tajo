@@ -4,25 +4,13 @@ require('leaflet/dist/leaflet.css');
 // require('leaflet-editable/handler/Edit.Circle');
 require('leaflet-draw');
 
+import { MAPBOX_KEY } from 'utils/constants';
 
-import { MAPBOX_KEY, ZERO_LOCATION, ZERO_ZOOM, NEW_GF_REQUIRED_ZOOM_LEVEL } from 'utils/constants';
-
-export function createMapboxMap(domNode) {
+export function createMapboxMap(domNode, view) {
   let theMap = null;
   window.L.mapbox.accessToken = MAPBOX_KEY;
   theMap = window.L.mapbox.map(domNode);
-  theMap.setView(ZERO_LOCATION, ZERO_ZOOM);
-
-  // theMap.on('contextmenu', (e) => ((inThis) => {
-  //   // if (inThis.props.gfEditMode) { // already editing?
-  //   //   return;
-  //   // }
-  //   inThis.setRefPos(e.latlng);
-  //   inThis.props.eventDispatcher.fireEvent(mapEvents.MAP_GF_ADD, { obj: null, pos: e.latlng });
-  //   if (inThis.theMap.getZoom() < NEW_GF_REQUIRED_ZOOM_LEVEL) {
-  //     inThis.theMap.setZoomAround(e.latlng, NEW_GF_REQUIRED_ZOOM_LEVEL);
-  //   }
-  // })(this));
+  theMap.setView(view.center, view.zoom);
 
   const tilesOSM = window.L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -49,7 +37,6 @@ export function createMapboxMap(domNode) {
      map.invalidateSize(true);
    })(theMap)),
     500);
-
   return theMap;
 }
 

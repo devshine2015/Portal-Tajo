@@ -12,11 +12,11 @@ import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { CHRONICLE_LOCAL_INCTANCE_STATE_VALID } from 'containers/Chronicle/actions';
 
 import { createMapboxMap } from 'utils/mapBoxMap';
+import { initiateGfEditingCallback } from 'containers/GFEditor/utils';
+import { mapStoreSetView, mapStoreGetView } from './reducerAction';
+
 import { gfEditUpdate } from 'containers/GFEditor/actions';
 import { gfEditIsEditing } from 'containers/GFEditor/reducer';
-import { makeLocalGF } from 'services/FleetModel/utils/gfHelpers';
-import { NEW_GF_REQUIRED_ZOOM_LEVEL } from 'utils/constants';
-
 
 const EMPTY_ARRAY = [];
 
@@ -37,23 +37,19 @@ class MapChronicle extends React.Component {
     this.theMap.addLayer(this.gfEditLayer);
   }
 
+  componentWillUnmount() {
+    // TODO: need to shutdown the mapbox object?
+    this.props.mapStoreSetView(this.theMap.getCenter(), this.theMap.getZoom());
+  }
+
   createMapboxMap() {
     // if already existing
     if (this.theMap !== null) {
       return;
     }
-    this.theMap = createMapboxMap(ReactDOM.findDOMNode(this));
-    this.theMap.on('contextmenu', (e) => ((inThis) => {
-      if (inThis.props.gfEditMode) { // already editing?
-        return;
-      }
-      inThis.props.gfEditUpdate(makeLocalGF(e.latlng));
-      if (inThis.theMap.getZoom() < NEW_GF_REQUIRED_ZOOM_LEVEL) {
-        inThis.theMap.setZoomAround(e.latlng, NEW_GF_REQUIRED_ZOOM_LEVEL);
-      }
-    })(this));
+    this.theMap = createMapboxMap(ReactDOM.findDOMNode(this), this.props.mapStoreGetView);
+    this.theMap.on('contextmenu', initiateGfEditingCallback(this.theMap, this.props.gfEditUpdate));
   }
-
 
   hideLayer(theLayer, doHide) {
     if (this.theMap === null) return;
@@ -123,7 +119,6 @@ class MapChronicle extends React.Component {
      (<EditGF
        key="gfEditHelper"
        theLayer={this.gfEditLayer}
-       eventDispatcher={this.props.eventDispatcher}
      />);
     return (
       <div className = {styles.mapContainer}>
@@ -140,12 +135,13 @@ class MapChronicle extends React.Component {
 MapChronicle.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
   gfs: React.PropTypes.array.isRequired,
-//  eventDispatcher: React.PropTypes.object.isRequired,
   vehicleById: React.PropTypes.func.isRequired,
   gfById: React.PropTypes.func.isRequired,
   gfEditMode: React.PropTypes.bool.isRequired,
   selectedVehicle: React.PropTypes.object,
   gfEditUpdate: React.PropTypes.func.isRequired,
+  mapStoreSetView: React.PropTypes.func.isRequired,
+  mapStoreGetView: React.PropTypes.object.isRequired,
 };
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesEx(state),
@@ -153,9 +149,11 @@ const mapState = (state) => ({
   vehicleById: fromFleetReducer.getVehicleByIdFunc(state),
   gfById: fromFleetReducer.getGFByIdFunc(state),
   gfEditMode: gfEditIsEditing(state),
+  mapStoreGetView: mapStoreGetView(state),
 });
 const mapDispatch = {
   gfEditUpdate,
+  mapStoreSetView,
 };
 const PureMapChronicle = pure(MapChronicle);
 export default connect(mapState, mapDispatch)(PureMapChronicle);
