@@ -25,7 +25,7 @@ class ChartTimeBox extends React.Component {
   }
 
   mouseMove = (e) => {
-        e.preventDefault();
+    e.preventDefault();
     const xPos = e.nativeEvent.layerX;
     const totalW = e.nativeEvent.target.clientWidth;
     const mouseNormalized100 = (xPos / totalW) * 100;
@@ -40,21 +40,22 @@ class ChartTimeBox extends React.Component {
     this.setState({ isMouseOver: true });
   }
   mouseOut = (e) => {
-        e.preventDefault();
+    e.preventDefault();
     this.mouseUp();
     this.setState({ isMouseOver: false });
   }
   mouseDown = (e) => {
-        e.preventDefault();
+    e.preventDefault();
     this.setState({ isMouseDown: true });
   }
-  mouseUp = (e=null) => {
-    if (e!==null)
-        e.preventDefault();
+  mouseUp = (e = null) => {
+    if (e !== null) {
+      e.preventDefault();
+    }
     this.setState({ isMouseDown: false });
   }
   mouseClick = (e) => {
-        e.preventDefault();
+    e.preventDefault();
     this.props.setChronicleNormalizedT(this.state.mouseNormalized100);
   }
 
@@ -63,7 +64,6 @@ class ChartTimeBox extends React.Component {
     const stl={left: this.props.normalized100T.toFixed(3)+'%'};
     const stlDrag={left: this.state.mouseNormalized100.toFixed(3)+'%',
           display: this.state.isMouseOver ? 'block' : 'none' };
-
     return (
       <div className={styles.containerBox}
         onMouseMove={this.mouseMove}
@@ -73,7 +73,7 @@ class ChartTimeBox extends React.Component {
         onMouseDown={this.mouseDown}
         onClick={this.mouseClick}
       >
-      <Chart srcVehicle={this.props.srcVehicle} />
+      <Chart chronicleFrame={this.props.chronicleFrame} />
         <div className={styles.timeMarkerLine} style={stl}>
         </div>
         <div className={styles.timeMarkerLineDrag} style={stlDrag}>
@@ -84,7 +84,7 @@ class ChartTimeBox extends React.Component {
 }
 
 ChartTimeBox.propTypes = {
-  srcVehicle: React.PropTypes.object,
+  chronicleFrame: React.PropTypes.object,
   setChronicleNormalizedT: React.PropTypes.func.isRequired,
   normalized100T: React.PropTypes.number.isRequired,
 };

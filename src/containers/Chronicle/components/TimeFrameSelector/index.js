@@ -5,8 +5,7 @@ import DatePicker from 'material-ui/DatePicker';
 // import moment from 'moment';
 // import Period from 'containers/Report/components/Period';
 import styles from './styles.css';
-import { setChronicleTimeFrame,
-    validateChronicleTimeFrame } from './../../actions';
+import { setChronicleTimeFrame } from './../../actions';
 
 class TimeFrame extends React.Component {
 
@@ -27,7 +26,6 @@ class TimeFrame extends React.Component {
     const toDate = new Date(date);
     toDate.setDate(toDate.getDate() + 1);
     this.props.setChronicleTimeFrame(date, toDate);
-    this.props.validateChronicleTimeFrame();
   };
 
   render() {
@@ -51,13 +49,11 @@ class TimeFrame extends React.Component {
 
 TimeFrame.propTypes = {
   setChronicleTimeFrame: React.PropTypes.func.isRequired,
-  validateChronicleTimeFrame: React.PropTypes.func.isRequired,
 };
 const mapState = () => ({
 });
 const mapDispatch = {
   setChronicleTimeFrame,
-  validateChronicleTimeFrame,
 };
 const PureTimeFrame = pure(TimeFrame);
 export default connect(mapState, mapDispatch)(PureTimeFrame);

@@ -1,11 +1,22 @@
+// TODO: huge room for optimizations here - locating samaples for time, etc..
+//
 import createFramePlayer from './chronicleFramePlayer';
 
-function ChronicleVehicleFrame(events, dateFrom, dateTo) {
-  this.dateFromDbgBackEnd = null;
+const CHRONICLE_LOCAL_INCTANCE_STATE_NONE = 'chronLocStateNone';
+const CHRONICLE_LOCAL_INCTANCE_STATE_LOADING = 'chronLocStateLoading';
+const CHRONICLE_LOCAL_INCTANCE_STATE_OK_EMPTY = 'chronLocStateOk';
+const CHRONICLE_LOCAL_INCTANCE_STATE_OK_DATA = 'chronLocStateEmpty';
+
+
+function ChronicleVehicleFrame(dateFrom, dateTo, events, inState) {
+  if (dateFrom === undefined) {
+    this.state = CHRONICLE_LOCAL_INCTANCE_STATE_NONE;
+    return;
+  }
   this.dateFrom = dateFrom;
-  this.dateFrom00 = new Date(dateFrom.getFullYear(), dateFrom.getMonth(), dateFrom.getDate() );
+  this.dateFrom00 = new Date(dateFrom.getFullYear(), dateFrom.getMonth(), dateFrom.getDate());
   this.dateTo = dateTo;
-  this.timeRangeMs = dateTo.getTime() - dateFrom.getTime(); //24*60*60*1000
+  this.timeRangeMs = dateTo.getTime() - dateFrom.getTime(); // 24*60*60*1000
   this.posData = [];
 
   this.temperatureData = [];
@@ -20,9 +31,18 @@ function ChronicleVehicleFrame(events, dateFrom, dateTo) {
   //
   this.lastFoundIdx = 0;
 //    this.indexHint = -1;
+  this.state = inState;
+
+  if (events === null) {
+    return;
+  }
+  this.parceData(events);
   this.player = createFramePlayer(this);
 
-  this.parceData(events);
+  // TODO: ? need more checks here - type of event, etc?
+  this.state = this.posData.length > 0 ?
+      CHRONICLE_LOCAL_INCTANCE_STATE_OK_DATA
+      : CHRONICLE_LOCAL_INCTANCE_STATE_OK_EMPTY;
 }
 
 
@@ -101,8 +121,22 @@ ChronicleVehicleFrame.prototype.kill = function( ){
 //
 //-----------------------------------------------------------------------
 ChronicleVehicleFrame.prototype.isValid = function( ){
-// TODO: need more checks here - type of event, etc
-  return this.posData.length > 0;
+  return this.state === CHRONICLE_LOCAL_INCTANCE_STATE_OK_DATA
+      || this.state === CHRONICLE_LOCAL_INCTANCE_STATE_OK_EMPTY;
+};
+
+//
+//
+//-----------------------------------------------------------------------
+ChronicleVehicleFrame.prototype.isLoading = function( ){
+  return this.state === CHRONICLE_LOCAL_INCTANCE_STATE_LOADING;
+};
+
+//
+//
+//-----------------------------------------------------------------------
+ChronicleVehicleFrame.prototype.isEmpty = function( ){
+  return this.state === CHRONICLE_LOCAL_INCTANCE_STATE_OK_EMPTY;
 };
 
 //
@@ -110,7 +144,7 @@ ChronicleVehicleFrame.prototype.isValid = function( ){
 //-----------------------------------------------------------------------
 ChronicleVehicleFrame.prototype.isStatic = function( ){
 // TODO: need more checks here - type of event, etc
-  return this.posData.length === 1;
+  return this.isValid() && this.posData.length === 1;
 };
 
 //
@@ -180,6 +214,8 @@ ChronicleVehicleFrame.prototype.findSample = function( requestMs, data ){
 //
 //-----------------------------------------------------------------------
 
-export default function createHistoryFrame(events, dateFrom, dateTo) {
-  return new ChronicleVehicleFrame(events, dateFrom, dateTo);
+export default function createHistoryFrame(dateFrom, dateTo,
+  events = null, isLoading = false) {
+  return new ChronicleVehicleFrame(dateFrom, dateTo, events,
+      isLoading ? CHRONICLE_LOCAL_INCTANCE_STATE_LOADING : CHRONICLE_LOCAL_INCTANCE_STATE_NONE);
 }

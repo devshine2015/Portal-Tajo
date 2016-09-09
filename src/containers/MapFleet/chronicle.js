@@ -9,7 +9,7 @@ import MapGF from './components/MapGF';
 import EditGF from './components/EditGF';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
-import { CHRONICLE_LOCAL_INCTANCE_STATE_VALID } from 'containers/Chronicle/actions';
+import { getInstanceChronicleFrameById } from 'containers/Chronicle/reducer';
 
 import { createMapboxMap } from 'utils/mapBoxMap';
 import { initiateGfEditingCallback } from 'containers/GFEditor/utils';
@@ -85,30 +85,30 @@ class MapChronicle extends React.Component {
       //   />
       // ));
       chronPaths = this.props.vehicles.map((v) => {
-        if (v.chronicleState !== CHRONICLE_LOCAL_INCTANCE_STATE_VALID
-          || !v.chronicleFrame.isValid()) {
+        const vehCronicleFrame = this.props.getInstanceChronicleFrameById(v.id);
+        if (!vehCronicleFrame.isValid() || vehCronicleFrame.isEmpty()) {
           return false;
         }
         return (
           <ChroniclePath
             key={v.id+'CrP'}
             theLayer={this.theMap}
-            theVehicle={v}
+            chronicleFrame={vehCronicleFrame}
             isSelected={this.props.selectedVehicle !== null
               && this.props.selectedVehicle.id === v.id}
           />
         );
       });
       chronMarkers = this.props.vehicles.map((v) => {
-        if (v.chronicleState !== CHRONICLE_LOCAL_INCTANCE_STATE_VALID
-          || !v.chronicleFrame.isValid()) {
+        const vehCronicleFrame = this.props.getInstanceChronicleFrameById(v.id);
+        if (!vehCronicleFrame.isValid() || vehCronicleFrame.isEmpty()) {
           return false;
         }
         return (
         <ChronicleMarker
           key={v.id+'CrM'}
           theLayer={this.theMap}
-          theVehicle={v}
+          chronicleFrame={vehCronicleFrame}
           isSelected={this.props.selectedVehicle !== null
             && this.props.selectedVehicle.id === v.id}
         />
@@ -142,6 +142,7 @@ MapChronicle.propTypes = {
   gfEditUpdate: React.PropTypes.func.isRequired,
   mapStoreSetView: React.PropTypes.func.isRequired,
   mapStoreGetView: React.PropTypes.object.isRequired,
+  getInstanceChronicleFrameById: React.PropTypes.func.isRequired,
 };
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesEx(state),
@@ -150,6 +151,7 @@ const mapState = (state) => ({
   gfById: fromFleetReducer.getGFByIdFunc(state),
   gfEditMode: gfEditIsEditing(state),
   mapStoreGetView: mapStoreGetView(state),
+  getInstanceChronicleFrameById: getInstanceChronicleFrameById(state),
 });
 const mapDispatch = {
   gfEditUpdate,

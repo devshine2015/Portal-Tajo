@@ -13,7 +13,6 @@
 // "kind":    //optional
 import { ZOMBIE_TIME_TRH_MINUTES } from 'utils/constants';
 import { sortByName } from 'utils/sorting';
-import { CHRONICLE_LOCAL_INCTANCE_STATE_NONE } from 'containers/Chronicle/actions';
 
 function makeLocalVehicle(backEndObject, vehicleStats) {
   if (backEndObject.status !== 'active'
@@ -53,10 +52,6 @@ function makeLocalVehicle(backEndObject, vehicleStats) {
     // posibly need different icon for this
     kind: backEndObject.kind || 'UNDEFINED',
     // ----
-    // TODO: the history - keep it in sep
-    chronicleFrame: null,
-    // TODO: this should be inside chronicleFrame
-    chronicleState: CHRONICLE_LOCAL_INCTANCE_STATE_NONE,
   });
 
   return theVehicle;

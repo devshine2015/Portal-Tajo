@@ -9,9 +9,8 @@ import TimeFrameController from './components/TimeFrameSelector';
 import ChartTimeBox from './components/ChartTimeBox';
 import PlaybackController from './components/PlaybackController';
 import ChronicleMap from 'containers/MapFleet/chronicle';
-import { CHRONICLE_LOCAL_INCTANCE_STATE_NONE,
-  requestHistory } from 'containers/Chronicle/actions';
-import { getChronicleTimeFrame } from 'containers/Chronicle/reducer';
+import { requestHistory } from 'containers/Chronicle/actions';
+import { getChronicleTimeFrame, getInstanceChronicleFrameById } from './reducer';
 
 import createEventDispatcher from 'utils/eventDispatcher';
 
@@ -48,7 +47,7 @@ class Chronicle extends React.Component {
         selectedVehicleId: id,
         selectedVehicle: v.vehicle,
       });
-      if (v.vehicle.chronicleState === CHRONICLE_LOCAL_INCTANCE_STATE_NONE) {
+      if (!this.props.getInstanceChronicleFrameById(id).isValid()) {
         const currentTimeFrame = this.props.chronicleTimeFrame;
         this.props.requestHistory(id, currentTimeFrame.fromDate, currentTimeFrame.toDate);
       }
@@ -59,6 +58,7 @@ class Chronicle extends React.Component {
     if (this.props.vehicles.length === 0) {
       return null;
     }
+    const chronicleFrame = this.props.getInstanceChronicleFrameById(this.state.selectedVehicleId);
 
     return (
       <div className={styles.topContainer}>
@@ -79,7 +79,7 @@ class Chronicle extends React.Component {
         />
         <FixedContent containerClassName={styles.fixedContent}>
         <TimeFrameController selectedVehicleId={this.state.selectedVehicleId} />
-        <ChartTimeBox srcVehicle={this.state.selectedVehicle} />
+        <ChartTimeBox chronicleFrame={chronicleFrame} />
         <PlaybackController />
         <ChronicleMap
           selectedVehicle={this.state.selectedVehicle}
@@ -96,11 +96,13 @@ Chronicle.propTypes = {
   filterFunc: React.PropTypes.func.isRequired,
   requestHistory: React.PropTypes.func.isRequired,
   chronicleTimeFrame: React.PropTypes.object.isRequired,
+  getInstanceChronicleFrameById: React.PropTypes.func.isRequired,
 };
 
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
   chronicleTimeFrame: getChronicleTimeFrame(state),
+  getInstanceChronicleFrameById: getInstanceChronicleFrameById(state),
 });
 const mapDispatch = {
   filterFunc: vehiclesActions.filterVehicles,

@@ -1,43 +1,31 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { CHRONICLE_LOCAL_INCTANCE_STATE_NONE,
-  CHRONICLE_LOCAL_INCTANCE_STATE_LOADING } from 'containers/Chronicle/actions';
-// import RefreshIcon from 'material-ui/svg-icons/navigation/refresh';
-// import IconButton from 'material-ui/IconButton';
-import Divider from 'material-ui/Divider';
+import { getInstanceChronicleFrameById } from 'containers/Chronicle/reducer';
 
-// import { red900, red500, teal100, teal200, yellow700, yellow500 } from 'material-ui/styles/colors';
-
+// import Divider from 'material-ui/Divider';
 
 import stylesTop from '../styles.css';
 import styles from './styles.css';
 
 import LinearProgress from 'material-ui/LinearProgress';
-// import RefreshIndicator from 'material-ui/RefreshIndicator';
-// const style = {
-//   container: {
-//   position: 'relative',
-// },
-// refresh: {
-//   display: 'inline-block',
-//   position: 'relative',
-// },
-// };
 
 class ChronicleListItem extends React.Component {
-
+  // shouldComponentUpdate(nextProps) {
+  //
+  // }
   onClick = () => {
     this.props.onClick(this.props.id);
   }
-
   getChronocle = () => {
 
   }
   // <Divider key="line02" />
   render() {
+    const chronicleFrame = this.props.getInstanceChronicleFrameById(this.props.id);
     const className = classnames(stylesTop.listItemInn, {
-      [styles.listItemNoChronicle]: this.props.chronicleState === CHRONICLE_LOCAL_INCTANCE_STATE_NONE,
+      [styles.listItemNoChronicle]: !chronicleFrame.isValid(),
     });
 
     return (
@@ -46,15 +34,12 @@ class ChronicleListItem extends React.Component {
         onClick={this.onClick}
       >
         {this.props.name}
-        { this.props.chronicleState === CHRONICLE_LOCAL_INCTANCE_STATE_LOADING ?
+        { chronicleFrame.isLoading() ?
           <LinearProgress mode="indeterminate" />
           : false
         }
-        { (this.props.chronicleState !== CHRONICLE_LOCAL_INCTANCE_STATE_NONE
-          && this.props.chronicleState !== CHRONICLE_LOCAL_INCTANCE_STATE_LOADING
-          && this.props.chronicleFrame !== null
-          && !this.props.chronicleFrame.isValid())
-          ? <div >
+        { chronicleFrame.isEmpty() ?
+          <div >
               No data...
             </div>
           : false
@@ -68,8 +53,11 @@ ChronicleListItem.propTypes = {
   id: React.PropTypes.string.isRequired,
   name: React.PropTypes.string.isRequired,
   onClick: React.PropTypes.func.isRequired,
-  chronicleState: React.PropTypes.string,
-  chronicleFrame: React.PropTypes.object,
+  getInstanceChronicleFrameById: React.PropTypes.func.isRequired,
 };
 
-export default pure(ChronicleListItem);
+const mapState = (state) => ({
+  getInstanceChronicleFrameById: getInstanceChronicleFrameById(state),
+});
+const PureChronicleListItem = pure(ChronicleListItem);
+export default connect(mapState)(PureChronicleListItem);

@@ -1,6 +1,5 @@
 import React from 'react';
 import pure from 'recompose/pure';
-import { CHRONICLE_LOCAL_INCTANCE_STATE_VALID } from 'containers/Chronicle/actions';
 
 // import styles from './../styles.css';
 
@@ -20,7 +19,7 @@ class ChroniclePath extends React.Component {
   }
   createPath() {
     const latLngArray = [];
-    const srcPosArray = this.props.theVehicle.chronicleFrame.posData;
+    const srcPosArray = this.props.chronicleFrame.posData;
     for (let i = 0; i < srcPosArray.length; ++i) {
       latLngArray.push(srcPosArray[i].pos);
     }
@@ -75,7 +74,7 @@ class ChroniclePath extends React.Component {
 
 ChroniclePath.propTypes = {
   theLayer: React.PropTypes.object.isRequired,
-  theVehicle: React.PropTypes.object.isRequired,
+  chronicleFrame: React.PropTypes.object.isRequired,
   isSelected: React.PropTypes.bool.isRequired,
 };
 const PureChroniclePath = pure(ChroniclePath);
