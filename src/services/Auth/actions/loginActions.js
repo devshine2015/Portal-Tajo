@@ -6,10 +6,7 @@ import {
   createBaseUrl,
   storage,
 } from 'utils';
-import {
-  setAuthentication,
-  resetAuthentication,
-} from './commonActions';
+import commonActions from './commonActions';
 import { getAuthenticationSession } from '../reducer';
 import { getFleetName } from 'services/Global/reducer';
 import {
@@ -40,8 +37,8 @@ function _login(data, dispatch, getState) {
         role: 'installer',
       };
 
-      storage.save(LOCAL_STORAGE_SESSION_KEY, sessionData, VERSIONS.currentVersion);
-      dispatch(setAuthentication(token, fleet));
+      storage.save(LOCAL_STORAGE_SESSION_KEY, sessionData, VERSIONS.authentication.currentVersion);
+      dispatch(commonActions.setAuthentication(token, fleet));
       dispatch(setUserData({
         role: sessionData.role,
       }));
@@ -61,7 +58,7 @@ function _logout({ redirectUrl }, dispatch, getState) {
 
   return api.delete(url, { optionalHeaders })
     .then(() => {
-      dispatch(resetAuthentication());
+      dispatch(commonActions.resetAuthentication());
       dispatch(resetUserData());
 
       return Promise.resolve({

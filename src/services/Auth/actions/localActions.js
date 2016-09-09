@@ -7,10 +7,7 @@ import {
   createBaseUrl,
 } from 'utils';
 import { getAuthenticatedFleet } from '../reducer';
-import {
-  setAuthentication,
-  resetAuthentication,
-} from './commonActions';
+import commonActions from './commonActions';
 import {
   setUserData,
   resetUserData,
@@ -31,7 +28,7 @@ function _checkUserAuthentication(params, dispatch, getState) {
   .then(_checkVersion(params.checkVersion))
   .then((sessions) => {
     if (sessions && typeof sessions === 'string') {
-      return dispatch(setAuthentication(sessions, fleet));
+      return dispatch(commonActions.setAuthentication(sessions, fleet));
     } else if (sessions) {
       const session = sessions.filter(s => s.fleet === fleet);
 
@@ -39,9 +36,9 @@ function _checkUserAuthentication(params, dispatch, getState) {
         dispatch(setUserData({
           role: session[0].role,
         }));
-        dispatch(setAuthentication(session[0]['session-id'], fleet));
+        dispatch(commonActions.setAuthentication(session[0]['session-id'], fleet));
       } else {
-        dispatch(resetAuthentication());
+        dispatch(commonActions.resetAuthentication());
         dispatch(resetUserData());
 
         if (params.urls) {
@@ -49,7 +46,7 @@ function _checkUserAuthentication(params, dispatch, getState) {
         }
       }
     } else {
-      dispatch(resetAuthentication());
+      dispatch(commonActions.resetAuthentication());
       dispatch(resetUserData());
 
       if (params.urls) {
@@ -65,7 +62,7 @@ function _checkUserAuthentication(params, dispatch, getState) {
       console.log(error.message);
 
       storage.clean(LOCAL_STORAGE_SESSION_KEY);
-      dispatch(resetAuthentication());
+      dispatch(commonActions.resetAuthentication());
       dispatch(resetUserData());
 
       if (params.urls) {

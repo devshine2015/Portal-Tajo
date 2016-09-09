@@ -1,11 +1,18 @@
-export const AUTH_SET = 'portal/App/AUTH_SET';
-export const AUTH_RESET = 'portal/App/AUTH_RESET';
+const AUTH_SET = 'portal/App/AUTH_SET';
+const AUTH_RESET = 'portal/App/AUTH_RESET';
 
-export const setAuthentication = (sessionId, fleet) => ({
+const setAuthentication = (sessionId, fleet) => ({
   type: AUTH_SET,
   sessionId,
   fleet,
 });
-export const resetAuthentication = () => ({
+const resetAuthentication = () => ({
   type: AUTH_RESET,
 });
+
+export default {
+  AUTH_SET,
+  AUTH_RESET,
+  setAuthentication,
+  resetAuthentication,
+};

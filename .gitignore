@@ -1,13 +1,12 @@
-# OSX
-#
-.DS_Store
-
 # project relate
 build/
 tajo/
 escape/
 customer/
 ssreports/
+
+# allow all files from projects directory
+!src/projects/*
 
 # node.js
 #
@@ -17,3 +16,7 @@ npm-debug.log
 # sublime
 *.sublime-project
 *.sublime-workspace
+
+# OSX
+#
+.DS_Store
