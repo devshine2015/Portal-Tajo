@@ -72,6 +72,7 @@
     "redux-thunk": "^2.1.0",
     "sanitize.css": "^3.3.0",
     "tinycolor2": "^1.4.1",
+    "velocity-react": "^1.1.5",
     "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
