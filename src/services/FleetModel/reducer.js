@@ -33,6 +33,8 @@ export const getVehicleByIdFunc = (state) =>
   getByIdFunc(state.getIn(['fleet', 'vehicles']));
 export const getProcessedVehicles = (state) =>
   fromVehiclesReducer.getProcessedVehicles(state.getIn(['fleet', 'vehicles']));
+export const getSelectedVehicleId = (state) =>
+  fromVehiclesReducer.getSelectedVehicleId(state.getIn(['fleet', 'vehicles']));
 
 export const getGFs = (state) =>
   fromgfReducer.getGFs(state.getIn(['fleet', 'locations']));

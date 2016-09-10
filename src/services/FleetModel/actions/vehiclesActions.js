@@ -9,6 +9,7 @@ import { getProcessedVehicles } from '../reducer';
 export const FLEET_MODEL_VEHICLES_SET = 'portal/services/FLEET_MODEL_VEHICLES_SET';
 export const FLEET_MODEL_VEHICLES_FILTER = 'portal/services/FLEET_MODEL_VEHICLES_FILTER';
 export const FLEET_MODEL_VEHICLE_UPDATE = 'portal/services/FLEET_MODEL_VEHICLE_UPDATE';
+export const FLEET_MODEL_VEHICLE_SELECT = 'portal/services/FLEET_MODEL_VEHICLE_SELECT';
 
 export const fetchVehicles = (fleet, openWebSocket) => (dispatch, getState) =>
   _fetchVehicles(fleet, openWebSocket, dispatch, getState);
@@ -16,6 +17,8 @@ export const updateDetails = (details = {}) => (dispatch, getState) =>
   makeUpdateVehicleRequest(details, dispatch, getState);
 export const filterVehicles = (searchString) => (dispatch, getState) =>
   _filterVehicles({ searchString }, dispatch, getState);
+export const setSelectedVehicleId = (id) => (dispatch) =>
+  dispatch(_vehicleSetSelect(id));
 
 /**
  * fleet is optional
@@ -89,4 +92,9 @@ const _vehicleUpdate = (details, id) => ({
 const _vehiclesFilterUpdate = (vehicles) => ({
   type: FLEET_MODEL_VEHICLES_FILTER,
   vehicles,
+});
+
+const _vehicleSetSelect = (id) => ({
+  type: FLEET_MODEL_VEHICLE_SELECT,
+  id,
 });

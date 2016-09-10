@@ -51,6 +51,14 @@ class MapFleet extends React.Component {
     this.theMap.addLayer(this.gfMarkersLayer);
     this.gfEditLayer = window.L.layerGroup();
     this.theMap.addLayer(this.gfEditLayer);
+
+// providing continuous UX - same vehicle selected when switching from other screens
+// TODO: NOT GOOD - relies on Mounting order, expects powerList to be already up
+//
+    const globalSelectedVehicleId = this.props.gloablSelctedVehicleId;
+    if (globalSelectedVehicleId !== '') {
+      this.selectMarker(mapEvents.MAP_VEHICLE_SELECTED, globalSelectedVehicleId);
+    }
   }
 
   componentWillUnmount() {
@@ -163,6 +171,7 @@ MapFleet.propTypes = {
   gfEditUpdate: React.PropTypes.func.isRequired,
   mapStoreSetView: React.PropTypes.func.isRequired,
   mapStoreGetView: React.PropTypes.object.isRequired,
+  gloablSelctedVehicleId: React.PropTypes.string.isRequired,
 };
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesEx(state),
@@ -171,6 +180,7 @@ const mapState = (state) => ({
   gfById: fromFleetReducer.getGFByIdFunc(state),
   gfEditMode: gfEditIsEditing(state),
   mapStoreGetView: mapStoreGetView(state),
+  gloablSelctedVehicleId: fromFleetReducer.getSelectedVehicleId(state),
 });
 const mapDispatch = {
   gfEditUpdate,

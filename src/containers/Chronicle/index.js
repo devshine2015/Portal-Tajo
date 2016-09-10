@@ -40,6 +40,13 @@ class Chronicle extends React.Component {
     this.onItemClick = this.onItemClick.bind(this);
   }
 
+  componentDidMount() {
+// providing continuous UX - same vehicle selected when switching from other screens
+    const globalSelectedVehicleId = this.props.globalSelectedVehicleId;
+    if (globalSelectedVehicleId !== '') {
+      this.onItemClick(globalSelectedVehicleId);
+    }
+  }
   /**
    * Choose vehicle by id
    **/
@@ -50,6 +57,7 @@ class Chronicle extends React.Component {
         selectedVehicleId: id,
         selectedVehicle: v.vehicle,
       });
+      this.props.setSelectedVehicleId(id);
       if (!this.props.getInstanceChronicleFrameById(id).isValid()) {
         const currentTimeFrame = this.props.chronicleTimeFrame;
         this.props.requestHistory(id, currentTimeFrame.fromDate, currentTimeFrame.toDate);
@@ -110,6 +118,8 @@ Chronicle.propTypes = {
   chronicleTimeFrame: React.PropTypes.object.isRequired,
   getInstanceChronicleFrameById: React.PropTypes.func.isRequired,
   hasChroniclePlayableFrames: React.PropTypes.bool.isRequired,
+  setSelectedVehicleId: React.PropTypes.func.isRequired,
+  globalSelectedVehicleId: React.PropTypes.string.isRequired,
 };
 
 const mapState = (state) => ({
@@ -117,9 +127,11 @@ const mapState = (state) => ({
   chronicleTimeFrame: getChronicleTimeFrame(state),
   getInstanceChronicleFrameById: getInstanceChronicleFrameById(state),
   hasChroniclePlayableFrames: hasChroniclePlayableFrames(state),
+  globalSelectedVehicleId: fromFleetReducer.getSelectedVehicleId(state),
 });
 const mapDispatch = {
   filterFunc: vehiclesActions.filterVehicles,
+  setSelectedVehicleId: vehiclesActions.setSelectedVehicleId,
   showSnackbar,
   requestHistory,
 };

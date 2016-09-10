@@ -2,12 +2,14 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { Tabs, Tab } from 'material-ui/Tabs';
+// import SwipeableViews from 'react-swipeable-views';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import ItemsList from 'components/InstancesList';
 import Scrollable from 'components/Scrollable';
 import listTypes from 'components/InstancesList/types';
 import { vehiclesActions, gfActions } from 'services/FleetModel/actions';
+import { getSelectedVehicleId } from 'services/FleetModel/reducer';
 import * as listEvents from './events';
 import * as mapEvents from 'containers/MapFleet/events';
 import { dimensions } from 'configs/theme';
@@ -28,13 +30,21 @@ class OperationalPowerList extends React.Component {
     props.eventDispatcher.registerHandler(mapEvents.MAP_VEHICLE_SELECTED, this.onVehicleClick);
     props.eventDispatcher.registerHandler(mapEvents.MAP_GF_SELECTED, this.onGFClick);
   }
-
+  //
+  // TODO: done in MAP now - mounting order dependant, need be indepenent
+  // componentDidMount() {
+  //   const globalSelectedVehicleId = this.props.getSelectedVehicleId;
+  //   if (globalSelectedVehicleId !== '') {
+  //     this.onVehicleClick(globalSelectedVehicleId);
+  //   }
+  // }
   onGFClick = (itemId, isExpanded = true) => {
     this.onItemClick(itemId, isExpanded, 'location');
   }
 
   onVehicleClick = (itemId, isExpanded = true) => {
     this.onItemClick(itemId, isExpanded, 'vehicle');
+    this.props.setSelectedVehicleId(itemId);
   }
 
   onItemClick = (itemId, isExpanded, type) => {
@@ -135,13 +145,18 @@ OperationalPowerList.propTypes = {
   eventDispatcher: React.PropTypes.object.isRequired,
   filterVehiclesFunc: React.PropTypes.func.isRequired,
   filterGFsFunc: React.PropTypes.func.isRequired,
+  setSelectedVehicleId: React.PropTypes.func.isRequired,
+  getSelectedVehicleId: React.PropTypes.string.isRequired,
 };
-
+const mapState = (state) => ({
+  getSelectedVehicleId: getSelectedVehicleId(state),
+});
 const mapDispatch = {
   filterVehiclesFunc: vehiclesActions.filterVehicles,
+  setSelectedVehicleId: vehiclesActions.setSelectedVehicleId,
   filterGFsFunc: gfActions.filterGFs,
 };
 
 const PureOperationalPowerList = pure(OperationalPowerList);
 
-export default connect(null, mapDispatch)(PureOperationalPowerList);
+export default connect(mapState, mapDispatch)(PureOperationalPowerList);

@@ -7,6 +7,9 @@ const vehiclesInitialState = fromJS({
   list: new List(),
   processedList: new Map(),
   orderedList: new List(),
+  // keep gloabl selelcted vehicle - to be persistent wneh switching screens/lists
+  // TODO: move it to separate reducer (userContext?), with mapView params, etc
+  slectedVehicleId: '',
 });
 
 function vehiclesReducer(state = vehiclesInitialState, action) {
@@ -21,6 +24,9 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
 
     case vehiclesActions.FLEET_MODEL_VEHICLES_FILTER:
       return state.set('processedList', fromJS(action.vehicles));
+
+    case vehiclesActions.FLEET_MODEL_VEHICLE_SELECT:
+      return state.set('slectedVehicleId', action.id);
 
     case socketActions.FLEET_MODEL_SOCKET_SET: {
       const inStatus = action.statusObj;
@@ -81,3 +87,5 @@ export const getVehiclesExSorted = (state) => {
 };
 export const getProcessedVehicles = (state) =>
   state.get('processedList');
+export const getSelectedVehicleId = (state) =>
+  state.get('slectedVehicleId');
