@@ -25,7 +25,7 @@ class ChronicleListItem extends React.Component {
   render() {
     const chronicleFrame = this.props.getInstanceChronicleFrameById(this.props.id);
     const className = classnames(stylesTop.listItemInn, {
-      [styles.listItemNoChronicle]: !chronicleFrame.isValid(),
+      [styles.listItemNoChronicle]: (!chronicleFrame.isValid() && !this.props.isExpanded),
     });
 
     return (
@@ -52,6 +52,7 @@ class ChronicleListItem extends React.Component {
 ChronicleListItem.propTypes = {
   id: React.PropTypes.string.isRequired,
   name: React.PropTypes.string.isRequired,
+  isExpanded: React.PropTypes.bool.isRequired,
   onClick: React.PropTypes.func.isRequired,
   getInstanceChronicleFrameById: React.PropTypes.func.isRequired,
 };

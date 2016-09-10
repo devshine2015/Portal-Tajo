@@ -25,6 +25,7 @@ export const setChronicleTimeFrame = (dateFrom, dateTo) => (dispatch, getState) 
   }
   dispatch(_chronicleSetTimeFrame(dateFrom, dateTo));
   dispatch(_chronicleValidateTimeFrame());
+  dispatch(_chronicleSetT(0));
 };
 
 function _requestHistory(inVehicleId, dateFrom, dateTo, dispatch, getState) {

@@ -10,7 +10,9 @@ import ChartTimeBox from './components/ChartTimeBox';
 import PlaybackController from './components/PlaybackController';
 import ChronicleMap from 'containers/MapFleet/chronicle';
 import { requestHistory } from 'containers/Chronicle/actions';
-import { getChronicleTimeFrame, getInstanceChronicleFrameById } from './reducer';
+import { getChronicleTimeFrame,
+  getInstanceChronicleFrameById, hasChroniclePlayableFrames } from './reducer';
+
 
 import createEventDispatcher from 'utils/eventDispatcher';
 
@@ -78,12 +80,17 @@ class Chronicle extends React.Component {
           }
         />
         <FixedContent containerClassName={styles.fixedContent}>
-        <TimeFrameController selectedVehicleId={this.state.selectedVehicleId} />
-        <ChartTimeBox chronicleFrame={chronicleFrame} />
-        <PlaybackController />
-        <ChronicleMap
-          selectedVehicle={this.state.selectedVehicle}
-        />
+          <div className={styles.allTheChronicleControllerscontainer}>
+            <TimeFrameController selectedVehicleId={this.state.selectedVehicleId} />
+            <ChartTimeBox chronicleFrame={chronicleFrame} />
+              { this.props.hasChroniclePlayableFrames ?
+                <PlaybackController />
+                : false
+              }
+          </div>
+          <ChronicleMap
+            selectedVehicle={this.state.selectedVehicle}
+          />
         </FixedContent>
         </div>
     );
@@ -97,12 +104,14 @@ Chronicle.propTypes = {
   requestHistory: React.PropTypes.func.isRequired,
   chronicleTimeFrame: React.PropTypes.object.isRequired,
   getInstanceChronicleFrameById: React.PropTypes.func.isRequired,
+  hasChroniclePlayableFrames: React.PropTypes.bool.isRequired,
 };
 
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
   chronicleTimeFrame: getChronicleTimeFrame(state),
   getInstanceChronicleFrameById: getInstanceChronicleFrameById(state),
+  hasChroniclePlayableFrames: hasChroniclePlayableFrames(state),
 });
 const mapDispatch = {
   filterFunc: vehiclesActions.filterVehicles,

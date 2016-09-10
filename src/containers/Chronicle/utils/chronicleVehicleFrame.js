@@ -45,6 +45,37 @@ function ChronicleVehicleFrame(dateFrom, dateTo, events, inState) {
       : CHRONICLE_LOCAL_INCTANCE_STATE_OK_EMPTY;
 }
 
+//
+//-----------------------------------------------------------------------
+//
+// STATUS checkers here
+//
+ChronicleVehicleFrame.prototype.isValid = function( ){
+  return this.state === CHRONICLE_LOCAL_INCTANCE_STATE_OK_DATA
+      || this.state === CHRONICLE_LOCAL_INCTANCE_STATE_OK_EMPTY;
+};
+
+//
+//
+//-----------------------------------------------------------------------
+ChronicleVehicleFrame.prototype.isLoading = function( ){
+  return this.state === CHRONICLE_LOCAL_INCTANCE_STATE_LOADING;
+};
+
+//
+//
+//-----------------------------------------------------------------------
+ChronicleVehicleFrame.prototype.isEmpty = function( ){
+  return this.state === CHRONICLE_LOCAL_INCTANCE_STATE_OK_EMPTY;
+};
+
+//
+//
+//-----------------------------------------------------------------------
+ChronicleVehicleFrame.prototype.isStatic = function( ){
+// TODO: need more checks here - type of event, etc
+  return this.isValid() && this.posData.length === 1;
+};
 
 //
 //
@@ -116,36 +147,6 @@ ChronicleVehicleFrame.prototype.kill = function( ){
   //   this.player.kill();
   // this.player = null;
 }
-
-//
-//
-//-----------------------------------------------------------------------
-ChronicleVehicleFrame.prototype.isValid = function( ){
-  return this.state === CHRONICLE_LOCAL_INCTANCE_STATE_OK_DATA
-      || this.state === CHRONICLE_LOCAL_INCTANCE_STATE_OK_EMPTY;
-};
-
-//
-//
-//-----------------------------------------------------------------------
-ChronicleVehicleFrame.prototype.isLoading = function( ){
-  return this.state === CHRONICLE_LOCAL_INCTANCE_STATE_LOADING;
-};
-
-//
-//
-//-----------------------------------------------------------------------
-ChronicleVehicleFrame.prototype.isEmpty = function( ){
-  return this.state === CHRONICLE_LOCAL_INCTANCE_STATE_OK_EMPTY;
-};
-
-//
-//
-//-----------------------------------------------------------------------
-ChronicleVehicleFrame.prototype.isStatic = function( ){
-// TODO: need more checks here - type of event, etc
-  return this.isValid() && this.posData.length === 1;
-};
 
 //
 //

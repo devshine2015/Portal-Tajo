@@ -106,6 +106,8 @@ class PlaybackCtr extends React.Component {
   render() {
     return (
       <div className={styles.containerBox}>
+        <div style={{ width: '48px', height: '48px', backgroundColor: 'red' }}>
+        </div>
         <IconButton
           tooltip="pause"
           onClick={() => (this.playSpeed(0))}

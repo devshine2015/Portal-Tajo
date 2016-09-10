@@ -2,6 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import DatePicker from 'material-ui/DatePicker';
+import ArrowIcon from 'material-ui/svg-icons/navigation/arrow-back';
 // import moment from 'moment';
 // import Period from 'containers/Report/components/Period';
 import styles from './styles.css';
@@ -31,7 +32,7 @@ class TimeFrame extends React.Component {
   render() {
     return (
       <div className={styles.timeFrameBox}>
-        <div>
+        <div className={styles.picker}>
           <DatePicker
             autoOk
             hintText="Controlled Date Input"
@@ -39,7 +40,8 @@ class TimeFrame extends React.Component {
             onChange={this.fromDateChange}
           />
         </div>
-        <div>
+        <div className={styles.tipTextContainer}>
+        <ArrowIcon color={'#accad8'} hoverColor={'#accad8'} style={{ fontSize: '32px' }} />
         select date here
         </div>
       </div>

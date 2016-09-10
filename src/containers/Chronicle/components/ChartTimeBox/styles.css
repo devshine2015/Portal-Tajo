@@ -5,6 +5,7 @@
     width: 100%;
     height: 150px;
     z-index: 100;
+    position: relative;
     }
   .timeMarkerLine {
     pointer-events: none;
@@ -14,18 +15,31 @@
     position: absolute;
     left: 33.33%;
     top: 0;
-    height: 200px;
+    height: 150px;
     z-index: 200;
     }
-    .timeMarkerLineDrag {
-      pointer-events: none;
-      background-color: #e64a19;
-      color: #fff;
-      width: 1px;
-      position: absolute;
-      left: 33.33%;
-      top: 0;
-      height: 200px;
-      z-index: 200;
-      }
+  .timeMarkerLineDrag {
+    pointer-events: none;
+    background-color: #e64a19;
+    color: #fff;
+    width: 1px;
+    position: absolute;
+    left: 33.33%;
+    top: 0;
+    height: 150px;
+    z-index: 200;
+    }
+   .statusTextContainer {
+     pointer-events: none;
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     color: #accad8;
+     text-align: center;
+   }
+   .statusTextContainer h1 {
+     font-size: 64px;
+   }
+
 }
