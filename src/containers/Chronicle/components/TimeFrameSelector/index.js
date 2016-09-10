@@ -38,6 +38,7 @@ class TimeFrame extends React.Component {
             hintText="Controlled Date Input"
             value={this.state.fromDate}
             onChange={this.fromDateChange}
+            maxDate={new Date()}
           />
         </div>
         <div className={styles.tipTextContainer}>
