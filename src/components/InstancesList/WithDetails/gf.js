@@ -2,6 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import { VelocityTransitionGroup } from 'velocity-react';
 import ItemProperty from '../DetailItemProperty';
 import { getGFByIdFunc } from 'services/FleetModel/reducer';
 import { deleteGF } from 'services/FleetModel/actions/gfActions';
@@ -82,7 +83,12 @@ class LocationWithDetails extends React.Component {
         <h1 key="name">
           {this.props.name}
         </h1>
-        { this.renderDetails() }
+        <VelocityTransitionGroup
+          enter={{ animation: 'slideDown', duration: 500 }}
+          leave={{ animation: 'slideUp', duration: 350 }}
+        >
+          { this.renderDetails() }
+        </VelocityTransitionGroup>
       </div>
     );
   }

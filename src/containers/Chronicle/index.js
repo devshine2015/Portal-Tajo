@@ -14,7 +14,6 @@ import { requestHistory } from 'containers/Chronicle/actions';
 import { getChronicleTimeFrame,
   getInstanceChronicleFrameById, hasChroniclePlayableFrames } from './reducer';
 
-
 import createEventDispatcher from 'utils/eventDispatcher';
 
 import * as fromFleetReducer from 'services/FleetModel/reducer';
@@ -92,8 +91,8 @@ class Chronicle extends React.Component {
           <div className={styles.allTheChronicleControllerscontainer}>
             <TimeFrameController selectedVehicleId={this.state.selectedVehicleId} />
             <ChartTimeBox chronicleFrame={chronicleFrame} />
-            <VelocityTransitionGroup enter={{ animation: "slideDown" }}
-              leave={{ animation: "slideUp" }}
+            <VelocityTransitionGroup enter={{ animation: 'slideDown' }}
+              leave={{ animation: 'slideUp' }}
             >
               { this.props.hasChroniclePlayableFrames ?
                 <PlaybackController />

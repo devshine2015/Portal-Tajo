@@ -91,7 +91,7 @@ class MapChronicle extends React.Component {
         }
         return (
           <ChroniclePath
-            key={v.id+'CrP'}
+            key={v.id + 'CrP'}
             theLayer={this.theMap}
             chronicleFrame={vehCronicleFrame}
             isSelected={this.props.selectedVehicle !== null
@@ -106,7 +106,7 @@ class MapChronicle extends React.Component {
         }
         return (
         <ChronicleMarker
-          key={v.id+'CrM'}
+          key={v.id + 'CrM'}
           theLayer={this.theMap}
           chronicleFrame={vehCronicleFrame}
           isSelected={this.props.selectedVehicle !== null
