@@ -1,6 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
+import { VelocityTransitionGroup } from 'velocity-react';
 import VehiclesList from 'components/InstancesList';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
@@ -83,10 +84,14 @@ class Chronicle extends React.Component {
           <div className={styles.allTheChronicleControllerscontainer}>
             <TimeFrameController selectedVehicleId={this.state.selectedVehicleId} />
             <ChartTimeBox chronicleFrame={chronicleFrame} />
+            <VelocityTransitionGroup enter={{ animation: "slideDown" }}
+              leave={{ animation: "slideUp" }}
+            >
               { this.props.hasChroniclePlayableFrames ?
                 <PlaybackController />
                 : false
               }
+            </VelocityTransitionGroup>
           </div>
           <ChronicleMap
             selectedVehicle={this.state.selectedVehicle}
