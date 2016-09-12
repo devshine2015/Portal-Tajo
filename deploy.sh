@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-PROJECT='portal'
+PROJECT='escape'
 TARGET_FOLDER='~/driver-server/static-root/public/common-portal/'
 FOLDER_NAME='tajo'
 ASSETS='assets'
