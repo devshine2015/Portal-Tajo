@@ -2,7 +2,7 @@ export const isDev = process.env.NODE_ENV !== 'production';
 export const protocol = document.location.protocol;
 export const isSecure = protocol.search('https') !== -1;
 export const onProduction = location.hostname === 'drvrapp.net';
-export const serverFolder = 'tajo';
+export const serverFolder = 'portal';
 export const FIREBASE_CONFIG = {
   apiKey: 'AIzaSyBp0Tvsnkrnv9mpFK6Zo0U9VdHZqH2hKjA',
   authDomain: 'drvr.firebaseapp.com',
