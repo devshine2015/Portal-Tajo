@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "clean": "rimraf ./build/* ./escape/* ./customer/* ./ssreports/*",
+    "clean": "rimraf ./build/* ./escape/* ./portal/* ./ssreports/*",
     "clean:escape": "rimraf ./build/* ./escape/*",
-    "clean:portal": "rimraf ./build/* ./customer/*",
+    "clean:portal": "rimraf ./build/* ./portal/*",
     "clean:ssreports": "rimraf ./build/* ./ssreports/*",
     "build:escape": "cross-env NODE_ENV=production DRVR_PROJECT=escape webpack --config webpack/webpack.prod.escape.babel.js --color -p",
     "build:portal": "cross-env NODE_ENV=production DRVR_PROJECT=portal webpack --config webpack/webpack.prod.portal.babel.js --color -p",
@@ -72,6 +72,7 @@
     "redux-thunk": "^2.1.0",
     "sanitize.css": "^3.3.0",
     "tinycolor2": "^1.4.1",
+    "velocity-react": "^1.1.5",
     "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {

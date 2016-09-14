@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-PROJECT='escape'
+PROJECT='portal'
 TARGET_FOLDER='~/driver-server/static-root/public/common-portal/'
-FOLDER_NAME='tajo'
+FOLDER_NAME=$PROJECT
 ASSETS='assets'
 
 echo "clean and build sources"

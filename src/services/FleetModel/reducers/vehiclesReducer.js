@@ -1,16 +1,15 @@
 import { List, Map, fromJS } from 'immutable';
 import * as vehiclesActions from '../actions/vehiclesActions';
 import * as socketActions from '../actions/socketActions';
-import { CHRONICLE_ITEM_NEW_FRAME,
-      CHRONICLE_ITEM_SET_STATE,
-      CHRONICLE_VALIDATE_TIMEFRAME,
-      CHRONICLE_LOCAL_INCTANCE_STATE_NONE } from 'containers/Chronicle/actions';
 import { checkZombieVehicle } from '../utils/vehicleHelpers';
 
 const vehiclesInitialState = fromJS({
   list: new List(),
   processedList: new Map(),
   orderedList: new List(),
+  // keep gloabl selelcted vehicle - to be persistent wneh switching screens/lists
+  // TODO: move it to separate reducer (userContext?), with mapView params, etc
+  slectedVehicleId: '',
 });
 
 function vehiclesReducer(state = vehiclesInitialState, action) {
@@ -25,6 +24,9 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
 
     case vehiclesActions.FLEET_MODEL_VEHICLES_FILTER:
       return state.set('processedList', fromJS(action.vehicles));
+
+    case vehiclesActions.FLEET_MODEL_VEHICLE_SELECT:
+      return state.set('slectedVehicleId', action.id);
 
     case socketActions.FLEET_MODEL_SOCKET_SET: {
       const inStatus = action.statusObj;
@@ -51,28 +53,6 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
           .setIn(['processedList', inStatus.id, 'speed'],
                           inStatus.pos.speed);
       }
-
-      return newState;
-    }
-    // TODO: the history - maybe have separate reducer for this
-    case CHRONICLE_ITEM_NEW_FRAME: {
-      return state.setIn(['processedList', action.vehicleId, 'chronicleFrame'],
-        action.chronicleFrame);
-    }
-    // TODO: move to state inside chronicleFrame (or separate reducer)
-    case CHRONICLE_ITEM_SET_STATE: {
-      return state.setIn(['processedList', action.vehicleId, 'chronicleState'],
-        action.chronicleState);
-    }
-    // TODO: quick and dirty - just reset all
-    case CHRONICLE_VALIDATE_TIMEFRAME: {
-      let newState = state;
-      const vehicles = newState.get('processedList');
-      vehicles.forEach((aValue, aKey) => {
-        newState = newState.setIn(['processedList', aKey, 'chronicleState'],
-            CHRONICLE_LOCAL_INCTANCE_STATE_NONE);
-        return true;
-      });
       return newState;
     }
     default:
@@ -107,3 +87,5 @@ export const getVehiclesExSorted = (state) => {
 };
 export const getProcessedVehicles = (state) =>
   state.get('processedList');
+export const getSelectedVehicleId = (state) =>
+  state.get('slectedVehicleId');

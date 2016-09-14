@@ -6,9 +6,9 @@ import VehicleDetails from './components/VehicleDetails';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import FixedContent from 'components/FixedContent';
-import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { getVehicleById, cleanVehicle } from 'services/FleetModel/utils/vehicleHelpers';
 import { vehiclesActions } from 'services/FleetModel/actions';
+import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { getLoaderState } from './reducer';
 import { detailsActions } from './actions';
 import { showSnackbar } from 'containers/Snackbar/actions';
@@ -27,6 +27,13 @@ class VehiclesEditor extends React.Component {
     };
 
     this.onItemClick = this.onItemClick.bind(this);
+  }
+
+  componentDidMount() {
+    const globalSelectedVehicleId = this.props.globalSelectedVehicleId;
+    if (globalSelectedVehicleId !== '') {
+      this.onItemClick(globalSelectedVehicleId);
+    }
   }
 
   /**
@@ -142,11 +149,13 @@ VehiclesEditor.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
   updateDetails: React.PropTypes.func.isRequired,
   filterFunc: React.PropTypes.func.isRequired,
+  globalSelectedVehicleId: React.PropTypes.string.isRequired,
 };
 
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
   isLoading: getLoaderState(state),
+  globalSelectedVehicleId: fromFleetReducer.getSelectedVehicleId(state),
 });
 const mapDispatch = {
   filterFunc: vehiclesActions.filterVehicles,

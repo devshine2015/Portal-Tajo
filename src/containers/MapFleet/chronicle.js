@@ -6,12 +6,17 @@ import styles from './styles.css';
 import ChroniclePath from './components/ChroniclePath';
 import ChronicleMarker from './components/ChronicleMarker';
 import MapGF from './components/MapGF';
+import EditGF from './components/EditGF';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
-import { CHRONICLE_LOCAL_INCTANCE_STATE_VALID } from 'containers/Chronicle/actions';
+import { getInstanceChronicleFrameById } from 'containers/Chronicle/reducer';
 
 import { createMapboxMap } from 'utils/mapBoxMap';
+import { initiateGfEditingCallback } from 'containers/GFEditor/utils';
+import { mapStoreSetView, mapStoreGetView } from './reducerAction';
 
+import { gfEditUpdate } from 'containers/GFEditor/actions';
+import { gfEditIsEditing } from 'containers/GFEditor/reducer';
 
 const EMPTY_ARRAY = [];
 
@@ -32,14 +37,19 @@ class MapChronicle extends React.Component {
     this.theMap.addLayer(this.gfEditLayer);
   }
 
+  componentWillUnmount() {
+    // TODO: need to shutdown the mapbox object?
+    this.props.mapStoreSetView(this.theMap.getCenter(), this.theMap.getZoom());
+  }
+
   createMapboxMap() {
     // if already existing
     if (this.theMap !== null) {
       return;
     }
-    this.theMap = createMapboxMap(ReactDOM.findDOMNode(this));
+    this.theMap = createMapboxMap(ReactDOM.findDOMNode(this), this.props.mapStoreGetView);
+    this.theMap.on('contextmenu', initiateGfEditingCallback(this.theMap, this.props.gfEditUpdate));
   }
-
 
   hideLayer(theLayer, doHide) {
     if (this.theMap === null) return;
@@ -75,60 +85,77 @@ class MapChronicle extends React.Component {
       //   />
       // ));
       chronPaths = this.props.vehicles.map((v) => {
-        if (v.chronicleState !== CHRONICLE_LOCAL_INCTANCE_STATE_VALID
-          || !v.chronicleFrame.isValid()) {
+        const vehCronicleFrame = this.props.getInstanceChronicleFrameById(v.id);
+        if (!vehCronicleFrame.isValid() || vehCronicleFrame.isEmpty()) {
           return false;
         }
         return (
           <ChroniclePath
-            key={v.id+'CrP'}
+            key={v.id + 'CrP'}
             theLayer={this.theMap}
-            theVehicle={v}
-            isSelected={this.props.selectedVehicle !== null && this.props.selectedVehicle.id === v.id}
+            chronicleFrame={vehCronicleFrame}
+            isSelected={this.props.selectedVehicle !== null
+              && this.props.selectedVehicle.id === v.id}
           />
         );
       });
       chronMarkers = this.props.vehicles.map((v) => {
-        if (v.chronicleState !== CHRONICLE_LOCAL_INCTANCE_STATE_VALID
-          || !v.chronicleFrame.isValid()) {
+        const vehCronicleFrame = this.props.getInstanceChronicleFrameById(v.id);
+        if (!vehCronicleFrame.isValid() || vehCronicleFrame.isEmpty()) {
           return false;
         }
         return (
         <ChronicleMarker
-          key={v.id+'CrM'}
+          key={v.id + 'CrM'}
           theLayer={this.theMap}
-          theVehicle={v}
-          isSelected={this.props.selectedVehicle !== null && this.props.selectedVehicle.id === v.id}
+          chronicleFrame={vehCronicleFrame}
+          isSelected={this.props.selectedVehicle !== null
+            && this.props.selectedVehicle.id === v.id}
         />
         );
       });
     }
+    const editGF = !this.props.gfEditMode ? false :
+     (<EditGF
+       key="gfEditHelper"
+       theLayer={this.gfEditLayer}
+     />);
     return (
       <div className = {styles.mapContainer}>
       {gfs}
       {chronPaths}
       {chronMarkers}
+      {editGF}
       }
       </div>
     );
   }
 }
 
-const PureMapChronicle = pure(MapChronicle);
-
 MapChronicle.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
   gfs: React.PropTypes.array.isRequired,
-//  eventDispatcher: React.PropTypes.object.isRequired,
   vehicleById: React.PropTypes.func.isRequired,
   gfById: React.PropTypes.func.isRequired,
   gfEditMode: React.PropTypes.bool.isRequired,
   selectedVehicle: React.PropTypes.object,
+  gfEditUpdate: React.PropTypes.func.isRequired,
+  mapStoreSetView: React.PropTypes.func.isRequired,
+  mapStoreGetView: React.PropTypes.object.isRequired,
+  getInstanceChronicleFrameById: React.PropTypes.func.isRequired,
 };
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesEx(state),
   gfs: fromFleetReducer.getGFsExSorted(state),
   vehicleById: fromFleetReducer.getVehicleByIdFunc(state),
   gfById: fromFleetReducer.getGFByIdFunc(state),
+  gfEditMode: gfEditIsEditing(state),
+  mapStoreGetView: mapStoreGetView(state),
+  getInstanceChronicleFrameById: getInstanceChronicleFrameById(state),
 });
-export default connect(mapState)(PureMapChronicle);
+const mapDispatch = {
+  gfEditUpdate,
+  mapStoreSetView,
+};
+const PureMapChronicle = pure(MapChronicle);
+export default connect(mapState, mapDispatch)(PureMapChronicle);

@@ -1,6 +1,10 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import classnames from 'classnames';
+import { VelocityTransitionGroup } from 'velocity-react';
+require('velocity-animate');
+require('velocity-animate/velocity.ui');
+
 import ItemProperty from '../DetailItemProperty';
 import Divider from 'material-ui/Divider';
 import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
@@ -13,13 +17,13 @@ import styles from './styles.css';
 // import stylesBasic from './../styles.css';
 
 class ListItemVehicle extends React.Component {
-  // shouldComponentUpdate(nextProps) {
-  //   return this.props.isExpanded !== nextProps.isExpanded
-  //   || this.props.speed.toFixed(1) !== nextProps.speed.toFixed(1)
-  //   || this.props.isZombie !== nextProps.isZombie
-  //   || this.props.isDead !== nextProps.isDead
-  //   ;
-  // }
+  shouldComponentUpdate(nextProps) {
+    return this.props.isExpanded !== nextProps.isExpanded
+    || this.props.speed.toFixed(1) !== nextProps.speed.toFixed(1)
+    || this.props.isZombie !== nextProps.isZombie
+    || this.props.isDead !== nextProps.isDead
+    ;
+  }
   onClick = () => {
     this.props.onClick(this.props.id);
   }
@@ -49,40 +53,40 @@ class ListItemVehicle extends React.Component {
 
   renderDetails() {
     if (this.props.isExpanded) {
-      return [
-        <Divider key="line01" />,
+      return (<div>
+        <Divider key="line01" />
         <ItemProperty
           key="speed"
           title="Speed"
           value={`${this.props.speed.toFixed(1)} km/h`}
-        />,
+        />
         <ItemProperty
           key="dist"
           title="Trip dist"
           value={`${(this.props.dist.lastTrip / 1000).toFixed(2)} km`}
-        />,
-        <Divider key="line02" />,
+        />
+        <Divider key="line02" />
         <ItemProperty
           key="license"
           title="license Plate"
           value={`${this.props.licensePlate}`}
-        />,
+        />
         <ItemProperty
           key="make"
           title="Make"
           value={`${this.props.make}`}
-        />,
+        />
         <ItemProperty
           key="model"
           title="Model"
           value={`${this.props.model}`}
-        />,
+        />
         <ItemProperty
           key="year"
           title="Year"
           value={`${this.props.year}`}
-        />,
-      ];
+        />
+      </div>);
     }
     return false;
   }
@@ -91,7 +95,6 @@ class ListItemVehicle extends React.Component {
     const className = classnames(stylesBase.listItemInn, {
       [styles.listItemInn_expanded]: this.props.isExpanded,
     });
-
     return (
       <div
         className={className}
@@ -100,12 +103,23 @@ class ListItemVehicle extends React.Component {
         <h1>
           {this.props.name}
         </h1>
-        {this.inActivityIndicator()}
-        {this.renderDetails()}
+        <VelocityTransitionGroup
+          enter={{ animation: 'fadeIn', duration: 150 }}
+          leave={{ animation: 'fadeOut', duration: 500 }}
+        >
+          {this.inActivityIndicator()}
+        </VelocityTransitionGroup>
+        <VelocityTransitionGroup
+          enter={{ animation: 'slideDown', duration: 500 }}
+          leave={{ animation: 'slideUp', duration: 350 }}
+        >
+          {this.renderDetails()}
+        </VelocityTransitionGroup>
       </div>
     );
   }
 }
+// enter={{ animation: 'transition.slideRightIn', duration: 500 }}
 
 ListItemVehicle.propTypes = {
   onClick: React.PropTypes.func.isRequired,

@@ -8,7 +8,7 @@ import {
   selectLocationState,
 } from 'utils/routerHelpers';
 
-const ROOT = '/portal/:fleet/tajo/';
+const ROOT = '/portal/:fleet/portal/';
 
 const MAIN_MENU =
 //   {

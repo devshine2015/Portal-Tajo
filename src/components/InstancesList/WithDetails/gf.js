@@ -2,8 +2,11 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import { VelocityTransitionGroup } from 'velocity-react';
 import ItemProperty from '../DetailItemProperty';
+import { getGFByIdFunc } from 'services/FleetModel/reducer';
 import { deleteGF } from 'services/FleetModel/actions/gfActions';
+import { gfEditUpdate } from 'containers/GFEditor/actions';
 import { showSnackbar } from 'containers/Snackbar/actions';
 import DeletIcon from 'material-ui/svg-icons/action/delete-forever';
 import EditIcon from 'material-ui/svg-icons/maps/edit-location';
@@ -29,7 +32,7 @@ class LocationWithDetails extends React.Component {
       });
   }
   onEdit = () => {
-
+    this.props.gfEditUpdate(this.props.gfById(this.props.id));
   }
   renderDetails() {
     if (this.props.isExpanded) {
@@ -80,7 +83,12 @@ class LocationWithDetails extends React.Component {
         <h1 key="name">
           {this.props.name}
         </h1>
-        { this.renderDetails() }
+        <VelocityTransitionGroup
+          enter={{ animation: 'slideDown', duration: 500 }}
+          leave={{ animation: 'slideUp', duration: 350 }}
+        >
+          { this.renderDetails() }
+        </VelocityTransitionGroup>
       </div>
     );
   }
@@ -96,11 +104,16 @@ LocationWithDetails.propTypes = {
   address: React.PropTypes.string.isRequired,
   deleteGF: React.PropTypes.func.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,
+  gfEditUpdate: React.PropTypes.func.isRequired,
+  gfById: React.PropTypes.func.isRequired,
 };
-const mapState = () => ({});
+const mapState = (state) => ({
+  gfById: getGFByIdFunc(state),
+});
 const mapDispatch = {
   deleteGF,
   showSnackbar,
+  gfEditUpdate,
 };
 const PureListItemGF = pure(LocationWithDetails);
 export default connect(mapState, mapDispatch)(PureListItemGF);

@@ -14,16 +14,14 @@ class ChartBox extends React.Component {
     this.speedChartPathD = '';
     this.tempChartPathD = '';
   }
-  componentDidMount() {
-  }
-  componentDidUpdate() {
-//    this.renderChart();
+
+  shouldComponentUpdate(nextProps) {
+    return nextProps.chronicleFrame.ownerId !== this.props.chronicleFrame.ownerId
+    || !this.props.chronicleFrame.isValid();
   }
 
   generateCharts() {
-    if (this.props.srcVehicle === null
-    || this.props.srcVehicle.chronicleFrame === null
-    || !this.props.srcVehicle.chronicleFrame.isValid()) {
+    if (!this.props.chronicleFrame.isValid() || this.props.chronicleFrame.isEmpty()) {
       this.speedChartPathD = '';
       this.tempChartPathD = '';
       return;
@@ -31,7 +29,7 @@ class ChartBox extends React.Component {
     const mySvgElement = this.refs.chart;
     const myWidht = mySvgElement.clientWidth;
     const myHeight = mySvgElement.clientHeight;
-    const srcFrame = this.props.srcVehicle.chronicleFrame;
+    const srcFrame = this.props.chronicleFrame;
     const tempRangePadding = 3;
     const paddings = {
       top: 10,
@@ -72,7 +70,7 @@ class ChartBox extends React.Component {
 }
 
 ChartBox.propTypes = {
-  srcVehicle: React.PropTypes.object.isRequired,
+  chronicleFrame: React.PropTypes.object.isRequired,
   setChronicleNormalizedT: React.PropTypes.func.isRequired,
   normalized100T: React.PropTypes.number.isRequired,
 };

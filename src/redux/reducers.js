@@ -10,6 +10,8 @@ import innerPortalReducer from 'containers/InnerPortal/reducer';
 import fleetReducer from 'services/FleetModel/reducer';
 import reportReducer from 'containers/Report/reducer';
 import chronicleReducer from 'containers/Chronicle/reducer';
+import gfEditorReducer from 'containers/GFEditor/reducer';
+import mapViewReducer from 'containers/MapFleet/reducerAction';
 import authReducer from 'services/Auth/reducer';
 import globalReducer from 'services/Global/reducer';
 import userReducer from 'services/UserModel/reducer';
@@ -43,6 +45,8 @@ export default function createReducer(asyncReducers) {
     fleet: fleetReducer,
     chronicle: chronicleReducer,
     user: userReducer,
+    gfEditor: gfEditorReducer,
+    mapView: mapViewReducer,
     ...asyncReducers,
   });
 }

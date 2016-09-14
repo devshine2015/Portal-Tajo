@@ -25,7 +25,7 @@ class ChartTimeBox extends React.Component {
   }
 
   mouseMove = (e) => {
-        e.preventDefault();
+    e.preventDefault();
     const xPos = e.nativeEvent.layerX;
     const totalW = e.nativeEvent.target.clientWidth;
     const mouseNormalized100 = (xPos / totalW) * 100;
@@ -40,30 +40,50 @@ class ChartTimeBox extends React.Component {
     this.setState({ isMouseOver: true });
   }
   mouseOut = (e) => {
-        e.preventDefault();
+    e.preventDefault();
     this.mouseUp();
     this.setState({ isMouseOver: false });
   }
   mouseDown = (e) => {
-        e.preventDefault();
+    e.preventDefault();
     this.setState({ isMouseDown: true });
   }
-  mouseUp = (e=null) => {
-    if (e!==null)
-        e.preventDefault();
+  mouseUp = (e = null) => {
+    if (e !== null) {
+      e.preventDefault();
+    }
     this.setState({ isMouseDown: false });
   }
   mouseClick = (e) => {
-        e.preventDefault();
+    e.preventDefault();
     this.props.setChronicleNormalizedT(this.state.mouseNormalized100);
   }
-
-
+  statusText() {
+    if (this.props.chronicleFrame.isLoading()) {
+      return (
+        <div className={styles.statusTextContainer}>
+          <h1> LOADING... </h1>
+          <span> please wait </span>
+        </div>
+      );
+    }
+    if (!this.props.chronicleFrame.isValid()
+      || this.props.chronicleFrame.isEmpty()) {
+      return (
+        <div className={styles.statusTextContainer}>
+          <h1> NO DATA </h1>
+          <span> please select vehicle </span>
+        </div>
+      );
+    }
+    return false;
+  }
   render() {
-    const stl={left: this.props.normalized100T.toFixed(3)+'%'};
-    const stlDrag={left: this.state.mouseNormalized100.toFixed(3)+'%',
-          display: this.state.isMouseOver ? 'block' : 'none' };
-
+    const isDisplayTimeHears = !this.props.chronicleFrame.isLoading()
+          && this.props.chronicleFrame.isValid()
+          && !this.props.chronicleFrame.isEmpty();
+    const stl = { left: this.props.normalized100T.toFixed(3) + '%' };
+    const stlDrag = { left: this.state.mouseNormalized100.toFixed(3) + '%'};
     return (
       <div className={styles.containerBox}
         onMouseMove={this.mouseMove}
@@ -73,18 +93,25 @@ class ChartTimeBox extends React.Component {
         onMouseDown={this.mouseDown}
         onClick={this.mouseClick}
       >
-      <Chart srcVehicle={this.props.srcVehicle} />
-        <div className={styles.timeMarkerLine} style={stl}>
-        </div>
-        <div className={styles.timeMarkerLineDrag} style={stlDrag}>
-        </div>
+        <Chart chronicleFrame={this.props.chronicleFrame} />
+        { isDisplayTimeHears ?
+          <div className={styles.timeMarkerLine} style={stl}>
+          </div>
+          : false
+        }
+        { isDisplayTimeHears && this.state.isMouseOver ?
+          <div className={styles.timeMarkerLineDrag} style={stlDrag}>
+          </div>
+          : false
+        }
+        {this.statusText()}
       </div>
     );
   }
 }
 
 ChartTimeBox.propTypes = {
-  srcVehicle: React.PropTypes.object,
+  chronicleFrame: React.PropTypes.object,
   setChronicleNormalizedT: React.PropTypes.func.isRequired,
   normalized100T: React.PropTypes.number.isRequired,
 };

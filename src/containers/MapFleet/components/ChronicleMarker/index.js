@@ -32,16 +32,14 @@ class ChronicleMarker extends React.Component {
     const markerR = 5;
     const startPos = window.L.latLng(0, 0);
     this.theMarkerSecondary = window.L.circleMarker(startPos,
-      { title: this.props.theVehicle.name,
-        opacity: 1,
+      { opacity: 1,
         fillOpacity: 1,
         color: '#0A5',
         fillColor: '#008241',
        })
       .setRadius(markerR);
     this.theMarker = window.L.circleMarker(startPos,
-      { title: this.props.theVehicle.name,
-        opacity: 1,
+      { opacity: 1,
         fillOpacity: 1,
         color: '#2c3e50',
         fillColor: '#2c3e50',
@@ -72,8 +70,8 @@ class ChronicleMarker extends React.Component {
   }
 
   update() {
-    this.props.theVehicle.chronicleFrame.player.gotoTime100(this.props.normalized100T);
-    const momentData = this.props.theVehicle.chronicleFrame.player.getCurrentMomentData();
+    this.props.chronicleFrame.player.gotoTime100(this.props.normalized100T);
+    const momentData = this.props.chronicleFrame.player.getCurrentMomentData();
     this.setPosition(momentData.pos);
 
     const content = '<span style="float:right">'+this.__REMOVE_THIS_ddsDateToTimeString(momentData.time)+'</span>'
@@ -137,7 +135,7 @@ class ChronicleMarker extends React.Component {
 
 ChronicleMarker.propTypes = {
   theLayer: React.PropTypes.object.isRequired,
-  theVehicle: React.PropTypes.object.isRequired,
+  chronicleFrame: React.PropTypes.object.isRequired,
   isSelected: React.PropTypes.bool.isRequired,
   normalized100T: React.PropTypes.number.isRequired,
 };
