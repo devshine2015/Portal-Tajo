@@ -5,7 +5,8 @@ machine:
 general:
   branches:
     ignore:
-      - dev
+      - master
+      - /sandbox-.*/ # ignore all branches with sandbox prefix; like sandbox-feature1
 
 deployment:
   production:
