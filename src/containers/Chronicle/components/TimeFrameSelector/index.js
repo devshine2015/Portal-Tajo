@@ -13,8 +13,10 @@ class TimeFrame extends React.Component {
   constructor(props) {
     super(props);
 
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() + 1);
     this.state = {
-      fromDate: new Date(),
+      fromDate: yesterday,
     };
 
 //    this.onChange = this.onChange.bind(this);
