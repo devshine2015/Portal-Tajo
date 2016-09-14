@@ -3,7 +3,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import { changeOnlineState } from 'services/Global/actions';
+import { onlineActions } from 'services/Global/actions';
 import { localActions } from 'services/Auth/actions';
 import drvrDevTheme from 'configs/theme';
 
@@ -55,7 +55,7 @@ App.propTypes = {
 
 const mapState = () => ({});
 const mapDispatch = {
-  changeOnlineState,
+  changeOnlineState: onlineActions.changeOnlineState,
   checkUserAuthentication: localActions.checkUserAuthentication,
 };
 

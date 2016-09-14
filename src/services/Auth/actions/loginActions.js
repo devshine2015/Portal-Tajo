@@ -9,10 +9,8 @@ import {
 import commonActions from './commonActions';
 import { getAuthenticationSession } from '../reducer';
 import { getFleetName } from 'services/Global/reducer';
-import {
-  setUserData,
-  resetUserData,
-} from 'services/UserModel/actions';
+import apiErrorsHandler from 'utils/apiErrorsHandler';
+import { setUserData } from 'services/UserModel/actions';
 
 export const login = (data) => (dispatch, getState) =>
   _login(data, dispatch, getState);
@@ -43,9 +41,7 @@ function _login(data, dispatch, getState) {
         role: sessionData.role,
       }));
       dispatch(push(`${createBaseUrl(fleet)}/`));
-    }, (error) => {
-      console.error(error);
-    });
+    }, apiErrorsHandler(dispatch));
 }
 
 function _logout({ redirectUrl }, dispatch, getState) {
@@ -58,12 +54,11 @@ function _logout({ redirectUrl }, dispatch, getState) {
 
   return api.delete(url, { optionalHeaders })
     .then(() => {
-      dispatch(commonActions.resetAuthentication());
-      dispatch(resetUserData());
+      dispatch(commonActions.eraseAuth());
 
       return Promise.resolve({
         fleet,
         sessionId,
       });
-    });
+    }, apiErrorsHandler(dispatch));
 }

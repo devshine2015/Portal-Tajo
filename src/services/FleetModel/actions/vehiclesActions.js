@@ -5,6 +5,7 @@ import { getAuthenticationSession } from 'services/Auth/reducer';
 import { makeLocalVehicles } from '../utils/vehicleHelpers';
 import { filterProcessedListByName } from '../utils/filtering';
 import { getProcessedVehicles } from '../reducer';
+import apiErrorsHandler from 'utils/apiErrorsHandler';
 
 export const FLEET_MODEL_VEHICLES_SET = 'portal/services/FLEET_MODEL_VEHICLES_SET';
 export const FLEET_MODEL_VEHICLES_FILTER = 'portal/services/FLEET_MODEL_VEHICLES_FILTER';
@@ -39,7 +40,8 @@ function _fetchVehicles(fleetName, openWebSocket, dispatch, getState) {
     if (openWebSocket) {
       dispatch(openFleetSocket(fleet));
     }
-  });
+  })
+  .catch(apiErrorsHandler(dispatch));
 }
 
 

@@ -4,6 +4,7 @@ import { getAuthenticationSession } from 'services/Auth/reducer';
 import { makeLocalGFs } from '../utils/gfHelpers';
 import { getProcessedGFs } from '../reducer';
 import { filterProcessedListByName } from '../utils/filtering';
+import apiErrorsHandler from 'utils/apiErrorsHandler';
 
 export const FLEET_MODEL_GF_SET = 'portal/services/FLEET_MODEL_GF_SET';
 export const FLEET_MODEL_GF_FILTER = 'portal/services/FLEET_MODEL_GF_FILTER';
@@ -35,7 +36,7 @@ function _fetchGFs(dispatch, getState, fleetName = undefined) {
     .then(gfs => {
       const { localGFs, sortedGFs } = makeLocalGFs(gfs);
       dispatch(_gfSet(gfs, localGFs, sortedGFs));
-    });
+    }, apiErrorsHandler(dispatch));
 }
 
 /**

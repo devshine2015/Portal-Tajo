@@ -8,7 +8,7 @@ import drvrDevTheme from 'configs/theme';
 import Report from 'containers/Report';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
-import { setFleet } from 'services/Global/actions';
+import { fleetNameActions } from 'services/Global/actions';
 import {
   localActions,
   loginActions,
@@ -66,7 +66,7 @@ SelfServiceReport.propTypes = {
 };
 
 const mapDispatch = {
-  setFleet,
+  setFleet: fleetNameActions.setFleet,
   checkUserAuthentication: localActions.checkUserAuthentication,
   fetchVehicles: vehiclesActions.fetchVehicles,
   logout: loginActions.logout,

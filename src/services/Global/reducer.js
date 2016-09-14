@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable';
 import {
-  GLOBAL_FLEET_NAME_SET,
-  GLOBAL_ONLINE_STATE_CHANGE,
+  fleetNameActions,
+  onlineActions,
 } from './actions';
 
 const initialState = fromJS({
@@ -11,9 +11,9 @@ const initialState = fromJS({
 
 function globalReducer(state = initialState, action) {
   switch (action.type) {
-    case GLOBAL_FLEET_NAME_SET:
+    case fleetNameActions.GLOBAL_FLEET_NAME_SET:
       return state.set('fleetName', action.fleetName);
-    case GLOBAL_ONLINE_STATE_CHANGE:
+    case onlineActions.GLOBAL_ONLINE_STATE_CHANGE:
       return state.set('isOnline', action.onLine);
     default:
       return state;
