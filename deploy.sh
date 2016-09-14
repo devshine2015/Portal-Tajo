@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-PROJECT='customer'
+PROJECT='portal'
 TARGET_FOLDER='~/driver-server/static-root/public/common-portal/'
 FOLDER_NAME=$PROJECT
 ASSETS='assets'
