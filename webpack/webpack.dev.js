@@ -23,6 +23,8 @@ module.exports = require('./webpack.base')({
   output: {
     filename: '[name].js',
     chunkFilename: '[name].chunk.js',
+    // add this path to static files in index.html
+    publicPath: `/assets/common-portal/${PROJECT}/`,
   },
 
   // where compile locally
