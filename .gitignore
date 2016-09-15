@@ -1,10 +1,6 @@
 # project relate
 build/
 builds/
-tajo/
-escape/
-customer/
-ssreports/
 
 # allow all files from projects directory
 !src/projects/*

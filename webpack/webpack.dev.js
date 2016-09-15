@@ -25,7 +25,8 @@ module.exports = require('./webpack.base')({
     chunkFilename: '[name].chunk.js',
   },
 
-  outputFolder: path.resolve(process.cwd(), `${PROJECT}_dev`),
+  // where compile locally
+  outputFolder: path.resolve(process.cwd(), `builds/dev/${PROJECT}`),
 
   // Load the CSS in a style tag in development
   cssLoaders: 'style-loader!css-loader?localIdentName=[local]__[path][name]__[hash:base64:5]&modules&importLoaders=1&sourceMap!postcss-loader',

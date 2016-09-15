@@ -1,13 +1,13 @@
 {
-  "name": "installer-feature",
-  "version": "0.0.1",
-  "description": "",
+  "name": "drvr.co",
+  "version": "0.0.5",
+  "description": "common code base for DRVR portals",
   "main": "index.js",
   "scripts": {
-    "clean": "rimraf ./build ./tajo ./portal ./ssreports",
-    "clean:tajo": "rimraf ./build ./tajo",
-    "clean:portal": "rimraf ./build ./portal",
-    "clean:ssreports": "rimraf ./build ./ssreports",
+    "clean": "rimraf ./build ./builds",
+    "clean:tajo": "rimraf ./builds/dev/tajo ./builds/prod/tajo",
+    "clean:portal": "rimraf ./builds/dev/portal ./builds/prod/portal",
+    "clean:ssreports": "rimraf ./builds/dev/ssreports ./builds/prod/ssreports",
     
     "//": "build production-ready scripts",
     "build:tajo": "cross-env NODE_ENV=production DRVR_PROJECT=tajo webpack --config webpack/webpack.prod.js --color -p",
@@ -18,7 +18,7 @@
     "build:tajo-dev": "cross-env DRVR_PROJECT=tajo webpack --config webpack/webpack.dev.js --color -p",
     "build:portal-dev": "cross-env DRVR_PROJECT=portal webpack --config webpack/webpack.dev.js --color -p",
     "build:devssreports": "cross-env NODE_ENV=development DRVR_PROJECT=ssreports webpack --config webpack/webpack.dev.ssreports.js --color -p",
-    
+
     "//": "tasks for local development",
     "tajo": "npm run start:tunnel:tajo",
     "portal": "npm run start:tunnel:portal",
@@ -27,7 +27,7 @@
     "start:tunnel:portal": "cross-env NODE_ENV=development DRVR_PROJECT=portal node server",
     "start:tunnel:ssreports": "cross-env NODE_ENV=development DRVR_PROJECT=ssreports node server"
   },
-  "author": "Maksim Orlov",
+  "author": "Maksim Orlov, Kirill Bulatsev",
   "license": "ISC",
   "babel": {
     "plugins": [

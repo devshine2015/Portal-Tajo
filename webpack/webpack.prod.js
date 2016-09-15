@@ -21,10 +21,12 @@ module.exports = require('./webpack.base')({
   output: {
     filename: '[name]_[chunkhash].js',
     chunkFilename: '[name]_[chunkhash].chunk.js',
+    // add this path to static files in index.html
     publicPath: `/assets/common-portal/${PROJECT}/`,
   },
 
-  outputFolder: path.resolve(process.cwd(), PROJECT),
+  // where compile locally
+  outputFolder: path.resolve(process.cwd(), `builds/prod/${PROJECT}`),
 
   // We use ExtractTextPlugin so we get a seperate CSS file instead
   // of the CSS being in the JS and injected as a style tag
