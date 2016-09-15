@@ -10,7 +10,6 @@ echo "clean and build sources"
 npm run clean
 "npm run build:$PROJECT1"
 "npm run build:$PROJECT2"
-mv "$PROJECT1 $FOLDER_NAME1 && mv $PROJECT2 $FOLDER_NAME2"
 
 echo "erase projects on server"
 ssh $1 "cd $TARGET_FOLDER && rm -r $FOLDER_NAME1 $FOLDER_NAME2"

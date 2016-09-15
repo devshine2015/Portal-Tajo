@@ -4,13 +4,14 @@ PROJECT2=$3
 TARGET_FOLDER='~/driver-server/static-root/public/common-portal/'
 FOLDER_NAME1="builds/dev/$PROJECT1"
 FOLDER_NAME2="builds/dev/$PROJECT2"
+TASK1="$PROJECT1-dev"
+TASK2="$PROJECT2-dev"
 ASSETS='assets'
 
 echo "clean and build sources"
 npm run clean
-"npm run build:$PROJECT1-dev"
-"npm run build:$PROJECT2-dev"
-mv "$PROJECT1 $FOLDER_NAME1 && mv $PROJECT2 $FOLDER_NAME2"
+"npm run build:$TASK1"
+"npm run build:$TASK2"
 
 echo "erase projects on server"
 ssh $1 "cd $TARGET_FOLDER && rm -r $FOLDER_NAME1 $FOLDER_NAME2"
