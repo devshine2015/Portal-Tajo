@@ -14,7 +14,7 @@ npm run build:$TASK1
 npm run build:$TASK2
 
 echo "erase projects on server"
-ssh $1 "cd $TARGET_FOLDER && rm -r $PROJECT1 $PROJECT2"
+ssh $1 "cd $TARGET_FOLDER && rm -r $PROJECT1 $PROJECT2 && mkdir $PROJECT1 $PROJECT2"
 
 echo "copy files of $PROJECT1 to $TARGET_FOLDER/$PROJECT1"
 scp "$FOLDER_NAME1/* $1:$TARGET_FOLDER/$PROJECT1"
