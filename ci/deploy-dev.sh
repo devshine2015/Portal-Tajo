@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 PROJECT1=$2
 PROJECT2=$3
-TARGET_FOLDER='~/driver-server/static-root/public/common-portal/'
+TARGET_FOLDER='~/driver-server/static-root/public/common-portal'
 FOLDER_NAME1="builds/dev/$PROJECT1"
 FOLDER_NAME2="builds/dev/$PROJECT2"
 TASK1="$PROJECT1-dev"
