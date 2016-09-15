@@ -1,28 +1,30 @@
 // Important modules this config uses
+const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const OfflinePlugin = require('offline-plugin');
+// const OfflinePlugin = require('offline-plugin');
 
 // PostCSS plugins
 const cssnext = require('postcss-cssnext');
 const postcssFocus = require('postcss-focus');
 const postcssReporter = require('postcss-reporter');
+const PROJECT = process.env.DRVR_PROJECT;
 
-module.exports = (options) => require('./webpack.base.babel')({
+module.exports = require('./webpack.base')({
   // In production, we skip all hot-reloading stuff
   entry: [
-    options.entryPoint,
+    path.join(process.cwd(), `src/projects/${PROJECT}`),
   ],
 
   // Utilize long-term caching by adding content hashes (not compilation hashes) to compiled assets
   output: {
     filename: '[name]_[chunkhash].js',
     chunkFilename: '[name]_[chunkhash].chunk.js',
-    publicPath: `/assets/common-portal/${options.projectFolder}/`,
+    publicPath: `/assets/common-portal/${PROJECT}/`,
   },
 
-  outputFolder: options.outputFolder,
+  outputFolder: path.resolve(process.cwd(), PROJECT),
 
   // We use ExtractTextPlugin so we get a seperate CSS file instead
   // of the CSS being in the JS and injected as a style tag

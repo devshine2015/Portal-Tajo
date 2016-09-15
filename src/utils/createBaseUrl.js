@@ -1,5 +1,5 @@
-import { serverFolder } from 'configs';
+import { portal } from 'configs';
 
 export default function createBaseUrl(fleet = 'test') {
-  return `/portal/${fleet}/${serverFolder}`;
+  return `/portal/${fleet}/${portal}`;
 }

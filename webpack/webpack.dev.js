@@ -2,6 +2,7 @@
  * DEVELOPMENT WEBPACK CONFIGURATION
  */
 
+const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -9,12 +10,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const cssnext = require('postcss-cssnext');
 const postcssFocus = require('postcss-focus');
 const postcssReporter = require('postcss-reporter');
+const PROJECT = process.env.DRVR_PROJECT;
 
-module.exports = (options) => require('./webpack.base.babel')({
+module.exports = require('./webpack.base')({
   // Add hot reloading in development
   entry: [
     'webpack-hot-middleware/client',
-    options.entryPoint,
+    path.join(process.cwd(), `src/projects/${PROJECT}`),
   ],
 
   // Don't use hashes in dev mode for better performance
@@ -22,6 +24,8 @@ module.exports = (options) => require('./webpack.base.babel')({
     filename: '[name].js',
     chunkFilename: '[name].chunk.js',
   },
+
+  outputFolder: path.resolve(process.cwd(), PROJECT),
 
   // Load the CSS in a style tag in development
   cssLoaders: 'style-loader!css-loader?localIdentName=[local]__[path][name]__[hash:base64:5]&modules&importLoaders=1&sourceMap!postcss-loader',

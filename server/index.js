@@ -6,7 +6,7 @@ const ngrok = require('ngrok');
 
 const frontend = require('./middlewares/frontendMiddleware');
 const isDev = process.env.NODE_ENV !== 'production';
-const portal = process.env.DRVR_PROJECT;
+// const portal = process.env.DRVR_PROJECT;
 
 const app = express();
 
@@ -17,22 +17,9 @@ const app = express();
 var webpackConfig;
 
 if (isDev) {
-  switch (portal) {
-    case 'escape':
-      webpackConfig = require('../webpack/webpack.dev.escape.babel.js');
-      break;
-    case 'portal':
-      webpackConfig = require('../webpack/webpack.dev.portal.babel.js');
-      break;
-    case 'ssreports':
-      webpackConfig = require('../webpack/webpack.dev.ssreports.babel.js');
-      break;
-    default:
-      webpackConfig = require('../webpack/webpack.dev.escape.babel.js');
-      break;
-  }
+  webpackConfig = require('../webpack/webpack.dev');
 } else {
-  webpackConfig = require('../webpack/webpack.prod.babel');
+  webpackConfig = require('../webpack/webpack.prod');
 }
 
 app.use(frontend(webpackConfig));

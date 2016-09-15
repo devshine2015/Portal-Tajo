@@ -4,18 +4,23 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "clean": "rimraf ./build/* ./escape/* ./portal/* ./ssreports/*",
-    "clean:escape": "rimraf ./build/* ./escape/*",
-    "clean:portal": "rimraf ./build/* ./portal/*",
-    "clean:ssreports": "rimraf ./build/* ./ssreports/*",
-    "build:escape": "cross-env NODE_ENV=production DRVR_PROJECT=escape webpack --config webpack/webpack.prod.escape.babel.js --color -p",
-    "build:portal": "cross-env NODE_ENV=production DRVR_PROJECT=portal webpack --config webpack/webpack.prod.portal.babel.js --color -p",
-    "build:ssreports": "cross-env NODE_ENV=production DRVR_PROJECT=ssreports webpack --config webpack/webpack.prod.ssreports.babel.js --color -p",
-    "build:devssreports": "cross-env NODE_ENV=development DRVR_PROJECT=ssreports webpack --config webpack/webpack.dev.ssreports.babel.js --color -p",
-    "escape": "npm run start:tunnel:escape",
+    "clean": "rimraf ./build ./tajo ./portal ./ssreports",
+    "clean:tajo": "rimraf ./build ./tajo",
+    "clean:portal": "rimraf ./build ./portal",
+    "clean:ssreports": "rimraf ./build ./ssreports",
+    // build production-ready scripts
+    "build:tajo": "cross-env NODE_ENV=production DRVR_PROJECT=tajo webpack --config webpack/webpack.prod.js --color -p",
+    "build:portal": "cross-env NODE_ENV=production DRVR_PROJECT=portal webpack --config webpack/webpack.prod.js --color -p",
+    "build:ssreports": "cross-env NODE_ENV=production DRVR_PROJECT=ssreports webpack --config webpack/webpack.prod.js --color -p",
+    // build unminified scripts for ddsdev
+    "build:tajo-dev": "cross-env DRVR_PROJECT=tajo webpack --config webpack/webpack.dev.js --color -p",
+    "build:portal-dev": "cross-env DRVR_PROJECT=portal webpack --config webpack/webpack.dev.js --color -p",
+    "build:devssreports": "cross-env NODE_ENV=development DRVR_PROJECT=ssreports webpack --config webpack/webpack.dev.ssreports.js --color -p",
+    // tasks for local development
+    "tajo": "npm run start:tunnel:tajo",
     "portal": "npm run start:tunnel:portal",
     "ssreports": "npm run start:tunnel:ssreports",
-    "start:tunnel:escape": "cross-env NODE_ENV=development DRVR_PROJECT=escape node server",
+    "start:tunnel:tajo": "cross-env NODE_ENV=development DRVR_PROJECT=tajo node server",
     "start:tunnel:portal": "cross-env NODE_ENV=development DRVR_PROJECT=portal node server",
     "start:tunnel:ssreports": "cross-env NODE_ENV=development DRVR_PROJECT=ssreports node server"
   },

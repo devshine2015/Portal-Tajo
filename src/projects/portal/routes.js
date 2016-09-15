@@ -2,13 +2,14 @@ import React from 'react';
 import { getHooks } from 'utils/hooks';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
+import { portal } from 'configs';
 import {
   errorHandler,
   loadModule,
   selectLocationState,
 } from 'utils/routerHelpers';
 
-const ROOT = '/portal/:fleet/portal/';
+const ROOT = `/portal/:fleet/${portal}/`;
 
 const MAIN_MENU =
 //   {
