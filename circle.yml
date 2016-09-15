@@ -9,14 +9,14 @@ general:
       - /sandbox-.*/ # ignore all branches with sandbox prefix; like sandbox-feature1
 
 deployment:
-  production:
-    branch: stage
-    commands:
-      - ./deploy.sh 'drvrappbeta@drvrappbeta.cloudapp.net'
   dev:
     branch: dev-release
     commands:
-      - ./deploy.sh 'ddsdev@ddsdev.cloudapp.net'
+      - ./ci/deploy-dev.sh 'ddsdev@ddsdev.cloudapp.net' 'tajo' 'portal'
+  production:
+    branch: production
+    commands:
+      - ./ci/deploy-prod.sh 'drvrappbeta@drvrappbeta.cloudapp.net' 'tajo' 'portal'
   ssreportsDev:
     branch: ssreports-dev
     commands:
