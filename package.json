@@ -8,15 +8,18 @@
     "clean:tajo": "rimraf ./build ./tajo",
     "clean:portal": "rimraf ./build ./portal",
     "clean:ssreports": "rimraf ./build ./ssreports",
-    // build production-ready scripts
+    
+    "//": "build production-ready scripts",
     "build:tajo": "cross-env NODE_ENV=production DRVR_PROJECT=tajo webpack --config webpack/webpack.prod.js --color -p",
     "build:portal": "cross-env NODE_ENV=production DRVR_PROJECT=portal webpack --config webpack/webpack.prod.js --color -p",
     "build:ssreports": "cross-env NODE_ENV=production DRVR_PROJECT=ssreports webpack --config webpack/webpack.prod.js --color -p",
-    // build unminified scripts for ddsdev
+
+    "//": "build unminified scripts for ddsdev",
     "build:tajo-dev": "cross-env DRVR_PROJECT=tajo webpack --config webpack/webpack.dev.js --color -p",
     "build:portal-dev": "cross-env DRVR_PROJECT=portal webpack --config webpack/webpack.dev.js --color -p",
     "build:devssreports": "cross-env NODE_ENV=development DRVR_PROJECT=ssreports webpack --config webpack/webpack.dev.ssreports.js --color -p",
-    // tasks for local development
+    
+    "//": "tasks for local development",
     "tajo": "npm run start:tunnel:tajo",
     "portal": "npm run start:tunnel:portal",
     "ssreports": "npm run start:tunnel:ssreports",
