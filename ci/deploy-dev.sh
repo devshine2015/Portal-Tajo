@@ -10,8 +10,8 @@ ASSETS='assets'
 
 echo "clean and build sources"
 npm run clean
-"npm run build:$TASK1"
-"npm run build:$TASK2"
+npm run build:$TASK1
+npm run build:$TASK2
 
 echo "erase projects on server"
 ssh $1 "cd $TARGET_FOLDER && rm -r $FOLDER_NAME1 $FOLDER_NAME2"
