@@ -25,7 +25,3 @@ deployment:
     branch: ssreports-prod
     commands:
       - ./deployToOld.sh 'drvrappbeta@drvrappbeta.cloudapp.net'
-  # demo:
-  #   branch: demo
-  #   commands:
-  #     - ./deployDemo.sh 'drvrappbeta@drvrappbeta.cloudapp.net'
