@@ -1,12 +1,19 @@
-
-import TimeIcon from 'material-ui/svg-icons/device/access-time';
+import { makeStaticLableSVG, deviceAccessTime, imageTimer,
+  notificationTimeToLeave, imageTimelapse, placesAcUnit } from './staticIcons';
 
 export function dateToChronicleLable(inDate) {
-  return 'time: <span style="float:right">'+dateToChronicleString(inDate)+'</span>';
+  return makeStaticLableSVG(deviceAccessTime)+'<span style="float:right">'+dateToChronicleString(inDate)+'</span>';
 }
 
 export function msToDurtationLable(duration) {
-  return 'for: <span style="float:right">'+msToTimeIntervalString(duration)+'</span>';
+  return makeStaticLableSVG(imageTimelapse)+'<span style="float:right">'+msToTimeIntervalString(duration)+'</span>';
+}
+
+export function speedToChronicleLable(speed) {
+  return makeStaticLableSVG(notificationTimeToLeave)+'<span style="float:right">'+speed.toFixed(1) + 'km/h</span>';
+}
+export function temperatureToChronicleLable(temp) {
+  return makeStaticLableSVG(placesAcUnit)+'<span style="float:right">'+temp+'&deg;C</span>';
 }
 
 function dateToChronicleString(inDate) {

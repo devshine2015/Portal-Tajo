@@ -7,10 +7,6 @@ import { dateToChronicleLable, msToDurtationLable } from 'containers/Chronicle/u
 import TimeIcon from 'material-ui/svg-icons/device/access-time';
 import FontIcon from 'material-ui/FontIcon';
 
-// need to load those styles for leafLet popUp
-require('./styles.css');
-
-
 class ChronicleMarker extends React.Component {
   constructor(props) {
     super(props);

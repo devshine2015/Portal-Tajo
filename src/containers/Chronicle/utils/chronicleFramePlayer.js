@@ -114,7 +114,7 @@ ChronicleFramePlayer.prototype.update = function( ) {
   this.frameData.date = this.chronicleFrame.getDateAtMs(timeMs);
   this.frameData.pos = this.chronicleFrame.getPosAtMs(timeMs);
   this.frameData.speed = this.chronicleFrame.getSpeedAtIdx();
-  this.frameData.teperature = this.chronicleFrame.hasTemperature() ?
+  this.frameData.temperature = this.chronicleFrame.hasTemperature() ?
           this.chronicleFrame.getTemperatureAtMs(timeMs) : null;
 
   // const _this = this;
