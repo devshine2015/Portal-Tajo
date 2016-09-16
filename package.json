@@ -66,6 +66,7 @@
     "firebase": "^3.0.5",
     "immutable": "^3.8.1",
     "leaflet-draw": "^0.3.2",
+    "leaflet.heat": "^0.2.0",
     "mapbox.js": "^2.4.0",
     "moment": "^2.13.0",
     "query-string": "^4.2.3",
