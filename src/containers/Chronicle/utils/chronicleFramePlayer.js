@@ -110,7 +110,8 @@ ChronicleFramePlayer.prototype.gotoTime100 = function(time100) {
 //-----------------------------------------------------------------------
 ChronicleFramePlayer.prototype.update = function( ) {
   const timeMs = this.chronicleFrame.timeRangeMs * this.normalizedTime100 / 100;
-  this.frameData.time = this.chronicleFrame.getDateAtMs(timeMs);
+  // Date object here
+  this.frameData.date = this.chronicleFrame.getDateAtMs(timeMs);
   this.frameData.pos = this.chronicleFrame.getPosAtMs(timeMs);
   this.frameData.speed = this.chronicleFrame.getSpeedAtIdx();
   this.frameData.teperature = this.chronicleFrame.hasTemperature() ?
@@ -123,6 +124,13 @@ ChronicleFramePlayer.prototype.update = function( ) {
   // });
 };
 
+// current frameData obj is:
+// {
+//   date -- Date objects
+//   pos
+//   speed
+//   teperature
+// }
 ChronicleFramePlayer.prototype.getCurrentMomentData = function( ) {
   return this.frameData;
 }

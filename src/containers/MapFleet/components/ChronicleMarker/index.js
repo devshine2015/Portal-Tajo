@@ -2,6 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { hideLayer } from 'utils/mapBoxMap';
+import { dateToChronicleLable } from 'containers/Chronicle/utils/strings';
 // import { CHRONICLE_LOCAL_INCTANCE_STATE_VALID } from 'containers/Chronicle/actions';
 
 import { getNormalized100T } from 'containers/Chronicle/reducer';
@@ -60,21 +61,12 @@ class ChronicleMarker extends React.Component {
     this.popUp.setLatLng(startPos);
   }
 
-  __REMOVE_THIS_ddsDateToTimeString(aDate){
-    var timeStr = (aDate.getHours()<10 ? 0 : '')
-                  + aDate.getHours()
-                  +':'
-                  + (aDate.getMinutes()<10 ? 0 : '')
-                  + aDate.getMinutes();
-    return timeStr;
-  }
-
   update() {
     this.props.chronicleFrame.player.gotoTime100(this.props.normalized100T);
     const momentData = this.props.chronicleFrame.player.getCurrentMomentData();
     this.setPosition(momentData.pos);
 
-    const content = '<span style="float:right">'+this.__REMOVE_THIS_ddsDateToTimeString(momentData.time)+'</span>'
+    const content = dateToChronicleLable(momentData.date)
                           +'<br>'
                           +'<span style="float:right">'+momentData.speed.toFixed(1) + 'km/h'+'</span>';
     // if(momentData.temp!=null)
@@ -96,7 +88,7 @@ class ChronicleMarker extends React.Component {
     }
   }
 
-  hichlight(doHighlight) {
+  highLight(doHighlight) {
     if (this.containerLayer === null) {
       return;
     }
@@ -128,7 +120,7 @@ class ChronicleMarker extends React.Component {
 
   render() {
     this.update();
-    this.hichlight(this.props.isSelected);
+    this.highLight(this.props.isSelected);
     return false;
   }
 }

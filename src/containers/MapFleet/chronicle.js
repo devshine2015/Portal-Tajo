@@ -5,6 +5,7 @@ import styles from './styles.css';
 
 import ChroniclePath from './components/ChroniclePath';
 import ChronicleMarker from './components/ChronicleMarker';
+import ChronicleEventMarker from './components/ChronicleEventMarker';
 import MapGF from './components/MapGF';
 import EditGF from './components/EditGF';
 import { connect } from 'react-redux';
@@ -72,6 +73,7 @@ class MapChronicle extends React.Component {
     let gfs = EMPTY_ARRAY;
     let chronPaths = EMPTY_ARRAY;
     let chronMarkers = EMPTY_ARRAY;
+    let stopEvents = EMPTY_ARRAY;
 
     if (this.theMap !== null) {
       // gfs = this.props.gfs.map((v) => (
@@ -114,6 +116,21 @@ class MapChronicle extends React.Component {
         />
         );
       });
+      if (this.props.selectedVehicle !== null) {
+        const vehCronicleFrame = this.props
+                    .getInstanceChronicleFrameById(this.props.selectedVehicle.id);
+        if (vehCronicleFrame.isValid()
+        && !vehCronicleFrame.isEmpty()
+        && vehCronicleFrame.stopEvents.length > 0) {
+          stopEvents = vehCronicleFrame.stopEvents.map((v, idx) => (
+            <ChronicleEventMarker
+              key={this.props.selectedVehicle.id + idx + 'CrSt'}
+              theLayer={this.theMap}
+              chronicleEvent={v}
+            />
+          ));
+        }
+      }
     }
     const editGF = !this.props.gfEditMode ? false :
      (<EditGF
@@ -126,7 +143,7 @@ class MapChronicle extends React.Component {
       {chronPaths}
       {chronMarkers}
       {editGF}
-      }
+      {stopEvents}
       </div>
     );
   }

@@ -108,17 +108,20 @@ ChronicleVehicleFrame.prototype.parceData = function(events) {
           this.minTemp = Math.min( this.minTemp, theEvent.ev.tempInfo );
         }
         break;
-      case 'vehicle-stop-stats':
-        //skip too short stops on the history
-        var stopMinutes = theEvent.ev.stopPeriod/(1000*60);
-        if( stopMinutes<2 )
+      case 'vehicle-stop-stats': {
+        // skip too short stops on the history
+        const stopMinutes = theEvent.ev.stopPeriod / (1000 * 60);
+        if (stopMinutes < 2) {
           continue;
-        this.stopEvents.push({timeMs: eventTimeMs,
-            pos: L.latLng( theEvent.ev.pos.latlon.lat, theEvent.ev.pos.latlon.lng ),
+        }
+        this.stopEvents.push({ timeMs: eventTimeMs,
+            date: eventDate,
+            pos: window.L.latLng(theEvent.ev.pos.latlon.lat, theEvent.ev.pos.latlon.lng),
             period: theEvent.ev.stopPeriod,
-            dateStr:theEvent.ev.pos.posTime});
+            dateStr: theEvent.ev.pos.posTime });
         break;
       }
+    }
   }
 
   var firstSample = this.posData[0];
