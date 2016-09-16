@@ -3,7 +3,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 // import SplitContainer from 'containers/SplitContainer';
 // import TheMap from 'containers/MapFleet';
-import TheMap from 'containers/MapFleet';
+import TheMap from 'containers/MapFleet/realTime';
 import OperationalList from './components/OperationalPowerList';
 import FixedContent from 'components/FixedContent';
 import * as fromFleetReducer from 'services/FleetModel/reducer';

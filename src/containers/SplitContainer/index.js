@@ -3,7 +3,7 @@ import pure from 'recompose/pure';
 import styles from './styles.css';
 import SplitSwitch from './components/SplitSwitch';
 import SplitBox from './components/SplitBox';
-import TheMap from 'containers/MapFleet';
+import TheMap from 'containers/MapFleet/realTime';
 
 
 class SplitContainer extends React.Component {
