@@ -9,7 +9,6 @@ import {
 import commonActions from './commonActions';
 import { getAuthenticationSession } from '../reducer';
 import { getFleetName } from 'services/Global/reducer';
-import apiErrorsHandler from 'utils/apiErrorsHandler';
 import { setUserData } from 'services/UserModel/actions';
 
 export const login = (data) => (dispatch, getState) =>
@@ -41,7 +40,7 @@ function _login(data, dispatch, getState) {
         role: sessionData.role,
       }));
       dispatch(push(`${createBaseUrl(fleet)}/`));
-    }, apiErrorsHandler(dispatch));
+    });
 }
 
 function _logout({ redirectUrl }, dispatch, getState) {
@@ -60,5 +59,8 @@ function _logout({ redirectUrl }, dispatch, getState) {
         fleet,
         sessionId,
       });
-    }, apiErrorsHandler(dispatch));
+    })
+    .catch(e => {
+      console.error(e);
+    });
 }
