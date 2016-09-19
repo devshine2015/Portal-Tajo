@@ -4,6 +4,7 @@ import pure from 'recompose/pure';
 import { Map } from 'immutable';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import Checkbox from 'material-ui/Checkbox';
 import Form from 'components/Form';
 import Dialog from './components/Dialog';
 import OfflineData from './components/OfflineData';
@@ -47,12 +48,19 @@ class Installer extends React.Component {
   }
 
   onChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     const nextState = Object.assign({}, {
       fields: new Map(this.state.fields),
     });
+    let v;
 
-    nextState.fields = nextState.fields.set(name, value.trim());
+    if (type === 'checkbox' && checked !== 'undefined') {
+      v = checked;
+    } else {
+      v = value.trim();
+    }
+
+    nextState.fields = nextState.fields.set(name, v);
     nextState.cannotSubmit = validateForm(nextState.fields.toObject());
 
     this.setState(nextState);
@@ -179,7 +187,13 @@ class Installer extends React.Component {
             required
             type="number"
           />
+          <Checkbox
+            label="ODO value in miles"
+            name="isMiles"
+            onCheck={this.onChange}
+          />
           <RaisedButton
+            className={styles.submitButton}
             disabled={mainButtonDisabled}
             onClick={this.onSubmit}
             label={mainButtonText}

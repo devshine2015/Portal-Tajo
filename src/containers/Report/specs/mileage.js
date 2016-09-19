@@ -6,7 +6,7 @@ const _calc = record =>
   record.distance !== undefined ? record.distance.toFixed(3, 10) : 0;
 
 const fields = [{
-  label: 'Driving Distance',
+  label: 'Driving Distance (km.)',
   name: 'mileage',
   reportType: 'mileage',
   endpoint: 'report/mileage',

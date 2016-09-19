@@ -36,6 +36,10 @@ export const sendData = (data, getState) => {
       status: 'active',
     },
   };
+
+  // convert miles to kilometres
+  const odo = data.isMiles ? data.odometer * 1.60934 : data.odometer;
+
   const createVehiclePayload = {
     optionalHeaders: headers,
     payload: {
@@ -47,7 +51,8 @@ export const sendData = (data, getState) => {
       status: 'active',
       year: 'fill_me',
       odometer: {
-        value: parseInt(data.odometer, 10),
+        // backend can accept only integers here, i.e. km.
+        value: parseInt(odo, 10),
       },
     },
   };

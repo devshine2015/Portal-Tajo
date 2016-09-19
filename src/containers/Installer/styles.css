@@ -4,3 +4,10 @@
     width: 100%;
   }  
 }
+
+@media screen and (min-width: 360px) {
+  .submitButton {
+    max-width: 150px;
+    align-self: center;
+  }
+}
