@@ -1,10 +1,13 @@
 import React from 'react';
 import pure from 'recompose/pure';
-import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
+import {
+  TextField,
+  SelectField,
+  MenuItem,
+  RaisedButton,
+  FlatButton,
+  Checkbox,
+} from 'material-ui';
 import Form from 'components/Form';
 import { VEHICLE_KINDS, getVehicleByValue } from 'services/FleetModel/utils/vehiclesMap';
 import styles from './styles.css';
@@ -17,6 +20,13 @@ const STYLES = {
   },
 };
 
+function getOdo({ odometer, isMiles }) {
+  // convert miles to kilometres
+  const odo = isMiles ? odometer * 1.60934 : odometer;
+
+  return parseInt(odo, 10);
+}
+
 class VehicleDetails extends React.Component {
   constructor(props) {
     super(props);
@@ -24,7 +34,9 @@ class VehicleDetails extends React.Component {
     /**
      * Initial values for controlled inputs
      **/
-    this.state = { ...props.details };
+    this.state = Object.assign({}, { ...props.details }, {
+      isMiles: false,
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -39,11 +51,17 @@ class VehicleDetails extends React.Component {
 
     const toSave = Object.assign({}, this.state, {
       odometer: {
-        value: parseInt(this.state.odometer, 10),
+        value: getOdo(this.state),
       },
     });
 
     this.props.onSave(toSave);
+  }
+
+  onIsMilesChange = (e, isCheked) => {
+    this.setState({
+      isMiles: isCheked,
+    });
   }
 
   /**
@@ -67,9 +85,9 @@ class VehicleDetails extends React.Component {
    * Update state if another vehicle has been chosen
    **/
   checkIfVehicleChanged(nextProps) {
-    if (nextProps.id !== this.props.id) {
-      this.setState({ ...nextProps.details });
-    }
+    // if (nextProps.id !== this.props.id) {
+    this.setState({ ...nextProps.details, isMiles: false });
+    // }
   }
 
   renderKindMenuItems() {
@@ -97,6 +115,8 @@ class VehicleDetails extends React.Component {
       const selectedKind = getVehicleByValue(this.state.kind);
       SelectedKindIcon = () => selectedKind.icon;
     }
+
+    console.log(this.state.odometer);
 
     return (
       <div className={styles.details}>
@@ -163,6 +183,12 @@ class VehicleDetails extends React.Component {
             floatingLabelText="Odometer (km.)"
             value={this.state.odometer}
             type="number"
+          />
+          <Checkbox
+            label="ODO value in miles"
+            name="isMiles"
+            checked={this.state.isMiles}
+            onCheck={this.onIsMilesChange}
           />
           <div className={styles.buttons}>
             <RaisedButton

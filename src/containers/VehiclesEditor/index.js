@@ -6,7 +6,7 @@ import VehicleDetails from './components/VehicleDetails';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import FixedContent from 'components/FixedContent';
-import { getVehicleById, cleanVehicle } from 'services/FleetModel/utils/vehicleHelpers';
+import { getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { getLoaderState } from './reducer';
@@ -21,33 +21,17 @@ class VehiclesEditor extends React.Component {
     super(props);
 
     this.state = {
-      selectedVehicle: undefined,
       selectedVehicleOriginalIndex: undefined,
-      selectedVehicelId: undefined,
+      selectedVehicleId: undefined,
     };
 
-    this.onItemClick = this.onItemClick.bind(this);
+    this.chooseVehicle = this.chooseVehicle.bind(this);
   }
 
   componentDidMount() {
     const globalSelectedVehicleId = this.props.globalSelectedVehicleId;
     if (globalSelectedVehicleId !== '') {
-      this.onItemClick(globalSelectedVehicleId);
-    }
-  }
-
-  /**
-   * Choose vehicle by id
-   **/
-  onItemClick = (id) => {
-    const v = getVehicleById(id, this.props.vehicles);
-
-    if (v !== undefined) {
-      this.setState({
-        selectedVehicelId: id,
-        selectedVehicle: v.vehicle,
-        selectedVehicleOriginalIndex: v.vehicleIndex,
-      });
+      this.chooseVehicle(globalSelectedVehicleId);
     }
   }
 
@@ -56,19 +40,28 @@ class VehiclesEditor extends React.Component {
    * since server requiring all details to be sent
    **/
   onDetailsSave = (data) => {
-    const { selectedVehicle } = this.state;
-    const updatedDetails = {
-      ...selectedVehicle,
-      ...data,
-    };
-    const details = cleanVehicle(updatedDetails);
+    const { selectedVehicleId } = this.state;
 
-    this.props.updateDetails(details)
+    this.props.updateDetails(data, selectedVehicleId)
       .then(() => {
         this.props.showSnackbar('Succesfully sended ✓', 3000);
       }, () => {
         this.props.showSnackbar('Something went wrong. Try later. ✓', 5000);
       });
+  }
+
+  /**
+   * Choose vehicle by id
+   **/
+  chooseVehicle = (id) => {
+    const v = getVehicleById(id, this.props.vehicles);
+
+    if (v !== undefined) {
+      this.setState({
+        selectedVehicleId: id,
+        selectedVehicleOriginalIndex: v.vehicleIndex,
+      });
+    }
   }
 
   /**
@@ -90,7 +83,7 @@ class VehiclesEditor extends React.Component {
     /**
      * Provide data required by component
      **/
-    const origins = this.state.selectedVehicle;
+    const origins = this.props.vehicles[selectedVehicleOriginalIndex];
     const data = {
       kind: origins.kind,
       name: origins.name,
@@ -129,9 +122,9 @@ class VehiclesEditor extends React.Component {
           }
           content={
             <VehiclesList
-              onItemClick={this.onItemClick}
+              onItemClick={this.chooseVehicle}
               data={this.props.vehicles}
-              currentExpandedItemId={this.state.selectedVehicelId}
+              currentExpandedItemId={this.state.selectedVehicleId}
             />
           }
         />

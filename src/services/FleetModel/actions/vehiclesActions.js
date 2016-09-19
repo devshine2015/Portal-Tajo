@@ -70,7 +70,11 @@ export function makeUpdateVehicleRequest(details, dispatch, getState) {
     optionalHeaders,
     payload: details,
   }).then(() => {
-    dispatch(_vehicleUpdate(details, details.id));
+    dispatch(_vehicleUpdate({
+      ...details, dist: {
+        total: details.odometer.value * 1000,
+      },
+    }, details.id));
     return Promise.resolve();
   }, error => Promise.reject(error));
 }
