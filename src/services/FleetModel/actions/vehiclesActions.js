@@ -35,13 +35,16 @@ function _fetchVehicles(fleetName, openWebSocket, dispatch, getState) {
     urls.map(url =>
       api(url, { optionalHeaders }).then(toJson)
     )
-  ).then(([vehicles = [], { status }]) => {
+  ).then(([vehicles = [], { status } = {}]) => {
     const { localVehicles, orderedVehicles } = makeLocalVehicles(vehicles, status);
     dispatch(_vehiclesSet(vehicles, localVehicles, orderedVehicles));
 
     if (openWebSocket) {
       dispatch(openFleetSocket(fleet));
     }
+  })
+  .catch(e => {
+    console.error(e);
   });
 }
 

@@ -53,7 +53,7 @@ export function save(key, value, version = undefined) {
       if (!savedData.hasOwnProperty('values')) {
         savedData.values = [];
       }
-      
+
       // update version if specified
       if (version !== undefined) {
         savedData.ver = version;
@@ -83,7 +83,9 @@ export function clean(key) {
 }
 
 export function cleanExactValues(key, values = []) {
-  return read(key).then((savedData = {}) => {
+  return read(key).then((savedData) => {
+    if (!savedData) return Promise.resolve();
+
     values.forEach(value => {
       const indexToDelete = _checkIfValueExist(value, savedData.values);
 

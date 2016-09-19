@@ -35,6 +35,9 @@ function _fetchGFs(dispatch, getState, fleetName = undefined) {
     .then(gfs => {
       const { localGFs, sortedGFs } = makeLocalGFs(gfs);
       dispatch(_gfSet(gfs, localGFs, sortedGFs));
+    })
+    .catch(e => {
+      console.error(e);
     });
 }
 

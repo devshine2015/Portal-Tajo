@@ -8,10 +8,7 @@ import {
 } from 'utils';
 import { getAuthenticatedFleet } from '../reducer';
 import commonActions from './commonActions';
-import {
-  setUserData,
-  resetUserData,
-} from 'services/UserModel/actions';
+import { setUserData } from 'services/UserModel/actions';
 
 export const checkUserAuthentication = (params) => (dispatch, getState) =>
   _checkUserAuthentication(params, dispatch, getState);
@@ -38,16 +35,14 @@ function _checkUserAuthentication(params, dispatch, getState) {
         }));
         dispatch(commonActions.setAuthentication(session[0]['session-id'], fleet));
       } else {
-        dispatch(commonActions.resetAuthentication());
-        dispatch(resetUserData());
+        dispatch(commonActions.eraseAuth());
 
         if (params.urls) {
           dispatch(replace(`${createBaseUrl(fleet)}/${params.urls.failure}`));
         }
       }
     } else {
-      dispatch(commonActions.resetAuthentication());
-      dispatch(resetUserData());
+      dispatch(commonActions.eraseAuth());
 
       if (params.urls) {
         dispatch(replace(`${createBaseUrl(fleet)}/${params.urls.failure}`));
@@ -61,9 +56,7 @@ function _checkUserAuthentication(params, dispatch, getState) {
 
       console.log(error.message);
 
-      storage.clean(LOCAL_STORAGE_SESSION_KEY);
-      dispatch(commonActions.resetAuthentication());
-      dispatch(resetUserData());
+      dispatch(commonActions.eraseAuth());
 
       if (params.urls) {
         dispatch(replace(loginUrl));

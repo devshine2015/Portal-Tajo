@@ -1,30 +1,29 @@
+import { commonActions } from 'services/Auth/actions';
 
+class APIErrors {
+  constructor() {
+    this.dispatch = () => ({});
+    this.state = {};
+  }
 
-function forbiddenError(response) {
-  console.log(response);
-}
+  injectStore(store) {
+    this.dispatch = store.dispatch;
+    this.state = store.getState();
+  }
 
-function chooseHandler(response) {
-  switch (response.status) {
-    case 403:
-      forbiddenError(response);
-      break;
-    default:
-      break;
+  handler = error => {
+    switch (error && error.response && error.response.status) {
+      case 403: {
+        this.dispatch(commonActions.eraseAuth());
+        break;
+      }
+      default: break;
+    }
+
+    return Promise.reject(error && error.response);
   }
 }
 
-export default function middlewareStore(store) {
-  return function middlewareNext(next) {
-    return function middlewareAction(action) {
-      try {
-        debugger;
-        return next(action);
-      } catch (error) {
-        debugger;
-        chooseHandler(error, store.getState);
-        return error;
-      }
-    };
-  };
-}
+const handler = new APIErrors();
+
+export default handler;

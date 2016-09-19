@@ -1,4 +1,4 @@
-import { setFleet } from 'services/Global/actions';
+import { fleetNameActions } from 'services/Global/actions';
 import { setInnerPortalPages } from 'containers/InnerPortal/actions';
 import createBaseUrl from 'utils/createBaseUrl';
 
@@ -33,7 +33,7 @@ const createRoute = ({
   childRoutes: [],
   onEnter: (location) => {
     const { params, routes } = location;
-    dispatch(setFleet(params.fleet));
+    dispatch(fleetNameActions.setFleet(params.fleet));
 
     if (mainMenu.length === 0) return;
 
