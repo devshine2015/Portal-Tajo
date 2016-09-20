@@ -1,5 +1,5 @@
 import moment from 'moment';
-
+import endpoints from 'configs/endpoints';
 /**
  *
  * Calculate min/max/avg temperature for given date at once
@@ -68,7 +68,7 @@ function filterSimilar(allSelectedReportTypes) {
 }
 
 const commonProps = {
-  endpoint: 'report/temperature',
+  endpoint: endpoints.temperatureReport.url,
   query: {
     downsampleSec: 30,
     tzoffset: new Date().getTimezoneOffset(),

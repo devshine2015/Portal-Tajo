@@ -1,3 +1,4 @@
+import endpoints from 'configs/endpoints';
 /*
  * Calculate mileage for the whole period.
  * NOT USED FREQUENCY CONCEPTION.
@@ -9,7 +10,7 @@ const fields = [{
   label: 'Driving Distance (km.)',
   name: 'mileage',
   reportType: 'mileage',
-  endpoint: 'report/mileage',
+  endpoint: endpoints.mileageReport.url,
   domain: 'mileage',
   checkedByDefault: false,
   order: 3,

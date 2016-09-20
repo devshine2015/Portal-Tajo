@@ -1,4 +1,5 @@
 import moment from 'moment';
+import endpoints from 'configs/endpoints';
 
 function formatValue(v) {
   const d = moment.duration(v, 'seconds');
@@ -26,7 +27,7 @@ function filterSimilar(allSelectedReportTypes) {
 }
 
 const commonFields = {
-  endpoint: 'report/idling',
+  endpoint: endpoints.idlingReport.url,
   checkedByDefault: false,
   domain: 'idling',
   query: {

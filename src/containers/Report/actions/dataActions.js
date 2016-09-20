@@ -1,6 +1,7 @@
 import moment from 'moment';
 import qs from 'query-string';
-import api from 'utils/api';
+import api from 'utils/api.next';
+import endpoints from 'configs/endpoints';
 import reporter from 'utils/reports';
 import { setLoader } from './loaderActions';
 import { setErrorMessage } from './configuratorActions';
@@ -11,8 +12,6 @@ import {
   getIsFiltering,
   getSelectedVehicles,
 } from '../reducer';
-import { getFleetName } from 'services/Global/reducer';
-import { getAuthenticationSession } from 'services/Auth/reducer';
 import { getVehiclesEx } from 'services/FleetModel/reducer';
 import {
   prepareDataForReport,
@@ -30,24 +29,16 @@ export const removeReportData = () => ({
   type: REPORT_DATA_REMOVE,
 });
 
-// TODO -- make configuratorAvailableFields truly flexible (depends on screen)
-
 function _generateReport({ timePeriod, frequency }, dispatch, getState) {
   dispatch(setLoader(true));
   dispatch(removeReportData());
 
-  const fleet = getFleetName(getState());
-  const baseVehiclesUrl = `${fleet}/vehicles`;
   const periods = _getPeriods(timePeriod, frequency);
   const periodQueryString = getReportParams(timePeriod);
   const selectedReports = getSelectedReportsTypes(getState());
   const vehicles = _getVehiclesForReport(getState());
 
   const fieldsToCall = {};
-  const sessionId = getAuthenticationSession(getState());
-  const optionalHeaders = {
-    ['DRVR-SESSION']: sessionId,
-  };
 
   Object.values(selectedReports)
     .filter(sr => sr.hasOwnProperty('endpoint'))
@@ -60,7 +51,7 @@ function _generateReport({ timePeriod, frequency }, dispatch, getState) {
   return Promise.all(
     Object.values(fieldsToCall)
       .map(({ domain, query = {}, endpoint = '' }) => (
-        _reportRequest(baseVehiclesUrl, vehicles, optionalHeaders, {
+        _reportRequest(vehicles, {
           domain,
           endpoint,
           queryString: `${periodQueryString}&${qs.stringify(query)}`,
@@ -148,16 +139,16 @@ const _saveReportData = (reportData) => ({
   reportData,
 });
 
-function _reportRequest(baseVehiclesUrl, vehicles = [], optionalHeaders, {
+function _reportRequest(vehicles = [], {
   endpoint,
   domain,
   queryString,
 } = {}) {
   return Promise.all(
     vehicles.map(v => {
-      const url = `${baseVehiclesUrl}/${v.id}/${endpoint}?${queryString}`;
-      return api(url, { optionalHeaders })
-        .then(toJson);
+      const url = `${endpoints.getVehicle(v.id).url}/${endpoint}?${queryString}`;
+
+      return api.get(url).then(toJson);
     }),
   ).then(res => ({
     domain,

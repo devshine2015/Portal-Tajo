@@ -32,6 +32,10 @@ const endpoints = {
     url: 'vehicles',
     method: 'get',
   },
+  getVehicle: id => ({
+    url: `vehicles/${id}`,
+    method: 'get',
+  }),
   updateVehicle: id => ({
     url: `vehicles/${id}`,
     method: 'put',
@@ -49,6 +53,19 @@ const endpoints = {
   createDevice: {
     url: 'devices',
     method: 'post',
+  },
+  // reports
+  idlingReport: {
+    url: 'report/idling',
+    method: 'get',
+  },
+  mileageReport: {
+    url: 'report/mileage',
+    method: 'get',
+  },
+  temperatureReport: {
+    url: 'report/temperature',
+    method: 'get',
   },
 
   // events

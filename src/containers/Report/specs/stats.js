@@ -1,3 +1,5 @@
+import endpoints from 'configs/endpoints';
+
 function _calc(record, { selectedTypes }) {
   const calcToReturn = (result) =>
     selectedTypes.map((key) => result[key]);
@@ -15,7 +17,7 @@ function filterSimilar(allSelectedReportTypes) {
 }
 
 const commonFields = {
-  endpoint: 'status',
+  endpoint: endpoints.getStats.url,
   checkedByDefault: false,
   domain: 'stats',
   query: {
