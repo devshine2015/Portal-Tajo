@@ -1,6 +1,5 @@
-import api from 'utils/api';
-import { getFleetName } from 'services/Global/reducer';
-import { getAuthenticationSession } from 'services/Auth/reducer';
+import endpoints from 'configs/endpoints';
+import apiNext from 'utils/api.next';
 import { makeLocalGFs } from '../utils/gfHelpers';
 import { getProcessedGFs } from '../reducer';
 import { filterProcessedListByName } from '../utils/filtering';
@@ -8,8 +7,7 @@ import { filterProcessedListByName } from '../utils/filtering';
 export const FLEET_MODEL_GF_SET = 'portal/services/FLEET_MODEL_GF_SET';
 export const FLEET_MODEL_GF_FILTER = 'portal/services/FLEET_MODEL_GF_FILTER';
 
-export const fetchGFs = (fleet = undefined) => (dispatch, getState) =>
-  _fetchGFs(dispatch, getState, fleet);
+export const fetchGFs = () => _fetchGFs;
 export const filterGFs = (searchString) => (dispatch, getState) =>
   _filterGf({ searchString }, dispatch, getState);
 export const createGF = (newGF, idx) => (dispatch, getState) =>
@@ -22,15 +20,10 @@ export const deleteGF = (id) => (dispatch, getState) =>
 /**
  * fleet is optional
  **/
-function _fetchGFs(dispatch, getState, fleetName = undefined) {
-  const fleet = fleetName || getFleetName(getState());
-  const url = `${fleet}/location`;
-  const sessionId = getAuthenticationSession(getState());
-  const optionalHeaders = {
-    ['DRVR-SESSION']: sessionId,
-  };
+function _fetchGFs(dispatch) {
+  const { url, method } = endpoints.getGFs;
 
-  return api(url, { optionalHeaders })
+  return apiNext[method](url)
     .then(toJson)
     .then(gfs => {
       const { localGFs, sortedGFs } = makeLocalGFs(gfs);
@@ -45,14 +38,9 @@ function _fetchGFs(dispatch, getState, fleetName = undefined) {
  * POST - new GF details to the server
  **/
 function _createGFRequest(gfObject, index, dispatch, getState) {
-  const fleet = getFleetName(getState());
-  const url = `${fleet}/location`;
-  const optionalHeaders = {
-    ['DRVR-SESSION']: getAuthenticationSession(getState()),
-  };
+  const { url, method } = endpoints.createGF;
 
-  return api.post(url, {
-    optionalHeaders,
+  return apiNext[method](url, {
     payload: gfObject,
   }).then(() => {
     _fetchGFs(dispatch, getState);
@@ -68,15 +56,9 @@ function _editGFRequest(gfObject, id, index, dispatch, getState) {
  * DELETE - new GF details to the server
  **/
 function _deleteGFRequest(id, dispatch, getState) {
-  const fleet = getFleetName(getState());
-  const url = `${fleet}/location/${id}`;
-  const optionalHeaders = {
-    ['DRVR-SESSION']: getAuthenticationSession(getState()),
-  };
+  const { url, method } = endpoints.deleteGF(id);
 
-  return api.delete(url, {
-    optionalHeaders,
-  }).then(() => {
+  return apiNext[method](url).then(() => {
     _fetchGFs(dispatch, getState);
     return Promise.resolve();
   }, error => Promise.reject(error));

@@ -7,6 +7,18 @@ const endpoints = {
     url: 'login',
     method: 'delete',
   },
+  getGFs: {
+    url: 'location',
+    method: 'get',
+  },
+  createGF: {
+    url: 'location',
+    method: 'post',
+  },
+  deleteGF: id => ({
+    url: `location/${id}`,
+    method: 'delete',
+  }),
 };
 
 export default {
