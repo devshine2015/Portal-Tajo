@@ -1,6 +1,6 @@
 import 'whatwg-fetch';
 import { protocol, isSecure, ENGINE_BASE } from 'configs';
-import APIErrors from 'utils/apiErrorsHandler';
+import apiNext from 'utils/api.next';
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -14,7 +14,7 @@ function checkStatus(response) {
 function sendRequest({ endpoint, options }) {
   return fetch(endpoint, options)
     .then(checkStatus)
-    .catch(APIErrors.handler);
+    .catch(apiNext.errorsHandler);
 }
 
 function prepareRequest(method, url, headers, payload) {

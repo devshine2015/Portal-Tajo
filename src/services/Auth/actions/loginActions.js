@@ -1,8 +1,9 @@
 import { push } from 'react-router-redux';
 import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
+import endpoints from 'configs/endpoints';
 import VERSIONS from 'configs/versions';
 import {
-  api,
+  apiNext,
   createBaseUrl,
   storage,
 } from 'utils';
@@ -17,21 +18,20 @@ export const logout = (redirectUrl = '') => (dispatch, getState) =>
   _logout({ redirectUrl }, dispatch, getState);
 
 function _login(data, dispatch, getState) {
-  const fleet = getFleetName(getState());
-  const loginUrl = `${fleet}/login`;
-
+  const { url, method } = endpoints.login;
   const options = {
     payload: data,
   };
 
-  return api.post(loginUrl, options)
+  return apiNext[method](url, options)
     .then(response => response.text())
     .then(token => {
+      const fleet = getFleetName(getState());
       const sessionData = {
         fleet,
         'session-id': token,
         id: token,
-        role: 'installer',
+        role: 'installer', //setup lowest possible role by default
       };
 
       storage.save(LOCAL_STORAGE_SESSION_KEY, sessionData, VERSIONS.authentication.currentVersion);
@@ -44,15 +44,13 @@ function _login(data, dispatch, getState) {
 }
 
 function _logout({ redirectUrl }, dispatch, getState) {
-  const fleet = getFleetName(getState());
-  const url = `${fleet}/login`;
+  const { url, method } = endpoints.logout;
   const sessionId = getAuthenticationSession(getState());
-  const optionalHeaders = {
-    ['DRVR-SESSION']: sessionId,
-  };
 
-  return api.delete(url, { optionalHeaders })
+  return apiNext[method](url)
     .then(() => {
+      const fleet = getFleetName(getState());
+
       dispatch(commonActions.eraseAuth());
 
       return Promise.resolve({
