@@ -1,3 +1,5 @@
+import qs from 'query-string';
+
 const endpoints = {
   // authentication
   login: {
@@ -35,6 +37,12 @@ const endpoints = {
     url: 'status',
     method: 'get',
   },
+
+  // events
+  getEventsInTimeRange: (id, params) => ({
+    url: `vehicles/${id}/events?${qs.stringify(params)}`,
+    method: 'get',
+  }),
 
   // ws monitor
   monitor: {

@@ -1,8 +1,7 @@
 // import moment from 'moment';
-import api from 'utils/api';
+import api from 'utils/api.next';
+import endpoints from 'configs/endpoints';
 // import { setLoader } from './loaderActions';
-import { getAuthenticationSession } from 'services/Auth/reducer';
-import { getFleetName } from 'services/Global/reducer';
 import createHistoryFrame from './../utils/chronicleVehicleFrame';
 import { getChronicleTimeFrame } from './../reducer';
 
@@ -11,8 +10,8 @@ export const CHRONICLE_SET_T = 'chronicle/setT';
 export const CHRONICLE_SET_TIMEFRAME = 'chronicle/setTimeFrame';
 export const CHRONICLE_VALIDATE_TIMEFRAME = 'chronicle/validateTimeFrame';
 
-export const requestHistory = (inVehicleId, dateFrom, dateTo) => (dispatch, getState) =>
-  _requestHistory(inVehicleId, dateFrom, dateTo, dispatch, getState);
+export const requestHistory = (vehicleId, dateFrom, dateTo) => dispatch =>
+  _requestHistory(vehicleId, dateFrom, dateTo, dispatch);
 
 export const setChronicleNormalizedT = (normalized100T) => (dispatch) => {
   dispatch(_chronicleSetT(normalized100T));
@@ -28,11 +27,8 @@ export const setChronicleTimeFrame = (dateFrom, dateTo) => (dispatch, getState) 
   dispatch(_chronicleSetT(0));
 };
 
-function _requestHistory(inVehicleId, dateFrom, dateTo, dispatch, getState) {
+function _requestHistory(vehicleId, dateFrom, dateTo, dispatch) {
 //  dispatch(setLoader(true));
-  const vehicleId = inVehicleId;
-  const fleet = getFleetName(getState());
-  const baseVehiclesUrl = `${fleet}/vehicles`;
 // TODO: properly generate from and to
 //  const fromString = '2016-08-21T04:38:32.000+0000';// date.toString();
   let fromString = dateFrom.toISOString();
@@ -40,24 +36,20 @@ function _requestHistory(inVehicleId, dateFrom, dateTo, dispatch, getState) {
   let toString = dateTo.toISOString();
   toString = toString.slice(0,-1) + '+0000';
 
+  const { url, method } = endpoints.getEventsInTimeRange(vehicleId, {
+    from: fromString,
+    to: toString,
+    max: 20000,
+    filter: 'PG',
+  });
   // setting loading state for local frame
   dispatch(_newVehicleChronicleFrame(vehicleId,
     createHistoryFrame(dateFrom, dateTo, null, true)));
   // const fromString = moment(date).format();
   // const toString = moment(date).add(1, 'days').format();
 //  const toString = '2016-08-22T04:38:32.000+0000';// date.toString();
-  const sessionId = getAuthenticationSession(getState());
-  const optionalHeaders = {
-    ['DRVR-SESSION']: sessionId,
-  };
-  const requestUrl = baseVehiclesUrl + '/'
-                            + vehicleId
-                            + '/events?from=' + fromString
-                            + '&to=' + toString
-                            + '&max=20000'
-                            + '&filter=PG';
 
-  return api(requestUrl, { optionalHeaders })
+  return api[method](url)
     .then(toJson)
     .then(events =>
       dispatch(_newVehicleChronicleFrame(vehicleId,
