@@ -22,7 +22,7 @@ export const permissions = {
 };
 
 const rolesAbilities = {
-  escape: {
+  tajo: {
     superadmin: {
       [permissions.USERS_SEE]: true,
       [permissions.USERS_ADD_ANY]: true,
