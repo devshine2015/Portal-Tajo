@@ -1,5 +1,5 @@
 import endpoints from 'configs/endpoints';
-import apiNext from 'utils/api.next';
+import api from 'utils/api';
 import { makeLocalGFs } from '../utils/gfHelpers';
 import { getProcessedGFs } from '../reducer';
 import { filterProcessedListByName } from '../utils/filtering';
@@ -23,7 +23,7 @@ export const deleteGF = (id) => (dispatch, getState) =>
 function _fetchGFs(dispatch) {
   const { url, method } = endpoints.getGFs;
 
-  return apiNext[method](url)
+  return api[method](url)
     .then(toJson)
     .then(gfs => {
       const { localGFs, sortedGFs } = makeLocalGFs(gfs);
@@ -40,7 +40,7 @@ function _fetchGFs(dispatch) {
 function _createGFRequest(gfObject, index, dispatch, getState) {
   const { url, method } = endpoints.createGF;
 
-  return apiNext[method](url, {
+  return api[method](url, {
     payload: gfObject,
   }).then(() => {
     _fetchGFs(dispatch, getState);
@@ -58,7 +58,7 @@ function _editGFRequest(gfObject, id, index, dispatch, getState) {
 function _deleteGFRequest(id, dispatch, getState) {
   const { url, method } = endpoints.deleteGF(id);
 
-  return apiNext[method](url).then(() => {
+  return api[method](url).then(() => {
     _fetchGFs(dispatch, getState);
     return Promise.resolve();
   }, error => Promise.reject(error));

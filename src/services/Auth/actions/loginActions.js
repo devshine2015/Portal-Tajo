@@ -3,7 +3,7 @@ import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
 import endpoints from 'configs/endpoints';
 import VERSIONS from 'configs/versions';
 import {
-  apiNext,
+  api,
   createBaseUrl,
   storage,
 } from 'utils';
@@ -23,7 +23,7 @@ function _login(data, dispatch, getState) {
     payload: data,
   };
 
-  return apiNext[method](url, options)
+  return api[method](url, options)
     .then(response => response.text())
     .then(token => {
       const fleet = getFleetName(getState());
@@ -47,7 +47,7 @@ function _logout({ redirectUrl }, dispatch, getState) {
   const { url, method } = endpoints.logout;
   const sessionId = getAuthenticationSession(getState());
 
-  return apiNext[method](url)
+  return api[method](url)
     .then(() => {
       const fleet = getFleetName(getState());
 

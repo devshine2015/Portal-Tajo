@@ -10,6 +10,7 @@ const endpoints = {
     url: 'login',
     method: 'delete',
   },
+
   // locations
   getGFs: {
     url: 'location',
@@ -23,6 +24,7 @@ const endpoints = {
     url: `location/${id}`,
     method: 'delete',
   }),
+
   // vehicles
   createVehicle: {
     url: 'vehicles',
@@ -44,16 +46,19 @@ const endpoints = {
     url: `vehicles/${id}/device`,
     method: 'post',
   }),
+
   // stats
   getStats: {
     url: 'status',
     method: 'get',
   },
+
   // devices
   createDevice: {
     url: 'devices',
     method: 'post',
   },
+
   // reports
   idlingReport: {
     url: 'report/idling',

@@ -1,6 +1,6 @@
 import moment from 'moment';
 import qs from 'query-string';
-import api from 'utils/api.next';
+import api from 'utils/api';
 import endpoints from 'configs/endpoints';
 import reporter from 'utils/reports';
 import { setLoader } from './loaderActions';

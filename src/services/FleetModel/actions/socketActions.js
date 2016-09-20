@@ -1,5 +1,5 @@
 import endpoints from 'configs/endpoints';
-import apiNext from 'utils/api.next';
+import api from 'utils/api';
 
 export const FLEET_MODEL_SOCKET_SET = 'portal/services/FLEET_MODEL_SOCKET_SET';
 
@@ -15,7 +15,7 @@ let socketIsOpened = false;
 function _openFleetSocket(dispatch) {
   const { url } = endpoints.monitor;
 
-  fleetSocket = apiNext.invokeWebSocket(url);
+  fleetSocket = api.invokeWebSocket(url);
 
   socketIsOpened = true;
 

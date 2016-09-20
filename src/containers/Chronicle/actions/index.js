@@ -1,5 +1,5 @@
 // import moment from 'moment';
-import api from 'utils/api.next';
+import api from 'utils/api';
 import endpoints from 'configs/endpoints';
 // import { setLoader } from './loaderActions';
 import createHistoryFrame from './../utils/chronicleVehicleFrame';

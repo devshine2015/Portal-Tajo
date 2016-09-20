@@ -1,4 +1,4 @@
-import apiNext from 'utils/api.next';
+import api from 'utils/api';
 import endpoints from 'configs/endpoints';
 import { openFleetSocket } from './socketActions';
 import { makeLocalVehicles } from '../utils/vehicleHelpers';
@@ -31,7 +31,7 @@ function _fetchVehicles(openWebSocket, dispatch) {
 
   return Promise.all(
     urls.map(({ url, method }) =>
-      apiNext[method](url).then(toJson)
+      api[method](url).then(toJson)
     )
   ).then(([vehicles = [], { status } = {}]) => {
     const { localVehicles, orderedVehicles } = makeLocalVehicles(vehicles, status);
@@ -60,7 +60,7 @@ function _filterVehicles({ searchString }, dispatch, getState) {
 export function makeUpdateVehicleRequest(details, dispatch) {
   const { url, method } = endpoints.updateVehicle(details.id);
 
-  return apiNext[method](url, {
+  return api[method](url, {
     payload: details,
   }).then(() => {
     dispatch(_vehicleUpdate({
