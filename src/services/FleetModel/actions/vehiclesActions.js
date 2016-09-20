@@ -1,7 +1,6 @@
-import api from 'utils/api';
+import apiNext from 'utils/api.next';
+import endpoints from 'configs/endpoints';
 import { openFleetSocket } from './socketActions';
-import { getFleetName } from 'services/Global/reducer';
-import { getAuthenticationSession } from 'services/Auth/reducer';
 import { makeLocalVehicles } from '../utils/vehicleHelpers';
 import { filterProcessedListByName } from '../utils/filtering';
 import { getProcessedVehicles } from '../reducer';
@@ -11,10 +10,10 @@ export const FLEET_MODEL_VEHICLES_FILTER = 'portal/services/FLEET_MODEL_VEHICLES
 export const FLEET_MODEL_VEHICLE_UPDATE = 'portal/services/FLEET_MODEL_VEHICLE_UPDATE';
 export const FLEET_MODEL_VEHICLE_SELECT = 'portal/services/FLEET_MODEL_VEHICLE_SELECT';
 
-export const fetchVehicles = (fleet, openWebSocket) => (dispatch, getState) =>
-  _fetchVehicles(fleet, openWebSocket, dispatch, getState);
-export const updateDetails = (details = {}) => (dispatch, getState) =>
-  makeUpdateVehicleRequest(details, dispatch, getState);
+export const fetchVehicles = openWebSocket => dispatch =>
+  _fetchVehicles(openWebSocket, dispatch);
+export const updateDetails = (details = {}) => dispatch =>
+  makeUpdateVehicleRequest(details, dispatch);
 export const filterVehicles = (searchString) => (dispatch, getState) =>
   _filterVehicles({ searchString }, dispatch, getState);
 export const setSelectedVehicleId = (id) => (dispatch) =>
@@ -23,24 +22,23 @@ export const setSelectedVehicleId = (id) => (dispatch) =>
 /**
  * fleet is optional
  **/
-function _fetchVehicles(fleetName, openWebSocket, dispatch, getState) {
-  const fleet = fleetName || getFleetName(getState());
-  const urls = [`${fleet}/vehicles`, `${fleet}/status`];
-  const sessionId = getAuthenticationSession(getState());
-  const optionalHeaders = {
-    ['DRVR-SESSION']: sessionId,
-  };
+function _fetchVehicles(openWebSocket, dispatch) {
+  const urls = [{
+    ...endpoints.getVehicles,
+  }, {
+    ...endpoints.getStats,
+  }];
 
   return Promise.all(
-    urls.map(url =>
-      api(url, { optionalHeaders }).then(toJson)
+    urls.map(({ url, method }) =>
+      apiNext[method](url).then(toJson)
     )
   ).then(([vehicles = [], { status } = {}]) => {
     const { localVehicles, orderedVehicles } = makeLocalVehicles(vehicles, status);
     dispatch(_vehiclesSet(vehicles, localVehicles, orderedVehicles));
 
     if (openWebSocket) {
-      dispatch(openFleetSocket(fleet));
+      dispatch(openFleetSocket());
     }
   })
   .catch(e => {
@@ -59,15 +57,10 @@ function _filterVehicles({ searchString }, dispatch, getState) {
 /**
  * PUT new updated details to the server
  **/
-export function makeUpdateVehicleRequest(details, dispatch, getState) {
-  const fleet = getFleetName(getState());
-  const url = `${fleet}/vehicles/${details.id}`;
-  const optionalHeaders = {
-    ['DRVR-SESSION']: getAuthenticationSession(getState()),
-  };
+export function makeUpdateVehicleRequest(details, dispatch) {
+  const { url, method } = endpoints.updateVehicle(details.id);
 
-  return api.put(url, {
-    optionalHeaders,
+  return apiNext[method](url, {
     payload: details,
   }).then(() => {
     dispatch(_vehicleUpdate({

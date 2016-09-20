@@ -1,12 +1,9 @@
-import qs from 'query-string';
-import { getFleetName } from 'services/Global/reducer';
-import { socket } from 'utils/api';
-import { getAuthenticationSession } from 'services/Auth/reducer';
+import endpoints from 'configs/endpoints';
+import apiNext from 'utils/api.next';
 
 export const FLEET_MODEL_SOCKET_SET = 'portal/services/FLEET_MODEL_SOCKET_SET';
 
-export const openFleetSocket = (fleet = undefined) => (dispatch, getState) =>
-  _openFleetSocket(fleet, dispatch, getState);
+export const openFleetSocket = () => _openFleetSocket;
 export const closeFleetSocket = () => _closeSocket;
 
 let fleetSocket;
@@ -15,14 +12,10 @@ let socketIsOpened = false;
 /**
  * fleetName is optional
  **/
-function _openFleetSocket(fleetName, dispatch, getState) {
-  const fleet = fleetName || getFleetName(getState());
-  const url = `${fleet}/status/monitor`;
-  const params = {
-    ['DRVR-SESSION']: getAuthenticationSession(getState()),
-  };
+function _openFleetSocket(dispatch) {
+  const { url } = endpoints.monitor;
 
-  fleetSocket = socket(url, qs.stringify(params));
+  fleetSocket = apiNext.invokeWebSocket(url);
 
   socketIsOpened = true;
 

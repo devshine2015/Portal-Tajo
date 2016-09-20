@@ -1,3 +1,4 @@
+import qs from 'query-string';
 import { protocol, socketProtocol, ENGINE_BASE } from 'configs';
 import { commonActions } from 'services/Auth/actions';
 import { getAuthenticationSession } from 'services/Auth/reducer';
@@ -39,11 +40,10 @@ class API {
   }
 
   invoke(method, url, { payload, optionalHeaders = {} } = {}) {
-    const sessionId = getAuthenticationSession(this.getState());
     const fleet = getFleetName(this.getState());
     const urlToInvoke = `${this.baseURL}/${fleet}/${url}`;
     const headers = Object.assign({}, HEADERS, {
-      ['DRVR-SESSION']: sessionId,
+      ['DRVR-SESSION']: getAuthenticationSession(this.getState()),
     }, {
       ...optionalHeaders,
     });
@@ -52,9 +52,14 @@ class API {
       .catch(this.errorsHandler);
   }
 
-  invokeWebSocket(url, params) {
-    const query = params ? `?${params}` : '';
-    const socketURL = `${this.socketURL}/${url}${query}`;
+  invokeWebSocket(url, options) {
+    const fleet = getFleetName(this.getState());
+    const sessionId = {
+      ['DRVR-SESSION']: getAuthenticationSession(this.getState()),
+    };
+    const params = Object.assign({}, { ...sessionId }, { ...options });
+    const query = params ? `?${qs.stringify(params)}` : '';
+    const socketURL = `${this.socketURL}/${fleet}/${url}${query}`;
 
     return new WebSocket(socketURL);
   }
