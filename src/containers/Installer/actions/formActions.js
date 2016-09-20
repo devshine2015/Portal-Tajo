@@ -1,15 +1,14 @@
-import api from 'utils/api';
+import api from 'utils/api.next';
+import endpoints from 'configs/endpoints';
 import { setLoaderState } from './loaderActions';
-import { getFleetName } from 'services/Global/reducer';
-import { getAuthenticationSession } from 'services/Auth/reducer';
 
-export const submitForm = (data) => (dispatch, getState) =>
-  _submitForm(data, dispatch, getState);
+export const submitForm = data => dispatch =>
+  _submitForm(data, dispatch);
 
-function _submitForm(data, dispatch, getState) {
+function _submitForm(data, dispatch) {
   dispatch(setLoaderState(true));
 
-  return sendData(data, getState).then(() => {
+  return sendData(data).then(() => {
     dispatch(setLoaderState(false));
     return Promise.resolve();
   }, (error) => {
@@ -19,16 +18,9 @@ function _submitForm(data, dispatch, getState) {
   });
 }
 
-export const sendData = (data, getState) => {
-  const fleet = getFleetName(getState());
-  const devicesUrl = `${fleet}/devices`;
-  const vehiceslUrl = `${fleet}/vehicles`;
-  const sessionId = getAuthenticationSession(getState());
-  const headers = {
-    ['DRVR-SESSION']: sessionId,
-  };
+export const sendData = data => {
+  const { createVehicle, createDevice } = endpoints;
   const createDevicePayload = {
-    optionalHeaders: headers,
     payload: {
       id: data.imei,
       kind: 'some_kind',
@@ -41,15 +33,14 @@ export const sendData = (data, getState) => {
   const odo = data.isMiles ? data.odometer * 1.60934 : data.odometer;
 
   const createVehiclePayload = {
-    optionalHeaders: headers,
     payload: {
       created: Date.now(),
       licensePlate: data.license,
-      make: 'fill_me',
-      model: 'fill_me',
+      make: '',
+      model: '',
       name: data.name,
       status: 'active',
-      year: 'fill_me',
+      year: '',
       odometer: {
         // backend can accept only integers here, i.e. km.
         value: parseInt(odo, 10),
@@ -57,15 +48,14 @@ export const sendData = (data, getState) => {
     },
   };
 
-  const request = api.post(devicesUrl, createDevicePayload)
-    .then(() => api.post(vehiceslUrl, createVehiclePayload))
+  const request = api[createDevice.method](createDevice.url, createDevicePayload)
+    .then(() => api[createVehicle.method](createVehicle.url, createVehiclePayload))
     .then(res => res.json())
     .then(vehicle => {
-      const attachDeviceUrl = `${vehiceslUrl}/${vehicle.id}/device`;
+      const { url, method } = endpoints.attachDevice(vehicle.id);
 
-      return api.post(attachDeviceUrl, {
+      return api[method](url, {
         payload: { deviceId: data.imei },
-        optionalHeaders: headers,
       });
     });
 

@@ -13,12 +13,11 @@ const _offlineDataCacheSave = (data) => ({
   type: INSTALLER_OFFLINE_DATA_CACHED_SAVE,
   data,
 });
-export const checkStorage = () => (dispatch) =>
-  _checkStorage(dispatch);
-export const cleanOfflineData = (indexes) => (dispatch) =>
+export const checkStorage = () => _checkStorage;
+export const cleanOfflineData = indexes => dispatch =>
   _cleanOfflineData(indexes, dispatch);
-export const sendFromStorage = (indexes) => (dispatch, getState) =>
-  _sendFromStorage(indexes, dispatch, getState);
+export const sendFromStorage = indexes => dispatch =>
+  _sendFromStorage(indexes, dispatch);
 
 function _saveLocally(data, dispatch) {
   const dataToSave = data;
@@ -53,7 +52,7 @@ function _cleanOfflineData(indexesToRemove = [], dispatch) {
   });
 }
 
-function _sendFromStorage(indexesToSend = [], dispatch, getState) {
+function _sendFromStorage(indexesToSend = [], dispatch) {
   const sendEverything = indexesToSend.length === 0;
 
   return storage.read(constants.LOCAL_STORAGE_INSTALLER_KEY).then(offlineData => {
@@ -67,7 +66,7 @@ function _sendFromStorage(indexesToSend = [], dispatch, getState) {
       dataToSend = offlineData;
     }
 
-    return Promise.all(dataToSend.map(data => sendData(data, getState)));
+    return Promise.all(dataToSend.map(data => sendData(data)));
   }).then(() => {
     if (!sendEverything) {
       // indexesToSend === indexesTo

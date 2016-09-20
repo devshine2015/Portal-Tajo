@@ -24,6 +24,10 @@ const endpoints = {
     method: 'delete',
   }),
   // vehicles
+  createVehicle: {
+    url: 'vehicles',
+    method: 'post',
+  },
   getVehicles: {
     url: 'vehicles',
     method: 'get',
@@ -32,10 +36,19 @@ const endpoints = {
     url: `vehicles/${id}`,
     method: 'put',
   }),
+  attachDevice: id => ({
+    url: `vehicles/${id}/device`,
+    method: 'post',
+  }),
   // stats
   getStats: {
     url: 'status',
     method: 'get',
+  },
+  // devices
+  createDevice: {
+    url: 'devices',
+    method: 'post',
   },
 
   // events
