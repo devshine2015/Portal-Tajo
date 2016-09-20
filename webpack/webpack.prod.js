@@ -45,6 +45,10 @@ module.exports = require('./webpack.base')({
       clearMessages: true,
     }),
   ],
+
+  // add sourcemaps
+  devtool: 'cheap-module-source-map',
+
   plugins: [
 
     // OccurrenceOrderPlugin is needed for long-term caching to work properly.
@@ -56,6 +60,7 @@ module.exports = require('./webpack.base')({
 
     // Minify and optimize the JavaScript
     new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
       compress: {
         warnings: false, // ...but do not show warnings in the console (there is a lot of them)
       },

@@ -15,9 +15,9 @@
     "build:ssreports": "cross-env NODE_ENV=production DRVR_PROJECT=ssreports webpack --config webpack/webpack.prod.js --color -p",
 
     "//": "build unminified scripts for ddsdev",
-    "build:tajo-dev": "cross-env DRVR_PROJECT=tajo webpack --config webpack/webpack.dev.js --color -p",
-    "build:portal-dev": "cross-env DRVR_PROJECT=portal webpack --config webpack/webpack.dev.js --color -p",
-    "build:devssreports": "cross-env NODE_ENV=development DRVR_PROJECT=ssreports webpack --config webpack/webpack.dev.ssreports.js --color -p",
+    "build:tajo-dev": "cross-env DRVR_PROJECT=tajo webpack --config webpack/webpack.dev.js --color -d",
+    "build:portal-dev": "cross-env DRVR_PROJECT=portal webpack --config webpack/webpack.dev.js --color -d",
+    "build:devssreports": "cross-env DRVR_PROJECT=ssreports webpack --config webpack/webpack.dev.js --color -d",
 
     "//": "tasks for local development",
     "tajo": "npm run start:tunnel:tajo",
