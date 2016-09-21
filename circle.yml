@@ -13,7 +13,7 @@ deployment:
     branch: dev-release
     commands:
       - ./ci/deploy-prod.sh 'ddsdev@ddsdev.cloudapp.net' 'tajo' 'portal'
-  production:
+  stage:
     branch: stage
     commands:
       - ./ci/deploy-prod.sh 'drvrstage@drvrstage.cloudapp.net' 'tajo' 'portal' '~/engine'
