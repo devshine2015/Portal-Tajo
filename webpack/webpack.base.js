@@ -10,6 +10,7 @@ module.exports = (options) => ({
     // Compile into specified folder or /build.js
     path: options.outputFolder,
     publicPath: '/',
+    sourceMapFilename: '[name].js.map',
   }, options.output), // Merge with env dependent settings
   module: {
     loaders: [{
