@@ -1,15 +1,15 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { Link } from 'react-router';
+import portals from 'configs/portals';
 import createBaseUrl from 'utils/createBaseUrl';
-import { PORTALS } from 'containers/InnerPortal/constants';
 
 import styles from './styles.css';
 
 const URLSList = ({ currentFleet }) => (
   <ul className={styles.list}>
     {
-      PORTALS.map(p => {
+      portals.map(p => {
         if (currentFleet === p.fleet) {
           return null;
         }
