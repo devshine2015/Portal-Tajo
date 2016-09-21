@@ -6,8 +6,8 @@ import { onProduction } from 'configs';
 
 const LoginScreenDemo = () => (
   <div>
-    <LoginForm />
     { !onProduction && <PortalsLinks /> }
+    <LoginForm />
   </div>
 );
 
