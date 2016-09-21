@@ -82,6 +82,9 @@
     "sanitize.css": "^3.3.0",
     "tinycolor2": "^1.4.1",
     "velocity-react": "^1.1.5",
+    "webpack": "^2.1.0-beta.21",
+    "webpack-dev-middleware": "^1.6.1",
+    "webpack-hot-middleware": "^2.10.0",
     "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
@@ -125,9 +128,6 @@
     "rimraf": "^2.5.2",
     "style-loader": "^0.13.1",
     "svg-react-loader": "^0.3.7",
-    "url-loader": "^0.5.7",
-    "webpack": "^2.1.0-beta.21",
-    "webpack-dev-middleware": "^1.6.1",
-    "webpack-hot-middleware": "^2.10.0"
+    "url-loader": "^0.5.7"
   }
 }
