@@ -4,7 +4,6 @@ PROJECT2=$3
 TARGET_FOLDER='~/driver-server/static-root/public/common-portal'
 FOLDER_NAME1="builds/prod/$PROJECT1"
 FOLDER_NAME2="builds/prod/$PROJECT2"
-ASSETS='assets'
 
 echo "clean and build sources"
 npm run clean
