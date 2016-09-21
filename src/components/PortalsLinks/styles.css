@@ -2,6 +2,7 @@
   .list {
     list-style-type: none;
     padding: 10px;
+    display: inline-block;
   }
 
   .list__item {
