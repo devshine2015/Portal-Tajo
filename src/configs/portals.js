@@ -1,4 +1,4 @@
-import { onProduction } from 'configs';
+import { serverEnv } from 'configs';
 
 /**
  * Reflect this table
@@ -59,4 +59,4 @@ const PROD_PORTALS = [{
   niceName: 'Demo',
 }];
 
-export const PORTALS = onProduction ? PROD_PORTALS : DEV_PORTALS;
+export default serverEnv !== 'dev' ? PROD_PORTALS : DEV_PORTALS;
