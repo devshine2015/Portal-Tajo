@@ -24,8 +24,8 @@ deployment:
   ssreportsDev:
     branch: ssreports-dev
     commands:
-      - ./deployToOld.sh 'ddsdev@ddsdev.cloudapp.net'
+      - ./ci/deployToOld.sh 'ddsdev@ddsdev.cloudapp.net'
   ssreportsProd:
     branch: ssreports-prod
     commands:
-      - ./deployToOld.sh 'drvrappbeta@drvrappbeta.cloudapp.net'
+      - ./ci/deployToOld.sh 'drvrappbeta@drvrappbeta.cloudapp.net'
