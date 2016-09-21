@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# deprecated
 PROJECT1=$2
 PROJECT2=$3
 TARGET_FOLDER='~/driver-server/static-root/public/common-portal'
