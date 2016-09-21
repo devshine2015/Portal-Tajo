@@ -47,7 +47,7 @@ module.exports = require('./webpack.base')({
   ],
 
   // add sourcemaps
-  devtool: 'cheap-module-source-map',
+  devtool: 'source-map',
 
   plugins: [
 
