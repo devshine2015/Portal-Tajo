@@ -3,10 +3,10 @@ import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
 import endpoints from 'configs/endpoints';
 import VERSIONS from 'configs/versions';
 import {
-  api,
   createBaseUrl,
   storage,
 } from 'utils';
+import api from 'utils/api';
 import commonActions from './commonActions';
 import { getAuthenticationSession } from '../reducer';
 import { getFleetName } from 'services/Global/reducer';
