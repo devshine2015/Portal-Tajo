@@ -1,5 +1,6 @@
-const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080/engine';
-const PROD_ENGINE_BASE = `${window.location.host}/engine`;
+const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080';
+const PROD_ENGINE_BASE = window.location.host;
+
 const chooseServerEnv = () => {
   if (window.location.hostname.search('drvrapp.net') !== -1) {
     return 'production';

@@ -18,24 +18,26 @@ export const logout = (redirectUrl = '') => (dispatch, getState) =>
   _logout({ redirectUrl }, dispatch, getState);
 
 function _login(data, dispatch, getState) {
-  const { url, method } = endpoints.login;
+  const { url, method, apiVersion } = endpoints.login;
   const options = {
+    apiVersion,
     payload: data,
   };
 
   return api[method](url, options)
-    .then(response => response.text())
-    .then(token => {
+    .then(response => {
+      if (apiVersion === 1) {
+        return response.text();
+      }
+
+      return response.json();
+    })
+    .then(res => {
       const fleet = getFleetName(getState());
-      const sessionData = {
-        fleet,
-        'session-id': token,
-        id: token,
-        role: 'installer', //setup lowest possible role by default
-      };
+      const sessionData = collectData(apiVersion, fleet, res);
 
       storage.save(LOCAL_STORAGE_SESSION_KEY, sessionData, VERSIONS.authentication.currentVersion);
-      dispatch(commonActions.setAuthentication(token, fleet));
+      dispatch(commonActions.setAuthentication(sessionData.sessionId, fleet));
       dispatch(setUserData({
         role: sessionData.role,
       }));
@@ -47,10 +49,10 @@ function _login(data, dispatch, getState) {
 }
 
 function _logout({ redirectUrl }, dispatch, getState) {
-  const { url, method } = endpoints.logout;
+  const { url, method, apiVersion } = endpoints.logout;
   const sessionId = getAuthenticationSession(getState());
 
-  return api[method](url)
+  return api[method](url, { apiVersion })
     .then(() => {
       const fleet = getFleetName(getState());
 
@@ -64,4 +66,22 @@ function _logout({ redirectUrl }, dispatch, getState) {
     .catch(e => {
       console.error(e);
     });
+}
+
+// after changing Login API
+// we get different responce schema
+function collectData(apiVersion, fleetFromURL, res) {
+  if (apiVersion === 1.1) {
+    return {
+      ...res,
+      id: res.sessionId,
+    };
+  }
+
+  return {
+    fleet: fleetFromURL,
+    sessionId: res,
+    id: res,
+    role: 'installer', //setup lowest possible role by default
+  };
 }
