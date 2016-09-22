@@ -8,7 +8,6 @@ import styles from './styles.css';
 
 const URLSList = ({ currentFleet }) => (
   <div>
-    Some text for test rebase
     Internal feature. Go to another fleet:
     <ul className={styles.list}>
       {
