@@ -33,7 +33,7 @@ function _checkUserAuthentication(params, dispatch, getState) {
         dispatch(setUserData({
           role: session[0].role,
         }));
-        dispatch(commonActions.setAuthentication(session[0]['session-id'], fleet));
+        dispatch(commonActions.setAuthentication(session[0].sessionId, fleet));
       } else {
         dispatch(commonActions.eraseAuth());
 

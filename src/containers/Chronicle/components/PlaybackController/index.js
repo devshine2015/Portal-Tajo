@@ -86,10 +86,10 @@ class PlaybackCtr extends React.Component {
     this.play(true);
     switch (speed) {
       case 1:
-        this.playbackSpeed = 0.2;
+        this.playbackSpeed = 0.05;
         break;
       case 2:
-        this.playbackSpeed = 0.4;
+        this.playbackSpeed = 0.2;
         break;
       case 3:
         this.playbackSpeed = 0.75;
