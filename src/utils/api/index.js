@@ -1,13 +1,15 @@
 import qs from 'query-string';
 import { protocol, socketProtocol, ENGINE_BASE } from 'configs';
-import { commonActions } from 'services/Auth/actions';
 import { getAuthenticationSession } from 'services/Auth/reducer';
 import { getFleetName } from 'services/Global/reducer';
+import { errorsActions } from 'services/Global/actions';
 import prepareRequest from './makeRequest';
+import errorsHandler from './errorsHandler';
 
 const HEADERS = {
   'content-type': 'application/json',
   accept: 'application/json',
+  mode: 'no-cors',
 };
 
 class API {
@@ -27,19 +29,11 @@ class API {
     this.getState = store.getState;
   }
 
-  errorsHandler = error => {
-    switch (error && error.response && error.response.status) {
-      case 403: {
-        this.dispatch(commonActions.eraseAuth());
-        break;
-      }
-      default: break;
-    }
-
-    return Promise.reject(error && error.response);
-  }
+  errorsHandler = error => errorsHandler(error, this.dispatch)
 
   invoke(method, url, { payload, optionalHeaders = {} } = {}) {
+    this.dispatch(errorsActions.resetError());
+
     const fleet = getFleetName(this.getState());
     const urlToInvoke = `${this.baseURL}/${fleet}/${url}`;
     const headers = Object.assign({}, HEADERS, {

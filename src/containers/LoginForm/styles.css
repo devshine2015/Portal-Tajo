@@ -4,8 +4,12 @@
     padding: 20px;
   }
 
+  .paper__inn {
+    padding-bottom: 10px;
+  }
+
   .loginForm {
-    padding: 10px 30px 30px;
+    padding: 10px 30px;
   }
 
   .header {
