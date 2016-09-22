@@ -1,4 +1,4 @@
-const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080';
+const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080'; // for localhost
 const PROD_ENGINE_BASE = window.location.host;
 
 const chooseServerEnv = () => {
@@ -25,4 +25,5 @@ export const onDev = serverEnv === 'dev';
 export const LOCAL_STORAGE_SESSION_KEY = portal !== 'ssreports' ?
   'drvr_tajo-sessionId' : 'ngStorage-sessionId';
 
-export const ENGINE_BASE = onProduction ? PROD_ENGINE_BASE : DEV_ENGINE_BASE;
+// isDev true only on localhost
+export const ENGINE_BASE = isDev ? DEV_ENGINE_BASE : PROD_ENGINE_BASE;
