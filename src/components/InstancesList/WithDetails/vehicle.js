@@ -50,6 +50,11 @@ class ListItemVehicle extends React.Component {
       />
     );
   }
+  // <ItemProperty
+  //   key="dist"
+  //   title="Trip dist"
+  //   value={`${(this.props.dist.lastTrip / 1000).toFixed(2)} km`}
+  // />
 
   renderDetails() {
     if (this.props.isExpanded) {
@@ -60,11 +65,13 @@ class ListItemVehicle extends React.Component {
           title="Speed"
           value={`${this.props.speed.toFixed(1)} km/h`}
         />
-        <ItemProperty
-          key="dist"
-          title="Trip dist"
-          value={`${(this.props.dist.lastTrip / 1000).toFixed(2)} km`}
-        />
+        {this.props.temp === undefined ? '' :
+          <ItemProperty
+            key="temp"
+            title="Temperature"
+            value={this.props.temp.toFixed(1)+'\xB0 C'}
+          />
+        }
         <Divider key="line02" />
         <ItemProperty
           key="license"
@@ -131,6 +138,7 @@ ListItemVehicle.propTypes = {
   lastUpdateSinceEpoch: React.PropTypes.number.isRequired,
   name: React.PropTypes.string.isRequired,
   speed: React.PropTypes.number,
+  temp: React.PropTypes.number,
   dist: React.PropTypes.object,
   licensePlate: React.PropTypes.string,
   make: React.PropTypes.string,

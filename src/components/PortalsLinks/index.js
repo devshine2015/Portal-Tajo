@@ -7,25 +7,28 @@ import createBaseUrl from 'utils/createBaseUrl';
 import styles from './styles.css';
 
 const URLSList = ({ currentFleet }) => (
-  <ul className={styles.list}>
-    {
-      portals.map(p => {
-        if (currentFleet === p.fleet) {
-          return null;
-        }
+  <div>
+    Internal feature. Go to another fleet:
+    <ul className={styles.list}>
+      {
+        portals.map(p => {
+          if (currentFleet === p.fleet) {
+            return null;
+          }
 
-        const link = `${createBaseUrl(p.fleet)}/`;
-        return (
-          <li
-            key={p.fleet}
-            className={styles.list__item}
-          >
-            <Link to={link}>{p.niceName}</Link>
-          </li>
-        );
-      })
-    }
-  </ul>
+          const link = `${createBaseUrl(p.fleet)}/`;
+          return (
+            <li
+              key={p.fleet}
+              className={styles.list__item}
+            >
+              <Link to={link}>{p.niceName}</Link>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
 );
 
 URLSList.propTypes = {

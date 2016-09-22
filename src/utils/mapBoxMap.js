@@ -12,7 +12,7 @@ export function createMapboxMap(domNode, view) {
   theMap = window.L.mapbox.map(domNode);
   theMap.setView(view.center, view.zoom);
 
-  const tilesOSM = window.L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+  const tilesOSM = window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
   });
   window.L.control.layers({

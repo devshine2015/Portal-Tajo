@@ -2,12 +2,22 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import Form from 'components/Form';
-import Button from 'components/Button';
-import InputField from 'components/InputField';
-import InputFieldWrapper from 'components/InputFieldWrapper';
+import {
+  TextField,
+  RaisedButton,
+  Paper,
+  Divider,
+} from 'material-ui';
 import { loginActions } from 'services/Auth/actions';
+import { getFleetName } from 'services/Global/reducer';
+
+import styles from './styles.css';
 
 const FORM_NAME = 'login';
+const Header = ({ fleetName }) => (
+  <h4 className={styles.header}>
+    Login to <span className={styles.header__portal}>{fleetName}</span> portal</h4>
+);
 
 class LoginForm extends React.Component {
 
@@ -28,42 +38,49 @@ class LoginForm extends React.Component {
 
   render() {
     return (
-      <Form
-        name={FORM_NAME}
-        onSubmit={this.onSubmit}
-      >
-        <InputFieldWrapper>
-          <InputField
-            name="username"
-            placeholder="Username"
-          />
-        </InputFieldWrapper>
-        <InputFieldWrapper>
-          <InputField
-            name="password"
-            placeholder="Password"
-            type="password"
-          />
-        </InputFieldWrapper>
-        <InputFieldWrapper>
-          <Button
-            type="submit"
-            text="Sign In"
-            onClick={this.onSubmit}
-          />
-        </InputFieldWrapper>
-      </Form>
+      <div className={styles.loginContainer}>
+        <Paper>
+          <Header fleetName={this.props.fleetName} />
+          <Divider />
+          <Form
+            name={FORM_NAME}
+            onSubmit={this.onSubmit}
+            className={styles.loginForm}
+          >
+            <TextField
+              fullWidth
+              name="username"
+              placeholder="Username"
+            />
+            <TextField
+              fullWidth
+              name="password"
+              placeholder="Password"
+              type="password"
+            />
+            <RaisedButton
+              type="submit"
+              label="Sign In"
+              onClick={this.onSubmit}
+              primary
+            />
+          </Form>
+        </Paper>
+      </div>
     );
   }
 }
 
 LoginForm.propTypes = {
   login: React.PropTypes.func.isRequired,
+  fleetName: React.PropTypes.string.isRequired,
 };
 
 const PureLoginForm = pure(LoginForm);
 
-const mapState = () => ({});
+const mapState = (state) => ({
+  fleetName: getFleetName(state),
+});
 const mapDispatch = {
   login: loginActions.login,
 };

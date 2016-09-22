@@ -1,0 +1,27 @@
+@media screen and (min-width: 100px) {
+  .loginContainer {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .loginForm {
+    padding: 10px 30px 30px;
+  }
+
+  .header {
+    text-align: center;
+    font-weight: normal;
+    padding: 10px 0;
+  }
+  .header__portal {
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+}
+
+@media screen and (min-width: 460px) {
+  .loginContainer {
+    width: 50%;
+    margin: 0 auto;
+  }
+}

@@ -1,8 +1,8 @@
 @media screen and (min-width: 100px) {
   .list {
     list-style-type: none;
-    border-bottom: 1px solid #ccc;
-    padding: 5px;
+    padding: 10px;
+    display: inline-block;
   }
 
   .list__item {
