@@ -8,8 +8,12 @@ import {
   Paper,
   Divider,
 } from 'material-ui';
+import SimpleError from 'components/Error';
 import { loginActions } from 'services/Auth/actions';
-import { getFleetName } from 'services/Global/reducer';
+import {
+  getFleetName,
+  getErrorMessage,
+} from 'services/Global/reducer';
 
 import styles from './styles.css';
 
@@ -20,51 +24,66 @@ const Header = ({ fleetName }) => (
 );
 
 class LoginForm extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      username: null,
+      password: null,
+    };
+  }
+
+  onChange = e => {
+    const { name, value } = e.target;
+
+    this.setState({
+      [name]: value,
+    });
+  }
 
   onSubmit = (e) => {
     e.preventDefault();
 
-    const fields = document.forms[FORM_NAME].elements;
-    const data = {};
-
-    for (let i = 0; i < fields.length; i++) {
-      if (fields[i].tagName.toLowerCase() !== 'input') continue;
-
-      data[fields[i].name] = fields[i].value.trim();
-    }
-
-    this.props.login(data);
+    this.props.login(this.state);
   }
 
   render() {
+    const isDisabled = !this.state.username || !this.state.password;
+
     return (
       <div className={styles.loginContainer}>
         <Paper>
-          <Header fleetName={this.props.fleetName} />
-          <Divider />
-          <Form
-            name={FORM_NAME}
-            onSubmit={this.onSubmit}
-            className={styles.loginForm}
-          >
-            <TextField
-              fullWidth
-              name="username"
-              placeholder="Username"
-            />
-            <TextField
-              fullWidth
-              name="password"
-              placeholder="Password"
-              type="password"
-            />
-            <RaisedButton
-              type="submit"
-              label="Sign In"
-              onClick={this.onSubmit}
-              primary
-            />
-          </Form>
+          <div className={styles.paper__inn}>
+            <Header fleetName={this.props.fleetName} />
+            <Divider />
+            <Form
+              name={FORM_NAME}
+              onSubmit={this.onSubmit}
+              className={styles.loginForm}
+            >
+              <TextField
+                fullWidth
+                name="username"
+                placeholder="Username"
+                onChange={this.onChange}
+              />
+              <TextField
+                fullWidth
+                name="password"
+                placeholder="Password"
+                type="password"
+                onChange={this.onChange}
+              />
+              <RaisedButton
+                disabled={isDisabled}
+                type="submit"
+                label="Sign In"
+                onClick={this.onSubmit}
+                primary
+              />
+            </Form>
+            { this.props.errorMessage !== '' && <SimpleError message={this.props.errorMessage} />}
+          </div>
         </Paper>
       </div>
     );
@@ -74,12 +93,14 @@ class LoginForm extends React.Component {
 LoginForm.propTypes = {
   login: React.PropTypes.func.isRequired,
   fleetName: React.PropTypes.string.isRequired,
+  errorMessage: React.PropTypes.string,
 };
 
 const PureLoginForm = pure(LoginForm);
 
 const mapState = (state) => ({
   fleetName: getFleetName(state),
+  errorMessage: getErrorMessage(state),
 });
 const mapDispatch = {
   login: loginActions.login,

@@ -1,28 +1,19 @@
-import { fromJS } from 'immutable';
-import {
-  fleetNameActions,
-  onlineActions,
-} from './actions';
+import { combineReducers } from 'redux-immutable';
+import globalFleetReducer, * as fromGlobalFleetReducer from './reducers/globalFleetReducer';
+import onlineReducer, * as fromOnlineReducer from './reducers/onlineReducer';
+import errorsReducer, * as fromErrorsReducer from './reducers/errorsReducer';
 
-const initialState = fromJS({
-  fleetName: null,
-  isOnline: window.navigator.onLine,
+export default combineReducers({
+  errors: errorsReducer,
+  online: onlineReducer,
+  fleet: globalFleetReducer,
 });
 
-function globalReducer(state = initialState, action) {
-  switch (action.type) {
-    case fleetNameActions.GLOBAL_FLEET_NAME_SET:
-      return state.set('fleetName', action.fleetName);
-    case onlineActions.GLOBAL_ONLINE_STATE_CHANGE:
-      return state.set('isOnline', action.onLine);
-    default:
-      return state;
-  }
-}
+export const getFleetName = state =>
+  fromGlobalFleetReducer.getFleetName(state.getIn(['global', 'fleet']));
 
-export default globalReducer;
+export const getAppOnlineState = state =>
+  fromOnlineReducer.getAppOnlineState(state.getIn(['global', 'online']));
 
-export const getFleetName = (state) =>
-  state.getIn(['global', 'fleetName']);
-export const getAppOnlineState = (state) =>
-  state.getIn(['global', 'isOnline']);
+export const getErrorMessage = state =>
+  fromErrorsReducer.getErrorMessage(state.getIn(['global', 'errors']));

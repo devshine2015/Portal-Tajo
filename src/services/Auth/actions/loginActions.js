@@ -40,6 +40,9 @@ function _login(data, dispatch, getState) {
         role: sessionData.role,
       }));
       dispatch(push(`${createBaseUrl(fleet)}/`));
+    })
+    .catch(error => {
+      console.error(error);
     });
 }
 
