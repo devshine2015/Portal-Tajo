@@ -1,6 +1,4 @@
-import { onProduction } from 'configs';
-
-export const LOCAL_STORAGE_INSTALLER_KEY = onProduction ? 'drvr_installer_tajo' : 'drvr_installer';
+export const LOCAL_STORAGE_INSTALLER_KEY = 'drvr_tajo-installer';
 //
 // -- map related stuff
 export const MAPBOX_KEY = 'pk.eyJ1IjoiZHJ2ciIsImEiOiI3NWM4ZWE1MWEyOTVmZTQ0ZDU2OTE5OGIwNzRlMWY2NyJ9.ybLA6tItFcbyAQyxRq3Pog';
