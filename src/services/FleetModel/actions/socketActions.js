@@ -4,7 +4,7 @@ import api from 'utils/api';
 export const FLEET_MODEL_SOCKET_SET = 'portal/services/FLEET_MODEL_SOCKET_SET';
 
 export const openFleetSocket = () => _openFleetSocket;
-export const closeFleetSocket = () => _closeSocket;
+export const closeFleetSocket = _closeSocket;
 
 let fleetSocket;
 let socketIsOpened = false;
