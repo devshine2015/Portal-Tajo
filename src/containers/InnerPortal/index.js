@@ -8,37 +8,38 @@ import MainSidebar from './components/MainSidebar';
 import { getFleetName } from 'services/Global/reducer';
 import { getIsUserAuthenticated } from 'services/Auth/reducer';
 import { localActions } from 'services/Auth/actions';
-// import PortalsList from 'components/PortalsLinks';
 import { commonFleetActions } from 'services/FleetModel/actions';
 
 const URLS = {
-  success: 'dashboard',
   failure: 'login',
 };
 
 class InnerPortal extends React.Component {
 
-  // TODO -- InnerPortal mounts each time screen change
   componentDidMount() {
     this.checkUserAuthentication();
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.fleet !== this.props.fleet) {
+      // FOR INTERNAL USE
+      // have to check authentication on fleet changing
       this.checkUserAuthentication();
     }
   }
 
   checkUserAuthentication() {
-    this.props.checkUserAuthentication({ urls: URLS }).then(() => {
-      this.props.fetchFleet(this.props.hasRealTimeData);
+    this.props.checkUserAuthentication({ urls: URLS }).then(isAuthenticated => {
+      if (isAuthenticated) {
+        this.props.fetchFleet(this.props.hasRealTimeData);
+      }
     });
   }
 
   render() {
+    // check here to hide InnerPortal
+    // from unauthenticated users for sure
     if (this.props.isAuthenticated) {
-      // const showPortals = this.props.showPortalsList === undefined ? true : this.props.showPortalsList;
-
       return (
         <div className={styles.innerPortal}>
 
@@ -47,7 +48,6 @@ class InnerPortal extends React.Component {
           <MainSidebar />
 
           <div className={styles.content}>
-            { /*showPortals && <PortalsList currentFleet={this.props.fleet} /> */}
             {this.props.children}
           </div>
 

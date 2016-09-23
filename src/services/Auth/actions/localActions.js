@@ -18,23 +18,28 @@ function _checkUserAuthentication(params, dispatch, getState) {
 
   // for case when no auth data was saved in localStorage
   if (getAuthenticatedFleet(getState()) === fleet) {
-    return Promise.resolve();
+    return Promise.resolve(true);
   }
 
   return storage.read(LOCAL_STORAGE_SESSION_KEY)
   .then(_checkVersion(params.checkVersion))
   .then((sessions) => {
+    let isAuthenticated = false;
+
     if (sessions && typeof sessions === 'string') {
-      return dispatch(commonActions.setAuthentication(sessions, fleet));
+      dispatch(commonActions.setAuthentication(sessions, fleet));
+      isAuthenticated = true;
     } else if (sessions) {
       const session = sessions.filter(s => s.fleet === fleet);
 
       if (session.length !== 0) {
+        isAuthenticated = true;
         dispatch(setUserData({
           role: session[0].role,
         }));
         dispatch(commonActions.setAuthentication(session[0].sessionId, fleet));
       } else {
+        isAuthenticated = false;
         dispatch(commonActions.eraseAuth());
 
         if (params.urls) {
@@ -47,14 +52,14 @@ function _checkUserAuthentication(params, dispatch, getState) {
       if (params.urls) {
         dispatch(replace(`${createBaseUrl(fleet)}/${params.urls.failure}`));
       }
+
+      return Promise.resolve(isAuthenticated);
     }
 
-    return Promise.resolve();
+    return Promise.resolve(isAuthenticated);
   }, (error) => {
     if (error.message && error.message === 'wrong version') {
       const loginUrl = `${createBaseUrl(fleet)}/login`;
-
-      console.log(error.message);
 
       dispatch(commonActions.eraseAuth());
 
@@ -62,6 +67,8 @@ function _checkUserAuthentication(params, dispatch, getState) {
         dispatch(replace(loginUrl));
       }
     }
+
+    return Promise.resolve(false);
   });
 }
 

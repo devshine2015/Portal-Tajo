@@ -4,9 +4,7 @@ import Installer from 'containers/Installer';
 import InnerPortal from 'containers/InnerPortal';
 
 const InstallerScreen = () => (
-  <InnerPortal>
-    <Installer />
-  </InnerPortal>
+  <Installer />
 );
 
 export default pure(InstallerScreen);
