@@ -14,7 +14,10 @@ export const updateDetails = (details = {}) => dispatch =>
   makeUpdateVehicleRequest(details, dispatch);
 export const filterVehicles = (searchString) => (dispatch, getState) =>
   _filterVehicles({ searchString }, dispatch, getState);
-export const setSelectedVehicleId = _vehicleSetSelect;
+export const setSelectedVehicleId = (id) => ({
+  type: FLEET_MODEL_VEHICLE_SELECT,
+  id,
+});
 
 /**
  * fleet is optional
@@ -85,9 +88,4 @@ const _vehicleUpdate = (details, id) => ({
 const _vehiclesFilterUpdate = (vehicles) => ({
   type: FLEET_MODEL_VEHICLES_FILTER,
   vehicles,
-});
-
-const _vehicleSetSelect = (id) => ({
-  type: FLEET_MODEL_VEHICLE_SELECT,
-  id,
 });
