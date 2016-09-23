@@ -8,10 +8,16 @@ const resourceNotFound = {
   message: 'Resource is not found. Please contact with administrator',
   internal: false,
 };
+const unauthorized = {
+  type: 'Unauthorized',
+  message: 'Username/password combination is wrong.',
+  internal: false,
+};
 
 const errors = {
   [failedToFetch.type]: failedToFetch,
   [resourceNotFound.type]: resourceNotFound,
+  [unauthorized.type]: unauthorized,
 };
 
 function getLocalType(error) {

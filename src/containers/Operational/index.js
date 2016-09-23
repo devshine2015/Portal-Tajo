@@ -7,6 +7,7 @@ import TheMap from 'containers/MapFleet/realTime';
 import OperationalList from './components/OperationalPowerList';
 import FixedContent from 'components/FixedContent';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
+import { socketActions } from 'services/FleetModel/actions';
 import createEventDispatcher from 'utils/eventDispatcher';
 
 import styles from './styles.css';
@@ -18,6 +19,14 @@ class Operational extends React.Component {
     super(props);
 
     this.eventDispatcher = createEventDispatcher();
+  }
+
+  componentDidMount() {
+    this.props.openFleetSocket();
+  }
+
+  componentWillUnmount() {
+    socketActions.closeFleetSocket();
   }
 
   render() {
@@ -44,12 +53,16 @@ class Operational extends React.Component {
 Operational.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
   gfs: React.PropTypes.array.isRequired,
+  openFleetSocket: React.PropTypes.func.isRequired,
 };
 
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
   gfs: fromFleetReducer.getGFsExSorted(state),
 });
+const mapDispatch = {
+  openFleetSocket: socketActions.openFleetSocket,
+};
 
 const PureOperational = pure(Operational);
-export default connect(mapState)(PureOperational);
+export default connect(mapState, mapDispatch)(PureOperational);

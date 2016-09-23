@@ -14,6 +14,7 @@ const createRoute = ({
     }, 'history');
   },
   childRoutes: [],
+  protected: true,
 });
 
 module.exports = createRoute;

@@ -3,6 +3,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import InnerPortal from 'containers/InnerPortal';
 import { onlineActions } from 'services/Global/actions';
 import { localActions } from 'services/Auth/actions';
 import drvrDevTheme from 'configs/theme';
@@ -10,10 +11,17 @@ import drvrDevTheme from 'configs/theme';
 // need this for global styling
 require('./styles.css');
 
+function screenIsProtected(routes = []) {
+  const lastRoute = routes[routes.length - 1];
+
+  // if screen don't have 'protected' property
+  // recon it as protected by default
+  return Object.hasOwnProperty.call(lastRoute, 'protected') ? lastRoute.protected : true;
+}
+
 const muiTheme = getMuiTheme(drvrDevTheme);
 
 const URLS = {
-  success: 'map',
   failure: 'login',
 };
 
@@ -35,9 +43,20 @@ class App extends React.Component {
   }
 
   render() {
+    let children = this.props.children;
+    const screenProtected = screenIsProtected(this.props.routes);
+
+    if (screenProtected) {
+      children = (
+        <InnerPortal>
+          {children}
+        </InnerPortal>
+      );
+    }
+
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
-        {this.props.children}
+        {children}
       </MuiThemeProvider>
     );
   }
@@ -51,6 +70,11 @@ App.propTypes = {
   changeOnlineState: React.PropTypes.func.isRequired,
   checkUserAuthentication: React.PropTypes.func.isRequired,
   children: React.PropTypes.node,
+  routes: React.PropTypes.arrayOf(
+    React.PropTypes.shape({
+      protected: React.PropTypes.bool,
+    })
+  ).isRequired,
 };
 
 const mapState = () => ({});

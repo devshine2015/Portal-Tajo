@@ -11,13 +11,7 @@ import {
 
 const ROOT = `/portal/:fleet/${portal}/`;
 
-const MAIN_MENU =
-//   {
-//   niceName: 'Dashboard',
-//   path: 'dashboard',
-//   order: 0,
-// },
-[{
+const MAIN_MENU = [{
   niceName: 'Operational',
   path: 'map',
   order: 1,
@@ -44,15 +38,6 @@ export default function createRoutes(store) {
 
   const mapAndListRoute = require('screens/Operational/route')({
     path: 'map',
-    dispatch: store.dispatch,
-  });
-
-  const dashboardRoute = require('screens/DashboardScreen/route')({
-    path: 'dashboard',
-    injectReducer,
-    errorHandler,
-    loadModule,
-    dispatch: store.dispatch,
   });
 
   const chronicleRoute = require('screens/Chronicle/route')({
@@ -89,13 +74,12 @@ export default function createRoutes(store) {
   });
 
   rootRoute.indexRoute = {
-    // component: require('screens/DashboardScreen').default,
     component: require('screens/Operational').default,
+    protected: mapAndListRoute.protected,
   };
 
   rootRoute.childRoutes.push(
     loginRoute,
-//    dashboardRoute,
     mapAndListRoute,
     reportsRoute,
     chronicleRoute,
