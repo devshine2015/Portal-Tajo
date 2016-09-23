@@ -20,6 +20,7 @@ const createRoute = ({
   onLeave: () => {
     dispatch(socketActions.closeFleetSocket());
   },
+  protected: true,
 });
 
 module.exports = createRoute;

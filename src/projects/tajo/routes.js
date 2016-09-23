@@ -91,7 +91,9 @@ export default function createRoutes(store) {
   });
 
   rootRoute.indexRoute = {
-    component: require('screens/DashboardScreen').default,
+    component: dashboardRoute.component,
+    name: dashboardRoute.name,
+    protected: dashboardRoute.protected,
   };
 
   rootRoute.childRoutes.push(

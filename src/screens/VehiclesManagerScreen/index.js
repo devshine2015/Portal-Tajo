@@ -4,9 +4,7 @@ import VehiclesEditor from 'containers/VehiclesEditor';
 import InnerPortal from 'containers/InnerPortal';
 
 const VehiclesManagerScreen = () => (
-  <InnerPortal>
-    <VehiclesEditor />
-  </InnerPortal>
+  <VehiclesEditor />
 );
 
 export default pure(VehiclesManagerScreen);

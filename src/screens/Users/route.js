@@ -13,6 +13,7 @@ const createRoute = ({
       cb(null, require('./index').default);
     }, 'users');
   },
+  protected: true,
 });
 
 module.exports = createRoute;
