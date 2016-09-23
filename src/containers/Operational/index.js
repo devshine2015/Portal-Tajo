@@ -43,7 +43,7 @@ class Operational extends React.Component {
             // filterFunc={this.props.filterFunc}
           />
         <FixedContent containerClassName={styles.fixedContent}>
-        <TheMap eventDispatcher={this.eventDispatcher} />
+          <TheMap eventDispatcher={this.eventDispatcher} />
         </FixedContent>
       </div>
     );

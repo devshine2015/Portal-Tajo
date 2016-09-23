@@ -12,6 +12,8 @@ import { vehiclesActions, gfActions } from 'services/FleetModel/actions';
 import { getSelectedVehicleId } from 'services/FleetModel/reducer';
 import * as listEvents from './events';
 import * as mapEvents from 'containers/MapFleet/events';
+import GFEditor from 'containers/GFEditor';
+import { gfEditIsEditing } from 'containers/GFEditor/reducer';
 import { dimensions } from 'configs/theme';
 
 import styles from './styles.css';
@@ -89,6 +91,14 @@ class OperationalPowerList extends React.Component {
   }
 
   render() {
+    if (this.props.isEditGF) {
+      return (
+        <PowerList>
+          <GFEditor />
+        </PowerList>
+      );
+    }
+
     return (
       <PowerList>
         <Tabs
@@ -147,9 +157,12 @@ OperationalPowerList.propTypes = {
   filterGFsFunc: React.PropTypes.func.isRequired,
   setSelectedVehicleId: React.PropTypes.func.isRequired,
   getSelectedVehicleId: React.PropTypes.string.isRequired,
+  isEditGF: React.PropTypes.bool.isRequired,
 };
+
 const mapState = (state) => ({
   getSelectedVehicleId: getSelectedVehicleId(state),
+  isEditGF: gfEditIsEditing(state),
 });
 const mapDispatch = {
   filterVehiclesFunc: vehiclesActions.filterVehicles,
