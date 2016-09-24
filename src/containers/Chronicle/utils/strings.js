@@ -1,6 +1,18 @@
 import { makeStaticLableSVG, deviceAccessTime, imageTimer,
   notificationTimeToLeave, imageTimelapse, placesAcUnit } from './staticIcons';
 
+//
+// need this for setting content of mapBox popUp
+export function generateInnerHTMLForHistoryMoment(momentData) {
+  let content = dateToChronicleLable(momentData.date)
+                        +'<br>'
+                        + speedToChronicleLable(momentData.speed);
+  if (momentData.temperature !== null) {
+    content += '<br>'+temperatureToChronicleLable(momentData.temperature);
+  }
+  return content;
+}
+
 export function dateToChronicleLable(inDate) {
   return makeStaticLableSVG(deviceAccessTime)+'<span style="float:right">'+dateToChronicleString(inDate)+'</span>';
 }
@@ -25,7 +37,7 @@ function dateToChronicleString(inDate) {
   return timeStr;
 }
 
-function msToTimeIntervalString(duration) {
+export function msToTimeIntervalString(duration) {
   // const milliseconds = parseInt((duration % 1000) / 100, 10);
   // const seconds = parseInt((duration / 1000) % 60, 10);
   const minutes = parseInt((duration / (1000 * 60)) % 60, 10);

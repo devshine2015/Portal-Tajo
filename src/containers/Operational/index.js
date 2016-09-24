@@ -21,18 +21,17 @@ class Operational extends React.Component {
     this.eventDispatcher = createEventDispatcher();
   }
 
-  componentDidMount() {
-    this.props.openFleetSocket();
-  }
-
   componentWillUnmount() {
     socketActions.closeFleetSocket();
   }
 
   render() {
-    // const displayColumn = this.props.vehicles.length !== 0 &&
-    //   this.props.gfs.length !== 0 && !this.props.isEditGF;
-
+    // quick fix to make sure sockets are not opened before we have created local fleet model
+    // if somebody else besides OPERATIONAL will be opening WS - lets move this to WS
+    // (pendingOpen state)
+    if (this.props.vehicles.length > 0 && !socketActions.isSocketOpened()) {
+      this.props.openFleetSocket();
+    }
     return (
       <div className={styles.mapAndListContainer}>
           <OperationalList

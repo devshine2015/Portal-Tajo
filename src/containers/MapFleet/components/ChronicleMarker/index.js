@@ -2,8 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { hideLayer } from 'utils/mapBoxMap';
-import { dateToChronicleLable, speedToChronicleLable,
-    temperatureToChronicleLable } from 'containers/Chronicle/utils/strings';
+import { generateInnerHTMLForHistoryMoment } from 'containers/Chronicle/utils/strings';
 // import { CHRONICLE_LOCAL_INCTANCE_STATE_VALID } from 'containers/Chronicle/actions';
 
 import { getNormalized100T } from 'containers/Chronicle/reducer';
@@ -66,14 +65,7 @@ class ChronicleMarker extends React.Component {
     this.props.chronicleFrame.player.gotoTime100(this.props.normalized100T);
     const momentData = this.props.chronicleFrame.player.getCurrentMomentData();
     this.setPosition(momentData.pos);
-
-    let content = dateToChronicleLable(momentData.date)
-                          +'<br>'
-                          + speedToChronicleLable(momentData.speed);
-    if (momentData.temperature !== null) {
-      content += '<br>'+temperatureToChronicleLable(momentData.temperature);
-    }
-    this.popUp.setContent(content);
+    this.popUp.setContent(generateInnerHTMLForHistoryMoment(momentData));
   }
 
   removeMarker() {
