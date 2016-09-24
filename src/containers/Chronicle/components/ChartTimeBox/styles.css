@@ -8,16 +8,6 @@
     }
   .timeMarkerLine {
     pointer-events: none;
-    background-color: #000;
-    color: #fff;
-    width: 1px;
-    position: absolute;
-    left: 33.33%;
-    top: 0;
-    height: 150px;
-    }
-  .timeMarkerLineDrag {
-    pointer-events: none;
     background-color: #e64a19;
     color: #fff;
     width: 1px;
