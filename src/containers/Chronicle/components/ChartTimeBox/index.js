@@ -5,6 +5,7 @@ import styles from './styles.css';
 import { setChronicleNormalizedT } from './../../actions';
 import { getNormalized100T } from './../../reducer';
 import Chart from './../Chart';
+import MomentIndicator from './../MomentIndicator';
 
 class ChartTimeBox extends React.Component {
 
@@ -83,7 +84,6 @@ class ChartTimeBox extends React.Component {
           && this.props.chronicleFrame.isValid()
           && !this.props.chronicleFrame.isEmpty();
     const stl = { left: this.props.normalized100T.toFixed(3) + '%' };
-    const stlDrag = { left: this.state.mouseNormalized100.toFixed(3) + '%'};
     return (
       <div className={styles.containerBox}
         onMouseMove={this.mouseMove}
@@ -100,8 +100,10 @@ class ChartTimeBox extends React.Component {
           : false
         }
         { isDisplayTimeHears && this.state.isMouseOver ?
-          <div className={styles.timeMarkerLineDrag} style={stlDrag}>
-          </div>
+          <MomentIndicator
+            normalized100T={this.state.mouseNormalized100}
+            chronicleFrame={this.props.chronicleFrame}
+          />
           : false
         }
         {this.statusText()}

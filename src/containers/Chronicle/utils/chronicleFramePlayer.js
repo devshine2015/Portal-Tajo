@@ -108,20 +108,27 @@ ChronicleFramePlayer.prototype.gotoTime100 = function(time100) {
 //
 //
 //-----------------------------------------------------------------------
-ChronicleFramePlayer.prototype.update = function( ) {
-  const timeMs = this.chronicleFrame.timeRangeMs * this.normalizedTime100 / 100;
-  // Date object here
-  this.frameData.date = this.chronicleFrame.getDateAtMs(timeMs);
-  this.frameData.pos = this.chronicleFrame.getPosAtMs(timeMs);
-  this.frameData.speed = this.chronicleFrame.getSpeedAtIdx();
-  this.frameData.temperature = this.chronicleFrame.hasTemperature() ?
-          this.chronicleFrame.getTemperatureAtMs(timeMs) : null;
-
+ChronicleFramePlayer.prototype.update = function() {
+  this.frameData = this.getMomentDataAtNormalized(this.normalizedTime100);
   // const _this = this;
   //
   // this.updateCallbacks.forEach(function(updater){
   //   updater( _this.normalizedTime100, curPos, curSpeed, curTeperature );
   // });
+};
+
+//
+//
+//-----------------------------------------------------------------------
+ChronicleFramePlayer.prototype.getMomentDataAtNormalized = function(normalizedTime100) {
+  const timeMs = this.chronicleFrame.timeRangeMs * normalizedTime100 / 100;
+  return {
+      // Date object here
+    date: this.chronicleFrame.getDateAtMs(timeMs),
+    pos: this.chronicleFrame.getPosAtMs(timeMs),
+    speed: this.chronicleFrame.getSpeedAtIdx(),
+    temperature: this.chronicleFrame.hasTemperature() ?
+      this.chronicleFrame.getTemperatureAtMs(timeMs) : null };
 };
 
 // current frameData obj is:
