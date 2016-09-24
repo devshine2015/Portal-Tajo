@@ -11,7 +11,7 @@
 // "deviceId": "863286020885894",
 // "status": "active"
 // "kind":    //optional
-import { ZOMBIE_TIME_TRH_MINUTES } from 'utils/constants';
+import { ZOMBIE_TIME_TRH_MS, LAG_INDICAION_TRH_MS } from 'utils/constants';
 import { sortByName } from 'utils/sorting';
 
 function makeLocalVehicle(backEndObject, vehicleStats) {
@@ -60,15 +60,20 @@ function makeLocalVehicle(backEndObject, vehicleStats) {
 //
 // inactive/not updated vehicle - device failure?
 export function checkZombieVehicle(lastUpdate) {
-  const nowSinceEpoch = (new Date()).getTime();
-  const deltaTMinutes = (nowSinceEpoch - lastUpdate) / 1000 / 60;
-  return deltaTMinutes > ZOMBIE_TIME_TRH_MINUTES;
+  const deltaTMs = (Date.now() - lastUpdate);
+  return deltaTMs > ZOMBIE_TIME_TRH_MS;
+}
+
+//
+// delayed update? (comm coverage, expected to be ~45min)
+export function checkLaggedVehicle(lastUpdate) {
+  const deltaTMs = (Date.now() - lastUpdate);
+  return deltaTMs > LAG_INDICAION_TRH_MS;
 }
 
 export function makeLocalVehicles(backEndVehiclesList, statsList) {
   const localVehicles = {};
   const orderedVehicles = [];
-
   backEndVehiclesList.sort(sortByName).forEach((aVehicle) => {
     const vehicleStats = getVehicleById(aVehicle.id, statsList).vehicle;
     const localVehicleObj = makeLocalVehicle(aVehicle, vehicleStats);

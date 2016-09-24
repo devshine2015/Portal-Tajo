@@ -7,5 +7,6 @@ export const ZERO_ZOOM = 12;
 export const NEW_GF_REQUIRED_ZOOM_LEVEL = 15;
 export const NEW_GF_RADIUS = 100;
 //---
-export const ZOMBIE_TIME_TRH_MINUTES = 90;
+export const ZOMBIE_TIME_TRH_MS = 1000*60*90;
+export const LAG_INDICAION_TRH_MS = 1000*60*5;
 //---
