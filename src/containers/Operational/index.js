@@ -7,6 +7,7 @@ import TheMap from 'containers/MapFleet/realTime';
 import OperationalList from './components/OperationalPowerList';
 import FixedContent from 'components/FixedContent';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
+import { socketActions } from 'services/FleetModel/actions';
 import createEventDispatcher from 'utils/eventDispatcher';
 
 import styles from './styles.css';
@@ -20,10 +21,17 @@ class Operational extends React.Component {
     this.eventDispatcher = createEventDispatcher();
   }
 
-  render() {
-    // const displayColumn = this.props.vehicles.length !== 0 &&
-    //   this.props.gfs.length !== 0 && !this.props.isEditGF;
+  componentWillUnmount() {
+    socketActions.closeFleetSocket();
+  }
 
+  render() {
+    // quick fix to make sure sockets are not opened before we have created local fleet model
+    // if somebody else besides OPERATIONAL will be opening WS - lets move this to WS
+    // (pendingOpen state)
+    if (this.props.vehicles.length > 0 && !socketActions.isSocketOpened()) {
+      this.props.openFleetSocket();
+    }
     return (
       <div className={styles.mapAndListContainer}>
           <OperationalList
@@ -34,7 +42,7 @@ class Operational extends React.Component {
             // filterFunc={this.props.filterFunc}
           />
         <FixedContent containerClassName={styles.fixedContent}>
-        <TheMap eventDispatcher={this.eventDispatcher} />
+          <TheMap eventDispatcher={this.eventDispatcher} />
         </FixedContent>
       </div>
     );
@@ -44,12 +52,16 @@ class Operational extends React.Component {
 Operational.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
   gfs: React.PropTypes.array.isRequired,
+  openFleetSocket: React.PropTypes.func.isRequired,
 };
 
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
   gfs: fromFleetReducer.getGFsExSorted(state),
 });
+const mapDispatch = {
+  openFleetSocket: socketActions.openFleetSocket,
+};
 
 const PureOperational = pure(Operational);
-export default connect(mapState)(PureOperational);
+export default connect(mapState, mapDispatch)(PureOperational);

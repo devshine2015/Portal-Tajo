@@ -28,6 +28,7 @@ const createRoute = ({
       importModules.catch(errorHandler);
     }, 'promos');
   },
+  protected: true,
 });
 
 module.exports = createRoute;

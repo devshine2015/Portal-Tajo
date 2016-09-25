@@ -18,8 +18,8 @@ function _calculate(vehicle, { selectedTypes, period, frequency }) {
 
   return calcToReturn({
     date: _formateDateForTable(period, frequency),
-    vehicles: JSON.stringify(vehicle.name),
-    license: JSON.stringify(vehicle.licensePlate),
+    vehicles: vehicle.name,
+    license: vehicle.licensePlate,
   });
 }
 

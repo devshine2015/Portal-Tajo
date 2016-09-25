@@ -53,6 +53,7 @@ export default function createReducer(asyncReducers) {
 
 export const createSelfServiceReducer = (asyncReducers) =>
   combineReducers({
+    auth: authReducer,
     global: globalReducer,
     fleet: fleetReducer,
     reports: reportReducer,

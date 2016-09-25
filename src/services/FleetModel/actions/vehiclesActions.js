@@ -1,6 +1,5 @@
 import api from 'utils/api';
 import endpoints from 'configs/endpoints';
-import { openFleetSocket } from './socketActions';
 import { makeLocalVehicles } from '../utils/vehicleHelpers';
 import { filterProcessedListByName } from '../utils/filtering';
 import { getProcessedVehicles } from '../reducer';
@@ -10,19 +9,20 @@ export const FLEET_MODEL_VEHICLES_FILTER = 'portal/services/FLEET_MODEL_VEHICLES
 export const FLEET_MODEL_VEHICLE_UPDATE = 'portal/services/FLEET_MODEL_VEHICLE_UPDATE';
 export const FLEET_MODEL_VEHICLE_SELECT = 'portal/services/FLEET_MODEL_VEHICLE_SELECT';
 
-export const fetchVehicles = openWebSocket => dispatch =>
-  _fetchVehicles(openWebSocket, dispatch);
+export const fetchVehicles = () => _fetchVehicles;
 export const updateDetails = (details = {}) => dispatch =>
   makeUpdateVehicleRequest(details, dispatch);
 export const filterVehicles = (searchString) => (dispatch, getState) =>
   _filterVehicles({ searchString }, dispatch, getState);
-export const setSelectedVehicleId = (id) => (dispatch) =>
-  dispatch(_vehicleSetSelect(id));
+export const setSelectedVehicleId = (id) => ({
+  type: FLEET_MODEL_VEHICLE_SELECT,
+  id,
+});
 
 /**
  * fleet is optional
  **/
-function _fetchVehicles(openWebSocket, dispatch) {
+function _fetchVehicles(dispatch) {
   const urls = [{
     ...endpoints.getVehicles,
   }, {
@@ -36,10 +36,6 @@ function _fetchVehicles(openWebSocket, dispatch) {
   ).then(([vehicles = [], { status } = {}]) => {
     const { localVehicles, orderedVehicles } = makeLocalVehicles(vehicles, status);
     dispatch(_vehiclesSet(vehicles, localVehicles, orderedVehicles));
-
-    if (openWebSocket) {
-      dispatch(openFleetSocket());
-    }
   })
   .catch(e => {
     console.error(e);
@@ -92,9 +88,4 @@ const _vehicleUpdate = (details, id) => ({
 const _vehiclesFilterUpdate = (vehicles) => ({
   type: FLEET_MODEL_VEHICLES_FILTER,
   vehicles,
-});
-
-const _vehicleSetSelect = (id) => ({
-  type: FLEET_MODEL_VEHICLE_SELECT,
-  id,
 });

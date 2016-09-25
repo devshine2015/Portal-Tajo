@@ -6,6 +6,7 @@ const createRoute = ({ path, name = 'login' }) => ({
       cb(null, require('./index').default);
     }, 'login');
   },
+  protected: false,
 });
 
 module.exports = createRoute;

@@ -2,12 +2,15 @@ import React from 'react';
 import pure from 'recompose/pure';
 import classnames from 'classnames';
 import { VelocityTransitionGroup } from 'velocity-react';
+import { checkLaggedVehicle } from 'services/FleetModel/utils/vehicleHelpers';
+import { msToTimeIntervalString } from 'containers/Chronicle/utils/strings';
 require('velocity-animate');
 require('velocity-animate/velocity.ui');
 
 import ItemProperty from '../DetailItemProperty';
 import Divider from 'material-ui/Divider';
 import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
+import AlertLagIcon from 'material-ui/svg-icons/action/watch-later';
 import { red500, yellow600, yellow700, } from 'material-ui/styles/colors';
 
 
@@ -17,11 +20,21 @@ import styles from './styles.css';
 // import stylesBasic from './../styles.css';
 
 class ListItemVehicle extends React.Component {
+  constructor(props) {
+    super(props);
+    this.lastIndicatedUpdateDelay = 0;
+  }
   shouldComponentUpdate(nextProps) {
+
     return this.props.isExpanded !== nextProps.isExpanded
     || this.props.speed.toFixed(1) !== nextProps.speed.toFixed(1)
     || this.props.isZombie !== nextProps.isZombie
     || this.props.isDead !== nextProps.isDead
+    || checkLaggedVehicle(this.props.lastUpdateSinceEpoch)
+        !== checkLaggedVehicle(nextProps.lastUpdateSinceEpoch)
+    || checkLaggedVehicle(nextProps.lastUpdateSinceEpoch)
+        && Math.floor(((Date.now() - nextProps.lastUpdateSinceEpoch)
+        - this.lastIndicatedUpdateDelay) / (1000 * 60)) > 0
     ;
   }
   onClick = () => {
@@ -30,6 +43,17 @@ class ListItemVehicle extends React.Component {
 
   inActivityIndicator() {
     if (!this.props.isZombie && !this.props.isDead) {
+      if (checkLaggedVehicle(this.props.lastUpdateSinceEpoch)) {
+        this.lastIndicatedUpdateDelay = Date.now() - this.props.lastUpdateSinceEpoch;
+        const infoStr = 'delayed ' + msToTimeIntervalString(this.lastIndicatedUpdateDelay);
+        return (
+          <ItemProperty
+            title=""
+            value={infoStr}
+            icon={<AlertLagIcon color={yellow700} />}
+          />
+        );
+      }
       return null;
     }
 

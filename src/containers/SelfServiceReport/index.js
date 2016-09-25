@@ -28,7 +28,11 @@ class SelfServiceReport extends React.Component {
       .then(() => this.props.checkUserAuthentication({
         checkVersion: false,
       }))
-      .then(() => this.props.fetchVehicles());
+      .then(isAuthenticated => {
+        if (isAuthenticated) {
+          this.props.fetchVehicles();
+        }
+      });
   }
 
   logout = () => {

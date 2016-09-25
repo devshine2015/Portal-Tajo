@@ -28,6 +28,7 @@ const createRoute = ({
       importModules.catch(errorHandler);
     }, 'vehicleEditor');
   },
+  protected: true,
 });
 
 module.exports = createRoute;
