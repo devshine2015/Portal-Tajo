@@ -4,7 +4,7 @@ import {
   SelectField,
   MenuItem,
 } from 'material-ui';
-import formats from './formats';
+import formats from 'configs/dateFormats';
 
 import styles from './styles.css';
 
