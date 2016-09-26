@@ -35,27 +35,29 @@ class LocationWithDetails extends React.Component {
     this.props.gfEditUpdate(this.props.gfById(this.props.id));
   }
   renderDetails() {
+    // TODO: no API for GF editing yet - remove the btn
+    // <IconButton
+    //   tooltip="Edit"
+    //   onClick={this.onEdit}
+    //   key="editBnt"
+    // >
+    //    <EditIcon color={teal200} hoverColor={teal100} />
+    //  </IconButton>
+
     if (this.props.isExpanded) {
-      return [
-        <Divider key="line01" />,
+      return (<div>
+        <Divider key="line01" />
         <ItemProperty
           key="address"
           title="Address"
           value={this.props.address}
-        />,
+        />
         <ItemProperty
           key="radius"
           title="Radius"
           value={this.props.radius.toFixed(0)}
-        />,
-        <Divider key="line02" />,
-        <IconButton
-          tooltip="Edit"
-          onClick={this.onEdit}
-          key="editBnt"
-        >
-           <EditIcon color={teal200} hoverColor={teal100} />
-         </IconButton>,
+        />
+        <Divider key="line02" />
         <IconButton
           tooltip="Delete"
           onClick={this.onDelete}
@@ -63,8 +65,8 @@ class LocationWithDetails extends React.Component {
           key="delBtn"
         >
            <DeletIcon color={yellow700} hoverColor={yellow500} />
-         </IconButton>,
-      ];
+         </IconButton>
+      </div>);
     }
     return false;
   }
