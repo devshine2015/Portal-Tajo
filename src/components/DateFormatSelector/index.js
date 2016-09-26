@@ -4,12 +4,12 @@ import {
   SelectField,
   MenuItem,
 } from 'material-ui';
-import formats from 'configs/dateFormats';
+import dateFormats from 'configs/dateFormats';
 
 import styles from './styles.css';
 
 function renderItems() {
-  return formats.map(format => (
+  return dateFormats.formats.map(format => (
     <MenuItem
       key={format.value}
       value={format.value}
@@ -24,7 +24,7 @@ class DateFormatSelector extends React.Component {
     super(props);
 
     this.state = {
-      value: props.defaultValue || formats[0].value,
+      value: props.defaultFormat,
     };
   }
 
@@ -52,9 +52,9 @@ class DateFormatSelector extends React.Component {
 }
 
 DateFormatSelector.propTypes = {
-  defaultValue: React.PropTypes.oneOf([
+  defaultFormat: React.PropTypes.oneOf([
     'yyyy-mm-dd', 'dd-mm-yyyy',
-  ]),
+  ]).isRequired,
   onChange: React.PropTypes.func.isRequired,
 };
 

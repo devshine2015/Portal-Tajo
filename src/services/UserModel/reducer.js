@@ -8,17 +8,19 @@ import {
 const initialState = fromJS({
   role: undefined,
   username: undefined,
-  settings: {},
+  settings: {
+    dateFormat: undefined,
+  },
 });
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
     case USER_SET:
-      return fromJS({ ...action.data });
+      return state.merge({ ...action.data });
     case USER_RESET:
       return initialState;
     case USER_SETTINGS_UPDATE:
-      return state.merge('settings', action.settings);
+      return state.mergeIn(['settings'], action.settings);
     default:
       return state;
   }

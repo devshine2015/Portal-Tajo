@@ -1,3 +1,17 @@
+function _getValueById(sessionId, list) {
+  const result = {};
+
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].sessionId === sessionId) {
+      result.value = list[i];
+      result.index = i;
+      break;
+    }
+  }
+
+  return result;
+}
+
 function _checkIfValueExist(val, list) {
   // assume same data already saved if list has entries
   let exist = false;
@@ -108,10 +122,34 @@ export function cleanExactIndexies(key, indexesToRemove = []) {
   });
 }
 
+export function updateSettingsBySessionId({
+  key, sessionId, newValue,
+} = {}) {
+  return read(key).then((savedData = []) => {
+    const { value, index } = _getValueById(sessionId, savedData.values);
+
+    if (index === undefined || !savedData.hasOwnProperty('values')) {
+      return Promise.resolve(false);
+    }
+
+    const oldSettings = value.hasOwnProperty('settings') ? value.settings : {};
+    const newSettings = Object.assign({}, oldSettings, {
+      ...newValue,
+    });
+
+    savedData.values[index].settings = newSettings;
+
+    window.localStorage.setItem(key, JSON.stringify(savedData));
+
+    return Promise.resolve(true);
+  });
+}
+
 export default {
   read,
   save,
   clean,
   cleanExactIndexies,
   cleanExactValues,
+  updateSettingsBySessionId,
 };

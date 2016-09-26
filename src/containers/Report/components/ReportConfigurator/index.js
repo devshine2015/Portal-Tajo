@@ -4,6 +4,7 @@ import pure from 'recompose/pure';
 import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import Divider from 'material-ui/Divider';
 import moment from 'moment';
 import Form from 'components/Form';
 import InputFieldWrapper from 'components/InputFieldWrapper';
@@ -163,11 +164,15 @@ class Report extends React.Component {
     const noMaterialUI = this.props.noMaterialUI !== undefined ? this.props.noMaterialUI : false;
 
     return (
-      <div>
+      <div className={styles.configurator}>
         <DateFormatSelectorWithMemory />
+
+        <Divider />
+
         <Form
           name={this.FORM_NAME}
           onSubmit={this.onSubmit}
+          className={styles.form}
         >
           <AvailableFields
             checkedFields={this.state}

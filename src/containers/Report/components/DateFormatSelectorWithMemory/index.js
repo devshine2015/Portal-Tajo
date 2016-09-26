@@ -1,9 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import Checkbox from 'material-ui/Checkbox';
 import RememberChoiceIcon from 'material-ui/svg-icons/action/lock';
 import RememberChoiceIconOpen from 'material-ui/svg-icons/action/lock-open';
 import DateFormatSelector from 'components/DateFormatSelector';
+import { getUserSettings } from 'services/UserModel/reducer';
+import { updateUserSettings } from 'services/UserModel/actions';
+import dateFormats from 'configs/dateFormats';
 
 import styles from './styles.css';
 
@@ -13,15 +17,17 @@ class DateFormatSelectorWithMemory extends React.Component {
     super(props);
 
     this.state = {
-      haveToRemember: false,
-      // some value from saved user settings or default value
-      chosenFormat: props.dateFormat || 'yyyy-mm-dd',
+      haveToRemember: !!props.dateFormat || false,
+      // some value from saved user settings
+      chosenFormat: props.dateFormat || dateFormats.defaultFormat,
     };
   }
 
   onChooseDateFormat = (e, key, value) => {
     this.setState({
       chosenFormat: value,
+      // reset checkbox if selected another format
+      haveToRemember: value === this.props.dateFormat,
     });
   }
 
@@ -29,7 +35,10 @@ class DateFormatSelectorWithMemory extends React.Component {
     this.setState({
       haveToRemember: isChecked,
     }, () => {
-      // perform remember action
+      // save chosen format in localStorage
+      this.props.updateUserSettings(isChecked, {
+        dateFormat: this.state.chosenFormat,
+      });
     });
   }
 
@@ -37,12 +46,12 @@ class DateFormatSelectorWithMemory extends React.Component {
     return (
       <div className={styles.wrapper}>
         <DateFormatSelector
-          defaultValue={this.state.chosenFormat}
+          defaultFormat={this.state.chosenFormat}
           onChange={this.onChooseDateFormat}
         />
         <Checkbox
           checked={this.state.haveToRemember}
-          label="Remember choice"
+          label="Remember my choice"
           checkedIcon={<RememberChoiceIcon />}
           uncheckedIcon={<RememberChoiceIconOpen />}
           onCheck={this.onRemember}
@@ -56,6 +65,16 @@ DateFormatSelectorWithMemory.propTypes = {
   dateFormat: React.PropTypes.oneOf([
     'yyyy-mm-dd', 'dd-mm-yyyy',
   ]),
+  updateUserSettings: React.PropTypes.func.isRequired,
 };
 
-export default pure(DateFormatSelectorWithMemory);
+const mapState = state => ({
+  dateFormat: getUserSettings(state).get('dateFormat'),
+});
+const mapDispatch = {
+  updateUserSettings,
+};
+
+const PureDateFormatSelectorWithMemory = pure(DateFormatSelectorWithMemory);
+
+export default connect(mapState, mapDispatch)(PureDateFormatSelectorWithMemory);
