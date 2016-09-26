@@ -71,17 +71,19 @@ function _logout({ redirectUrl }, dispatch, getState) {
 // after changing Login API
 // we get different responce schema
 function collectData(apiVersion, fleetFromURL, res) {
+  const settings = {};
+
   if (apiVersion === 1.1) {
     return {
       ...res,
-      id: res.sessionId,
+      settings,
     };
   }
 
   return {
+    settings,
     fleet: fleetFromURL,
     sessionId: res,
-    id: res,
-    role: 'installer', //setup lowest possible role by default
+    role: 'installer', // setup lowest possible role by default
   };
 }

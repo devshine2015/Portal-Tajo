@@ -3,7 +3,7 @@ function _checkIfValueExist(val, list) {
   let exist = false;
 
   for (let i = 0; i < list.length; i++) {
-    if (list[i].id === val.id) {
+    if (list[i].sessionId === val.sessionId) {
       exist = i;
       break;
     }

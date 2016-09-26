@@ -61,6 +61,8 @@ function _checkUserAuthentication(params, dispatch, getState) {
     if (error.message && error.message === 'wrong version') {
       const loginUrl = `${createBaseUrl(fleet)}/login`;
 
+      console.warn(error.message);
+
       dispatch(commonActions.eraseAuth());
 
       if (params.urls) {
