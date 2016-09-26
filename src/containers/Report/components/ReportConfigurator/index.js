@@ -7,6 +7,7 @@ import MenuItem from 'material-ui/MenuItem';
 import moment from 'moment';
 import Form from 'components/Form';
 import InputFieldWrapper from 'components/InputFieldWrapper';
+import DateFormatSelectorWithMemory from '../DateFormatSelectorWithMemory';
 import Period from '../Period';
 import AvailableFields from '../AvailableFields';
 import { dataActions, configuratorActions } from 'containers/Report/actions';
@@ -163,6 +164,7 @@ class Report extends React.Component {
 
     return (
       <div>
+        <DateFormatSelectorWithMemory />
         <Form
           name={this.FORM_NAME}
           onSubmit={this.onSubmit}
