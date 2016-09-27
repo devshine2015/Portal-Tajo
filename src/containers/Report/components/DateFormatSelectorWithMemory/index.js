@@ -9,6 +9,9 @@ import { updateUserSettings } from 'services/UserModel/actions';
 
 import styles from './styles.css';
 
+const REMEMBER_ME = 'Remember my choice';
+const FORGET_ME = 'Forget my choice';
+
 class DateFormatSelectorWithMemory extends React.Component {
 
   constructor(props) {
@@ -16,14 +19,11 @@ class DateFormatSelectorWithMemory extends React.Component {
 
     this.state = {
       haveToRemember: props.userDateFormat === props.tempDateFormat,
-      // some value from saved user settings
-      // chosenFormat: props.dateFormat,
     };
   }
 
   onChooseDateFormat = (e, key, value) => {
     this.setState({
-      // chosenFormat: value,
       // reset checkbox if selected another format
       haveToRemember: value === this.props.userDateFormat,
     }, () => {
@@ -43,15 +43,17 @@ class DateFormatSelectorWithMemory extends React.Component {
   }
 
   render() {
+    const rememberText = this.state.haveToRemember ? FORGET_ME : REMEMBER_ME;
+
     return (
       <div className={styles.wrapper}>
         <DateFormatSelector
-          defaultFormat={this.props.userDateFormat}
+          defaultFormat={this.props.userDateFormat || this.props.tempDateFormat}
           onChange={this.onChooseDateFormat}
         />
         <Checkbox
           checked={this.state.haveToRemember}
-          label="Remember my choice"
+          label={rememberText}
           checkedIcon={<RememberChoiceIcon />}
           uncheckedIcon={<RememberChoiceIconOpen />}
           onCheck={this.onRemember}
@@ -67,7 +69,7 @@ DateFormatSelectorWithMemory.propTypes = {
   ]),
   tempDateFormat: React.PropTypes.oneOf([
     'yyyy-mm-dd', 'dd-mm-yyyy',
-  ]),
+  ]).isRequired,
   updateUserSettings: React.PropTypes.func.isRequired,
   onFormatChange: React.PropTypes.func.isRequired,
 };

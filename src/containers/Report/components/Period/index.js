@@ -1,5 +1,6 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import moment from 'moment'
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
 import OutdatedPeriod from './outdated';
@@ -28,9 +29,12 @@ class Period extends React.Component {
     this.props.handlePeriodChange(field, value);
   }
 
+  formatDate = date => moment(date).format(this.props.dateFormat.toUpperCase());
+
   renderDate = () => (
     <div className={styles['interval-col']}>
       <DatePicker
+        formatDate={this.formatDate}
         autoOk
         hintText="Start date interval"
         defaultDate={this.props.fields.start.default}
@@ -38,6 +42,7 @@ class Period extends React.Component {
         onChange={this.onStartDateChange}
       />
       <DatePicker
+        formatDate={this.formatDate}
         autoOk
         hintText="End date interval"
         name={this.props.fields.end.name}
@@ -86,6 +91,9 @@ class Period extends React.Component {
 }
 
 Period.propTypes = {
+  dateFormat: React.PropTypes.oneOf([
+    'yyyy-mm-dd', 'dd-mm-yyyy',
+  ]),
   handlePeriodChange: React.PropTypes.func.isRequired,
   fields: React.PropTypes.shape({
     start: React.PropTypes.shape({

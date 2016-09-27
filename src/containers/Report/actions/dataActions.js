@@ -37,8 +37,7 @@ function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getSta
   const periodQueryString = getReportParams(timePeriod);
   const selectedReports = getSelectedReportsTypes(getState());
   const vehicles = _getVehiclesForReport(getState());
-
-  console.log(dateFormat);
+  const reportDateFormat = dateFormat.toUpperCase();
 
   const fieldsToCall = {};
 
@@ -87,7 +86,8 @@ function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getSta
 
 
       return result;
-    }).then(prepareDataForReport(selectedReports, periods, frequency))
+    })
+    .then(prepareDataForReport(selectedReports, periods, frequency, reportDateFormat))
     .then(table => {
       dispatch(setLoader(false));
       dispatch(_saveReportData(table));

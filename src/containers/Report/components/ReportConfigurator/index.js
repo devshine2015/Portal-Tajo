@@ -198,6 +198,7 @@ class Report extends React.Component {
           <Period
             handlePeriodChange={this.onPeriodChange}
             fields={this.periodFields}
+            dateFormat={this.state.tempDateFormat}
             withTime
           />
 
