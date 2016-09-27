@@ -1,6 +1,8 @@
 import moment from 'moment';
 
-export const prepareDataForReport = (selectedReports = {}, periods = [], frequency) =>
+export const prepareDataForReport = (
+  selectedReports = {}, periods = [], frequency, dateFormat,
+) =>
   (reports = {}) => {
     const result = [];
     const selectedTypes = Object.keys(selectedReports);
@@ -55,6 +57,7 @@ export const prepareDataForReport = (selectedReports = {}, periods = [], frequen
             filteredTypesToCalc,
             frequency,
             period,
+            dateFormat,
             calculate: filteredTypesByDomain[domain].calc,
             record: recordsForAllVehicles[i],
           });
@@ -92,6 +95,7 @@ function _calculateColumn({
   frequency,
   period,
   record,
+  dateFormat,
 }) {
   let recordsToCalc = record;
 
@@ -102,6 +106,7 @@ function _calculateColumn({
   return calculate(recordsToCalc, {
     frequency,
     period,
+    dateFormat,
     selectedTypes: filteredTypesToCalc,
   });
 }

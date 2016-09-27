@@ -36,6 +36,7 @@ function _checkUserAuthentication(params, dispatch, getState) {
         isAuthenticated = true;
         dispatch(setUserData({
           role: session[0].role,
+          settings: session[0].settings,
         }));
         dispatch(commonActions.setAuthentication(session[0].sessionId, fleet));
       } else {
@@ -60,6 +61,8 @@ function _checkUserAuthentication(params, dispatch, getState) {
   }, (error) => {
     if (error.message && error.message === 'wrong version') {
       const loginUrl = `${createBaseUrl(fleet)}/login`;
+
+      console.warn(error.message);
 
       dispatch(commonActions.eraseAuth());
 

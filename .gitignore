@@ -1,6 +1,7 @@
 # project relate
-build/
-builds/
+build
+builds
+old
 
 # allow all files from projects directory
 !src/projects/*

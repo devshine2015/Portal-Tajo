@@ -4,9 +4,13 @@ import pure from 'recompose/pure';
 import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import Divider from 'material-ui/Divider';
 import moment from 'moment';
+import dateFormats from 'configs/dateFormats';
 import Form from 'components/Form';
 import InputFieldWrapper from 'components/InputFieldWrapper';
+import { getUserSettings } from 'services/UserModel/reducer';
+import DateFormatSelectorWithMemory from '../DateFormatSelectorWithMemory';
 import Period from '../Period';
 import AvailableFields from '../AvailableFields';
 import { dataActions, configuratorActions } from 'containers/Report/actions';
@@ -86,10 +90,17 @@ class Report extends React.Component {
       [this.periodFields.end.name]: this.periodFields.end.default,
       [this.periodFields.startTime.name]: this.periodFields.startTime.default,
       [this.periodFields.endTime.name]: this.periodFields.endTime.default,
+      tempDateFormat: props.userDateFormat || dateFormats.defaultFormat,
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  onDateFormatChange = newFormat => {
+    this.setState({
+      tempDateFormat: newFormat,
+    });
   }
 
   onSelectedFieldsChange = (event, value, index) => {
@@ -136,6 +147,7 @@ class Report extends React.Component {
     this.props.generateReport({
       timePeriod: data,
       frequency: this.props.frequency,
+      dateFormat: this.state.tempDateFormat,
     });
   }
 
@@ -162,10 +174,19 @@ class Report extends React.Component {
     const noMaterialUI = this.props.noMaterialUI !== undefined ? this.props.noMaterialUI : false;
 
     return (
-      <div>
+      <div className={styles.configurator}>
+        <DateFormatSelectorWithMemory
+          userDateFormat={this.props.userDateFormat}
+          tempDateFormat={this.state.tempDateFormat}
+          onFormatChange={this.onDateFormatChange}
+        />
+
+        <Divider />
+
         <Form
           name={this.FORM_NAME}
           onSubmit={this.onSubmit}
+          className={styles.form}
         >
           <AvailableFields
             checkedFields={this.state}
@@ -177,6 +198,7 @@ class Report extends React.Component {
           <Period
             handlePeriodChange={this.onPeriodChange}
             fields={this.periodFields}
+            dateFormat={this.state.tempDateFormat}
             withTime
           />
 
@@ -224,6 +246,9 @@ Report.propTypes = {
   swipeGeneratedData: React.PropTypes.func.isRequired,
   noMaterialUI: React.PropTypes.bool,
   error: React.PropTypes.string,
+  userDateFormat: React.PropTypes.oneOf([
+    'yyyy-mm-dd', 'dd-mm-yyyy',
+  ]),
 };
 
 const mapState = (state) => ({
@@ -231,6 +256,7 @@ const mapState = (state) => ({
   isLoading: getReportLoadingState(state),
   frequency: getReportFrequency(state),
   error: getErrorMessage(state),
+  userDateFormat: getUserSettings(state).get('dateFormat'),
 });
 const mapDispatch = {
   generateReport: dataActions.generateReport,

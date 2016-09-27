@@ -2,6 +2,7 @@ import { push } from 'react-router-redux';
 import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
 import endpoints from 'configs/endpoints';
 import VERSIONS from 'configs/versions';
+import dateFormats from 'configs/dateFormats';
 import {
   createBaseUrl,
   storage,
@@ -40,6 +41,7 @@ function _login(data, dispatch, getState) {
       dispatch(commonActions.setAuthentication(sessionData.sessionId, fleet));
       dispatch(setUserData({
         role: sessionData.role,
+        settings: sessionData.settings,
       }));
       dispatch(push(`${createBaseUrl(fleet)}/`));
     })
@@ -71,17 +73,19 @@ function _logout({ redirectUrl }, dispatch, getState) {
 // after changing Login API
 // we get different responce schema
 function collectData(apiVersion, fleetFromURL, res) {
+  const settings = res.settings || {};
+
   if (apiVersion === 1.1) {
     return {
       ...res,
-      id: res.sessionId,
+      settings,
     };
   }
 
   return {
+    settings,
     fleet: fleetFromURL,
     sessionId: res,
-    id: res,
-    role: 'installer', //setup lowest possible role by default
+    role: 'installer', // setup lowest possible role by default
   };
 }

@@ -1,6 +1,6 @@
-function _formateDateForTable({ start, end }, frequency) {
-  const startFormat = !frequency || frequency === 'daily' ? 'L' : 'L LT';
-  const endFormat = !frequency || frequency === 'daily' ? 'L' : 'LT';
+function _formateDateForTable({ start, end }, frequency, dateFormat) {
+  const startFormat = !frequency || frequency === 'daily' ? dateFormat : 'L LT';
+  const endFormat = !frequency || frequency === 'daily' ? dateFormat : 'LT';
   let formattted;
 
   if (!frequency && end.isSame(start, 'days')) {
@@ -12,12 +12,12 @@ function _formateDateForTable({ start, end }, frequency) {
   return formattted;
 }
 
-function _calculate(vehicle, { selectedTypes, period, frequency }) {
+function _calculate(vehicle, { selectedTypes, period, frequency, dateFormat }) {
   const calcToReturn = (resultTemps) =>
     selectedTypes.map((key) => resultTemps[key]);
 
   return calcToReturn({
-    date: _formateDateForTable(period, frequency),
+    date: _formateDateForTable(period, frequency, dateFormat),
     vehicles: vehicle.name,
     license: vehicle.licensePlate,
   });
