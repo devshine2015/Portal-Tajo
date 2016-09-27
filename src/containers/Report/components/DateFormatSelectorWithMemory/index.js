@@ -12,6 +12,21 @@ import styles from './styles.css';
 const REMEMBER_ME = 'Remember my choice';
 const FORGET_ME = 'Forget my choice';
 
+/**
+ * Here we face little subtle behaviour.
+ * ReportConfigurator has 3 sources for dataFormat
+ * to choose from for using:
+ * - localStorage (if user save it previously)
+ * - settings from services/UserModel (where value from localStorage are cached)
+ * - temporary format from ReportConfigurator' state
+ *
+ * userDateFormat is coming from localStorage or user settings
+ * and changes only if user updates settings. Used for detect if
+ * user chose same format as saved in settings/localStorage.
+ *
+ * tempDateFormat is coming from DateFormatSelector onChange handler
+ * and reflect current selected format
+ **/
 class DateFormatSelectorWithMemory extends React.Component {
 
   constructor(props) {
