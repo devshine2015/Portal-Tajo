@@ -26,8 +26,9 @@ const eraseAuth = () => (dispatch, getState) => {
     dispatch(resetAuthentication());
     dispatch(resetUserData());
     dispatch(replace(`${createBaseUrl(fleetName)}/login`));
-    storage.clean(LOCAL_STORAGE_SESSION_KEY);
   }
+
+  storage.clean(LOCAL_STORAGE_SESSION_KEY);
 };
 
 export default {

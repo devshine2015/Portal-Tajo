@@ -1,9 +1,18 @@
 @media screen and (min-width: 100px) {
+  .configurator {
+    margin-bottom: 20px;
+  }
+
   .button:first-child {
     margin-right: 15px; 
   }
+
   .error {
     font-size: 14px;
     color: red;
+  }
+
+  .form {
+    margin-top: 20px;
   }
 }

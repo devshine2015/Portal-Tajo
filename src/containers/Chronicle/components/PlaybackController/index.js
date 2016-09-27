@@ -56,6 +56,9 @@ class PlaybackCtr extends React.Component {
     }
     const _this = this;
     // targeting 30fps
+    // TODO: use requestAnimationFrame
+    // when do - make sure actual frame time used
+    // for speed/advance calculations
     this.animationProc = window.setInterval(() => {
       let t = _this.props.normalized100T + _this.playbackSpeed;
       if (t >= 100) {
@@ -84,23 +87,26 @@ class PlaybackCtr extends React.Component {
       return;
     }
     this.play(true);
+    // time (minutes) it takes to playback the whole history (24hvrs timeline initialy)
+    let timeToPlayMin = 5;
     switch (speed) {
       case 1:
-        this.playbackSpeed = 0.05;
+        timeToPlayMin = 15;
         break;
       case 2:
-        this.playbackSpeed = 0.2;
+        timeToPlayMin = 5;
         break;
       case 3:
-        this.playbackSpeed = 0.75;
+        timeToPlayMin = 1;
         break;
       case 4:
-        this.playbackSpeed = 1;
+        timeToPlayMin = 0.1;
         break;
       default:
-        this.playbackSpeed = 0;
         break;
     }
+    // assuming we have 30 fps
+    this.playbackSpeed = 100 / (timeToPlayMin * 60 * 30);
   }
 
   render() {

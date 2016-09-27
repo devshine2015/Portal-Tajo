@@ -29,7 +29,7 @@ export const removeReportData = () => ({
   type: REPORT_DATA_REMOVE,
 });
 
-function _generateReport({ timePeriod, frequency }, dispatch, getState) {
+function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getState) {
   dispatch(setLoader(true));
   dispatch(removeReportData());
 
@@ -37,6 +37,7 @@ function _generateReport({ timePeriod, frequency }, dispatch, getState) {
   const periodQueryString = getReportParams(timePeriod);
   const selectedReports = getSelectedReportsTypes(getState());
   const vehicles = _getVehiclesForReport(getState());
+  const reportDateFormat = dateFormat.toUpperCase();
 
   const fieldsToCall = {};
 
@@ -85,7 +86,8 @@ function _generateReport({ timePeriod, frequency }, dispatch, getState) {
 
 
       return result;
-    }).then(prepareDataForReport(selectedReports, periods, frequency))
+    })
+    .then(prepareDataForReport(selectedReports, periods, frequency, reportDateFormat))
     .then(table => {
       dispatch(setLoader(false));
       dispatch(_saveReportData(table));
