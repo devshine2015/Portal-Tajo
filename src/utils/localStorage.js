@@ -145,6 +145,30 @@ export function updateSettingsBySessionId({
   });
 }
 
+function removeSettingsPropsBySessionId({
+  key, sessionId, props = [],
+} = {}) {
+  return read(key).then((savedData = []) => {
+    const { value, index } = _getValueById(sessionId, savedData.values);
+
+    if (index === undefined || !savedData.hasOwnProperty('values')) {
+      return Promise.resolve(false);
+    }
+
+    const settings = value.hasOwnProperty('settings') ? value.settings : {};
+
+    props.forEach(p => {
+      delete settings[p];
+    });
+
+    savedData.values[index].settings = settings;
+
+    window.localStorage.setItem(key, JSON.stringify(savedData));
+
+    return Promise.resolve(true);
+  });
+}
+
 export default {
   read,
   save,
@@ -152,4 +176,5 @@ export default {
   cleanExactIndexies,
   cleanExactValues,
   updateSettingsBySessionId,
+  removeSettingsPropsBySessionId,
 };

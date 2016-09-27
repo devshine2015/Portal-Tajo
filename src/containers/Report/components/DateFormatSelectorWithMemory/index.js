@@ -5,9 +5,7 @@ import Checkbox from 'material-ui/Checkbox';
 import RememberChoiceIcon from 'material-ui/svg-icons/action/lock';
 import RememberChoiceIconOpen from 'material-ui/svg-icons/action/lock-open';
 import DateFormatSelector from 'components/DateFormatSelector';
-import { getUserSettings } from 'services/UserModel/reducer';
 import { updateUserSettings } from 'services/UserModel/actions';
-import dateFormats from 'configs/dateFormats';
 
 import styles from './styles.css';
 
@@ -17,17 +15,19 @@ class DateFormatSelectorWithMemory extends React.Component {
     super(props);
 
     this.state = {
-      haveToRemember: !!props.dateFormat || false,
+      haveToRemember: props.userDateFormat === props.tempDateFormat,
       // some value from saved user settings
-      chosenFormat: props.dateFormat || dateFormats.defaultFormat,
+      // chosenFormat: props.dateFormat,
     };
   }
 
   onChooseDateFormat = (e, key, value) => {
     this.setState({
-      chosenFormat: value,
+      // chosenFormat: value,
       // reset checkbox if selected another format
-      haveToRemember: value === this.props.dateFormat,
+      haveToRemember: value === this.props.userDateFormat,
+    }, () => {
+      this.props.onFormatChange(value);
     });
   }
 
@@ -37,7 +37,7 @@ class DateFormatSelectorWithMemory extends React.Component {
     }, () => {
       // save chosen format in localStorage
       this.props.updateUserSettings(isChecked, {
-        dateFormat: this.state.chosenFormat,
+        dateFormat: this.props.tempDateFormat,
       });
     });
   }
@@ -46,7 +46,7 @@ class DateFormatSelectorWithMemory extends React.Component {
     return (
       <div className={styles.wrapper}>
         <DateFormatSelector
-          defaultFormat={this.state.chosenFormat}
+          defaultFormat={this.props.userDateFormat}
           onChange={this.onChooseDateFormat}
         />
         <Checkbox
@@ -62,15 +62,17 @@ class DateFormatSelectorWithMemory extends React.Component {
 }
 
 DateFormatSelectorWithMemory.propTypes = {
-  dateFormat: React.PropTypes.oneOf([
+  userDateFormat: React.PropTypes.oneOf([
+    'yyyy-mm-dd', 'dd-mm-yyyy',
+  ]),
+  tempDateFormat: React.PropTypes.oneOf([
     'yyyy-mm-dd', 'dd-mm-yyyy',
   ]),
   updateUserSettings: React.PropTypes.func.isRequired,
+  onFormatChange: React.PropTypes.func.isRequired,
 };
 
-const mapState = state => ({
-  dateFormat: getUserSettings(state).get('dateFormat'),
-});
+const mapState = null;
 const mapDispatch = {
   updateUserSettings,
 };

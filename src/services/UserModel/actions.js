@@ -24,7 +24,11 @@ function _updateUserSettings(saveToStorage, settings, dispatch, getState) {
   if (!saveToStorage) {
     dispatch(_userSettingsUpdate(settings));
 
-    return Promise.resolve();
+    return storage.removeSettingsPropsBySessionId({
+      key: LOCAL_STORAGE_SESSION_KEY,
+      sessionId,
+      props: Object.keys(settings),
+    });
   }
 
   return storage.updateSettingsBySessionId({

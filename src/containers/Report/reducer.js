@@ -66,4 +66,3 @@ export const isVehicleAlreadyAdded = (state, id) =>
 
 export const getIsFiltering = (state) =>
   fromVehiclesReducer.isFiltering(state.getIn(['reports', 'vehicles']));
-
