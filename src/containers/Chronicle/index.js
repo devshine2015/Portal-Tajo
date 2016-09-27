@@ -13,9 +13,10 @@ import ChronicleMap from 'containers/MapFleet/chronicle';
 import { requestHistory } from 'containers/Chronicle/actions';
 import { getChronicleTimeFrame,
   getInstanceChronicleFrameById, hasChroniclePlayableFrames } from './reducer';
-
+import GFEditor from 'containers/GFEditor';
 import createEventDispatcher from 'utils/eventDispatcher';
 
+import { gfEditIsEditing } from 'containers/GFEditor/reducer';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
 import { vehiclesActions } from 'services/FleetModel/actions';
@@ -73,20 +74,25 @@ class Chronicle extends React.Component {
     return (
       <div className={styles.topContainer}>
 
-        <PowerList
-          scrollable
-          filter={
-            <Filter filterFunc={this.props.filterFunc} />
-          }
-          content={
-            <VehiclesList
-              onItemClick={this.onItemClick}
-              data={this.props.vehicles}
-              currentExpandedItemId={this.state.selectedVehicleId}
-              type={listTypes.vehicleChronicle}
-            />
-          }
-        />
+        {this.props.isEditGF ? (
+          <PowerList>
+            <GFEditor />
+          </PowerList>
+          ) : (
+          <PowerList
+            scrollable
+            filter={
+              <Filter filterFunc={this.props.filterFunc} />
+            }
+            content={
+              <VehiclesList
+                onItemClick={this.onItemClick}
+                data={this.props.vehicles}
+                currentExpandedItemId={this.state.selectedVehicleId}
+                type={listTypes.vehicleChronicle}
+              />
+            }
+          />)}
         <FixedContent containerClassName={styles.fixedContent}>
           <div className={styles.allTheChronicleControllerscontainer}>
             <TimeFrameController selectedVehicleId={this.state.selectedVehicleId} />
@@ -119,6 +125,7 @@ Chronicle.propTypes = {
   hasChroniclePlayableFrames: React.PropTypes.bool.isRequired,
   setSelectedVehicleId: React.PropTypes.func.isRequired,
   globalSelectedVehicleId: React.PropTypes.string.isRequired,
+  isEditGF: React.PropTypes.bool.isRequired,
 };
 
 const mapState = (state) => ({
@@ -127,6 +134,7 @@ const mapState = (state) => ({
   getInstanceChronicleFrameById: getInstanceChronicleFrameById(state),
   hasChroniclePlayableFrames: hasChroniclePlayableFrames(state),
   globalSelectedVehicleId: fromFleetReducer.getSelectedVehicleId(state),
+  isEditGF: gfEditIsEditing(state),
 });
 const mapDispatch = {
   filterFunc: vehiclesActions.filterVehicles,
