@@ -1,0 +1,19 @@
+@media screen and (min-width: 100px) {
+  .actions {
+    text-align: center;
+  }
+
+  .button {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 378px) {
+  .actions {
+    text-align: right;
+  }
+
+  .button {
+    width: auto;
+  }
+}

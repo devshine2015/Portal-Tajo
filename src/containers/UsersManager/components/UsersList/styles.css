@@ -1,0 +1,10 @@
+@media screen and (min-width: 100px) {
+  .list {
+    list-style: none;
+    margin: 20px 0 0;
+  }
+
+  .list__item:not(:last-child) {
+    margin-bottom: 30px;
+  }
+}
