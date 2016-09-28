@@ -19,9 +19,9 @@ class UsersList extends React.Component {
       return null;
     }
 
-    const users = this.props.users.map(user => (
+    const users = this.props.users.map((user, i) => (
       <li
-        key={user.created}
+        key={i}
         className={styles.list__item}
       >
         <UserItem {...user} />

@@ -39,6 +39,24 @@ function renderActions(userPermittedTo) {
   );
 }
 
+function renderUserpic(status, username) {
+  const backgroundColor = status === 'active' ? 'green' : 'red';
+
+  return <Userpic backgroundColor={backgroundColor}>{username}</Userpic>;
+}
+
+function renderSubtitle(role, fleet) {
+  return (
+    <dl>
+      <dt className={styles.title}>Fleet:&nbsp;</dt>
+      <dd className={styles.detail}>{fleet}</dd>
+      <br />
+      <dt className={styles.title}>Role:&nbsp;</dt>
+      <dd className={styles.detail}>{role}</dd>
+    </dl>
+  );
+}
+
 const UserItem = ({
   userPermittedTo = [],
   role,
@@ -48,9 +66,9 @@ const UserItem = ({
 }) => (
   <Card>
     <CardHeader
-      avatar={<Userpic>{username}</Userpic>}
+      avatar={renderUserpic(status, username)}
       title={username}
-      subtitle={fleet}
+      subtitle={renderSubtitle(role, fleet)}
     />
     { renderActions(userPermittedTo) }
   </Card>

@@ -6,6 +6,18 @@
   .button {
     width: 100%;
   }
+
+  .title,
+  .detail {
+    display: inline-block;
+  }
+
+  .title {
+    font-weight: 400;
+  }
+  .detail {
+    font-weight: 500;
+  }
 }
 
 @media screen and (min-width: 378px) {
