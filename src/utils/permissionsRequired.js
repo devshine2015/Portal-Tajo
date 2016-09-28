@@ -24,7 +24,10 @@ export default (permissions = []) => (Component) => {
 
     render() {
       return (
-        <Component userPermittedTo={this.permitted} />
+        <Component
+          userPermittedTo={this.permitted}
+          {...this.props}
+        />
       );
     }
   }
