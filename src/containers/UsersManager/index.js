@@ -1,11 +1,19 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
+import Divider from 'material-ui/Divider';
 import { permissions } from 'configs/roles';
 import permitted from 'utils/permissionsRequired';
+import { getGroupBy } from './reducer';
 import UsersList from './components/UsersList';
+import ToolsPanel from './components/ToolsPanel';
 
 import styles from './styles.css';
+
+function renderTools(groupBy) {
+  return <ToolsPanel />;
+}
 
 const PERMISSIONS = [
   permissions.USERS_SEE,
@@ -14,6 +22,7 @@ const PERMISSIONS = [
 
 const UsersManager = ({
   userPermittedTo = [],
+  groupBy,
 }) => {
   if (!userPermittedTo[permissions.USERS_SEE]) {
     return null;
@@ -25,14 +34,26 @@ const UsersManager = ({
 
   return (
     <div className={styles.wrapper}>
+      { renderTools(groupBy) }
+      <Divider />
       { addUserButton }
-      <UsersList />
+      <UsersList groupBy={groupBy} />
     </div>
   );
 };
 
 UsersManager.propTypes = {
   userPermittedTo: React.PropTypes.object,
+  groupBy: React.PropTypes.oneOf([
+    'fleet', 'role',
+  ]).isRequired,
 };
 
-export default pure(permitted(PERMISSIONS)(UsersManager));
+const mapState = state => ({
+  groupBy: getGroupBy(state),
+});
+const mapDispatch = null;
+
+const PureUsersManager = pure(permitted(PERMISSIONS)(UsersManager));
+
+export default connect(mapState, mapDispatch)(PureUsersManager);

@@ -133,7 +133,7 @@ export const VEHICLE_KINDS = [
   }, {
     value: 'UNDEFINED',
     text: 'Undefined',
-    icon: <Undefined />,  // do we need UNDEFINED icon?
+    icon: <Undefined />,
     pic: iUndefined,
   },
 ];
