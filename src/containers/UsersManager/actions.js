@@ -98,6 +98,12 @@ const _newUserAdd = (users, grouped, isLoading) => ({
   isLoading,
 });
 
+// create object:
+// if groupBy = fleet
+// {
+//    psl: List([0,3,5]),
+//    test: List([1,2,4,6]),
+// }
 function _group(groupBy, user, index) {
   const groupProp = user[groupBy];
   let list = this[groupProp];

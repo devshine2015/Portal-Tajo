@@ -24,11 +24,11 @@ const GroupBy = ({
     >
       <RadioButton
         value="fleet"
-        label="By fleet"
+        label="Fleet"
       />
       <RadioButton
         value="role"
-        label="By role"
+        label="Role"
       />
     </RadioButtonGroup>
   </div>
