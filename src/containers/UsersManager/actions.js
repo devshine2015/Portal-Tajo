@@ -3,7 +3,8 @@ import endpoints from 'configs/endpoints';
 import { getUsers } from './reducer';
 
 export const USERS_MANAGER_USERS_SET = 'portal/UsersManager/USERS_MANAGER_USERS_SET';
-export const USERS_MANAGER_GROUPBY_UPDATE = 'portal/UsersManager/USERS_MANAGER_GROUPBY_UPDATE';
+export const USERS_MANAGER_GROUPBY_CHANGE = 'portal/UsersManager/USERS_MANAGER_GROUPBY_CHANGE';
+export const USERS_MANAGER_NEW_USER_TOGGLE = 'portal/UsersManager/USERS_MANAGER_NEW_USER_TOGGLE';
 
 export const fetchUsers = groupBy => dispatch => {
   const { url, method, apiVersion } = endpoints.getAllUsers;
@@ -18,6 +19,11 @@ export const fetchUsers = groupBy => dispatch => {
       dispatch(_usersSet(users, grouped));
     });
 };
+
+export const toggleNewUser = nextState => ({
+  type: USERS_MANAGER_NEW_USER_TOGGLE,
+  nextState,
+});
 
 export const changeGroupBy = newGroupBy => (dispatch, getState) => {
   const users = getUsers(getState());
@@ -41,7 +47,7 @@ const _usersSet = (users, grouped) => ({
 });
 
 const _usersGroupUpdate = (groupBy, grouped) => ({
-  type: USERS_MANAGER_GROUPBY_UPDATE,
+  type: USERS_MANAGER_GROUPBY_CHANGE,
   groupBy,
   grouped,
 });

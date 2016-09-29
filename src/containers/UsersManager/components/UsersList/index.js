@@ -4,7 +4,11 @@ import { List, Map } from 'immutable';
 import pure from 'recompose/pure';
 import Subheader from 'material-ui/Subheader';
 import { fetchUsers } from 'containers/UsersManager/actions';
-import { getUsers, getGrouping } from 'containers/UsersManager/reducer';
+import {
+  getUsers,
+  getGrouping,
+  getGroupBy,
+} from 'containers/UsersManager/reducer';
 import UserItem from '../UserItem';
 
 import styles from './styles.css';
@@ -87,6 +91,7 @@ UsersList.propTypes = {
 const mapState = state => ({
   users: getUsers(state),
   currentGrouping: getGrouping(state),
+  groupBy: getGroupBy(state),
 });
 const mapDispatch = {
   fetchUsers,
