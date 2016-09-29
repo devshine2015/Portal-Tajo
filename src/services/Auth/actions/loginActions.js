@@ -2,7 +2,6 @@ import { push } from 'react-router-redux';
 import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
 import endpoints from 'configs/endpoints';
 import VERSIONS from 'configs/versions';
-import dateFormats from 'configs/dateFormats';
 import {
   createBaseUrl,
   storage,

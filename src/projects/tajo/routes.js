@@ -72,9 +72,12 @@ export default function createRoutes(store) {
     loadModule,
   });
 
-  // const usersManagerRoute = require('screens/Users/route')({
-  //   path: 'users',
-  // });
+  const usersManagerRoute = require('screens/UsersManager/route')({
+    path: 'users',
+    injectReducer,
+    errorHandler,
+    loadModule,
+  });
 
   const loginRoute = require('screens/LoginScreen/route')({
     path: 'login',
@@ -103,7 +106,7 @@ export default function createRoutes(store) {
     promoRoute,
     reportsRoute,
     vehiclesEditorRoute,
-    // usersManagerRoute,
+    usersManagerRoute,
   );
 
   return (

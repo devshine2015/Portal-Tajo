@@ -23,7 +23,7 @@ export const permissions = {
 
 const rolesAbilities = {
   tajo: {
-    superadmin: {
+    uber: {
       [permissions.USERS_SEE]: true,
       [permissions.USERS_ADD_ANY]: true,
       [permissions.USERS_EDIT_ANY]: true,

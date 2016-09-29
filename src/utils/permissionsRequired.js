@@ -19,22 +19,25 @@ export default (permissions = []) => (Component) => {
     constructor(props) {
       super(props);
 
-      this.permitted = checkAllPermissions(props.role, permissions);
+      this.permitted = checkAllPermissions(props.currentUserRole, permissions);
     }
 
     render() {
       return (
-        <Component userPermittedTo={this.permitted} />
+        <Component
+          userPermittedTo={this.permitted}
+          {...this.props}
+        />
       );
     }
   }
 
   PermissionsRequired.propTypes = {
-    role: React.PropTypes.string.isRequired,
+    currentUserRole: React.PropTypes.string.isRequired,
   };
 
   const mapState = state => ({
-    role: getUserRole(state),
+    currentUserRole: getUserRole(state),
   });
 
   return connect(mapState)(PermissionsRequired);
