@@ -3,6 +3,7 @@ import {
   USERS_MANAGER_USERS_SET,
   USERS_MANAGER_GROUPBY_CHANGE,
   USERS_MANAGER_NEW_USER_TOGGLE,
+  USERS_MANAGER_NEW_USER_ADD,
 } from './actions';
 
 const initialState = fromJS({
@@ -10,6 +11,7 @@ const initialState = fromJS({
   grouped: new Map(),
   groupBy: 'fleet',
   isAddingNewUser: false,
+  isLoading: false,
 });
 
 function reducer(state = initialState, action) {
@@ -28,7 +30,16 @@ function reducer(state = initialState, action) {
          .set('grouped', new Map(action.grouped));
       });
     case USERS_MANAGER_NEW_USER_TOGGLE:
-      return state.set('isAddingNewUser', action.nextState);
+      return state.withMutations(s => {
+        s.set('isAddingNewUser', action.nextState)
+         .set('isLoading', action.isLoading);
+      });
+    case USERS_MANAGER_NEW_USER_ADD:
+      return state.withMutations(s => {
+        s.set('grouped', new Map(action.grouped))
+         .set('isLoading', action.isLoading)
+         .set('users', new List(action.users));
+      });
     default:
       return state;
   }
@@ -45,3 +56,6 @@ export const getGrouping = state =>
 
 export const getIsAddingNewUser = state =>
   state.getIn(['usersManager', 'isAddingNewUser']);
+
+export const getIsLoading = state =>
+  state.getIn(['usersManager', 'isLoading']);

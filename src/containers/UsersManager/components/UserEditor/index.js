@@ -9,7 +9,11 @@ import {
   RaisedButton,
   FlatButton,
 } from 'material-ui';
-import { toggleNewUser } from 'containers/UsersManager/actions';
+import {
+  toggleNewUser,
+  addNewUser,
+} from 'containers/UsersManager/actions';
+import { getIsLoading } from 'containers/UsersManager/reducer';
 
 import styles from './styles.css';
 
@@ -51,6 +55,8 @@ class UserEditor extends React.Component {
 
   onSubmit = e => {
     e.preventDefault();
+
+    this.props.addNewUser(this.state);
   }
 
   onType = e => {
@@ -80,6 +86,7 @@ class UserEditor extends React.Component {
         <form
           name="userEditor"
           className={styles.form}
+          onSubmit={this.onSubmit}
         >
           <div className={styles.row}>
             <div className={styles.inputWrapper}>
@@ -128,9 +135,10 @@ class UserEditor extends React.Component {
           </div>
           <div className={styles.buttons}>
             <RaisedButton
+              onClick={this.onSubmit}
               label={submitButtonText}
               type="submit"
-              disabled={!disabled}
+              disabled={this.props.isLoading || !disabled}
               secondary
             />
             <FlatButton
@@ -146,15 +154,20 @@ class UserEditor extends React.Component {
 }
 
 UserEditor.propTypes = {
+  addNewUser: React.PropTypes.func.isRequired,
   editMode: React.PropTypes.oneOf([
     'create', 'edit',
   ]).isRequired,
   toggleNewUser: React.PropTypes.func.isRequired,
+  isLoading: React.PropTypes.bool.isRequired,
 };
 
-const mapState = null;
+const mapState = state => ({
+  isLoading: getIsLoading(state),
+});
 const mapDispatch = {
   toggleNewUser,
+  addNewUser,
 };
 
 const PureUserEditor = pure(UserEditor);

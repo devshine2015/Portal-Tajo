@@ -26,7 +26,7 @@ function renderUsers(groupIndexies, allUsers) {
 
     return (
       <li
-        key={user.created}
+        key={index}
         className={styles.list__item}
       >
         <UserItem {...user} />
