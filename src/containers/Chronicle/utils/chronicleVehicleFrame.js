@@ -30,6 +30,7 @@ function ChronicleVehicleFrame(dateFrom, dateTo, events, inState) {
 
   //
   this.lastFoundIdx = 0;
+  this.lastFoundIdxT = { idx: 0, t:0 };
 //    this.indexHint = -1;
   this.state = inState;
 
@@ -164,23 +165,40 @@ ChronicleVehicleFrame.prototype.getDateAtMs = function( timeMs ){
 //
 //-----------------------------------------------------------------------
 ChronicleVehicleFrame.prototype.getSpeedAtMs = function( timeMs ){
-  var speedSample =this.findSample( Math.floor(timeMs), this.speedData);
+  const speedSample = this.findSample(Math.floor(timeMs), this.speedData);
   return speedSample.v;
-}
-//
-//
-//-----------------------------------------------------------------------
-ChronicleVehicleFrame.prototype.getSpeedAtIdx = function( idx ){
-  return this.speedData[idx===undefined ? this.lastFoundIdx : idx].v;
-}
+};
 
 //
 //
 //-----------------------------------------------------------------------
-ChronicleVehicleFrame.prototype.getPosAtMs = function( timeMs ){
-  var posSample =this.findSample( Math.floor(timeMs), this.posData);
-  return posSample.pos;
-}
+ChronicleVehicleFrame.prototype.getSpeedAtLastPos = function() {
+//  return this.speedData[idx===undefined ? this.lastFoundIdx : idx].v;
+  if (this.lastFoundIdxT.t <= 0) {
+    return this.speedData[this.lastFoundIdxT.idx].v;
+  }
+// interpolate
+  const v1 = this.speedData[this.lastFoundIdxT.idx].v;
+  const v2 = this.speedData[this.lastFoundIdxT.idx + 1].v;
+  return v1 + (v2 - v1) * this.lastFoundIdxT.t;
+};
+
+//
+//
+//-----------------------------------------------------------------------
+ChronicleVehicleFrame.prototype.getPosAtMs = function(timeMs) {
+  this.lastFoundIdxT = this.findSampleIdxWithT(Math.floor(timeMs), this.posData);
+  if (this.lastFoundIdxT.t <= 0) {
+    return this.posData[this.lastFoundIdxT.idx].pos;
+  }
+  // interpolate
+  const xx1 = this.posData[this.lastFoundIdxT.idx].pos.lat;
+  const yy1 = this.posData[this.lastFoundIdxT.idx].pos.lng;
+  const xx2 = this.posData[this.lastFoundIdxT.idx + 1].pos.lat;
+  const yy2 = this.posData[this.lastFoundIdxT.idx + 1].pos.lng;
+  return [xx1 + (xx2 - xx1) * this.lastFoundIdxT.t,
+            yy1 + (yy2 - yy1) * this.lastFoundIdxT.t];
+};
 //
 //
 //-----------------------------------------------------------------------
@@ -209,11 +227,68 @@ ChronicleVehicleFrame.prototype.findSample = function( requestMs, data ){
   for(; dataIdx>=0 && dataIdx<dataSz-1; dataIdx+=stepDir)
   if( data[dataIdx].timeMs<=requestMs && data[dataIdx+1].timeMs>requestMs ){
       this.lastFoundIdx = dataIdx;
-    //interpolate here?
+    // interpolate here?
       return data[dataIdx];
   }
   return (dataIdx<0) ? data[0] : data[dataSz-1];
 }
+
+
+//
+//
+//-----------------------------------------------------------------------
+ChronicleVehicleFrame.prototype.findSampleWithT = function(requestMs, data){
+
+  if (requestMs <= 0) {
+    return { d1: data[0],
+            t: 0 };
+  }
+  const dataSz = data.length;
+  let dataIdx = Math.min(dataSz - 1, Math.floor(dataSz * requestMs / this.timeRangeMs));
+  const stepDir = requestMs < data[dataIdx].timeMs ? -1 : 1;
+
+  for (; dataIdx >= 0 && dataIdx < dataSz - 1; dataIdx += stepDir) {
+    if (data[dataIdx].timeMs <= requestMs && data[dataIdx + 1].timeMs > requestMs) {
+      this.lastFoundIdx = dataIdx;
+      // interpolate here?
+      const normalizedT = (requestMs - data[dataIdx].timeMs)
+          / (data[dataIdx + 1].timeMs - data[dataIdx].timeMs);
+      return { d1: data[dataIdx],
+              d2: data[dataIdx + 1],
+              t: normalizedT };
+    }
+  }
+  return { d1: (dataIdx < 0) ? data[0] : data[dataSz - 1],
+          t: 0 };
+};
+
+//
+//
+//-----------------------------------------------------------------------
+ChronicleVehicleFrame.prototype.findSampleIdxWithT = function(requestMs, data){
+
+  if (requestMs <= 0) {
+    return { idx: 0,
+            t: 0 };
+  }
+  const dataSz = data.length;
+  let dataIdx = this.lastFoundIdx; // Math.min(dataSz - 1, Math.floor(dataSz * requestMs / this.timeRangeMs));
+  const stepDir = requestMs < data[dataIdx].timeMs ? -1 : 1;
+
+  for (; dataIdx >= 0 && dataIdx < dataSz - 1; dataIdx += stepDir) {
+    if (data[dataIdx].timeMs <= requestMs && data[dataIdx + 1].timeMs > requestMs) {
+      this.lastFoundIdx = dataIdx;
+      // interpolate here?
+      const normalizedT = (requestMs - data[dataIdx].timeMs)
+          / (data[dataIdx + 1].timeMs - data[dataIdx].timeMs);
+      return { idx: dataIdx,
+              t: normalizedT };
+    }
+  }
+  return { idx: (dataIdx < 0) ? 0 : dataSz - 1,
+          t: 0 };
+};
+
 //
 //
 //-----------------------------------------------------------------------
