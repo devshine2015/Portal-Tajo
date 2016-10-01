@@ -91,16 +91,16 @@ class PlaybackCtr extends React.Component {
     let timeToPlayMin = 5;
     switch (speed) {
       case 1:
-        timeToPlayMin = 1440; // realime speed
+        timeToPlayMin = 1440 * 2; // realime speed 24*60 = 1440
         break;
       case 2:
-        timeToPlayMin = 5;
+        timeToPlayMin = 100;
         break;
       case 3:
-        timeToPlayMin = 1;
+        timeToPlayMin = 5;
         break;
       case 4:
-        timeToPlayMin = 0.1;
+        timeToPlayMin = 1;
         break;
       default:
         break;
