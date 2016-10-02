@@ -140,7 +140,13 @@ ChronicleFramePlayer.prototype.getMomentDataAtNormalized = function(normalizedTi
 // }
 ChronicleFramePlayer.prototype.getCurrentMomentData = function( ) {
   return this.frameData;
-}
+};
+
+ChronicleFramePlayer.prototype.findNormilized100TForPos = function(refPos) {
+  const theSample = this.chronicleFrame.findSampleForPos(refPos);
+  return 100 * theSample.timeMs / this.chronicleFrame.timeRangeMs;
+};
+
 
 //
 //

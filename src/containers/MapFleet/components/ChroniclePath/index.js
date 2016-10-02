@@ -1,5 +1,8 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import { connect } from 'react-redux';
+import { setChronicleNormalizedT } from 'containers/Chronicle/actions';
+
 
 // import styles from './../styles.css';
 
@@ -23,8 +26,13 @@ class ChroniclePath extends React.Component {
     for (let i = 0; i < srcPosArray.length; ++i) {
       latLngArray.push(srcPosArray[i].pos);
     }
-
+    const that = this;
     this.thePath = window.L.polyline(latLngArray);
+    this.thePath.on('click', (e) => {
+      const clickT100 = that.props.chronicleFrame.player.findNormilized100TForPos(e.latlng);
+      console.log('click on '+clickT100.toFixed(1));
+      that.props.setChronicleNormalizedT(clickT100);
+    });
 
     if (!this.containerLayer.hasLayer(this.thePath)) {
       this.containerLayer.addLayer(this.thePath);
@@ -76,7 +84,14 @@ ChroniclePath.propTypes = {
   theLayer: React.PropTypes.object.isRequired,
   chronicleFrame: React.PropTypes.object.isRequired,
   isSelected: React.PropTypes.bool.isRequired,
+  setChronicleNormalizedT: React.PropTypes.func.isRequired,
+};
+const mapState = () => ({
+});
+const mapDispatch = {
+  setChronicleNormalizedT,
 };
 const PureChroniclePath = pure(ChroniclePath);
+export default connect(mapState, mapDispatch)(PureChroniclePath);
 
-export default PureChroniclePath;
+// export default PureChroniclePath;
