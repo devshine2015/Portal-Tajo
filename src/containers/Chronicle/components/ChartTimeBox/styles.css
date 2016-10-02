@@ -25,6 +25,22 @@
      color: #accad8;
      text-align: center;
    }
+   .infoTextContainer {
+     pointer-events: none;
+     position: absolute;
+     top: 0px;
+     right: 0px;
+     min-width: 175px;
+     margin: 5px;
+     color: rgba(0,0,0,.45);
+     text-align: center;
+   }
+   .infoPropContainer{
+     width: 100%;
+     /*font-size: 14px;*/
+     display: flex;
+     justify-content: space-between;
+   }
    .statusTextContainer h1 {
      font-size: 64px;
    }
