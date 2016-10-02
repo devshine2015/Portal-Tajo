@@ -1,0 +1,31 @@
+@media screen and (min-width: 100px) {
+  .actions {
+    text-align: center;
+  }
+
+  .button {
+    width: 100%;
+  }
+
+  .title,
+  .detail {
+    display: inline-block;
+  }
+
+  .title {
+    font-weight: 400;
+  }
+  .detail {
+    font-weight: 500;
+  }
+}
+
+@media screen and (min-width: 378px) {
+  .actions {
+    text-align: right;
+  }
+
+  .button {
+    width: auto;
+  }
+}

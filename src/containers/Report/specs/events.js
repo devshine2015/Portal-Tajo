@@ -1,82 +1,97 @@
-// import { isDev } from 'configs';
+import moment from 'moment';
 
-// const h = 1000 * 60 * 60;
-// const m = 1000 * 60;
-// const s = 1000;
+const prettyTypes = {
+  'vehicle-position': 'Position',
+  'vehicle-fuel': 'Fuel',
+  'vehicle-ign-off': 'Ignition Off',
+  'vehicle-ign-on': 'Ignition On',
+  'vehicle-1wire-temperature': 'Temperature',
+  'vehicle-started-moving': 'Start Moving',
+  'vehicle-stopped-moving': 'Stop Moving',
+  'vehicle-stop-stats': 'Stop Statistics',
+};
 
-// // returns hh, mm, ss
-// function _getTime(ms) {
-//   const hours = parseInt(ms / h, 10);
-//   ms = ms - (h * hours);
-//   const minutes = parseInt(ms / m, 10);
-//   ms = ms - (m * minutes);
-//   const seconds = ms / s;
+function prettifyAdditionalInfo(type, {
+  fuelInfo,
+  ignitionOnPeriod,
+  ignitionOffPeriod,
+  tempInfo,
+  stopPeriod,
+  stoppedPeriod,
+  movingPeriod,
+}) {
+  switch (type) {
+    case 'vehicle-fuel': {
+      return `Fuel used: ${fuelInfo.totFuelUsed}, Fuel level: ${fuelInfo.fuelLevelPerc}`;
+    }
+    case 'vehicle-ign-off': {
+      return `Ignition on period: ${ignitionOnPeriod}`;
+    }
+    case 'vehicle-ign-on': {
+      return `Ignition off period: ${ignitionOffPeriod}`;
+    }
+    case 'vehicle-1wire-temperature': {
+      return `Temperature: ${tempInfo}`;
+    }
+    case 'vehicle-started-moving': {
+      return `Stoped period: ${stoppedPeriod}`;
+    }
+    case 'vehicle-stopped-moving': {
+      return `Moving period: ${movingPeriod}`;
+    }
+    case 'vehicle-stop-stats': {
+      return `Stop period: ${stopPeriod}, Ignition on period: ${ignitionOnPeriod}`;
+    }
+    default:
+      return '';
+  }
+}
 
-//   return `${hours}h ${minutes}m ${seconds}s`;
-// }
+const calculateVehicleRow = ({ ev, type } = {}, {
+  dateFormat,
+  name,
+  licensePlate,
+}, empty = false) => {
+  // return single row in case of no events
+  if (empty) {
+    return [
+      licensePlate,
+      name,
+      'no data',
+      'no data',
+      'no data',
+      'no data',
+      'no data',
+    ];
+  }
 
-// function _calculate(events, { selectedTypes }) {
-//   const calcToReturn = (result) =>
-//     selectedTypes.map((key) => result[key]);
+  const prettyType = prettyTypes[type] || type;
+  const { pos, ts, vehicleId, ...rest } = ev;
 
-//   const isNeeded = (eventType, neededEventType, neededType) =>
-//     eventType === neededEventType && selectedTypes.indexOf(neededType) !== -1;
 
-//   const result = {};
+  return [
+    licensePlate,
+    name,
+    prettyType,
+    moment(pos.posTime).format(dateFormat),
+    `${pos.latlon.lat}, ${pos.latlon.lng}`,
+    pos.speed.toFixed(2, 10),
+    prettifyAdditionalInfo(type, rest),
+  ];
+};
 
-//   const ignitionOnType = 'timeIgnitionOn';
-//   const idlingTimeType = 'idlingTime';
+const calculateVehicleRows = options => (events = []) => {
+  const rows = [];
 
-//   const ignitionOffEvent = 'vehicle-ign-off';
-//   const idlingTimeEvent = 'vehicle-stop-stats';
+  if (events.length > 0) {
+    events.forEach(event => {
+      rows.push(calculateVehicleRow(event, options));
+    });
+  } else {
+    rows.push(calculateVehicleRow({}, options, true));
+  }
 
-//   let totalTimeIgnitionOn = 0;
-//   let totalIdlingTime = 0;
+  return rows;
+};
 
-//   events.forEach(event => {
-//     if (isNeeded(event.type, ignitionOffEvent, ignitionOnType)) {
-//       totalTimeIgnitionOn += event.ev.ignitionOnPeriod;
-//     }
-
-//     if (isNeeded(event.type, idlingTimeEvent, idlingTimeType)) {
-//       totalIdlingTime += event.ev.ignitionOnPeriod;
-//     }
-//   });
-
-//   result[ignitionOnType] = _getTime(totalTimeIgnitionOn);
-//   result[idlingTimeType] = _getTime(totalIdlingTime);
-
-//   return calcToReturn(result);
-// }
-
-// function filterSimilar(allSelectedReportTypes) {
-//   const similarTypes = ['timeIgnitionOn', 'idlingTime'];
-
-//   return allSelectedReportTypes.filter(type => similarTypes.indexOf(type) !== -1);
-// }
-
-// const commonProps = {
-//   domain: 'ignition',
-//   endpoint: 'events',
-//   filterSimilar,
-//   calc: _calculate,
-//   available: isDev,
-// };
-
-// const fields = [{
-//   ...commonProps,
-//   label: 'Ignition on Time',
-//   name: 'timeIgnitionOn',
-//   reportType: 'timeIgnitionOn',
-//   checkedByDefault: false,
-//   order: 0,
-// }, {
-//   ...commonProps,
-//   label: 'Idling Time',
-//   name: 'idlingTime',
-//   reportType: 'idlingTime',
-//   checkedByDefault: false,
-//   order: 0,
-// }];
-
-// export default fields;
+export default calculateVehicleRows;

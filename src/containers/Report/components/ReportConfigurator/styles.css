@@ -3,7 +3,7 @@
     margin-bottom: 20px;
   }
 
-  .button:first-child {
+  .button:not(:last-child) {
     margin-right: 15px; 
   }
 

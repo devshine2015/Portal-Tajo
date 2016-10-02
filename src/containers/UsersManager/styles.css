@@ -1,0 +1,18 @@
+@media screen and (min-width: 100px) {
+  .wrapper {
+    width: 100%;
+  }
+
+  .floatingButton {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .wrapper {
+    width: 600px;
+    margin: 0 auto;
+  }
+}

@@ -1,0 +1,19 @@
+@media screen and (min-width: 100px) {
+
+  .groups {
+    margin-top: 5px;
+  }
+
+  .group {
+    padding: 0 1px;
+  }
+
+  .list {
+    list-style: none;
+  }
+
+  .group:not(:last-child),
+  .list__item:not(:last-child) {
+    margin-bottom: 15px;
+  }
+}

@@ -21,11 +21,12 @@ export function msToDurtationLable(duration) {
   return makeStaticLableSVG(imageTimelapse)+'<span style="float:right">'+msToTimeIntervalString(duration)+'</span>';
 }
 
+
 export function speedToChronicleLable(speed) {
   return makeStaticLableSVG(notificationTimeToLeave)+'<span style="float:right">'+speed.toFixed(1) + 'km/h</span>';
 }
 export function temperatureToChronicleLable(temp) {
-  return makeStaticLableSVG(placesAcUnit)+'<span style="float:right">'+temp+'&deg;C</span>';
+  return makeStaticLableSVG(placesAcUnit)+'<span style="float:right">' + temp.toFixed(1) + '&deg;C</span>';
 }
 
 function dateToChronicleString(inDate) {
@@ -33,7 +34,11 @@ function dateToChronicleString(inDate) {
                 + inDate.getHours()
                 + ':'
                 + (inDate.getMinutes() < 10 ? 0 : '')
-                + inDate.getMinutes();
+                + inDate.getMinutes()
+                + ':'
+                + (inDate.getSeconds() < 10 ? 0 : '')
+                + inDate.getSeconds();
+
   return timeStr;
 }
 
