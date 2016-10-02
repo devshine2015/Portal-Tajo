@@ -171,8 +171,6 @@ class Report extends React.Component {
   }
 
   render() {
-    const noMaterialUI = this.props.noMaterialUI !== undefined ? this.props.noMaterialUI : false;
-
     return (
       <div className={styles.configurator}>
         <DateFormatSelectorWithMemory
@@ -192,7 +190,6 @@ class Report extends React.Component {
             checkedFields={this.state}
             onChange={this.onSelectedFieldsChange}
             fields={this.props.availableFields}
-            noMaterialUI={noMaterialUI}
           />
 
           <Period
@@ -244,7 +241,6 @@ Report.propTypes = {
   saveReport: React.PropTypes.func.isRequired,
   updateSelectedFields: React.PropTypes.func.isRequired,
   swipeGeneratedData: React.PropTypes.func.isRequired,
-  noMaterialUI: React.PropTypes.bool,
   error: React.PropTypes.string,
   userDateFormat: React.PropTypes.oneOf([
     'yyyy-mm-dd', 'dd-mm-yyyy',
