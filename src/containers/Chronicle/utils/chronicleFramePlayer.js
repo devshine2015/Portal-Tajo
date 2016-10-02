@@ -14,7 +14,7 @@ function ChronicleFramePlayer(chronicleFrame) {
   this.updateCallbacks = [];
   this.loopCallbacks = [];
 
-  this.frameData = {};
+  this.frameData = this.getMomentDataAtNormalized(this.normalizedTime100);
 }
 
 
@@ -126,7 +126,7 @@ ChronicleFramePlayer.prototype.getMomentDataAtNormalized = function(normalizedTi
       // Date object here
     date: this.chronicleFrame.getDateAtMs(timeMs),
     pos: this.chronicleFrame.getPosAtMs(timeMs),
-    speed: this.chronicleFrame.getSpeedAtIdx(),
+    speed: this.chronicleFrame.getSpeedAtLastPos(),
     temperature: this.chronicleFrame.hasTemperature() ?
       this.chronicleFrame.getTemperatureAtMs(timeMs) : null };
 };

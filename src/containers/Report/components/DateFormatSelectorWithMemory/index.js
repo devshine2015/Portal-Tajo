@@ -4,6 +4,7 @@ import pure from 'recompose/pure';
 import Checkbox from 'material-ui/Checkbox';
 import RememberChoiceIcon from 'material-ui/svg-icons/action/lock';
 import RememberChoiceIconOpen from 'material-ui/svg-icons/action/lock-open';
+import { portal } from 'configs';
 import DateFormatSelector from 'components/DateFormatSelector';
 import { updateUserSettings } from 'services/UserModel/actions';
 
@@ -59,6 +60,17 @@ class DateFormatSelectorWithMemory extends React.Component {
 
   render() {
     const rememberText = this.state.haveToRemember ? FORGET_ME : REMEMBER_ME;
+
+    if (portal === 'ssreports') {
+      return (
+        <div className={styles.wrapper}>
+          <DateFormatSelector
+            defaultFormat={this.props.tempDateFormat}
+            onChange={this.onChooseDateFormat}
+          />
+        </div>
+      );
+    }
 
     return (
       <div className={styles.wrapper}>

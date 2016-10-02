@@ -13,9 +13,10 @@ export const CHRONICLE_VALIDATE_TIMEFRAME = 'chronicle/validateTimeFrame';
 export const requestHistory = (vehicleId, dateFrom, dateTo) => dispatch =>
   _requestHistory(vehicleId, dateFrom, dateTo, dispatch);
 
-export const setChronicleNormalizedT = (normalized100T) => (dispatch) => {
-  dispatch(_chronicleSetT(normalized100T));
-};
+export const setChronicleNormalizedT = normalized100T => ({
+  type: CHRONICLE_SET_T,
+  normalized100T,
+});
 export const setChronicleTimeFrame = (dateFrom, dateTo) => (dispatch, getState) => {
   // TODO: fix dates comparison (use moments?)
   //
@@ -24,7 +25,7 @@ export const setChronicleTimeFrame = (dateFrom, dateTo) => (dispatch, getState) 
   }
   dispatch(_chronicleSetTimeFrame(dateFrom, dateTo));
   dispatch(_chronicleValidateTimeFrame());
-  dispatch(_chronicleSetT(0));
+  dispatch(setChronicleNormalizedT(0));
 };
 
 function _requestHistory(vehicleId, dateFrom, dateTo, dispatch) {
@@ -65,11 +66,6 @@ const _newVehicleChronicleFrame = (vehicleId, chronicleFrame) => ({
   type: CHRONICLE_ITEM_NEW_FRAME,
   vehicleId,
   chronicleFrame,
-});
-
-const _chronicleSetT = (normalized100T) => ({
-  type: CHRONICLE_SET_T,
-  normalized100T,
 });
 
 const _chronicleSetTimeFrame = (dateFrom, dateTo) => ({

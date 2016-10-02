@@ -54,7 +54,7 @@ class ChroniclePath extends React.Component {
         weight: 3,
         opacity: 0.85,
       });
-//      this.thePath.bringToFront();
+      this.thePath.bringToFront();
 // zoom the map to the PATH
 //      this.containerLayer.fitBounds(this.thePath.getBounds());
     } else {

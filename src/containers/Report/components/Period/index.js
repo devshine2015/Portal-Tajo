@@ -75,10 +75,6 @@ class Period extends React.Component {
   )
 
   render() {
-    if (this.props.noMaterialUI) {
-      return <OutdatedPeriod {...this.props} />;
-    }
-
     return (
       <div>
         <div className={styles.intervals}>
@@ -114,7 +110,6 @@ Period.propTypes = {
     }),
   }).isRequired,
   withTime: React.PropTypes.bool,
-  noMaterialUI: React.PropTypes.bool,
 };
 
 export default pure(Period);
