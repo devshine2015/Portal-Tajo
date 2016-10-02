@@ -14,7 +14,7 @@ function ChronicleFramePlayer(chronicleFrame) {
   this.updateCallbacks = [];
   this.loopCallbacks = [];
 
-  this.frameData = this.getMomentDataAtNormalized(this.normalizedTime100);
+  this.frameData = {};
 }
 
 
