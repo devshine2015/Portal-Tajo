@@ -86,7 +86,10 @@ export const getReportParams = ({
   const fromFormatted = _formateDateForRequest(start, startTime);
   const toFormatted = _formateDateForRequest(endDate, endTime);
 
-  return `from=${fromFormatted}&to=${toFormatted}`;
+  return {
+    from: fromFormatted,
+    to: toFormatted,
+  };
 };
 
 function _calculateColumn({

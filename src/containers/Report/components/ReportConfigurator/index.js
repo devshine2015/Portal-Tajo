@@ -13,7 +13,11 @@ import { getUserSettings } from 'services/UserModel/reducer';
 import DateFormatSelectorWithMemory from '../DateFormatSelectorWithMemory';
 import Period from '../Period';
 import AvailableFields from '../AvailableFields';
-import { dataActions, configuratorActions } from 'containers/Report/actions';
+import {
+  dataActions,
+  configuratorActions,
+  rawActions,
+} from 'containers/Report/actions';
 import {
   getReportLoadingState,
   getAvailableFields,
@@ -95,6 +99,7 @@ class Report extends React.Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    // this.onSaveRawData = this.onSaveRawData.bind(this);
   }
 
   onDateFormatChange = newFormat => {
@@ -134,9 +139,21 @@ class Report extends React.Component {
     this.props.changeFrequency(value);
   }
 
+  onSaveRawData = () => {
+    const params = this.getParams();
+
+    this.props.saveRawData(params);
+  }
+
   onSubmit = (e) => {
     e.preventDefault();
 
+    const params = this.getParams();
+
+    this.props.generateReport(params);
+  }
+
+  getParams() {
     const data = {
       start: this.state[this.periodFields.start.name],
       end: this.state[this.periodFields.end.name],
@@ -144,11 +161,11 @@ class Report extends React.Component {
       endTime: this.state[this.periodFields.endTime.name],
     };
 
-    this.props.generateReport({
+    return {
       timePeriod: data,
       frequency: this.props.frequency,
-      dateFormat: this.state.tempDateFormat,
-    });
+      dateFormat: this.state.tempDateFormat.toUpperCase(),
+    };
   }
 
   renderSplitter() {
@@ -209,12 +226,19 @@ class Report extends React.Component {
               disabled={this.props.isLoading}
               primary
             />
+            <RaisedButton
+              className={styles.button}
+              label="Save raw data"
+              onClick={this.onSaveRawData}
+              disabled={this.props.isLoading}
+              primary
+            />
             { this.props.hasReport && (
               <RaisedButton
                 className={styles.button}
                 label="Save Generated"
                 onClick={this.props.saveReport}
-                primary
+                secondary
               />
             )}
           </InputFieldWrapper>
@@ -241,6 +265,7 @@ Report.propTypes = {
   saveReport: React.PropTypes.func.isRequired,
   updateSelectedFields: React.PropTypes.func.isRequired,
   swipeGeneratedData: React.PropTypes.func.isRequired,
+  saveRawData: React.PropTypes.func.isRequired,
   error: React.PropTypes.string,
   userDateFormat: React.PropTypes.oneOf([
     'yyyy-mm-dd', 'dd-mm-yyyy',
@@ -259,6 +284,7 @@ const mapDispatch = {
   updateSelectedFields: configuratorActions.updateSelected,
   changeFrequency: configuratorActions.changeFrequency,
   swipeGeneratedData: dataActions.removeReportData,
+  saveRawData: rawActions.getRawEvents,
 };
 
 const PureReport = pure(Report);
