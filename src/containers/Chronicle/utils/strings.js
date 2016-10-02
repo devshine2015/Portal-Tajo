@@ -10,6 +10,8 @@ export function generateInnerHTMLForHistoryMoment(momentData) {
   if (momentData.temperature !== null) {
     content += '<br>'+temperatureToChronicleLable(momentData.temperature);
   }
+  content += '<hr>lat:'+'<span style="float:right">'+momentData.pos.lat.toFixed(6)+'</span>'
+  +'<br>lon:'+'<span style="float:right">'+momentData.pos.lng.toFixed(6)+'</span>';
   return content;
 }
 

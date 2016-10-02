@@ -93,13 +93,13 @@ class ListItemVehicle extends React.Component {
           <ItemProperty
             key="temp"
             title="Temperature"
-            value={this.props.temp.toFixed(1)+'\xB0 C'}
+            value={this.props.temp.toFixed(1) + '\xB0 C'}
           />
         }
         <Divider key="line02" />
         <ItemProperty
           key="license"
-          title="license Plate"
+          title="License Plate"
           value={`${this.props.licensePlate}`}
         />
         <ItemProperty
@@ -116,6 +116,17 @@ class ListItemVehicle extends React.Component {
           key="year"
           title="Year"
           value={`${this.props.year}`}
+        />
+        <Divider key="lineP" />
+        <ItemProperty
+          key="lat"
+          title="lat"
+          value={`${this.props.pos[0].toFixed(6)}`}
+        />
+        <ItemProperty
+          key="lon"
+          title="lon"
+          value={`${this.props.pos[1].toFixed(6)}`}
         />
       </div>);
     }
@@ -162,6 +173,7 @@ ListItemVehicle.propTypes = {
   lastUpdateSinceEpoch: React.PropTypes.number.isRequired,
   name: React.PropTypes.string.isRequired,
   speed: React.PropTypes.number,
+  pos: React.PropTypes.array,
   temp: React.PropTypes.number,
   dist: React.PropTypes.object,
   licensePlate: React.PropTypes.string,

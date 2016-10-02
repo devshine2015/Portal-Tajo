@@ -196,8 +196,8 @@ ChronicleVehicleFrame.prototype.getPosAtMs = function(timeMs) {
   const yy1 = this.posData[this.lastFoundIdxT.idx].pos.lng;
   const xx2 = this.posData[this.lastFoundIdxT.idx + 1].pos.lat;
   const yy2 = this.posData[this.lastFoundIdxT.idx + 1].pos.lng;
-  return [xx1 + (xx2 - xx1) * this.lastFoundIdxT.t,
-            yy1 + (yy2 - yy1) * this.lastFoundIdxT.t];
+  return { lat: xx1 + (xx2 - xx1) * this.lastFoundIdxT.t,
+            lng: yy1 + (yy2 - yy1) * this.lastFoundIdxT.t };
 };
 //
 //
@@ -218,13 +218,13 @@ ChronicleVehicleFrame.prototype.hasTemperature = function( ){
 //-----------------------------------------------------------------------
 ChronicleVehicleFrame.prototype.findSample = function( requestMs, data ){
 
-  if( requestMs<=0 )
+  if (requestMs<=0)
     return data[0];
   var dataSz = data.length;
   var dataIdx = Math.min( dataSz-1,  Math.floor(dataSz * requestMs/this.timeRangeMs));
   var stepDir = requestMs<data[dataIdx].timeMs ? -1 : 1;
 
-  for(; dataIdx>=0 && dataIdx<dataSz-1; dataIdx+=stepDir)
+  for (; dataIdx >= 0 && dataIdx < dataSz - 1; dataIdx += stepDir)
   if( data[dataIdx].timeMs<=requestMs && data[dataIdx+1].timeMs>requestMs ){
       this.lastFoundIdx = dataIdx;
     // interpolate here?
