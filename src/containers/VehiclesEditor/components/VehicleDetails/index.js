@@ -116,8 +116,6 @@ class VehicleDetails extends React.Component {
       SelectedKindIcon = () => selectedKind.icon;
     }
 
-    console.log(this.state.odometer);
-
     return (
       <div className={styles.details}>
         <Form

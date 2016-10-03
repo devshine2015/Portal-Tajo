@@ -15,9 +15,18 @@ const vehiclesInitialState = fromJS({
 function vehiclesReducer(state = vehiclesInitialState, action) {
   switch (action.type) {
     case vehiclesActions.FLEET_MODEL_VEHICLES_SET:
-      return state.set('list', new List(action.vehicles))
-              .set('processedList', fromJS(action.localVehicles))
-              .set('orderedList', new List(action.orderedVehicles));
+      return state.withMutations(s => {
+        s.set('list', new List(action.vehicles))
+         .set('processedList', fromJS(action.localVehicles))
+         .set('orderedList', new List(action.orderedVehicles));
+      });
+
+    case vehiclesActions.FLEET_MODEL_VEHICLE_ADD:
+      return state.withMutations(s => {
+        s.update('list', list => list.push(action.newVehicle))
+         .setIn(['processedList', action.id], action.localVehicle)
+         .set('orderedList', action.orderedList);
+      });
 
     case vehiclesActions.FLEET_MODEL_VEHICLE_UPDATE:
       return state.mergeIn(['processedList', action.id], action.details);

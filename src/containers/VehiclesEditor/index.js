@@ -91,7 +91,7 @@ class VehiclesEditor extends React.Component {
       model: origins.model,
       make: origins.make,
       licensePlate: origins.licensePlate,
-      odometer: parseInt(origins.dist.total / 1000, 10),
+      odometer: (origins.dist.total / 1000).toFixed(0),
     };
 
     return (
