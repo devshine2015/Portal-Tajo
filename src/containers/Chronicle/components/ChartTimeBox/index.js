@@ -79,6 +79,32 @@ class ChartTimeBox extends React.Component {
     }
     return false;
   }
+  frameInfo() {
+    if (this.props.chronicleFrame.isValid()
+      && !this.props.chronicleFrame.isEmpty()) {
+      return (
+        <div className={styles.infoTextContainer}>
+          <div className={styles.infoPropContainer}>
+            <span>Max speed:</span>
+            <span>{this.props.chronicleFrame.maxSpeed.toFixed(1)} km/h</span>
+          </div>
+          { !this.props.chronicleFrame.hasTemperature() ? false :
+            <div>
+              <div className={styles.infoPropContainer}>
+                <span>MaxT:</span>
+                <span>{this.props.chronicleFrame.maxTemp.toFixed(1)} &deg;C</span>
+              </div>
+              <div className={styles.infoPropContainer}>
+                <span>MinT:</span>
+                <span>{this.props.chronicleFrame.minTemp.toFixed(1)} &deg;C</span>
+              </div>
+            </div>
+          }
+        </div>
+      );
+    }
+    return false;
+  }
   render() {
     const isDisplayTimeHears = !this.props.chronicleFrame.isLoading()
           && this.props.chronicleFrame.isValid()
@@ -107,6 +133,7 @@ class ChartTimeBox extends React.Component {
           : false
         }
         {this.statusText()}
+        {this.frameInfo()}
       </div>
     );
   }

@@ -196,76 +196,48 @@ ChronicleVehicleFrame.prototype.getPosAtMs = function(timeMs) {
   const yy1 = this.posData[this.lastFoundIdxT.idx].pos.lng;
   const xx2 = this.posData[this.lastFoundIdxT.idx + 1].pos.lat;
   const yy2 = this.posData[this.lastFoundIdxT.idx + 1].pos.lng;
-  return [xx1 + (xx2 - xx1) * this.lastFoundIdxT.t,
-            yy1 + (yy2 - yy1) * this.lastFoundIdxT.t];
+  return { lat: xx1 + (xx2 - xx1) * this.lastFoundIdxT.t,
+            lng: yy1 + (yy2 - yy1) * this.lastFoundIdxT.t };
 };
 //
 //
 //-----------------------------------------------------------------------
-ChronicleVehicleFrame.prototype.getTemperatureAtMs = function( timeMs ){
-  var tempSample =this.findSample( Math.floor(timeMs), this.temperatureData);
+ChronicleVehicleFrame.prototype.getTemperatureAtMs = function (timeMs) {
+  const tempSample = this.findSample(Math.floor(timeMs), this.temperatureData);
   return tempSample.t;
-}
+};
+
 //
 //
 //-----------------------------------------------------------------------
-ChronicleVehicleFrame.prototype.hasTemperature = function( ){
-  return this.temperatureData.length>5;
-}
+ChronicleVehicleFrame.prototype.hasTemperature = function () {
+  return this.temperatureData.length > 5;
+};
 
 //
 //
 //-----------------------------------------------------------------------
 ChronicleVehicleFrame.prototype.findSample = function( requestMs, data ){
-
-  if( requestMs<=0 )
-    return data[0];
-  var dataSz = data.length;
-  var dataIdx = Math.min( dataSz-1,  Math.floor(dataSz * requestMs/this.timeRangeMs));
-  var stepDir = requestMs<data[dataIdx].timeMs ? -1 : 1;
-
-  for(; dataIdx>=0 && dataIdx<dataSz-1; dataIdx+=stepDir)
-  if( data[dataIdx].timeMs<=requestMs && data[dataIdx+1].timeMs>requestMs ){
-      this.lastFoundIdx = dataIdx;
-    // interpolate here?
-      return data[dataIdx];
-  }
-  return (dataIdx<0) ? data[0] : data[dataSz-1];
-}
-
-
-//
-//
-//-----------------------------------------------------------------------
-ChronicleVehicleFrame.prototype.findSampleWithT = function(requestMs, data){
-
   if (requestMs <= 0) {
-    return { d1: data[0],
-            t: 0 };
+    return data[0];
   }
   const dataSz = data.length;
   let dataIdx = Math.min(dataSz - 1, Math.floor(dataSz * requestMs / this.timeRangeMs));
   const stepDir = requestMs < data[dataIdx].timeMs ? -1 : 1;
 
-  for (; dataIdx >= 0 && dataIdx < dataSz - 1; dataIdx += stepDir) {
-    if (data[dataIdx].timeMs <= requestMs && data[dataIdx + 1].timeMs > requestMs) {
-      this.lastFoundIdx = dataIdx;
-      // interpolate here?
-      const normalizedT = (requestMs - data[dataIdx].timeMs)
-          / (data[dataIdx + 1].timeMs - data[dataIdx].timeMs);
-      return { d1: data[dataIdx],
-              d2: data[dataIdx + 1],
-              t: normalizedT };
-    }
+  for (; dataIdx >= 0 && dataIdx < dataSz - 1; dataIdx += stepDir)
+  if (data[dataIdx].timeMs<=requestMs && data[dataIdx + 1].timeMs>requestMs) {
+    this.lastFoundIdx = dataIdx;
+    // interpolate here?
+    return data[dataIdx];
   }
-  return { d1: (dataIdx < 0) ? data[0] : data[dataSz - 1],
-          t: 0 };
+  return (dataIdx < 0) ? data[0] : data[dataSz - 1];
 };
 
 //
 //
 //-----------------------------------------------------------------------
-ChronicleVehicleFrame.prototype.findSampleIdxWithT = function(requestMs, data){
+ChronicleVehicleFrame.prototype.findSampleIdxWithT = function (requestMs, data){
 
   if (requestMs <= 0) {
     return { idx: 0,
@@ -287,6 +259,25 @@ ChronicleVehicleFrame.prototype.findSampleIdxWithT = function(requestMs, data){
   }
   return { idx: (dataIdx < 0) ? 0 : dataSz - 1,
           t: 0 };
+};
+
+
+//
+//
+//-----------------------------------------------------------------------
+ChronicleVehicleFrame.prototype.findSampleForPos = function (refPos) {
+  let bestFitIdx = 0;
+  let bestDist = Number.MAX_VALUE;
+  this.posData.forEach((posSample, idx) => {
+    const dLat = (refPos.lat - posSample.pos.lat);
+    const dLng = (refPos.lng - posSample.pos.lng);
+    const dist = dLat * dLat + dLng * dLng;
+    if (bestDist > dist) {
+      bestFitIdx = idx;
+      bestDist = dist;
+    }
+  });
+  return this.posData[bestFitIdx];
 };
 
 //
