@@ -14,7 +14,7 @@ function ChronicleFramePlayer(chronicleFrame) {
   this.updateCallbacks = [];
   this.loopCallbacks = [];
 
-  this.frameData = this.getMomentDataAtNormalized(this.normalizedTime100);
+  this.frameData = {};
 }
 
 
@@ -140,7 +140,13 @@ ChronicleFramePlayer.prototype.getMomentDataAtNormalized = function(normalizedTi
 // }
 ChronicleFramePlayer.prototype.getCurrentMomentData = function( ) {
   return this.frameData;
-}
+};
+
+ChronicleFramePlayer.prototype.findNormilized100TForPos = function(refPos) {
+  const theSample = this.chronicleFrame.findSampleForPos(refPos);
+  return 100 * theSample.timeMs / this.chronicleFrame.timeRangeMs;
+};
+
 
 //
 //

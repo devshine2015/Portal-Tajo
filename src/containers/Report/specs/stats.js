@@ -1,19 +1,16 @@
 import endpoints from 'configs/endpoints';
+import specsUtils from '../utils/specsUtils';
 
 function _calc(record, { selectedTypes }) {
-  const calcToReturn = (result) =>
-    selectedTypes.map((key) => result[key]);
-
-  return calcToReturn({
-    // record.dist.total in meters
+  return specsUtils.calcToReturn({
     odometer: record.dist && parseInt((record.dist.total / 1000), 10) || 'N/A',
-  });
+  }, selectedTypes);
 }
 
-function filterSimilar(allSelectedReportTypes) {
+function _filterSimilar(allSelectedReportTypes) {
   const similarTypes = ['odometer'];
 
-  return allSelectedReportTypes.filter(type => similarTypes.indexOf(type) !== -1);
+  return specsUtils.filterSimilar(allSelectedReportTypes, similarTypes);
 }
 
 const commonFields = {
@@ -23,7 +20,7 @@ const commonFields = {
   query: {
     tzoffset: new Date().getTimezoneOffset(),
   },
-  filterSimilar,
+  filterSimilar: _filterSimilar,
   calc: _calc,
 };
 

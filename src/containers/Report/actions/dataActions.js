@@ -27,7 +27,7 @@ export const removeReportData = () => ({
 });
 
 function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getState) {
-  dispatch(setLoader(true));
+  // dispatch(setLoader(true));
   dispatch(removeReportData());
 
   const periods = getPeriods(timePeriod, frequency);
@@ -93,6 +93,7 @@ function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getSta
         dispatch(setLoader(false));
         dispatch(setErrorMessage('Server error'));
       }
+      console.error(e);
     });
 }
 
