@@ -62,24 +62,24 @@ export const prepareDataForReport = (
             record: recordsForAllVehicles[i],
           });
 
-          // row = Object.assign({}, row, column);
           result[rowNumber] = result[rowNumber].concat(column);
         }
 
         maxRowsCount = recordsForAllVehicles.length;
       });
 
-
-      for (let k = 0; k < result.length; k++) {
-        const sortedRow = result[k]
-                           .sort((x, y) => x.order - y.order)
-                           .map(obj => obj.value);
-
-        result[k] = sortedRow;
-      }
-
       totalRowsCount += maxRowsCount;
     });
+
+    // sort columns in rows
+    // accordingly to order property
+    for (let k = 0; k < result.length; k++) {
+      const sortedRow = result[k]
+                         .sort((x, y) => x.order - y.order)
+                         .map(obj => obj.value);
+
+      result[k] = sortedRow;
+    }
 
     return Promise.resolve(result);
   };
