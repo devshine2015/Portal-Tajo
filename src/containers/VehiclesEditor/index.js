@@ -21,20 +21,25 @@ class VehiclesEditor extends React.Component {
     super(props);
 
     this.state = {
-      selectedVehicleOriginalIndex: undefined,
       selectedVehicleId: undefined,
+      selectedVehicleOriginalIndex: undefined,
     };
 
     this.chooseVehicle = this.chooseVehicle.bind(this);
   }
 
-  componentDidMount() {
-    const globalSelectedVehicleId = this.props.globalSelectedVehicleId;
-    if (globalSelectedVehicleId !== '') {
-      this.chooseVehicle(globalSelectedVehicleId);
+  // componentDidMount() {
+  //   const globalSelectedVehicleId = this.props.globalSelectedVehicleId;
+  //   if (globalSelectedVehicleId !== '') {
+  //     this.chooseVehicle(globalSelectedVehicleId);
+  //   }
+  // }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.vehicles.length && nextProps.vehicles.length) {
+      this.chooseVehicle(nextProps);
     }
   }
-
   /**
    * Combine new data with the old ones
    * since server requiring all details to be sent
@@ -51,17 +56,22 @@ class VehiclesEditor extends React.Component {
   }
 
   /**
-   * Choose vehicle by id
+   * Choose vehicle by global id or pick first one
    **/
-  chooseVehicle = (id) => {
-    const v = getVehicleById(id, this.props.vehicles);
+  chooseVehicle = props => {
+    if (!!props.globalSelectedVehicleId) {
+      const v = getVehicleById(props.globalSelectedVehicleId, props.vehicles);
 
-    if (v !== undefined) {
       this.setState({
-        selectedVehicleId: id,
+        selectedVehicleId: props.globalSelectedVehicleId,
         selectedVehicleOriginalIndex: v.vehicleIndex,
       });
     }
+
+    this.setState({
+      selectedVehicleId: props.vehicles[0].id,
+      selectedVehicleOriginalIndex: 0,
+    });
   }
 
   /**
