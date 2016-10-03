@@ -1,5 +1,6 @@
 import moment from 'moment';
 import endpoints from 'configs/endpoints';
+import specsUtils from '../utils/specsUtils';
 
 function formatValue(v) {
   const d = moment.duration(v, 'seconds');
@@ -11,19 +12,16 @@ function formatValue(v) {
 }
 
 function _calc(record, { selectedTypes }) {
-  const calcToReturn = (result) =>
-    selectedTypes.map((key) => result[key]);
-
-  return calcToReturn({
+  return specsUtils.calcToReturn({
     stoppedTime: formatValue(record.stoppedTime),
     idleWhileStopped: formatValue(record.idleWhileStopped),
-  });
+  }, selectedTypes);
 }
 
-function filterSimilar(allSelectedReportTypes) {
+function _filterSimilar(allSelectedReportTypes) {
   const similarTypes = ['stoppedTime', 'idleWhileStopped'];
 
-  return allSelectedReportTypes.filter(type => similarTypes.indexOf(type) !== -1);
+  return specsUtils.filterSimilar(allSelectedReportTypes, similarTypes);
 }
 
 const commonFields = {
@@ -33,7 +31,7 @@ const commonFields = {
   query: {
     tzoffset: new Date().getTimezoneOffset(),
   },
-  filterSimilar,
+  filterSimilar: _filterSimilar,
   calc: _calc,
 };
 

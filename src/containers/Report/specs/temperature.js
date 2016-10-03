@@ -1,5 +1,11 @@
 import moment from 'moment';
 import endpoints from 'configs/endpoints';
+import specsUtils from '../utils/specsUtils';
+
+function withinPeriod(time, period) {
+  return moment(time).isBetween(period.start, period.end);
+}
+
 /**
  *
  * Calculate min/max/avg temperature for given date at once
@@ -11,12 +17,6 @@ import endpoints from 'configs/endpoints';
  *
  **/
 function calcTemperature(records, { selectedTypes, period, frequency }) {
-  const calcToReturn = (resultTemps) =>
-    selectedTypes.map((key) => resultTemps[key]);
-
-  const withinPeriod = (time) =>
-    moment(time).isBetween(period.start, period.end);
-
   let resultTemps = {
     minTemp: 'n/a',
     maxTemp: 'n/a',
@@ -24,7 +24,7 @@ function calcTemperature(records, { selectedTypes, period, frequency }) {
   };
 
   if (records.length === 0) {
-    return calcToReturn(resultTemps);
+    return specsUtils.calcToReturn(resultTemps, selectedTypes);
   }
 
 
@@ -36,7 +36,7 @@ function calcTemperature(records, { selectedTypes, period, frequency }) {
   for (let i = 0; i < records.length; i++) {
     const record = records[i];
 
-    if (frequency && !withinPeriod(record.time)) {
+    if (frequency && !withinPeriod(record.time, period)) {
       continue;
     }
 
@@ -58,13 +58,13 @@ function calcTemperature(records, { selectedTypes, period, frequency }) {
     avgTemp,
   };
 
-  return calcToReturn(resultTemps);
+  return specsUtils.calcToReturn(resultTemps, selectedTypes);
 }
 
-function filterSimilar(allSelectedReportTypes) {
+function _filterSimilar(allSelectedReportTypes) {
   const similarTypes = ['minTemp', 'maxTemp', 'avgTemp'];
 
-  return allSelectedReportTypes.filter(type => similarTypes.indexOf(type) !== -1);
+  return specsUtils.filterSimilar(allSelectedReportTypes, similarTypes);
 }
 
 const commonProps = {
@@ -75,7 +75,7 @@ const commonProps = {
   },
   domain: 'temperature',
   checkedByDefault: false,
-  filterSimilar,
+  filterSimilar: _filterSimilar,
   calc: calcTemperature,
 };
 

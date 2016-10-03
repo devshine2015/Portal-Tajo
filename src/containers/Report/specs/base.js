@@ -1,3 +1,5 @@
+import specsUtils from '../utils/specsUtils';
+
 function _formateDateForTable({ start, end }, frequency, dateFormat) {
   const startFormat = !frequency || frequency === 'daily' ? dateFormat : 'L LT';
   const endFormat = !frequency || frequency === 'daily' ? dateFormat : 'LT';
@@ -13,49 +15,45 @@ function _formateDateForTable({ start, end }, frequency, dateFormat) {
 }
 
 function _calculate(vehicle, { selectedTypes, period, frequency, dateFormat }) {
-  const calcToReturn = (resultTemps) =>
-    selectedTypes.map((key) => resultTemps[key]);
-
-  return calcToReturn({
+  return specsUtils.calcToReturn({
     date: _formateDateForTable(period, frequency, dateFormat),
-    vehicles: vehicle.name,
+    name: vehicle.name,
     license: vehicle.licensePlate,
-  });
+  }, selectedTypes);
 }
 
-function filterSimilar(allSelectedReportTypes) {
-  const similarTypes = ['date', 'vehicles', 'license'];
+function _filterSimilar(allSelectedReportTypes) {
+  const similarTypes = ['date', 'name', 'license'];
 
-  return allSelectedReportTypes.filter(type => similarTypes.indexOf(type) !== -1);
+  return specsUtils.filterSimilar(allSelectedReportTypes, similarTypes);
 }
+
+const commonProps = {
+  domain: 'base',
+  checkedByDefault: true,
+  filterSimilar: _filterSimilar,
+  calc: _calculate,
+};
 
 const fields = [{
+  ...commonProps,
   label: 'Date',
   name: 'date',
   reportType: 'date',
-  checkedByDefault: true,
-  domain: 'base',
   order: 0,
-  filterSimilar,
-  calc: _calculate,
 }, {
+  ...commonProps,
   label: 'Vehicle Name',
   name: 'name',
-  reportType: 'vehicles',
-  checkedByDefault: true,
-  domain: 'base',
+  reportType: 'name',
   order: 1,
-  filterSimilar,
-  calc: _calculate,
 }, {
+  ...commonProps,
   label: 'License Plate',
   name: 'license',
   reportType: 'license',
   checkedByDefault: false,
-  domain: 'base',
   order: 2,
-  filterSimilar,
-  calc: _calculate,
 }];
 
 export default fields;

@@ -19,6 +19,7 @@ export const prepareDataForReport = (
     let rowNumber = 0;
     let totalRowsCount = 0;
     let maxRowsCount = 0;
+    let row = {};
 
     periods.forEach((momentDate, j, a) => {
       const isLastDate = j === a.length - 1;
@@ -52,7 +53,6 @@ export const prepareDataForReport = (
           if (!result[rowNumber]) {
             result[rowNumber] = [];
           }
-
           const column = _calculateColumn({
             filteredTypesToCalc,
             frequency,
@@ -62,11 +62,21 @@ export const prepareDataForReport = (
             record: recordsForAllVehicles[i],
           });
 
+          // row = Object.assign({}, row, column);
           result[rowNumber] = result[rowNumber].concat(column);
         }
 
         maxRowsCount = recordsForAllVehicles.length;
       });
+
+
+      for (let k = 0; k < result.length; k++) {
+        const sortedRow = result[k]
+                           .sort((x, y) => x.order - y.order)
+                           .map(obj => obj.value);
+
+        result[k] = sortedRow;
+      }
 
       totalRowsCount += maxRowsCount;
     });
@@ -74,7 +84,6 @@ export const prepareDataForReport = (
     return Promise.resolve(result);
   };
 
-// TODO -- check how request MUST be sent: as utc or local time?
 export const getReportParams = ({
   start,
   end = undefined,
