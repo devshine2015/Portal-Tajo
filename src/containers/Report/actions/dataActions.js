@@ -2,8 +2,6 @@ import qs from 'query-string';
 import api from 'utils/api';
 import endpoints from 'configs/endpoints';
 import reporter from 'utils/reports';
-import { setLoader } from './loaderActions';
-import { setErrorMessage } from './configuratorActions';
 import {
   getSavedReportData,
   getSelectedFields,
@@ -18,6 +16,9 @@ import getVehiclesForReport from '../utils/reportVehicles';
 
 export const REPORT_DATA_SAVE = 'portal/Report/REPORT_DATA_SAVE';
 export const REPORT_DATA_REMOVE = 'portal/Report/REPORT_DATA_REMOVE';
+export const REPORT_BEFORE_GENERATING = 'portal/Report/REPORT_BEFORE_GENERATING';
+export const REPORT_GENERATING_SUCCESS = 'portal/Report/REPORT_GENERATING_SUCCESS';
+export const REPORT_GENERATING_FAILURE = 'portal/Report/REPORT_GENERATING_FAILURE';
 
 export const generateReport = params => (dispatch, getState) =>
   _generateReport(params, dispatch, getState);
@@ -27,8 +28,7 @@ export const removeReportData = () => ({
 });
 
 function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getState) {
-  // dispatch(setLoader(true));
-  dispatch(removeReportData());
+  dispatch(_beforeGenerating());
 
   const periods = getPeriods(timePeriod, frequency);
   const periodParams = getReportParams(timePeriod);
@@ -85,13 +85,11 @@ function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getSta
     })
     .then(prepareDataForReport(selectedReports, periods, frequency, dateFormat))
     .then(table => {
-      dispatch(setLoader(false));
-      dispatch(_saveReportData(table));
+      dispatch(_generatingSuccess(table));
     })
     .catch(e => {
       if (e && e.response && e.response.status === 500) {
-        dispatch(setLoader(false));
-        dispatch(setErrorMessage('Server error'));
+        dispatch(_generatingFail('Server error'));
       }
       console.error(e);
     });
@@ -104,9 +102,18 @@ function _saveGenerated(dispatch, getState) {
   return reporter(reportData, headers);
 }
 
-const _saveReportData = (reportData) => ({
-  type: REPORT_DATA_SAVE,
+const _beforeGenerating = () => ({
+  type: REPORT_BEFORE_GENERATING,
+});
+
+const _generatingSuccess = reportData => ({
+  type: REPORT_GENERATING_SUCCESS,
   reportData,
+});
+
+const _generatingFail = errorMessage => ({
+  type: REPORT_GENERATING_FAILURE,
+  message: errorMessage,
 });
 
 function _reportRequest(vehicles = [], {
