@@ -32,7 +32,7 @@ class Installer extends React.Component {
 
     this.state = {
       fields: initialFields,
-      cannotSubmit: true,
+      cannotSubmit: false,
       dialogIsOpen: this.dialogIsOpen(props),
     };
 
