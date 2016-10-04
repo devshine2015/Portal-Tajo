@@ -34,7 +34,7 @@ class VehicleDetails extends React.Component {
     /**
      * Initial values for controlled inputs
      **/
-    this.state = Object.assign({}, { ...props.details }, {
+    this.state = Object.assign({}, props.details, {
       isMiles: false,
     });
   }
@@ -48,6 +48,7 @@ class VehicleDetails extends React.Component {
    **/
   onSubmit = (e) => {
     e.preventDefault();
+    const nameChanged = this.state.name !== this.props.details.name;
 
     const toSave = Object.assign({}, this.state, {
       odometer: {
@@ -55,7 +56,7 @@ class VehicleDetails extends React.Component {
       },
     });
 
-    this.props.onSave(toSave);
+    this.props.onSave(toSave, nameChanged);
   }
 
   onIsMilesChange = (e, isCheked) => {
@@ -85,9 +86,7 @@ class VehicleDetails extends React.Component {
    * Update state if another vehicle has been chosen
    **/
   checkIfVehicleChanged(nextProps) {
-    // if (nextProps.id !== this.props.id) {
     this.setState({ ...nextProps.details, isMiles: false });
-    // }
   }
 
   renderKindMenuItems() {

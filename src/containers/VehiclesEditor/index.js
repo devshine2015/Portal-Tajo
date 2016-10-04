@@ -41,13 +41,18 @@ class VehiclesEditor extends React.Component {
   /**
    * Combine new data with the old ones
    * since server requiring all details to be sent
+   * needResort if name has been changed
    **/
-  onDetailsSave = (data) => {
+  onDetailsSave = (data, needResort) => {
     const { selectedVehicleId } = this.state;
 
-    this.props.updateDetails(data, selectedVehicleId)
-      .then(() => {
-        this.props.showSnackbar('Succesfully sended ✓', 3000);
+    this.props.updateDetails(data, selectedVehicleId, needResort)
+      .then((newIndex = undefined) => {
+        this.setState({
+          selectedVehicleOriginalIndex: newIndex,
+        }, () => {
+          this.props.showSnackbar('Succesfully sended ✓', 3000);
+        });
       }, () => {
         this.props.showSnackbar('Something went wrong. Try later. ✓', 5000);
       });
