@@ -21,23 +21,21 @@ class VehiclesEditor extends React.Component {
     super(props);
 
     this.state = {
-      selectedVehicleId: undefined,
-      selectedVehicleOriginalIndex: undefined,
+      ...this.getSelectedState({
+        id: props.globalSelectedVehicleId,
+        vehicles: props.vehicles,
+      }),
     };
-
-    this.chooseVehicle = this.chooseVehicle.bind(this);
   }
-
-  // componentDidMount() {
-  //   const globalSelectedVehicleId = this.props.globalSelectedVehicleId;
-  //   if (globalSelectedVehicleId !== '') {
-  //     this.chooseVehicle(globalSelectedVehicleId);
-  //   }
-  // }
 
   componentWillReceiveProps(nextProps) {
     if (!this.props.vehicles.length && nextProps.vehicles.length) {
-      this.chooseVehicle(nextProps);
+      this.setState({
+        ...this.getSelectedState({
+          id: nextProps.globalSelectedVehicleId,
+          vehicles: nextProps.vehicles,
+        }),
+      });
     }
   }
   /**
@@ -55,23 +53,35 @@ class VehiclesEditor extends React.Component {
       });
   }
 
-  /**
-   * Choose vehicle by global id or pick first one
-   **/
-  chooseVehicle = props => {
-    if (!!props.globalSelectedVehicleId) {
-      const v = getVehicleById(props.globalSelectedVehicleId, props.vehicles);
+  onChooseVehicle = id => {
+    this.setState({
+      ...this.getSelectedState({
+        id,
+        vehicles: this.props.vehicles,
+      }),
+    });
+  }
 
-      this.setState({
-        selectedVehicleId: props.globalSelectedVehicleId,
-        selectedVehicleOriginalIndex: v.vehicleIndex,
-      });
+  getSelectedState = ({
+    id,
+    vehicles,
+  }) => {
+    const result = {
+      selectedVehicleOriginalIndex: undefined,
+      selectedVehicleId: undefined,
+    };
+
+    if (id) {
+      const v = getVehicleById(id, vehicles);
+
+      result.selectedVehicleId = id;
+      result.selectedVehicleOriginalIndex = v.vehicleIndex;
+    } else if (vehicles.length > 0) {
+      result.selectedVehicleId = vehicles[0].id;
+      result.selectedVehicleOriginalIndex = 0;
     }
 
-    this.setState({
-      selectedVehicleId: props.vehicles[0].id,
-      selectedVehicleOriginalIndex: 0,
-    });
+    return result;
   }
 
   /**
@@ -132,7 +142,7 @@ class VehiclesEditor extends React.Component {
           }
           content={
             <VehiclesList
-              onItemClick={this.chooseVehicle}
+              onItemClick={this.onChooseVehicle}
               data={this.props.vehicles}
               currentExpandedItemId={this.state.selectedVehicleId}
             />
