@@ -21,47 +21,72 @@ class VehiclesEditor extends React.Component {
     super(props);
 
     this.state = {
-      selectedVehicleOriginalIndex: undefined,
-      selectedVehicleId: undefined,
+      ...this.getSelectedState({
+        id: props.globalSelectedVehicleId,
+        vehicles: props.vehicles,
+      }),
     };
-
-    this.chooseVehicle = this.chooseVehicle.bind(this);
   }
 
-  componentDidMount() {
-    const globalSelectedVehicleId = this.props.globalSelectedVehicleId;
-    if (globalSelectedVehicleId !== '') {
-      this.chooseVehicle(globalSelectedVehicleId);
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.vehicles.length && nextProps.vehicles.length) {
+      this.setState({
+        ...this.getSelectedState({
+          id: nextProps.globalSelectedVehicleId,
+          vehicles: nextProps.vehicles,
+        }),
+      });
     }
   }
-
   /**
    * Combine new data with the old ones
    * since server requiring all details to be sent
+   * needResort if name has been changed
    **/
-  onDetailsSave = (data) => {
+  onDetailsSave = (data, needResort) => {
     const { selectedVehicleId } = this.state;
 
-    this.props.updateDetails(data, selectedVehicleId)
-      .then(() => {
-        this.props.showSnackbar('Succesfully sended ✓', 3000);
+    this.props.updateDetails(data, selectedVehicleId, needResort)
+      .then((newIndex = undefined) => {
+        this.setState({
+          selectedVehicleOriginalIndex: newIndex,
+        }, () => {
+          this.props.showSnackbar('Succesfully sended ✓', 3000);
+        });
       }, () => {
         this.props.showSnackbar('Something went wrong. Try later. ✓', 5000);
       });
   }
 
-  /**
-   * Choose vehicle by id
-   **/
-  chooseVehicle = (id) => {
-    const v = getVehicleById(id, this.props.vehicles);
+  onChooseVehicle = id => {
+    this.setState({
+      ...this.getSelectedState({
+        id,
+        vehicles: this.props.vehicles,
+      }),
+    });
+  }
 
-    if (v !== undefined) {
-      this.setState({
-        selectedVehicleId: id,
-        selectedVehicleOriginalIndex: v.vehicleIndex,
-      });
+  getSelectedState = ({
+    id,
+    vehicles,
+  }) => {
+    const result = {
+      selectedVehicleOriginalIndex: undefined,
+      selectedVehicleId: undefined,
+    };
+
+    if (id) {
+      const v = getVehicleById(id, vehicles);
+
+      result.selectedVehicleId = id;
+      result.selectedVehicleOriginalIndex = v.vehicleIndex;
+    } else if (vehicles.length > 0) {
+      result.selectedVehicleId = vehicles[0].id;
+      result.selectedVehicleOriginalIndex = 0;
     }
+
+    return result;
   }
 
   /**
@@ -91,7 +116,7 @@ class VehiclesEditor extends React.Component {
       model: origins.model,
       make: origins.make,
       licensePlate: origins.licensePlate,
-      odometer: parseInt(origins.dist.total / 1000, 10),
+      odometer: (origins.dist.total / 1000).toFixed(0),
     };
 
     return (
@@ -122,7 +147,7 @@ class VehiclesEditor extends React.Component {
           }
           content={
             <VehiclesList
-              onItemClick={this.chooseVehicle}
+              onItemClick={this.onChooseVehicle}
               data={this.props.vehicles}
               currentExpandedItemId={this.state.selectedVehicleId}
             />

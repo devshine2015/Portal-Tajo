@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
-import RaisedButton from 'material-ui/RaisedButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import Divider from 'material-ui/Divider';
+import {
+  RaisedButton,
+  SelectField,
+  MenuItem,
+  Divider,
+} from 'material-ui';
 import moment from 'moment';
 import dateFormats from 'configs/dateFormats';
 import Form from 'components/Form';
@@ -13,13 +15,14 @@ import { getUserSettings } from 'services/UserModel/reducer';
 import DateFormatSelectorWithMemory from '../DateFormatSelectorWithMemory';
 import Period from '../Period';
 import AvailableFields from '../AvailableFields';
+import ProgressBar from '../ProgressBar';
 import {
   dataActions,
   configuratorActions,
   rawActions,
 } from 'containers/Report/actions';
 import {
-  getReportLoadingState,
+  getLoadingState,
   getAvailableFields,
   getReportFrequency,
   getErrorMessage,
@@ -188,6 +191,13 @@ class Report extends React.Component {
   }
 
   render() {
+    const buttonsStyle = {
+      display: this.props.isLoading ? 'none' : 'block',
+    };
+    const progressStyle = {
+      display: this.props.isLoading ? 'block' : 'none',
+    };
+
     return (
       <div className={styles.configurator}>
         <DateFormatSelectorWithMemory
@@ -218,30 +228,35 @@ class Report extends React.Component {
 
           { !this.props.hideSplitter && this.renderSplitter() }
 
-          <InputFieldWrapper>
-            <RaisedButton
-              className={styles.button}
-              label="Generate report"
-              onClick={this.onSubmit}
-              disabled={this.props.isLoading}
-              primary
-            />
-            <RaisedButton
-              className={styles.button}
-              label="Save raw data"
-              onClick={this.onSaveRawData}
-              disabled={this.props.isLoading}
-              primary
-            />
-            { this.props.hasReport && (
+          { !this.props.isLoading && (
+            <InputFieldWrapper>
               <RaisedButton
                 className={styles.button}
-                label="Save Generated"
-                onClick={this.props.saveReport}
-                secondary
+                label="Generate report"
+                onClick={this.onSubmit}
+                disabled={this.props.isLoading}
+                primary
               />
-            )}
-          </InputFieldWrapper>
+              <RaisedButton
+                className={styles.button}
+                label="Save raw data"
+                onClick={this.onSaveRawData}
+                disabled={this.props.isLoading}
+                primary
+              />
+              { this.props.hasReport && (
+                <RaisedButton
+                  className={styles.button}
+                  label="Save Generated"
+                  onClick={this.props.saveReport}
+                  secondary
+                />
+              )}
+            </InputFieldWrapper>
+          )}
+
+          { this.props.isLoading && <ProgressBar /> }
+
         </Form>
 
         { this.props.error && (
@@ -274,7 +289,7 @@ Report.propTypes = {
 
 const mapState = (state) => ({
   availableFields: getAvailableFields(state),
-  isLoading: getReportLoadingState(state),
+  isLoading: getLoadingState(state),
   frequency: getReportFrequency(state),
   error: getErrorMessage(state),
   userDateFormat: getUserSettings(state).get('dateFormat'),
