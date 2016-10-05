@@ -6,12 +6,13 @@ import ReportConfigurator from './components/ReportConfigurator';
 import PreviewTable from './components/PreviewTable';
 import VehiclesList from './components/VehiclesList';
 import FixedContent from 'components/FixedContent';
-import * as fromConfigReducer from './reducers/configuratorReducer';
 import {
+  getAvailableFields,
+  getSelectedFields,
   getSavedReportData,
   appHasStoredReport,
 } from './reducer';
-import { dataActions } from './actions';
+import { reportActions } from './actions';
 
 const ReportsScreen = ({
   availableFields,
@@ -36,7 +37,6 @@ const ReportsScreen = ({
       />
       <FixedContent>
         <ReportConfigurator
-          hideSplitter
           hasReport={hasReport}
           saveReport={saveGenerated}
         />
@@ -63,11 +63,13 @@ ReportsScreen.propTypes = {
 const PureReportsScreen = pure(ReportsScreen);
 
 const mapState = (state) => ({
-  availableFields: fromConfigReducer.getAvailableFields(state).toArray(),
+  availableFields: getAvailableFields(state).toArray(),
   data: getSavedReportData(state),
   hasReport: appHasStoredReport(state),
-  selectedFields: fromConfigReducer.getSelectedFields(state),
+  selectedFields: getSelectedFields(state),
 });
-const mapDispatch = { saveGenerated: dataActions.saveGenerated };
+const mapDispatch = {
+  saveGenerated: reportActions.saveGenerated,
+};
 
 export default connect(mapState, mapDispatch)(PureReportsScreen);

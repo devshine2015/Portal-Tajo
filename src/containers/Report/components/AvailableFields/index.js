@@ -4,8 +4,8 @@ import Checkbox from 'material-ui/Checkbox';
 
 class Field extends React.Component {
 
-  injectIndex = (event) => {
-    this.props.onCheck(event, !this.props.isChecked, this.props.index);
+  injectProps = event => {
+    this.props.onCheck(event, !this.props.isChecked, this.props.index, 'report');
   }
 
   render() {
@@ -14,7 +14,7 @@ class Field extends React.Component {
         checked={this.props.isChecked}
         label={this.props.label}
         name={this.props.name}
-        onCheck={this.injectIndex}
+        onCheck={this.injectProps}
       />
     );
   }

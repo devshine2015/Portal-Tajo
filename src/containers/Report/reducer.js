@@ -1,8 +1,6 @@
 import { combineReducers } from 'redux-immutable';
 import { List } from 'immutable';
-import {
-  dataActions,
-} from './actions';
+import { reportActions } from './actions';
 import configuratorReducer, * as fromConfigReducer from './reducers/configuratorReducer';
 import availableVehiclesReducer, * as fromVehiclesReducer from './reducers/vehiclesReducer';
 
@@ -10,16 +8,16 @@ const dataInitialState = new List();
 
 function dataReducer(state = dataInitialState, action) {
   switch (action.type) {
-    case dataActions.REPORT_DATA_SAVE:
+    case reportActions.REPORT_DATA_SAVE:
       return new List(action.reportData);
 
-    case dataActions.REPORT_GENERATING_SUCCESS:
+    case reportActions.REPORT_GENERATING_SUCCESS:
       return new List(action.reportData);
 
-    case dataActions.REPORT_DATA_REMOVE:
+    case reportActions.REPORT_DATA_REMOVE:
       return new List();
 
-    case dataActions.REPORT_BEFORE_GENERATING:
+    case reportActions.REPORT_BEFORE_GENERATING:
       return new List();
 
     default:
@@ -33,26 +31,32 @@ export default combineReducers({
   data: dataReducer,
 });
 
+function getConfigurator(s) {
+  return s.getIn(['reports', 'configurator']);
+}
+
 export const getSavedReportData = (state) =>
   state.getIn(['reports', 'data']);
 export const appHasStoredReport = (state) =>
   state.getIn(['reports', 'data']).size !== 0;
 
 
-export const getAvailableFields = (state) =>
-  fromConfigReducer.getAvailableFields(state);
+export const getAvailableFields = state =>
+  fromConfigReducer.getAvailableFields(getConfigurator(state));
+
 export const getAvailableFieldIndex = (state, value) =>
-  fromConfigReducer.getAvailableFieldIndex(state, value);
-export const getSelectedFields = (state) =>
-  fromConfigReducer.getSelectedFields(state);
+  fromConfigReducer.getAvailableFieldIndex(getConfigurator(state), value);
+
+export const getSelectedFields = state =>
+  fromConfigReducer.getSelectedFields(getConfigurator(state));
+
 export const getSelectedFieldIndex = (state, value) =>
-  fromConfigReducer.getSelectedFieldIndex(state, value);
-export const getReportFrequency = (state) =>
-  fromConfigReducer.getReportFrequency(state);
+  fromConfigReducer.getSelectedFieldIndex(getConfigurator(state), value);
+
 export const getErrorMessage = (state) =>
-  fromConfigReducer.getErrorMessage(state.getIn(['reports', 'configurator']));
+  fromConfigReducer.getErrorMessage(getConfigurator(state));
 export const getLoadingState = state =>
-  fromConfigReducer.getLoadingState(state.getIn(['reports', 'configurator']));
+  fromConfigReducer.getLoadingState(getConfigurator(state));
 
 export const getSelectedVehicles = (state) =>
   fromVehiclesReducer.getSelectedVehicles(state.getIn(['reports', 'vehicles']));

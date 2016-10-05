@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import {
   RaisedButton,
-  SelectField,
-  MenuItem,
   Divider,
 } from 'material-ui';
 import moment from 'moment';
@@ -17,14 +15,13 @@ import Period from '../Period';
 import AvailableFields from '../AvailableFields';
 import ProgressBar from '../ProgressBar';
 import {
-  dataActions,
+  reportActions,
   configuratorActions,
-  rawActions,
+  eventActions,
 } from 'containers/Report/actions';
 import {
   getLoadingState,
   getAvailableFields,
-  getReportFrequency,
   getErrorMessage,
 } from 'containers/Report/reducer';
 
@@ -51,13 +48,13 @@ function calcEndTime() {
   return t.toDate();
 }
 
-function getDefaultCheckedFields(fields) {
+function getDefaultCheckedReportTypes(fields) {
   const result = {};
 
   fields.forEach(f => {
     if (!f.checkedByDefault) return;
 
-    result[f.name] = f.checkedByDefault;
+    result[f.name] = true;
   });
 
   return result;
@@ -92,7 +89,7 @@ class Report extends React.Component {
     };
 
     this.state = {
-      ...getDefaultCheckedFields(props.availableFields),
+      ...getDefaultCheckedReportTypes(props.availableFields),
       [this.periodFields.start.name]: this.periodFields.start.default,
       [this.periodFields.end.name]: this.periodFields.end.default,
       [this.periodFields.startTime.name]: this.periodFields.startTime.default,
@@ -102,7 +99,6 @@ class Report extends React.Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    // this.onSaveRawData = this.onSaveRawData.bind(this);
   }
 
   onDateFormatChange = newFormat => {
@@ -111,10 +107,11 @@ class Report extends React.Component {
     });
   }
 
-  onSelectedFieldsChange = (event, value, index) => {
+  // source - 'report' or 'event'
+  onSelectedFieldsChange = (event, value, index, source) => {
     const field = event.target.name;
 
-    this.props.updateSelectedFields({ field, value, index })
+    this.props.updateSelectedReportTypesFields({ field, value, index, source })
     .then(() => {
       if (this.props.hasReport) {
         this.props.swipeGeneratedData();
@@ -136,10 +133,6 @@ class Report extends React.Component {
     this.setState({
       [field]: value,
     });
-  }
-
-  onFrequencyChange = (event, key, value) => {
-    this.props.changeFrequency(value);
   }
 
   onSaveRawData = () => {
@@ -166,38 +159,11 @@ class Report extends React.Component {
 
     return {
       timePeriod: data,
-      frequency: this.props.frequency,
       dateFormat: this.state.tempDateFormat.toUpperCase(),
     };
   }
 
-  renderSplitter() {
-    return (
-      <SelectField
-        value={this.props.frequency}
-        onChange={this.onFrequencyChange}
-        floatingLabelText="Split report"
-      >
-        <MenuItem
-          value="daily"
-          primaryText="Daily"
-        />
-        <MenuItem
-          value="hourly"
-          primaryText="Hourly"
-        />
-      </SelectField>
-    );
-  }
-
   render() {
-    const buttonsStyle = {
-      display: this.props.isLoading ? 'none' : 'block',
-    };
-    const progressStyle = {
-      display: this.props.isLoading ? 'block' : 'none',
-    };
-
     return (
       <div className={styles.configurator}>
         <DateFormatSelectorWithMemory
@@ -225,8 +191,6 @@ class Report extends React.Component {
             dateFormat={this.state.tempDateFormat}
             withTime
           />
-
-          { !this.props.hideSplitter && this.renderSplitter() }
 
           { !this.props.isLoading && (
             <InputFieldWrapper>
@@ -271,14 +235,11 @@ class Report extends React.Component {
 
 Report.propTypes = {
   availableFields: React.PropTypes.object.isRequired,
-  changeFrequency: React.PropTypes.func.isRequired,
-  frequency: React.PropTypes.string,
   generateReport: React.PropTypes.func.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
   hasReport: React.PropTypes.bool.isRequired,
-  hideSplitter: React.PropTypes.bool.isRequired,
   saveReport: React.PropTypes.func.isRequired,
-  updateSelectedFields: React.PropTypes.func.isRequired,
+  updateSelectedReportTypesFields: React.PropTypes.func.isRequired,
   swipeGeneratedData: React.PropTypes.func.isRequired,
   saveRawData: React.PropTypes.func.isRequired,
   error: React.PropTypes.string,
@@ -290,16 +251,14 @@ Report.propTypes = {
 const mapState = (state) => ({
   availableFields: getAvailableFields(state),
   isLoading: getLoadingState(state),
-  frequency: getReportFrequency(state),
   error: getErrorMessage(state),
   userDateFormat: getUserSettings(state).get('dateFormat'),
 });
 const mapDispatch = {
-  generateReport: dataActions.generateReport,
-  updateSelectedFields: configuratorActions.updateSelected,
-  changeFrequency: configuratorActions.changeFrequency,
-  swipeGeneratedData: dataActions.removeReportData,
-  saveRawData: rawActions.getRawEvents,
+  generateReport: reportActions.generateReport,
+  updateSelectedReportTypesFields: configuratorActions.updateSelectedReportTypes,
+  swipeGeneratedData: reportActions.removeReportData,
+  saveRawData: eventActions.getRawEvents,
 };
 
 const PureReport = pure(Report);
