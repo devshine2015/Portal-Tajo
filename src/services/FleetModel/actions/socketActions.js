@@ -5,19 +5,16 @@ export const FLEET_MODEL_SOCKET_SET = 'portal/services/FLEET_MODEL_SOCKET_SET';
 
 export const openFleetSocket = () => _openFleetSocket;
 export const closeFleetSocket = _closeSocket;
-export const isSocketOpened = () => socketIsOpened;
 
 let fleetSocket;
 let socketIsOpened = false;
 
-/**
- * fleetName is optional
- **/
 function _openFleetSocket(dispatch) {
   if (socketIsOpened) {
     console.warn('!!>> TRYING to open already opened WS!!');
-    _closeSocket();
+    return;
   }
+
   const { url } = endpoints.monitor;
 
   fleetSocket = api.invokeWebSocket(url);
