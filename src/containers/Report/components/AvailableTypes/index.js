@@ -5,7 +5,12 @@ import Checkbox from 'material-ui/Checkbox';
 class Field extends React.Component {
 
   injectProps = event => {
-    this.props.onCheck(event, !this.props.isChecked, this.props.index, 'report');
+    this.props.onCheck({
+      event,
+      value: !this.props.isChecked,
+      index: this.props.index,
+      source: this.props.source,
+    });
   }
 
   render() {
@@ -26,14 +31,18 @@ Field.propTypes = {
   label: React.PropTypes.string.isRequired,
   name: React.PropTypes.string.isRequired,
   onCheck: React.PropTypes.func.isRequired,
+  source: React.PropTypes.oneOf([
+    'events', 'reports',
+  ]).isRequired,
 };
 
 const PureField = pure(Field);
 
-const AvailableFields = ({
+const AvailableTypes = ({
   checkedFields,
   fields,
   onChange,
+  source,
 }) => (
   <div className="availableFields">
     {fields.map((f, index) => {
@@ -46,16 +55,20 @@ const AvailableFields = ({
           index={index}
           onCheck={onChange}
           key={f.name}
+          source={source}
         />
       );
     })}
   </div>
 );
 
-AvailableFields.propTypes = {
+AvailableTypes.propTypes = {
   checkedFields: React.PropTypes.object.isRequired,
   fields: React.PropTypes.object.isRequired,
   onChange: React.PropTypes.func.isRequired,
+  source: React.PropTypes.oneOf([
+    'events', 'reports',
+  ]).isRequired,
 };
 
-export default pure(AvailableFields);
+export default pure(AvailableTypes);

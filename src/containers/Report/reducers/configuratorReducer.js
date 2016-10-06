@@ -1,6 +1,7 @@
 import { fromJS } from 'immutable';
 import { combineReducers } from 'redux-immutable';
 import reportsReducer, * as fromReportsReducer from './reportsReducer';
+import eventsReducer, * as fromEventsReducer from './eventsReducer';
 import {
   configuratorActions,
   loaderActions,
@@ -38,6 +39,7 @@ function reducer(state = initialState, action) {
 }
 
 export default combineReducers({
+  eventTypes: eventsReducer,
   reportTypes: reportsReducer,
   common: reducer,
 });
@@ -46,17 +48,33 @@ function getReportTypes(s) {
   return s.get('reportTypes');
 }
 
-export const getAvailableFields = state =>
-  fromReportsReducer.getAvailableFields(getReportTypes(state));
+function getEventTypes(s) {
+  return s.get('eventTypes');
+}
 
-export const getAvailableFieldIndex = (state, value) =>
-  fromReportsReducer.getAvailableFieldIndex(getReportTypes(state), value);
+export const getAvailableReports = state =>
+  fromReportsReducer.getAvailableReports(getReportTypes(state));
 
-export const getSelectedFields = state =>
-  fromReportsReducer.getSelectedFields(getReportTypes(state));
+export const getAvailableReportIndex = (state, value) =>
+  fromReportsReducer.getAvailableReportIndex(getReportTypes(state), value);
 
-export const getSelectedFieldIndex = (state, value) =>
-  fromReportsReducer.getSelectedFieldIndex(getReportTypes(state), value);
+export const getSelectedReports = state =>
+  fromReportsReducer.getSelectedReports(getReportTypes(state));
+
+export const getSelectedReportIndex = (state, value) =>
+  fromReportsReducer.getSelectedReportIndex(getReportTypes(state), value);
+
+export const getAvailableEvents = state =>
+  fromEventsReducer.getAvailableEvents(getEventTypes(state));
+
+export const getAvailableEventIndex = (state, value) =>
+  fromEventsReducer.getAvailableEventIndex(getEventTypes(state), value);
+
+export const getSelectedEvents = state =>
+  fromEventsReducer.getSelectedEvents(getEventTypes(state));
+
+export const getSelectedEventIndex = (state, value) =>
+  fromEventsReducer.getSelectedEventIndex(getEventTypes(state), value);
 
 export const getErrorMessage = state =>
   state.getIn(['common', 'error']);

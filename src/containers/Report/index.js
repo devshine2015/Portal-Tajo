@@ -7,15 +7,15 @@ import PreviewTable from './components/PreviewTable';
 import VehiclesList from './components/VehiclesList';
 import FixedContent from 'components/FixedContent';
 import {
-  getAvailableFields,
-  getSelectedFields,
+  getAvailableReports,
+  getSelectedReports,
   getSavedReportData,
   appHasStoredReport,
 } from './reducer';
 import { reportActions } from './actions';
 
 const ReportsScreen = ({
-  availableFields,
+  availableReports,
   data,
   hasReport,
   saveGenerated,
@@ -24,7 +24,7 @@ const ReportsScreen = ({
   contentClassName,
 }) => {
   const headers = selectedFields.map(index => (
-    availableFields[index].label
+    availableReports[index].label
   ));
 
   const className = cs('configurator', contentClassName);
@@ -51,7 +51,7 @@ const ReportsScreen = ({
 };
 
 ReportsScreen.propTypes = {
-  availableFields: React.PropTypes.array.isRequired,
+  availableReports: React.PropTypes.array.isRequired,
   vehiclesClassName: React.PropTypes.string,
   contentClassName: React.PropTypes.string,
   data: React.PropTypes.object.isRequired,
@@ -63,10 +63,10 @@ ReportsScreen.propTypes = {
 const PureReportsScreen = pure(ReportsScreen);
 
 const mapState = (state) => ({
-  availableFields: getAvailableFields(state).toArray(),
+  availableReports: getAvailableReports(state).toArray(),
   data: getSavedReportData(state),
   hasReport: appHasStoredReport(state),
-  selectedFields: getSelectedFields(state),
+  selectedFields: getSelectedReports(state),
 });
 const mapDispatch = {
   saveGenerated: reportActions.saveGenerated,

@@ -12,7 +12,7 @@ import InputFieldWrapper from 'components/InputFieldWrapper';
 import { getUserSettings } from 'services/UserModel/reducer';
 import DateFormatSelectorWithMemory from '../DateFormatSelectorWithMemory';
 import Period from '../Period';
-import AvailableFields from '../AvailableFields';
+import AvailableTypes from '../AvailableTypes';
 import ProgressBar from '../ProgressBar';
 import {
   reportActions,
@@ -21,7 +21,8 @@ import {
 } from 'containers/Report/actions';
 import {
   getLoadingState,
-  getAvailableFields,
+  getAvailableReports,
+  getAvailableEvents,
   getErrorMessage,
 } from 'containers/Report/reducer';
 
@@ -89,7 +90,7 @@ class Report extends React.Component {
     };
 
     this.state = {
-      ...getDefaultCheckedReportTypes(props.availableFields),
+      ...getDefaultCheckedReportTypes(props.availableReports),
       [this.periodFields.start.name]: this.periodFields.start.default,
       [this.periodFields.end.name]: this.periodFields.end.default,
       [this.periodFields.startTime.name]: this.periodFields.startTime.default,
@@ -108,10 +109,10 @@ class Report extends React.Component {
   }
 
   // source - 'report' or 'event'
-  onSelectedFieldsChange = (event, value, index, source) => {
+  onSelectedFieldsChange = ({ event, value, index, source }) => {
     const field = event.target.name;
 
-    this.props.updateSelectedReportTypesFields({ field, value, index, source })
+    this.props.updateSelectedTypesFields({ field, value, index, source })
     .then(() => {
       if (this.props.hasReport) {
         this.props.swipeGeneratedData();
@@ -179,10 +180,18 @@ class Report extends React.Component {
           onSubmit={this.onSubmit}
           className={styles.form}
         >
-          <AvailableFields
+          <AvailableTypes
             checkedFields={this.state}
             onChange={this.onSelectedFieldsChange}
-            fields={this.props.availableFields}
+            fields={this.props.availableReports}
+            source="reports"
+          />
+
+          <AvailableTypes
+            checkedFields={this.state}
+            onChange={this.onSelectedFieldsChange}
+            fields={this.props.availableEvents}
+            source="events"
           />
 
           <Period
@@ -234,12 +243,13 @@ class Report extends React.Component {
 }
 
 Report.propTypes = {
-  availableFields: React.PropTypes.object.isRequired,
+  availableReports: React.PropTypes.object.isRequired,
+  availableEvents: React.PropTypes.object.isRequired,
   generateReport: React.PropTypes.func.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
   hasReport: React.PropTypes.bool.isRequired,
   saveReport: React.PropTypes.func.isRequired,
-  updateSelectedReportTypesFields: React.PropTypes.func.isRequired,
+  updateSelectedTypesFields: React.PropTypes.func.isRequired,
   swipeGeneratedData: React.PropTypes.func.isRequired,
   saveRawData: React.PropTypes.func.isRequired,
   error: React.PropTypes.string,
@@ -249,14 +259,15 @@ Report.propTypes = {
 };
 
 const mapState = (state) => ({
-  availableFields: getAvailableFields(state),
+  availableReports: getAvailableReports(state),
+  availableEvents: getAvailableEvents(state),
   isLoading: getLoadingState(state),
   error: getErrorMessage(state),
   userDateFormat: getUserSettings(state).get('dateFormat'),
 });
 const mapDispatch = {
   generateReport: reportActions.generateReport,
-  updateSelectedReportTypesFields: configuratorActions.updateSelectedReportTypes,
+  updateSelectedTypesFields: configuratorActions.updateSelectedTypes,
   swipeGeneratedData: reportActions.removeReportData,
   saveRawData: eventActions.getRawEvents,
 };

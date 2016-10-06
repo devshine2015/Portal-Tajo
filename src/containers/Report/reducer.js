@@ -41,17 +41,29 @@ export const appHasStoredReport = (state) =>
   state.getIn(['reports', 'data']).size !== 0;
 
 
-export const getAvailableFields = state =>
-  fromConfigReducer.getAvailableFields(getConfigurator(state));
+export const getAvailableReports = state =>
+  fromConfigReducer.getAvailableReports(getConfigurator(state));
 
-export const getAvailableFieldIndex = (state, value) =>
-  fromConfigReducer.getAvailableFieldIndex(getConfigurator(state), value);
+export const getAvailableReportIndex = (state, value) =>
+  fromConfigReducer.getAvailableReportIndex(getConfigurator(state), value);
 
-export const getSelectedFields = state =>
-  fromConfigReducer.getSelectedFields(getConfigurator(state));
+export const getSelectedReports = state =>
+  fromConfigReducer.getSelectedReports(getConfigurator(state));
 
-export const getSelectedFieldIndex = (state, value) =>
-  fromConfigReducer.getSelectedFieldIndex(getConfigurator(state), value);
+export const getSelectedReportIndex = (state, value) =>
+  fromConfigReducer.getSelectedReportIndex(getConfigurator(state), value);
+
+export const getAvailableEvents = state =>
+  fromConfigReducer.getAvailableEvents(getConfigurator(state));
+
+export const getAvailableEventIndex = (state, value) =>
+  fromConfigReducer.getAvailableEventIndex(getConfigurator(state), value);
+
+export const getSelectedEvents = state =>
+  fromConfigReducer.getSelectedEvents(getConfigurator(state));
+
+export const getSelectedEventIndex = (state, value) =>
+  fromConfigReducer.getSelectedEventIndex(getConfigurator(state), value);
 
 export const getErrorMessage = (state) =>
   fromConfigReducer.getErrorMessage(getConfigurator(state));

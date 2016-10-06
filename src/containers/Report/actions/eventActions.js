@@ -7,6 +7,19 @@ import getVehiclesForReport from '../utils/reportVehicles';
 import { getReportParams } from '../utils/prepareReport';
 import calculateVehicleRows from '../specs/events';
 
+export const EVENT_SELECTED_ADD = 'portal/Report/EVENT_SELECTED_ADD';
+export const EVENT_SELECTED_REMOVE = 'portal/Report/EVENT_SELECTED_REMOVE';
+
+export const addSelectedEvent = index => ({
+  type: EVENT_SELECTED_ADD,
+  index,
+});
+
+export const removeSelectedEvent = index => ({
+  type: EVENT_SELECTED_REMOVE,
+  index,
+});
+
 export const getRawEvents = params => (dispatch, getState) =>
   _generateRawReport(params, dispatch, getState);
 

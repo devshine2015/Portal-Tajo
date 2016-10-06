@@ -8,13 +8,13 @@ const initialState = fromJS({
 
 function selectedVehiclesReducer(state = initialState, action) {
   switch (action.type) {
-    case reportVehiclesActions.REPORT_VEHICLES_ADD: {
+    case reportVehiclesActions.VEHICLE_ADD: {
       const sv = state.get('selectedVehicles');
       const nextSv = sv.push(action.id);
 
       return state.set('selectedVehicles', nextSv);
     }
-    case reportVehiclesActions.REPORT_VEHICLES_REMOVE: {
+    case reportVehiclesActions.VEHICLE_REMOVE: {
       const index = findIndexById(state, action.id);
 
       if (index !== -1) {
@@ -26,7 +26,7 @@ function selectedVehiclesReducer(state = initialState, action) {
 
       return state;
     }
-    case reportVehiclesActions.REPORT_VEHICLES_FILTERING:
+    case reportVehiclesActions.VEHICLES_FILTERING:
       return state.set('isFiltering', action.isFiltering);
 
     default:

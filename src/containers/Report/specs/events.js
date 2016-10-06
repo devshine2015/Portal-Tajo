@@ -1,14 +1,25 @@
 import moment from 'moment';
 
-const prettyTypes = {
-  'vehicle-position': 'Position',
-  'vehicle-fuel': 'Fuel',
-  'vehicle-ign-off': 'Ignition Off',
-  'vehicle-ign-on': 'Ignition On',
-  'vehicle-1wire-temperature': 'Temperature',
-  'vehicle-started-moving': 'Start Moving',
-  'vehicle-stopped-moving': 'Stop Moving',
-  'vehicle-stop-stats': 'Stop Statistics',
+const TYPES = {
+  POSITION: 'vehicle-position',
+  FUEL: 'vehicle-fuel',
+  IGNITION_OFF: 'vehicle-ign-off',
+  IGNITION_ON: 'vehicle-ign-on',
+  TEMPERATURE: 'vehicle-1wire-temperature',
+  START_MOVING: 'vehicle-started-moving',
+  STOP_MOVING: 'vehicle-stopped-moving',
+  STOP_STATS: 'vehicle-stop-stats',
+};
+
+const prettifiedTypes = {
+  [TYPES.POSITION]: 'Position',
+  [TYPES.FUEL]: 'Fuel',
+  [TYPES.IGNITION_OFF]: 'Ignition Off',
+  [TYPES.IGNITION_ON]: 'Ignition On',
+  [TYPES.TEMPERATURE]: 'Temperature',
+  [TYPES.START_MOVING]: 'Start Moving',
+  [TYPES.STOP_MOVING]: 'Stop Moving',
+  [TYPES.STOP_STATS]: 'Stop Statistics',
 };
 
 function prettifyAdditionalInfo(type, {
@@ -21,25 +32,25 @@ function prettifyAdditionalInfo(type, {
   movingPeriod,
 }) {
   switch (type) {
-    case 'vehicle-fuel': {
+    case TYPES.POSITION: {
       return `Fuel used: ${fuelInfo.totFuelUsed}, Fuel level: ${fuelInfo.fuelLevelPerc}`;
     }
-    case 'vehicle-ign-off': {
+    case TYPES.IGNITION_OFF: {
       return `Ignition on period: ${ignitionOnPeriod}`;
     }
-    case 'vehicle-ign-on': {
+    case TYPES.IGNITION_ON: {
       return `Ignition off period: ${ignitionOffPeriod}`;
     }
-    case 'vehicle-1wire-temperature': {
+    case TYPES.TEMPERATURE: {
       return `Temperature: ${tempInfo}`;
     }
-    case 'vehicle-started-moving': {
+    case TYPES.START_MOVING: {
       return `Stoped period: ${stoppedPeriod}`;
     }
-    case 'vehicle-stopped-moving': {
+    case TYPES.STOP_MOVING: {
       return `Moving period: ${movingPeriod}`;
     }
-    case 'vehicle-stop-stats': {
+    case TYPES.STOP_STATS: {
       return `Stop period: ${stopPeriod}, Ignition on period: ${ignitionOnPeriod}`;
     }
     default:
@@ -65,9 +76,8 @@ const calculateVehicleRow = ({ ev, type } = {}, {
     ];
   }
 
-  const prettyType = prettyTypes[type] || type;
+  const prettyType = prettifiedTypes[type] || type;
   const { pos, ts, vehicleId, ...rest } = ev;
-
 
   return [
     licensePlate,
@@ -95,3 +105,10 @@ const calculateVehicleRows = options => (events = []) => {
 };
 
 export default calculateVehicleRows;
+
+export const fields = [{
+  label: prettifiedTypes[TYPES.POSITION],
+  order: 0,
+  eventType: TYPES.POSITION,
+  name: TYPES.POSITION,
+}];
