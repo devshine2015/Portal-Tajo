@@ -173,6 +173,13 @@ class Report extends React.Component {
           onFormatChange={this.onDateFormatChange}
         />
 
+        <Period
+          handlePeriodChange={this.onPeriodChange}
+          fields={this.periodFields}
+          dateFormat={this.state.tempDateFormat}
+          withTime
+        />
+
         <Divider />
 
         <Form
@@ -180,40 +187,20 @@ class Report extends React.Component {
           onSubmit={this.onSubmit}
           className={styles.form}
         >
-          <AvailableTypes
-            checkedFields={this.state}
-            onChange={this.onSelectedFieldsChange}
-            fields={this.props.availableReports}
-            source="reports"
-          />
+          <div className={styles.column}>
+            <AvailableTypes
+              checkedFields={this.state}
+              onChange={this.onSelectedFieldsChange}
+              fields={this.props.availableReports}
+              source="reports"
+              title="Customise Report"
+            />
 
-          <AvailableTypes
-            checkedFields={this.state}
-            onChange={this.onSelectedFieldsChange}
-            fields={this.props.availableEvents}
-            source="events"
-          />
-
-          <Period
-            handlePeriodChange={this.onPeriodChange}
-            fields={this.periodFields}
-            dateFormat={this.state.tempDateFormat}
-            withTime
-          />
-
-          { !this.props.isLoading && (
-            <InputFieldWrapper>
+            <div className={styles.buttons}>
               <RaisedButton
                 className={styles.button}
                 label="Generate report"
                 onClick={this.onSubmit}
-                disabled={this.props.isLoading}
-                primary
-              />
-              <RaisedButton
-                className={styles.button}
-                label="Save raw data"
-                onClick={this.onSaveRawData}
                 disabled={this.props.isLoading}
                 primary
               />
@@ -225,11 +212,29 @@ class Report extends React.Component {
                   secondary
                 />
               )}
-            </InputFieldWrapper>
-          )}
+            </div>
+          </div>
 
-          { this.props.isLoading && <ProgressBar /> }
+          <div className={styles.separator}></div>
 
+          <div className={styles.column}>
+            <AvailableTypes
+              checkedFields={this.state}
+              onChange={this.onSelectedFieldsChange}
+              fields={this.props.availableEvents}
+              source="events"
+              title="Customise Raw Events"
+            />
+            <div className={styles.buttons}>
+              <RaisedButton
+                className={styles.button}
+                label="Save raw data"
+                onClick={this.onSaveRawData}
+                disabled={this.props.isLoading}
+                primary
+              />
+            </div>
+          </div>
         </Form>
 
         { this.props.error && (

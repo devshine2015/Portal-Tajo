@@ -1,0 +1,16 @@
+@media screen and (min-width: 100px) {
+  .title {
+    text-align: center;
+    margin-bottom: 10px;
+    color: rgba(0, 0, 0, 0.498039);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .availableTypes {
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}

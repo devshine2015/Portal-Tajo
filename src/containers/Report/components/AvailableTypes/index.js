@@ -2,6 +2,8 @@ import React from 'react';
 import pure from 'recompose/pure';
 import Checkbox from 'material-ui/Checkbox';
 
+import styles from './styles.css';
+
 class Field extends React.Component {
 
   injectProps = event => {
@@ -43,8 +45,12 @@ const AvailableTypes = ({
   fields,
   onChange,
   source,
+  title,
 }) => (
-  <div className="availableFields">
+  <div className={styles.availableTypes}>
+
+    { !!title && <div className={styles.title}>{title}</div> }
+
     {fields.map((f, index) => {
       const isChecked = Boolean(checkedFields[f.name]);
 
@@ -69,6 +75,7 @@ AvailableTypes.propTypes = {
   source: React.PropTypes.oneOf([
     'events', 'reports',
   ]).isRequired,
+  title: React.PropTypes.string,
 };
 
 export default pure(AvailableTypes);
