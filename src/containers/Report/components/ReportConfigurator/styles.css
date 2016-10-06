@@ -1,6 +1,11 @@
 @media screen and (min-width: 100px) {
   .configurator {
     margin-bottom: 20px;
+    max-width: 768px;
+  }
+
+  .row {
+    display: flex;
   }
 
   .button:not(:last-child) {
@@ -14,7 +19,6 @@
 
   .form {
     margin-top: 20px;
-    display: flex;
   }
 
   .buttons {
@@ -23,7 +27,7 @@
 }
 
 @media screen and (min-width: 768px) {
-  .form {
+  .row {
     flex-direction: row;
     justify-content: space-around;
   }
@@ -34,6 +38,11 @@
     align-items: center;
     justify-content: space-between;
     flex: 1;
+  }
+
+  .top .column {
+    align-items: inherit;
+    flex-basis: auto;
   }
 
   .separator {

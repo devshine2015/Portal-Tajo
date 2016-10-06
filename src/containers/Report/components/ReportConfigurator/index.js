@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
+import cs from 'classnames';
 import {
   RaisedButton,
   Divider,
@@ -8,7 +9,6 @@ import {
 import moment from 'moment';
 import dateFormats from 'configs/dateFormats';
 import Form from 'components/Form';
-import InputFieldWrapper from 'components/InputFieldWrapper';
 import { getUserSettings } from 'services/UserModel/reducer';
 import DateFormatSelectorWithMemory from '../DateFormatSelectorWithMemory';
 import Period from '../Period';
@@ -27,6 +27,9 @@ import {
 } from 'containers/Report/reducer';
 
 import styles from './styles.css';
+
+const TOP_ROW_CLASS = cs(styles.row, styles.top);
+const FIELDS_ROW_CLASS = cs(styles.row, styles.form);
 
 function calcStartTime() {
   const t = moment().set({
@@ -167,25 +170,31 @@ class Report extends React.Component {
   render() {
     return (
       <div className={styles.configurator}>
-        <DateFormatSelectorWithMemory
-          userDateFormat={this.props.userDateFormat}
-          tempDateFormat={this.state.tempDateFormat}
-          onFormatChange={this.onDateFormatChange}
-        />
+        <div className={TOP_ROW_CLASS}>
+          <div className={styles.column}>
+            <DateFormatSelectorWithMemory
+              userDateFormat={this.props.userDateFormat}
+              tempDateFormat={this.state.tempDateFormat}
+              onFormatChange={this.onDateFormatChange}
+            />
+          </div>
 
-        <Period
-          handlePeriodChange={this.onPeriodChange}
-          fields={this.periodFields}
-          dateFormat={this.state.tempDateFormat}
-          withTime
-        />
+          <div className={styles.column}>
+            <Period
+              handlePeriodChange={this.onPeriodChange}
+              fields={this.periodFields}
+              dateFormat={this.state.tempDateFormat}
+              withTime
+            />
+          </div>
+        </div>
 
         <Divider />
 
         <Form
           name={this.FORM_NAME}
           onSubmit={this.onSubmit}
-          className={styles.form}
+          className={FIELDS_ROW_CLASS}
         >
           <div className={styles.column}>
             <AvailableTypes
