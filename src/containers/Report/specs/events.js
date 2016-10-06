@@ -109,6 +109,26 @@ export default calculateVehicleRows;
 export const fields = [{
   label: prettifiedTypes[TYPES.POSITION],
   order: 0,
-  eventType: TYPES.POSITION,
+  eventTypes: [TYPES.POSITION],
   name: TYPES.POSITION,
+}, {
+  label: 'Ignition On/Off',
+  order: 1,
+  eventTypes: [TYPES.IGNITION_ON, TYPES.IGNITION_OFF],
+  name: 'ignition',
+}, {
+  label: prettifiedTypes[TYPES.FUEL],
+  order: 2,
+  eventTypes: [TYPES.FUEL],
+  name: TYPES.FUEL,
+}, {
+  label: prettifiedTypes[TYPES.TEMPERATURE],
+  order: 3,
+  eventTypes: [TYPES.TEMPERATURE],
+  name: TYPES.TEMPERATURE,
+}, {
+  label: 'Start/Stop Moving',
+  order: 4,
+  eventTypes: [TYPES.STOP_MOVING, TYPES.START_MOVING, TYPES.STOP_STATS],
+  name: 'moving',
 }];
