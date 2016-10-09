@@ -12,6 +12,33 @@ const vehiclesInitialState = fromJS({
   slectedVehicleId: '',
 });
 
+function aHelper(inState, inStatus) {
+  const sinceEpoch = (new Date(inStatus.ts)).getTime();
+  const isZombie = checkZombieVehicle(sinceEpoch);
+  let theState = inState.set('lastUpdateSinceEpoch', sinceEpoch);
+  theState = theState.set('isZombie', isZombie);
+  theState = theState.set('isDead', false);
+  if (inStatus.temp !== undefined) {
+    theState = theState.set('temp',
+      inStatus.temp.temperature);
+  }
+  if (inStatus.dist !== undefined) {
+    theState = theState.setIn(['dist', 'total'],
+      inStatus.dist.total);
+    theState = theState.setIn(['dist', 'lastTrip'],
+      inStatus.dist.lastTrip);
+  }
+  if (inStatus.pos !== undefined) {
+    theState = theState.set('pos',
+          [inStatus.pos.latlon.lat, inStatus.pos.latlon.lng])
+      .setIn('speed',
+                      inStatus.pos.speed);
+    // theState = theState.setIn('speed',
+    //                   inStatus.pos.speed);
+  }
+  return theState;
+}
+
 function vehiclesReducer(state = vehiclesInitialState, action) {
   switch (action.type) {
     case vehiclesActions.FLEET_MODEL_VEHICLES_SET:
@@ -42,29 +69,58 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
 
     case socketActions.FLEET_MODEL_SOCKET_SET: {
       const inStatus = action.statusObj;
+      const theState = aHelper(state.getIn(['processedList', inStatus.id]), inStatus);
+      // const sinceEpoch = (new Date(inStatus.ts)).getTime();
+      // const isZombie = checkZombieVehicle(sinceEpoch);
+      // let theState = state.getIn(['processedList', inStatus.id]);
+      // theState = theState.set('lastUpdateSinceEpoch', sinceEpoch);
+      // theState = theState.set('isZombie', isZombie);
+      // theState = theState.set('isDead', false);
+      // if (inStatus.temp !== undefined) {
+      //   theState = theState.set('temp',
+      //     inStatus.temp.temperature);
+      // }
+      // if (inStatus.dist !== undefined) {
+      //   theState = theState.setIn(['dist', 'total'],
+      //     inStatus.dist.total);
+      //   theState = theState.setIn(['dist', 'lastTrip'],
+      //     inStatus.dist.lastTrip);
+      // }
+      // if (inStatus.pos !== undefined) {
+      //   theState = theState.set('pos',
+      //         [inStatus.pos.latlon.lat, inStatus.pos.latlon.lng])
+      //     .setIn('speed',
+      //                     inStatus.pos.speed);
+      //   // theState = theState.setIn('speed',
+      //   //                   inStatus.pos.speed);
+      // }
+
+      return state.setIn(['processedList', inStatus.id], theState);
+      // if (inStatus.temp !== undefined) {
+      //   newState = newState.setIn(['processedList', inStatus.id, 'temp'],
+      //     inStatus.temp.temperature);
+      // }
+      // if (inStatus.dist !== undefined) {
+      //   newState = newState.setIn(['processedList', inStatus.id, 'dist', 'total'],
+      //     inStatus.dist.total);
+      //   newState = newState.setIn(['processedList', inStatus.id, 'dist', 'lastTrip'],
+      //     inStatus.dist.lastTrip);
+      // }
+      // if (inStatus.pos !== undefined) {
+      //   newState = newState.setIn(['processedList', inStatus.id, 'pos'],
+      //         [inStatus.pos.latlon.lat, inStatus.pos.latlon.lng])
+      //     .setIn(['processedList', inStatus.id, 'speed'],
+      //                     inStatus.pos.speed);
+      // }
+//      return newState;
+    }
+    case socketActions.FLEET_MODEL_SOCKET_SET_BATCH: {
       let newState = state;
-//      const tsDate = new Date(inStatus.ts);
-      const sinceEpoch = (new Date(inStatus.ts)).getTime();
-      const isZombie = checkZombieVehicle(sinceEpoch);
-      newState = newState.setIn(['processedList', inStatus.id, 'lastUpdateSinceEpoch'], sinceEpoch);
-      newState = newState.setIn(['processedList', inStatus.id, 'isZombie'], isZombie);
-      newState = newState.setIn(['processedList', inStatus.id, 'isDead'], false);
-      if (inStatus.temp !== undefined) {
-        newState = newState.setIn(['processedList', inStatus.id, 'temp'],
-          inStatus.temp.temperature);
-      }
-      if (inStatus.dist !== undefined) {
-        newState = newState.setIn(['processedList', inStatus.id, 'dist', 'total'],
-          inStatus.dist.total);
-        newState = newState.setIn(['processedList', inStatus.id, 'dist', 'lastTrip'],
-          inStatus.dist.lastTrip);
-      }
-      if (inStatus.pos !== undefined) {
-        newState = newState.setIn(['processedList', inStatus.id, 'pos'],
-              [inStatus.pos.latlon.lat, inStatus.pos.latlon.lng])
-          .setIn(['processedList', inStatus.id, 'speed'],
-                          inStatus.pos.speed);
-      }
+      const inBatch = action.statusBatch;
+      inBatch.forEach((oneStatus) => {
+        const theState = aHelper(newState.getIn(['processedList', oneStatus.id]), oneStatus);
+        newState = newState.setIn(['processedList', oneStatus.id], theState);
+      });
       return newState;
     }
     default:
