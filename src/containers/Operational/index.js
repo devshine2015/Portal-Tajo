@@ -10,6 +10,11 @@ import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { socketActions } from 'services/FleetModel/actions';
 import createEventDispatcher from 'utils/eventDispatcher';
 
+import ItemsList from 'components/InstancesList';
+import PowerList from 'components/PowerList';
+import Filter from 'components/Filter';
+import listTypes from 'components/InstancesList/types';
+
 import styles from './styles.css';
 
 
@@ -32,6 +37,30 @@ class Operational extends React.Component {
     if (this.props.vehicles.length > 0 && !socketActions.isSocketOpened()) {
       this.props.openFleetSocket();
     }
+// const theList = this.props.vehicles.map((aVeh)=>(<div key={aVeh.id}> {aVeh.name} </div>));
+// return (
+//   <div className={styles.mapAndListContainer}>
+//     <PowerList>
+//     {theList}
+//     </PowerList>
+//     <FixedContent containerClassName={styles.fixedContent}>
+//     </FixedContent>
+//   </div>
+// );
+
+    // return (
+    //   <div className={styles.mapAndListContainer}>
+    //     <PowerList>
+    //     <ItemsList
+    //       scrollIntoView
+    //       data={this.props.vehicles}
+    //       type={listTypes.withVehicleDetails}
+    //     />
+    //     </PowerList>
+    //     <FixedContent containerClassName={styles.fixedContent}>
+    //     </FixedContent>
+    //   </div>
+    // );
     return (
       <div className={styles.mapAndListContainer}>
           <OperationalList

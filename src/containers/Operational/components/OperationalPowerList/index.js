@@ -99,6 +99,32 @@ class OperationalPowerList extends React.Component {
       );
     }
 
+    // const theList = this.props.vehicles.map((aVeh)=>(<div key={aVeh.id}> {aVeh.name} </div>));
+    // return (
+    //   <PowerList>
+    //     <Tabs
+    //       inkBarStyle={{
+    //         backgroundColor: 'rgba(255,255,255,0.5)',
+    //       }}
+    //       className={styles.fullHeight}
+    //       contentContainerClassName={styles.contentFullHeight}
+    //       onChange={this.onTabChange}
+    //       value={this.state.selectedTab}
+    //     >
+    //       <Tab
+    //         label="Vehicles"
+    //         value={listTypes.withVehicleDetails}
+    //       >
+    //         <Filter filterFunc={this.props.filterVehiclesFunc} />
+    //         <Scrollable offsetTop={dimensions.powerlistFilterHeight}>
+    //           {theList}
+    //         </Scrollable>
+    //       </Tab>
+    //     </Tabs>
+    //   </PowerList>
+    // );
+
+
     return (
       <PowerList>
         <Tabs
