@@ -21,8 +21,10 @@ const BATCHING_TIME_MS = 2000;
 function _openFleetSocket(dispatch) {
   if (socketIsOpened) {
     console.warn('!!>> TRYING to open already opened WS!!');
-    _closeSocket();
+    //     _closeSocket();
+    return;
   }
+
   const { url } = endpoints.monitor;
 
   fleetSocket = api.invokeWebSocket(url);

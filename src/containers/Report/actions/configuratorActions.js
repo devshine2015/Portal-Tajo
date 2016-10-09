@@ -5,6 +5,7 @@ export const CONFIGURATOR_SELECTED_REMOVE = 'portal/Report/CONFIGURATOR_SELECTED
 export const CONFIGURATOR_FREQUENCY_CHANGE = 'portal/Report/CONFIGURATOR_FREQUENCY_CHANGE';
 export const CONFIGURATOR_ERROR_SET = 'portal/Report/CONFIGURATOR_ERROR_SET';
 
+
 export const updateSelected = (field) => (dispatch, getState) =>
   _updateSelected(field, dispatch, getState);
 export const changeFrequency = (nextState) => ({

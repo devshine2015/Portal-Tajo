@@ -66,7 +66,7 @@ function _sendFromStorage(indexesToSend = [], dispatch) {
       dataToSend = offlineData;
     }
 
-    return Promise.all(dataToSend.map(data => sendData(data)));
+    return Promise.all(dataToSend.map(data => sendData(data, dispatch)));
   }).then(() => {
     if (!sendEverything) {
       // indexesToSend === indexesTo

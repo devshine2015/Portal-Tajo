@@ -1,62 +1,49 @@
 import api from 'utils/api';
 import endpoints from 'configs/endpoints';
 import { setLoaderState } from './loaderActions';
+import { vehiclesActions } from 'services/FleetModel/actions';
+import { mockBackendVehicle } from 'services/FleetModel/utils/vehicleHelpers';
+
+export const INSTALLER_SUBMIT_SUCCESS = 'portal/Installer/INSTALLER_SUBMIT_SUCCESS';
+export const INSTALLER_SUBMIT_FAILURE = 'portal/Installer/INSTALLER_SUBMIT_FAILURE';
 
 export const submitForm = data => dispatch =>
-  _submitForm(data, dispatch);
+  sendData(data, dispatch);
 
-function _submitForm(data, dispatch) {
+export const sendData = (formData, dispatch) => {
   dispatch(setLoaderState(true));
-
-  return sendData(data).then(() => {
-    dispatch(setLoaderState(false));
-    return Promise.resolve();
-  }, (error) => {
-    console.error(error);
-    dispatch(setLoaderState(false));
-    return Promise.reject();
-  });
-}
-
-export const sendData = data => {
   const { createVehicle, createDevice } = endpoints;
-  const createDevicePayload = {
+  const vehiclePayload = {
+    payload: mockBackendVehicle(formData),
+  };
+  const devicePayload = {
     payload: {
-      id: data.imei,
-      kind: 'some_kind',
-      sn: data.imei,
+      id: formData.imei,
+      kind: '',
+      sn: formData.imei,
       status: 'active',
     },
   };
 
-  // convert miles to kilometres
-  const odo = data.isMiles ? data.odometer * 1.60934 : data.odometer;
-
-  const createVehiclePayload = {
-    payload: {
-      created: Date.now(),
-      licensePlate: data.license,
-      make: '',
-      model: '',
-      name: data.name,
-      status: 'active',
-      year: '',
-      odometer: {
-        // backend can accept only integers here, i.e. km.
-        value: parseInt(odo, 10),
-      },
-    },
-  };
-
-  const request = api[createDevice.method](createDevice.url, createDevicePayload)
-    .then(() => api[createVehicle.method](createVehicle.url, createVehiclePayload))
+  const request = api[createDevice.method](createDevice.url, devicePayload)
+    .then(() => api[createVehicle.method](createVehicle.url, vehiclePayload))
     .then(res => res.json())
     .then(vehicle => {
       const { url, method } = endpoints.attachDevice(vehicle.id);
 
+      dispatch(vehiclesActions.addVehicle(vehicle));
+
       return api[method](url, {
-        payload: { deviceId: data.imei },
+        payload: { deviceId: formData.imei },
       });
+    })
+    .then(() => {
+      dispatch(setLoaderState(false));
+      return Promise.resolve();
+    }, error => {
+      console.error(error);
+      dispatch(setLoaderState(false));
+      return Promise.reject();
     });
 
   return request;

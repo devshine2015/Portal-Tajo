@@ -14,7 +14,7 @@
 import { ZOMBIE_TIME_TRH_MS, LAG_INDICAION_TRH_MS } from 'utils/constants';
 import { sortByName } from 'utils/sorting';
 
-function makeLocalVehicle(backEndObject, vehicleStats) {
+export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
   if (backEndObject.status !== 'active'
     || !backEndObject.name) {
     return null;
@@ -73,8 +73,9 @@ export function checkLaggedVehicle(lastUpdate) {
 
 export function makeLocalVehicles(backEndVehiclesList, statsList) {
   const localVehicles = {};
-  const orderedVehicles = [];
-  backEndVehiclesList.sort(sortByName).forEach((aVehicle) => {
+  const orderedVehicles = sortVehicles(backEndVehiclesList);
+
+  backEndVehiclesList.forEach((aVehicle) => {
     const vehicleStats = getVehicleById(aVehicle.id, statsList).vehicle;
     const localVehicleObj = makeLocalVehicle(aVehicle, vehicleStats);
 
@@ -82,12 +83,36 @@ export function makeLocalVehicles(backEndVehiclesList, statsList) {
       localVehicles[aVehicle.id] = localVehicleObj;
     }
 
-    orderedVehicles.push(aVehicle.id);
+    // orderedVehicles.push(aVehicle.id);
   });
 
   return {
     localVehicles,
     orderedVehicles,
+  };
+}
+
+export function sortVehicles(vehicles) {
+  return vehicles
+    .sort(sortByName)
+    .map(obj => obj.id);
+}
+
+export function mockBackendVehicle(data) {
+  const odo = data.isMiles ? data.odometer * 1.60934 : data.odometer;
+
+  return {
+    created: Date.now(),
+    licensePlate: data.license,
+    make: '',
+    model: '',
+    name: data.name,
+    status: 'active',
+    year: '',
+    odometer: {
+      // backend can accept only integers here, i.e. km.
+      value: parseInt(odo, 10),
+    },
   };
 }
 
