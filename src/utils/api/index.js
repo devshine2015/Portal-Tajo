@@ -16,14 +16,14 @@ const BASE_URL = `${protocol}//${ENGINE_BASE}`;
 const SOCKET_URL = `${socketProtocol}://${ENGINE_BASE}/engine`;
 
 // construct URL depends on API version
-function makeUrl(apiVersion, url, fleet) {
+function makeUrl(apiVersion, url, fleet, host) {
   let result;
 
   if (apiVersion === 1) {
-    result = `${BASE_URL}/engine/${fleet}/${url}`;
+    result = `${host || BASE_URL}/engine/${fleet}/${url}`;
   }
   if (apiVersion === 1.1) {
-    result = `${BASE_URL}/${url}`;
+    result = `${host || BASE_URL}/${url}`;
   }
 
   return result;
@@ -51,6 +51,8 @@ class API {
     payload,
     optionalHeaders = {},
     apiVersion = this.currentVersion,
+    optionalFleet,
+    host,
   } = {}) {
     const hasError = !!getErrorMessage(this.getState());
 
@@ -59,8 +61,8 @@ class API {
       this.dispatch(errorsActions.resetError());
     }
 
-    const fleet = getFleetName(this.getState());
-    const urlToInvoke = makeUrl(apiVersion, url, fleet);
+    const fleet = optionalFleet || getFleetName(this.getState());
+    const urlToInvoke = makeUrl(apiVersion, url, fleet, host);
     const headers = Object.assign({}, HEADERS, {
       ['DRVR-SESSION']: getAuthenticationSession(this.getState()),
     }, {
