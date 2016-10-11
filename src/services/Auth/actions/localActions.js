@@ -6,53 +6,45 @@ import {
   createBaseUrl,
 } from 'utils';
 import { getIsUserAuthenticated } from '../reducer';
-import commonActions from './commonActions';
-import { setUserData } from 'services/UserModel/actions';
-import { getFleetName } from 'services/UserModel/reducer';
+import { loginActions, commonActions } from './';
 
 export const checkUserAuthentication = (params) => (dispatch, getState) =>
   _checkUserAuthentication(params, dispatch, getState);
 
 function _checkUserAuthentication(params, dispatch, getState) {
-  console.log('check localStorage')
   // for case when no auth data was saved in localStorage
   if (getIsUserAuthenticated(getState())) {
     return Promise.resolve(true);
   }
 
-
   return storage.read(LOCAL_STORAGE_SESSION_KEY)
   .then(_checkVersion(params.checkVersion))
-  .then((sessions) => {
+  .then(sessions => {
     let isAuthenticated = false;
-    const fleet = getFleetName(getState());
 
     if (sessions && typeof sessions === 'string') {
-      dispatch(commonActions.setAuthentication(sessions, fleet));
+      dispatch(commonActions.setAuthentication(sessions));
       isAuthenticated = true;
     } else if (sessions) {
-      const session = sessions.filter(s => s.fleet === fleet);
-
-      if (session.length !== 0) {
+      if (sessions.length !== 0) {
+        // assuming first value is correct
+        // @deprecated multi-login functionality
+        const session = sessions[0];
         isAuthenticated = true;
-        dispatch(setUserData({
-          role: session[0].role,
-          settings: session[0].settings,
-        }));
-        dispatch(commonActions.setAuthentication(session[0].sessionId, fleet));
+        dispatch(loginActions.loginSuccess(session));
       } else {
         isAuthenticated = false;
         dispatch(commonActions.eraseAuth());
 
         if (params.urls) {
-          dispatch(replace(`${createBaseUrl(fleet)}/${params.urls.failure}`));
+          dispatch(replace(`${createBaseUrl()}/${params.urls.failure}`));
         }
       }
     } else {
       dispatch(commonActions.eraseAuth());
 
       if (params.urls) {
-        dispatch(replace(`${createBaseUrl(fleet)}/${params.urls.failure}`));
+        dispatch(replace(`${createBaseUrl()}/${params.urls.failure}`));
       }
 
       return Promise.resolve(isAuthenticated);

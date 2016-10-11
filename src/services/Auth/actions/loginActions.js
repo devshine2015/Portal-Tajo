@@ -5,7 +5,7 @@ import storage from 'utils/localStorage';
 import api from 'utils/api';
 import commonActions from './commonActions';
 import { getAuthenticationSession } from '../reducer';
-import { getFleetName } from 'services/Global/reducer';
+import { getFleetName } from 'services/UserModel/reducer';
 
 export const LOGIN_SUCCESS = 'portal/Auth/LOGIN_SUCCESS';
 
@@ -13,6 +13,22 @@ export const login = data => dispatch =>
   _login(data, dispatch);
 export const logout = (redirectUrl = '') => (dispatch, getState) =>
   _logout({ redirectUrl }, dispatch, getState);
+
+export const loginSuccess = ({
+  sessionId,
+  role,
+  settings,
+  fleet,
+}) => ({
+  type: LOGIN_SUCCESS,
+  sessionId,
+  userData: {
+    role,
+    settings,
+    fleet,
+  },
+});
+
 
 function _login(data, dispatch) {
   const { url, method, apiVersion } = endpoints.login;
@@ -27,11 +43,7 @@ function _login(data, dispatch) {
       const sessionData = collectData(res);
 
       storage.save(LOCAL_STORAGE_SESSION_KEY, sessionData, VERSIONS.authentication.currentVersion);
-      dispatch(_loginSuccess(sessionData.sessionId, {
-        role: sessionData.role,
-        settings: sessionData.settings,
-        fleet: sessionData.fleet,
-      }));
+      dispatch(loginSuccess(sessionData));
       return Promise.resolve();
     })
     .catch(error => {
@@ -69,9 +81,3 @@ function collectData(res) {
     settings,
   };
 }
-
-const _loginSuccess = (sessionId, userData) => ({
-  type: LOGIN_SUCCESS,
-  sessionId,
-  userData,
-});

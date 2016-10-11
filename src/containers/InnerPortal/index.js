@@ -5,7 +5,7 @@ import SnackbarNotification from 'containers/Snackbar';
 import styles from './styles.css';
 import ApplicationBar from './components/ApplicationBar';
 import MainSidebar from './components/MainSidebar';
-import { getFleetName } from 'services/Global/reducer';
+import { getFleetName } from 'services/UserModel/reducer';
 import { getIsUserAuthenticated } from 'services/Auth/reducer';
 import { localActions } from 'services/Auth/actions';
 import { commonFleetActions } from 'services/FleetModel/actions';
