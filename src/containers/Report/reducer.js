@@ -9,14 +9,10 @@ const dataInitialState = new List();
 function dataReducer(state = dataInitialState, action) {
   switch (action.type) {
     case reportActions.REPORT_DATA_SAVE:
-      return new List(action.reportData);
-
     case reportActions.REPORT_GENERATING_SUCCESS:
       return new List(action.reportData);
 
     case reportActions.REPORT_DATA_REMOVE:
-      return new List();
-
     case reportActions.REPORT_BEFORE_GENERATING:
       return new List();
 
@@ -65,7 +61,7 @@ export const getSelectedEvents = state =>
 export const getSelectedEventIndex = (state, value) =>
   fromConfigReducer.getSelectedEventIndex(getConfigurator(state), value);
 
-export const getErrorMessage = (state) =>
+export const getErrorMessage = state =>
   fromConfigReducer.getErrorMessage(getConfigurator(state));
 export const getLoadingState = state =>
   fromConfigReducer.getLoadingState(getConfigurator(state));

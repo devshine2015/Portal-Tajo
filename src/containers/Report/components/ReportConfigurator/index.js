@@ -14,6 +14,7 @@ import DateFormatSelectorWithMemory from '../DateFormatSelectorWithMemory';
 import Period from '../Period';
 import AvailableTypes from '../AvailableTypes';
 import ProgressBar from '../ProgressBar';
+import RawDataButtons from '../RawDataButtons';
 import {
   reportActions,
   configuratorActions,
@@ -234,15 +235,12 @@ class Report extends React.Component {
               source="events"
               title="Customise Raw Events"
             />
-            <div className={styles.buttons}>
-              <RaisedButton
-                className={styles.button}
-                label="Save raw data"
-                onClick={this.onSaveRawData}
-                disabled={this.props.isLoading}
-                primary
-              />
-            </div>
+            <RawDataButtons
+              containerClassName={styles.buttons}
+              buttonClassName={styles.button}
+              onClick={this.onSaveRawData}
+              disabled={this.props.isLoading}
+            />
           </div>
         </Form>
 
