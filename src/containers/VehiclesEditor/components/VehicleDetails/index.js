@@ -212,7 +212,7 @@ class VehicleDetails extends React.Component {
             <FlatButton
               className={styles.buttons__button}
               onClick={this.props.onCancel}
-              label="Close"
+              label="Cancel"
             />
           </div>
         </Form>
