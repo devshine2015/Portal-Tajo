@@ -1,9 +1,9 @@
 import { replace } from 'react-router-redux';
 import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
-import { resetUserData } from 'services/UserModel/actions';
 import { getIsUserAuthenticated } from '../reducer';
 import storage from 'utils/localStorage';
 
+const LOGOUT_SUCCESS = 'portal/Auth/LOGOUT_SUCCESS';
 const AUTH_SET = 'portal/Auth/AUTH_SET';
 const AUTH_RESET = 'portal/Auth/AUTH_RESET';
 
@@ -15,12 +15,15 @@ const resetAuthentication = () => ({
   type: AUTH_RESET,
 });
 
+const logout = () => ({
+  type: LOGOUT_SUCCESS,
+});
+
 const eraseAuth = () => (dispatch, getState) => {
   const isAuthenticated = getIsUserAuthenticated(getState());
 
   if (isAuthenticated) {
-    dispatch(resetAuthentication());
-    dispatch(resetUserData());
+    dispatch(logout());
     dispatch(replace('/login'));
   }
 

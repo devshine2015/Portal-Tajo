@@ -1,5 +1,5 @@
 import { fromJS } from 'immutable';
-import { loginActions } from 'services/Auth/actions';
+import { loginActions, commonActions } from 'services/Auth/actions';
 import {
   USER_SET,
   USER_RESET,
@@ -21,6 +21,7 @@ function userReducer(state = initialState, action) {
     case loginActions.LOGIN_SUCCESS:
       return state.merge({ ...action.userData });
     case USER_RESET:
+    case commonActions.LOGOUT_SUCCESS:
       return initialState;
     case USER_SETTINGS_UPDATE:
       return state.mergeIn(['settings'], action.settings);
