@@ -62,9 +62,9 @@ const calculateVehicleRow = ({ ev, type } = {}, {
   dateFormat,
   name,
   licensePlate,
-}, empty = false) => {
+}, noEvents = false) => {
   // return single row in case of no events
-  if (empty) {
+  if (noEvents) {
     return [
       licensePlate,
       name,
@@ -95,10 +95,15 @@ const calculateVehicleRows = options => (events = []) => {
 
   if (events.length > 0) {
     events.forEach(event => {
+      // filter events only if user selected some
+      if (!!options.selectedEvents &&
+          options.selectedEvents.length > 0 &&
+          options.selectedEvents.indexOf(event.type) === -1) return;
+
       rows.push(calculateVehicleRow(event, options));
     });
   } else {
-    rows.push(calculateVehicleRow({}, options, true));
+    rows.push(calculateVehicleRow({}, options, !events.length));
   }
 
   return rows;

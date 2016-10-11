@@ -6,6 +6,7 @@ import { setLoader } from './loaderActions';
 import getVehiclesForReport from '../utils/reportVehicles';
 import { getReportParams } from '../utils/prepareReport';
 import calculateVehicleRows from '../specs/events';
+import { getSelectedEvents, getAvailableEvents } from '../reducer';
 
 export const EVENT_SELECTED_ADD = 'portal/Report/EVENT_SELECTED_ADD';
 export const EVENT_SELECTED_REMOVE = 'portal/Report/EVENT_SELECTED_REMOVE';
@@ -24,10 +25,11 @@ export const getRawEvents = params => (dispatch, getState) =>
   _generateRawReport(params, dispatch, getState);
 
 function _generateRawReport({ timePeriod, frequency, dateFormat }, dispatch, getState) {
-  dispatch(setLoader(true));
+  // dispatch(setLoader(true));
 
   const dateFormatWithTime = `${dateFormat} HH:mm:ss`;
   const vehiclesForRequest = getVehiclesForReport(getState());
+  const selectedEvents = _getEvents(getState);
   const periodParamsWithOptions = Object.assign({}, getReportParams(timePeriod), {
     max: 20000,
     filter: 'PG',
@@ -47,6 +49,7 @@ function _generateRawReport({ timePeriod, frequency, dateFormat }, dispatch, get
           dateFormat: dateFormatWithTime,
           name: v.name,
           licensePlate: v.licensePlate,
+          selectedEvents,
         }));
     })
   )
@@ -65,8 +68,10 @@ function _generateRawReport({ timePeriod, frequency, dateFormat }, dispatch, get
     const endTime = moment.utc(periodParamsWithOptions.to).format(dateFormatWithTime);
     const fileName = `events for period [${startTime} - ${endTime}]`;
 
-    events.forEach(vehicle => {
-      rows = rows.concat(vehicle);
+    events.forEach(event => {
+      if (!event) return;
+
+      rows = rows.concat(event);
     });
 
     dispatch(setLoader(false));
@@ -76,4 +81,14 @@ function _generateRawReport({ timePeriod, frequency, dateFormat }, dispatch, get
     console.warn(error);
     dispatch(setLoader(false));
   });
+}
+
+function _getEvents(getState) {
+  const availableEvents = getAvailableEvents(getState());
+  const selectedIndexies = getSelectedEvents(getState());
+
+  // pick eventTypes and make single array of them
+  return selectedIndexies
+    .map(selectedIndex => availableEvents.get(selectedIndex).eventTypes)
+    .reduce((prev, next) => prev.concat(next));
 }
