@@ -1,3 +1,4 @@
+// @deprecated -- remove after publishing new portal
 import { fromJS } from 'immutable';
 import { fleetNameActions } from '../actions';
 

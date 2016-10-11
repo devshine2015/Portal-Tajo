@@ -8,25 +8,16 @@ import {
   Paper,
   Divider,
 } from 'material-ui';
+import { push } from 'react-router-redux';
 import SimpleError from 'components/Error';
 import { loginActions } from 'services/Auth/actions';
 import { errorsActions } from 'services/Global/actions';
-import {
-  getFleetName,
-  getErrorMessage,
-} from 'services/Global/reducer';
+import { getErrorMessage } from 'services/Global/reducer';
 
 import styles from './styles.css';
 
 const FORM_NAME = 'login';
-const Header = ({ fleetName }) => (
-  <h4 className={styles.header}>
-    Login to <span className={styles.header__portal}>{fleetName}</span> portal</h4>
-);
-
-Header.propTypes = {
-  fleetName: React.PropTypes.string.isRequired,
-};
+const Header = () => <h4 className={styles.header}>Login</h4>;
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -53,7 +44,9 @@ class LoginForm extends React.Component {
   onSubmit = (e) => {
     e.preventDefault();
 
-    this.props.login(this.state);
+    this.props.login(this.state).then(() => {
+      this.props.goToRoot();
+    });
   }
 
   render() {
@@ -63,7 +56,7 @@ class LoginForm extends React.Component {
       <div className={styles.loginContainer}>
         <Paper>
           <div className={styles.paper__inn}>
-            <Header fleetName={this.props.fleetName} />
+            <Header />
             <Divider />
             <Form
               name={FORM_NAME}
@@ -101,20 +94,20 @@ class LoginForm extends React.Component {
 
 LoginForm.propTypes = {
   login: React.PropTypes.func.isRequired,
-  fleetName: React.PropTypes.string.isRequired,
   errorMessage: React.PropTypes.string,
   resetError: React.PropTypes.func.isRequired,
+  goToRoot: React.PropTypes.func.isRequired,
 };
 
 const PureLoginForm = pure(LoginForm);
 
 const mapState = (state) => ({
-  fleetName: getFleetName(state),
   errorMessage: getErrorMessage(state),
 });
-const mapDispatch = {
-  login: loginActions.login,
+const mapDispatch = dispatch => ({
+  login: data => dispatch(loginActions.login(data)),
   resetError: errorsActions.resetError,
-};
+  goToRoot: () => dispatch(push('/')),
+});
 
 export default connect(mapState, mapDispatch)(PureLoginForm);

@@ -6,9 +6,9 @@ export const USER_SET = 'portal/services/USER_SET';
 export const USER_RESET = 'portal/services/USER_RESET';
 export const USER_SETTINGS_UPDATE = 'portal/services/USER_SETTINGS_UPDATE';
 
-export const setUserData = (data) => ({
+export const setUserData = userData => ({
   type: USER_SET,
-  data,
+  userData,
 });
 
 export const resetUserData = () => ({

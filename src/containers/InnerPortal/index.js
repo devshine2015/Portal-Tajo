@@ -20,14 +20,6 @@ class InnerPortal extends React.Component {
     this.checkUserAuthentication();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.fleet !== this.props.fleet) {
-      // FOR INTERNAL USE
-      // have to check authentication on fleet changing
-      this.checkUserAuthentication();
-    }
-  }
-
   checkUserAuthentication() {
     this.props.checkUserAuthentication({ urls: URLS }).then(isAuthenticated => {
       if (isAuthenticated) {
@@ -65,7 +57,7 @@ InnerPortal.propTypes = {
   checkUserAuthentication: React.PropTypes.func.isRequired,
   children: React.PropTypes.node,
   fetchFleet: React.PropTypes.func.isRequired,
-  fleet: React.PropTypes.string.isRequired,
+  fleet: React.PropTypes.string,
   isAuthenticated: React.PropTypes.bool.isRequired,
   showPortalsList: React.PropTypes.bool,
 };

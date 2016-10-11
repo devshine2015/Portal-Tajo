@@ -6,13 +6,12 @@ import { getIsUserAuthenticated } from '../reducer';
 import createBaseUrl from 'utils/createBaseUrl';
 import storage from 'utils/localStorage';
 
-const AUTH_SET = 'portal/App/AUTH_SET';
-const AUTH_RESET = 'portal/App/AUTH_RESET';
+const AUTH_SET = 'portal/Auth/AUTH_SET';
+const AUTH_RESET = 'portal/Auth/AUTH_RESET';
 
-const setAuthentication = (sessionId, fleet) => ({
+const setAuthentication = sessionId => ({
   type: AUTH_SET,
   sessionId,
-  fleet,
 });
 const resetAuthentication = () => ({
   type: AUTH_RESET,

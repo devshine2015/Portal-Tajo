@@ -1,30 +1,31 @@
 import { replace } from 'react-router-redux';
 import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
 import VERSIONS from 'configs/versions';
-import { getFleetName } from 'services/Global/reducer';
 import {
   storage,
   createBaseUrl,
 } from 'utils';
-import { getAuthenticatedFleet } from '../reducer';
+import { getIsUserAuthenticated } from '../reducer';
 import commonActions from './commonActions';
 import { setUserData } from 'services/UserModel/actions';
+import { getFleetName } from 'services/UserModel/reducer';
 
 export const checkUserAuthentication = (params) => (dispatch, getState) =>
   _checkUserAuthentication(params, dispatch, getState);
 
 function _checkUserAuthentication(params, dispatch, getState) {
-  const fleet = getFleetName(getState());
-
+  console.log('check localStorage')
   // for case when no auth data was saved in localStorage
-  if (getAuthenticatedFleet(getState()) === fleet) {
+  if (getIsUserAuthenticated(getState())) {
     return Promise.resolve(true);
   }
+
 
   return storage.read(LOCAL_STORAGE_SESSION_KEY)
   .then(_checkVersion(params.checkVersion))
   .then((sessions) => {
     let isAuthenticated = false;
+    const fleet = getFleetName(getState());
 
     if (sessions && typeof sessions === 'string') {
       dispatch(commonActions.setAuthentication(sessions, fleet));
@@ -60,7 +61,7 @@ function _checkUserAuthentication(params, dispatch, getState) {
     return Promise.resolve(isAuthenticated);
   }, (error) => {
     if (error.message && error.message === 'wrong version') {
-      const loginUrl = `${createBaseUrl(fleet)}/login`;
+      const loginUrl = `${createBaseUrl()}/login`;
 
       console.warn(error.message);
 
