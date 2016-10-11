@@ -12,7 +12,6 @@ const chooseServerEnv = () => {
 };
 
 export const portal = process.env.DRVR_PROJECT;
-export const isDev = process.env.NODE_ENV !== 'production';
 export const protocol = document.location.protocol;
 export const isSecure = protocol.search('https') !== -1;
 export const socketProtocol = isSecure ? 'wss' : 'ws';
@@ -26,4 +25,4 @@ export const LOCAL_STORAGE_SESSION_KEY = portal !== 'ssreports' ?
 export const ROOT_ROUTE = onDev ? '/' : `/portal/:fleet/${portal}/`;
 
 // isDev true only on localhost
-export const ENGINE_BASE = isDev ? DEV_ENGINE_BASE : PROD_ENGINE_BASE;
+export const ENGINE_BASE = onDev ? DEV_ENGINE_BASE : PROD_ENGINE_BASE;
