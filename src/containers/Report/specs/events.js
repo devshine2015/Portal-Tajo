@@ -32,8 +32,8 @@ function prettifyAdditionalInfo(type, {
   movingPeriod,
 }) {
   switch (type) {
-    case TYPES.POSITION: {
-      return `Fuel used: ${fuelInfo.totFuelUsed}, Fuel level: ${fuelInfo.fuelLevelPerc}`;
+    case TYPES.FUEL: {
+      return `Fuel used: ${fuelInfo.totalFuelUsed}, Fuel level: ${fuelInfo.fuelLevelPerc}`;
     }
     case TYPES.IGNITION_OFF: {
       return `Ignition on period: ${ignitionOnPeriod}`;
@@ -83,7 +83,7 @@ const calculateVehicleRow = ({ ev, type } = {}, {
     licensePlate,
     name,
     prettyType,
-    moment(pos.posTime).format(dateFormat),
+    moment.utc(pos.posTime).format(dateFormat),
     `${pos.latlon.lat}, ${pos.latlon.lng}`,
     pos.speed.toFixed(2, 10),
     prettifyAdditionalInfo(type, rest),

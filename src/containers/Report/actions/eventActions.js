@@ -50,7 +50,7 @@ function _generateRawReport({ timePeriod, frequency, dateFormat }, dispatch, get
         }));
     })
   )
-  .then((vehicles = []) => {
+  .then((events = []) => {
     const headers = [
       'License Plate',
       'Vehicle Name',
@@ -65,7 +65,7 @@ function _generateRawReport({ timePeriod, frequency, dateFormat }, dispatch, get
     const endTime = moment.utc(periodParamsWithOptions.to).format(dateFormatWithTime);
     const fileName = `events for period [${startTime} - ${endTime}]`;
 
-    vehicles.forEach(vehicle => {
+    events.forEach(vehicle => {
       rows = rows.concat(vehicle);
     });
 
