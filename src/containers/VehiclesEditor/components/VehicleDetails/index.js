@@ -18,6 +18,9 @@ const STYLES = {
     paddingTop: 5,
     paddingBottom: 5,
   },
+  disabledField: {
+    color: 'rgba(0, 0, 0, 0.870588)',
+  },
 };
 
 function getOdo({ odometer, isMiles }) {
@@ -152,6 +155,16 @@ class VehicleDetails extends React.Component {
             value={this.state.licensePlate}
           />
           <TextField
+            disabled
+            autoWidth
+            floatingLabelFixed
+            underlineShow={false}
+            name="deviceId"
+            floatingLabelText="Device IMEI"
+            inputStyle={STYLES.disabledField}
+            value={this.props.details.deviceId}
+          />
+          <TextField
             fullWidth
             name="make"
             onChange={this.onChange}
@@ -199,7 +212,7 @@ class VehicleDetails extends React.Component {
             <FlatButton
               className={styles.buttons__button}
               onClick={this.props.onCancel}
-              label="Cancel"
+              label="Close"
             />
           </div>
         </Form>
@@ -213,6 +226,7 @@ VehicleDetails.propTypes = {
   id: React.PropTypes.string.isRequired,
   disabled: React.PropTypes.bool.isRequired,
   details: React.PropTypes.shape({
+    deviceId: React.PropTypes.string,
     kind: React.PropTypes.string,
     name: React.PropTypes.string.isRequired,
     make: React.PropTypes.string.isRequired,

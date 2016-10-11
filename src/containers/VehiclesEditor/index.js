@@ -115,6 +115,7 @@ class VehiclesEditor extends React.Component {
       year: origins.year,
       model: origins.model,
       make: origins.make,
+      deviceId: origins.deviceId,
       licensePlate: origins.licensePlate,
       odometer: (origins.dist.total / 1000).toFixed(0),
     };
