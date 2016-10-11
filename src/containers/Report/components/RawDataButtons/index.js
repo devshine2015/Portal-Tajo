@@ -40,15 +40,15 @@ class RawDataButtons extends React.Component {
             disabled={this.props.disabled}
             primary
           />
-          <Toggle
+          {/*<Toggle
             className={styles.toggle}
             label={warnMessage}
             labelPosition="right"
             style={STYLES.toggleRoot}
             labelStyle={STYLES.toggleLabel}
-          />
+          />*/}
         </div>
-        <Hint />
+        {/*<Hint />*/}
       </div>
     );
   }
