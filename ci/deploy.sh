@@ -14,5 +14,5 @@ echo "erase projects on server"
 ssh $1 "cd $TARGET_FOLDER && rm -r $TAJO $PORTAL"
 
 echo "copy files of $TAJO and $PORTAL to $TARGET_FOLDER"
-scp $PORTAL_FOLDER/* $1:$TARGET_FOLDER
+scp -r $PORTAL_FOLDER/* $1:$TARGET_FOLDER
 scp -r $TAJO_FOLDER $1:$TARGET_FOLDER
