@@ -9,6 +9,7 @@ import {
   Checkbox,
 } from 'material-ui';
 import Form from 'components/Form';
+import DeviceEditor from '../DeviceEditor';
 import { VEHICLE_KINDS, getVehicleByValue } from 'services/FleetModel/utils/vehiclesMap';
 import styles from './styles.css';
 
@@ -17,9 +18,6 @@ const STYLES = {
   menuItem: {
     paddingTop: 5,
     paddingBottom: 5,
-  },
-  disabledField: {
-    color: 'rgba(0, 0, 0, 0.870588)',
   },
 };
 
@@ -154,16 +152,11 @@ class VehicleDetails extends React.Component {
             floatingLabelText="License Plate Number"
             value={this.state.licensePlate}
           />
-          <TextField
-            disabled
-            autoWidth
-            floatingLabelFixed
-            underlineShow={false}
-            name="deviceId"
-            floatingLabelText="Device IMEI"
-            inputStyle={STYLES.disabledField}
-            value={this.props.details.deviceId || ''}
+
+          <DeviceEditor
+            deviceId={this.props.details.deviceId}
           />
+
           <TextField
             fullWidth
             name="make"
