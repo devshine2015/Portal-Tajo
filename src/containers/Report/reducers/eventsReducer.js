@@ -6,6 +6,7 @@ const initialState = fromJS({
   available: new List(fields),
   selected: new List(),
   tooManyVehiclesSelected: true,
+  forced: false,
 });
 
 function reducer(state = initialState, action) {
@@ -27,7 +28,10 @@ function reducer(state = initialState, action) {
       return state.set('tooManyVehiclesSelected', action.selectedTooMuch);
 
     case eventActions.EVENT_ALLOW_PICK_MORE:
-      return state.set('tooManyVehiclesSelected', !action.allow);
+      return state.withMutations(s => {
+        s.set('tooManyVehiclesSelected', !action.allow)
+         .set('forced', action.forced);
+      });
 
     default:
       return state;
@@ -54,3 +58,6 @@ export const getSelectedEventIndex = (state, value) =>
 
 export const getIsTooManyVehiclesSelected = state =>
   state.get('tooManyVehiclesSelected');
+
+export const getIsForced = state =>
+  state.get('forced');

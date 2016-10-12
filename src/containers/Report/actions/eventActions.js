@@ -34,7 +34,7 @@ export const getRawEvents = params => (dispatch, getState) =>
   _generateRawReport(params, dispatch, getState);
 
 function _generateRawReport({ timePeriod, frequency, dateFormat }, dispatch, getState) {
-  // dispatch(setLoader(true));
+  dispatch(setLoader(true));
 
   const dateFormatWithTime = `${dateFormat} HH:mm:ss`;
   const vehiclesForRequest = getVehiclesForReport(getState());
@@ -102,20 +102,21 @@ function _getEvents(getState) {
     .reduce((prev, next) => prev.concat(next));
 }
 
-function _allowPickMore(toggled, dispatch, getState) {
-  if (toggled) {
-    dispatch(_allow(toggled));
+function _allowPickMore(forced, dispatch, getState) {
+  if (forced) {
+    dispatch(_allow(true, forced));
   } else {
     const selectedVehiclesAmount = getSelectedVehiclesAmount(getState());
     const vehiclesAmount = getVehiclesAmount(getState());
     const allow = (selectedVehiclesAmount === 0 && vehiclesAmount <= 3) ||
                   (selectedVehiclesAmount > 0 && selectedVehiclesAmount <= 3);
 
-    dispatch(_allow(allow));
+    dispatch(_allow(allow, forced));
   }
 }
 
-const _allow = allow => ({
+const _allow = (allow, forced) => ({
   type: EVENT_ALLOW_PICK_MORE,
   allow,
+  forced,
 });

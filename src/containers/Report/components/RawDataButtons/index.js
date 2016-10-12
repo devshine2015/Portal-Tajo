@@ -4,8 +4,11 @@ import pure from 'recompose/pure';
 import cs from 'classnames';
 import RaisedButton from 'material-ui/RaisedButton';
 import Toggle from 'material-ui/Toggle';
-import { getIsTooManyVehiclesSelected } from 'containers/Report/reducer';
 import { eventActions } from 'containers/Report/actions';
+import {
+  getIsForced,
+  getIsTooManyVehiclesSelected,
+} from 'containers/Report/reducer';
 
 import styles from './styles.css';
 
@@ -28,37 +31,25 @@ const STYLES = {
 const Hint = () => <div className={styles.hint}>*Pick up to 3 vehicles for getting events</div>;
 
 class RawDataButtons extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      forced: !props.tooManyVehiclesSelected,
-    };
-  }
 
   onToggle = (e, toggled) => {
-    this.setState({
-      forced: toggled,
-    }, () => {
-      this.props.allowPickMore(toggled);
-    });
+    this.props.allowPickMore(toggled);
   }
 
   render() {
     const containerClassName = cs(styles.container, this.props.containerClassName);
     const btnClassName = cs(styles.button, this.props.buttonClassName);
-    const forced = this.state.forced;
     let btnIsDisabled;
 
-    if (forced) {
+    if (this.props.forced) {
       btnIsDisabled = false;
     } else {
-      btnIsDisabled = this.props.tooManyVehiclesSelected ||
-                      this.props.isLoading;
+      btnIsDisabled = this.props.tooManyVehiclesSelected;
     }
 
     return (
       <div className={containerClassName}>
+
         <div className={styles.top}>
           <RaisedButton
             className={btnClassName}
@@ -73,11 +64,12 @@ class RawDataButtons extends React.Component {
             labelPosition="right"
             style={STYLES.toggleRoot}
             labelStyle={STYLES.toggleLabel}
-            toggled={this.state.forced}
+            toggled={this.props.forced}
             onToggle={this.onToggle}
           />
         </div>
         <Hint />
+
       </div>
     );
   }
@@ -90,9 +82,6 @@ RawDataButtons.propTypes = {
   // button className
   buttonClassName: React.PropTypes.string,
 
-  // property to disable primary button if loading happenning
-  isLoading: React.PropTypes.bool.isRequired,
-
   // callback on primary button click
   onClick: React.PropTypes.func.isRequired,
 
@@ -102,10 +91,14 @@ RawDataButtons.propTypes = {
 
   // callback to allow pick more than X vehicles
   allowPickMore: React.PropTypes.func.isRequired,
+
+  // allowed to choose and save events for more vehicles
+  forced: React.PropTypes.bool.isRequired,
 };
 
 const mapState = state => ({
   tooManyVehiclesSelected: getIsTooManyVehiclesSelected(state),
+  forced: getIsForced(state),
 });
 const mapDispatch = {
   allowPickMore: eventActions.allowPickMore,

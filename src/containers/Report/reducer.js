@@ -68,6 +68,9 @@ export const getSelectedEventIndex = (state, value) =>
 export const getIsTooManyVehiclesSelected = state =>
   fromConfigReducer.getIsTooManyVehiclesSelected(getConfigurator(state));
 
+export const getIsForced = state =>
+  fromConfigReducer.getIsForced(getConfigurator(state));
+
 export const getErrorMessage = state =>
   fromConfigReducer.getErrorMessage(getConfigurator(state));
 export const getLoadingState = state =>

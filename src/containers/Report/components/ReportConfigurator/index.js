@@ -206,23 +206,25 @@ class Report extends React.Component {
               title="Customise Report"
             />
 
-            <div className={styles.buttons}>
-              <RaisedButton
-                className={styles.button}
-                label="Generate report"
-                onClick={this.onSubmit}
-                disabled={this.props.isLoading}
-                primary
-              />
-              { this.props.hasReport && (
+            { !this.props.isLoading && (
+              <div className={styles.buttons}>
                 <RaisedButton
                   className={styles.button}
-                  label="Save Generated"
-                  onClick={this.props.saveReport}
-                  secondary
+                  label="Generate report"
+                  onClick={this.onSubmit}
+                  disabled={this.props.isLoading}
+                  primary
                 />
-              )}
-            </div>
+                { this.props.hasReport && (
+                  <RaisedButton
+                    className={styles.button}
+                    label="Save Generated"
+                    onClick={this.props.saveReport}
+                    secondary
+                  />
+                )}
+              </div>
+            )}
           </div>
 
           <div className={styles.separator}></div>
@@ -235,14 +237,20 @@ class Report extends React.Component {
               source="events"
               title="Customise Raw Events"
             />
-            <RawDataButtons
-              containerClassName={styles.buttons}
-              buttonClassName={styles.button}
-              onClick={this.onSaveRawData}
-              isLoading={this.props.isLoading}
-            />
+
+            { !this.props.isLoading && (
+              <RawDataButtons
+                containerClassName={styles.buttons}
+                buttonClassName={styles.button}
+                onClick={this.onSaveRawData}
+                isLoading={this.props.isLoading}
+              />
+            )}
+
           </div>
         </Form>
+
+        { this.props.isLoading && <ProgressBar /> }
 
         { this.props.error && (
           <div className={styles.error}>
