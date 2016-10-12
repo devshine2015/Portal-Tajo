@@ -38,7 +38,9 @@ export default selectedVehiclesReducer;
 
 export const findIndexById = (state, id) =>
   state.get('selectedVehicles').findIndex(item => item === id);
-export const getSelectedVehicles = (state) =>
+export const getSelectedVehicles = state =>
   state.get('selectedVehicles');
-export const isFiltering = (state) =>
+export const isFiltering = state =>
   state.get('isFiltering');
+export const getSelectedVehiclesAmount = state =>
+  state.get('selectedVehicles').size;

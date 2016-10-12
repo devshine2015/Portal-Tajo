@@ -239,7 +239,7 @@ class Report extends React.Component {
               containerClassName={styles.buttons}
               buttonClassName={styles.button}
               onClick={this.onSaveRawData}
-              disabled={this.props.isLoading}
+              isLoading={this.props.isLoading}
             />
           </div>
         </Form>

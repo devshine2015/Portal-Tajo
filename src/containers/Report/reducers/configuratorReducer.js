@@ -76,6 +76,9 @@ export const getSelectedEvents = state =>
 export const getSelectedEventIndex = (state, value) =>
   fromEventsReducer.getSelectedEventIndex(getEventTypes(state), value);
 
+export const getIsTooManyVehiclesSelected = state =>
+  fromEventsReducer.getIsTooManyVehiclesSelected(getEventTypes(state));
+
 export const getErrorMessage = state =>
   state.getIn(['common', 'error']);
 

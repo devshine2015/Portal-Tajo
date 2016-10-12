@@ -31,6 +31,10 @@ function getConfigurator(s) {
   return s.getIn(['reports', 'configurator']);
 }
 
+function getVehicles(s) {
+  return s.getIn(['reports', 'vehicles']);
+}
+
 export const getSavedReportData = (state) =>
   state.getIn(['reports', 'data']);
 export const appHasStoredReport = (state) =>
@@ -61,15 +65,21 @@ export const getSelectedEvents = state =>
 export const getSelectedEventIndex = (state, value) =>
   fromConfigReducer.getSelectedEventIndex(getConfigurator(state), value);
 
+export const getIsTooManyVehiclesSelected = state =>
+  fromConfigReducer.getIsTooManyVehiclesSelected(getConfigurator(state));
+
 export const getErrorMessage = state =>
   fromConfigReducer.getErrorMessage(getConfigurator(state));
 export const getLoadingState = state =>
   fromConfigReducer.getLoadingState(getConfigurator(state));
 
-export const getSelectedVehicles = (state) =>
-  fromVehiclesReducer.getSelectedVehicles(state.getIn(['reports', 'vehicles']));
+export const getSelectedVehicles = state =>
+  fromVehiclesReducer.getSelectedVehicles(getVehicles(state));
+export const getSelectedVehiclesAmount = state =>
+  fromVehiclesReducer.getSelectedVehiclesAmount(getVehicles(state));
+
 export const isVehicleAlreadyAdded = (state, id) =>
-  fromVehiclesReducer.findIndexById(state.getIn(['reports', 'vehicles']), id);
+  fromVehiclesReducer.findIndexById(getVehicles(state), id);
 
 export const getIsFiltering = (state) =>
-  fromVehiclesReducer.isFiltering(state.getIn(['reports', 'vehicles']));
+  fromVehiclesReducer.isFiltering(getVehicles(state));

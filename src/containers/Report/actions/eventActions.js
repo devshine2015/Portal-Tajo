@@ -6,10 +6,16 @@ import { setLoader } from './loaderActions';
 import getVehiclesForReport from '../utils/reportVehicles';
 import { getReportParams } from '../utils/prepareReport';
 import calculateVehicleRows from '../specs/events';
-import { getSelectedEvents, getAvailableEvents } from '../reducer';
+import { getVehiclesAmount } from 'services/FleetModel/reducer';
+import {
+  getSelectedEvents,
+  getAvailableEvents,
+  getSelectedVehiclesAmount,
+} from '../reducer';
 
 export const EVENT_SELECTED_ADD = 'portal/Report/EVENT_SELECTED_ADD';
 export const EVENT_SELECTED_REMOVE = 'portal/Report/EVENT_SELECTED_REMOVE';
+export const EVENT_ALLOW_PICK_MORE = 'portal/Report/EVENT_ALLOW_PICK_MORE';
 
 export const addSelectedEvent = index => ({
   type: EVENT_SELECTED_ADD,
@@ -20,6 +26,9 @@ export const removeSelectedEvent = index => ({
   type: EVENT_SELECTED_REMOVE,
   index,
 });
+
+export const allowPickMore = allow => (dispatch, getState) =>
+  _allowPickMore(allow, dispatch, getState);
 
 export const getRawEvents = params => (dispatch, getState) =>
   _generateRawReport(params, dispatch, getState);
@@ -92,3 +101,21 @@ function _getEvents(getState) {
     .map(selectedIndex => availableEvents.get(selectedIndex).eventTypes)
     .reduce((prev, next) => prev.concat(next));
 }
+
+function _allowPickMore(toggled, dispatch, getState) {
+  if (toggled) {
+    dispatch(_allow(toggled));
+  } else {
+    const selectedVehiclesAmount = getSelectedVehiclesAmount(getState());
+    const vehiclesAmount = getVehiclesAmount(getState());
+    const allow = (selectedVehiclesAmount === 0 && vehiclesAmount <= 3) ||
+                  (selectedVehiclesAmount > 0 && selectedVehiclesAmount <= 3);
+
+    dispatch(_allow(allow));
+  }
+}
+
+const _allow = allow => ({
+  type: EVENT_ALLOW_PICK_MORE,
+  allow,
+});

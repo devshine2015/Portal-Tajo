@@ -1,10 +1,11 @@
 import { fromJS, List } from 'immutable';
-import { eventActions } from '../actions';
+import { eventActions, reportVehiclesActions } from '../actions';
 import { fields } from '../specs/events';
 
 const initialState = fromJS({
   available: new List(fields),
   selected: new List(),
+  tooManyVehiclesSelected: true,
 });
 
 function reducer(state = initialState, action) {
@@ -18,6 +19,15 @@ function reducer(state = initialState, action) {
       return state.updateIn(['selected'], selected =>
         selected.delete(action.index)
       );
+
+    case reportVehiclesActions.VEHICLE_ADD:
+      return state.set('tooManyVehiclesSelected', action.selectedTooMuch);
+
+    case reportVehiclesActions.VEHICLE_REMOVE:
+      return state.set('tooManyVehiclesSelected', action.selectedTooMuch);
+
+    case eventActions.EVENT_ALLOW_PICK_MORE:
+      return state.set('tooManyVehiclesSelected', !action.allow);
 
     default:
       return state;
@@ -41,3 +51,6 @@ export const getSelectedEvents = state =>
 
 export const getSelectedEventIndex = (state, value) =>
   state.get('selected').indexOf(value);
+
+export const getIsTooManyVehiclesSelected = state =>
+  state.get('tooManyVehiclesSelected');
