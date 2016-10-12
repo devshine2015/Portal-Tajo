@@ -22,6 +22,7 @@ class Field extends React.Component {
         label={this.props.label}
         name={this.props.name}
         onCheck={this.injectProps}
+        disabled={this.props.disabled || false}
       />
     );
   }
@@ -32,6 +33,7 @@ Field.propTypes = {
   isChecked: React.PropTypes.bool.isRequired,
   label: React.PropTypes.string.isRequired,
   name: React.PropTypes.string.isRequired,
+  disabled: React.PropTypes.bool,
   onCheck: React.PropTypes.func.isRequired,
   source: React.PropTypes.oneOf([
     'events', 'reports',
