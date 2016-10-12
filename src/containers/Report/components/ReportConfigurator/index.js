@@ -242,7 +242,7 @@ class Report extends React.Component {
               <RawDataButtons
                 containerClassName={styles.buttons}
                 buttonClassName={styles.button}
-                onClick={this.onSaveRawData}
+                generateEvents={this.onSaveRawData}
                 isLoading={this.props.isLoading}
               />
             )}

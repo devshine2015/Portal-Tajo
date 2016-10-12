@@ -4,10 +4,12 @@ import pure from 'recompose/pure';
 import cs from 'classnames';
 import RaisedButton from 'material-ui/RaisedButton';
 import Toggle from 'material-ui/Toggle';
+import WarningDialog from '../WarningDialog';
 import { eventActions } from 'containers/Report/actions';
 import {
   getIsForced,
   getIsTooManyVehiclesSelected,
+  getSelectedVehiclesAmount,
 } from 'containers/Report/reducer';
 
 import styles from './styles.css';
@@ -32,8 +34,39 @@ const Hint = () => <div className={styles.hint}>*Pick up to 3 vehicles for getti
 
 class RawDataButtons extends React.Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      dialogOpened: false,
+    };
+  }
+
+  onDialogCancel = () => {
+    this.changeDialogOpenState(false);
+  }
+
+  onDialogOk = () => {
+    this.props.generateEvents();
+    this.changeDialogOpenState(false);
+  }
+
   onToggle = (e, toggled) => {
     this.props.allowPickMore(toggled);
+  }
+
+  onPrimaryClick = () => {
+    if (this.props.tooManyVehiclesSelected) {
+      this.changeDialogOpenState(true);
+    } else {
+      this.props.generateEvents();
+    }
+  }
+
+  changeDialogOpenState(dialogOpened) {
+    this.setState({
+      dialogOpened,
+    });
   }
 
   render() {
@@ -54,7 +87,7 @@ class RawDataButtons extends React.Component {
           <RaisedButton
             className={btnClassName}
             label="Save raw data"
-            onClick={this.props.onClick}
+            onClick={this.onPrimaryClick}
             disabled={btnIsDisabled}
             primary
           />
@@ -70,6 +103,13 @@ class RawDataButtons extends React.Component {
         </div>
         <Hint />
 
+        <WarningDialog
+          open={this.state.dialogOpened}
+          onCancel={this.onDialogCancel}
+          onOk={this.onDialogOk}
+          vehiclesAmount={this.props.selectedVehiclesAmount}
+        />
+
       </div>
     );
   }
@@ -83,7 +123,7 @@ RawDataButtons.propTypes = {
   buttonClassName: React.PropTypes.string,
 
   // callback on primary button click
-  onClick: React.PropTypes.func.isRequired,
+  generateEvents: React.PropTypes.func.isRequired,
 
   // true by default;
   // false if less than 3 vehicles are chosen
@@ -94,11 +134,15 @@ RawDataButtons.propTypes = {
 
   // allowed to choose and save events for more vehicles
   forced: React.PropTypes.bool.isRequired,
+
+  // display amount of selected vehicles in dialog
+  selectedVehiclesAmount: React.PropTypes.number.isRequired,
 };
 
 const mapState = state => ({
   tooManyVehiclesSelected: getIsTooManyVehiclesSelected(state),
   forced: getIsForced(state),
+  selectedVehiclesAmount: getSelectedVehiclesAmount(state),
 });
 const mapDispatch = {
   allowPickMore: eventActions.allowPickMore,

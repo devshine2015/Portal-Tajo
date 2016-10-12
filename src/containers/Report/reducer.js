@@ -78,6 +78,7 @@ export const getLoadingState = state =>
 
 export const getSelectedVehicles = state =>
   fromVehiclesReducer.getSelectedVehicles(getVehicles(state));
+
 export const getSelectedVehiclesAmount = state =>
   fromVehiclesReducer.getSelectedVehiclesAmount(getVehicles(state));
 
