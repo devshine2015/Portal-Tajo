@@ -1,6 +1,12 @@
 @media screen and (min-width: 100px) {
   .managerContainer {
     max-width: 900px;
-    margin: 0 auto;
+    margin: 20px auto;
+  }
+
+  .floatingButton {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
   }
 }

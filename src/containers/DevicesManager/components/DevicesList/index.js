@@ -19,7 +19,7 @@ class DevicesList extends React.Component {
       return null;
     }
 
-    const devices = this.props.devices.map(d => (
+    const devices = this.props.devices.toList().map(d => (
       <li
         key={d.id}
         className={styles.list__item}

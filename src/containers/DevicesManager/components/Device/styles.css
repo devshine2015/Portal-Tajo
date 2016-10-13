@@ -1,3 +1,24 @@
-.actions {
-  text-align: right;
+@media screen and (min-width: 100px) {
+  .deviceContainer {}
+  
+  .card {
+    min-height: 100px;
+    display: flex;
+  }
+
+  .card > div {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card_withActions {
+    min-height: 150px;
+  }
+
+  .actions {
+    text-align: right;
+  }
+
 }
