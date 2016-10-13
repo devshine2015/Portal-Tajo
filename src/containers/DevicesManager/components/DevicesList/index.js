@@ -20,8 +20,6 @@ class DevicesList extends React.Component {
       return null;
     }
 
-    console.log('list re-rendered');
-
     const devices = this.props.devices.toList().map(d => {
       const vehicleName = this.props.vehicles.getIn([d.vehicleId, 'name']);
       const correctVehicle = !d.vehicleId || !!vehicleName;

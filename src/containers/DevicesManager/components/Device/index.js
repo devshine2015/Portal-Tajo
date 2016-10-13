@@ -43,7 +43,6 @@ function renderActions(onDiactivate) {
   );
 }
 
-const normalText = name => name;
 const vehicleNotCorrectText = id => `No such vehicle with id: ${id}`;
 const deviceNotAttached = 'Device not attached to any vehicle';
 
@@ -93,7 +92,7 @@ const Text = ({
   let text = '';
 
   if (!!vehicleId && correctVehicle) {
-    text = normalText(vehicleName);
+    text = vehicleName;
   } else if (!vehicleId) {
     text = deviceNotAttached;
   } else if (!correctVehicle) {
