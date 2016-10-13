@@ -1,12 +1,12 @@
-const NAME = 'installer';
+const NAME = 'devices';
 
 const createRoute = ({
   path,
   name = NAME,
   niceName = NAME,
-  errorHandler,
-  injectReducer,
   loadModule,
+  injectReducer,
+  errorHandler,
 }) => ({
   path,
   name,
@@ -14,25 +14,19 @@ const createRoute = ({
   getComponent: (location, cb) => {
     require.ensure([], require => {
       const importModules = Promise.all([
-        require('containers/Installer/reducer'),
         require('services/Devices/reducer'),
         require('./index'),
       ]);
 
       const renderModule = loadModule(cb);
 
-      importModules.then(([
-        installerReducer,
-        devicesReducer,
-        installerScreenComponent,
-      ]) => {
-        injectReducer(NAME, installerReducer.default);
-        injectReducer('devices', devicesReducer.default);
-        renderModule(installerScreenComponent);
+      importModules.then(([reducer, component]) => {
+        injectReducer(NAME, reducer.default);
+        renderModule(component);
       });
 
       importModules.catch(errorHandler);
-    }, 'installer');
+    }, 'devices');
   },
   protected: true,
 });

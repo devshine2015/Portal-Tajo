@@ -2,7 +2,7 @@ import { Map, fromJS } from 'immutable';
 import { DEVICES_FETCH_SUCCESS } from './actions';
 
 const initialState = fromJS({
-  list: undefined,
+  list: new Map({}),
 });
 
 function reducer(state = initialState, action) {

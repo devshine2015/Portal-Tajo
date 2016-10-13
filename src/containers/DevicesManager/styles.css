@@ -1,0 +1,6 @@
+@media screen and (min-width: 100px) {
+  .managerContainer {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+}
