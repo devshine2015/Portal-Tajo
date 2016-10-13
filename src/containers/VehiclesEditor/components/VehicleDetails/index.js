@@ -154,6 +154,7 @@ class VehicleDetails extends React.Component {
           />
 
           <DeviceEditor
+            vehicleId={this.props.id}
             deviceId={this.props.details.deviceId}
           />
 

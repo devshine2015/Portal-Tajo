@@ -1,37 +1,137 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
+import IconButton from 'material-ui/IconButton';
+import RemoveIcon from 'material-ui/svg-icons/content/remove-circle-outline';
+import AddIcon from 'material-ui/svg-icons/content/add-circle-outline';
 import pure from 'recompose/pure';
+import theme from 'configs/theme';
+import { deviceActions } from 'containers/VehiclesEditor/actions';
+
+import styles from './styles.css';
 
 const STYLES = {
   disabledField: {
     color: 'rgba(0, 0, 0, 0.870588)',
   },
+  warningUnderline: {
+    borderColor: theme.palette.accent1Color,
+  },
+  warning: {
+    color: theme.palette.accent1Color,
+  },
+};
+
+const EditorButton = ({ onClick, icon, tooltip }) => (
+  <IconButton
+    tooltip={tooltip}
+    onClick={onClick}
+  >
+    {icon}
+  </IconButton>
+);
+
+EditorButton.propTypes = {
+  // callback fired on button click
+  onClick: React.PropTypes.func.isRequired,
+
+  // svg-material-ui icon
+  icon: React.PropTypes.node.isRequired,
+
+  // text to display on button hover
+  tooltip: React.PropTypes.string.isRequired,
 };
 
 class DeviceEditor extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      imei: props.deviceId || '',
+    };
+  }
+
+  onAttach = () => {
+    this.props.attachDevice(this.props.vehicleId, this.state.imei);
+  }
+
+  onDetach = () => {
+    this.props.detachDevice(this.props.vehicleId);
+  }
+
+  onImeiChange = (e, value) => {
+    this.setState({
+      imei: value,
+    });
+  }
+
   render() {
+    const hasDevice = !!this.props.deviceId;
+    const fieldStyles = hasDevice ? STYLES.disabledField : {};
+    const hintText = hasDevice ? '' : 'Fill in IMEI';
+    const errorText = !hasDevice ? 'No device attached' : '';
+    const floatingLabelStyle = !hasDevice ? STYLES.warning : {};
+    const errorStyle = !hasDevice ? STYLES.warning : {};
+    const underlineStyle = !hasDevice ? STYLES.warningUnderline : {};
+
     return (
-      <TextField
-        disabled
-        autoWidth
-        floatingLabelFixed
-        underlineShow={false}
-        name="deviceId"
-        floatingLabelText="Device IMEI"
-        inputStyle={STYLES.disabledField}
-        value={this.props.deviceId}
-      />
+      <div className={styles.editor}>
+        <TextField
+          autoWidth
+          type="number"
+          name="deviceId"
+          floatingLabelFixed
+          hintText={hintText}
+          disabled={hasDevice}
+          errorText={errorText}
+          value={this.state.imei}
+          errorStyle={errorStyle}
+          inputStyle={fieldStyles}
+          underlineShow={!hasDevice}
+          onChange={this.onImeiChange}
+          floatingLabelText="Device IMEI"
+          underlineStyle={underlineStyle}
+          floatingLabelStyle={floatingLabelStyle}
+        />
+
+        { !hasDevice && (
+          <EditorButton
+            tooltip="Attach device"
+            icon={<AddIcon />}
+            onClick={this.onAttach}
+          />
+        )}
+
+        { hasDevice && (
+          <EditorButton
+            tooltip="Detach device"
+            icon={<RemoveIcon />}
+            onClick={this.onDetach}
+          />
+        )}
+
+      </div>
     );
   }
 }
 
 DeviceEditor.propTypes = {
-  deviceId: React.PropTypes.string.isRequired,
+  // display deviceId if it presented
+  // could be empty
+  deviceId: React.PropTypes.string,
+
+  // id of vehicle
+  vehicleId: React.PropTypes.string.isRequired,
+
+  detachDevice: React.PropTypes.func.isRequired,
+  attachDevice: React.PropTypes.func.isRequired,
 };
 
 const mapState = null;
-const mapDispatch = null;
+const mapDispatch = {
+  detachDevice: deviceActions.detachDevice,
+  attachDevice: deviceActions.attachDevice,
+};
 
 const PureDeviceEditor = pure(DeviceEditor);
 
