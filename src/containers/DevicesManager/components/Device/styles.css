@@ -1,5 +1,7 @@
 @media screen and (min-width: 100px) {
-  .deviceContainer {}
+  .deviceContainer {
+    position: relative;
+  }
   
   .card {
     min-height: 100px;
@@ -21,4 +23,9 @@
     text-align: right;
   }
 
+  .warning {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
 }

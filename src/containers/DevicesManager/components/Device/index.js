@@ -8,14 +8,23 @@ import {
   CardHeader,
 } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
+import WarningIcon from 'material-ui/svg-icons/alert/warning';
 import { permissions } from 'configs/roles';
 import permitted from 'utils/permissionsRequired';
+import theme from 'configs/theme';
 
 import styles from './styles.css';
 
 const PERMISSIONS = [
   permissions.DEVICES_DEACTIVATE,
 ];
+
+const STYLES = {
+  warningicon: {
+    height: 20,
+    width: 20,
+  },
+};
 
 function userCan(permission, userPermittedTo) {
   return userPermittedTo[permission];
@@ -33,6 +42,25 @@ function renderActions(onDiactivate) {
   );
 }
 
+// show warning if device not attached
+function renderStatus(vehicleId) {
+  if (!!vehicleId) {
+    return null;
+  }
+
+  return (
+    <div
+      className={styles.warning}
+      title="Not Attached to Any Vehicle"
+    >
+      <WarningIcon
+        color={theme.palette.accent1Color}
+        style={STYLES.warningicon}
+      />
+    </div>
+  );
+}
+
 class Device extends React.Component {
 
   onDiactivate = () => {
@@ -47,17 +75,15 @@ class Device extends React.Component {
 
     return (
       <div className={styles.deviceContainer}>
-        <Card
-          className={cardClassName}
-          // style={{minHeight: 150}}
-          // containerStyle={{minHeight: 150}}
-        >
+        <Card className={cardClassName}>
           <CardHeader
             title={this.props.sn}
             subtitle={this.props.kind}
           />
           { canDeactivate && renderActions(this.onDiactivate) }
         </Card>
+
+        { renderStatus(this.props.vehicleId) }
       </div>
     );
   }
