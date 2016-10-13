@@ -6,6 +6,7 @@ import {
   Card,
   CardActions,
   CardHeader,
+  CardText,
 } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import WarningIcon from 'material-ui/svg-icons/alert/warning';
@@ -34,24 +35,41 @@ function renderActions(onDiactivate) {
   return (
     <CardActions className={styles.actions}>
       <FlatButton
-        primary
-        label="Diactivate"
+        disabled
+        label="Diactivate (Not Working)"
         onClick={onDiactivate}
       />
     </CardActions>
   );
 }
 
+const normalText = name => name;
+const vehicleNotCorrectText = id => `No such vehicle with id: ${id}`;
+const deviceNotAttached = 'Device not attached to any vehicle';
+
 // show warning if device not attached
-function renderStatus(vehicleId) {
-  if (!!vehicleId) {
+// or no such vehicle
+const Status = ({
+  vehicleId,
+  correctVehicle,
+}) => {
+  // attached and id is correct
+  if (!!vehicleId && correctVehicle) {
     return null;
+  }
+
+  let title = '';
+
+  if (!vehicleId) {
+    title = 'Not Attached to Any Vehicle';
+  } else if (!correctVehicle) {
+    title = 'No such vehicle in fleet';
   }
 
   return (
     <div
       className={styles.warning}
-      title="Not Attached to Any Vehicle"
+      title={title}
     >
       <WarningIcon
         color={theme.palette.accent1Color}
@@ -59,7 +77,40 @@ function renderStatus(vehicleId) {
       />
     </div>
   );
-}
+};
+
+Status.propTypes = {
+  vehicleId: React.PropTypes.string,
+  correctVehicle: React.PropTypes.bool.isRequired,
+};
+
+// show vehicle name if device attached
+const Text = ({
+  vehicleId,
+  vehicleName,
+  correctVehicle,
+}) => {
+  let text = '';
+
+  if (!!vehicleId && correctVehicle) {
+    text = normalText(vehicleName);
+  } else if (!vehicleId) {
+    text = deviceNotAttached;
+  } else if (!correctVehicle) {
+    text = vehicleNotCorrectText(vehicleId);
+  }
+  return (
+    <CardText>
+      { text }
+    </CardText>
+  );
+};
+
+Text.propTypes = {
+  vehicleId: React.PropTypes.string,
+  vehicleName: React.PropTypes.string,
+  correctVehicle: React.PropTypes.bool.isRequired,
+};
 
 class Device extends React.Component {
 
@@ -80,10 +131,11 @@ class Device extends React.Component {
             title={this.props.sn}
             subtitle={this.props.kind}
           />
+          <Text {...this.props} />
           { canDeactivate && renderActions(this.onDiactivate) }
         </Card>
 
-        { renderStatus(this.props.vehicleId) }
+        <Status {...this.props} />
       </div>
     );
   }
@@ -106,6 +158,12 @@ Device.propTypes = {
   // id of vehicle device attached to
   // could be undefined
   vehicleId: React.PropTypes.string,
+
+  // name of vehicle device attached to
+  vehicleName: React.PropTypes.string,
+
+  // true no vehicles with such vehicleId in the fleet
+  correctVehicle: React.PropTypes.bool.isRequired,
 
   // object with available permissions from permitted
   userPermittedTo: React.PropTypes.object.isRequired,

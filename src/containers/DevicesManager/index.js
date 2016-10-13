@@ -5,6 +5,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import { permissions } from 'configs/roles';
 import permitted from 'utils/permissionsRequired';
 import DevicesList from './components/DevicesList';
+import Toolbox from './components/Toolbox';
 
 import styles from './styles.css';
 
@@ -38,6 +39,7 @@ const DevicesManager = ({
 
   return (
     <div className={styles.managerContainer}>
+      <Toolbox />
       <DevicesList />
       { renderAddButton(userPermittedTo) }
     </div>

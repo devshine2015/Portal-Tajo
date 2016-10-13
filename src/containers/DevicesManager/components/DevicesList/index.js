@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Device from '../Device';
 import { fetchDevices } from 'services/Devices/actions';
 import { getDevices } from 'services/Devices/reducer';
+import { getProcessedVehicles } from 'services/FleetModel/reducer';
 
 import styles from './styles.css';
 
@@ -19,14 +20,25 @@ class DevicesList extends React.Component {
       return null;
     }
 
-    const devices = this.props.devices.toList().map(d => (
-      <li
-        key={d.id}
-        className={styles.list__item}
-      >
-        <Device {...d} />
-      </li>
-    ));
+    console.log('list re-rendered');
+
+    const devices = this.props.devices.toList().map(d => {
+      const vehicleName = this.props.vehicles.getIn([d.vehicleId, 'name']);
+      const correctVehicle = !d.vehicleId || !!vehicleName;
+
+      return (
+        <li
+          key={d.id}
+          className={styles.list__item}
+        >
+          <Device
+            {...d}
+            correctVehicle={correctVehicle}
+            vehicleName={vehicleName}
+          />
+        </li>
+      );
+    });
 
     return (
       <ul className={styles.list}>
@@ -42,10 +54,14 @@ DevicesList.propTypes = {
 
   // list of devices
   devices: React.PropTypes.instanceOf(Map).isRequired,
+
+  // list of proccessed vehicles
+  vehicles: React.PropTypes.instanceOf(Map).isRequired,
 };
 
 const mapState = state => ({
   devices: getDevices(state),
+  vehicles: getProcessedVehicles(state),
 });
 const mapDispatch = {
   fetchDevices,
