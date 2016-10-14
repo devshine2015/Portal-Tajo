@@ -11,15 +11,28 @@ import styles from './styles.css';
 
 class DevicesList extends React.Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      setupFinished: false,
+    };
+  }
+
   componentWillReceiveProps(nextProps) {
     // be sure vehicles loaded
     if (!this.props.hasVehicles && nextProps.hasVehicles) {
-      this.props.fetchDevices();
+      this.props.fetchDevices()
+        .then(() => {
+          this.setState({
+            setupFinished: true,
+          });
+        });
     }
   }
 
   render() {
-    if (this.props.devices.size === 0) {
+    if (this.props.devices.size === 0 || !this.state.setupFinished) {
       return null;
     }
 

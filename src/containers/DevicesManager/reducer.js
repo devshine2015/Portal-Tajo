@@ -6,6 +6,7 @@ const initialState = fromJS({
   notAttached: new List([]),
   faultVehicles: new List([]),
   associatedVehicles: new Map({}),
+  currentFilter: 'all',
 });
 
 function reducer(state = initialState, action) {
@@ -51,3 +52,6 @@ export const getAssociatedVehicles = state =>
 
 export const getAssociatedVehicleName = (state, deviceId) =>
   state.getIn(['devicesManager', 'associatedVehicles', deviceId]);
+
+export const getCurrentFilter = state =>
+  state.getIn(['devicesManager', 'currentFilter']);

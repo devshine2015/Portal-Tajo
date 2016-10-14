@@ -1,0 +1,12 @@
+@media screen and (min-width: 100px) {
+  .total {
+    color: rgba(0, 0, 0, 0.541176);
+    font-size: 14px;
+  }
+
+  .total__link {
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: 400;
+  }
+}
