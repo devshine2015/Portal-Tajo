@@ -19,3 +19,6 @@ export default reducer;
 
 export const getDevices = state =>
   state.getIn(['devices', 'list']);
+
+export const getDevicesAmount = state =>
+  state.getIn(['devices', 'list']).size;

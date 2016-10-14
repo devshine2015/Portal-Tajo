@@ -1,5 +1,12 @@
 @media screen and (min-width: 100px) {
   .toolbox {
-    margin-bottom: 16px;
+    margin: 0 10px 16px;
+  }
+
+  .totalContainer {}
+
+  .total {
+    color: rgba(0, 0, 0, 0.541176);
+    font-size: 14px;
   }
 }

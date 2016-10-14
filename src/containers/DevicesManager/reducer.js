@@ -30,12 +30,18 @@ export const getIsEditing = state =>
 export const getFaultVehicles = state =>
   state.getIn(['devicesManager', 'faultVehicles']);
 
+export const getFaultVehiclesAmount = state =>
+  state.getIn(['devicesManager', 'faultVehicles']).size;
+
 export const hasFaultVehicle = (state, deviceId) =>
   state.getIn(['devicesManager', 'faultVehicles'])
        .findIndex(id => id === deviceId) !== -1;
 
-export const getNotAttachedList = state =>
+export const getNotAttached = state =>
   state.getIn(['devicesManager', 'notAttached']);
+
+export const getNotAttachedAmount = state =>
+  state.getIn(['devicesManager', 'notAttached']).size;
 
 export const isNotAttached = (state, deviceId) =>
   state.hasIn(['devicesManager', 'notAttached', deviceId]);
