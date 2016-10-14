@@ -16,6 +16,8 @@ export const fetchDevices = () => dispatch => {
       });
 
       dispatch(_devicesFetchSuccess(devicesMap));
+
+      return devices;
     });
 };
 

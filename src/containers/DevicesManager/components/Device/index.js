@@ -13,6 +13,10 @@ import WarningIcon from 'material-ui/svg-icons/alert/warning';
 import { permissions } from 'configs/roles';
 import permitted from 'utils/permissionsRequired';
 import theme from 'configs/theme';
+import {
+  hasFaultVehicle,
+  getAssociatedVehicleName,
+} from 'containers/DevicesManager/reducer';
 
 import styles from './styles.css';
 
@@ -49,19 +53,19 @@ const deviceNotAttached = 'Device not attached to any vehicle';
 // show warning if device not attached
 // or no such vehicle
 const Status = ({
-  vehicleId,
-  correctVehicle,
+  notAttached,
+  vehicleIdIsFault,
 }) => {
   // attached and id is correct
-  if (!!vehicleId && correctVehicle) {
+  if (!notAttached && !vehicleIdIsFault) {
     return null;
   }
 
   let title = '';
 
-  if (!vehicleId) {
+  if (notAttached) {
     title = 'Not Attached to Any Vehicle';
-  } else if (!correctVehicle) {
+  } else if (vehicleIdIsFault) {
     title = 'No such vehicle in fleet';
   }
 
@@ -79,25 +83,27 @@ const Status = ({
 };
 
 Status.propTypes = {
-  vehicleId: React.PropTypes.string,
-  correctVehicle: React.PropTypes.bool.isRequired,
+  notAttached: React.PropTypes.bool.isRequired,
+  vehicleIdIsFault: React.PropTypes.bool.isRequired,
 };
 
 // show vehicle name if device attached
 const Text = ({
   vehicleId,
   vehicleName,
-  correctVehicle,
+  notAttached,
+  vehicleIdIsFault,
 }) => {
   let text = '';
 
-  if (!!vehicleId && correctVehicle) {
+  if (!notAttached && !vehicleIdIsFault) {
     text = vehicleName;
-  } else if (!vehicleId) {
+  } else if (notAttached) {
     text = deviceNotAttached;
-  } else if (!correctVehicle) {
+  } else if (vehicleIdIsFault) {
     text = vehicleNotCorrectText(vehicleId);
   }
+
   return (
     <CardText>
       { text }
@@ -108,7 +114,8 @@ const Text = ({
 Text.propTypes = {
   vehicleId: React.PropTypes.string,
   vehicleName: React.PropTypes.string,
-  correctVehicle: React.PropTypes.bool.isRequired,
+  notAttached: React.PropTypes.bool.isRequired,
+  vehicleIdIsFault: React.PropTypes.bool.isRequired,
 };
 
 class Device extends React.Component {
@@ -118,10 +125,13 @@ class Device extends React.Component {
   }
 
   render() {
+    const notAttached = !this.props.vehicleId;
     const canDeactivate = userCan(permissions.DEVICES_DEACTIVATE, this.props.userPermittedTo);
     const cardClassName = cs(styles.card, {
       [styles.card_withActions]: canDeactivate,
     });
+
+    console.log(`re-render ${this.props.id}`)
 
     return (
       <div className={styles.deviceContainer}>
@@ -130,11 +140,19 @@ class Device extends React.Component {
             title={this.props.sn}
             subtitle={this.props.kind}
           />
-          <Text {...this.props} />
+          <Text
+            notAttached={notAttached}
+            vehicleId={this.props.vehicleId}
+            vehicleName={this.props.vehicleName}
+            vehicleIdIsFault={this.props.vehicleIdIsFault}
+          />
           { canDeactivate && renderActions(this.onDiactivate) }
         </Card>
 
-        <Status {...this.props} />
+        <Status
+          notAttached={notAttached}
+          vehicleIdIsFault={this.props.vehicleIdIsFault}
+        />
       </div>
     );
   }
@@ -161,14 +179,17 @@ Device.propTypes = {
   // name of vehicle device attached to
   vehicleName: React.PropTypes.string,
 
-  // true no vehicles with such vehicleId in the fleet
-  correctVehicle: React.PropTypes.bool.isRequired,
+  // true if vehicleId presented in faultVehicles list
+  vehicleIdIsFault: React.PropTypes.bool.isRequired,
 
   // object with available permissions from permitted
   userPermittedTo: React.PropTypes.object.isRequired,
 };
 
-const mapState = null;
+const mapState = (state, ownProps) => ({
+  vehicleName: getAssociatedVehicleName(state, ownProps.id),
+  vehicleIdIsFault: hasFaultVehicle(state, ownProps.id),
+});
 const mapDispatch = null;
 
 const PureDevice = pure(permitted(PERMISSIONS)(Device));

@@ -15,13 +15,19 @@ const createRoute = ({
     require.ensure([], require => {
       const importModules = Promise.all([
         require('services/Devices/reducer'),
+        require('containers/DevicesManager/reducer'),
         require('./index'),
       ]);
 
       const renderModule = loadModule(cb);
 
-      importModules.then(([reducer, component]) => {
-        injectReducer(NAME, reducer.default);
+      importModules.then(([
+        devicesServiceReducer,
+        devicesManagerReducer,
+        component,
+      ]) => {
+        injectReducer(NAME, devicesServiceReducer.default);
+        injectReducer('devicesManager', devicesManagerReducer.default);
         renderModule(component);
       });
 

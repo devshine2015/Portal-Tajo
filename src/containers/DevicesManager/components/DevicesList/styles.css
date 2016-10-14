@@ -8,10 +8,7 @@
 
   .list__item {
     width: 100%;
-  }
-
-  .list__item:not(:last-child) {
-    margin-bottom: 15px;
+    margin: 0 10px 15px;
   }
 }
 

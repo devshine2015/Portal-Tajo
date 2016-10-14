@@ -160,3 +160,5 @@ export const getSelectedVehicleId = (state) =>
 export const getVehiclesAmount = state =>
   state.get('processedList').size;
 
+export const hasProcessedVehicles = state =>
+  state.get('processedList').size > 0;
