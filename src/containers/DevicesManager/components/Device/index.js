@@ -131,8 +131,6 @@ class Device extends React.Component {
       [styles.card_withActions]: canDeactivate,
     });
 
-    console.log(`re-render ${this.props.id}`)
-
     return (
       <div className={styles.deviceContainer}>
         <Card className={cardClassName}>

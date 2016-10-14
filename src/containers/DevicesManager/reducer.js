@@ -1,5 +1,5 @@
 import { fromJS, List, Map } from 'immutable';
-import { fetchActions } from './actions';
+import { fetchActions, filterActions } from './actions';
 
 const initialState = fromJS({
   isEditing: false,
@@ -17,6 +17,9 @@ function reducer(state = initialState, action) {
          .set('notAttached', new List(action.notAttached))
          .set('associatedVehicles', new Map(action.associatedVehicles));
       });
+
+    case filterActions.DEVICES_MANAGER_FILTER:
+      return state.set('currentFilter', action.filterType);
 
     default:
       return state;

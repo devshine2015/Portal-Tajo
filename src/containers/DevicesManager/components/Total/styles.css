@@ -4,9 +4,18 @@
     font-size: 14px;
   }
 
+  .total__filter {
+    display: inline-block;
+    margin-right: 7px;
+  }
+
+  .total__filter_current {
+    font-weight: 600;
+    cursor: default;
+  }
+
   .total__link {
     text-decoration: underline;
     cursor: pointer;
-    font-weight: 400;
   }
 }
