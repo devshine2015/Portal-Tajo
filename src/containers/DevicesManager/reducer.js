@@ -1,5 +1,9 @@
 import { fromJS, List, Map } from 'immutable';
-import { fetchActions, filterActions } from './actions';
+import {
+  fetchActions,
+  filterActions,
+  searchActions,
+} from './actions';
 
 const initialState = fromJS({
   isEditing: false,
@@ -7,6 +11,7 @@ const initialState = fromJS({
   faultVehicles: new List([]),
   associatedVehicles: new Map({}),
   currentFilter: 'all',
+  searchString: '',
 });
 
 function reducer(state = initialState, action) {
@@ -20,6 +25,12 @@ function reducer(state = initialState, action) {
 
     case filterActions.DEVICES_MANAGER_FILTER:
       return state.set('currentFilter', action.filterType);
+
+    case searchActions.DEVICES_MANAGER_SEARCH:
+      return state.set('searchString', action.searchString);
+
+    case searchActions.DEVICES_MANAGER_SEARCH_RESET:
+      return state.set('searchString', initialState.searchString);
 
     default:
       return state;
@@ -58,3 +69,6 @@ export const getAssociatedVehicleName = (state, deviceId) =>
 
 export const getCurrentFilter = state =>
   state.getIn(['devicesManager', 'currentFilter']);
+
+export const getSearchString = state =>
+  state.getIn(['devicesManager', 'searchString']);

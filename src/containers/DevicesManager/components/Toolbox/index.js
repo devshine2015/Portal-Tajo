@@ -2,6 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import Total from '../Total';
+import DeviceSearch from '../DeviceSearch';
 
 import styles from './styles.css';
 
@@ -11,6 +12,9 @@ class Toolbox extends React.Component {
       <div className={styles.toolbox}>
         <div className={styles.totalContainer}>
           <Total />
+        </div>
+        <div className={styles.searchContainer}>
+          <DeviceSearch />
         </div>
       </div>
     );

@@ -8,11 +8,16 @@ import {
   getNotAttached,
   getFaultVehicles,
   getCurrentFilter,
+  getSearchString,
 } from '../../reducer';
 import { getDevices } from 'services/Devices/reducer';
 import { hasProcessedVehicles } from 'services/FleetModel/reducer';
 
 import styles from './styles.css';
+
+function searchById(id, searchString) {
+  return id.search(searchString) !== -1;
+}
 
 const ListItem = (props) => (
   <li className={styles.list__item}>
@@ -20,11 +25,13 @@ const ListItem = (props) => (
   </li>
 );
 
-function mapSource(source, devices) {
+function mapSource(source, searchString, devices) {
   return source.map(id => {
     const d = devices.get(id);
 
-    return <ListItem key={id} {...d} />;
+    if (!searchById(id, searchString)) return null;
+
+    return <ListItem key={d.id} {...d} />;
   });
 }
 
@@ -33,17 +40,23 @@ function renderDevices({
   devices,
   faultVehicles,
   notAttached,
+  searchString,
 }) {
   switch (currentFilter) {
     case 'fault-vehicle':
-      return mapSource(faultVehicles, devices);
+      return mapSource(faultVehicles, searchString, devices);
 
     case 'not-attached':
-      return mapSource(notAttached, devices);
+      return mapSource(notAttached, searchString, devices);
 
     case 'all':
-    default:
-      return devices.toList().map(d => <ListItem key={d.id} {...d} />);
+    default: {
+      return devices.toList().map(d => {
+        if (!searchById(d.id, searchString)) return null;
+
+        return <ListItem key={d.id} {...d} />;
+      });
+    }
   }
 }
 
@@ -51,6 +64,7 @@ renderDevices.propTypes = {
   devices: React.PropTypes.instanceOf(Map).isRequired,
   notAttached: React.PropTypes.instanceOf(List).isRequired,
   faultVehicles: React.PropTypes.instanceOf(List).isRequired,
+  searchString: React.PropTypes.string,
   currentFilter: React.PropTypes.oneOf([
     'all', 'not-attached', 'fault-vehicle',
   ]).isRequired,
@@ -103,6 +117,8 @@ DevicesList.propTypes = {
   notAttached: React.PropTypes.instanceOf(List).isRequired,
   faultVehicles: React.PropTypes.instanceOf(List).isRequired,
 
+  searchString: React.PropTypes.string,
+
   // choose source to display by currentFilter
   currentFilter: React.PropTypes.oneOf([
     'all', 'not-attached', 'fault-vehicle',
@@ -115,6 +131,7 @@ const mapState = state => ({
   notAttached: getNotAttached(state),
   faultVehicles: getFaultVehicles(state),
   currentFilter: getCurrentFilter(state),
+  searchString: getSearchString(state),
 });
 const mapDispatch = {
   fetchDevices: fetchActions.fetchDevices,
