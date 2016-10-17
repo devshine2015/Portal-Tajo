@@ -7,7 +7,7 @@ function _getPeriods({
   end = undefined,
   startTime = undefined,
   endTime = undefined,
-}, frequency) {
+}, frequency = undefined) {
   const supportMultiPeriods = frequency !== undefined;
   const periods = [];
   let momentFrom;
@@ -22,14 +22,17 @@ function _getPeriods({
   if (end && endTime) {
     momentTo = _setTime(end, endTime);
   } else if (end) {
-    momentTo = moment(momentFrom);
+    momentTo = moment(end);
   } else if (endTime) {
-    momentTo = _setTime(momentFrom, endTime);
+    momentTo = _setTime(end, endTime);
+  } else {
+    momentTo = moment(start);
   }
 
   periods.push(momentFrom);
 
   if (supportMultiPeriods) {
+    const counter = moment(momentFrom);
     const differ = frequency === 'daily' ? 'days' : 'hours';
     // because 01.00 AM.diff(00.00, 'hours') === 0
     // or 30.06.diff(29.06, 'days') === 0
@@ -37,10 +40,11 @@ function _getPeriods({
 
     if (periodsCount !== 1) {
       for (let i = 0; i < periodsCount; i++) {
-        momentFrom.add(1, differ);
+        const next = moment(counter.add(1, differ));
+        const isBetween = next.isBetween(momentFrom, momentTo, null, '(]');
 
-        if (momentFrom.isBefore(momentTo)) {
-          periods.push(momentFrom);
+        if (isBetween) {
+          periods.push(next);
         }
       }
 

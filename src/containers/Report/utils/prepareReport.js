@@ -19,7 +19,6 @@ export const prepareDataForReport = (
     let rowNumber = 0;
     let totalRowsCount = 0;
     let maxRowsCount = 0;
-    let row = {};
 
     periods.forEach((momentDate, j, a) => {
       const isLastDate = j === a.length - 1;
@@ -125,13 +124,15 @@ function _calculateColumn({
 
 // Just formatting to ISO string. Keep actual date and time values
 function _formateDateForRequest(date, time) {
+  const d = moment.isMoment(date) ? date.toDate() : date;
+
   const result = moment.utc({
-    y: date.getFullYear(),
-    M: date.getMonth(),
-    d: date.getDate(),
-    h: time.getHours(),
-    m: time.getMinutes(),
-    s: time.getSeconds(),
+    y: d.getFullYear(),
+    M: d.getMonth(),
+    d: d.getDate(),
+    h: time ? time.getHours() : '00',
+    m: time ? time.getMinutes() : '00',
+    s: time ? time.getSeconds() : '00',
   }).toISOString();
   return `${result.slice(0, -1)}+0000`;
 }

@@ -37,11 +37,15 @@ function _requestHistory(vehicleId, dateFrom, dateTo, dispatch) {
   let toString = dateTo.toISOString();
   toString = toString.slice(0,-1) + '+0000';
 
+  const tzOffsetDate = new Date();
+  const tzOffset = tzOffsetDate.getTimezoneOffset();
+
   const { url, method } = endpoints.getEventsInTimeRange(vehicleId, {
     from: fromString,
     to: toString,
     max: 20000,
     filter: 'PG',
+    tzoffset: tzOffset,
   });
   // setting loading state for local frame
   dispatch(_newVehicleChronicleFrame(vehicleId,
