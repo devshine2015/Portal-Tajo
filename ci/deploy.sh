@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 TAJO=$2
 PORTAL=$3
-TARGET_FOLDER="$4/static-root/public"
+TARGET_FOLDER=$4
 TAJO_FOLDER="builds/prod/$TAJO"
 PORTAL_FOLDER="builds/prod/$PORTAL"
 
