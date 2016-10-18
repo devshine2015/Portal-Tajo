@@ -1,0 +1,21 @@
+@media screen and (min-width: 100px) {
+  .total {
+    color: rgba(0, 0, 0, 0.541176);
+    font-size: 14px;
+  }
+
+  .total__filter {
+    display: inline-block;
+    margin-right: 7px;
+  }
+
+  .total__filter_current {
+    font-weight: 600;
+    cursor: default;
+  }
+
+  .total__link {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}

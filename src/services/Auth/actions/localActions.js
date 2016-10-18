@@ -28,7 +28,7 @@ function _checkUserAuthentication(params, dispatch, getState) {
     } else if (sessions) {
       if (sessions.length !== 0) {
         // assuming first value is correct
-        // @deprecated multi-login functionality
+        // TODO -- deprecate multi-login functionality
         const session = sessions[0];
         isAuthenticated = true;
         dispatch(loginActions.loginSuccess(session));

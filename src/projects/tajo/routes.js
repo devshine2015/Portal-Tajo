@@ -2,7 +2,7 @@ import React from 'react';
 import { getHooks } from 'utils/hooks';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
-import { ROOT_ROUTE, onDev } from 'configs';
+import { REACT_ROUTER_ROOT } from 'configs';
 import {
   errorHandler,
   loadModule,
@@ -33,6 +33,10 @@ const MAIN_MENU = [{
   niceName: 'Users Manager',
   path: 'users',
   order: 5,
+}, {
+  niceName: 'Devices Manager',
+  path: 'devices',
+  order: 6,
 }];
 
 export default function createRoutes(store) {
@@ -77,6 +81,13 @@ export default function createRoutes(store) {
     loadModule,
   });
 
+  const devicesManagerRoute = require('screens/DevicesManager/route')({
+    path: 'devices',
+    injectReducer,
+    errorHandler,
+    loadModule,
+  });
+
   const loginRoute = require('screens/LoginScreen/route')({
     path: 'login',
   });
@@ -86,7 +97,7 @@ export default function createRoutes(store) {
   });
 
   const rootRoute = require('screens/Root/route')({
-    path: onDev ? `${ROOT_ROUTE}tajo` : ROOT_ROUTE,
+    path: REACT_ROUTER_ROOT,
     dispatch: store.dispatch,
     mainMenu: MAIN_MENU,
   });
@@ -105,6 +116,7 @@ export default function createRoutes(store) {
     reportsRoute,
     vehiclesEditorRoute,
     usersManagerRoute,
+    devicesManagerRoute,
   );
 
   return (

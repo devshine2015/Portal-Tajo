@@ -1,4 +1,5 @@
-// import { fleetNameActions } from 'services/Global/actions';
+import { useLegacy, initRootRoute } from 'configs';
+import { setFleetName } from 'services/UserModel/actions';
 import { setInnerPortalPages } from 'containers/InnerPortal/actions';
 import createBaseUrl from 'utils/createBaseUrl';
 
@@ -30,12 +31,15 @@ const createRoute = ({
   indexRoute: {},
   childRoutes: [],
   onEnter: (location) => {
-    const { routes } = location;
-    // dispatch(fleetNameActions.setFleet(params.fleet));
+    initRootRoute(location.params.fleet);
+
+    if (useLegacy('url-with-fleet')) {
+      dispatch(setFleetName(location.params.fleet));
+    }
 
     if (mainMenu.length === 0) return;
 
-    const patchedMenu = patchMenuPaths(mainMenu, routes[0]);
+    const patchedMenu = patchMenuPaths(mainMenu, location.routes[0]);
 
     dispatch(setInnerPortalPages(patchedMenu));
   },

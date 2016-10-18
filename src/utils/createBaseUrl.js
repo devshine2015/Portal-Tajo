@@ -1,8 +1,6 @@
-import { portal, onDev } from 'configs';
+import { ROOT_ROUTE } from 'configs';
 
-export default function createBaseUrl(fleet = undefined) {
+export default function createBaseUrl() {
   // on dev environments we don't have fleet in url
-  if (onDev && portal === 'tajo') return '/tajo';
-
-  return !fleet ? '' : `/portal/${fleet}/${portal}`;
+  return ROOT_ROUTE;
 }

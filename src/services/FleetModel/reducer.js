@@ -45,6 +45,8 @@ export const getVehicleByIdFunc = state =>
   getByIdFunc(vehicles(state));
 export const getProcessedVehicles = state =>
   fromVehiclesReducer.getProcessedVehicles(vehicles(state));
+export const hasProcessedVehicles = state =>
+  fromVehiclesReducer.hasProcessedVehicles(vehicles(state));
 export const getSelectedVehicleId = state =>
   fromVehiclesReducer.getSelectedVehicleId(vehicles(state));
 

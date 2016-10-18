@@ -4,6 +4,7 @@ import {
   USER_SET,
   USER_RESET,
   USER_SETTINGS_UPDATE,
+  USER_FLEET_SET,
 } from './actions';
 
 const initialState = fromJS({
@@ -20,11 +21,17 @@ function userReducer(state = initialState, action) {
     case USER_SET:
     case loginActions.LOGIN_SUCCESS:
       return state.merge({ ...action.userData });
+
     case USER_RESET:
     case commonActions.LOGOUT_SUCCESS:
       return initialState;
+
     case USER_SETTINGS_UPDATE:
       return state.mergeIn(['settings'], action.settings);
+
+    case USER_FLEET_SET:
+      return state.set('fleet', action.fleetName);
+
     default:
       return state;
   }
