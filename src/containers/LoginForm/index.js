@@ -9,6 +9,7 @@ import {
   Divider,
 } from 'material-ui';
 import { push } from 'react-router-redux';
+import { ROOT_ROUTE } from 'configs';
 import SimpleError from 'components/Error';
 import { loginActions } from 'services/Auth/actions';
 import { errorsActions } from 'services/Global/actions';
@@ -106,8 +107,8 @@ const mapState = (state) => ({
 });
 const mapDispatch = dispatch => ({
   login: data => dispatch(loginActions.login(data)),
-  resetError: errorsActions.resetError,
-  goToRoot: () => dispatch(push('/')),
+  resetError: () => dispatch(errorsActions.resetError()),
+  goToRoot: () => dispatch(push(ROOT_ROUTE)),
 });
 
 export default connect(mapState, mapDispatch)(PureLoginForm);
