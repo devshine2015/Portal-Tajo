@@ -14,10 +14,10 @@ const chooseServerEnv = () => {
 const chooseRootRoute = () => {
   if (onDev) {
     if (portal === 'tajo') return '/tajo';
-    if (portal === 'portal') return '/';
+    if (portal === 'portal') return '';
   }
 
-  return `/portal/:fleet/${portal}/`;
+  return `/portal/:fleet/${portal}`;
 };
 
 export const portal = process.env.DRVR_PROJECT;
@@ -27,7 +27,7 @@ export const socketProtocol = isSecure ? 'wss' : 'ws';
 export const serverEnv = chooseServerEnv();
 export const onProduction = serverEnv === 'production';
 export const onStage = serverEnv === 'stage';
-export const onDev = serverEnv === 'dev';
+export const onDev = false; //serverEnv === 'dev';
 // use old local storage key notation for ssreports
 export const LOCAL_STORAGE_SESSION_KEY = portal !== 'ssreports' ?
   'drvr_tajo-sessionId' : 'ngStorage-sessionId';

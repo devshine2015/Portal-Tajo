@@ -1,5 +1,5 @@
 import { useLegacy } from 'configs';
-import { fleetNameActions } from 'services/Global/actions';
+import { setFleetName } from 'services/UserModel/actions';
 import { setInnerPortalPages } from 'containers/InnerPortal/actions';
 import createBaseUrl from 'utils/createBaseUrl';
 
@@ -32,7 +32,7 @@ const createRoute = ({
   childRoutes: [],
   onEnter: (location) => {
     if (useLegacy('url-with-fleet')) {
-      dispatch(fleetNameActions.setFleet(location.params.fleet));
+      dispatch(setFleetName(location.params.fleet));
     }
 
     if (mainMenu.length === 0) return;
