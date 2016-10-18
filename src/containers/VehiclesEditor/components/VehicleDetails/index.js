@@ -162,7 +162,7 @@ class VehicleDetails extends React.Component {
             name="deviceId"
             floatingLabelText="Device IMEI"
             inputStyle={STYLES.disabledField}
-            value={this.props.details.deviceId}
+            value={this.props.details.deviceId || ''}
           />
           <TextField
             fullWidth
