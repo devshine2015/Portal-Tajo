@@ -108,7 +108,7 @@ const mapState = (state) => ({
 const mapDispatch = dispatch => ({
   login: data => dispatch(loginActions.login(data)),
   resetError: () => dispatch(errorsActions.resetError()),
-  goToRoot: () => dispatch(push(ROOT_ROUTE)),
+  goToRoot: () => dispatch(push(`${ROOT_ROUTE}/`)),
 });
 
 export default connect(mapState, mapDispatch)(PureLoginForm);

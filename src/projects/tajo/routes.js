@@ -2,7 +2,7 @@ import React from 'react';
 import { getHooks } from 'utils/hooks';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
-import { ROOT_ROUTE } from 'configs';
+import { REACT_ROUTER_ROOT } from 'configs';
 import {
   errorHandler,
   loadModule,
@@ -97,7 +97,7 @@ export default function createRoutes(store) {
   });
 
   const rootRoute = require('screens/Root/route')({
-    path: ROOT_ROUTE,
+    path: REACT_ROUTER_ROOT,
     dispatch: store.dispatch,
     mainMenu: MAIN_MENU,
   });

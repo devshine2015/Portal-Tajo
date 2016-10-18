@@ -11,13 +11,29 @@ const chooseServerEnv = () => {
   return 'dev';
 };
 
-const chooseRootRoute = () => {
-  if (onDev) {
-    if (portal === 'tajo') return '/tajo';
-    if (portal === 'portal') return '';
+const chooseRoot = () => {
+  if (portal === 'tajo') {
+    return '/tajo';
   }
 
-  return `/portal/:fleet/${portal}`;
+  return '';
+};
+
+export const initRootRoute = (fleet = undefined) => {
+  if (onDev) {
+    ROOT_ROUTE = chooseRoot();
+    return;
+  }
+
+  ROOT_ROUTE = `/portal/${fleet}/${portal}`;
+};
+
+const initRouterRoot = () => {
+  if (onDev) {
+    return `${chooseRoot()}/`;
+  }
+
+  return `/portal/:fleet/${portal}/`;
 };
 
 export const portal = process.env.DRVR_PROJECT;
@@ -27,11 +43,12 @@ export const socketProtocol = isSecure ? 'wss' : 'ws';
 export const serverEnv = chooseServerEnv();
 export const onProduction = serverEnv === 'production';
 export const onStage = serverEnv === 'stage';
-export const onDev = false; //serverEnv === 'dev';
+export const onDev = serverEnv === 'dev';
 // use old local storage key notation for ssreports
 export const LOCAL_STORAGE_SESSION_KEY = portal !== 'ssreports' ?
   'drvr_tajo-sessionId' : 'ngStorage-sessionId';
-export const ROOT_ROUTE = chooseRootRoute();
+export let ROOT_ROUTE = '';
+export const REACT_ROUTER_ROOT = initRouterRoot();
 
 // support or not some old API depends on environment
 // for example:

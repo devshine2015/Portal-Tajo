@@ -1,4 +1,4 @@
-import { useLegacy } from 'configs';
+import { useLegacy, initRootRoute } from 'configs';
 import { setFleetName } from 'services/UserModel/actions';
 import { setInnerPortalPages } from 'containers/InnerPortal/actions';
 import createBaseUrl from 'utils/createBaseUrl';
@@ -31,6 +31,8 @@ const createRoute = ({
   indexRoute: {},
   childRoutes: [],
   onEnter: (location) => {
+    initRootRoute(location.params.fleet);
+
     if (useLegacy('url-with-fleet')) {
       dispatch(setFleetName(location.params.fleet));
     }
