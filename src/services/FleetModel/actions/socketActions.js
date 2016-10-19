@@ -35,7 +35,8 @@ function _openFleetSocket(dispatch) {
   batchLastTime = Date.now();
 
   // fleetSocket.onmessage = inEvent => onMessage(inEvent, dispatch);
-  fleetSocket.onmessage = inEvent => onMessageBatching(inEvent, dispatch);
+  // fleetSocket.onmessage = inEvent => onMessageBatching(inEvent, dispatch);
+  fleetSocket.onmessage = inEvent => onMessageBatchingWithTimer(inEvent, dispatch);
 }
 
 function onMessage(inEvent, dispatch) {
@@ -63,6 +64,17 @@ function onMessageBatching(inEvent, dispatch) {
   }
 }
 
+function onMessageBatchingWithTimer(inEvent, dispatch) {
+  const data = JSON.parse(inEvent.data);
+  if (batchQueue.length === 0) {
+    window.setTimeout(() => {
+      console.log("dispatching BATCH "+batchQueue.length);
+      dispatch(_updateStatusBatch(batchQueue));
+      batchQueue.length = 0;
+    }, BATCHING_TIME_MS);
+  }
+  batchQueue = batchQueue.concat(data.status);
+}
 
 function _closeSocket() {
   if (socketIsOpened) {
