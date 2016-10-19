@@ -14,8 +14,10 @@ function authReducer(state = initialState, action) {
         s.set('isAuthenticated', true)
          .set('sessionId', action.sessionId);
       });
+
     case commonActions.AUTH_RESET:
       return initialState;
+
     default:
       return state;
   }
@@ -23,9 +25,9 @@ function authReducer(state = initialState, action) {
 
 export default authReducer;
 
-export const getIsUserAuthenticated = (state) =>
+export const getIsUserAuthenticated = state =>
   state.getIn(['auth', 'isAuthenticated']);
-export const getAuthenticationData = (state) =>
+export const getAuthenticationData = state =>
   state.get('auth');
-export const getAuthenticationSession = (state) =>
+export const getAuthenticationSession = state =>
   state.getIn(['auth', 'sessionId']);
