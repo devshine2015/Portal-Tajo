@@ -6,7 +6,7 @@ import {
 } from './actions';
 
 const initialState = fromJS({
-  isEditing: true,
+  isEditing: false,
   currentFilter: 'all',
   searchString: '',
 });

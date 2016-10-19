@@ -57,7 +57,7 @@ class DevicesList extends React.Component {
     super(props);
 
     this.state = {
-      setupFinished: false,
+      setupFinished: props.hasVehicles && props.devices.size > 0,
     };
   }
 
