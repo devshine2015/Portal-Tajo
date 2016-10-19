@@ -2,18 +2,25 @@
   .list {
     list-style: none;
     display: flex;
-    justify-content: space-around;
     flex-wrap: wrap;
   }
 
   .list__item {
     width: 100%;
-    margin: 0 10px 15px;
+    margin: 0 0 15px;
   }
 }
 
-@media screen and (min-width: 530px) {
+@media screen and (min-width: 540px) {
   .list__item {
-    width: 250px;
+    width: 48%;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .list__item {
+    width: 32%;
   }
 }
