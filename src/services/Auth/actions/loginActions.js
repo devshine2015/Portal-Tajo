@@ -1,4 +1,4 @@
-import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
+import { LOCAL_STORAGE_SESSION_KEY, useLegacy } from 'configs';
 import endpoints from 'configs/endpoints';
 import VERSIONS from 'configs/versions';
 import storage from 'utils/localStorage';
@@ -9,8 +9,8 @@ import { getFleetName } from 'services/UserModel/reducer';
 
 export const LOGIN_SUCCESS = 'portal/Auth/LOGIN_SUCCESS';
 
-export const login = data => dispatch =>
-  _login(data, dispatch);
+export const login = data => (dispatch, getState) =>
+  _login(data, dispatch, getState);
 export const logout = (redirectUrl = '') => (dispatch, getState) =>
   _logout({ redirectUrl }, dispatch, getState);
 
@@ -30,7 +30,7 @@ export const loginSuccess = ({
 });
 
 
-function _login(data, dispatch) {
+function _login(data, dispatch, getState) {
   const { url, method, apiVersion } = endpoints.login;
   const options = {
     apiVersion,
@@ -40,7 +40,11 @@ function _login(data, dispatch) {
   return api[method](url, options)
     .then(_extractResponse(apiVersion))
     .then(res => {
-      const sessionData = collectData(res);
+      const sessionData = collectData(res, apiVersion);
+
+      if (useLegacy('login')) {
+        sessionData.fleet = getFleetName(getState());
+      }
 
       storage.save(LOCAL_STORAGE_SESSION_KEY, sessionData, VERSIONS.authentication.currentVersion);
       dispatch(loginSuccess(sessionData));
@@ -80,6 +84,7 @@ function collectData(res, apiVersion) {
     return {
       sessionId: res,
       role: 'installer',
+      fleet:
       settings,
     };
   }
