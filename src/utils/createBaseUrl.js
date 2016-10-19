@@ -1,5 +1,6 @@
-import { portal } from 'configs';
+import { ROOT_ROUTE } from 'configs';
 
-export default function createBaseUrl(fleet = 'test') {
-  return `/portal/${fleet}/${portal}`;
+export default function createBaseUrl() {
+  // on dev environments we don't have fleet in url
+  return ROOT_ROUTE;
 }

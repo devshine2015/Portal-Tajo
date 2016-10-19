@@ -71,6 +71,16 @@ const endpoints = {
     method: 'post',
     apiVersion: 1,
   },
+  getDevices: {
+    url: 'devices',
+    method: 'get',
+    apiVersion: 1,
+  },
+  deactivate: id => ({
+    url: `devices/${id}`,
+    method: 'delete',
+    apiVersion: 1,
+  }),
 
   // reports
   idlingReport: {

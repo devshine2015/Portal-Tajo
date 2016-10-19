@@ -123,6 +123,7 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
       });
       return newState;
     }
+
     default:
       return state;
   }
@@ -157,3 +158,8 @@ export const getProcessedVehicles = (state) =>
   state.get('processedList');
 export const getSelectedVehicleId = (state) =>
   state.get('slectedVehicleId');
+export const getVehiclesAmount = state =>
+  state.get('processedList').size;
+
+export const hasProcessedVehicles = state =>
+  state.get('processedList').size > 0;

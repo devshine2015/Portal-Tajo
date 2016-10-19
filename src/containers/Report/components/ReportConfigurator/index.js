@@ -1,34 +1,36 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
+import cs from 'classnames';
 import {
   RaisedButton,
-  SelectField,
-  MenuItem,
   Divider,
 } from 'material-ui';
 import moment from 'moment';
 import dateFormats from 'configs/dateFormats';
 import Form from 'components/Form';
-import InputFieldWrapper from 'components/InputFieldWrapper';
 import { getUserSettings } from 'services/UserModel/reducer';
 import DateFormatSelectorWithMemory from '../DateFormatSelectorWithMemory';
 import Period from '../Period';
-import AvailableFields from '../AvailableFields';
+import AvailableTypes from '../AvailableTypes';
 import ProgressBar from '../ProgressBar';
+import RawDataButtons from '../RawDataButtons';
 import {
-  dataActions,
+  reportActions,
   configuratorActions,
-  rawActions,
+  eventActions,
 } from 'containers/Report/actions';
 import {
   getLoadingState,
-  getAvailableFields,
-  getReportFrequency,
+  getAvailableReports,
+  getAvailableEvents,
   getErrorMessage,
 } from 'containers/Report/reducer';
 
 import styles from './styles.css';
+
+const TOP_ROW_CLASS = cs(styles.row, styles.top);
+const FIELDS_ROW_CLASS = cs(styles.row, styles.form);
 
 function calcStartTime() {
   const t = moment().set({
@@ -51,13 +53,13 @@ function calcEndTime() {
   return t.toDate();
 }
 
-function getDefaultCheckedFields(fields) {
+function getDefaultCheckedReportTypes(fields) {
   const result = {};
 
   fields.forEach(f => {
     if (!f.checkedByDefault) return;
 
-    result[f.name] = f.checkedByDefault;
+    result[f.name] = true;
   });
 
   return result;
@@ -92,7 +94,7 @@ class Report extends React.Component {
     };
 
     this.state = {
-      ...getDefaultCheckedFields(props.availableFields),
+      ...getDefaultCheckedReportTypes(props.availableReports),
       [this.periodFields.start.name]: this.periodFields.start.default,
       [this.periodFields.end.name]: this.periodFields.end.default,
       [this.periodFields.startTime.name]: this.periodFields.startTime.default,
@@ -102,7 +104,6 @@ class Report extends React.Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    // this.onSaveRawData = this.onSaveRawData.bind(this);
   }
 
   onDateFormatChange = newFormat => {
@@ -111,10 +112,11 @@ class Report extends React.Component {
     });
   }
 
-  onSelectedFieldsChange = (event, value, index) => {
+  // source - 'report' or 'event'
+  onSelectedFieldsChange = ({ event, value, index, source }) => {
     const field = event.target.name;
 
-    this.props.updateSelectedFields({ field, value, index })
+    this.props.updateSelectedTypesFields({ field, value, index, source })
     .then(() => {
       if (this.props.hasReport) {
         this.props.swipeGeneratedData();
@@ -136,10 +138,6 @@ class Report extends React.Component {
     this.setState({
       [field]: value,
     });
-  }
-
-  onFrequencyChange = (event, key, value) => {
-    this.props.changeFrequency(value);
   }
 
   onSaveRawData = () => {
@@ -166,98 +164,93 @@ class Report extends React.Component {
 
     return {
       timePeriod: data,
-      frequency: this.props.frequency,
       dateFormat: this.state.tempDateFormat.toUpperCase(),
     };
   }
 
-  renderSplitter() {
-    return (
-      <SelectField
-        value={this.props.frequency}
-        onChange={this.onFrequencyChange}
-        floatingLabelText="Split report"
-      >
-        <MenuItem
-          value="daily"
-          primaryText="Daily"
-        />
-        <MenuItem
-          value="hourly"
-          primaryText="Hourly"
-        />
-      </SelectField>
-    );
-  }
-
   render() {
-    const buttonsStyle = {
-      display: this.props.isLoading ? 'none' : 'block',
-    };
-    const progressStyle = {
-      display: this.props.isLoading ? 'block' : 'none',
-    };
-
     return (
       <div className={styles.configurator}>
-        <DateFormatSelectorWithMemory
-          userDateFormat={this.props.userDateFormat}
-          tempDateFormat={this.state.tempDateFormat}
-          onFormatChange={this.onDateFormatChange}
-        />
+        <div className={TOP_ROW_CLASS}>
+          <div className={styles.column}>
+            <DateFormatSelectorWithMemory
+              userDateFormat={this.props.userDateFormat}
+              tempDateFormat={this.state.tempDateFormat}
+              onFormatChange={this.onDateFormatChange}
+            />
+          </div>
+
+          <div className={styles.column}>
+            <Period
+              handlePeriodChange={this.onPeriodChange}
+              fields={this.periodFields}
+              dateFormat={this.state.tempDateFormat}
+              withTime
+            />
+          </div>
+        </div>
 
         <Divider />
 
         <Form
           name={this.FORM_NAME}
           onSubmit={this.onSubmit}
-          className={styles.form}
+          className={FIELDS_ROW_CLASS}
         >
-          <AvailableFields
-            checkedFields={this.state}
-            onChange={this.onSelectedFieldsChange}
-            fields={this.props.availableFields}
-          />
+          <div className={styles.column}>
+            <AvailableTypes
+              checkedFields={this.state}
+              onChange={this.onSelectedFieldsChange}
+              fields={this.props.availableReports}
+              source="reports"
+              title="Customise Report"
+            />
 
-          <Period
-            handlePeriodChange={this.onPeriodChange}
-            fields={this.periodFields}
-            dateFormat={this.state.tempDateFormat}
-            withTime
-          />
-
-          { !this.props.hideSplitter && this.renderSplitter() }
-
-          { !this.props.isLoading && (
-            <InputFieldWrapper>
-              <RaisedButton
-                className={styles.button}
-                label="Generate report"
-                onClick={this.onSubmit}
-                disabled={this.props.isLoading}
-                primary
-              />
-              <RaisedButton
-                className={styles.button}
-                label="Save raw data"
-                onClick={this.onSaveRawData}
-                disabled={this.props.isLoading}
-                primary
-              />
-              { this.props.hasReport && (
+            { !this.props.isLoading && (
+              <div className={styles.buttons}>
                 <RaisedButton
                   className={styles.button}
-                  label="Save Generated"
-                  onClick={this.props.saveReport}
-                  secondary
+                  label="Generate report"
+                  onClick={this.onSubmit}
+                  disabled={this.props.isLoading}
+                  primary
                 />
-              )}
-            </InputFieldWrapper>
-          )}
+                { this.props.hasReport && (
+                  <RaisedButton
+                    className={styles.button}
+                    label="Save Generated"
+                    onClick={this.props.saveReport}
+                    secondary
+                  />
+                )}
+              </div>
+            )}
+          </div>
 
-          { this.props.isLoading && <ProgressBar /> }
+          <div className={styles.separator}></div>
 
+          <div className={styles.column}>
+            <AvailableTypes
+              checkedFields={this.state}
+              onChange={this.onSelectedFieldsChange}
+              fields={this.props.availableEvents}
+              source="events"
+              title="Customise Raw Events"
+            />
+
+            { !this.props.isLoading && (
+              <RawDataButtons
+                containerClassName={styles.buttons}
+                buttonClassName={styles.button}
+                generateEvents={this.onSaveRawData}
+                isLoading={this.props.isLoading}
+              />
+            )}
+
+          </div>
         </Form>
+
+        { this.props.isLoading && <ProgressBar /> }
 
         { this.props.error && (
           <div className={styles.error}>
@@ -270,15 +263,13 @@ class Report extends React.Component {
 }
 
 Report.propTypes = {
-  availableFields: React.PropTypes.object.isRequired,
-  changeFrequency: React.PropTypes.func.isRequired,
-  frequency: React.PropTypes.string,
+  availableReports: React.PropTypes.object.isRequired,
+  availableEvents: React.PropTypes.object.isRequired,
   generateReport: React.PropTypes.func.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
   hasReport: React.PropTypes.bool.isRequired,
-  hideSplitter: React.PropTypes.bool.isRequired,
   saveReport: React.PropTypes.func.isRequired,
-  updateSelectedFields: React.PropTypes.func.isRequired,
+  updateSelectedTypesFields: React.PropTypes.func.isRequired,
   swipeGeneratedData: React.PropTypes.func.isRequired,
   saveRawData: React.PropTypes.func.isRequired,
   error: React.PropTypes.string,
@@ -288,18 +279,17 @@ Report.propTypes = {
 };
 
 const mapState = (state) => ({
-  availableFields: getAvailableFields(state),
+  availableReports: getAvailableReports(state),
+  availableEvents: getAvailableEvents(state),
   isLoading: getLoadingState(state),
-  frequency: getReportFrequency(state),
   error: getErrorMessage(state),
   userDateFormat: getUserSettings(state).get('dateFormat'),
 });
 const mapDispatch = {
-  generateReport: dataActions.generateReport,
-  updateSelectedFields: configuratorActions.updateSelected,
-  changeFrequency: configuratorActions.changeFrequency,
-  swipeGeneratedData: dataActions.removeReportData,
-  saveRawData: rawActions.getRawEvents,
+  generateReport: reportActions.generateReport,
+  updateSelectedTypesFields: configuratorActions.updateSelectedTypes,
+  swipeGeneratedData: reportActions.removeReportData,
+  saveRawData: eventActions.getRawEvents,
 };
 
 const PureReport = pure(Report);

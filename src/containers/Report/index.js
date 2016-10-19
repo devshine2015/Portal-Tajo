@@ -6,15 +6,16 @@ import ReportConfigurator from './components/ReportConfigurator';
 import PreviewTable from './components/PreviewTable';
 import VehiclesList from './components/VehiclesList';
 import FixedContent from 'components/FixedContent';
-import * as fromConfigReducer from './reducers/configuratorReducer';
 import {
+  getAvailableReports,
+  getSelectedReports,
   getSavedReportData,
   appHasStoredReport,
 } from './reducer';
-import { dataActions } from './actions';
+import { reportActions } from './actions';
 
 const ReportsScreen = ({
-  availableFields,
+  availableReports,
   data,
   hasReport,
   saveGenerated,
@@ -23,7 +24,7 @@ const ReportsScreen = ({
   contentClassName,
 }) => {
   const headers = selectedFields.map(index => (
-    availableFields[index].label
+    availableReports[index].label
   ));
 
   const className = cs('configurator', contentClassName);
@@ -36,7 +37,6 @@ const ReportsScreen = ({
       />
       <FixedContent>
         <ReportConfigurator
-          hideSplitter
           hasReport={hasReport}
           saveReport={saveGenerated}
         />
@@ -51,7 +51,7 @@ const ReportsScreen = ({
 };
 
 ReportsScreen.propTypes = {
-  availableFields: React.PropTypes.array.isRequired,
+  availableReports: React.PropTypes.array.isRequired,
   vehiclesClassName: React.PropTypes.string,
   contentClassName: React.PropTypes.string,
   data: React.PropTypes.object.isRequired,
@@ -63,11 +63,13 @@ ReportsScreen.propTypes = {
 const PureReportsScreen = pure(ReportsScreen);
 
 const mapState = (state) => ({
-  availableFields: fromConfigReducer.getAvailableFields(state).toArray(),
+  availableReports: getAvailableReports(state).toArray(),
   data: getSavedReportData(state),
   hasReport: appHasStoredReport(state),
-  selectedFields: fromConfigReducer.getSelectedFields(state),
+  selectedFields: getSelectedReports(state),
 });
-const mapDispatch = { saveGenerated: dataActions.saveGenerated };
+const mapDispatch = {
+  saveGenerated: reportActions.saveGenerated,
+};
 
 export default connect(mapState, mapDispatch)(PureReportsScreen);

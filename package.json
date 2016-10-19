@@ -8,18 +8,13 @@
     "clean:tajo": "rimraf ./builds/dev/tajo ./builds/prod/tajo",
     "clean:portal": "rimraf ./builds/dev/portal ./builds/prod/portal",
     "clean:ssreports": "rimraf ./builds/dev/ssreports ./builds/prod/ssreports",
-    
-    "//": "build production-ready scripts",
+    "//": "tasks for local development",
     "build:tajo": "cross-env NODE_ENV=production DRVR_PROJECT=tajo webpack --config webpack/webpack.prod.js --color -p",
     "build:portal": "cross-env NODE_ENV=production DRVR_PROJECT=portal webpack --config webpack/webpack.prod.js --color -p",
     "build:ssreports": "cross-env NODE_ENV=production DRVR_PROJECT=ssreports webpack --config webpack/webpack.prod.js --color -p",
-
-    "//": "build unminified scripts for ddsdev",
     "build:tajo-dev": "cross-env DRVR_PROJECT=tajo webpack --config webpack/webpack.dev.js --color -d",
     "build:portal-dev": "cross-env DRVR_PROJECT=portal webpack --config webpack/webpack.dev.js --color -d",
     "build:devssreports": "cross-env DRVR_PROJECT=ssreports webpack --config webpack/webpack.dev.js --color -d",
-
-    "//": "tasks for local development",
     "tajo": "npm run start:tunnel:tajo",
     "portal": "npm run start:tunnel:portal",
     "ssreports": "npm run start:tunnel:ssreports",
@@ -117,7 +112,6 @@
     "imports-loader": "^0.6.5",
     "json-loader": "^0.5.4",
     "material-ui": "^0.15.4",
-    "ngrok": "^2.1.8",
     "offline-plugin": "^3.2.1",
     "postcss-cssnext": "^2.5.2",
     "postcss-focus": "^1.0.0",

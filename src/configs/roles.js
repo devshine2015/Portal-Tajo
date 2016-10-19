@@ -19,6 +19,12 @@ export const permissions = {
   USERS_DELETE_MANAGER: 'able delete manager users',
   USERS_DELETE_INSTALLER: 'able delete installer users',
   /* end of user management */
+
+  /* devices management abilities */
+  DEVICES_SEE: 'able see devices list',
+  DEVICES_CREATE: 'able create new device',
+  DEVICES_DEACTIVATE: 'able deactivate device',
+  /* end of devices management */
 };
 
 const rolesAbilities = {
@@ -28,6 +34,9 @@ const rolesAbilities = {
       [permissions.USERS_ADD_ANY]: true,
       [permissions.USERS_EDIT_ANY]: true,
       [permissions.USERS_DELETE_ANY]: true,
+      [permissions.DEVICES_SEE]: true,
+      [permissions.DEVICES_CREATE]: true,
+      [permissions.DEVICES_DEACTIVATE]: true,
     },
     admin: {
       [permissions.USERS_SEE]: true,
@@ -37,14 +46,21 @@ const rolesAbilities = {
       [permissions.USERS_EDIT_INSTALLER]: true,
       [permissions.USERS_DELETE_MANAGER]: true,
       [permissions.USERS_DELETE_INSTALLER]: true,
+      [permissions.DEVICES_SEE]: true,
+      [permissions.DEVICES_CREATE]: true,
+      [permissions.DEVICES_DEACTIVATE]: true,
     },
     manager: {
       [permissions.USERS_SEE]: true,
       [permissions.USERS_ADD_INSTALLER]: true,
       [permissions.USERS_EDIT_INSTALLER]: true,
       [permissions.USERS_DELETE_INSTALLER]: true,
+      [permissions.DEVICES_SEE]: true,
+      [permissions.DEVICES_CREATE]: true,
     },
-    installer: {},
+    installer: {
+      [permissions.DEVICES_SEE]: true,
+    },
   },
 
   portal: {

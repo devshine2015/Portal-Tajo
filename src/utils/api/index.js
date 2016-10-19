@@ -1,8 +1,9 @@
 import qs from 'query-string';
 import { protocol, socketProtocol, ENGINE_BASE } from 'configs';
 import { getAuthenticationSession } from 'services/Auth/reducer';
-import { getFleetName, getErrorMessage } from 'services/Global/reducer';
+import { getErrorMessage } from 'services/Global/reducer';
 import { errorsActions } from 'services/Global/actions';
+import { getFleetName } from 'services/UserModel/reducer';
 import prepareRequest from './makeRequest';
 import errorsHandler from './errorsHandler';
 
@@ -16,10 +17,10 @@ const BASE_URL = `${protocol}//${ENGINE_BASE}`;
 const SOCKET_URL = `${socketProtocol}://${ENGINE_BASE}/engine`;
 
 // construct URL depends on API version
-function makeUrl(apiVersion, url, fleet, host) {
+function makeUrl(apiVersion, url, fleet, host = undefined) {
   let result;
 
-  if (apiVersion === 1) {
+  if (!apiVersion || apiVersion === 1) {
     result = `${host || BASE_URL}/engine/${fleet}/${url}`;
   }
   if (apiVersion === 1.1) {

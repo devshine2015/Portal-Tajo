@@ -4,9 +4,17 @@
   }
 
   .interval-col {
-    margin-right: 50px;
+    margin-right: 25px;
+    max-width: 150px;
   }
   .interval-col:last-child {
     margin-right: 0;
+  }
+
+  .picker {
+    width: 150px;
+  }
+  .picker > div {
+    width: 100%;
   }
 }

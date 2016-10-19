@@ -1,0 +1,18 @@
+@media screen and (min-width: 100px) {
+  .managerContainer {
+    margin: 20px auto;
+    padding: 0 16px;
+  }
+
+  .floatingButton {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .managerContainer {
+    width: 900px; 
+  }
+}

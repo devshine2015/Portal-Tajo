@@ -2,14 +2,12 @@ import React from 'react';
 import { getHooks } from 'utils/hooks';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
-import { portal } from 'configs';
+import { REACT_ROUTER_ROOT } from 'configs';
 import {
   errorHandler,
   loadModule,
   selectLocationState,
 } from 'utils/routerHelpers';
-
-const ROOT = `/portal/:fleet/${portal}/`;
 
 const MAIN_MENU = [{
   niceName: 'Operational',
@@ -68,7 +66,7 @@ export default function createRoutes(store) {
   });
 
   const rootRoute = require('screens/Root/route')({
-    path: ROOT,
+    path: REACT_ROUTER_ROOT,
     dispatch: store.dispatch,
     mainMenu: MAIN_MENU,
   });

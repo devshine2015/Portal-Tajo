@@ -1,0 +1,14 @@
+@media screen and (min-width: 100px) {
+  .toolbox {
+    margin: 0 0 16px;
+  }
+
+  .totalContainer {}
+}
+
+@media screen and (min-width: 540px) {
+  .toolbox {
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+}

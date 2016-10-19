@@ -19,10 +19,11 @@ module.exports = require('./webpack.base')({
 
   // Utilize long-term caching by adding content hashes (not compilation hashes) to compiled assets
   output: {
-    filename: '[name]_[chunkhash].js',
-    chunkFilename: '[name]_[chunkhash].chunk.js',
+    filename: 'js/[name]_[chunkhash].js',
+    chunkFilename: 'js/[name]_[chunkhash].chunk.js',
     // add this path to static files in index.html
-    publicPath: `/assets/common-portal/${PROJECT}/`,
+    // publicPath: `/assets/common-portal/${PROJECT}/`,
+    publicPath: '',
   },
 
   // where compile locally
@@ -47,7 +48,7 @@ module.exports = require('./webpack.base')({
   ],
 
   // add sourcemaps
-  devtool: 'source-map',
+  // devtool: 'source-map',
 
   plugins: [
 
@@ -60,7 +61,6 @@ module.exports = require('./webpack.base')({
 
     // Minify and optimize the JavaScript
     new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
       compress: {
         warnings: false, // ...but do not show warnings in the console (there is a lot of them)
       },
@@ -85,7 +85,7 @@ module.exports = require('./webpack.base')({
     }),
 
     // Extract the CSS into a seperate file
-    new ExtractTextPlugin('[name].[contenthash].css'),
+    new ExtractTextPlugin('css/[name].[contenthash].css'),
 
     new webpack.DefinePlugin({
       'process.env': {

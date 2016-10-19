@@ -1,15 +1,54 @@
 import moment from 'moment';
 
-const prettyTypes = {
-  'vehicle-position': 'Position',
-  'vehicle-fuel': 'Fuel',
-  'vehicle-ign-off': 'Ignition Off',
-  'vehicle-ign-on': 'Ignition On',
-  'vehicle-1wire-temperature': 'Temperature',
-  'vehicle-started-moving': 'Start Moving',
-  'vehicle-stopped-moving': 'Stop Moving',
-  'vehicle-stop-stats': 'Stop Statistics',
+const TYPES = {
+  POSITION: {
+    type: 'vehicle-position',
+    disabled: false,
+  },
+  FUEL: {
+    type: 'vehicle-fuel',
+    disabled: true,
+  },
+  IGNITION_OFF: {
+    type: 'vehicle-ign-off',
+    disabled: false,
+  },
+  IGNITION_ON: {
+    type: 'vehicle-ign-on',
+    disabled: false,
+  },
+  TEMPERATURE: {
+    type: 'vehicle-1wire-temperature',
+    disabled: false,
+  },
+  START_MOVING: {
+    type: 'vehicle-started-moving',
+    disabled: false,
+  },
+  STOP_MOVING: {
+    type: 'vehicle-stopped-moving',
+    disabled: false,
+  },
+  STOP_STATS: {
+    type: 'vehicle-stop-stats',
+    disabled: false,
+  },
 };
+
+const prettifiedTypes = {
+  [TYPES.POSITION.type]: 'Position',
+  [TYPES.FUEL.type]: 'Fuel',
+  [TYPES.IGNITION_OFF.type]: 'Ignition Off',
+  [TYPES.IGNITION_ON.type]: 'Ignition On',
+  [TYPES.TEMPERATURE.type]: 'Temperature',
+  [TYPES.START_MOVING.type]: 'Start Moving',
+  [TYPES.STOP_MOVING.type]: 'Stop Moving',
+  [TYPES.STOP_STATS.type]: 'Stop Statistics',
+};
+
+const disabledTypes = Object.keys(TYPES)
+                      .filter(key => TYPES[key].disabled)
+                      .map(key => TYPES[key].type);
 
 function prettifyAdditionalInfo(type, {
   fuelInfo,
@@ -21,25 +60,25 @@ function prettifyAdditionalInfo(type, {
   movingPeriod,
 }) {
   switch (type) {
-    case 'vehicle-fuel': {
-      return `Fuel used: ${fuelInfo.totFuelUsed}, Fuel level: ${fuelInfo.fuelLevelPerc}`;
+    case TYPES.FUEL.type: {
+      return `Fuel used: ${fuelInfo.totalFuelUsed}, Fuel level: ${fuelInfo.fuelLevelPerc}`;
     }
-    case 'vehicle-ign-off': {
+    case TYPES.IGNITION_OFF.type: {
       return `Ignition on period: ${ignitionOnPeriod}`;
     }
-    case 'vehicle-ign-on': {
+    case TYPES.IGNITION_ON.type: {
       return `Ignition off period: ${ignitionOffPeriod}`;
     }
-    case 'vehicle-1wire-temperature': {
+    case TYPES.TEMPERATURE.type: {
       return `Temperature: ${tempInfo}`;
     }
-    case 'vehicle-started-moving': {
+    case TYPES.START_MOVING.type: {
       return `Stoped period: ${stoppedPeriod}`;
     }
-    case 'vehicle-stopped-moving': {
+    case TYPES.STOP_MOVING.type: {
       return `Moving period: ${movingPeriod}`;
     }
-    case 'vehicle-stop-stats': {
+    case TYPES.STOP_STATS.type: {
       return `Stop period: ${stopPeriod}, Ignition on period: ${ignitionOnPeriod}`;
     }
     default:
@@ -51,9 +90,9 @@ const calculateVehicleRow = ({ ev, type } = {}, {
   dateFormat,
   name,
   licensePlate,
-}, empty = false) => {
+}, noEvents = false) => {
   // return single row in case of no events
-  if (empty) {
+  if (noEvents) {
     return [
       licensePlate,
       name,
@@ -65,15 +104,14 @@ const calculateVehicleRow = ({ ev, type } = {}, {
     ];
   }
 
-  const prettyType = prettyTypes[type] || type;
+  const prettyType = prettifiedTypes[type] || type;
   const { pos, ts, vehicleId, ...rest } = ev;
-
 
   return [
     licensePlate,
     name,
     prettyType,
-    moment(pos.posTime).format(dateFormat),
+    moment.utc(pos.posTime).format(dateFormat),
     `${pos.latlon.lat}, ${pos.latlon.lng}`,
     pos.speed.toFixed(2, 10),
     prettifyAdditionalInfo(type, rest),
@@ -85,13 +123,51 @@ const calculateVehicleRows = options => (events = []) => {
 
   if (events.length > 0) {
     events.forEach(event => {
+      // filter events only if user selected some
+      if (disabledTypes.indexOf(event.type) !== -1 ||
+          !!options.selectedEvents &&
+          options.selectedEvents.length > 0 &&
+          options.selectedEvents.indexOf(event.type) === -1) return;
+
       rows.push(calculateVehicleRow(event, options));
     });
   } else {
-    rows.push(calculateVehicleRow({}, options, true));
+    rows.push(calculateVehicleRow({}, options, !events.length));
   }
 
   return rows;
 };
 
 export default calculateVehicleRows;
+
+export const fields = [{
+  label: prettifiedTypes[TYPES.POSITION.type],
+  order: 0,
+  eventTypes: [TYPES.POSITION.type],
+  name: TYPES.POSITION.type,
+  disabled: false,
+}, {
+  label: 'Ignition On/Off',
+  order: 1,
+  eventTypes: [TYPES.IGNITION_ON.type, TYPES.IGNITION_OFF.type],
+  name: 'ignition',
+  disabled: false,
+}, {
+  label: prettifiedTypes[TYPES.TEMPERATURE.type],
+  order: 2,
+  eventTypes: [TYPES.TEMPERATURE.type],
+  name: TYPES.TEMPERATURE.type,
+  disabled: false,
+}, {
+  label: 'Start/Stop Moving',
+  order: 3,
+  eventTypes: [TYPES.STOP_MOVING.type, TYPES.START_MOVING.type, TYPES.STOP_STATS.type],
+  name: 'moving',
+  disabled: false,
+}, {
+  label: `${prettifiedTypes[TYPES.FUEL.type]} (coming soon)`,
+  order: 4,
+  eventTypes: [TYPES.FUEL.type],
+  name: TYPES.FUEL.type,
+  disabled: true,
+}];

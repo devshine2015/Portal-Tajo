@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import { Map } from 'immutable';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
 import Form from 'components/Form';
@@ -32,7 +33,7 @@ class Installer extends React.Component {
 
     this.state = {
       fields: initialFields,
-      cannotSubmit: false,
+      cannotSubmit: true,
       dialogIsOpen: this.dialogIsOpen(props),
     };
 
@@ -115,11 +116,12 @@ class Installer extends React.Component {
     }
   }
 
-  resetForm() {
+  resetForm = () => {
     const formNode = document.forms.bounder;
 
     this.setState({
       fields: initialFields,
+      cannotSubmit: true,
     });
 
     formNode.reset();
@@ -192,14 +194,20 @@ class Installer extends React.Component {
             name="isMiles"
             onCheck={this.onChange}
           />
-          <RaisedButton
-            className={styles.submitButton}
-            disabled={mainButtonDisabled}
-            onClick={this.onSubmit}
-            label={mainButtonText}
-            type="submit"
-            primary
-          />
+          <div className={styles.buttons}>
+            <RaisedButton
+              className={styles.submitButton}
+              disabled={mainButtonDisabled}
+              onClick={this.onSubmit}
+              label={mainButtonText}
+              type="submit"
+              primary
+            />
+            <FlatButton
+              onClick={this.resetForm}
+              label="Reset"
+            />
+          </div>
         </Form>
         <OfflineData
           sendData={this.props.sendFromStorage}

@@ -1,44 +1,48 @@
-import { getSelectedFieldIndex, getAvailableFieldIndex } from '../reducer';
+import { addSelectedReport, removeSelectedReport } from './reportActions';
+import { addSelectedEvent, removeSelectedEvent } from './eventActions';
+import {
+  getSelectedReportIndex,
+  getAvailableReportIndex,
+  getSelectedEventIndex,
+  getAvailableEventIndex,
+} from '../reducer';
 
-export const CONFIGURATOR_SELECTED_ADD = 'portal/Report/CONFIGURATOR_SELECTED_ADD';
-export const CONFIGURATOR_SELECTED_REMOVE = 'portal/Report/CONFIGURATOR_SELECTED_REMOVE';
-export const CONFIGURATOR_FREQUENCY_CHANGE = 'portal/Report/CONFIGURATOR_FREQUENCY_CHANGE';
 export const CONFIGURATOR_ERROR_SET = 'portal/Report/CONFIGURATOR_ERROR_SET';
 
-
-export const updateSelected = (field) => (dispatch, getState) =>
-  _updateSelected(field, dispatch, getState);
-export const changeFrequency = (nextState) => ({
-  type: CONFIGURATOR_FREQUENCY_CHANGE,
-  nextState,
-});
-export const setErrorMessage = (message) => ({
+export const updateSelectedTypes = params => (dispatch, getState) =>
+  _updateSelectedTypes(params, dispatch, getState);
+export const setErrorMessage = message => ({
   type: CONFIGURATOR_ERROR_SET,
   message,
 });
 
-function _updateSelected({ field, value, index }, dispatch, getState) {
-  const selectedFieldIndex = getSelectedFieldIndex(getState(), index);
+function _updateSelectedTypes({ field, value, index, source }, dispatch, getState) {
+  let selectedIndex;
+  let getAvailableIndex;
+  let addSelected;
+  let removeSelected;
+
+  if (source === 'reports') {
+    selectedIndex = getSelectedReportIndex(getState(), index);
+    getAvailableIndex = getAvailableReportIndex;
+    addSelected = addSelectedReport;
+    removeSelected = removeSelectedReport;
+  } else if (source === 'events') {
+    selectedIndex = getSelectedEventIndex(getState(), index);
+    getAvailableIndex = getAvailableEventIndex;
+    addSelected = addSelectedEvent;
+    removeSelected = removeSelectedEvent;
+  }
 
   // add selected field if its value is true
   // and if state doesn't have such field yet;
-  if (value && selectedFieldIndex === -1) {
-    const availableFieldIndex = getAvailableFieldIndex(getState(), field);
+  if (value && selectedIndex === -1) {
+    const availableFieldIndex = getAvailableIndex(getState(), field);
 
-    dispatch(_addSelected(availableFieldIndex));
+    dispatch(addSelected(availableFieldIndex));
   } else {
-    dispatch(_removeSelected(selectedFieldIndex));
+    dispatch(removeSelected(selectedIndex));
   }
 
   return Promise.resolve();
 }
-
-const _addSelected = (index) => ({
-  type: CONFIGURATOR_SELECTED_ADD,
-  index,
-});
-
-const _removeSelected = (index) => ({
-  type: CONFIGURATOR_SELECTED_REMOVE,
-  index,
-});

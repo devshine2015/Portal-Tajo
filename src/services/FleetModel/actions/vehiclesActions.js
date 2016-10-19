@@ -43,7 +43,7 @@ function _fetchVehicles(dispatch) {
     )
   ).then(([vehicles = [], { status } = {}]) => {
     const { localVehicles, orderedVehicles } = makeLocalVehicles(vehicles, status);
-    dispatch(_vehiclesSet(vehicles, localVehicles, orderedVehicles));
+    dispatch(_vehiclesSet({ vehicles, localVehicles, orderedVehicles }));
   })
   .catch(e => {
     console.error(e);
@@ -100,7 +100,11 @@ function toJson(response) {
   return response.json();
 }
 
-const _vehiclesSet = (vehicles, localVehicles, orderedVehicles) => ({
+const _vehiclesSet = ({
+  vehicles,
+  localVehicles,
+  orderedVehicles,
+}) => ({
   type: FLEET_MODEL_VEHICLES_SET,
   vehicles,
   localVehicles,
