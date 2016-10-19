@@ -2,12 +2,14 @@ import React from 'react';
 import pure from 'recompose/pure';
 import cs from 'classnames';
 import { connect } from 'react-redux';
-import { getDevicesAmount } from 'services/Devices/reducer';
 import {
-  getFaultVehiclesAmount,
-  getNotAttachedAmount,
   getCurrentFilter,
 } from '../../reducer';
+import {
+  getDevicesAmount,
+  getFaultAmount,
+  getNotAttachedAmount,
+} from 'services/Devices/reducer';
 import { filterActions } from '../../actions';
 
 import styles from './styles.css';
@@ -98,7 +100,7 @@ const mapState = state => ({
   totalDevices: getDevicesAmount(state),
   currentFilter: getCurrentFilter(state),
   totalNotAttached: getNotAttachedAmount(state),
-  totalFaultVehicles: getFaultVehiclesAmount(state),
+  totalFaultVehicles: getFaultAmount(state),
 });
 const mapDispatch = {
   filterBy: filterActions.filterBy,

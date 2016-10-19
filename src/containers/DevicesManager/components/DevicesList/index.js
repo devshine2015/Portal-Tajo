@@ -1,11 +1,9 @@
 import React from 'react';
 import pure from 'recompose/pure';
-import { Map, List } from 'immutable';
+import { Map } from 'immutable';
 import { connect } from 'react-redux';
 import Device from '../Device';
 import {
-  // getNotAttached,
-  // getFaultVehicles,
   getCurrentFilter,
   getSearchString,
 } from '../../reducer';
@@ -19,7 +17,9 @@ import {
 import styles from './styles.css';
 
 function searchById(id, searchString) {
-  return !!searchString ? id.search(searchString) !== -1 : true;
+  const r = new RegExp(searchString, 'g');
+
+  return r.test(id);
 }
 
 const ListItem = (props) => (
@@ -28,45 +28,23 @@ const ListItem = (props) => (
   </li>
 );
 
-function mapSource(source, searchString, devices) {
-  return source.map(id => {
-    const d = devices.get(id);
+function renderDevices({
+  currentFilter,
+  devices,
+  searchString,
+}) {
+  return devices.toList().map(d => {
+    if (searchString && !searchById(d.id, searchString)) return null;
 
-    if (!searchById(id, searchString)) return null;
+    if (currentFilter === 'not-attached' && !d.notAttached) return null;
+    if (currentFilter === 'fault-vehicle' && !d.vehicleIsFault) return null;
 
     return <ListItem key={d.id} {...d} />;
   });
 }
 
-function renderDevices({
-  currentFilter,
-  devices,
-  faultVehicles,
-  notAttached,
-  searchString,
-}) {
-  switch (currentFilter) {
-    case 'fault-vehicle':
-      return mapSource(faultVehicles, searchString, devices);
-
-    case 'not-attached':
-      return mapSource(notAttached, searchString, devices);
-
-    case 'all':
-    default: {
-      return devices.toList().map(d => {
-        if (!searchById(d.id, searchString)) return null;
-
-        return <ListItem key={d.id} {...d} />;
-      });
-    }
-  }
-}
-
 renderDevices.propTypes = {
   devices: React.PropTypes.instanceOf(Map).isRequired,
-  notAttached: React.PropTypes.instanceOf(List).isRequired,
-  faultVehicles: React.PropTypes.instanceOf(List).isRequired,
   searchString: React.PropTypes.string,
   currentFilter: React.PropTypes.oneOf([
     'all', 'not-attached', 'fault-vehicle',
@@ -143,8 +121,6 @@ DevicesList.propTypes = {
 const mapState = state => ({
   devices: getDevices(state),
   hasVehicles: hasProcessedVehicles(state),
-  // notAttached: getNotAttached(state),
-  // faultVehicles: getFaultVehicles(state),
   currentFilter: getCurrentFilter(state),
   searchString: getSearchString(state),
 });

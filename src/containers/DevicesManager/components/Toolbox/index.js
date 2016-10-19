@@ -11,7 +11,7 @@ class Toolbox extends React.Component {
     return (
       <div className={styles.toolbox}>
         <div className={styles.totalContainer}>
-          {/*<Total />*/}
+          <Total />
         </div>
         <div className={styles.searchContainer}>
           <DeviceSearch />

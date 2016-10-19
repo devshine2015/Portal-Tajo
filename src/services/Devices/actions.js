@@ -13,18 +13,25 @@ export const fetchDevices = () => dispatch => {
     .then(res => res.json())
     .then(devices => {
       const devicesMap = {};
+      let notAttachedAmount = 0;
 
       devices.forEach(device => {
+        const notAttached = !device.vehicleId;
+
+        if (notAttached) {
+          notAttachedAmount++;
+        }
+
         devicesMap[device.id] = {
+          notAttached,
           id: device.id,
           original: device,
-          notAttached: !device.vehicleId,
           vehicleName: '',
           vehicleIsFault: false,
         };
       });
 
-      dispatch(_devicesFetchSuccess(devicesMap));
+      dispatch(_devicesFetchSuccess(devicesMap, notAttachedAmount));
 
       return devices;
     });
@@ -34,28 +41,36 @@ export const updateWithVehicles = () => (dispatch, getState) => {
   const vehicles = getProcessedVehicles(getState());
   const devices = getDevices(getState());
   const devicesWithVehicles = {};
+  let faultAmount = 0;
 
   devices.forEach(device => {
     const v = vehicles.get(device.original.vehicleId);
+    const vehicleIsFault = !device.notAttached && !v;
+
+    if (vehicleIsFault) {
+      faultAmount++;
+    }
 
     devicesWithVehicles[device.id] = {
       ...device,
-      vehicleIsFault: !device.notAttached && !v,
+      vehicleIsFault,
       vehicleName: !!v ? v.get('name') : '',
     };
   });
 
-  dispatch(_updateWithVehciles(devicesWithVehicles));
+  dispatch(_updateWithVehciles(devicesWithVehicles, faultAmount));
 
   return Promise.resolve();
 };
 
-const _devicesFetchSuccess = devices => ({
+const _devicesFetchSuccess = (devices, notAttachedAmount) => ({
   type: DEVICES_FETCH_SUCCESS,
   devices,
+  notAttachedAmount,
 });
 
-const _updateWithVehciles = devices => ({
+const _updateWithVehciles = (devices, faultAmount) => ({
   type: DEVICES_UPDATE,
   devices,
+  faultAmount,
 });
