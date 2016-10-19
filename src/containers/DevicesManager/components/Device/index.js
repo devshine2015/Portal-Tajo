@@ -134,6 +134,8 @@ class Device extends React.Component {
       [styles.card_withActions]: canDeactivate,
     });
 
+    if (!this.props.original) debugger;
+
     return (
       <div className={styles.deviceContainer}>
         <Card className={cardClassName}>
@@ -174,6 +176,8 @@ Device.propTypes = {
 
   // original properties from backend
   original: React.PropTypes.shape({
+    // device id
+    id: React.PropTypes.string.isRequired,
     // serial-number or imei.
     // Usually equal to id
     sn: React.PropTypes.string.isRequired,

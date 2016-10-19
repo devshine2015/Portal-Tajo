@@ -1,6 +1,5 @@
 @media screen and (min-width: 100px) {
   .managerContainer {
-    // width: 100%;
     margin: 20px auto;
     padding: 0 16px;
   }
@@ -14,6 +13,6 @@
 
 @media screen and (min-width: 800px) {
   .managerContainer {
-    max-width: 900px; 
+    width: 900px; 
   }
 }

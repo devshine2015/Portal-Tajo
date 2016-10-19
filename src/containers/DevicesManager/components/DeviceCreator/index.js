@@ -25,7 +25,7 @@ const KINDS = [{
 const kinds = KINDS.map(kind => (
   <MenuItem
     key={kind.id}
-    value={kind.id}
+    value={`${kind.manufacturer} ${kind.model}`}
     primaryText={`${kind.manufacturer} ${kind.model}`}
   />
 ));
