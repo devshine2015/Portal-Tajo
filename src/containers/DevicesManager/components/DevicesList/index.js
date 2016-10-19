@@ -34,10 +34,10 @@ function renderDevices({
   searchString,
 }) {
   return devices.toList().map(d => {
-    if (searchString && !searchById(d.id, searchString)) return null;
-
     if (currentFilter === 'not-attached' && !d.notAttached) return null;
     if (currentFilter === 'fault-vehicle' && !d.vehicleIsFault) return null;
+
+    if (searchString && !searchById(d.id, searchString)) return null;
 
     return <ListItem key={d.id} {...d} />;
   });
@@ -68,9 +68,10 @@ class DevicesList extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // be sure vehicles loaded and setup is finished
+    // be sure vehicles and devices loaded and setup is finished
     if (!this.state.setupFinished &&
-        this.props.devices.size > 0 &&
+        (this.props.devices.size > 0 ||
+          (!this.props.devices.size && nextProps.devices.size > 0)) &&
         (this.props.hasVehicles ||
         (!this.props.hasVehicles && nextProps.hasVehicles))) {
       this.setState({

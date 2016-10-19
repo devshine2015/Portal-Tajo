@@ -1,11 +1,12 @@
 import { fromJS } from 'immutable';
 import {
+  creatorActions,
   filterActions,
   searchActions,
 } from './actions';
 
 const initialState = fromJS({
-  isEditing: false,
+  isEditing: true,
   currentFilter: 'all',
   searchString: '',
 });
@@ -21,6 +22,12 @@ function reducer(state = initialState, action) {
 
     case searchActions.DEVICES_MANAGER_SEARCH_RESET:
       return state.set('searchString', initialState.searchString);
+
+    case creatorActions.DEVICES_MANAGER_EDITOR_OPEN:
+      return state.set('isEditing', true);
+
+    case creatorActions.DEVICES_MANAGER_EDITOR_CLOSE:
+      return state.set('isEditing', false);
 
     default:
       return state;

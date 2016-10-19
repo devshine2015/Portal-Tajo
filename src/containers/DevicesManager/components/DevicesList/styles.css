@@ -8,13 +8,15 @@
 
   .list__item {
     width: 100%;
-    margin: 0 5px 15px;
+    margin: 0 0 15px;
   }
 }
 
 @media screen and (min-width: 540px) {
   .list__item {
     width: 48%;
+    margin-left: 5px;
+    margin-right: 5px;
   }
 }
 
