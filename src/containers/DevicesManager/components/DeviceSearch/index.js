@@ -37,14 +37,18 @@ class DeviceSearch extends React.Component {
     return (
       <div className={styles.search}>
         <TextField
+          fullWidth
           type="search"
           hintText="Search by IMEI"
           onChange={this.onChange}
+          className={styles.textField}
           value={this.state.searchString}
         />
-        <IconButton onClick={this.onReset}>
-          <ClearIcon />
-        </IconButton>
+        <div className={styles.resetButton}>
+          <IconButton onClick={this.onReset}>
+            <ClearIcon />
+          </IconButton>
+        </div>
       </div>
     );
   }

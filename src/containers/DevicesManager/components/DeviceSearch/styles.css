@@ -1,0 +1,22 @@
+@media screen and (min-width: 100px) {
+  .search {
+    position: relative;
+    // max-width: 300px;
+  }
+
+  .textField {
+    padding-right: 52px;
+  }
+
+  .resetButton {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+
+@media screen and (min-width: 540px) {
+  .search {
+    max-width: 300px;
+  }
+}

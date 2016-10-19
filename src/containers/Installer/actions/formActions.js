@@ -3,6 +3,7 @@ import endpoints from 'configs/endpoints';
 import { setLoaderState } from './loaderActions';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import { mockBackendVehicle } from 'services/FleetModel/utils/vehicleHelpers';
+import { createDevice } from 'services/Devices/actions';
 
 export const INSTALLER_SUBMIT_SUCCESS = 'portal/Installer/INSTALLER_SUBMIT_SUCCESS';
 export const INSTALLER_SUBMIT_FAILURE = 'portal/Installer/INSTALLER_SUBMIT_FAILURE';
@@ -12,20 +13,12 @@ export const submitForm = data => dispatch =>
 
 export const sendData = (formData, dispatch) => {
   dispatch(setLoaderState(true));
-  const { createVehicle, createDevice } = endpoints;
+  const { createVehicle } = endpoints;
   const vehiclePayload = {
     payload: mockBackendVehicle(formData),
   };
-  const devicePayload = {
-    payload: {
-      id: formData.imei,
-      kind: '',
-      sn: formData.imei,
-      status: 'active',
-    },
-  };
 
-  const request = api[createDevice.method](createDevice.url, devicePayload)
+  const request = dispatch(createDevice(formData))
     .then(() => api[createVehicle.method](createVehicle.url, vehiclePayload))
     .then(res => res.json())
     .then(vehicle => {

@@ -123,6 +123,7 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
       });
       return newState;
     }
+
     default:
       return state;
   }
