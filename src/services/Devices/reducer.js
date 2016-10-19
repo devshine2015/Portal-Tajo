@@ -1,5 +1,6 @@
 import { Map, fromJS } from 'immutable';
 import {
+  DEVICES_DEVICE_DEACTIVATE,
   DEVICES_FETCH_SUCCESS,
   DEVICES_DEVICE_ADD,
   DEVICES_UPDATE,
@@ -29,6 +30,13 @@ function reducer(state = initialState, action) {
     case DEVICES_DEVICE_ADD:
       return state.withMutations(s => {
         s.setIn(['list', action.data.id], action.data)
+         .set('notAttachedAmount', action.notAttachedAmount);
+      });
+
+    case DEVICES_DEVICE_DEACTIVATE:
+      return state.withMutations(s => {
+        s.update('list', list => list.delete(action.id))
+         .set('faultAmount', action.faultAmount)
          .set('notAttachedAmount', action.notAttachedAmount);
       });
 

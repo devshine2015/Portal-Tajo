@@ -13,6 +13,7 @@ import WarningIcon from 'material-ui/svg-icons/alert/warning';
 import { permissions } from 'configs/roles';
 import permitted from 'utils/permissionsRequired';
 import theme from 'configs/theme';
+import { deactivateDevice } from 'services/Devices/actions';
 
 import styles from './styles.css';
 
@@ -36,7 +37,7 @@ function renderActions(onDiactivate) {
     <CardActions className={styles.actions}>
       <FlatButton
         disabled
-        label="Diactivate (Not Working)"
+        label="Deactivate (back not ready)"
         onClick={onDiactivate}
       />
     </CardActions>
@@ -125,7 +126,9 @@ Text.propTypes = {
 class Device extends React.Component {
 
   onDiactivate = () => {
-    console.log(this.props.id);
+    const { userPermittedTo, deactivateDevice, ...rest } = this.props;
+
+    deactivateDevice(rest);
   }
 
   render() {
@@ -133,8 +136,6 @@ class Device extends React.Component {
     const cardClassName = cs(styles.card, {
       [styles.card_withActions]: canDeactivate,
     });
-
-    if (!this.props.original) debugger;
 
     return (
       <div className={styles.deviceContainer}>
@@ -195,10 +196,15 @@ Device.propTypes = {
 
   // object with available permissions from permitted
   userPermittedTo: React.PropTypes.object.isRequired,
+
+  // callback on deactivate
+  deactivateDevice: React.PropTypes.func.isRequired,
 };
 
 const mapState = null;
-const mapDispatch = null;
+const mapDispatch = {
+  deactivateDevice,
+};
 
 const PureDevice = pure(permitted(PERMISSIONS)(Device));
 

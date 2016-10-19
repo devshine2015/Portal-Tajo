@@ -1,8 +1,13 @@
 import api from 'utils/api';
 import endpoints from 'configs/endpoints';
 import { getProcessedVehicles } from 'services/FleetModel/reducer';
-import { getDevices, getNotAttachedAmount } from './reducer';
+import {
+  getDevices,
+  getFaultAmount,
+  getNotAttachedAmount,
+} from './reducer';
 
+export const DEVICES_DEVICE_DEACTIVATE = 'portal/Devices/DEVICES_DEVICE_DEACTIVATE';
 export const DEVICES_FETCH_SUCCESS = 'portal/Devices/DEVICES_FETCH_SUCCESS';
 export const DEVICES_DEVICE_ADD = 'portal/Devices/DEVICES_DEVICE_ADD';
 export const DEVICES_UPDATE = 'portal/Devices/DEVICES_UPDATE';
@@ -93,6 +98,32 @@ export const createDevice = ({ imei, model }) => (dispatch, getState) => {
     });
 };
 
+export const deactivateDevice = device => (dispatch, getState) => {
+  const { url, method, apiVersion } = endpoints.deactivate(device.id);
+
+  return api[method](url, { apiVersion })
+    .then((res) => {
+      console.log(res)
+      let notAttachedAmount = getNotAttachedAmount(getState());
+      let faultAmount = getFaultAmount(getState());
+
+      if (device.notAttached) {
+        notAttachedAmount--;
+      }
+      if (device.vehicleIsFault) {
+        faultAmount--;
+      }
+
+      dispatch(_deactivateDevice({
+        id: device.id,
+        faultAmount,
+        notAttachedAmount,
+      }));
+
+      return Promise.resolve();
+    });
+};
+
 const _devicesFetchSuccess = (devices, notAttachedAmount) => ({
   type: DEVICES_FETCH_SUCCESS,
   devices,
@@ -108,5 +139,16 @@ const _updateWithVehciles = (devices, faultAmount) => ({
 const _addNewDevice = (data, notAttachedAmount) => ({
   type: DEVICES_DEVICE_ADD,
   data,
+  notAttachedAmount,
+});
+
+const _deactivateDevice = ({
+  id,
+  faultAmount,
+  notAttachedAmount,
+}) => ({
+  type: DEVICES_DEVICE_DEACTIVATE,
+  id,
+  faultAmount,
   notAttachedAmount,
 });
