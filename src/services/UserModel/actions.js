@@ -5,14 +5,20 @@ import { getAuthenticationSession } from 'services/Auth/reducer';
 export const USER_SET = 'portal/services/USER_SET';
 export const USER_RESET = 'portal/services/USER_RESET';
 export const USER_SETTINGS_UPDATE = 'portal/services/USER_SETTINGS_UPDATE';
+export const USER_FLEET_SET = 'portal/services/USER_FLEET_SET';
 
-export const setUserData = (data) => ({
+export const setUserData = userData => ({
   type: USER_SET,
-  data,
+  userData,
 });
 
 export const resetUserData = () => ({
   type: USER_RESET,
+});
+
+export const setFleetName = fleetName => ({
+  type: USER_FLEET_SET,
+  fleetName,
 });
 
 export const updateUserSettings = (saveToStorage, settings) => (dispatch, getState) =>

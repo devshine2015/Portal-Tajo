@@ -1,8 +1,9 @@
 import qs from 'query-string';
 import { protocol, socketProtocol, ENGINE_BASE } from 'configs';
 import { getAuthenticationSession } from 'services/Auth/reducer';
-import { getFleetName, getErrorMessage } from 'services/Global/reducer';
+import { getErrorMessage } from 'services/Global/reducer';
 import { errorsActions } from 'services/Global/actions';
+import { getFleetName } from 'services/UserModel/reducer';
 import prepareRequest from './makeRequest';
 import errorsHandler from './errorsHandler';
 
@@ -16,14 +17,14 @@ const BASE_URL = `${protocol}//${ENGINE_BASE}`;
 const SOCKET_URL = `${socketProtocol}://${ENGINE_BASE}/engine`;
 
 // construct URL depends on API version
-function makeUrl(apiVersion, url, fleet) {
+function makeUrl(apiVersion, url, fleet, host = undefined) {
   let result;
 
-  if (apiVersion === 1) {
-    result = `${BASE_URL}/engine/${fleet}/${url}`;
+  if (!apiVersion || apiVersion === 1) {
+    result = `${host || BASE_URL}/engine/${fleet}/${url}`;
   }
   if (apiVersion === 1.1) {
-    result = `${BASE_URL}/${url}`;
+    result = `${host || BASE_URL}/${url}`;
   }
 
   return result;
@@ -51,6 +52,8 @@ class API {
     payload,
     optionalHeaders = {},
     apiVersion = this.currentVersion,
+    optionalFleet,
+    host,
   } = {}) {
     const hasError = !!getErrorMessage(this.getState());
 
@@ -59,8 +62,8 @@ class API {
       this.dispatch(errorsActions.resetError());
     }
 
-    const fleet = getFleetName(this.getState());
-    const urlToInvoke = makeUrl(apiVersion, url, fleet);
+    const fleet = optionalFleet || getFleetName(this.getState());
+    const urlToInvoke = makeUrl(apiVersion, url, fleet, host);
     const headers = Object.assign({}, HEADERS, {
       ['DRVR-SESSION']: getAuthenticationSession(this.getState()),
     }, {

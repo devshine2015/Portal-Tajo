@@ -12,15 +12,15 @@ deployment:
   dev:
     branch: dev-release
     commands:
-      - ./ci/deploy.sh 'ddsdev@ddsdev.cloudapp.net' 'tajo' 'portal' '~/driver-server'
+      - ./ci/deploy.sh 'ddsdev@ddsdev.cloudapp.net' 'tajo' 'portal' '~/driver-server/static-root/public'
   stage:
     branch: stage
     commands:
-      - ./ci/deploy.sh 'drvrstage@drvrstage.cloudapp.net' 'tajo' 'portal' '~/engine'
+      - ./ci/deploy.sh 'drvrstage@drvrstage.cloudapp.net' 'tajo' 'portal' '~/engine/static-root/public/common-portal'
   production:
     branch: production
     commands:
-      - ./ci/deploy.sh 'drvrappbeta@drvrappbeta.cloudapp.net' 'tajo' 'portal' '~/driver-server'
+      - ./ci/deploy.sh 'drvrappbeta@drvrappbeta.cloudapp.net' 'tajo' 'portal' '~/driver-server/static-root/public/common-portal'
   ssreportsDev:
     branch: ssreports-dev
     commands:

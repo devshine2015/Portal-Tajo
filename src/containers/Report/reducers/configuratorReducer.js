@@ -1,57 +1,33 @@
-import { fromJS, List } from 'immutable';
+import { fromJS } from 'immutable';
+import { combineReducers } from 'redux-immutable';
+import reportsReducer, * as fromReportsReducer from './reportsReducer';
+import eventsReducer, * as fromEventsReducer from './eventsReducer';
 import {
   configuratorActions,
   loaderActions,
-  dataActions,
+  reportActions,
 } from '../actions';
-import tempSpecs from '../specs/temperature';
-import baseSpecs from '../specs/base';
-import mileageSpecs from '../specs/mileage';
-import idlingSpecs from '../specs/idling';
-import statsSpecs from '../specs/stats';
 
-// join arrays and filter for available ones
-const specs = baseSpecs.concat(mileageSpecs, tempSpecs, idlingSpecs, statsSpecs).filter(spec =>
-  !spec.hasOwnProperty('available') || spec.available
-);
-const checkedSpecs = specs.filter(({ checkedByDefault }) => checkedByDefault)
-  .map((spec, i) => i);
-const configuratorInitialState = fromJS({
-  available: new List(specs),
-  selected: new List(checkedSpecs),
-  frequency: undefined,
-  error: undefined,
+const initialState = fromJS({
   isLoading: false,
+  error: undefined,
 });
 
-function configuratorReducer(state = configuratorInitialState, action) {
+function reducer(state = initialState, action) {
   switch (action.type) {
-    case configuratorActions.CONFIGURATOR_FREQUENCY_CHANGE:
-      return state.set('frequency', action.nextState);
-
-    case configuratorActions.CONFIGURATOR_SELECTED_ADD:
-      return state.updateIn(['selected'], selected =>
-        selected.push(action.index)
-      );
-
-    case configuratorActions.CONFIGURATOR_SELECTED_REMOVE:
-      return state.updateIn(['selected'], selected =>
-        selected.delete(action.index)
-      );
-
     case configuratorActions.CONFIGURATOR_ERROR_SET:
       return state.set('error', action.message);
-
-    case dataActions.REPORT_BEFORE_GENERATING:
-      return state.set('isLoading', true);
 
     case loaderActions.REPORT_CONFIGURATOR_LOADER_SET:
       return state.set('isLoading', action.nextState);
 
-    case dataActions.REPORT_GENERATING_SUCCESS:
+    case reportActions.REPORT_BEFORE_GENERATING:
+      return state.set('isLoading', true);
+
+    case reportActions.REPORT_GENERATING_SUCCESS:
       return state.set('isLoading', false);
 
-    case dataActions.REPORT_GENERATING_FAILURE:
+    case reportActions.REPORT_GENERATING_FAILURE:
       return state.withMutations(s => {
         s.set('isLoading', false)
          .set('error', action.message);
@@ -62,23 +38,52 @@ function configuratorReducer(state = configuratorInitialState, action) {
   }
 }
 
-export default configuratorReducer;
+export default combineReducers({
+  eventTypes: eventsReducer,
+  reportTypes: reportsReducer,
+  common: reducer,
+});
 
-export const getAvailableFields = state =>
-  state.getIn(['reports', 'configurator', 'available']);
-export const getAvailableFieldIndex = (state, value) =>
-  getAvailableFields(state).findKey((field) => (
-    field.name === value
-  ));
-export const getSelectedFields = state =>
-  state.getIn(['reports', 'configurator', 'selected']);
-export const getSelectedFieldIndex = (state, value) =>
-  getSelectedFields(state).indexOf(value);
-export const getReportFrequency = state =>
-  state.getIn(['reports', 'configurator', 'frequency']);
+function getReportTypes(s) {
+  return s.get('reportTypes');
+}
+
+function getEventTypes(s) {
+  return s.get('eventTypes');
+}
+
+export const getAvailableReports = state =>
+  fromReportsReducer.getAvailableReports(getReportTypes(state));
+
+export const getAvailableReportIndex = (state, value) =>
+  fromReportsReducer.getAvailableReportIndex(getReportTypes(state), value);
+
+export const getSelectedReports = state =>
+  fromReportsReducer.getSelectedReports(getReportTypes(state));
+
+export const getSelectedReportIndex = (state, value) =>
+  fromReportsReducer.getSelectedReportIndex(getReportTypes(state), value);
+
+export const getAvailableEvents = state =>
+  fromEventsReducer.getAvailableEvents(getEventTypes(state));
+
+export const getAvailableEventIndex = (state, value) =>
+  fromEventsReducer.getAvailableEventIndex(getEventTypes(state), value);
+
+export const getSelectedEvents = state =>
+  fromEventsReducer.getSelectedEvents(getEventTypes(state));
+
+export const getSelectedEventIndex = (state, value) =>
+  fromEventsReducer.getSelectedEventIndex(getEventTypes(state), value);
+
+export const getIsTooManyVehiclesSelected = state =>
+  fromEventsReducer.getIsTooManyVehiclesSelected(getEventTypes(state));
+
+export const getIsForced = state =>
+  fromEventsReducer.getIsForced(getEventTypes(state));
 
 export const getErrorMessage = state =>
-  state.get('error');
+  state.getIn(['common', 'error']);
 
 export const getLoadingState = state =>
-  state.get('isLoading');
+  state.getIn(['common', 'isLoading']);

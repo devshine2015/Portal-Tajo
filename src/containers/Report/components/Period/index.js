@@ -1,11 +1,16 @@
 import React from 'react';
 import pure from 'recompose/pure';
-import moment from 'moment'
+import moment from 'moment';
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
-import OutdatedPeriod from './outdated';
 
 import styles from './styles.css';
+
+const STYLES = {
+  picker: {
+    width: 150,
+  },
+};
 
 class Period extends React.Component {
 
@@ -34,6 +39,8 @@ class Period extends React.Component {
   renderDate = () => (
     <div className={styles['interval-col']}>
       <DatePicker
+        textFieldStyle={STYLES.picker}
+        className={styles.picker}
         formatDate={this.formatDate}
         autoOk
         hintText="Start date interval"
@@ -42,6 +49,8 @@ class Period extends React.Component {
         onChange={this.onStartDateChange}
       />
       <DatePicker
+        textFieldStyle={STYLES.picker}
+        className={styles.picker}
         formatDate={this.formatDate}
         autoOk
         hintText="End date interval"
@@ -54,6 +63,8 @@ class Period extends React.Component {
   renderTime = () => (
     <div className={styles['interval-col']}>
       <TimePicker
+        textFieldStyle={STYLES.picker}
+        className={styles.picker}
         autoOk
         container="inline"
         defaultTime={this.props.fields.startTime.default}
@@ -63,6 +74,8 @@ class Period extends React.Component {
         onChange={this.onStartTimeChange}
       />
       <TimePicker
+        textFieldStyle={STYLES.picker}
+        className={styles.picker}
         autoOk
         container="inline"
         defaultTime={this.props.fields.endTime.default}
@@ -76,11 +89,9 @@ class Period extends React.Component {
 
   render() {
     return (
-      <div>
-        <div className={styles.intervals}>
-          { this.renderDate() }
-          { this.props.withTime && this.renderTime() }
-        </div>
+      <div className={styles.intervals}>
+        { this.renderDate() }
+        { this.props.withTime && this.renderTime() }
       </div>
     );
   }

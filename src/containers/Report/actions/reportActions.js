@@ -4,8 +4,8 @@ import endpoints from 'configs/endpoints';
 import reporter from 'utils/reports';
 import {
   getSavedReportData,
-  getSelectedFields,
-  getAvailableFields,
+  getSelectedReports,
+  getAvailableReports,
 } from '../reducer';
 import {
   prepareDataForReport,
@@ -19,12 +19,23 @@ export const REPORT_DATA_REMOVE = 'portal/Report/REPORT_DATA_REMOVE';
 export const REPORT_BEFORE_GENERATING = 'portal/Report/REPORT_BEFORE_GENERATING';
 export const REPORT_GENERATING_SUCCESS = 'portal/Report/REPORT_GENERATING_SUCCESS';
 export const REPORT_GENERATING_FAILURE = 'portal/Report/REPORT_GENERATING_FAILURE';
+export const REPORT_SELECTED_ADD = 'portal/Report/REPORT_SELECTED_ADD';
+export const REPORT_SELECTED_REMOVE = 'portal/Report/REPORT_SELECTED_REMOVE';
 
 export const generateReport = params => (dispatch, getState) =>
   _generateReport(params, dispatch, getState);
 export const saveGenerated = () => _saveGenerated;
 export const removeReportData = () => ({
   type: REPORT_DATA_REMOVE,
+});
+export const addSelectedReport = index => ({
+  type: REPORT_SELECTED_ADD,
+  index,
+});
+
+export const removeSelectedReport = index => ({
+  type: REPORT_SELECTED_REMOVE,
+  index,
 });
 
 function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getState) {
@@ -116,6 +127,7 @@ const _generatingFail = errorMessage => ({
   message: errorMessage,
 });
 
+
 function _reportRequest(vehicles = [], {
   endpoint,
   domain,
@@ -138,8 +150,8 @@ function toJson(response) {
 }
 
 function getSelectedReportsTypes(state) {
-  const selectedReports = getSelectedFields(state).toArray();
-  const availableFields = getAvailableFields(state).toArray();
+  const selectedReports = getSelectedReports(state).toArray();
+  const availableFields = getAvailableReports(state).toArray();
   const result = {};
 
   selectedReports.forEach(i => {
@@ -150,8 +162,8 @@ function getSelectedReportsTypes(state) {
 }
 
 function _getHeaders(state) {
-  const selectedReports = getSelectedFields(state).toArray();
-  const availableFields = getAvailableFields(state).toArray();
+  const selectedReports = getSelectedReports(state).toArray();
+  const availableFields = getAvailableReports(state).toArray();
   const result = [];
 
   selectedReports.forEach((index) => {
@@ -160,3 +172,4 @@ function _getHeaders(state) {
 
   return result;
 }
+

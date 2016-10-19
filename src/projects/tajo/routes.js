@@ -2,14 +2,12 @@ import React from 'react';
 import { getHooks } from 'utils/hooks';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
-import { portal } from 'configs';
+import { REACT_ROUTER_ROOT } from 'configs';
 import {
   errorHandler,
   loadModule,
   selectLocationState,
 } from 'utils/routerHelpers';
-
-const ROOT = `/portal/:fleet/${portal}/`;
 
 const MAIN_MENU = [{
   niceName: 'dashboard',
@@ -35,6 +33,10 @@ const MAIN_MENU = [{
   niceName: 'Users Manager',
   path: 'users',
   order: 5,
+}, {
+  niceName: 'Devices Manager',
+  path: 'devices',
+  order: 6,
 }];
 
 export default function createRoutes(store) {
@@ -79,6 +81,13 @@ export default function createRoutes(store) {
     loadModule,
   });
 
+  const devicesManagerRoute = require('screens/DevicesManager/route')({
+    path: 'devices',
+    injectReducer,
+    errorHandler,
+    loadModule,
+  });
+
   const loginRoute = require('screens/LoginScreen/route')({
     path: 'login',
   });
@@ -88,7 +97,7 @@ export default function createRoutes(store) {
   });
 
   const rootRoute = require('screens/Root/route')({
-    path: ROOT,
+    path: REACT_ROUTER_ROOT,
     dispatch: store.dispatch,
     mainMenu: MAIN_MENU,
   });
@@ -107,6 +116,7 @@ export default function createRoutes(store) {
     reportsRoute,
     vehiclesEditorRoute,
     usersManagerRoute,
+    devicesManagerRoute,
   );
 
   return (

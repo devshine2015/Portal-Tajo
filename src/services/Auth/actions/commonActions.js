@@ -1,14 +1,13 @@
 import { replace } from 'react-router-redux';
-import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
-import { resetUserData } from 'services/UserModel/actions';
-import { getFleetName } from 'services/Global/reducer';
+import { LOCAL_STORAGE_SESSION_KEY, ROOT_ROUTE } from 'configs';
 import { getIsUserAuthenticated } from '../reducer';
-import createBaseUrl from 'utils/createBaseUrl';
 import storage from 'utils/localStorage';
 
-const AUTH_SET = 'portal/App/AUTH_SET';
-const AUTH_RESET = 'portal/App/AUTH_RESET';
+const LOGOUT_SUCCESS = 'portal/Auth/LOGOUT_SUCCESS';
+const AUTH_SET = 'portal/Auth/AUTH_SET';
+const AUTH_RESET = 'portal/Auth/AUTH_RESET';
 
+// fleet - deprecated in new url schema
 const setAuthentication = (sessionId, fleet) => ({
   type: AUTH_SET,
   sessionId,
@@ -18,14 +17,16 @@ const resetAuthentication = () => ({
   type: AUTH_RESET,
 });
 
+const logout = () => ({
+  type: LOGOUT_SUCCESS,
+});
+
 const eraseAuth = () => (dispatch, getState) => {
-  const fleetName = getFleetName(getState());
   const isAuthenticated = getIsUserAuthenticated(getState());
 
   if (isAuthenticated) {
-    dispatch(resetAuthentication());
-    dispatch(resetUserData());
-    dispatch(replace(`${createBaseUrl(fleetName)}/login`));
+    dispatch(logout());
+    dispatch(replace(`${ROOT_ROUTE}/login`));
   }
 
   storage.clean(LOCAL_STORAGE_SESSION_KEY);

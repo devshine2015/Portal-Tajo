@@ -1,8 +1,6 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-// import SplitContainer from 'containers/SplitContainer';
-// import TheMap from 'containers/MapFleet';
 import TheMap from 'containers/MapFleet/realTime';
 import OperationalList from './components/OperationalPowerList';
 import FixedContent from 'components/FixedContent';
@@ -21,25 +19,29 @@ class Operational extends React.Component {
     this.eventDispatcher = createEventDispatcher();
   }
 
+  componentDidMount() {
+    if (this.props.vehicles.length > 0) {
+      this.props.openFleetSocket();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.vehicles.length === 0 && nextProps.vehicles.length > 0) {
+      this.props.openFleetSocket();
+    }
+  }
+
   componentWillUnmount() {
     socketActions.closeFleetSocket();
   }
 
   render() {
-    // quick fix to make sure sockets are not opened before we have created local fleet model
-    // if somebody else besides OPERATIONAL will be opening WS - lets move this to WS
-    // (pendingOpen state)
-    if (this.props.vehicles.length > 0 && !socketActions.isSocketOpened()) {
-      this.props.openFleetSocket();
-    }
     return (
       <div className={styles.mapAndListContainer}>
           <OperationalList
             eventDispatcher={this.eventDispatcher}
             gfs={this.props.gfs}
             vehicles={this.props.vehicles}
-            // filteredVehicles={this.props.filteredVehicles}
-            // filterFunc={this.props.filterFunc}
           />
         <FixedContent containerClassName={styles.fixedContent}>
           <TheMap eventDispatcher={this.eventDispatcher} />

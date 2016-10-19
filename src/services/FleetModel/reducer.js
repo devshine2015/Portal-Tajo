@@ -7,7 +7,7 @@ export default combineReducers({
   locations: gfReducer,
 });
 
-const getByIdFunc = (state) => (id) => {
+const getByIdFunc = state => id => {
   const theMapObj = state.get('processedList');
   if (theMapObj.size === 0) {
     return null;
@@ -19,30 +19,44 @@ const getByIdFunc = (state) => (id) => {
   return theObj.toJS();
 };
 
-export const getFleetData = (state) =>
-  state.get('fleet');
-export const getVehicles = (state) =>
-  fromVehiclesReducer.getVehicles(state.getIn(['fleet', 'vehicles']));
-export const getVehiclesById = (state, ids = []) =>
-  fromVehiclesReducer.getVehiclesById(state.getIn(['fleet', 'vehicles']), ids);
-export const getVehiclesEx = (state) =>
-  fromVehiclesReducer.getVehiclesEx(state.getIn(['fleet', 'vehicles']));
-export const getVehiclesExSorted = state =>
-  fromVehiclesReducer.getVehiclesExSorted(state.getIn(['fleet', 'vehicles']));
-export const getVehicleByIdFunc = (state) =>
-  getByIdFunc(state.getIn(['fleet', 'vehicles']));
-export const getProcessedVehicles = (state) =>
-  fromVehiclesReducer.getProcessedVehicles(state.getIn(['fleet', 'vehicles']));
-export const getSelectedVehicleId = (state) =>
-  fromVehiclesReducer.getSelectedVehicleId(state.getIn(['fleet', 'vehicles']));
+function vehicles(s) {
+  return s.getIn(['fleet', 'vehicles']);
+}
 
-export const getGFs = (state) =>
-  fromgfReducer.getGFs(state.getIn(['fleet', 'locations']));
-export const getGFsEx = (state) =>
-  fromgfReducer.getGFsEx(state.getIn(['fleet', 'locations']));
-export const getGFsExSorted = (state) =>
-  fromgfReducer.getGFsExSorted(state.getIn(['fleet', 'locations']));
-export const getGFByIdFunc = (state) =>
-  getByIdFunc(state.getIn(['fleet', 'locations']));
-export const getProcessedGFs = (state) =>
-  fromgfReducer.getProcessedGFs(state.getIn(['fleet', 'locations']));
+function locations(s) {
+  return s.getIn(['fleet', 'locations']);
+}
+
+export const getFleetData = state =>
+  state.get('fleet');
+
+export const getVehiclesAmount = state =>
+  fromVehiclesReducer.getVehiclesAmount(vehicles(state));
+
+export const getVehicles = state =>
+  fromVehiclesReducer.getVehicles(vehicles(state));
+export const getVehiclesById = (state, ids = []) =>
+  fromVehiclesReducer.getVehiclesById(vehicles(state), ids);
+export const getVehiclesEx = state =>
+  fromVehiclesReducer.getVehiclesEx(vehicles(state));
+export const getVehiclesExSorted = state =>
+  fromVehiclesReducer.getVehiclesExSorted(vehicles(state));
+export const getVehicleByIdFunc = state =>
+  getByIdFunc(vehicles(state));
+export const getProcessedVehicles = state =>
+  fromVehiclesReducer.getProcessedVehicles(vehicles(state));
+export const hasProcessedVehicles = state =>
+  fromVehiclesReducer.hasProcessedVehicles(vehicles(state));
+export const getSelectedVehicleId = state =>
+  fromVehiclesReducer.getSelectedVehicleId(vehicles(state));
+
+export const getGFs = state =>
+  fromgfReducer.getGFs(locations(state));
+export const getGFsEx = state =>
+  fromgfReducer.getGFsEx(locations(state));
+export const getGFsExSorted = state =>
+  fromgfReducer.getGFsExSorted(locations(state));
+export const getGFByIdFunc = state =>
+  getByIdFunc(locations(state));
+export const getProcessedGFs = state =>
+  fromgfReducer.getProcessedGFs(locations(state));

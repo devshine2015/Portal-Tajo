@@ -1,18 +1,19 @@
 import { fromJS } from 'immutable';
-import { commonActions } from './actions';
+import { commonActions, loginActions } from './actions';
 
 const initialState = fromJS({
   isAuthenticated: false,
   sessionId: undefined,
-  authenticatedFleet: undefined,
 });
 
 function authReducer(state = initialState, action) {
   switch (action.type) {
     case commonActions.AUTH_SET:
-      return state.set('isAuthenticated', true)
-        .set('sessionId', action.sessionId)
-        .set('authenticatedFleet', action.fleet);
+    case loginActions.LOGIN_SUCCESS:
+      return state.withMutations(s => {
+        s.set('isAuthenticated', true)
+         .set('sessionId', action.sessionId);
+      });
     case commonActions.AUTH_RESET:
       return initialState;
     default:
@@ -28,5 +29,3 @@ export const getAuthenticationData = (state) =>
   state.get('auth');
 export const getAuthenticationSession = (state) =>
   state.getIn(['auth', 'sessionId']);
-export const getAuthenticatedFleet = (state) =>
-  state.getIn(['auth', 'authenticatedFleet']);

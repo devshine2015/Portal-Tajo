@@ -15,6 +15,7 @@ const createRoute = ({
     require.ensure([], require => {
       const importModules = Promise.all([
         require('containers/Installer/reducer'),
+        require('services/Devices/reducer'),
         require('./index'),
       ]);
 
@@ -22,9 +23,11 @@ const createRoute = ({
 
       importModules.then(([
         installerReducer,
+        devicesReducer,
         installerScreenComponent,
       ]) => {
         injectReducer(NAME, installerReducer.default);
+        injectReducer('devices', devicesReducer.default);
         renderModule(installerScreenComponent);
       });
 

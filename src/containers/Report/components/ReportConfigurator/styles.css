@@ -1,6 +1,11 @@
 @media screen and (min-width: 100px) {
   .configurator {
-    margin-bottom: 20px;
+    margin-bottom: 28px;
+    max-width: 768px;
+  }
+
+  .row {
+    display: flex;
   }
 
   .button:not(:last-child) {
@@ -14,5 +19,52 @@
 
   .form {
     margin-top: 20px;
+  }
+
+  .buttons {
+    margin-top: 15px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .row {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+  }
+
+  .top .column {
+    align-items: inherit;
+    flex-basis: auto;
+  }
+
+  .separator {
+    width: 1px;
+    background-color: rgb(224, 224, 224);
+    position: relative;
+  }
+
+  .separator:after {
+    position: absolute;
+    content: "or";
+    background-color: rgb(0, 150, 136);
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    top: 50%;
+    left: 0;
+    margin-top: -20px;
+    margin-left: -19px;
   }
 }

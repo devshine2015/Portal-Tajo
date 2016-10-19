@@ -11,9 +11,32 @@ const chooseServerEnv = () => {
   return 'dev';
 };
 
-export const portal = process.env.DRVR_PROJECT;
+const chooseRoot = () => {
+  if (portal === 'tajo') {
+    return '/tajo';
+  }
 
-export const isDev = process.env.NODE_ENV !== 'production';
+  return '';
+};
+
+export const initRootRoute = (fleet = undefined) => {
+  if (onDev) {
+    ROOT_ROUTE = chooseRoot();
+    return;
+  }
+
+  ROOT_ROUTE = `/portal/${fleet}/${portal}`;
+};
+
+const initRouterRoot = () => {
+  if (onDev) {
+    return `${chooseRoot()}/`;
+  }
+
+  return `/portal/:fleet/${portal}/`;
+};
+
+export const portal = process.env.DRVR_PROJECT;
 export const protocol = document.location.protocol;
 export const isSecure = protocol.search('https') !== -1;
 export const socketProtocol = isSecure ? 'wss' : 'ws';
@@ -24,6 +47,24 @@ export const onDev = serverEnv === 'dev';
 // use old local storage key notation for ssreports
 export const LOCAL_STORAGE_SESSION_KEY = portal !== 'ssreports' ?
   'drvr_tajo-sessionId' : 'ngStorage-sessionId';
+export let ROOT_ROUTE = '';
+export const REACT_ROUTER_ROOT = initRouterRoot();
+
+// support or not some old API depends on environment
+// for example:
+// at this moment (18.10.2016) we have 2 versions of LoginAPI.
+// new one works locally and on ddsdev,
+// while old one works on stage && production
+// and keeped alive for old portal.
+export const useLegacy = type => {
+  switch (type) {
+    // use old loginApi on stage and prod
+    case 'login': return !onDev;
+    case 'url-with-fleet': return !onDev;
+    default:
+      return false;
+  }
+};
 
 // isDev true only on localhost
-export const ENGINE_BASE = isDev ? DEV_ENGINE_BASE : PROD_ENGINE_BASE;
+export const ENGINE_BASE = onDev ? DEV_ENGINE_BASE : PROD_ENGINE_BASE;
