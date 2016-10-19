@@ -3,20 +3,23 @@ import pure from 'recompose/pure';
 import { Map, List } from 'immutable';
 import { connect } from 'react-redux';
 import Device from '../Device';
-import { fetchActions } from '../../actions';
 import {
-  getNotAttached,
-  getFaultVehicles,
+  // getNotAttached,
+  // getFaultVehicles,
   getCurrentFilter,
   getSearchString,
 } from '../../reducer';
 import { getDevices } from 'services/Devices/reducer';
 import { hasProcessedVehicles } from 'services/FleetModel/reducer';
+import {
+  fetchDevices,
+  updateWithVehicles,
+} from 'services/Devices/actions';
 
 import styles from './styles.css';
 
 function searchById(id, searchString) {
-  return id.search(searchString) !== -1;
+  return !!searchString ? id.search(searchString) !== -1 : true;
 }
 
 const ListItem = (props) => (
@@ -80,14 +83,22 @@ class DevicesList extends React.Component {
     };
   }
 
+  componentWillMount() {
+    if (this.props.devices.size === 0) {
+      this.props.fetchDevices();
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     // be sure vehicles loaded and setup is finished
-    if (!this.props.hasVehicles && nextProps.hasVehicles) {
-      this.props.fetchDevices()
-      .then(() => {
-        this.setState({
-          setupFinished: true,
-        });
+    if (!this.state.setupFinished &&
+        this.props.devices.size > 0 &&
+        (this.props.hasVehicles ||
+        (!this.props.hasVehicles && nextProps.hasVehicles))) {
+      this.setState({
+        setupFinished: true,
+      }, () => {
+        this.props.updateWithVehicles();
       });
     }
   }
@@ -109,13 +120,17 @@ DevicesList.propTypes = {
   // fetch list of all devices for fleet
   fetchDevices: React.PropTypes.func.isRequired,
 
+  // update devices with properties depends on vehicles
+  // like vehicle name, vehicleIsFault
+  updateWithVehicles: React.PropTypes.func.isRequired,
+
   // true if size of processedList > 0
   hasVehicles: React.PropTypes.bool.isRequired,
 
   // sources for filtering
   devices: React.PropTypes.instanceOf(Map).isRequired,
-  notAttached: React.PropTypes.instanceOf(List).isRequired,
-  faultVehicles: React.PropTypes.instanceOf(List).isRequired,
+  // notAttached: React.PropTypes.instanceOf(List).isRequired,
+  // faultVehicles: React.PropTypes.instanceOf(List).isRequired,
 
   searchString: React.PropTypes.string,
 
@@ -128,13 +143,14 @@ DevicesList.propTypes = {
 const mapState = state => ({
   devices: getDevices(state),
   hasVehicles: hasProcessedVehicles(state),
-  notAttached: getNotAttached(state),
-  faultVehicles: getFaultVehicles(state),
+  // notAttached: getNotAttached(state),
+  // faultVehicles: getFaultVehicles(state),
   currentFilter: getCurrentFilter(state),
   searchString: getSearchString(state),
 });
 const mapDispatch = {
-  fetchDevices: fetchActions.fetchDevices,
+  fetchDevices,
+  updateWithVehicles,
 };
 
 const PureDevicesList = pure(DevicesList);

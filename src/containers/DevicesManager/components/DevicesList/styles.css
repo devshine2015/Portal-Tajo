@@ -8,12 +8,12 @@
 
   .list__item {
     width: 100%;
-    margin: 0 10px 15px;
+    margin: 0 5px 15px;
   }
 }
 
 @media screen and (min-width: 530px) {
   .list__item {
-    width: 250px;
+    width: 260px;
   }
 }

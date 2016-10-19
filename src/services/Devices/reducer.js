@@ -1,5 +1,5 @@
 import { Map, fromJS } from 'immutable';
-import { DEVICES_FETCH_SUCCESS } from './actions';
+import { DEVICES_FETCH_SUCCESS, DEVICES_UPDATE } from './actions';
 
 const initialState = fromJS({
   list: new Map({}),
@@ -8,6 +8,9 @@ const initialState = fromJS({
 function reducer(state = initialState, action) {
   switch (action.type) {
     case DEVICES_FETCH_SUCCESS:
+      return state.set('list', new Map(action.devices));
+
+    case DEVICES_UPDATE:
       return state.set('list', new Map(action.devices));
 
     default:
