@@ -12,8 +12,14 @@
   }
 }
 
-@media screen and (min-width: 530px) {
+@media screen and (min-width: 540px) {
   .list__item {
-    width: 260px;
+    width: 48%;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .list__item {
+    width: 32%;
   }
 }
