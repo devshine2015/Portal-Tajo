@@ -38,7 +38,7 @@ function _login(data, dispatch) {
   };
 
   return api[method](url, options)
-    .then(res => res.json())
+    .then(_extractResponse(apiVersion))
     .then(res => {
       const sessionData = collectData(res);
 
@@ -73,11 +73,22 @@ function _logout({ redirectUrl }, dispatch, getState) {
 
 // after changing Login API
 // we get different responce schema
-function collectData(res) {
+function collectData(res, apiVersion) {
   const settings = res.settings || {};
+
+  if (apiVersion === 1) {
+    return {
+      sessionId: res,
+      role: 'installer',
+      settings,
+    };
+  }
 
   return {
     ...res,
     settings,
   };
 }
+
+const _extractResponse = apiVersion => res =>
+  apiVersion === 1 ? res.text() : res.json();
