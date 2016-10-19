@@ -8,10 +8,9 @@ const AUTH_SET = 'portal/Auth/AUTH_SET';
 const AUTH_RESET = 'portal/Auth/AUTH_RESET';
 
 // fleet - deprecated in new url schema
-const setAuthentication = (sessionId, fleet) => ({
+const setAuthentication = (sessionId) => ({
   type: AUTH_SET,
   sessionId,
-  fleet,
 });
 const resetAuthentication = () => ({
   type: AUTH_RESET,
