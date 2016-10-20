@@ -88,7 +88,7 @@ class Installer extends React.Component {
 
     if (!validateForm(fields)) {
       if (this.props.isOnline) {
-        // this.submitForm(fields);
+        this.submitForm(fields);
       } else {
         this.saveLocally(fields);
       }
