@@ -10,6 +10,7 @@ import {
 
 import styles from './styles.css';
 
+const ERROR_MESSAGE = 'You must choose one of existing devices';
 
 class Device extends React.Component {
 
@@ -19,7 +20,13 @@ class Device extends React.Component {
     }
   }
 
+  onUpdateInput = searchString => {
+    this.props.onChange('imei', searchString);
+  }
+
   render() {
+    const error = this.props.hasError ? ERROR_MESSAGE : '';
+
     return (
       <div className={styles.device}>
         <AutoComplete
@@ -30,6 +37,8 @@ class Device extends React.Component {
           dataSource={this.props.vacantDevices}
           filter={AutoComplete.fuzzyFilter}
           onNewRequest={this.props.onSelect}
+          onUpdateInput={this.onUpdateInput}
+          errorText={error}
           maxSearchResults={7}
         />
       </div>
@@ -40,9 +49,16 @@ class Device extends React.Component {
 Device.propTypes = {
   fetchDevices: React.PropTypes.func.isRequired,
 
+  // true if no device has been chosen
+  hasError: React.PropTypes.bool.isRequired,
+
   // Callback function that is fired when a list item is selected,
   // or enter is pressed in the TextField.
   onSelect: React.PropTypes.func.isRequired,
+
+  // Callback function that is fired when
+  // the user updates the TextField.
+  onChange: React.PropTypes.func.isRequired,
 
   // true if list not empty
   hasDevices: React.PropTypes.bool.isRequired,

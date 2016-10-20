@@ -36,6 +36,8 @@ class Installer extends React.Component {
       fields: initialFields,
       cannotSubmit: true,
       dialogIsOpen: this.dialogIsOpen(props),
+      noDeviceSelectedError: false,
+      deviceSelected: false,
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -51,30 +53,38 @@ class Installer extends React.Component {
 
   onChange = (e) => {
     const { name, value, type, checked } = e.target;
-    const nextState = Object.assign({}, {
-      fields: new Map(this.state.fields),
-    });
     let v;
 
     if (type === 'checkbox' && checked !== 'undefined') {
       v = checked;
     } else {
-      v = value.trim();
+      v = value;
     }
 
-    nextState.fields = nextState.fields.set(name, v);
-    nextState.cannotSubmit = validateForm(nextState.fields.toObject());
-
-    this.setState(nextState);
+    this.updateState(name, v);
   }
 
-  onDeviceSelect = (name, index) => {
-    console.log(name, index);
+  onDeviceSelect = imei => {
+    const fields = this.state.fields.set('imei', imei);
+
+    this.setState({
+      fields,
+      noDeviceSelectedError: false,
+      deviceSelected: true,
+    });
   }
 
   onSubmit = (e) => {
     e.preventDefault();
     const fields = this.state.fields.toObject();
+
+    if (!this.state.deviceSelected) {
+      this.setState({
+        noDeviceSelectedError: true,
+      });
+
+      return;
+    }
 
     if (!validateForm(fields)) {
       if (this.props.isOnline) {
@@ -83,6 +93,17 @@ class Installer extends React.Component {
         this.saveLocally(fields);
       }
     }
+  }
+
+  updateState = (name, value) => {
+    const nextState = Object.assign({}, {
+      fields: new Map(this.state.fields),
+    });
+
+    nextState.fields = nextState.fields.set(name, value);
+    nextState.cannotSubmit = validateForm(nextState.fields.toObject());
+
+    this.setState(nextState);
   }
 
   dialogIsOpen(props) {
@@ -179,7 +200,11 @@ class Installer extends React.Component {
             floatingLabelText="License Plate Number"
             required
           />
-          <Device onSelect={this.onDeviceSelect} />
+          <Device
+            onChange={this.updateState}
+            onSelect={this.onDeviceSelect}
+            hasError={this.state.noDeviceSelectedError}
+          />
           <TextField
             fullWidth
             name="odometer"
