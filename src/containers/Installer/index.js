@@ -8,6 +8,7 @@ import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
 import Form from 'components/Form';
 import Dialog from './components/Dialog';
+import Device from './components/Device';
 import OfflineData from './components/OfflineData';
 import { formActions, offlineDataActions } from './actions';
 import { validateForm } from 'utils/forms';
@@ -67,13 +68,17 @@ class Installer extends React.Component {
     this.setState(nextState);
   }
 
+  onDeviceSelect = (name, index) => {
+    console.log(name, index);
+  }
+
   onSubmit = (e) => {
     e.preventDefault();
     const fields = this.state.fields.toObject();
 
     if (!validateForm(fields)) {
       if (this.props.isOnline) {
-        this.submitForm(fields);
+        // this.submitForm(fields);
       } else {
         this.saveLocally(fields);
       }
@@ -174,13 +179,7 @@ class Installer extends React.Component {
             floatingLabelText="License Plate Number"
             required
           />
-          <TextField
-            fullWidth
-            name="imei"
-            onChange={this.onChange}
-            floatingLabelText="IMEI"
-            required
-          />
+          <Device onSelect={this.onDeviceSelect} />
           <TextField
             fullWidth
             name="odometer"
