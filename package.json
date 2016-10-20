@@ -64,6 +64,7 @@
     "leaflet.heat": "^0.2.0",
     "mapbox.js": "^2.4.0",
     "moment": "^2.13.0",
+    "node-uuid": "^1.4.7",
     "query-string": "^4.2.3",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
