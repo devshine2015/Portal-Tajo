@@ -96,14 +96,13 @@ class Installer extends React.Component {
   }
 
   updateState = (name, value) => {
-    const nextState = Object.assign({}, {
-      fields: new Map(this.state.fields),
+    const fields = this.state.fields.set(name, value);
+    const cannotSubmit = validateForm(this.state.fields.toObject());
+
+    this.setState({
+      fields,
+      cannotSubmit,
     });
-
-    nextState.fields = nextState.fields.set(name, value);
-    nextState.cannotSubmit = validateForm(nextState.fields.toObject());
-
-    this.setState(nextState);
   }
 
   dialogIsOpen(props) {

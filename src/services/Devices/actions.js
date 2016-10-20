@@ -28,7 +28,7 @@ export const fetchDevices = () => dispatch => {
 
         if (notAttached) {
           notAttachedAmount++;
-          vacantDevices.push(device.sn);
+          vacantDevices.push(device.id);
         }
 
         devicesMap[device.id] = {

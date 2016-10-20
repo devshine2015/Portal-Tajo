@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
+import { Map } from 'immutable';
 import AutoComplete from 'material-ui/AutoComplete';
+import MenuItem from 'material-ui/MenuItem';
 import { fetchDevices } from 'services/Devices/actions';
 import {
-  hasDevices,
+  getDevices,
   getVacantDevices,
 } from 'services/Devices/reducer';
 
@@ -15,7 +17,7 @@ const ERROR_MESSAGE = 'You must choose one of existing devices';
 class Device extends React.Component {
 
   componentWillMount() {
-    if (!this.props.hasDevices) {
+    if (this.props.devices.size === 0) {
       this.props.fetchDevices();
     }
   }
@@ -26,6 +28,23 @@ class Device extends React.Component {
 
   render() {
     const error = this.props.hasError ? ERROR_MESSAGE : '';
+    const dataSource = this.props.vacantDevices.map(id => {
+      const device = this.props.devices.get(id);
+
+      return {
+        text: device.original.sn,
+        value: (
+          <MenuItem
+            primaryText={device.original.sn}
+            secondaryText={(
+              <div className={styles.kindText}>
+                {device.original.kind}
+              </div>
+            )}
+          />
+        ),
+      };
+    });
 
     return (
       <div className={styles.device}>
@@ -34,7 +53,7 @@ class Device extends React.Component {
           fullWidth
           name="imei"
           floatingLabelText="IMEI"
-          dataSource={this.props.vacantDevices}
+          dataSource={dataSource}
           filter={AutoComplete.fuzzyFilter}
           onNewRequest={this.props.onSelect}
           onUpdateInput={this.onUpdateInput}
@@ -60,17 +79,17 @@ Device.propTypes = {
   // the user updates the TextField.
   onChange: React.PropTypes.func.isRequired,
 
-  // true if list not empty
-  hasDevices: React.PropTypes.bool.isRequired,
+  // list of all devices
+  devices: React.PropTypes.instanceOf(Map).isRequired,
 
-  // array of imies
+  // array of ids
   vacantDevices: React.PropTypes.arrayOf(
     React.PropTypes.string
   ).isRequired,
 };
 
 const mapState = state => ({
-  hasDevices: hasDevices(state),
+  devices: getDevices(state),
   vacantDevices: getVacantDevices(state),
 });
 const mapDispatch = {
