@@ -6,7 +6,7 @@ import {
   RaisedButton,
   FlatButton,
 } from 'material-ui';
-import DevicesSelector from 'components/DevicesSelector';
+import DevicesSelector from '../DevicesSelector';
 import { creatorActions } from 'containers/DevicesManager/actions';
 import devices from 'configs/devices';
 
