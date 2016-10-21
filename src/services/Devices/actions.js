@@ -5,6 +5,7 @@ import {
   getDevices,
   getFaultAmount,
   getNotAttachedAmount,
+  getVacantDeviceIndex,
 } from './reducer';
 
 export const DEVICES_DEVICE_DEACTIVATE = 'portal/Devices/DEVICES_DEVICE_DEACTIVATE';
@@ -19,6 +20,7 @@ export const fetchDevices = () => dispatch => {
     .then(res => res.json())
     .then(devices => {
       const devicesMap = {};
+      const vacantDevices = [];
       let notAttachedAmount = 0;
 
       devices.forEach(device => {
@@ -26,6 +28,7 @@ export const fetchDevices = () => dispatch => {
 
         if (notAttached) {
           notAttachedAmount++;
+          vacantDevices.push(device.id);
         }
 
         devicesMap[device.id] = {
@@ -37,7 +40,11 @@ export const fetchDevices = () => dispatch => {
         };
       });
 
-      dispatch(_devicesFetchSuccess(devicesMap, notAttachedAmount));
+      dispatch(_devicesFetchSuccess({
+        vacantDevices,
+        notAttachedAmount,
+        devices: devicesMap,
+      }));
 
       return devices;
     });
@@ -102,10 +109,10 @@ export const deactivateDevice = device => (dispatch, getState) => {
   const { url, method, apiVersion } = endpoints.deactivate(device.id);
 
   return api[method](url, { apiVersion })
-    .then((res) => {
-      console.log(res)
+    .then(() => {
       let notAttachedAmount = getNotAttachedAmount(getState());
       let faultAmount = getFaultAmount(getState());
+      const vacantDeviceIndex = getVacantDeviceIndex(getState(), device.original.sn);
 
       if (device.notAttached) {
         notAttachedAmount--;
@@ -116,17 +123,24 @@ export const deactivateDevice = device => (dispatch, getState) => {
 
       dispatch(_deactivateDevice({
         id: device.id,
+        name: device.name,
         faultAmount,
         notAttachedAmount,
+        vacantDeviceIndex,
       }));
 
       return Promise.resolve();
     });
 };
 
-const _devicesFetchSuccess = (devices, notAttachedAmount) => ({
+const _devicesFetchSuccess = ({
+  devices,
+  vacantDevices,
+  notAttachedAmount,
+}) => ({
   type: DEVICES_FETCH_SUCCESS,
   devices,
+  vacantDevices,
   notAttachedAmount,
 });
 
@@ -146,9 +160,11 @@ const _deactivateDevice = ({
   id,
   faultAmount,
   notAttachedAmount,
+  vacantDeviceIndex,
 }) => ({
   type: DEVICES_DEVICE_DEACTIVATE,
   id,
   faultAmount,
   notAttachedAmount,
+  vacantDeviceIndex,
 });
