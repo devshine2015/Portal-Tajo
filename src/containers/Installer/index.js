@@ -38,6 +38,7 @@ class Installer extends React.Component {
       dialogIsOpen: this.dialogIsOpen(props),
       noDeviceSelectedError: false,
       deviceSelected: false,
+      haveToReset: false,
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -88,7 +89,7 @@ class Installer extends React.Component {
 
     if (!validateForm(fields)) {
       if (this.props.isOnline) {
-        this.submitForm(fields);
+        // this.submitForm(fields);
       } else {
         this.saveLocally(fields);
       }
@@ -102,6 +103,7 @@ class Installer extends React.Component {
     this.setState({
       fields,
       cannotSubmit,
+      haveToReset: false,
     });
   }
 
@@ -147,6 +149,7 @@ class Installer extends React.Component {
     this.setState({
       fields: initialFields,
       cannotSubmit: true,
+      haveToReset: true,
     });
 
     formNode.reset();
@@ -203,6 +206,7 @@ class Installer extends React.Component {
             onChange={this.updateState}
             onSelect={this.onDeviceSelect}
             hasError={this.state.noDeviceSelectedError}
+            forcedValue={this.state.haveToReset ? '' : null}
           />
           <TextField
             fullWidth

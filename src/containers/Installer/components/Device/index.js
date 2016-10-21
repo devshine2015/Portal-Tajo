@@ -16,14 +16,40 @@ const ERROR_MESSAGE = 'You must choose one of existing devices';
 
 class Device extends React.Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      searchText: '',
+    };
+  }
+
   componentWillMount() {
     if (this.props.devices.size === 0) {
       this.props.fetchDevices();
     }
   }
 
-  onUpdateInput = searchString => {
-    this.props.onChange('imei', searchString);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.forcedValue !== null) {
+      this.setState({
+        searchText: nextProps.forcedValue,
+      });
+    }
+  }
+
+  onUpdateInput = searchText => {
+    this.setState({
+      searchText,
+    }, () => {
+      this.props.onChange('imei', searchText);
+    });
+  }
+
+  focusOnError = ref => {
+    if (!this.props.hasError) return;
+
+    ref.focus();
   }
 
   render() {
@@ -59,6 +85,8 @@ class Device extends React.Component {
           onUpdateInput={this.onUpdateInput}
           errorText={error}
           maxSearchResults={7}
+          searchText={this.state.searchText}
+          ref={this.focusOnError}
         />
       </div>
     );
@@ -67,6 +95,9 @@ class Device extends React.Component {
 
 Device.propTypes = {
   fetchDevices: React.PropTypes.func.isRequired,
+
+  // value to set by force from parent component
+  forcedValue: React.PropTypes.string,
 
   // true if no device has been chosen
   hasError: React.PropTypes.bool.isRequired,
