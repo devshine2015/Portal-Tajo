@@ -8,7 +8,6 @@ import {
   IconButton,
   RefreshIndicator,
 } from 'material-ui';
-import RefreshIcon from 'material-ui/svg-icons/navigation/refresh';
 import { fetchDevices } from 'services/Devices/actions';
 import {
   getDevices,
@@ -24,10 +23,15 @@ const STYLES = {
   fullWidth: {
     width: '100%',
   },
+  disabled: {
+    borderBottomWidth: 1,
+    borderBottomStyle: 'solid',
+    borderBottomColor: 'rgb(224, 224, 224)',
+  },
   refreshStatic: {
-    display: 'none',
-    // backgroundColor: '#000',
-    // boxShadow: 'none',
+    position: 'relative',
+    backgroundColor: 'transparent',
+    boxShadow: 'none',
   },
 };
 
@@ -44,19 +48,16 @@ const RefreshButton = ({ onClick, isRefreshing }) => {
     otherProps = {
       percentage: 100,
       status: 'ready',
+      style: STYLES.refreshStatic,
     };
-    // <RefreshIcon className={styles.icon} />
   }
 
   return (
     <IconButton onClick={onClick}>
       <RefreshIndicator
-        size={30}
         top={9}
         left={9}
-        style={{
-          display: 'none',
-        }}
+        size={29}
         {...otherProps}
       />
     </IconButton>
@@ -141,8 +142,9 @@ class Device extends React.Component {
       <div className={styles.device}>
         <AutoComplete
           required
-          name="imei"
           fullWidth
+          name="imei"
+          disabled={this.state.isRefreshing}
           floatingLabelText="IMEI"
           dataSource={dataSource}
           filter={AutoComplete.fuzzyFilter}
@@ -153,7 +155,7 @@ class Device extends React.Component {
           searchText={this.state.searchText}
           ref={this.focusOnError}
           style={STYLES.fullWidth}
-          textFieldStyle={STYLES.fullWidth}
+          underlineDisabledStyle={STYLES.disabled}
         />
         <RefreshButton
           onClick={this.refresh}
