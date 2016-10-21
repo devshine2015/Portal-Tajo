@@ -116,6 +116,13 @@ class Device extends React.Component {
     this.setState({
       isRefreshing: true,
     });
+
+    this.props.fetchDevices()
+    .then(() => {
+      this.setState({
+        isRefreshing: false,
+      });
+    });
   }
 
   render() {
