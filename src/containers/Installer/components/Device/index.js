@@ -2,17 +2,73 @@ import React from 'react';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import { Map } from 'immutable';
-import AutoComplete from 'material-ui/AutoComplete';
-import MenuItem from 'material-ui/MenuItem';
+import {
+  AutoComplete,
+  MenuItem,
+  IconButton,
+  RefreshIndicator,
+} from 'material-ui';
+import RefreshIcon from 'material-ui/svg-icons/navigation/refresh';
 import { fetchDevices } from 'services/Devices/actions';
 import {
   getDevices,
   getVacantDevices,
 } from 'services/Devices/reducer';
+import theme from 'configs/theme';
 
 import styles from './styles.css';
 
 const ERROR_MESSAGE = 'You must choose one of existing devices';
+
+const STYLES = {
+  fullWidth: {
+    width: '100%',
+  },
+  refreshStatic: {
+    display: 'none',
+    // backgroundColor: '#000',
+    // boxShadow: 'none',
+  },
+};
+
+const RefreshButton = ({ onClick, isRefreshing }) => {
+  let otherProps;
+
+  if (isRefreshing) {
+    otherProps = {
+      percentage: 0,
+      status: 'loading',
+      loadingColor: theme.palette.accent1Color,
+    };
+  } else {
+    otherProps = {
+      percentage: 100,
+      status: 'ready',
+    };
+    // <RefreshIcon className={styles.icon} />
+  }
+
+  return (
+    <IconButton onClick={onClick}>
+      <RefreshIndicator
+        size={30}
+        top={9}
+        left={9}
+        style={{
+          display: 'none',
+        }}
+        {...otherProps}
+      />
+    </IconButton>
+  );
+};
+
+RefreshButton.propTypes = {
+  onClick: React.PropTypes.func.isRequired,
+
+  // rotate icon during refresh
+  isRefreshing: React.PropTypes.bool.isRequired,
+};
 
 class Device extends React.Component {
 
@@ -21,6 +77,7 @@ class Device extends React.Component {
 
     this.state = {
       searchText: '',
+      isRefreshing: false,
     };
   }
 
@@ -52,6 +109,14 @@ class Device extends React.Component {
     ref.focus();
   }
 
+  refresh = () => {
+    if (this.state.isRefreshing) return;
+
+    this.setState({
+      isRefreshing: true,
+    });
+  }
+
   render() {
     const error = this.props.hasError ? ERROR_MESSAGE : '';
     const dataSource = this.props.vacantDevices.map(id => {
@@ -76,8 +141,8 @@ class Device extends React.Component {
       <div className={styles.device}>
         <AutoComplete
           required
-          fullWidth
           name="imei"
+          fullWidth
           floatingLabelText="IMEI"
           dataSource={dataSource}
           filter={AutoComplete.fuzzyFilter}
@@ -87,6 +152,12 @@ class Device extends React.Component {
           maxSearchResults={7}
           searchText={this.state.searchText}
           ref={this.focusOnError}
+          style={STYLES.fullWidth}
+          textFieldStyle={STYLES.fullWidth}
+        />
+        <RefreshButton
+          onClick={this.refresh}
+          isRefreshing={this.state.isRefreshing}
         />
       </div>
     );

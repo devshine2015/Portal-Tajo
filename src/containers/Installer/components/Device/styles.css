@@ -1,6 +1,14 @@
 @media screen and (min-width: 100px) {
+  .device {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+  }
+
   .kindText {
     font-size: 12px;
     color: #888;
   }
+
+  .icon {}
 }
