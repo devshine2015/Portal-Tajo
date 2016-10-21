@@ -217,6 +217,7 @@ class Installer extends React.Component {
             type="number"
           />
           <Checkbox
+            className={styles.odo}
             label="ODO value in miles"
             name="isMiles"
             onCheck={this.onChange}
