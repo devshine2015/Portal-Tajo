@@ -1,6 +1,7 @@
 @media screen and (min-width: 100px) {
   .creatorContainer {
     margin: 30px 0;
+    position: relative;
   }
 
   .header {
