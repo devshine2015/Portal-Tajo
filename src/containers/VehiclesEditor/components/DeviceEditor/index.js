@@ -1,13 +1,13 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 import RemoveIcon from 'material-ui/svg-icons/content/remove-circle-outline';
 import AddIcon from 'material-ui/svg-icons/content/add-circle-outline';
 import pure from 'recompose/pure';
 import theme from 'configs/theme';
+import { permissions } from 'configs/roles';
 import DeviceSelector from 'containers/DeviceSelector';
-import { deviceActions } from 'containers/VehiclesEditor/actions';
+import permitted from 'utils/permissionsRequired';
 
 import styles from './styles.css';
 
@@ -22,6 +22,11 @@ const STYLES = {
     color: theme.palette.accent1Color,
   },
 };
+
+const PERMISSIONS = [
+  permissions.DEVICES_DETACH,
+  permissions.DEVICES_ATTACH,
+];
 
 const EditorButton = ({
   onClick,
@@ -59,6 +64,7 @@ class DeviceEditor extends React.Component {
     this.state = {
       imei: props.deviceId || '',
       newImei: null,
+      haveToReset: false,
     };
   }
 
@@ -69,25 +75,25 @@ class DeviceEditor extends React.Component {
   }
 
   onAttach = () => {
-    this.props.attachDevice(this.props.vehicleId, this.state.newImei)
-    .then(() => {
-      this.setState({
-        newImei: null,
-      });
+    this.setState({
+      haveToReset: false,
+    }, () => {
+      this.props.updateDeviceId(this.state.newImei);
     });
   }
 
   onDetach = () => {
-    this.props.detachDevice(this.props.vehicleId);
-  }
-
-  onChange = (e, value) => {
-    this.updateImeiState(value);
+    this.setState({
+      haveToReset: true,
+    }, () => {
+      this.props.updateDeviceId('');
+    });
   }
 
   onNewDeviceSelect = imei => {
     this.setState({
       newImei: imei,
+      haveToReset: false,
     });
   }
 
@@ -105,6 +111,8 @@ class DeviceEditor extends React.Component {
     const floatingLabelStyle = !hasDevice ? STYLES.warning : {};
     const errorStyle = !hasDevice ? STYLES.warning : {};
     const underlineStyle = !hasDevice ? STYLES.warningUnderline : {};
+    const canAttach = this.props.userPermittedTo[permissions.DEVICES_ATTACH];
+    const canDetach = this.props.userPermittedTo[permissions.DEVICES_DETACH];
 
     let inputField;
 
@@ -121,7 +129,6 @@ class DeviceEditor extends React.Component {
           errorStyle={errorStyle}
           inputStyle={fieldStyles}
           underlineShow={!hasDevice}
-          onChange={this.onChange}
           floatingLabelText="Device IMEI"
           underlineStyle={underlineStyle}
           floatingLabelStyle={floatingLabelStyle}
@@ -130,11 +137,11 @@ class DeviceEditor extends React.Component {
     } else {
       inputField = (
         <DeviceSelector
-          onChange={() => ({})}
-          onSelect={this.onNewDeviceSelect}
+          disabled={!canAttach}
           hasError={false}
-          forcedValue={null}
           canRefresh={false}
+          forcedValue={this.state.haveToReset ? '' : null}
+          onSelect={this.onNewDeviceSelect}
         />
       );
     }
@@ -143,7 +150,7 @@ class DeviceEditor extends React.Component {
       <div className={styles.editor}>
         { inputField }
 
-        { !hasDevice && (
+        { !hasDevice && canAttach && (
           <EditorButton
             disabled={!this.state.newImei}
             tooltip="Attach device"
@@ -152,7 +159,7 @@ class DeviceEditor extends React.Component {
           />
         )}
 
-        { hasDevice && (
+        { hasDevice && canDetach && (
           <EditorButton
             tooltip="Detach device"
             icon={<RemoveIcon />}
@@ -173,16 +180,13 @@ DeviceEditor.propTypes = {
   // id of vehicle
   vehicleId: React.PropTypes.string.isRequired,
 
-  detachDevice: React.PropTypes.func.isRequired,
-  attachDevice: React.PropTypes.func.isRequired,
+  userPermittedTo: React.PropTypes.object,
+
+  // callback on attach/detach device
+  // returns new deviceId
+  updateDeviceId: React.PropTypes.func.isRequired,
 };
 
-const mapState = null;
-const mapDispatch = {
-  detachDevice: deviceActions.detachDevice,
-  attachDevice: deviceActions.attachDevice,
-};
+const PureDeviceEditor = pure(permitted(PERMISSIONS)(DeviceEditor));
 
-const PureDeviceEditor = pure(DeviceEditor);
-
-export default connect(mapState, mapDispatch)(PureDeviceEditor);
+export default PureDeviceEditor;

@@ -100,7 +100,9 @@ class DeviceSelector extends React.Component {
     this.setState({
       searchText,
     }, () => {
-      this.props.onChange('imei', searchText);
+      if (this.props.onChange) {
+        this.props.onChange('imei', searchText);
+      }
     });
   }
 
@@ -132,6 +134,7 @@ class DeviceSelector extends React.Component {
   render() {
     const error = this.props.hasError ? ERROR_MESSAGE : '';
     const canRefresh = this.props.canRefresh === undefined ? true : this.props.canRefresh;
+    const disabled = this.props.disabled || this.state.isRefreshing;
 
     const dataSource = this.props.vacantDevices.map(id => {
       const device = this.props.devices.get(id);
@@ -157,7 +160,7 @@ class DeviceSelector extends React.Component {
           required
           fullWidth
           name="imei"
-          disabled={this.state.isRefreshing}
+          disabled={disabled}
           floatingLabelText="IMEI"
           dataSource={dataSource}
           filter={AutoComplete.fuzzyFilter}
@@ -194,6 +197,9 @@ DeviceSelector.propTypes = {
   // true if no device has been chosen
   hasError: React.PropTypes.bool.isRequired,
 
+  // whether textField disabled or not
+  disabled: React.PropTypes.bool,
+
   // will render RefreshButton within actions layout if set to true
   // true by default
   canRefresh: React.PropTypes.bool,
@@ -209,7 +215,7 @@ DeviceSelector.propTypes = {
 
   // Callback function that is fired when
   // the user updates the TextField.
-  onChange: React.PropTypes.func.isRequired,
+  onChange: React.PropTypes.func,
 
   // list of all devices
   devices: React.PropTypes.instanceOf(Map).isRequired,

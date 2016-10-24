@@ -98,6 +98,24 @@ export function makeUpdateVehicleRequest(details, dispatch) {
   }, error => Promise.reject(error));
 }
 
+export const attachDevice = (vehicleId, deviceId) => {
+  const { url, method, apiVersion } = endpoints.attachDevice(vehicleId);
+
+  return api[method](url, {
+    apiVersion,
+    payload: { deviceId },
+  });
+};
+
+export const detachDevice = (vehicleId, deviceId) => {
+  const { url, method, apiVersion } = endpoints.detachDevice(vehicleId);
+
+  return api[method](url, {
+    apiVersion,
+    payload: { deviceId },
+  });
+};
+
 function toJson(response) {
   return response.json();
 }
