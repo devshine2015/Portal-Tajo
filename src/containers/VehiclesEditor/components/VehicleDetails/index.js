@@ -36,6 +36,7 @@ class VehicleDetails extends React.Component {
      * Initial values for controlled inputs
      **/
     this.state = Object.assign({}, props.details, {
+      year: parseInt(props.details.year, 10),
       isMiles: false,
     });
   }
@@ -116,6 +117,8 @@ class VehicleDetails extends React.Component {
       SelectedKindIcon = () => selectedKind.icon;
     }
 
+    const yearIsDefined = typeof this.state.year === 'number';
+
     return (
       <div className={styles.details}>
         <Form
@@ -177,7 +180,7 @@ class VehicleDetails extends React.Component {
             name="year"
             onChange={this.onChange}
             floatingLabelText="Year of Manufacture"
-            value={this.state.year}
+            value={yearIsDefined ? this.state.year : ''}
             type="number"
           />
           <TextField

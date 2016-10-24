@@ -51,6 +51,12 @@ class DeviceEditor extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.deviceId !== nextProps.deviceId) {
+      this.updateImeiState(nextProps.deviceId);
+    }
+  }
+
   onAttach = () => {
     this.props.attachDevice(this.props.vehicleId, this.state.imei);
   }
@@ -59,7 +65,11 @@ class DeviceEditor extends React.Component {
     this.props.detachDevice(this.props.vehicleId);
   }
 
-  onImeiChange = (e, value) => {
+  onChange = (e, value) => {
+    this.updateImeiState(value);
+  }
+
+  updateImeiState = (value = '') => {
     this.setState({
       imei: value,
     });
@@ -77,7 +87,6 @@ class DeviceEditor extends React.Component {
     return (
       <div className={styles.editor}>
         <TextField
-          autoWidth
           type="number"
           name="deviceId"
           floatingLabelFixed
@@ -88,7 +97,7 @@ class DeviceEditor extends React.Component {
           errorStyle={errorStyle}
           inputStyle={fieldStyles}
           underlineShow={!hasDevice}
-          onChange={this.onImeiChange}
+          onChange={this.onChange}
           floatingLabelText="Device IMEI"
           underlineStyle={underlineStyle}
           floatingLabelStyle={floatingLabelStyle}
