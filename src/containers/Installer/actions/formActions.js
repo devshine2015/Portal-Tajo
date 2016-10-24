@@ -22,13 +22,9 @@ export const sendData = (formData, dispatch) => {
     .then(() => api[createVehicle.method](createVehicle.url, vehiclePayload))
     .then(res => res.json())
     .then(vehicle => {
-      const { url, method } = endpoints.attachDevice(vehicle.id);
-
       dispatch(vehiclesActions.addVehicle(vehicle));
 
-      return api[method](url, {
-        payload: { deviceId: formData.imei },
-      });
+      return vehiclesActions.attachDevice(vehicle.id, formData.imei);
     })
     .then(() => {
       dispatch(setLoaderState(false));

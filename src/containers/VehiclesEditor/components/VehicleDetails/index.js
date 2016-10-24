@@ -9,6 +9,7 @@ import {
   Checkbox,
 } from 'material-ui';
 import Form from 'components/Form';
+import DeviceEditor from '../DeviceEditor';
 import { VEHICLE_KINDS, getVehicleByValue } from 'services/FleetModel/utils/vehiclesMap';
 import styles from './styles.css';
 
@@ -17,9 +18,6 @@ const STYLES = {
   menuItem: {
     paddingTop: 5,
     paddingBottom: 5,
-  },
-  disabledField: {
-    color: 'rgba(0, 0, 0, 0.870588)',
   },
 };
 
@@ -30,6 +28,17 @@ function getOdo({ odometer, isMiles }) {
   return parseInt(odo, 10);
 }
 
+function setVehicleState(props) {
+  return {
+    ...props.details,
+    isMiles: false,
+  };
+}
+
+function checkIfDeviceChanged(state, props) {
+  return state.deviceId !== props.details.deviceId;
+}
+
 class VehicleDetails extends React.Component {
   constructor(props) {
     super(props);
@@ -37,13 +46,13 @@ class VehicleDetails extends React.Component {
     /**
      * Initial values for controlled inputs
      **/
-    this.state = Object.assign({}, props.details, {
-      isMiles: false,
-    });
+    this.state = setVehicleState(props);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.checkIfVehicleChanged(nextProps);
+    if (this.props.id !== nextProps.id) {
+      this.setNewVehicleDetails(nextProps);
+    }
   }
 
   /**
@@ -52,6 +61,12 @@ class VehicleDetails extends React.Component {
   onSubmit = (e) => {
     e.preventDefault();
     const nameChanged = this.state.name !== this.props.details.name;
+    const deviceChanged = checkIfDeviceChanged(this.state, this.props);
+
+    const device = {
+      needDetach: !!this.props.details.deviceId && deviceChanged,
+      needAttach: !!this.state.deviceId && deviceChanged,
+    };
 
     const toSave = Object.assign({}, this.state, {
       odometer: {
@@ -59,7 +74,7 @@ class VehicleDetails extends React.Component {
       },
     });
 
-    this.props.onSave(toSave, nameChanged);
+    this.props.onSave(toSave, nameChanged, device);
   }
 
   onIsMilesChange = (e, isCheked) => {
@@ -75,7 +90,7 @@ class VehicleDetails extends React.Component {
     const field = e.target.name;
 
     this.setState({
-      [field]: value.trim(),
+      [field]: value,
     });
   }
 
@@ -88,8 +103,14 @@ class VehicleDetails extends React.Component {
   /**
    * Update state if another vehicle has been chosen
    **/
-  checkIfVehicleChanged(nextProps) {
-    this.setState({ ...nextProps.details, isMiles: false });
+  setNewVehicleDetails(nextProps) {
+    this.setState(setVehicleState(nextProps));
+  }
+
+  updateDeviceId = deviceId => {
+    this.setState({
+      deviceId,
+    });
   }
 
   renderKindMenuItems() {
@@ -154,16 +175,13 @@ class VehicleDetails extends React.Component {
             floatingLabelText="License Plate Number"
             value={this.state.licensePlate}
           />
-          <TextField
-            disabled
-            autoWidth
-            floatingLabelFixed
-            underlineShow={false}
-            name="deviceId"
-            floatingLabelText="Device IMEI"
-            inputStyle={STYLES.disabledField}
-            value={this.props.details.deviceId || ''}
+
+          <DeviceEditor
+            vehicleId={this.props.id}
+            deviceId={this.state.deviceId}
+            updateDeviceId={this.updateDeviceId}
           />
+
           <TextField
             fullWidth
             name="make"

@@ -57,6 +57,11 @@ const endpoints = {
     method: 'post',
     apiVersion: 1,
   }),
+  detachDevice: id => ({
+    url: `vehicles/${id}/device`,
+    method: 'delete',
+    apiVersion: 1,
+  }),
 
   // stats
   getStats: {

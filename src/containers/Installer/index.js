@@ -8,6 +8,7 @@ import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
 import Form from 'components/Form';
 import Dialog from './components/Dialog';
+import DeviceSelector from 'containers/DeviceSelector';
 import OfflineData from './components/OfflineData';
 import { formActions, offlineDataActions } from './actions';
 import { validateForm } from 'utils/forms';
@@ -35,6 +36,9 @@ class Installer extends React.Component {
       fields: initialFields,
       cannotSubmit: true,
       dialogIsOpen: this.dialogIsOpen(props),
+      noDeviceSelectedError: false,
+      deviceSelected: false,
+      haveToReset: false,
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -50,34 +54,57 @@ class Installer extends React.Component {
 
   onChange = (e) => {
     const { name, value, type, checked } = e.target;
-    const nextState = Object.assign({}, {
-      fields: new Map(this.state.fields),
-    });
     let v;
 
     if (type === 'checkbox' && checked !== 'undefined') {
       v = checked;
     } else {
-      v = value.trim();
+      v = value;
     }
 
-    nextState.fields = nextState.fields.set(name, v);
-    nextState.cannotSubmit = validateForm(nextState.fields.toObject());
+    this.updateState(name, v);
+  }
 
-    this.setState(nextState);
+  onDeviceSelect = imei => {
+    const fields = this.state.fields.set('imei', imei);
+
+    this.setState({
+      fields,
+      noDeviceSelectedError: false,
+      deviceSelected: true,
+    });
   }
 
   onSubmit = (e) => {
     e.preventDefault();
     const fields = this.state.fields.toObject();
 
+    if (!this.state.deviceSelected) {
+      this.setState({
+        noDeviceSelectedError: true,
+      });
+
+      return;
+    }
+
     if (!validateForm(fields)) {
       if (this.props.isOnline) {
-        this.submitForm(fields);
+        // this.submitForm(fields);
       } else {
         this.saveLocally(fields);
       }
     }
+  }
+
+  updateState = (name, value) => {
+    const fields = this.state.fields.set(name, value);
+    const cannotSubmit = validateForm(this.state.fields.toObject());
+
+    this.setState({
+      fields,
+      cannotSubmit,
+      haveToReset: false,
+    });
   }
 
   dialogIsOpen(props) {
@@ -122,6 +149,7 @@ class Installer extends React.Component {
     this.setState({
       fields: initialFields,
       cannotSubmit: true,
+      haveToReset: true,
     });
 
     formNode.reset();
@@ -174,12 +202,11 @@ class Installer extends React.Component {
             floatingLabelText="License Plate Number"
             required
           />
-          <TextField
-            fullWidth
-            name="imei"
-            onChange={this.onChange}
-            floatingLabelText="IMEI"
-            required
+          <DeviceSelector
+            onChange={this.updateState}
+            onSelect={this.onDeviceSelect}
+            hasError={this.state.noDeviceSelectedError}
+            forcedValue={this.state.haveToReset ? '' : null}
           />
           <TextField
             fullWidth
@@ -190,6 +217,7 @@ class Installer extends React.Component {
             type="number"
           />
           <Checkbox
+            className={styles.odo}
             label="ODO value in miles"
             name="isMiles"
             onCheck={this.onChange}

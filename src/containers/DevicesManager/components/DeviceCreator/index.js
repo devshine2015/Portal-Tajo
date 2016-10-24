@@ -3,32 +3,14 @@ import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import {
   TextField,
-  SelectField,
-  MenuItem,
   RaisedButton,
   FlatButton,
 } from 'material-ui';
+import DevicesSelector from '../DevicesSelector';
 import { creatorActions } from 'containers/DevicesManager/actions';
+import devices from 'configs/devices';
 
 import styles from './styles.css';
-
-const KINDS = [{
-  id: 1,
-  manufacturer: 'Atrack',
-  model: 'as7',
-}, {
-  id: 2,
-  manufacturer: 'Atrack',
-  model: 'al5',
-}];
-
-const kinds = KINDS.map(kind => (
-  <MenuItem
-    key={kind.id}
-    value={`${kind.manufacturer} ${kind.model}`}
-    primaryText={`${kind.manufacturer} ${kind.model}`}
-  />
-));
 
 class DeviceCreator extends React.Component {
   constructor(props) {
@@ -36,7 +18,7 @@ class DeviceCreator extends React.Component {
 
     this.state = {
       imei: '',
-      model: null,
+      modelId: '',
     };
   }
 
@@ -47,13 +29,17 @@ class DeviceCreator extends React.Component {
   }
 
   onModelChange = (e, key, value) => {
-    this.updateState('model', value);
+    this.updateState('modelId', value);
   }
 
   onSubmit = e => {
     e.preventDefault();
+    const deviceName = devices.getById(this.state.modelId).name;
 
-    this.props.submitDevice(this.state);
+    this.props.submitDevice({
+      imei: this.state.imei,
+      model: deviceName,
+    });
   }
 
   updateState = (name, value) => {
@@ -72,31 +58,27 @@ class DeviceCreator extends React.Component {
     return (
       <div className={styles.creatorContainer}>
         <h3 className={styles.header}>Register new device</h3>
-        <form
-          onSubmit={this.onSubmit}
-        >
-          <TextField
-            required
-            fullWidth
-            floatingLabelText="IMEI"
-            name="imei"
-            type="number"
-            onChange={this.onType}
-            value={this.state.imei}
-            ref={this.focus}
-          />
-          <SelectField
-            required
-            fullWidth
-            floatingLabelFixed
-            floatingLabelText="Choose Model"
-            name="model"
-            value={this.state.model}
-            onChange={this.onModelChange}
-          >
-            {kinds}
-          </SelectField>
-
+        <form onSubmit={this.onSubmit}>
+          <div className={styles.row}>
+            <TextField
+              required
+              fullWidth
+              floatingLabelFixed
+              floatingLabelText="IMEI"
+              name="imei"
+              type="number"
+              onChange={this.onType}
+              value={this.state.imei}
+              ref={this.focus}
+            />
+            <DevicesSelector
+              required
+              fullWidth
+              floatingLabelFixed
+              onChange={this.onModelChange}
+              value={this.state.modelId}
+            />
+          </div>
           <div className={styles.buttons}>
             <RaisedButton
               primary
