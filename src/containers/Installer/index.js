@@ -8,7 +8,7 @@ import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
 import Form from 'components/Form';
 import Dialog from './components/Dialog';
-import Device from './components/Device';
+import DeviceSelector from 'containers/DeviceSelector';
 import OfflineData from './components/OfflineData';
 import { formActions, offlineDataActions } from './actions';
 import { validateForm } from 'utils/forms';
@@ -202,7 +202,7 @@ class Installer extends React.Component {
             floatingLabelText="License Plate Number"
             required
           />
-          <Device
+          <DeviceSelector
             onChange={this.updateState}
             onSelect={this.onDeviceSelect}
             hasError={this.state.noDeviceSelectedError}

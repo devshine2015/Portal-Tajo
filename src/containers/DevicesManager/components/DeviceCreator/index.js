@@ -18,7 +18,7 @@ class DeviceCreator extends React.Component {
 
     this.state = {
       imei: '',
-      modelId: null,
+      modelId: '',
     };
   }
 

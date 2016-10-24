@@ -124,6 +124,12 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
       return newState;
     }
 
+    case vehiclesActions.FLEET_MODEL_DETACH_DEVICE:
+      return state.deleteIn(['processedList', action.id, 'deviceId']);
+
+    case vehiclesActions.FLEET_MODEL_ATTACH_DEVICE:
+      return state.setIn(['processedList', action.id, 'deviceId'], action.deviceId);
+
     default:
       return state;
   }

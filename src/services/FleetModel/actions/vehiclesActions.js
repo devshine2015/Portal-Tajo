@@ -17,6 +17,8 @@ export const FLEET_MODEL_VEHICLE_UPDATE = 'portal/services/FLEET_MODEL_VEHICLE_U
 export const FLEET_MODEL_VEHICLE_SELECT = 'portal/services/FLEET_MODEL_VEHICLE_SELECT';
 export const FLEET_MODEL_VEHICLE_ADD = 'portal/services/FLEET_MODEL_VEHICLE_ADD';
 export const FLEET_MODEL_ORDER_UPDATE = 'portal/services/FLEET_MODEL_ORDER_UPDATE';
+export const FLEET_MODEL_DETACH_DEVICE = 'portal/services/FLEET_MODEL_DETACH_DEVICE';
+export const FLEET_MODEL_ATTACH_DEVICE = 'portal/services/FLEET_MODEL_ATTACH_DEVICE';
 
 export const fetchVehicles = () => _fetchVehicles;
 export const updateDetails = (details = {}) => dispatch =>
@@ -95,6 +97,24 @@ export function makeUpdateVehicleRequest(details, dispatch) {
     return Promise.resolve();
   }, error => Promise.reject(error));
 }
+
+export const attachDevice = (vehicleId, deviceId) => {
+  const { url, method, apiVersion } = endpoints.attachDevice(vehicleId);
+
+  return api[method](url, {
+    apiVersion,
+    payload: { deviceId },
+  });
+};
+
+export const detachDevice = (vehicleId, deviceId) => {
+  const { url, method, apiVersion } = endpoints.detachDevice(vehicleId);
+
+  return api[method](url, {
+    apiVersion,
+    payload: { deviceId },
+  });
+};
 
 function toJson(response) {
   return response.json();

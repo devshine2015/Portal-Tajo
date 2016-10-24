@@ -71,7 +71,7 @@ RefreshButton.propTypes = {
   isRefreshing: React.PropTypes.bool.isRequired,
 };
 
-class Device extends React.Component {
+class DeviceSelector extends React.Component {
 
   constructor(props) {
     super(props);
@@ -100,8 +100,14 @@ class Device extends React.Component {
     this.setState({
       searchText,
     }, () => {
-      this.props.onChange('imei', searchText);
+      if (this.props.onChange) {
+        this.props.onChange('imei', searchText);
+      }
     });
+  }
+
+  onDeviceSelect = value => {
+    this.props.onSelect(value.text);
   }
 
   focusOnError = ref => {
@@ -127,6 +133,9 @@ class Device extends React.Component {
 
   render() {
     const error = this.props.hasError ? ERROR_MESSAGE : '';
+    const canRefresh = this.props.canRefresh === undefined ? true : this.props.canRefresh;
+    const disabled = this.props.disabled || this.state.isRefreshing;
+
     const dataSource = this.props.vacantDevices.map(id => {
       const device = this.props.devices.get(id);
 
@@ -151,29 +160,36 @@ class Device extends React.Component {
           required
           fullWidth
           name="imei"
-          disabled={this.state.isRefreshing}
-          floatingLabelText="IMEI"
-          dataSource={dataSource}
-          filter={AutoComplete.fuzzyFilter}
-          onNewRequest={this.props.onSelect}
-          onUpdateInput={this.onUpdateInput}
+          openOnFocus
           errorText={error}
+          disabled={disabled}
           maxSearchResults={7}
-          searchText={this.state.searchText}
+          dataSource={dataSource}
           ref={this.focusOnError}
           style={STYLES.fullWidth}
+          floatingLabelText="IMEI"
+          filter={AutoComplete.fuzzyFilter}
+          onNewRequest={this.onDeviceSelect}
+          onUpdateInput={this.onUpdateInput}
+          searchText={this.state.searchText}
           underlineDisabledStyle={STYLES.disabled}
         />
-        <RefreshButton
-          onClick={this.refresh}
-          isRefreshing={this.state.isRefreshing}
-        />
+        <div className={styles.actions}>
+          { this.props.actions || null }
+
+          { canRefresh && (
+            <RefreshButton
+              onClick={this.refresh}
+              isRefreshing={this.state.isRefreshing}
+            />
+          )}
+        </div>
       </div>
     );
   }
 }
 
-Device.propTypes = {
+DeviceSelector.propTypes = {
   fetchDevices: React.PropTypes.func.isRequired,
 
   // value to set by force from parent component
@@ -182,13 +198,25 @@ Device.propTypes = {
   // true if no device has been chosen
   hasError: React.PropTypes.bool.isRequired,
 
+  // whether textField disabled or not
+  disabled: React.PropTypes.bool,
+
+  // will render RefreshButton within actions layout if set to true
+  // true by default
+  canRefresh: React.PropTypes.bool,
+
+  // additional actions for DeviceSelector
+  actions: React.PropTypes.arrayOf(
+    React.PropTypes.node
+  ),
+
   // Callback function that is fired when a list item is selected,
   // or enter is pressed in the TextField.
   onSelect: React.PropTypes.func.isRequired,
 
   // Callback function that is fired when
   // the user updates the TextField.
-  onChange: React.PropTypes.func.isRequired,
+  onChange: React.PropTypes.func,
 
   // list of all devices
   devices: React.PropTypes.instanceOf(Map).isRequired,
@@ -207,6 +235,6 @@ const mapDispatch = {
   fetchDevices,
 };
 
-const PureDevice = pure(Device);
+const PureDeviceSelector = pure(DeviceSelector);
 
-export default connect(mapState, mapDispatch)(PureDevice);
+export default connect(mapState, mapDispatch)(PureDeviceSelector);

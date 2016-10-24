@@ -11,7 +11,12 @@ import {
 export const VEHICLE_EDITOR_LOADER_SET = 'portal/VehiclesEditor/VEHICLE_EDITOR_LOADER_SET';
 export const VEHICLE_EDITOR_LOADER_RESET = 'portal/VehiclesEditor/VEHICLE_EDITOR_LOADER_RESET';
 
-export const updateDetails = (data = {}, selectedVehicleId, needResort) => (dispatch, getState) => {
+export const updateDetails = ({
+  data = {},
+  selectedVehicleId,
+  needResort,
+  device,
+}) => (dispatch, getState) => {
   dispatch({
     type: VEHICLE_EDITOR_LOADER_SET,
   });
@@ -23,13 +28,14 @@ export const updateDetails = (data = {}, selectedVehicleId, needResort) => (disp
   };
   const details = cleanVehicle(updatedDetails);
 
+  let newIndex;
+  let deviceId;
+
   return vehiclesActions.makeUpdateVehicleRequest(details, dispatch, getState)
     .then(() => {
       dispatch({
         type: VEHICLE_EDITOR_LOADER_RESET,
       });
-
-      let newIndex;
 
       if (needResort) {
         const vehicles = getVehiclesEx(getState());
@@ -43,8 +49,32 @@ export const updateDetails = (data = {}, selectedVehicleId, needResort) => (disp
         });
       }
 
-      return Promise.resolve(newIndex);
-    }, () => {
+      // attach or detach device
+      let deviceFunction = () => Promise.resolve();
+
+      // first - detach device if needed
+      if (device.needDetach) {
+        deviceId = selectedVehicle.deviceId;
+        deviceFunction = vehiclesActions.detachDevice;
+      } else if (device.needAttach) {
+        deviceId = data.deviceId;
+        deviceFunction = vehiclesActions.attachDevice;
+      }
+
+      return deviceFunction(selectedVehicle.id, deviceId);
+    })
+    .then(() => {
+      let deviceFunction = () => Promise.resolve();
+
+      // second - attach new device if needed
+      if (device.needDetach && device.needAttach) {
+        deviceId = data.deviceId;
+        deviceFunction = vehiclesActions.attachDevice;
+      }
+
+      return deviceFunction(selectedVehicle.id, deviceId);
+    })
+    .then(() => Promise.resolve(newIndex), () => {
       dispatch({
         type: VEHICLE_EDITOR_LOADER_RESET,
       });
