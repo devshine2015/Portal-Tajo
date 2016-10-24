@@ -5,13 +5,15 @@ import { vehiclesActions } from 'services/FleetModel/actions';
 export const detachDevice = vehicleId => dispatch => {
   const { url, method, apiVersion } = endpoints.detachDevice(vehicleId);
 
-  return api[method](url, { apiVersion })
-    .then(() => {
+  // return api[method](url, { apiVersion })
+  //   .then(() => {
       dispatch({
         type: vehiclesActions.FLEET_MODEL_DETACH_DEVICE,
         id: vehicleId,
       });
-    }, () => {});
+      
+      return Promise.resolve();
+    // }, () => {});
 };
 
 export const attachDevice = (vehicleId, deviceId) => dispatch => {
@@ -23,12 +25,14 @@ export const attachDevice = (vehicleId, deviceId) => dispatch => {
     apiVersion,
   };
 
-  return api[method](url, payload)
-    .then(() => {
+  // return api[method](url, payload)
+    // .then(() => {
       dispatch({
         type: vehiclesActions.FLEET_MODEL_ATTACH_DEVICE,
         id: vehicleId,
         deviceId,
       });
-    }, () => {});
+
+      return Promise.resolve();
+    // }, () => {});
 };

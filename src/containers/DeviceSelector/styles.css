@@ -3,6 +3,7 @@
     position: relative;
     display: flex;
     align-items: baseline;
+    width: 100%;
   }
 
   .kindText {

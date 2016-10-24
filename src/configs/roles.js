@@ -24,6 +24,8 @@ export const permissions = {
   DEVICES_SEE: 'able see devices list',
   DEVICES_CREATE: 'able create new device',
   DEVICES_DEACTIVATE: 'able deactivate device',
+  DEVICES_ATTACH: 'able attach device to vehicle',
+  DEVICES_DETACH: 'able detach device from vehicle',
   /* end of devices management */
 };
 
@@ -37,6 +39,8 @@ const rolesAbilities = {
       [permissions.DEVICES_SEE]: true,
       [permissions.DEVICES_CREATE]: true,
       [permissions.DEVICES_DEACTIVATE]: true,
+      [permissions.DEVICES_DETACH]: true,
+      [permissions.DEVICES_ATTACH]: true,
     },
     admin: {
       [permissions.USERS_SEE]: true,
@@ -49,6 +53,8 @@ const rolesAbilities = {
       [permissions.DEVICES_SEE]: true,
       [permissions.DEVICES_CREATE]: true,
       [permissions.DEVICES_DEACTIVATE]: true,
+      [permissions.DEVICES_DETACH]: true,
+      [permissions.DEVICES_ATTACH]: true,
     },
     manager: {
       [permissions.USERS_SEE]: true,
@@ -64,8 +70,16 @@ const rolesAbilities = {
   },
 
   portal: {
-    admin: {},
-    manager: {},
+    admin: {
+      [permissions.DEVICES_SEE]: true,
+      [permissions.DEVICES_DETACH]: true,
+      [permissions.DEVICES_ATTACH]: true,
+    },
+    manager: {
+      [permissions.DEVICES_SEE]: true,
+      [permissions.DEVICES_DETACH]: true,
+      [permissions.DEVICES_ATTACH]: true,
+    },
     installer: {},
   },
 };

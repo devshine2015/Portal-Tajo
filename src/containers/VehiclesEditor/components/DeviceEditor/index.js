@@ -6,6 +6,7 @@ import RemoveIcon from 'material-ui/svg-icons/content/remove-circle-outline';
 import AddIcon from 'material-ui/svg-icons/content/add-circle-outline';
 import pure from 'recompose/pure';
 import theme from 'configs/theme';
+import DeviceSelector from 'containers/DeviceSelector';
 import { deviceActions } from 'containers/VehiclesEditor/actions';
 
 import styles from './styles.css';
@@ -22,8 +23,14 @@ const STYLES = {
   },
 };
 
-const EditorButton = ({ onClick, icon, tooltip }) => (
+const EditorButton = ({
+  onClick,
+  icon,
+  tooltip,
+  disabled = false,
+}) => (
   <IconButton
+    disabled={disabled}
     tooltip={tooltip}
     onClick={onClick}
   >
@@ -32,6 +39,9 @@ const EditorButton = ({ onClick, icon, tooltip }) => (
 );
 
 EditorButton.propTypes = {
+  // false by default
+  disabled: React.PropTypes.bool,
+
   // callback fired on button click
   onClick: React.PropTypes.func.isRequired,
 
@@ -48,6 +58,7 @@ class DeviceEditor extends React.Component {
 
     this.state = {
       imei: props.deviceId || '',
+      newImei: null,
     };
   }
 
@@ -58,7 +69,12 @@ class DeviceEditor extends React.Component {
   }
 
   onAttach = () => {
-    this.props.attachDevice(this.props.vehicleId, this.state.imei);
+    this.props.attachDevice(this.props.vehicleId, this.state.newImei)
+    .then(() => {
+      this.setState({
+        newImei: null,
+      });
+    });
   }
 
   onDetach = () => {
@@ -67,6 +83,12 @@ class DeviceEditor extends React.Component {
 
   onChange = (e, value) => {
     this.updateImeiState(value);
+  }
+
+  onNewDeviceSelect = imei => {
+    this.setState({
+      newImei: imei,
+    });
   }
 
   updateImeiState = (value = '') => {
@@ -84,10 +106,12 @@ class DeviceEditor extends React.Component {
     const errorStyle = !hasDevice ? STYLES.warning : {};
     const underlineStyle = !hasDevice ? STYLES.warningUnderline : {};
 
-    return (
-      <div className={styles.editor}>
+    let inputField;
+
+    if (hasDevice) {
+      inputField = (
         <TextField
-          type="number"
+          fullWidth
           name="deviceId"
           floatingLabelFixed
           hintText={hintText}
@@ -102,9 +126,26 @@ class DeviceEditor extends React.Component {
           underlineStyle={underlineStyle}
           floatingLabelStyle={floatingLabelStyle}
         />
+      );
+    } else {
+      inputField = (
+        <DeviceSelector
+          onChange={() => ({})}
+          onSelect={this.onNewDeviceSelect}
+          hasError={false}
+          forcedValue={null}
+          canRefresh={false}
+        />
+      );
+    }
+
+    return (
+      <div className={styles.editor}>
+        { inputField }
 
         { !hasDevice && (
           <EditorButton
+            disabled={!this.state.newImei}
             tooltip="Attach device"
             icon={<AddIcon />}
             onClick={this.onAttach}

@@ -1,4 +1,8 @@
-.editor {
-  display: flex;
-  align-items: flex-end;
+@media screen and (min-width: 100px) {
+  .editor {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    max-width: 350px;
+  }
 }
