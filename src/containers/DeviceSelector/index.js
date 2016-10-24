@@ -160,17 +160,18 @@ class DeviceSelector extends React.Component {
           required
           fullWidth
           name="imei"
+          openOnFocus
+          errorText={error}
           disabled={disabled}
-          floatingLabelText="IMEI"
+          maxSearchResults={7}
           dataSource={dataSource}
+          ref={this.focusOnError}
+          style={STYLES.fullWidth}
+          floatingLabelText="IMEI"
           filter={AutoComplete.fuzzyFilter}
           onNewRequest={this.onDeviceSelect}
           onUpdateInput={this.onUpdateInput}
-          errorText={error}
-          maxSearchResults={7}
           searchText={this.state.searchText}
-          ref={this.focusOnError}
-          style={STYLES.fullWidth}
           underlineDisabledStyle={STYLES.disabled}
         />
         <div className={styles.actions}>
