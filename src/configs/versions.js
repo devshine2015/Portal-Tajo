@@ -9,6 +9,6 @@ export default {
 
       return version === this.currentVersion;
     },
-    currentVersion: 2.4,
+    currentVersion: 2.41,
   },
 };

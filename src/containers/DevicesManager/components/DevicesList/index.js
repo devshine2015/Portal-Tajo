@@ -71,9 +71,9 @@ class DevicesList extends React.Component {
     // be sure vehicles and devices loaded and setup is finished
     if (!this.state.setupFinished &&
         (this.props.devices.size > 0 ||
-          (!this.props.devices.size && nextProps.devices.size > 0)) &&
+          (!this.props.devices.size && nextProps.devices.size > 0)) /*&&
         (this.props.hasVehicles ||
-        (!this.props.hasVehicles && nextProps.hasVehicles))) {
+        (!this.props.hasVehicles && nextProps.hasVehicles))*/) {
       this.setState({
         setupFinished: true,
       }, () => {
@@ -83,7 +83,7 @@ class DevicesList extends React.Component {
   }
 
   render() {
-    if (this.props.devices.size === 0 || !this.state.setupFinished) {
+    if (this.props.devices.size === 0/* || !this.state.setupFinished*/) {
       return null;
     }
 

@@ -34,6 +34,7 @@ const eraseAuth = () => (dispatch, getState) => {
 export default {
   AUTH_SET,
   AUTH_RESET,
+  LOGOUT_SUCCESS,
   setAuthentication,
   resetAuthentication,
   eraseAuth,
