@@ -82,10 +82,9 @@ function collectData(res, apiVersion) {
 
   if (apiVersion === 1) {
     return {
+      settings,
       sessionId: res,
       role: 'manager',
-      fleet:
-      settings,
     };
   }
 
