@@ -33,6 +33,14 @@ const TYPES = {
     type: 'vehicle-stop-stats',
     disabled: false,
   },
+  GEOFENCE_ENTER: {
+    type: 'vehicle-entered-geofence',
+    disabled: false,
+  },
+  GEOFENCE_LEAVE: {
+    type: 'vehicle-left-geofence',
+    disabled: false,
+  },
 };
 
 const prettifiedTypes = {
@@ -44,6 +52,8 @@ const prettifiedTypes = {
   [TYPES.START_MOVING.type]: 'Start Moving',
   [TYPES.STOP_MOVING.type]: 'Stop Moving',
   [TYPES.STOP_STATS.type]: 'Stop Statistics',
+  [TYPES.GEOFENCE_ENTER.type]: 'Geofence Entered',
+  [TYPES.GEOFENCE_LEAVE.type]: 'Geofence Leaved',
 };
 
 const disabledTypes = Object.keys(TYPES)
@@ -58,6 +68,7 @@ function prettifyAdditionalInfo(type, {
   stopPeriod,
   stoppedPeriod,
   movingPeriod,
+  gf,
 }) {
   switch (type) {
     case TYPES.FUEL.type: {
@@ -81,21 +92,61 @@ function prettifyAdditionalInfo(type, {
     case TYPES.STOP_STATS.type: {
       return `Stop period: ${stopPeriod}, Ignition on period: ${ignitionOnPeriod}`;
     }
+    case TYPES.GEOFENCE_ENTER.type: {
+      return `Entered geofence: ${gf.name}`;
+    }
+    case TYPES.GEOFENCE_LEAVE.type: {
+      return `Left geofence: ${gf.name}`;
+    }
     default:
       return '';
   }
 }
 
-const calculateVehicleRow = ({ ev, type } = {}, {
+function calcCommonEvents({ ev, type } = {}, {
   dateFormat,
   name,
   licensePlate,
-}, noEvents = false) => {
+}) {
+  const prettyType = prettifiedTypes[type] || type;
+  const { pos, ts, vehicleId, ...rest } = ev;
+
+  return [
+    licensePlate, // license plate number
+    name,         // vehcile name
+    prettyType,   // prettified event type
+    moment.utc(pos.posTime).format(dateFormat), // event time
+    `${pos.latlon.lat}, ${pos.latlon.lng}`,   // event position
+    pos.speed.toFixed(2, 10),   // speed
+    prettifyAdditionalInfo(type, rest),  // additional info
+  ];
+}
+
+function calcGeofenceEvents({ ev, type } = {}, {
+  dateFormat,
+  name,
+  licensePlate,
+}) {
+  const prettyType = prettifiedTypes[type] || type;
+  const { crossPos, crossTime, vehicleId, ...rest } = ev;
+
+  return [
+    licensePlate, // license plate number
+    name,         // vehcile name
+    prettyType,   // prettified event type
+    moment.utc(crossTime).format(dateFormat), // event time
+    `${crossPos.lat}, ${crossPos.lng}`,   // event position
+    '', // speed
+    prettifyAdditionalInfo(type, rest),  // additional info
+  ];
+}
+
+const calculateVehicleRow = (event, options, noEvents = false) => {
   // return single row in case of no events
   if (noEvents) {
     return [
-      licensePlate,
-      name,
+      options.licensePlate,
+      options.name,
       'no data',
       'no data',
       'no data',
@@ -104,18 +155,14 @@ const calculateVehicleRow = ({ ev, type } = {}, {
     ];
   }
 
-  const prettyType = prettifiedTypes[type] || type;
-  const { pos, ts, vehicleId, ...rest } = ev;
+  switch (event.type) {
+    case TYPES.GEOFENCE_LEAVE.type:
+    case TYPES.GEOFENCE_ENTER.type:
+      return calcGeofenceEvents(event, options);
 
-  return [
-    licensePlate,
-    name,
-    prettyType,
-    moment.utc(pos.posTime).format(dateFormat),
-    `${pos.latlon.lat}, ${pos.latlon.lng}`,
-    pos.speed.toFixed(2, 10),
-    prettifyAdditionalInfo(type, rest),
-  ];
+    default:
+      return calcCommonEvents(event, options);
+  }
 };
 
 const calculateVehicleRows = options => (events = []) => {
@@ -169,5 +216,11 @@ export const fields = [{
   order: 4,
   eventTypes: [TYPES.FUEL.type],
   name: TYPES.FUEL.type,
+  disabled: true,
+}, {
+  label: 'Geofence crossing (coming soon)',
+  order: 5,
+  eventTypes: [TYPES.GEOFENCE_ENTER.type, TYPES.GEOFENCE_LEAVE.type],
+  name: 'geofences',
   disabled: true,
 }];
