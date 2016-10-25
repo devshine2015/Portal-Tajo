@@ -3,6 +3,8 @@ import endpoints from 'configs/endpoints';
 import specsUtils from '../utils/specsUtils';
 
 function formatValue(v) {
+  if (!v) return '';
+
   const d = moment.duration(v, 'seconds');
   const h = d.get('hours');
   const m = d.get('minutes');
@@ -15,11 +17,19 @@ function _calc(record, { selectedTypes }) {
   return specsUtils.calcToReturn({
     stoppedTime: formatValue(record.stoppedTime),
     idleWhileStopped: formatValue(record.idleWhileStopped),
+    ignOn: formatValue(record.ignOn),
+    drivingTime: formatValue(record.drivingTime),
   }, selectedTypes);
 }
 
 function _filterSimilar(allSelectedReportTypes) {
-  const similarTypes = ['stoppedTime', 'idleWhileStopped'];
+  const similarTypes = [
+    'ignOn', // 1
+    'stoppedTime', // 2.1
+    'idleWhileStopped', // 2.2
+    'nonIdleWhileStopped', //
+    'drivingTime', // 3
+  ];
 
   return specsUtils.filterSimilar(allSelectedReportTypes, similarTypes);
 }
@@ -47,6 +57,18 @@ const fields = [{
   label: 'Idling Time',
   name: 'idleWhileStopped',
   order: 8,
+}, {
+  ...commonFields,
+  reportType: 'drivingTime',
+  label: 'Driving Time',
+  name: 'drivingTime',
+  order: 9,
+}, {
+  ...commonFields,
+  reportType: 'ignOn',
+  label: 'Ignition On Time',
+  name: 'ignOn',
+  order: 10,
 }];
 
 export default fields;
