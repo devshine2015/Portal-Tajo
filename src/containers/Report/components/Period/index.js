@@ -54,6 +54,7 @@ class Period extends React.Component {
         formatDate={this.formatDate}
         autoOk
         hintText="End date interval"
+        defaultDate={this.props.fields.end.default}
         name={this.props.fields.end.name}
         onChange={this.onEndDateChange}
       />
@@ -107,7 +108,7 @@ Period.propTypes = {
     }).isRequired,
     end: React.PropTypes.shape({
       name: React.PropTypes.string.isRequired,
-      default: React.PropTypes.any,
+      default: React.PropTypes.any.isRequired,
     }).isRequired,
     startTime: React.PropTypes.shape({
       name: React.PropTypes.string.isRequired,
