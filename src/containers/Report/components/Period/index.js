@@ -66,7 +66,6 @@ class Period extends React.Component {
         textFieldStyle={STYLES.picker}
         className={styles.picker}
         autoOk
-        container="inline"
         defaultTime={this.props.fields.startTime.default}
         format="24hr"
         hintText="Start time interval"
@@ -77,7 +76,6 @@ class Period extends React.Component {
         textFieldStyle={STYLES.picker}
         className={styles.picker}
         autoOk
-        container="inline"
         defaultTime={this.props.fields.endTime.default}
         format="24hr"
         hintText="End time interval"
