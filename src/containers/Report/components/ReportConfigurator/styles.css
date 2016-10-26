@@ -49,6 +49,7 @@
     width: 1px;
     background-color: rgb(224, 224, 224);
     position: relative;
+    z-index: -1;
   }
 
   .separator:after {

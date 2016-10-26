@@ -12,22 +12,20 @@ const STYLES = {
     flexShrink: 0,
     maxWidth: 240,
   },
-  helpIcon: {
-    width: 24,
-    height: 24,
-    padding: 0,
+  label: {
+    fontSize: 15,
   },
   helpButton: {
-    width: 24,
-    height: 24,
-    padding: 0,
+    width: 30,
+    height: 30,
+    padding: 3,
   },
 };
 
 const Help = ({ tooltip }) => (
   <IconButton
-    iconStyle={STYLES.helpIcon}
     style={STYLES.helpButton}
+    iconStyle={STYLES.helpIcon}
     tooltip={tooltip}
     tooltipPosition="top-center"
   >
@@ -55,6 +53,7 @@ class Field extends React.Component {
       <Checkbox
         checked={this.props.isChecked}
         label={this.props.label}
+        labelStyle={STYLES.label}
         name={this.props.name}
         onCheck={this.injectProps}
         disabled={this.props.disabled || false}

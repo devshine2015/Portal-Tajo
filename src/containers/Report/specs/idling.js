@@ -51,7 +51,7 @@ const commonFields = {
 const fields = [{
   ...commonFields,
   reportType: 'idlingTime',
-  label: 'Idling Time',
+  label: 'Total Idling Time',
   name: 'idlingTime',
   help: 'Ignition On While Stopped + Ignition Off While Stopped',
   order: 7,
