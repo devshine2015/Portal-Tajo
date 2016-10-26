@@ -16,7 +16,9 @@ function formatValue(v) {
 function _calc(record, { selectedTypes }) {
   return specsUtils.calcToReturn({
     // stoppedTime: formatValue(record.stoppedTime),
-    idleWhileStopped: formatValue(record.idleWhileStopped),
+    idlingTime: formatValue(record.ignOnWhileStopped + record.ignOffWhileStopped),
+    ignOnWhileStopped: formatValue(record.ignOnWhileStopped),
+    ignOffWhileStopped: formatValue(record.ignOffWhileStopped),
     ignOn: formatValue(record.ignOn),
     drivingTime: formatValue(record.drivingTime),
   }, selectedTypes);
@@ -24,10 +26,11 @@ function _calc(record, { selectedTypes }) {
 
 function _filterSimilar(allSelectedReportTypes) {
   const similarTypes = [
+    // 'stopPeriod', // ?
     'ignOn', // 1
-    // 'stoppedTime', // 2.1
-    'idleWhileStopped', // 2.1
-    'nonIdleWhileStopped', // 2.2
+    'idlingTime', // 2 = 2.1 + 2.2
+    'ignOffWhileStopped', // 2.1
+    'ignOnWhileStopped', // 2.2
     'drivingTime', // 3
   ];
 
@@ -47,28 +50,34 @@ const commonFields = {
 
 const fields = [{
   ...commonFields,
-  reportType: 'idleWhileStopped',
+  reportType: 'idlingTime',
   label: 'Idling Time',
-  name: 'idleWhileStopped',
+  name: 'idlingTime',
   order: 7,
-}, /* {
+}, {
   ...commonFields,
-  reportType: 'stoppedTime',
-  label: 'Stopped Time',
-  name: 'stoppedTime',
-  order: 7,
-}, */ {
+  reportType: 'ignOnWhileStopped',
+  label: 'Ignition On While Stopped',
+  name: 'ignOnWhileStopped',
+  order: 8,
+}, {
+  ...commonFields,
+  reportType: 'ignOffWhileStopped',
+  label: 'Ignition Off While Stopped',
+  name: 'ignOffWhileStopped',
+  order: 9,
+}, {
   ...commonFields,
   reportType: 'drivingTime',
   label: 'Driving Time',
   name: 'drivingTime',
-  order: 8,
+  order: 10,
 }, {
   ...commonFields,
   reportType: 'ignOn',
   label: 'Ignition On Time',
   name: 'ignOn',
-  order: 9,
+  order: 11,
 }];
 
 export default fields;
