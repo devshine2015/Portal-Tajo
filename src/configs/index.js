@@ -20,20 +20,20 @@ const chooseRoot = () => {
 };
 
 export const initRootRoute = (fleet = undefined) => {
-  if (onDev) {
-    ROOT_ROUTE = chooseRoot();
+  if (onProduction) {
+    ROOT_ROUTE = `/portal/${fleet}/${portal}`;
     return;
   }
 
-  ROOT_ROUTE = `/portal/${fleet}/${portal}`;
+  ROOT_ROUTE = chooseRoot();
 };
 
 const initRouterRoot = () => {
-  if (onDev) {
-    return `${chooseRoot()}/`;
+  if (onProduction) {
+    return `/portal/:fleet/${portal}/`;
   }
 
-  return `/portal/:fleet/${portal}/`;
+  return `${chooseRoot()}/`;
 };
 
 export const portal = process.env.DRVR_PROJECT;
@@ -59,8 +59,8 @@ export const REACT_ROUTER_ROOT = initRouterRoot();
 export const useLegacy = type => {
   switch (type) {
     // use old loginApi on stage and prod
-    case 'login': return !onDev;
-    case 'url-with-fleet': return !onDev;
+    case 'login': return onProduction;
+    case 'url-with-fleet': return onProduction;
     default:
       return false;
   }

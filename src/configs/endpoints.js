@@ -1,17 +1,17 @@
 import qs from 'query-string';
-import { onDev, onStage, onProduction } from 'configs';
+import { onProduction } from 'configs';
 
 const endpoints = {
   // authentication
   login: {
     url: 'login',
     method: 'post',
-    apiVersion: onProduction || onStage ? 1 : 1.1,
+    apiVersion: onProduction ? 1 : 1.1,
   },
   logout: {
     url: 'login',
     method: 'delete',
-    apiVersion: onProduction || onStage ? 1 : 1.1,
+    apiVersion: onProduction ? 1 : 1.1,
   },
 
   // locations
