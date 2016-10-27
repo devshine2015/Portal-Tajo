@@ -9,6 +9,7 @@ import { getFleetName } from 'services/UserModel/reducer';
 import { getIsUserAuthenticated } from 'services/Auth/reducer';
 import { localActions } from 'services/Auth/actions';
 import { commonFleetActions } from 'services/FleetModel/actions';
+import { fetchDevices } from 'services/Devices/actions';
 
 const URLS = {
   failure: 'login',
@@ -23,7 +24,8 @@ class InnerPortal extends React.Component {
   checkUserAuthentication() {
     this.props.checkUserAuthentication({ urls: URLS }).then(isAuthenticated => {
       if (isAuthenticated) {
-        this.props.fetchFleet();
+        this.props.fetchFleet()
+        .then(() => this.props.fetchDevices());
       }
     });
   }
@@ -57,6 +59,7 @@ InnerPortal.propTypes = {
   checkUserAuthentication: React.PropTypes.func.isRequired,
   children: React.PropTypes.node,
   fetchFleet: React.PropTypes.func.isRequired,
+  fetchDevices: React.PropTypes.func.isRequired,
   fleet: React.PropTypes.string,
   isAuthenticated: React.PropTypes.bool.isRequired,
   showPortalsList: React.PropTypes.bool,
@@ -69,6 +72,7 @@ const mapState = (state) => ({
   isAuthenticated: getIsUserAuthenticated(state),
 });
 const mapDispatch = {
+  fetchDevices,
   checkUserAuthentication: localActions.checkUserAuthentication,
   fetchFleet: commonFleetActions.fetchFleet,
 };

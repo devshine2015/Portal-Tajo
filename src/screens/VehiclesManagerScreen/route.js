@@ -15,15 +15,13 @@ const createRoute = ({
     require.ensure([], require => {
       const importModules = Promise.all([
         require('containers/VehiclesEditor/reducer'),
-        require('services/Devices/reducer'),
         require('./index'),
       ]);
 
       const renderModule = loadModule(cb);
 
-      importModules.then(([reducer, devices, component]) => {
+      importModules.then(([reducer, component]) => {
         injectReducer(NAME, reducer.default);
-        injectReducer('devices', devices.default);
         renderModule(component);
       });
 

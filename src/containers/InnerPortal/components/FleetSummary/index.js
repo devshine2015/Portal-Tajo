@@ -1,8 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import pure from 'recompose/pure';
 import CarIcon from 'material-ui/svg-icons/maps/directions-car';
 import DeviceIcon from 'material-ui/svg-icons/hardware/router';
 import NotReportedIcon from 'material-ui/svg-icons/alert/error-outline';
 import DelayedIcon from 'material-ui/svg-icons/action/watch-later';
+import { getVehiclesAmount } from 'services/FleetModel/reducer';
+import { getDevicesAmount } from 'services/Devices/reducer';
 import theme from 'configs/theme';
 
 import styles from './styles.css';
@@ -15,7 +19,10 @@ const STYLES = {
   },
 };
 
-const Amount = ({ amount, icon }) => (
+const Amount = ({
+  amount = 0,
+  icon,
+}) => (
   <div className={styles.amount}>
     { amount }
     <div className={styles.amount__icon}>
@@ -28,7 +35,7 @@ const Amount = ({ amount, icon }) => (
 );
 
 Amount.propTypes = {
-  amount: React.PropTypes.number.isRequired,
+  amount: React.PropTypes.number,
   icon: React.PropTypes.node.isRequired,
 };
 
@@ -38,11 +45,11 @@ class FleetSummary extends React.Component {
     return (
       <div className={styles.summaryWrapper}>
         <Amount
-          amount={134}
+          amount={this.props.vehiclesAmount}
           icon={<CarIcon color={theme.palette.primary3Color} />}
         />
         <Amount
-          amount={132}
+          amount={this.props.devicesAmount}
           icon={<DeviceIcon color={theme.palette.primary3Color} />}
         />
         <Amount
@@ -58,4 +65,17 @@ class FleetSummary extends React.Component {
   }
 }
 
-export default FleetSummary;
+FleetSummary.propTypes = {
+  vehiclesAmount: React.PropTypes.number,
+  devicesAmount: React.PropTypes.number,
+};
+
+const mapState = state => ({
+  vehiclesAmount: getVehiclesAmount(state),
+  devicesAmount: getDevicesAmount(state),
+});
+
+const PureFleetSummary = pure(FleetSummary);
+
+export default connect(mapState)(PureFleetSummary);
+

@@ -3,5 +3,5 @@ import { fetchGFs } from './gfActions';
 
 export const fetchFleet = () => dispatch => {
   dispatch(fetchGFs());
-  dispatch(fetchVehicles());
+  return dispatch(fetchVehicles());
 };
