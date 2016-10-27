@@ -3,6 +3,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { AppBar, FlatButton } from 'material-ui';
 import { changeMainSidebarState } from 'containers/InnerPortal/actions';
+import FleetSummary from '../FleetSummary';
 import { logout } from '../../actions';
 
 import styles from './styles.css';
@@ -27,6 +28,11 @@ class ApplicationBar extends React.Component {
           className={styles.bar}
           zDepth={0}
           onLeftIconButtonTouchTap={this.props.toggleSidebar}
+          children={(
+            <div className={styles.centerContainer}>
+              <FleetSummary />
+            </div>
+          )}
         />
       </div>
     );

@@ -24,7 +24,6 @@ function renderAddButton(userPermittedTo, onClick) {
       <FloatingActionButton
         onClick={onClick}
         className={styles.floatingButton}
-        primary
       >
         <ContentAdd />
       </FloatingActionButton>
