@@ -1,8 +1,10 @@
 import endpoints from 'configs/endpoints';
 import api from 'utils/api';
+import { updateLocalVehicles } from '../utils/vehicleHelpers';
 
 export const FLEET_MODEL_SOCKET_SET = 'portal/services/FLEET_MODEL_SOCKET_SET';
 export const FLEET_MODEL_SOCKET_SET_BATCH = 'portal/services/FLEET_MODEL_SOCKET_SET_BATCH';
+export const FLEET_MODEL_SOCKET_SET_BATCH2 = 'portal/services/FLEET_MODEL_SOCKET_SET_BATCH2';
 
 export const openFleetSocket = () => _openFleetSocket;
 export const closeFleetSocket = _closeSocket;
@@ -68,8 +70,10 @@ function onMessageBatchingWithTimer(inEvent, dispatch) {
   const data = JSON.parse(inEvent.data);
   if (batchQueue.length === 0) {
     window.setTimeout(() => {
-      console.log("dispatching BATCH "+batchQueue.length);
-      dispatch(_updateStatusBatch(batchQueue));
+      // console.log("dispatching BATCH "+batchQueue.length);
+      const updates = updateLocalVehicles(batchQueue);
+      dispatch(_updateStatusBatch2(updates));
+      // dispatch(_updateStatusBatch(batchQueue));
       batchQueue.length = 0;
     }, BATCHING_TIME_MS);
   }
@@ -91,4 +95,9 @@ const _updateStatus = (statusObj) => ({
 const _updateStatusBatch = (statusBatch) => ({
   type: FLEET_MODEL_SOCKET_SET_BATCH,
   statusBatch,
+});
+
+const _updateStatusBatch2 = updates => ({
+  type: FLEET_MODEL_SOCKET_SET_BATCH2,
+  updates,
 });

@@ -14,6 +14,39 @@
 import { ZOMBIE_TIME_TRH_MS, LAG_INDICAION_TRH_MS } from 'utils/constants';
 import { sortByName } from 'utils/sorting';
 
+function updateLocalVehicle(status) {
+  const sinceEpoch = (new Date(status.ts)).getTime();
+  const isZombie = checkZombieVehicle(sinceEpoch);
+  const nextStatus = {
+    isZombie,
+    isDead: false,
+    lastUpdateSinceEpoch: sinceEpoch,
+  };
+
+  if (status.temp !== undefined) {
+    nextStatus.temp = status.temp.temperature;
+  }
+  if (status.dist !== undefined) {
+    nextStatus.dist = status.dist;
+  }
+  if (status.pos !== undefined) {
+    nextStatus.pos = [status.pos.latlon.lat, status.pos.latlon.lng];
+    nextStatus.speed = status.pos.speed;
+  }
+
+  return nextStatus;
+}
+
+export function updateLocalVehicles(wsStatuses) {
+  const updates = {};
+
+  wsStatuses.forEach(status => {
+    updates[status.id] = updateLocalVehicle(status);
+  });
+
+  return updates;
+}
+
 export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
   if (backEndObject.status !== 'active'
     || !backEndObject.name) {
