@@ -108,3 +108,9 @@ export const getDelayedList = state =>
 
 export const getDelayedAmount = state =>
   state.get('delayedList').size;
+
+export const getAmounts = state => ({
+  deadAmount: getDeadAmount(state),
+  delayedAmount: getDelayedAmount(state),
+  vehiclesAmount: getVehiclesAmount(state),
+});

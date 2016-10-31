@@ -57,6 +57,8 @@ export const getDeadAmount = state =>
   fromVehiclesReducer.getDeadAmount(vehicles(state));
 export const getDelayedAmount = state =>
   fromVehiclesReducer.getDelayedAmount(vehicles(state));
+export const getAmounts = state =>
+  fromVehiclesReducer.getAmounts(vehicles(state));
 
 export const getGFs = state =>
   fromgfReducer.getGFs(locations(state));

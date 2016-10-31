@@ -5,8 +5,8 @@ import CarIcon from 'material-ui/svg-icons/maps/directions-car';
 import DeviceIcon from 'material-ui/svg-icons/hardware/router';
 import NotReportedIcon from 'material-ui/svg-icons/alert/error-outline';
 import DelayedIcon from 'material-ui/svg-icons/action/watch-later';
-import { getVehiclesAmount } from 'services/FleetModel/reducer';
 import { getDevicesAmount } from 'services/Devices/reducer';
+import { getAmounts } from 'services/FleetModel/reducer';
 import theme from 'configs/theme';
 
 import styles from './styles.css';
@@ -53,11 +53,11 @@ class FleetSummary extends React.Component {
           icon={<DeviceIcon color={theme.palette.primary3Color} />}
         />
         <Amount
-          amount={14}
+          amount={this.props.deadAmount}
           icon={<NotReportedIcon color={theme.palette.accent2Color} />}
         />
         <Amount
-          amount={37}
+          amount={this.props.delayedAmount}
           icon={<DelayedIcon color={theme.palette.accent2Color} />}
         />
       </div>
@@ -66,12 +66,14 @@ class FleetSummary extends React.Component {
 }
 
 FleetSummary.propTypes = {
-  vehiclesAmount: React.PropTypes.number,
-  devicesAmount: React.PropTypes.number,
+  vehiclesAmount: React.PropTypes.number.isRequired,
+  devicesAmount: React.PropTypes.number.isRequired,
+  delayedAmount: React.PropTypes.number.isRequired,
+  deadAmount: React.PropTypes.number.isRequired,
 };
 
 const mapState = state => ({
-  vehiclesAmount: getVehiclesAmount(state),
+  ...getAmounts(state),
   devicesAmount: getDevicesAmount(state),
 });
 
