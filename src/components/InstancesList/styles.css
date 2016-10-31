@@ -6,10 +6,10 @@
   .listItemInn {
     padding: 7px 15px;
     min-height: 78px;
-    cursor: pointer;
     transition: color .2s;
     display: block;
     font-size: 14px;
+    position: relative;
   }
 
   .listItemInn,
