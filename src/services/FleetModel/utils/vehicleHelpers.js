@@ -11,40 +11,102 @@
 // "deviceId": "863286020885894",
 // "status": "active"
 // "kind":    //optional
+import { Map } from 'immutable';
 import { ZOMBIE_TIME_TRH_MS, LAG_INDICAION_TRH_MS } from 'utils/constants';
 import { sortByName } from 'utils/sorting';
+import {
+  getProcessedVehicles,
+  getDeadList,
+  getDelayedList,
+} from '../reducer';
 
-function updateLocalVehicle(status) {
+const updateLocalVehicle = (vehicle, status) => {
   const sinceEpoch = (new Date(status.ts)).getTime();
-  const isZombie = checkZombieVehicle(sinceEpoch);
-  const nextStatus = {
-    isZombie,
-    isDead: false,
-    lastUpdateSinceEpoch: sinceEpoch,
-  };
+  const hasPosition = !!status.pos;
+  const isDead = !hasPosition;
+  const isDelayed = checkLaggedVehicle(sinceEpoch);
 
-  if (status.temp !== undefined) {
-    nextStatus.temp = status.temp.temperature;
-  }
-  if (status.dist !== undefined) {
-    nextStatus.dist = status.dist;
-  }
-  if (status.pos !== undefined) {
-    nextStatus.pos = [status.pos.latlon.lat, status.pos.latlon.lng];
-    nextStatus.speed = status.pos.speed;
-  }
+  const nextVehicle = vehicle.withMutations(s => {
+    s.set('isDead', isDead)
+     .set('isDelayed', isDelayed)
+     .set('lastUpdateSinceEpoch', sinceEpoch);
 
-  return nextStatus;
-}
-
-export function updateLocalVehicles(wsStatuses) {
-  const updates = {};
-
-  wsStatuses.forEach(status => {
-    updates[status.id] = updateLocalVehicle(status);
+    if (status.temp !== undefined) {
+      s.set('temp', status.temp.temperature);
+    }
+    if (status.dist !== undefined) {
+      s.set('dist', status.dist);
+    }
+    if (hasPosition) {
+      s.set('pos', [status.pos.latlon.lat, status.pos.latlon.lng])
+       .set('speed', status.pos.speed);
+    }
   });
 
-  return updates;
+  const wasDead = vehicle.get('isDead');
+  const wasDelayed = vehicle.get('isDelayed');
+
+  let willDead = isDead;
+  let willDelayed = isDelayed;
+
+  if (wasDead !== isDead) {
+    if (wasDead && !isDead) {
+      willDead = false;
+    } else if (!wasDead && isDead) {
+      willDead = true;
+    }
+  }
+
+  if (wasDelayed !== isDelayed) {
+    if (wasDelayed && !isDelayed) {
+      willDelayed = false;
+    } else if (!wasDelayed && isDelayed) {
+      willDelayed = true;
+    }
+  }
+
+
+  return {
+    nextVehicle,
+    // it was dead but become alive
+    willDead,
+    willDelayed,
+  };
+};
+
+export function updateLocalVehicles(wsStatuses, getState) {
+  const nextLocalVehicles = {};
+  const processedList = getProcessedVehicles(getState());
+  let deadList = getDeadList(getState());
+  let delayedList = getDelayedList(getState());
+
+  wsStatuses.forEach(status => {
+    const localVehicle = processedList.get(status.id);
+    const { nextVehicle, willDead, willDelayed } = updateLocalVehicle(localVehicle, status);
+    nextLocalVehicles[status.id] = nextVehicle;
+
+    if (willDead) {
+      deadList = deadList.push(status.id);
+    } else {
+      const index = deadList.indexOf(status.id);
+
+      deadList = deadList.delete(index);
+    }
+
+    if (willDelayed) {
+      delayedList = delayedList.push(status.id);
+    } else {
+      const index = delayedList.indexOf(status.id);
+
+      delayedList = delayedList.delete(index);
+    }
+  });
+
+  return {
+    updates: new Map(nextLocalVehicles),
+    deadList,
+    delayedList,
+  };
 }
 
 export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
@@ -81,6 +143,7 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
     lastUpdateSinceEpoch: 0,
     isZombie: true, // reported more the ZOMBIE_TIME_TRH_MINUTES ago
     isDead: true,   // never updated/reported
+    isDelayed: true,
     // make sure we have some valid kind for vehicle
     // posibly need different icon for this
     kind: backEndObject.kind || 'UNDEFINED',
@@ -101,12 +164,14 @@ export function checkZombieVehicle(lastUpdate) {
 // delayed update? (comm coverage, expected to be ~45min)
 export function checkLaggedVehicle(lastUpdate) {
   const deltaTMs = (Date.now() - lastUpdate);
-  return deltaTMs > LAG_INDICAION_TRH_MS;
+  return deltaTMs > LAG_INDICAION_TRH_MS && deltaTMs < ZOMBIE_TIME_TRH_MS;
 }
 
 export function makeLocalVehicles(backEndVehiclesList, statsList) {
   const localVehicles = {};
   const orderedVehicles = sortVehicles(backEndVehiclesList);
+  const deadList = [];
+  const delayedList = [];
 
   backEndVehiclesList.forEach((aVehicle) => {
     const vehicleStats = getVehicleById(aVehicle.id, statsList).vehicle;
@@ -114,14 +179,16 @@ export function makeLocalVehicles(backEndVehiclesList, statsList) {
 
     if (localVehicleObj !== null) {
       localVehicles[aVehicle.id] = localVehicleObj;
+      deadList.push(aVehicle.id);
+      delayedList.push(aVehicle.id);
     }
-
-    // orderedVehicles.push(aVehicle.id);
   });
 
   return {
     localVehicles,
     orderedVehicles,
+    deadList,
+    delayedList,
   };
 }
 

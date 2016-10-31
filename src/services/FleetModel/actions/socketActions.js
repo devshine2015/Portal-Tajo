@@ -4,7 +4,6 @@ import { updateLocalVehicles } from '../utils/vehicleHelpers';
 
 export const FLEET_MODEL_SOCKET_SET = 'portal/services/FLEET_MODEL_SOCKET_SET';
 export const FLEET_MODEL_SOCKET_SET_BATCH = 'portal/services/FLEET_MODEL_SOCKET_SET_BATCH';
-export const FLEET_MODEL_SOCKET_SET_BATCH2 = 'portal/services/FLEET_MODEL_SOCKET_SET_BATCH2';
 
 export const openFleetSocket = () => _openFleetSocket;
 export const closeFleetSocket = _closeSocket;
@@ -14,16 +13,10 @@ let fleetSocket;
 let socketIsOpened = false;
 
 let batchQueue;
-let batchLastTime;
 const BATCHING_TIME_MS = 2000;
 
-/**
- * fleetName is optional
- **/
-function _openFleetSocket(dispatch) {
+function _openFleetSocket(dispatch, getState) {
   if (socketIsOpened) {
-    console.warn('!!>> TRYING to open already opened WS!!');
-    //     _closeSocket();
     return;
   }
 
@@ -34,46 +27,24 @@ function _openFleetSocket(dispatch) {
   socketIsOpened = true;
 
   batchQueue = [];
-  batchLastTime = Date.now();
 
-  // fleetSocket.onmessage = inEvent => onMessage(inEvent, dispatch);
-  // fleetSocket.onmessage = inEvent => onMessageBatching(inEvent, dispatch);
-  fleetSocket.onmessage = inEvent => onMessageBatchingWithTimer(inEvent, dispatch);
+  fleetSocket.onmessage = inEvent => onMessageBatchingWithTimer(inEvent, dispatch, getState);
 }
 
-function onMessage(inEvent, dispatch) {
-  const data = JSON.parse(inEvent.data);
-console.log("socketSz "+data.status.length);
-  dispatch(_updateStatusBatch(data.status));
-  // if (data.status.length === 1) {
-  //   dispatch(_updateStatus(data.status[0]));
-  // } else {
-  //   data.status.forEach((inSt) => {dispatch(_updateStatus(inSt));});
-  // }
-}
-
-function onMessageBatching(inEvent, dispatch) {
-  const data = JSON.parse(inEvent.data);
-  batchQueue = batchQueue.concat(data.status);
-//  console.log("socketSz "+data.status.length);
-
-  const nowTime = Date.now();
-  if (nowTime - batchLastTime > BATCHING_TIME_MS) {
-    console.log("dispatching BATCH "+batchQueue.length);
-    dispatch(_updateStatusBatch(batchQueue));
-    batchQueue.length = 0;
-    batchLastTime = nowTime;
-  }
-}
-
-function onMessageBatchingWithTimer(inEvent, dispatch) {
+function onMessageBatchingWithTimer(inEvent, dispatch, getState) {
   const data = JSON.parse(inEvent.data);
   if (batchQueue.length === 0) {
     window.setTimeout(() => {
-      // console.log("dispatching BATCH "+batchQueue.length);
-      const updates = updateLocalVehicles(batchQueue);
-      dispatch(_updateStatusBatch2(updates));
-      // dispatch(_updateStatusBatch(batchQueue));
+      console.log(`dispatching BATCH ${batchQueue.length}`);
+
+      const { updates, deadList, delayedList } = updateLocalVehicles(batchQueue, getState);
+
+      dispatch(_updateStatusBatch2({
+        updates,
+        deadList,
+        delayedList,
+      }));
+
       batchQueue.length = 0;
     }, BATCHING_TIME_MS);
   }
@@ -87,17 +58,13 @@ function _closeSocket() {
   }
 }
 
-const _updateStatus = (statusObj) => ({
-  type: FLEET_MODEL_SOCKET_SET,
-  statusObj,
-});
-
-const _updateStatusBatch = (statusBatch) => ({
-  type: FLEET_MODEL_SOCKET_SET_BATCH,
-  statusBatch,
-});
-
-const _updateStatusBatch2 = updates => ({
-  type: FLEET_MODEL_SOCKET_SET_BATCH2,
+const _updateStatusBatch2 = ({
   updates,
+  deadList,
+  delayedList,
+}) => ({
+  type: FLEET_MODEL_SOCKET_SET_BATCH,
+  updates,
+  deadList,
+  delayedList,
 });
