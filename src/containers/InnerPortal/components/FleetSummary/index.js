@@ -7,6 +7,7 @@ import NotReportedIcon from 'material-ui/svg-icons/alert/error-outline';
 import DelayedIcon from 'material-ui/svg-icons/action/watch-later';
 import { getDevicesAmount } from 'services/Devices/reducer';
 import { getAmounts } from 'services/FleetModel/reducer';
+import { portal } from 'configs';
 import theme from 'configs/theme';
 
 import styles from './styles.css';
@@ -39,31 +40,33 @@ Amount.propTypes = {
   icon: React.PropTypes.node.isRequired,
 };
 
-class FleetSummary extends React.Component {
-
-  render() {
-    return (
-      <div className={styles.summaryWrapper}>
-        <Amount
-          amount={this.props.vehiclesAmount}
-          icon={<CarIcon color={theme.palette.primary3Color} />}
-        />
-        <Amount
-          amount={this.props.devicesAmount}
-          icon={<DeviceIcon color={theme.palette.primary3Color} />}
-        />
-        <Amount
-          amount={this.props.deadAmount}
-          icon={<NotReportedIcon color={theme.palette.accent2Color} />}
-        />
-        <Amount
-          amount={this.props.delayedAmount}
-          icon={<DelayedIcon color={theme.palette.accent2Color} />}
-        />
-      </div>
-    );
-  }
-}
+const FleetSummary = ({
+  devicesAmount,
+  deadAmount,
+  delayedAmount,
+  vehiclesAmount,
+}) => (
+  <div className={styles.summaryWrapper}>
+    <Amount
+      amount={vehiclesAmount}
+      icon={<CarIcon color={theme.palette.primary3Color} />}
+    />
+    { portal === 'tajo' &&
+      <Amount
+        amount={devicesAmount}
+        icon={<DeviceIcon color={theme.palette.primary3Color} />}
+      />
+    }
+    <Amount
+      amount={deadAmount}
+      icon={<NotReportedIcon color={theme.palette.accent2Color} />}
+    />
+    <Amount
+      amount={delayedAmount}
+      icon={<DelayedIcon color={theme.palette.accent2Color} />}
+    />
+  </div>
+);
 
 FleetSummary.propTypes = {
   vehiclesAmount: React.PropTypes.number.isRequired,
