@@ -7,9 +7,7 @@
   },
   rules: {
     "react/prefer-es6-class": 1,
-    "react/prop-types": [2, {
-        "skipUndeclared": true
-    }],
+    "react/jsx-uses-react": 2,
     "no-use-before-define": 0,
     "no-confusing-arrow": 0,
     "strict": 0, // controls location of Use Strict Directives. 0: required by `babel-eslint`
