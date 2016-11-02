@@ -4,9 +4,9 @@ import { withRouter } from 'react-router';
 import locationShape from 'react-router/lib/PropTypes';
 import { connect } from 'react-redux';
 import { AppBar, FlatButton } from 'material-ui';
-import { changeMainSidebarState } from 'containers/InnerPortal/actions';
 import { REACT_ROUTER_ROOT, portal } from 'configs';
-import FleetSummary from '../FleetSummary';
+import { changeMainSidebarState } from 'containers/InnerPortal/actions';
+import FleetSummary from 'containers/FleetSummary';
 import { logout } from '../../actions';
 
 import styles from './styles.css';
@@ -25,7 +25,7 @@ function renderSummary(location) {
 
   return (
     <div className={styles.centerContainer}>
-      <FleetSummary />
+      <FleetSummary simple />
     </div>
   );
 }
