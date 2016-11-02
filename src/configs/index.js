@@ -16,7 +16,7 @@ const chooseRoot = () => {
     return '/tajo';
   }
 
-  return '';
+  return '/';
 };
 
 // support or not some old API depends on environment
@@ -28,29 +28,12 @@ const chooseRoot = () => {
 export const useLegacy = type => {
   switch (type) {
     // use old loginApi on stage and prod
-    case 'login': return onProduction;
-    case 'url-with-fleet': return onProduction;
+    case 'login': return false;
+    case 'url-with-fleet': return false;
     case 'session-key': return portal === 'ssreports';
     default:
       return false;
   }
-};
-
-export const initRootRoute = (fleet = undefined) => {
-  if (useLegacy('url-with-fleet')) {
-    ROOT_ROUTE = `/portal/${fleet}/${portal}`;
-    return;
-  }
-
-  ROOT_ROUTE = chooseRoot();
-};
-
-const initRouterRoot = () => {
-  if (useLegacy('url-with-fleet')) {
-    return `/portal/:fleet/${portal}/`;
-  }
-
-  return `${chooseRoot()}/`;
 };
 
 export const portal = process.env.DRVR_PROJECT;
@@ -64,9 +47,9 @@ export const onDev = serverEnv === 'dev';
 // use old local storage key notation for ssreports
 export const LOCAL_STORAGE_SESSION_KEY = useLegacy('session-key') ?
   'ngStorage-sessionId' : 'drvr_tajo-sessionId';
-export let ROOT_ROUTE = '';
-export const REACT_ROUTER_ROOT = initRouterRoot();
 
+// use to initiate root for react-router
+export const ROOT_ROUTE = chooseRoot();
 
 // isDev true only on localhost
 export const ENGINE_BASE = onDev ? DEV_ENGINE_BASE : PROD_ENGINE_BASE;
