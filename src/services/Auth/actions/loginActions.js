@@ -42,10 +42,6 @@ function _login(data, dispatch) {
     .then(res => {
       const sessionData = collectData(res);
 
-      // if (useLegacy('login')) {
-      //   sessionData.fleet = getFleetName(getState());
-      // }
-
       storage.save(LOCAL_STORAGE_SESSION_KEY, sessionData, VERSIONS.authentication.currentVersion);
       dispatch(loginSuccess(sessionData));
 
@@ -77,18 +73,8 @@ function _logout({ redirectUrl }, dispatch, getState) {
     });
 }
 
-// after changing Login API
-// we get different responce schema
 function collectData(res) {
   const settings = res.settings || {};
-
-  // if (apiVersion === 1) {
-  //   return {
-  //     settings,
-  //     sessionId: res,
-  //     role: 'manager',
-  //   };
-  // }
 
   return {
     ...res,
