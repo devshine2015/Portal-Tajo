@@ -17,7 +17,7 @@ const STYLES = {
 
 const AMOUNT_TYPES_AVAILABILITY = {
   vehicles: true,
-  devices: portal !== 'tajo',
+  devices: portal === 'tajo',
   dead: true,
   delayed: true,
 };

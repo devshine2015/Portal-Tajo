@@ -4,6 +4,11 @@ const classes = StyleSheet.create({
   group: {
     display: 'flex',
     flexDirection: 'column',
+    maxWidth: 600,
+
+    '@media (max-width: 600px)': {
+      width: '100%',
+    },
   },
   group__title: {
     fontSize: 18,

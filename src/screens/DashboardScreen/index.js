@@ -6,13 +6,6 @@ import FleetSummary from 'containers/FleetSummary';
 import WidgetsGroup from './components/WidgetsGroup';
 import classes from './classes';
 
-const STYLES = {
-  fleetSummaryGroup: {
-    width: '70%',
-    height: 300,
-  },
-};
-
 function canShow(Component) {
   if (Component === EventsCalculator) {
     return false && portal === 'tajo';
@@ -28,7 +21,7 @@ function canShow(Component) {
 function renderGroup(component) {
   return (
     <WidgetsGroup
-      containerStyle={STYLES.fleetSummaryGroup}
+      containerClass={classes.dashboard__summaryGroup}
       title="Fleet Summary"
     >
       { component }

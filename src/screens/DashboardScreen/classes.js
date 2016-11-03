@@ -5,7 +5,15 @@ const classes = StyleSheet.create({
     width: '100%',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    padding: 20,
+  },
+  dashboard__summaryGroup: {
+    width: '70%',
+    height: 300,
+
+    '@media (max-width: 600px)': {
+      height: 'auto',
+    },
   },
 });
 

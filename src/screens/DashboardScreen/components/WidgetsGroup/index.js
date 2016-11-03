@@ -20,7 +20,7 @@ GroupTitle.propTypes = {
 const WidgetsGroup = ({
   children,
   group,
-  containerStyle,
+  containerClass,
   title,
 }) => {
   if (!children && !group) return null;
@@ -28,10 +28,7 @@ const WidgetsGroup = ({
   const child = group || children;
 
   return (
-    <div
-      className={css(classes.group)}
-      style={containerStyle}
-    >
+    <div className={css(classes.group, containerClass)}>
       { title && <GroupTitle title={title} /> }
       <div className={css(classes.group__inn)}>
         { child }
@@ -43,7 +40,7 @@ const WidgetsGroup = ({
 WidgetsGroup.propTypes = {
   group: React.PropTypes.node,
   children: React.PropTypes.node,
-  containerStyle: React.PropTypes.object,
+  containerClass: React.PropTypes.object,
   title: titlePropType,
 };
 

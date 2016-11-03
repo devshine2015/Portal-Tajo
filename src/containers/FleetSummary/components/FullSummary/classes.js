@@ -7,15 +7,28 @@ const classes = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
+
+    '@media (max-width: 600px)': {
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      flexWrap: 'nowrap',
+    },
   },
 
   amount: {
     width: '49%',
+    minWidth: 190,
     height: '49%',
+    minHeight: 100,
+    maxHeight: 150,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    minWidth: 190,
+
+    '@media (max-width: 600px)': {
+      width: '100%',
+      marginBottom: 15,
+    },
   },
   amount_fullwidth: {
     width: '100%',

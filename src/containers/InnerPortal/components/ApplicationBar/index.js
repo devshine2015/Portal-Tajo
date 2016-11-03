@@ -12,6 +12,7 @@ import { logout } from '../../actions';
 import styles from './styles.css';
 
 const hideSummaryOn = [
+  `${REACT_ROUTER_ROOT}review`,
   `${REACT_ROUTER_ROOT}dashboard`,
   portal === 'tajo' && REACT_ROUTER_ROOT,
 ];
