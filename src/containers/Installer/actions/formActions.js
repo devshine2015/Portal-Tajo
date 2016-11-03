@@ -3,7 +3,6 @@ import endpoints from 'configs/endpoints';
 import { setLoaderState } from './loaderActions';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import { mockBackendVehicle } from 'services/FleetModel/utils/vehicleHelpers';
-import { createDevice } from 'services/Devices/actions';
 
 export const INSTALLER_SUBMIT_SUCCESS = 'portal/Installer/INSTALLER_SUBMIT_SUCCESS';
 export const INSTALLER_SUBMIT_FAILURE = 'portal/Installer/INSTALLER_SUBMIT_FAILURE';
@@ -13,13 +12,12 @@ export const submitForm = data => dispatch =>
 
 export const sendData = (formData, dispatch) => {
   dispatch(setLoaderState(true));
-  const { createVehicle } = endpoints;
+  const { method, url } = endpoints.createVehicle;
   const vehiclePayload = {
     payload: mockBackendVehicle(formData),
   };
 
-  const request = dispatch(createDevice(formData))
-    .then(() => api[createVehicle.method](createVehicle.url, vehiclePayload))
+  return api[method](url, vehiclePayload)
     .then(res => res.json())
     .then(vehicle => {
       dispatch(vehiclesActions.addVehicle(vehicle));
@@ -28,12 +26,12 @@ export const sendData = (formData, dispatch) => {
     })
     .then(() => {
       dispatch(setLoaderState(false));
+
       return Promise.resolve();
     }, error => {
       console.error(error);
       dispatch(setLoaderState(false));
+
       return Promise.reject();
     });
-
-  return request;
 };
