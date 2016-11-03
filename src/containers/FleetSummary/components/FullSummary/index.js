@@ -2,6 +2,8 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { css } from 'aphrodite/no-important';
 import Paper from 'material-ui/Paper';
+import { portal } from 'configs';
+import theme from 'configs/theme';
 import Icon from '../Icons';
 import { amountsShape } from '../../PropTypes';
 import classes from './classes';
@@ -48,22 +50,24 @@ const FullSummary = ({
 }) => (
   <div className={css(classes.fullSummary)}>
     <Amount
-      icon={<Icon.CarIcon />}
+      icon={<Icon.CarIcon color={theme.palette.primary3Color} />}
       amount={amounts.vehiclesAmount}
       helpText="vehicles in fleet"
     />
+    { portal === 'tajo' &&
+      <Amount
+        icon={<Icon.DeviceIcon color={theme.palette.primary3Color} />}
+        amount={amounts.devicesAmount}
+        helpText="devices in fleet"
+      />
+    }
     <Amount
-      icon={<Icon.DeviceIcon />}
-      amount={amounts.devicesAmount}
-      helpText="devices in fleet"
-    />
-    <Amount
-      icon={<Icon.NotReportedIcon />}
+      icon={<Icon.NotReportedIcon color={theme.palette.accent2Color} />}
       amount={amounts.deadAmount}
       helpText="vehicles never reported"
     />
     <Amount
-      icon={<Icon.DelayedIcon />}
+      icon={<Icon.DelayedIcon color={theme.palette.accent2Color} />}
       amount={amounts.delayedAmount}
       helpText="vehicles sending delayed messages"
     />

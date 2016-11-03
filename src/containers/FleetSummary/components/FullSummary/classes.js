@@ -1,23 +1,21 @@
 import { StyleSheet } from 'aphrodite/no-important';
+import theme from 'configs/theme';
 
 const classes = StyleSheet.create({
   fullSummary: {
     display: 'flex',
     width: '100%',
-    height: '100%',
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    alignItems: 'space-around',
+    justifyContent: 'space-between',
     flexWrap: 'wrap',
   },
 
   amount: {
-    minWidth: '48%',
-    minHeight: '48%',
-    margin: '0 10px',
+    width: '49%',
+    height: '49%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    minWidth: 190,
   },
   amount__inn: {
     display: 'flex',
@@ -38,12 +36,13 @@ const classes = StyleSheet.create({
   amount__title: {
     fontSize: 40,
     fontWeight: 100,
-    color: '#aaa',
+    color: theme.palette.primary3Color,
     lineHeight: '100%',
   },
   amount__help: {
     fontSize: 12,
     marginLeft: 2,
+    color: '#aaa',
   },
 });
 
