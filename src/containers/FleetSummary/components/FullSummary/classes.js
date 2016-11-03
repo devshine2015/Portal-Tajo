@@ -17,6 +17,9 @@ const classes = StyleSheet.create({
     alignItems: 'center',
     minWidth: 190,
   },
+  amount_fullwidth: {
+    width: '100%',
+  },
   amount__inn: {
     display: 'flex',
     alignItems: 'center',
