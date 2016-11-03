@@ -97,9 +97,7 @@ class DeviceSelector extends React.Component {
   }
 
   onUpdateInput = searchText => {
-    this.setState({
-      searchText,
-    }, () => {
+    this.updateSearchText(searchText, () => {
       if (this.props.onChange) {
         this.props.onChange('imei', searchText);
       }
@@ -107,7 +105,17 @@ class DeviceSelector extends React.Component {
   }
 
   onDeviceSelect = value => {
-    this.props.onSelect(value.text);
+    this.updateSearchText(value.text, () => {
+      if (this.props.onSelect) {
+        this.props.onSelect(value.text);
+      }
+    });
+  }
+
+  updateSearchText = (text, cb) => {
+    this.setState({
+      searchText: text,
+    }, cb);
   }
 
   focusOnError = ref => {

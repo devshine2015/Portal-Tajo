@@ -72,3 +72,6 @@ export const getVacantDevices = state =>
 export const getVacantDeviceIndex = (state, name) =>
   state.getIn(['devices', 'vacantDevices'])
        .keyOf(name);
+
+export const getDeviceById = (state, id) =>
+  state.getIn(['devices', 'list', id]);

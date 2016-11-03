@@ -142,7 +142,7 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}, now) {
     lastUpdateSinceEpoch: ts,
     isDead: !hasPos,
     isDelayed: checkLaggedVehicle(now, ts),
-    kind: backEndObject.kind || 'UNDEFINED',
+    kind: 'UNDEFINED',
   });
 
   return {
