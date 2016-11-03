@@ -10,6 +10,10 @@ import {
 } from 'utils/routerHelpers';
 
 const MAIN_MENU = [{
+  niceName: 'Review',
+  path: 'review',
+  order: 0,
+}, {
   niceName: 'Operational',
   path: 'map',
   order: 1,
@@ -32,6 +36,10 @@ export default function createRoutes(store) {
 
   const history = syncHistoryWithStore(browserHistory, store, {
     selectLocationState: selectLocationState(),
+  });
+
+  const reviewScreen = require('screens/DashboardScreen/route')({
+    path: 'review',
   });
 
   const mapAndListRoute = require('screens/Operational/route')({
@@ -82,6 +90,7 @@ export default function createRoutes(store) {
     reportsRoute,
     chronicleRoute,
     vehiclesEditorRoute,
+    reviewScreen,
   );
 
   return (

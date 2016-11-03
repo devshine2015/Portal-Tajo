@@ -70,6 +70,11 @@ const rolesAbilities = {
   },
 
   portal: {
+    uber: {
+      [permissions.DEVICES_SEE]: true,
+      [permissions.DEVICES_DETACH]: true,
+      [permissions.DEVICES_ATTACH]: true,
+    },
     admin: {
       [permissions.DEVICES_SEE]: true,
       [permissions.DEVICES_DETACH]: true,

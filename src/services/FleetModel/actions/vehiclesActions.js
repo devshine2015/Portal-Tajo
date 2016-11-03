@@ -44,8 +44,12 @@ function _fetchVehicles(dispatch) {
       api[method](url).then(toJson)
     )
   ).then(([vehicles = [], { status } = {}]) => {
-    const { localVehicles, orderedVehicles } = makeLocalVehicles(vehicles, status);
-    dispatch(_vehiclesSet({ vehicles, localVehicles, orderedVehicles }));
+    const localObjects = makeLocalVehicles(vehicles, status);
+
+    dispatch(_vehiclesSet({
+      vehicles,
+      ...localObjects,
+    }));
   })
   .catch(e => {
     console.error(e);
@@ -121,12 +125,16 @@ function toJson(response) {
 }
 
 const _vehiclesSet = ({
+  deadList,
   vehicles,
+  delayedList,
   localVehicles,
   orderedVehicles,
 }) => ({
   type: FLEET_MODEL_VEHICLES_SET,
+  deadList,
   vehicles,
+  delayedList,
   localVehicles,
   orderedVehicles,
 });

@@ -8,7 +8,7 @@ import {
   getSearchString,
 } from '../../reducer';
 import { getDevices } from 'services/Devices/reducer';
-import { hasProcessedVehicles } from 'services/FleetModel/reducer';
+// import { hasProcessedVehicles } from 'services/FleetModel/reducer';
 import {
   fetchDevices,
   updateWithVehicles,
@@ -53,37 +53,38 @@ renderDevices.propTypes = {
 
 class DevicesList extends React.Component {
 
-  constructor(props) {
-    super(props);
+  // constructor(props) {
+  //   super(props);
 
-    this.state = {
-      setupFinished: props.hasVehicles && props.devices.size > 0,
-    };
-  }
+  //   this.state = {
+      // setupFinished: props.hasVehicles && props.devices.size > 0,
+  //   };
+  // }
 
   componentWillMount() {
     if (this.props.devices.size === 0) {
       this.props.fetchDevices();
+    } else {
+      this.props.updateWithVehicles();
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  // componentWillReceiveProps(nextProps) {
     // be sure vehicles and devices loaded and setup is finished
-    if (!this.state.setupFinished &&
-        (this.props.devices.size > 0 ||
-          (!this.props.devices.size && nextProps.devices.size > 0)) /*&&
-        (this.props.hasVehicles ||
-        (!this.props.hasVehicles && nextProps.hasVehicles))*/) {
-      this.setState({
-        setupFinished: true,
-      }, () => {
-        this.props.updateWithVehicles();
-      });
-    }
-  }
+    // if (!this.state.setupFinished &&
+    //     (this.props.devices.size > 0 ||
+    //       (!this.props.devices.size && nextProps.devices.size > 0)) &&
+    //     (this.props.hasVehicles ||
+    //     (!this.props.hasVehicles && nextProps.hasVehicles))) {
+    //   this.setState({
+    //     setupFinished: true,
+    //   }, () => {
+    //   });
+    // }
+  // }
 
   render() {
-    if (this.props.devices.size === 0/* || !this.state.setupFinished*/) {
+    if (this.props.devices.size === 0) {
       return null;
     }
 
@@ -104,7 +105,7 @@ DevicesList.propTypes = {
   updateWithVehicles: React.PropTypes.func.isRequired,
 
   // true if size of processedList > 0
-  hasVehicles: React.PropTypes.bool.isRequired,
+  // hasVehicles: React.PropTypes.bool.isRequired,
 
   // sources for filtering
   devices: React.PropTypes.instanceOf(Map).isRequired,
@@ -121,7 +122,7 @@ DevicesList.propTypes = {
 
 const mapState = state => ({
   devices: getDevices(state),
-  hasVehicles: hasProcessedVehicles(state),
+  // hasVehicles: hasProcessedVehicles(state),
   currentFilter: getCurrentFilter(state),
   searchString: getSearchString(state),
 });

@@ -3,6 +3,8 @@ import endpoints from 'configs/endpoints';
 import specsUtils from '../utils/specsUtils';
 
 function formatValue(v) {
+  if (!v) return '';
+
   const d = moment.duration(v, 'seconds');
   const h = d.get('hours');
   const m = d.get('minutes');
@@ -13,13 +15,24 @@ function formatValue(v) {
 
 function _calc(record, { selectedTypes }) {
   return specsUtils.calcToReturn({
-    stoppedTime: formatValue(record.stoppedTime),
-    idleWhileStopped: formatValue(record.idleWhileStopped),
+    // stoppedTime: formatValue(record.stoppedTime),
+    idlingTime: formatValue(record.ignOnWhileStopped + record.ignOffWhileStopped),
+    ignOnWhileStopped: formatValue(record.ignOnWhileStopped),
+    ignOffWhileStopped: formatValue(record.ignOffWhileStopped),
+    ignOn: formatValue(record.ignOn),
+    drivingTime: formatValue(record.drivingTime),
   }, selectedTypes);
 }
 
 function _filterSimilar(allSelectedReportTypes) {
-  const similarTypes = ['stoppedTime', 'idleWhileStopped'];
+  const similarTypes = [
+    // 'stopPeriod', // ?
+    'ignOn', // 1
+    'idlingTime', // 2 = 2.1 + 2.2
+    'ignOffWhileStopped', // 2.1
+    'ignOnWhileStopped', // 2.2
+    'drivingTime', // 3
+  ];
 
   return specsUtils.filterSimilar(allSelectedReportTypes, similarTypes);
 }
@@ -37,16 +50,37 @@ const commonFields = {
 
 const fields = [{
   ...commonFields,
-  reportType: 'stoppedTime',
-  label: 'Stopped Time',
-  name: 'stoppedTime',
+  reportType: 'idlingTime',
+  label: 'Total Idling Time',
+  name: 'idlingTime',
+  help: 'Ignition On While Stopped + Ignition Off While Stopped',
   order: 7,
 }, {
   ...commonFields,
-  reportType: 'idleWhileStopped',
-  label: 'Idling Time',
-  name: 'idleWhileStopped',
+  reportType: 'ignOnWhileStopped',
+  label: 'Ignition On While Stopped',
+  name: 'ignOnWhileStopped',
+  help: 'Ignition On and speed = 0',
   order: 8,
+}, {
+  ...commonFields,
+  reportType: 'ignOffWhileStopped',
+  label: 'Ignition Off While Stopped',
+  name: 'ignOffWhileStopped',
+  help: 'Ignition Off and speed = 0',
+  order: 9,
+}, {
+  ...commonFields,
+  reportType: 'drivingTime',
+  label: 'Driving Time',
+  name: 'drivingTime',
+  order: 10,
+}, {
+  ...commonFields,
+  reportType: 'ignOn',
+  label: 'Ignition On Time',
+  name: 'ignOn',
+  order: 11,
 }];
 
 export default fields;

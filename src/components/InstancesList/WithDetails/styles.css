@@ -1,11 +1,5 @@
 @media screen and (min-width: 100px) {
 
-  .iconDelBtn {
-    /*float: right;*/
-      }
-  /*.listItemInn_expanded:hover {
-//    color: rgb(255, 215, 136);
-  }*/
   .listItemNoChronicle {
       background-color: #1f757d;;
       border-bottom-color: rgb(70, 70, 70);
@@ -13,5 +7,20 @@
   .listItemNoChronicle:hover {
     background-color: #2896a1;
     border-bottom-color: rgb(70, 70, 70);
+  }
+
+  .warn {
+    color: #b2dfdb;
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+  .warn_white {
+    color: #fff;
+  }
+
+  .indicator {
+    position: absolute;
+    top: 7px;
+    right: 10px;
   }
 }

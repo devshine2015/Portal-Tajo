@@ -1,8 +1,41 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import Checkbox from 'material-ui/Checkbox';
+import IconButton from 'material-ui/IconButton';
+import HelpIcon from 'material-ui/svg-icons/action/help-outline';
 
 import styles from './styles.css';
+
+const STYLES = {
+  fieldRoot: {
+    display: 'block',
+    flexShrink: 0,
+    maxWidth: 240,
+  },
+  label: {
+    fontSize: 15,
+  },
+  helpButton: {
+    width: 30,
+    height: 30,
+    padding: 3,
+  },
+};
+
+const Help = ({ tooltip }) => (
+  <IconButton
+    style={STYLES.helpButton}
+    iconStyle={STYLES.helpIcon}
+    tooltip={tooltip}
+    tooltipPosition="top-center"
+  >
+    <HelpIcon />
+  </IconButton>
+);
+
+Help.propTypes = {
+  tooltip: React.PropTypes.string.isRequired,
+};
 
 class Field extends React.Component {
 
@@ -20,9 +53,11 @@ class Field extends React.Component {
       <Checkbox
         checked={this.props.isChecked}
         label={this.props.label}
+        labelStyle={STYLES.label}
         name={this.props.name}
         onCheck={this.injectProps}
         disabled={this.props.disabled || false}
+        style={STYLES.fieldRoot}
       />
     );
   }
@@ -57,14 +92,19 @@ const AvailableTypes = ({
       const isChecked = Boolean(checkedFields[f.name]);
 
       return (
-        <PureField
-          {...f}
-          isChecked={isChecked}
-          index={index}
-          onCheck={onChange}
-          key={f.name}
-          source={source}
-        />
+        <div className={styles.typeWrapper} key={index}>
+          <PureField
+            {...f}
+            isChecked={isChecked}
+            index={index}
+            onCheck={onChange}
+            key={f.name}
+            source={source}
+          />
+
+          { f.help && <Help tooltip={f.help} /> }
+
+        </div>
       );
     })}
   </div>

@@ -16,7 +16,7 @@ deployment:
   stage:
     branch: stage
     commands:
-      - ./ci/deployToProd.sh 'drvrstage@drvrstage.cloudapp.net' 'tajo' 'portal' '~/engine/static-root/public/common-portal'
+      - ./ci/deploy.sh 'drvrstage@drvrstage.cloudapp.net' 'tajo' 'portal' '~/engine/static-root/public'
   production:
     branch: production
     commands:

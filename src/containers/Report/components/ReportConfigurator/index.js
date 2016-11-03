@@ -74,6 +74,7 @@ class Report extends React.Component {
     this.defaultStartTime = calcStartTime();
     this.defaultEndTime = calcEndTime();
     this.defaultStartDate = moment().subtract(1, 'days').toDate();
+    this.defaultEndDate = this.defaultStartDate;
     this.periodFields = {
       start: {
         name: 'start',
@@ -81,7 +82,7 @@ class Report extends React.Component {
       },
       end: {
         name: 'end',
-        default: undefined,
+        default: this.defaultEndDate,
       },
       startTime: {
         name: 'startTime',
