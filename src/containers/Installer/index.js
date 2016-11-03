@@ -72,6 +72,7 @@ class Installer extends React.Component {
       fields,
       noDeviceSelectedError: false,
       deviceSelected: true,
+      haveToReset: false,
     });
   }
 
@@ -89,7 +90,7 @@ class Installer extends React.Component {
 
     if (!validateForm(fields)) {
       if (this.props.isOnline) {
-        // this.submitForm(fields);
+        this.submitForm(fields);
       } else {
         this.saveLocally(fields);
       }
@@ -150,6 +151,7 @@ class Installer extends React.Component {
       fields: initialFields,
       cannotSubmit: true,
       haveToReset: true,
+      deviceSelected: false,
     });
 
     formNode.reset();
