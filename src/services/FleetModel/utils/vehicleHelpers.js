@@ -60,8 +60,6 @@ const updateLocalVehicle = (vehicle, status, now) => {
   const willDead = getNextState(wasDead, isDead);
   const willDelayed = getNextState(wasDelayed, isDelayed);
 
-  if (willDead === false) debugger;
-
   return {
     nextVehicle,
     willDead,
@@ -73,10 +71,12 @@ function updateList(list, nextState = undefined, id) {
   if (nextState === undefined) return list;
 
   if (nextState) {
+    // eslint-disable-next-line no-param-reassign
     list = list.push(id);
   } else {
     const index = list.indexOf(id);
 
+    // eslint-disable-next-line no-param-reassign
     list = list.delete(index);
   }
 
@@ -99,8 +99,6 @@ export function updateLocalVehicles(wsStatuses, getState) {
     delayedList = updateList(delayedList, willDelayed, status.id);
   });
 
-  console.log(deadList.size, delayedList.size)
-
   return {
     updates: new Map(nextLocalVehicles),
     deadList,
@@ -115,8 +113,6 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}, now) {
   }
 
   const hasPos = vehicleStats.hasOwnProperty('pos');
-
-  if (!hasPos) debugger;
 
   const hasDist = vehicleStats.hasOwnProperty('dist');
   const hasTemp = vehicleStats.hasOwnProperty('temp');
@@ -152,7 +148,7 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}, now) {
   return {
     vehicle: theVehicle,
     isDead: theVehicle.isDead,
-    isDelayed: theVehicle.isDelayed
+    isDelayed: theVehicle.isDelayed,
   };
 }
 
