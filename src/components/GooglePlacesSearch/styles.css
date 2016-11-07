@@ -1,0 +1,12 @@
+@media screen and (min-width: 100px) {
+  .searchContainer {
+    width: 200px;
+    top: 120px;
+    left: 10px;
+    border: 1px solid #e64a19;
+/*//    position: absolute;*/
+    position: relative;
+    z-index: 2;
+    background-color: #fff;
+  }
+}
