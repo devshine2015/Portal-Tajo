@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import pure from 'recompose/pure';
 import styles from './styles.css';
 
+import GooglePlacesSearch from 'components/GooglePlacesSearch';
+
 import ChroniclePath from './components/ChroniclePath';
 import ChronicleMarker from './components/ChronicleMarker';
 import ChronicleEventMarker from './components/ChronicleEventMarker';
@@ -139,6 +141,7 @@ class MapChronicle extends React.Component {
      />);
     return (
       <div className = {styles.mapContainer}>
+      <GooglePlacesSearch ownerMapObj={this.theMap} />
       {gfs}
       {chronPaths}
       {chronMarkers}
