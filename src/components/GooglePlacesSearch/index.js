@@ -5,6 +5,7 @@ import pure from 'recompose/pure';
 import { hideLayer } from 'utils/mapBoxMap';
 const googleMapsAPI = require('google-maps-api')('AIzaSyA-97-nJq7i1hy46cjHJSeOwkKgBdv08aI',
       ['places']);
+const iconPointer = require('assets/images/v_icons_combi/pointerArrow.png');
 
 import styles from './styles.css';
 
@@ -20,6 +21,17 @@ class GooglePlacesSearch extends React.Component {
   componentDidMount() {
     // maybe be using it without map as well
     this.setUpOnMap();
+  }
+
+  onChange = (e) => {
+    const value = e.target.value.trim().toLowerCase();
+    const isClearing = value.length < this.state.previousValueLength;
+    this.setState({
+      previousValueLength: value.length,
+    });
+    if (isClearing) {
+      this.hideMarker(true);
+    }
   }
 
   setUpOnMap() {
@@ -43,8 +55,31 @@ class GooglePlacesSearch extends React.Component {
       // if(_this.resultListener!==null)
       //   _this.resultListener( mapBoxPos );
         if (this.searchPin === null) {
-          this.searchPin = window.L.circleMarker(posOfInterest);
-          this.searchPin.setRadius(12);
+          // this.searchPin = window.L.circleMarker(posOfInterest,
+          //   {
+          //     className: styles.animatedS,
+          //   });
+          // this.searchPin.setRadius(12);
+          const iScale = 0.15;
+          const iW = 152 * iScale;
+          const iH = 253 * iScale;
+          this.selectedMarkerIcon = window.L.icon({
+            iconUrl: iconPointer,
+            iconSize: [iW, iH],
+            iconAnchor: [0, iH],
+            className: styles.animatedS,
+          });
+          this.searchPin = window.L.marker(posOfInterest,
+            {
+              className: styles.animatedS,
+            });
+          this.searchPin = window.L.marker(posOfInterest,
+            {
+              // title: this.props.theGF.name,
+              icon: this.selectedMarkerIcon,
+              riseOnHover: true,
+            });
+          this.searchPin.setZIndexOffset(2000);
         } else {
           this.searchPin.setLatLng(posOfInterest);
         }
@@ -54,21 +89,9 @@ class GooglePlacesSearch extends React.Component {
     });
   }
 
-  onChange = (e) => {
-    const value = e.target.value.trim().toLowerCase();
-    const isClearing = value.length < this.state.previousValueLength;
-    this.setState({
-      previousValueLength: value.length,
-    });
-    if (isClearing) {
-      this.hideMarker(true);
-    }
-  }
-
   hideMarker(doHide) {
     hideLayer(this.props.ownerMapObj, this.searchPin, doHide);
   }
-
   render() {
     return (
       <input className={styles.searchContainer} type="text"
@@ -78,6 +101,9 @@ class GooglePlacesSearch extends React.Component {
   }
 }
 
+GooglePlacesSearch.contextTypes = {
+  muiTheme: React.PropTypes.object.isRequired,
+};
 GooglePlacesSearch.propTypes = {
   ownerMapObj: React.PropTypes.object,
 };
