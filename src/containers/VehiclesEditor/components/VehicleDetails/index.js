@@ -4,11 +4,12 @@ import {
   TextField,
   SelectField,
   MenuItem,
-  RaisedButton,
+  // RaisedButton,
   FlatButton,
   Checkbox,
 } from 'material-ui';
 import Form from 'components/Form';
+import ButtonWithProgress from 'components/ButtonWithProgress';
 import DeviceEditor from '../DeviceEditor';
 import { VEHICLE_KINDS, getVehicleByValue } from 'services/FleetModel/utils/vehiclesMap';
 import styles from './styles.css';
@@ -219,10 +220,11 @@ class VehicleDetails extends React.Component {
             onCheck={this.onIsMilesChange}
           />
           <div className={styles.buttons}>
-            <RaisedButton
+            <ButtonWithProgress
               className={styles.buttons__button}
               disabled={this.props.disabled}
               onClick={this.onSubmit}
+              isLoading={this.props.isLoading}
               label="Save"
               type="submit"
               primary
@@ -243,6 +245,7 @@ VehicleDetails.propTypes = {
   // Id for detecting if vehicle and its details has been changed
   id: React.PropTypes.string.isRequired,
   disabled: React.PropTypes.bool.isRequired,
+  isLoading: React.PropTypes.bool.isRequired,
   details: React.PropTypes.shape({
     deviceId: React.PropTypes.string,
     kind: React.PropTypes.string,

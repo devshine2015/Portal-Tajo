@@ -48,10 +48,12 @@ function _login(data, dispatch, getState) {
 
       storage.save(LOCAL_STORAGE_SESSION_KEY, sessionData, VERSIONS.authentication.currentVersion);
       dispatch(loginSuccess(sessionData));
+
       return Promise.resolve();
-    })
-    .catch(error => {
+    }, error => {
       console.error(error);
+
+      return Promise.reject(error);
     });
 }
 

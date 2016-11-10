@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import Form from 'components/Form';
 import {
   TextField,
-  RaisedButton,
   Paper,
   Divider,
 } from 'material-ui';
 import { push } from 'react-router-redux';
 import { ROOT_ROUTE } from 'configs';
 import SimpleError from 'components/Error';
+import ButtonWithProgress from 'components/ButtonWithProgress';
 import { loginActions } from 'services/Auth/actions';
 import { errorsActions } from 'services/Global/actions';
 import { getErrorMessage } from 'services/Global/reducer';
@@ -27,6 +27,7 @@ class LoginForm extends React.Component {
     this.state = {
       username: null,
       password: null,
+      isLoading: false,
     };
   }
 
@@ -45,13 +46,27 @@ class LoginForm extends React.Component {
   onSubmit = (e) => {
     e.preventDefault();
 
+    this.changeLoadingState(true);
+
     this.props.login(this.state).then(() => {
+      this.changeLoadingState(false);
+
       this.props.goToRoot();
+    }, () => {
+      this.changeLoadingState(false);
+    });
+  }
+
+  changeLoadingState = nextState => {
+    this.setState({
+      isLoading: nextState,
     });
   }
 
   render() {
     const isDisabled = !this.state.username || !this.state.password;
+    const buttonText = !this.state.isLoading ? 'Sign In' : 'Signing...';
+    const { isLoading } = this.state;
 
     return (
       <div className={styles.loginContainer}>
@@ -77,13 +92,16 @@ class LoginForm extends React.Component {
                 type="password"
                 onChange={this.onChange}
               />
-              <RaisedButton
-                disabled={isDisabled}
+
+              <ButtonWithProgress
+                isLoading={isLoading}
+                disabled={isDisabled || isLoading}
+                label={buttonText}
                 type="submit"
-                label="Sign In"
                 onClick={this.onSubmit}
                 primary
               />
+
             </Form>
             { this.props.errorMessage !== '' && <SimpleError message={this.props.errorMessage} />}
           </div>
