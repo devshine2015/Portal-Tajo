@@ -39,6 +39,25 @@ const tajo = {
   },
 };
 
+const portal = {
+  review: {
+    name: 'review',
+    niceName: 'Review',
+    path: 'review',
+  },
+  operational: {
+    name: 'operational',
+    niceName: 'Operational',
+    path: 'map',
+  },
+  history: {
+    name: 'history',
+    niceName: 'History',
+    path: 'history',
+  },
+};
+
 export default {
   tajo: Object.assign({}, common, tajo),
+  portal: Object.assign({}, common, portal),
 };

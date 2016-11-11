@@ -18,7 +18,7 @@ export default function createRoutes(store) {
   });
 
   const reportsRoute = require('screens/ReportsScreen/route')({
-    path: 'reports',
+    ...mainMenu.tajo.reports,
     injectReducer,
     errorHandler,
     loadModule,
@@ -39,14 +39,14 @@ export default function createRoutes(store) {
   });
 
   const vehiclesEditorRoute = require('screens/VehiclesManagerScreen/route')({
-    path: 'vehicles',
+    ...mainMenu.tajo.vehicles,
     injectReducer,
     errorHandler,
     loadModule,
   });
 
   const usersManagerRoute = require('screens/UsersManager/route')({
-    path: 'users',
+    ...mainMenu.tajo.users,
     injectReducer,
     errorHandler,
     loadModule,

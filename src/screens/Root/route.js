@@ -9,10 +9,9 @@ function patchMenuPaths(menu = {}, rootRoute = {}) {
   const rootChildrens = rootRoute.childRoutes.map(({ path }) => path);
 
   const filtered = Object.values(menu)
+    .filter(item => rootChildrens.indexOf(item.path) !== -1)
     .map(item => {
       const index = rootChildrens.indexOf(item.path);
-
-      if (index === -1) return null;
 
       return {
         ...item,
