@@ -3,41 +3,12 @@ import { getHooks } from 'utils/hooks';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { ROOT_ROUTE } from 'configs';
+import mainMenu from 'configs/mainMenu';
 import {
   errorHandler,
   loadModule,
   selectLocationState,
 } from 'utils/routerHelpers';
-
-const MAIN_MENU = [{
-  niceName: 'dashboard',
-  path: 'dashboard',
-  order: 0,
-}, {
-  niceName: 'installer',
-  path: 'installer',
-  order: 1,
-}, {
-  niceName: 'Promo Subscribtions',
-  path: 'promos',
-  order: 2,
-}, {
-  niceName: 'Reports',
-  path: 'reports',
-  order: 3,
-}, {
-  niceName: 'Vehicles Editor',
-  path: 'vehicles',
-  order: 4,
-}, {
-  niceName: 'Users Manager',
-  path: 'users',
-  order: 5,
-}, {
-  niceName: 'Devices Manager',
-  path: 'devices',
-  order: 6,
-}];
 
 export default function createRoutes(store) {
   const { injectReducer } = getHooks(store);
@@ -54,14 +25,14 @@ export default function createRoutes(store) {
   });
 
   const promoRoute = require('screens/PromoTrackingScreen/route')({
-    path: 'promos',
+    ...mainMenu.tajo.promos,
     injectReducer,
     errorHandler,
     loadModule,
   });
 
   const installerRoute = require('screens/InstallerScreen/route')({
-    path: 'installer',
+    ...mainMenu.tajo.installer,
     injectReducer,
     errorHandler,
     loadModule,
@@ -82,7 +53,7 @@ export default function createRoutes(store) {
   });
 
   const devicesManagerRoute = require('screens/DevicesManager/route')({
-    path: 'devices',
+    ...mainMenu.tajo.devices,
     injectReducer,
     errorHandler,
     loadModule,
@@ -92,14 +63,12 @@ export default function createRoutes(store) {
     path: 'login',
   });
 
-  const dashboardRoute = require('screens/DashboardScreen/route')({
-    path: 'dashboard',
-  });
+  const dashboardRoute = require('screens/DashboardScreen/route')(mainMenu.tajo.dashboard);
 
   const rootRoute = require('screens/Root/route')({
     path: ROOT_ROUTE,
     dispatch: store.dispatch,
-    mainMenu: MAIN_MENU,
+    mainMenu: mainMenu.tajo,
   });
 
   rootRoute.indexRoute = {
@@ -108,6 +77,7 @@ export default function createRoutes(store) {
     protected: dashboardRoute.protected,
   };
 
+  // order of menu depends of pushing order
   rootRoute.childRoutes.push(
     loginRoute,
     dashboardRoute,

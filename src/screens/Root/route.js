@@ -4,16 +4,23 @@ import { BASE_URL } from 'configs';
 
 const NAME = 'root';
 
-function patchMenuPaths(menu = [], rootRoute = {}) {
+function patchMenuPaths(menu = {}, rootRoute = {}) {
   // check if defined menu items actually in routes;
   const rootChildrens = rootRoute.childRoutes.map(({ path }) => path);
 
-  const filtered = menu
-  .filter(({ path }) => rootChildrens.indexOf(path) !== -1)
-  .map(item => ({
-    ...item,
-    path: `${BASE_URL}/${item.path}`,
-  }));
+  const filtered = Object.values(menu)
+    .map(item => {
+      const index = rootChildrens.indexOf(item.path);
+
+      if (index === -1) return null;
+
+      return {
+        ...item,
+        index,
+        path: `${BASE_URL}/${item.path}`,
+      };
+    })
+    .sort((a, b) => a.index - b.index);
 
   return filtered;
 }
