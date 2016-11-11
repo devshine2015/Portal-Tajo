@@ -4,6 +4,7 @@ import pure from 'recompose/pure';
 import styles from './styles.css';
 
 import GooglePlacesSearch from 'components/GooglePlacesSearch';
+import MapMarkerToggle from 'components/MapMarkerToggle';
 
 import ChroniclePath from './components/ChroniclePath';
 import ChronicleMarker from './components/ChronicleMarker';
@@ -142,6 +143,7 @@ class MapChronicle extends React.Component {
     return (
       <div className = {styles.mapContainer}>
       <GooglePlacesSearch ownerMapObj={this.theMap} />
+      <MapMarkerToggle />
       {gfs}
       {chronPaths}
       {chronMarkers}
