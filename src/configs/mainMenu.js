@@ -1,3 +1,5 @@
+import roles from 'configs/roles';
+
 const common = {
   reports: {
     name: 'reports',
@@ -13,6 +15,9 @@ const common = {
     name: 'users',
     niceName: 'Users Manager',
     path: 'users',
+    includeRoles: [
+      roles.uber, roles.admin,
+    ],
   },
 };
 
@@ -20,7 +25,7 @@ const tajo = {
   dashboard: {
     name: 'dashboard',
     niceName: 'Dashboard',
-    path: '/',
+    path: '',
   },
   installer: {
     name: 'installer',
@@ -29,7 +34,7 @@ const tajo = {
   },
   promos: {
     name: 'promos',
-    niceName: 'Promo Subscribtions',
+    niceName: 'Promo',
     path: 'promos',
   },
   devices: {

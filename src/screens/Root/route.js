@@ -1,4 +1,3 @@
-// import { ROOT_ROUTE } from 'configs';
 import { setInnerPortalPages } from 'containers/InnerPortal/actions';
 import { BASE_URL } from 'configs';
 

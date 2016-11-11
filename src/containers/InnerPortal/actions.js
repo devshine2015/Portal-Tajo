@@ -10,21 +10,10 @@ export const changeMainSidebarState = () => ({
   type: INNER_PORTAL_SIDEBAR_CHANGE,
 });
 
-export const setInnerPortalPages = (routes = []) => (dispatch) =>
-  _setInnerPortalPages(routes, dispatch);
-
-function _setInnerPortalPages(routes, dispatch) {
-  const pages = routes.map(route => ({
-    text: route.niceName,
-    path: route.path,
-    order: route.order,
-  }));
-
-  dispatch({
-    type: INNER_PORTAL_PAGES_SET,
-    pages,
-  });
-}
+export const setInnerPortalPages = pages => ({
+  type: INNER_PORTAL_PAGES_SET,
+  pages,
+});
 
 export const logout = () => dispatch =>
   dispatch(loginActions.logout())
