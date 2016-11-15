@@ -53,8 +53,6 @@ const rolesAbilities = {
       [permissions.DEVICES_SEE]: true,
       [permissions.DEVICES_CREATE]: true,
       [permissions.DEVICES_DEACTIVATE]: true,
-      [permissions.DEVICES_DETACH]: true,
-      [permissions.DEVICES_ATTACH]: true,
     },
     manager: {
       [permissions.USERS_SEE]: true,
@@ -77,13 +75,9 @@ const rolesAbilities = {
     },
     admin: {
       [permissions.DEVICES_SEE]: true,
-      [permissions.DEVICES_DETACH]: true,
-      [permissions.DEVICES_ATTACH]: true,
     },
     manager: {
       [permissions.DEVICES_SEE]: true,
-      [permissions.DEVICES_DETACH]: true,
-      [permissions.DEVICES_ATTACH]: true,
     },
     installer: {},
   },
