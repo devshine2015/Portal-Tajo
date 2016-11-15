@@ -1,5 +1,5 @@
 import { replace } from 'react-router-redux';
-import { LOCAL_STORAGE_SESSION_KEY, ROOT_ROUTE } from 'configs';
+import { LOCAL_STORAGE_SESSION_KEY, BASE_URL } from 'configs';
 import { getIsUserAuthenticated } from '../reducer';
 import storage from 'utils/localStorage';
 
@@ -25,7 +25,7 @@ const eraseAuth = () => (dispatch, getState) => {
 
   if (isAuthenticated) {
     dispatch(logout());
-    dispatch(replace(`${ROOT_ROUTE}/login`));
+    dispatch(replace(`${BASE_URL}/login`));
   }
 
   storage.clean(LOCAL_STORAGE_SESSION_KEY);

@@ -1,12 +1,15 @@
 import { replace } from 'react-router-redux';
-import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
-import VERSIONS from 'configs/versions';
 import {
-  storage,
-  createBaseUrl,
-} from 'utils';
+  LOCAL_STORAGE_SESSION_KEY,
+  BASE_URL,
+} from 'configs';
+import VERSIONS from 'configs/versions';
+import storage from 'utils/localStorage';
 import { getIsUserAuthenticated } from '../reducer';
-import { loginActions, commonActions } from './';
+import {
+  loginActions,
+  commonActions,
+} from './';
 
 export const checkUserAuthentication = (params) => (dispatch, getState) =>
   _checkUserAuthentication(params, dispatch, getState);
@@ -37,14 +40,14 @@ function _checkUserAuthentication(params, dispatch, getState) {
         dispatch(commonActions.eraseAuth());
 
         if (params.urls) {
-          dispatch(replace(`${createBaseUrl()}/${params.urls.failure}`));
+          dispatch(replace(`${BASE_URL}/${params.urls.failure}`));
         }
       }
     } else {
       dispatch(commonActions.eraseAuth());
 
       if (params.urls) {
-        dispatch(replace(`${createBaseUrl()}/${params.urls.failure}`));
+        dispatch(replace(`${BASE_URL}/${params.urls.failure}`));
       }
 
       return Promise.resolve(isAuthenticated);
@@ -53,7 +56,7 @@ function _checkUserAuthentication(params, dispatch, getState) {
     return Promise.resolve(isAuthenticated);
   }, (error) => {
     if (error.message && error.message === 'wrong version') {
-      const loginUrl = `${createBaseUrl()}/login`;
+      const loginUrl = `${BASE_URL}/login`;
 
       console.warn(error.message);
 

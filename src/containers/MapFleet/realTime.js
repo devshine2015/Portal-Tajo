@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import pure from 'recompose/pure';
 import styles from './styles.css';
 
+import GooglePlacesSearch from 'components/GooglePlacesSearch';
+
 import MapVehicle from './components/MapVehicle';
 import MapGF from './components/MapGF';
 import EditGF from './components/EditGF';
@@ -148,7 +150,7 @@ class MapFleet extends React.Component {
        key="gfEditHelper"
        theLayer={this.gfEditLayer}
      />);
-
+    //  <GooglePlacesSearch ownerMapObj={this.theMap} />
     return (
       <div className = {styles.mapContainer}>
       {gfs}

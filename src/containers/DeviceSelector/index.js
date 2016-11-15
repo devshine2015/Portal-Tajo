@@ -33,6 +33,9 @@ const STYLES = {
     backgroundColor: 'transparent',
     boxShadow: 'none',
   },
+  disabledInput: {
+    color: '#000',
+  },
 };
 
 const RefreshButton = ({ onClick, isRefreshing }) => {
@@ -143,6 +146,7 @@ class DeviceSelector extends React.Component {
     const error = this.props.hasError ? ERROR_MESSAGE : '';
     const canRefresh = this.props.canRefresh === undefined ? true : this.props.canRefresh;
     const disabled = this.props.disabled || this.state.isRefreshing;
+    const inputStyle = disabled ? STYLES.disabledInput : {};
 
     const dataSource = this.props.vacantDevices.map(id => {
       const device = this.props.devices.get(id);
@@ -176,6 +180,7 @@ class DeviceSelector extends React.Component {
           ref={this.focusOnError}
           style={STYLES.fullWidth}
           floatingLabelText="IMEI"
+          inputStyle={inputStyle}
           filter={AutoComplete.fuzzyFilter}
           onNewRequest={this.onDeviceSelect}
           onUpdateInput={this.onUpdateInput}

@@ -1,11 +1,10 @@
-import { useLegacy, initRootRoute } from 'configs';
-import { setFleetName } from 'services/UserModel/actions';
+// import { ROOT_ROUTE } from 'configs';
 import { setInnerPortalPages } from 'containers/InnerPortal/actions';
-import createBaseUrl from 'utils/createBaseUrl';
+import { BASE_URL } from 'configs';
 
 const NAME = 'root';
 
-function patchMenuPaths(menu = [], rootRoute = {}, fleet = undefined) {
+function patchMenuPaths(menu = [], rootRoute = {}) {
   // check if defined menu items actually in routes;
   const rootChildrens = rootRoute.childRoutes.map(({ path }) => path);
 
@@ -13,7 +12,7 @@ function patchMenuPaths(menu = [], rootRoute = {}, fleet = undefined) {
   .filter(({ path }) => rootChildrens.indexOf(path) !== -1)
   .map(item => ({
     ...item,
-    path: `${createBaseUrl(fleet)}/${item.path}`,
+    path: `${BASE_URL}/${item.path}`,
   }));
 
   return filtered;
@@ -31,12 +30,6 @@ const createRoute = ({
   indexRoute: {},
   childRoutes: [],
   onEnter: (location) => {
-    initRootRoute(location.params.fleet);
-
-    if (useLegacy('url-with-fleet')) {
-      dispatch(setFleetName(location.params.fleet));
-    }
-
     if (mainMenu.length === 0) return;
 
     const patchedMenu = patchMenuPaths(mainMenu, location.routes[0]);

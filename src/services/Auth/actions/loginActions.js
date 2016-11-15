@@ -1,4 +1,4 @@
-import { LOCAL_STORAGE_SESSION_KEY, useLegacy } from 'configs';
+import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
 import endpoints from 'configs/endpoints';
 import VERSIONS from 'configs/versions';
 import storage from 'utils/localStorage';
@@ -9,8 +9,8 @@ import { getFleetName } from 'services/UserModel/reducer';
 
 export const LOGIN_SUCCESS = 'portal/Auth/LOGIN_SUCCESS';
 
-export const login = data => (dispatch, getState) =>
-  _login(data, dispatch, getState);
+export const login = data => dispatch =>
+  _login(data, dispatch);
 export const logout = (redirectUrl = '') => (dispatch, getState) =>
   _logout({ redirectUrl }, dispatch, getState);
 
@@ -30,7 +30,7 @@ export const loginSuccess = ({
 });
 
 
-function _login(data, dispatch, getState) {
+function _login(data, dispatch) {
   const { url, method, apiVersion } = endpoints.login;
   const options = {
     apiVersion,
@@ -40,18 +40,16 @@ function _login(data, dispatch, getState) {
   return api[method](url, options)
     .then(_extractResponse(apiVersion))
     .then(res => {
-      const sessionData = collectData(res, apiVersion);
-
-      if (useLegacy('login')) {
-        sessionData.fleet = getFleetName(getState());
-      }
+      const sessionData = collectData(res);
 
       storage.save(LOCAL_STORAGE_SESSION_KEY, sessionData, VERSIONS.authentication.currentVersion);
       dispatch(loginSuccess(sessionData));
+
       return Promise.resolve();
-    })
-    .catch(error => {
+    }, error => {
       console.error(error);
+
+      return Promise.reject(error);
     });
 }
 
@@ -75,18 +73,8 @@ function _logout({ redirectUrl }, dispatch, getState) {
     });
 }
 
-// after changing Login API
-// we get different responce schema
-function collectData(res, apiVersion) {
+function collectData(res) {
   const settings = res.settings || {};
-
-  if (apiVersion === 1) {
-    return {
-      settings,
-      sessionId: res,
-      role: 'manager',
-    };
-  }
 
   return {
     ...res,
