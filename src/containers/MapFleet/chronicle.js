@@ -14,8 +14,9 @@ import EditGF from './components/EditGF';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { getInstanceChronicleFrameById } from 'containers/Chronicle/reducer';
+import { ctxGetHideGF } from 'services/Global/reducers/contextReducer';
 
-import { createMapboxMap } from 'utils/mapBoxMap';
+import { createMapboxMap, hideLayer } from 'utils/mapBoxMap';
 import { initiateGfEditingCallback } from 'containers/GFEditor/utils';
 import { mapStoreSetView, mapStoreGetView } from './reducerAction';
 
@@ -55,23 +56,11 @@ class MapChronicle extends React.Component {
     this.theMap.on('contextmenu', initiateGfEditingCallback(this.theMap, this.props.gfEditUpdate));
   }
 
-  hideLayer(theLayer, doHide) {
-    if (this.theMap === null) return;
-    if (doHide) {
-      if (this.theMap.hasLayer(theLayer)) {
-        this.theMap.removeLayer(theLayer);
-      }
-    } else {
-      if (!this.theMap.hasLayer(theLayer)) {
-        this.theMap.addLayer(theLayer);
-      }
-    }
-  }
-
   render() {
-    this.hideLayer(this.vehicleMarkersLayer, this.props.gfEditMode);
-    this.hideLayer(this.gfMarkersLayer, this.props.gfEditMode);
-    this.hideLayer(this.gfEditLayer, !this.props.gfEditMode);
+    const hideGF = this.props.gfEditMode || this.props.isHideGF;
+    hideLayer(this.theMap, this.vehicleMarkersLayer, this.props.gfEditMode);
+    hideLayer(this.theMap, this.gfMarkersLayer, hideGF);
+    hideLayer(this.theMap, this.gfEditLayer, !this.props.gfEditMode);
 
     let gfs = EMPTY_ARRAY;
     let chronPaths = EMPTY_ARRAY;
@@ -79,16 +68,16 @@ class MapChronicle extends React.Component {
     let stopEvents = EMPTY_ARRAY;
 
     if (this.theMap !== null) {
-      // gfs = this.props.gfs.map((v) => (
-      //   <MapGF
-      //     key={v.id}
-      //     isSelected={false}
-      //     isDetailViewActivated={false}
-      //     theLayer={this.gfMarkersLayer}
-      //     theGF={v}
-      //     onClick={ () => {} }
-      //   />
-      // ));
+      gfs = this.props.gfs.map((v) => (
+        <MapGF
+          key={v.id}
+          isSelected={false}
+          isDetailViewActivated={false}
+          theLayer={this.gfMarkersLayer}
+          theGF={v}
+          onClick={ () => {} }
+        />
+      ));
       chronPaths = this.props.vehicles.map((v) => {
         const vehCronicleFrame = this.props.getInstanceChronicleFrameById(v.id);
         if (!vehCronicleFrame.isValid() || vehCronicleFrame.isEmpty()) {
@@ -165,6 +154,7 @@ MapChronicle.propTypes = {
   mapStoreSetView: React.PropTypes.func.isRequired,
   mapStoreGetView: React.PropTypes.object.isRequired,
   getInstanceChronicleFrameById: React.PropTypes.func.isRequired,
+  isHideGF: React.PropTypes.bool.isRequired,
 };
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesEx(state),
@@ -174,6 +164,7 @@ const mapState = (state) => ({
   gfEditMode: gfEditIsEditing(state),
   mapStoreGetView: mapStoreGetView(state),
   getInstanceChronicleFrameById: getInstanceChronicleFrameById(state),
+  isHideGF: ctxGetHideGF(state),
 });
 const mapDispatch = {
   gfEditUpdate,
