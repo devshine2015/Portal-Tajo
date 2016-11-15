@@ -11,4 +11,11 @@
     border-radius: 4px;
     /*border: 1px solid #e64a19;*/
   }
+  .iconBtn {
+    z-index: 2;
+    top: 10px;
+    background-color: rebeccapurple;
+    border-radius: 50%;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+  }
 }
