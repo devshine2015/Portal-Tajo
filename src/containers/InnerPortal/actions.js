@@ -1,6 +1,6 @@
 import { replace } from 'react-router-redux';
 import { loginActions } from 'services/Auth/actions';
-import { LOCAL_STORAGE_SESSION_KEY, ROOT_ROUTE } from 'configs';
+import { LOCAL_STORAGE_SESSION_KEY, BASE_URL } from 'configs';
 import storage from 'utils/localStorage';
 
 export const INNER_PORTAL_PAGES_SET = 'portal/InnerPortal/INNER_PORTAL_PAGES_SET';
@@ -34,7 +34,7 @@ export const logout = () => dispatch =>
     }];
 
     storage.cleanExactValues(LOCAL_STORAGE_SESSION_KEY, toDelete);
-    dispatch(replace(`${ROOT_ROUTE}/login`));
+    dispatch(replace(`${BASE_URL}/login`));
 
     return Promise.resolve();
   });
