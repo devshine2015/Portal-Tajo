@@ -10,6 +10,7 @@ import drvrDevTheme from 'configs/theme';
 
 // need this for global styling
 require('./styles.css');
+import 'font-awesome/css/font-awesome.css';
 
 function screenIsProtected(routes = []) {
   const lastRoute = routes[routes.length - 1];

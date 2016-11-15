@@ -129,6 +129,7 @@ class VehiclesEditor extends React.Component {
     return (
       <FixedContent containerClassName={styles.detailsContainer}>
         <VehicleDetails
+          isLoading={this.props.isLoading}
           details={data}
           id={origins.id}
           onSave={this.onDetailsSave}

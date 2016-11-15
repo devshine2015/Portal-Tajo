@@ -16,41 +16,21 @@ const chooseRoot = () => {
     return '/tajo';
   }
 
-  return '';
+  return '/';
 };
 
-// support or not some old API depends on environment
+// support or not some old stuff depends on environment
 // for example:
-// at this moment (18.10.2016) we have 2 versions of LoginAPI.
+// at 18.10.2016 we have had 2 versions of LoginAPI.
 // new one works locally and on ddsdev,
 // while old one works on stage && production
 // and keeped alive for old portal.
 export const useLegacy = type => {
   switch (type) {
-    // use old loginApi on stage and prod
-    case 'login': return onProduction;
-    case 'url-with-fleet': return onProduction;
     case 'session-key': return portal === 'ssreports';
     default:
       return false;
   }
-};
-
-export const initRootRoute = (fleet = undefined) => {
-  if (useLegacy('url-with-fleet')) {
-    ROOT_ROUTE = `/portal/${fleet}/${portal}`;
-    return;
-  }
-
-  ROOT_ROUTE = chooseRoot();
-};
-
-const initRouterRoot = () => {
-  if (useLegacy('url-with-fleet')) {
-    return `/portal/:fleet/${portal}/`;
-  }
-
-  return `${chooseRoot()}/`;
 };
 
 export const portal = process.env.DRVR_PROJECT;
@@ -64,9 +44,12 @@ export const onDev = serverEnv === 'dev';
 // use old local storage key notation for ssreports
 export const LOCAL_STORAGE_SESSION_KEY = useLegacy('session-key') ?
   'ngStorage-sessionId' : 'drvr_tajo-sessionId';
-export let ROOT_ROUTE = '';
-export const REACT_ROUTER_ROOT = initRouterRoot();
 
+// use to initiate root for react-router
+export const ROOT_ROUTE = chooseRoot();
+
+// use it for navigation throught app
+export const BASE_URL = ROOT_ROUTE === '/' ? '' : ROOT_ROUTE;
 
 // isDev true only on localhost
 export const ENGINE_BASE = onDev ? DEV_ENGINE_BASE : PROD_ENGINE_BASE;

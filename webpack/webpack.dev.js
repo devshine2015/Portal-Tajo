@@ -21,10 +21,10 @@ module.exports = require('./webpack.base')({
 
   // Don't use hashes in dev mode for better performance
   output: {
-    filename: '[name].js',
-    chunkFilename: '[name].chunk.js',
+    filename: 'js/[name].js',
+    chunkFilename: 'js/[name].chunk.js',
     // add this path to static files in index.html
-    publicPath: `/assets/common-portal/${PROJECT}/`,
+    publicPath: '',
   },
 
   // where compile locally

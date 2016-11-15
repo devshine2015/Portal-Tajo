@@ -3,12 +3,13 @@ import { reportActions } from '../actions';
 import tempSpecs from '../specs/temperature';
 import baseSpecs from '../specs/base';
 import mileageSpecs from '../specs/mileage';
-import idlingSpecs from '../specs/idling';
+// import idlingSpecs from '../specs/idling';
 import statsSpecs from '../specs/stats';
 
 // join arrays and filter for available ones
 const specs = baseSpecs
-  .concat(mileageSpecs, tempSpecs, idlingSpecs, statsSpecs)
+//  .concat(mileageSpecs, tempSpecs, idlingSpecs, statsSpecs)
+  .concat(mileageSpecs, tempSpecs, statsSpecs)
   .filter(spec =>
     !spec.hasOwnProperty('available') || spec.available
   );

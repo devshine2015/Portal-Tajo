@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import locationShape from 'react-router/lib/PropTypes';
 import { connect } from 'react-redux';
 import { AppBar, FlatButton } from 'material-ui';
-import { REACT_ROUTER_ROOT, portal } from 'configs';
+import { BASE_URL, portal } from 'configs';
 import { changeMainSidebarState } from 'containers/InnerPortal/actions';
 import FleetSummary from 'containers/FleetSummary';
 import { logout } from '../../actions';
@@ -12,9 +12,9 @@ import { logout } from '../../actions';
 import styles from './styles.css';
 
 const hideSummaryOn = [
-  `${REACT_ROUTER_ROOT}review`,
-  `${REACT_ROUTER_ROOT}dashboard`,
-  portal === 'tajo' && REACT_ROUTER_ROOT,
+  `${BASE_URL}review`,
+  `${BASE_URL}dashboard`,
+  portal === 'tajo' && BASE_URL,
 ];
 
 function renderSummary(location) {

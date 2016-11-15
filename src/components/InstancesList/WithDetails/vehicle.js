@@ -96,6 +96,15 @@ class ListItemVehicle extends React.Component {
             value={`${this.props.temp.toFixed(1)}\xB0 C`}
           />
         }
+      </div>
+    );
+  }
+
+  renderMoreDetails() {
+    if (!this.props.isExpanded) return null;
+
+    return (
+      <div>
         <Divider />
         <ItemProperty
           title="License Plate"
@@ -130,7 +139,7 @@ class ListItemVehicle extends React.Component {
     const className = cs(stylesBase.listItemInn, {
       [styles.listItemInn_expanded]: this.props.isExpanded,
     });
-    const { isDead, isDelayed } = this.props; 
+    const { isDead, isDelayed } = this.props;
     const needIndicator = isDead || isDelayed;
 
     return (
