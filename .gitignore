@@ -2,6 +2,7 @@
 build
 builds
 old
+portal-rio
 
 # allow all files from projects directory
 !src/projects/*

@@ -53,10 +53,10 @@ const SimpleSummary = ({
       amount={amounts.deadAmount}
       icon={<Icon.NotReportedIcon color={theme.palette.accent2Color} />}
     />
-    <Amount
+    {/*<Amount
       amount={amounts.delayedAmount}
       icon={<Icon.DelayedIcon color={theme.palette.accent2Color} />}
-    />
+    />*/}
   </div>
 );
 

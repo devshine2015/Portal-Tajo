@@ -42,6 +42,7 @@ function _generateRawReport({ timePeriod, frequency, dateFormat }, dispatch, get
   const periodParamsWithOptions = Object.assign({}, getReportParams(timePeriod), {
     max: 20000,
     filter: 'PG',
+    tzoffset: new Date().getTimezoneOffset(),
   });
 
   return Promise.all(
