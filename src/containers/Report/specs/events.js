@@ -115,7 +115,7 @@ function calcCommonEvents({ ev, type } = {}, {
     licensePlate, // license plate number
     name,         // vehcile name
     prettyType,   // prettified event type
-    moment.utc(pos.posTime).format(dateFormat), // event time
+    moment(pos.posTime).format(dateFormat), // event time
     `${pos.latlon.lat}, ${pos.latlon.lng}`,   // event position
     pos.speed.toFixed(2, 10),   // speed
     prettifyAdditionalInfo(type, rest),  // additional info
@@ -134,7 +134,7 @@ function calcGeofenceEvents({ ev, type } = {}, {
     licensePlate, // license plate number
     name,         // vehcile name
     prettyType,   // prettified event type
-    moment.utc(crossTime).format(dateFormat), // event time
+    moment(crossTime).format(dateFormat), // event time
     `${crossPos.lat}, ${crossPos.lng}`,   // event position
     '', // speed
     prettifyAdditionalInfo(type, rest),  // additional info

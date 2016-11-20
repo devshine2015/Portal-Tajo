@@ -126,7 +126,7 @@ function _calculateColumn({
 function _formateDateForRequest(date, time) {
   const d = moment.isMoment(date) ? date.toDate() : date;
 
-  const result = moment.utc({
+  const result = moment({
     y: d.getFullYear(),
     M: d.getMonth(),
     d: d.getDate(),
@@ -134,5 +134,6 @@ function _formateDateForRequest(date, time) {
     m: time ? time.getMinutes() : '00',
     s: time ? time.getSeconds() : '00',
   }).toISOString();
+
   return `${result.slice(0, -1)}+0000`;
 }
