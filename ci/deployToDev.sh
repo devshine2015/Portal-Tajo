@@ -4,7 +4,7 @@ TAJO=$1
 PORTAL=$2
 EXTRA_FOLDER=$3
 
-if [ $EXTRA_FOLDER -n ] ; then
+if [ -z $EXTRA_FOLDER ] ; then
   TARGET_FOLDER="~/driver-server/static-root/public/$EXTRA_FOLDER"
 else
   TARGET_FOLDER="~/driver-server/static-root/public"
