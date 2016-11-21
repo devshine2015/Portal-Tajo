@@ -13,8 +13,8 @@
   }
   button.iconBtn {
     z-index: 2;
-    top: 10px;
-    left: -100px;
+    top: 120px;
+    left: 10px;
     border-radius: 50%;
     box-shadow: 0 1px 5px rgba(0,0,0,0.65);
   }
