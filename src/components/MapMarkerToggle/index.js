@@ -7,14 +7,17 @@ import IconButton from 'material-ui/IconButton';
 import CarIcon from 'material-ui/svg-icons/maps/local-shipping';
 // import LocationIcon from 'material-ui/svg-icons/social/location-city';
 import LocationIcon from 'material-ui/svg-icons/social/location-city';
-import { red900, red500, teal100, teal200, yellow700, yellow500 } from 'material-ui/styles/colors';
 
-import { ctxGetHideGF, ctxGetHideVehicles, ctxGetPowListTabType } from 'services/Global/reducers/contextReducer';
+import { ctxGetHideGF, ctxGetHideVehicles,
+    ctxGetPowListTabType } from 'services/Global/reducers/contextReducer';
 import { contextActions } from 'services/Global/actions';
 
 import listTypes from 'components/InstancesList/types';
 
 import styles from './styles.css';
+
+const iconColor = '#535353';
+const iconHoverColor = '#00695C';
 
 class MapMarkerToggle extends React.Component {
 
@@ -44,7 +47,7 @@ class MapMarkerToggle extends React.Component {
     }
   }
   btnHideColor = (isHide) =>
-    isHide ? '#FFFFFF' : '#888899';
+    isHide ? '#ffffff' : '#e3e3e3';
   btnColor = () => {
     switch (this.props.listType) {
       case listTypes.withGFDetails:
@@ -57,10 +60,10 @@ class MapMarkerToggle extends React.Component {
   contentIcon = () => {
     switch (this.props.listType) {
       case listTypes.withGFDetails:
-        return (<CarIcon color={yellow700} hoverColor={yellow700} />);
+        return (<CarIcon color={iconColor} hoverColor={iconHoverColor} />);
       case listTypes.withVehicleDetails:
       default:
-        return (<LocationIcon color={yellow700} hoverColor={yellow700} />);
+        return (<LocationIcon color={iconColor} hoverColor={iconHoverColor} />);
     }
   }
 
@@ -78,16 +81,6 @@ class MapMarkerToggle extends React.Component {
       </IconButton>
     );
   }
-  // render() {
-  //   return (
-  //     <button
-  //       className={styles.toggle}
-  //       onClick={this.onClick}
-  //     >
-  //     {this.contentText()}
-  //     </button>
-  //   );
-  // }
 }
 
 MapMarkerToggle.propTypes = {
