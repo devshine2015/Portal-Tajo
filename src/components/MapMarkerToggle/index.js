@@ -3,7 +3,6 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
 import IconButton from 'material-ui/IconButton';
-import DeletIcon from 'material-ui/svg-icons/action/delete-forever';
 // import CarIcon from 'material-ui/svg-icons/maps/directions-car';
 import CarIcon from 'material-ui/svg-icons/maps/local-shipping';
 // import LocationIcon from 'material-ui/svg-icons/social/location-city';
@@ -44,22 +43,35 @@ class MapMarkerToggle extends React.Component {
         return this.hidePrefix(this.props.isHideGF) + 'Locations';
     }
   }
+  btnHideColor = (isHide) =>
+    isHide ? '#FFFFFF' : '#888899';
+  btnColor = () => {
+    switch (this.props.listType) {
+      case listTypes.withGFDetails:
+        return this.btnHideColor(this.props.isHideVehicles);
+      case listTypes.withVehicleDetails:
+      default:
+        return this.btnHideColor(this.props.isHideGF);
+    }
+  }
   contentIcon = () => {
     switch (this.props.listType) {
       case listTypes.withGFDetails:
-        return (<CarIcon color={yellow700} hoverColor={yellow500} />);
+        return (<CarIcon color={yellow700} hoverColor={yellow700} />);
       case listTypes.withVehicleDetails:
       default:
-        return (<LocationIcon color={yellow700} hoverColor={yellow500} />);
+        return (<LocationIcon color={yellow700} hoverColor={yellow700} />);
     }
   }
 
   render() {
+    const toolTip = this.contentText();
     return (
       <IconButton
-        tooltip="Toggle"
+        tooltip={toolTip}
         onClick={this.onClick}
         className={styles.iconBtn}
+        style={ { backgroundColor: this.btnColor() } }
         key="delBtn"
       >
         {this.contentIcon()}
