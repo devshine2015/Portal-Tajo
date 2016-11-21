@@ -1,3 +1,5 @@
+// TODO: make this element as proper MapBox controller
+//
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
