@@ -3,7 +3,7 @@
   .listItemNoChronicle {
       background-color: #1f757d;;
       border-bottom-color: rgb(70, 70, 70);
-    }
+  }
   .listItemNoChronicle:hover {
     background-color: #2896a1;
     border-bottom-color: rgb(70, 70, 70);

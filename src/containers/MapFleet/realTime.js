@@ -4,6 +4,7 @@ import pure from 'recompose/pure';
 import styles from './styles.css';
 
 import GooglePlacesSearch from 'components/GooglePlacesSearch';
+import MapMarkerToggle from 'components/MapMarkerToggle';
 
 import MapVehicle from './components/MapVehicle';
 import MapGF from './components/MapGF';
@@ -11,9 +12,13 @@ import EditGF from './components/EditGF';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 
-import { createMapboxMap } from 'utils/mapBoxMap';
+import { createMapboxMap, hideLayer } from 'utils/mapBoxMap';
 import { initiateGfEditingCallback } from 'containers/GFEditor/utils';
+
+// TODO: remove; this must be in the global/contextReducer
 import { mapStoreSetView, mapStoreGetView } from './reducerAction';
+// TODO: remove over
+import { ctxGetHideGF, ctxGetHideVehicles, ctxGetPowListTabType } from 'services/Global/reducers/contextReducer';
 
 import { gfEditUpdate } from 'containers/GFEditor/actions';
 import { gfEditIsEditing } from 'containers/GFEditor/reducer';
@@ -102,23 +107,14 @@ class MapFleet extends React.Component {
     });
   }
 
-  hideLayer(theLayer, doHide) {
-    if (this.theMap === null) return;
-    if (doHide) {
-      if (this.theMap.hasLayer(theLayer)) {
-        this.theMap.removeLayer(theLayer);
-      }
-    } else {
-      if (!this.theMap.hasLayer(theLayer)) {
-        this.theMap.addLayer(theLayer);
-      }
-    }
-  }
-
   render() {
-    this.hideLayer(this.vehicleMarkersLayer, this.props.gfEditMode);
-    this.hideLayer(this.gfMarkersLayer, this.props.gfEditMode);
-    this.hideLayer(this.gfEditLayer, !this.props.gfEditMode);
+    const shouldHideGFs = this.props.gfEditMode ||
+          this.props.isHideGF && this.props.activeListType === listTypes.withVehicleDetails;
+    const shouldHideVehicles = this.props.gfEditMode ||
+          this.props.isHideVehicles && this.props.activeListType === listTypes.withGFDetails;
+    hideLayer(this.theMap, this.vehicleMarkersLayer, shouldHideVehicles);
+    hideLayer(this.theMap, this.gfMarkersLayer, shouldHideGFs);
+    hideLayer(this.theMap, this.gfEditLayer, !this.props.gfEditMode);
 
     let vehicles = EMPTY_ARRAY;
     let gfs = EMPTY_ARRAY;
@@ -150,9 +146,11 @@ class MapFleet extends React.Component {
        key="gfEditHelper"
        theLayer={this.gfEditLayer}
      />);
-    //  <GooglePlacesSearch ownerMapObj={this.theMap} />
+
     return (
       <div className = {styles.mapContainer}>
+      <GooglePlacesSearch ownerMapObj={this.theMap} />
+      <MapMarkerToggle />
       {gfs}
       {vehicles}
       {editGF}
@@ -174,6 +172,9 @@ MapFleet.propTypes = {
   mapStoreSetView: React.PropTypes.func.isRequired,
   mapStoreGetView: React.PropTypes.object.isRequired,
   gloablSelctedVehicleId: React.PropTypes.string.isRequired,
+  isHideGF: React.PropTypes.bool.isRequired,
+  isHideVehicles: React.PropTypes.bool.isRequired,
+  activeListType: React.PropTypes.string,
 };
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesEx(state),
@@ -183,6 +184,9 @@ const mapState = (state) => ({
   gfEditMode: gfEditIsEditing(state),
   mapStoreGetView: mapStoreGetView(state),
   gloablSelctedVehicleId: fromFleetReducer.getSelectedVehicleId(state),
+  isHideGF: ctxGetHideGF(state),
+  isHideVehicles: ctxGetHideVehicles(state),
+  activeListType: ctxGetPowListTabType(state),
 });
 const mapDispatch = {
   gfEditUpdate,
