@@ -23,7 +23,8 @@ deployment:
       - ./ci/deployToDev.sh karl
 
   stage:
-    branch: stage
+    # code, released at the end of previous sprint
+    branch: stage@latest_release
     commands:
       - ./ci/deployToStage.sh
     
