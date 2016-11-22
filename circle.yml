@@ -12,15 +12,20 @@ deployment:
   dev:
     branch: dev
     commands:
-      - ./ci/deployToDev.sh 'tajo' 'portal'
+      - ./ci/deployToDev.sh
+    # Maksim's personal branch
     branch: dev@max
     commands:
-      - ./ci/deployToDev.sh 'tajo' 'portal' 'max'
+      - ./ci/deployToDev.sh 'max'
+    # Kirill's personal branch
+    branch: dev@karl
+    commands:
+      - ./ci/deployToDev.sh 'karl'
 
   stage:
     branch: stage
     commands:
-      - ./ci/deploy.sh 'drvrstage@drvrstage.cloudapp.net' 'tajo' 'portal' '~/engine/static-root/public'
+      - ./ci/deploy.sh 'tajo' 'portal'
   production:
     branch: production
     commands:
