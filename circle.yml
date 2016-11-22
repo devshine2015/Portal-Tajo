@@ -16,16 +16,27 @@ deployment:
     # Maksim's personal branch
     branch: dev@max
     commands:
-      - ./ci/deployToDev.sh 'max'
+      - ./ci/deployToDev.sh max
     # Kirill's personal branch
     branch: dev@karl
     commands:
-      - ./ci/deployToDev.sh 'karl'
+      - ./ci/deployToDev.sh karl
 
   stage:
     branch: stage
     commands:
-      - ./ci/deploy.sh 'tajo' 'portal'
+      - ./ci/deployToStage.sh
+    
+    # here current sprint code lives
+    branch: stage@candidate
+    commands:
+      - ./ci/deployToStage.sh candidate
+  
+    # push here to try something on stage
+    branch: stage@sandbox
+    commands:
+      - ./ci/deployToStage.sh sandbox
+
   production:
     branch: production
     commands:
