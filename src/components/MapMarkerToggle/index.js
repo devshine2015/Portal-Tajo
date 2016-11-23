@@ -49,7 +49,7 @@ class MapMarkerToggle extends React.Component {
     }
   }
   btnHideColor = (isHide) =>
-    isHide ? '#ffffff' : '#e3e3e3';
+    isHide ? '#ffffff' : '#f9f9f9';
   btnColor = () => {
     switch (this.props.listType) {
       case listTypes.withGFDetails:
@@ -70,14 +70,16 @@ class MapMarkerToggle extends React.Component {
   }
 
   render() {
+    const iconBtnSyle = { backgroundColor: this.btnColor(), width: '36px',
+        height: '36px', padding: '0' };
     const toolTip = this.contentText();
     return (
       <IconButton
         tooltip={toolTip}
         onClick={this.onClick}
         className={styles.iconBtn}
-        style={ { backgroundColor: this.btnColor() } }
-        key="delBtn"
+        style={ iconBtnSyle }
+        key="toggleBtn"
       >
         {this.contentIcon()}
       </IconButton>
