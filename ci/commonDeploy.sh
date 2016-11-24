@@ -15,7 +15,7 @@ fi
 TAJO_FOLDER="builds/prod/$TAJO"
 PORTAL_FOLDER="builds/prod/$PORTAL"
 
-# echo "rebuild static sources..."
+echo "rebuild static sources..."
 npm run clean
 npm run build:$TAJO
 npm run build:$PORTAL

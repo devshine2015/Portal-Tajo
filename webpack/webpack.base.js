@@ -7,7 +7,7 @@ const webpack = require('webpack');
 module.exports = (options) => ({
   entry: options.entry,
   output: Object.assign({
-    // Compile into specified folder or /build.js
+    // put build into specified folder
     path: options.outputFolder,
     publicPath: '/',
     sourceMapFilename: '[name].js.map',
