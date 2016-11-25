@@ -16,8 +16,6 @@ HOST='drvrstage@drvrstage.cloudapp.net'
 PUBLIC='~/engine/static-root/public'
 EXTRA_FOLDER=$1
 
-parent_path=$( cd "$(dirname "${BASH_SOURCE}")" ; pwd -P )
-
 if [ ! -z $EXTRA_FOLDER ] ; then
   TARGET_FOLDER="$PUBLIC/$EXTRA_FOLDER"
 else
