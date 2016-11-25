@@ -6,6 +6,7 @@ import { VelocityTransitionGroup } from 'velocity-react';
 require('velocity-animate');
 require('velocity-animate/velocity.ui');
 
+import { isEscape } from 'configs';
 import ItemProperty from '../DetailItemProperty';
 import Divider from 'material-ui/Divider';
 import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
@@ -26,10 +27,9 @@ const Icon = ({
 
   if (isDead) {
     icon = <AlertIcon color={yellow700} />;
-  }/*  else if (isDelayedWithIgnitionOff) {
+  } else if (isEscape && isDelayedWithIgnitionOff) {
     icon = <AlertLagIcon color={blueGrey200} />;
-  }*/ 
-  else if (isDelayed) {
+  } else if (isDelayed) {
     icon = <AlertLagIcon color={yellow700} />;
   }
 
@@ -145,14 +145,13 @@ class ListItemVehicle extends React.Component {
     });
     const { isDead, isDelayed, isDelayedWithIgnitionOff } = this.props;
     const needIndicator = isDead || isDelayed || isDelayedWithIgnitionOff;
-
     return (
       <div
         className={className}
         onClick={this.onClick}
       >
         <h1>
-          {this.props.name}
+          {isEscape ? `${this.props.name} ig:${this.props.ignitionOn}` : this.props.name}
         </h1>
 
         { this.inActivityIndicator() }
