@@ -19,6 +19,11 @@ const common = {
       roles.uber, roles.admin,
     ],
   },
+  operational: {
+    name: 'operational',
+    niceName: 'Operational',
+    path: 'map',
+  },
 };
 
 const tajo = {
@@ -49,11 +54,6 @@ const portal = {
     name: 'review',
     niceName: 'Review',
     path: 'review',
-  },
-  operational: {
-    name: 'operational',
-    niceName: 'Operational',
-    path: 'map',
   },
   history: {
     name: 'history',

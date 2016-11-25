@@ -17,6 +17,10 @@ export default function createRoutes(store) {
     selectLocationState: selectLocationState(),
   });
 
+  const operationalRoute = require('screens/Operational/route')({
+    ...mainMenu.tajo.operational,
+  });
+
   const reportsRoute = require('screens/ReportsScreen/route')({
     ...mainMenu.tajo.reports,
     injectReducer,
@@ -81,6 +85,7 @@ export default function createRoutes(store) {
   rootRoute.childRoutes.push(
     loginRoute,
     dashboardRoute,
+    operationalRoute,
     installerRoute,
     promoRoute,
     reportsRoute,
