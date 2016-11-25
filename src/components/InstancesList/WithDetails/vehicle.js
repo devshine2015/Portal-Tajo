@@ -26,9 +26,10 @@ const Icon = ({
 
   if (isDead) {
     icon = <AlertIcon color={yellow700} />;
-  } else if (isDelayedWithIgnitionOff) {
+  }/*  else if (isDelayedWithIgnitionOff) {
     icon = <AlertLagIcon color={blueGrey200} />;
-  } else if (isDelayed) {
+  }*/ 
+  else if (isDelayed) {
     icon = <AlertLagIcon color={yellow700} />;
   }
 
@@ -151,7 +152,7 @@ class ListItemVehicle extends React.Component {
         onClick={this.onClick}
       >
         <h1>
-          {this.props.name + ' ' + this.props.ignitionOn}
+          {this.props.name}
         </h1>
 
         { this.inActivityIndicator() }
