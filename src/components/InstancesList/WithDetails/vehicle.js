@@ -10,7 +10,7 @@ import ItemProperty from '../DetailItemProperty';
 import Divider from 'material-ui/Divider';
 import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
 import AlertLagIcon from 'material-ui/svg-icons/action/watch-later';
-import { yellow700 } from 'material-ui/styles/colors';
+import { yellow700, blueGrey200 } from 'material-ui/styles/colors';
 
 import stylesBase from '../styles.css';
 import styles from './styles.css';
@@ -20,11 +20,14 @@ const NEVER_REPORTED = 'never reported - check device';
 const Icon = ({
   isDead,
   isDelayed,
+  isDelayedWithIgnitionOff,
 }) => {
   let icon = null;
 
   if (isDead) {
     icon = <AlertIcon color={yellow700} />;
+  } else if (isDelayedWithIgnitionOff) {
+    icon = <AlertLagIcon color={blueGrey200} />;
   } else if (isDelayed) {
     icon = <AlertLagIcon color={yellow700} />;
   }
@@ -139,8 +142,8 @@ class ListItemVehicle extends React.Component {
     const className = cs(stylesBase.listItemInn, {
       [styles.listItemInn_expanded]: this.props.isExpanded,
     });
-    const { isDead, isDelayed } = this.props;
-    const needIndicator = isDead || isDelayed;
+    const { isDead, isDelayed, isDelayedWithIgnitionOff } = this.props;
+    const needIndicator = isDead || isDelayed || isDelayedWithIgnitionOff;
 
     return (
       <div
@@ -148,7 +151,7 @@ class ListItemVehicle extends React.Component {
         onClick={this.onClick}
       >
         <h1>
-          {this.props.name}
+          {this.props.name + ' ' + this.props.ignitionOn}
         </h1>
 
         { this.inActivityIndicator() }
@@ -164,6 +167,7 @@ class ListItemVehicle extends React.Component {
           <Icon
             isDead={isDead}
             isDelayed={isDelayed}
+            isDelayedWithIgnitionOff={isDelayedWithIgnitionOff}
           />
         )}
       </div>
@@ -187,6 +191,8 @@ ListItemVehicle.propTypes = {
   make: React.PropTypes.string,
   model: React.PropTypes.string,
   year: React.PropTypes.string,
+  ignitionOn: React.PropTypes.number,
+  isDelayedWithIgnitionOff: React.PropTypes.bool.isRequired,
 };
 
 const PureListItemVehicle = pure(ListItemVehicle);
