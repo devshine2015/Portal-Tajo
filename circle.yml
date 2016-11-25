@@ -24,7 +24,8 @@ deployment:
 
   stage:
     # code, released at the end of previous sprint
-    branch: stage@latest_release
+    # branch: stage@latest_release
+    branch: /stage*/
     commands:
       - ./ci/deploy.sh 'drvrstage@drvrstage.cloudapp.net' 'tajo' 'portal' '~/engine/static-root/public'
       # - ./ci/deployToStage.sh
