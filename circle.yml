@@ -9,31 +9,39 @@ general:
       - verified_candidate
 
 deployment:
-  dev:
+  development:
     branch: dev
     commands:
       - ./ci/deployToDev.sh
-    # Maksim's personal branch
+
+  # Maksim's personal branch
+  dev_max:
     branch: dev@max
+    owner: orelmax
     commands:
       - ./ci/deployToDev.sh max
-    # Kirill's personal branch
+
+  # Kirill's personal branch
+  dev_kirill:
     branch: dev@karl
+    owner: kirill07
     commands:
       - ./ci/deployToDev.sh karl
 
-  stage:
-    # code, released at the end of previous sprint
+  # code, released at the end of previous sprint
+  stage_latest:
     branch: stage@latest_release
     commands:
       - ./ci/deployToStage.sh
-    
-    # here current sprint code lives
+  
+  # here current sprint code lives
+  stage_candidate:  
     branch: stage@candidate
     commands:
       - ./ci/deployToStage.sh candidate
   
-    # push here to try something on stage
+  # push here to try something on stage
+  stage_sandbox:
     branch: stage@sandbox
     commands:
       - ./ci/deployToStage.sh sandbox
