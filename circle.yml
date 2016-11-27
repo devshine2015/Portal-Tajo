@@ -9,36 +9,7 @@ general:
       - verified_candidate
 
 deployment:
-  dev:
+  development:
     branch: dev
     commands:
       - ./ci/deployToDev.sh
-    # Maksim's personal branch
-    branch: dev_max
-    commands:
-      - ./ci/deployToDev.sh max
-    # Kirill's personal branch
-    branch: dev_karl
-    commands:
-      - ./ci/deployToDev.sh karl
-
-  # stage:
-  #   # code, released at the end of previous sprint
-  #   branch: stage@latest_release
-  #   commands:
-  #     - ./ci/deployToStage.sh
-    
-  #   # here current sprint code lives
-  #   branch: stage@candidate
-  #   commands:
-  #     - ./ci/deployToStage.sh candidate
-  
-  #   # push here to try something on stage
-  #   branch: stage@sandbox
-  #   commands:
-  #     - ./ci/deployToStage.sh sandbox
-
-  # production:
-  #   branch: production
-  #   commands:
-  #     - ./ci/deploy.sh
