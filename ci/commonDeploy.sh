@@ -17,8 +17,8 @@ PORTAL_FOLDER="builds/prod/$PORTAL"
 
 echo "rebuild static sources..."
 npm run clean
-npm run build:$TAJO
-npm run build:$PORTAL
+npm run build:escape
+npm run build:sunshine
 
 
 if [ ! -z $EXTRA_FOLDER ] ; then
