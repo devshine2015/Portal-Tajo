@@ -73,6 +73,7 @@ InstancesList.propTypes = {
     types.withVehicleDetails,
     types.withGFDetails,
     types.vehicleChronicle,
+    types.maritime,
     types.simple,
   ]),
 

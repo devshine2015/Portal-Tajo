@@ -7,6 +7,7 @@ import CheckboxItem from '../WithCheckboxes';
 import DetailedGFItem from '../WithDetails/gf';
 import DetailedVehicleItem from '../WithDetails/vehicle';
 import VehicleChronicleItem from '../WithDetails/vehicleChronicle';
+import MaritimeItem from '../WithDetails/maritime';
 import types from '../types';
 
 import styles from './styles.css';
@@ -51,6 +52,15 @@ function chooseItem(type, {
     case types.vehicleChronicle: {
       return (
         <VehicleChronicleItem
+          onClick={onItemClick}
+          isExpanded={isExpanded}
+          {...item}
+        />
+      );
+    }
+    case types.maritime: {
+      return (
+        <MaritimeItem
           onClick={onItemClick}
           isExpanded={isExpanded}
           {...item}
@@ -122,6 +132,7 @@ GenericListItem.propTypes = {
     types.withVehicleDetails,
     types.withGFDetails,
     types.vehicleChronicle,
+    types.maritime,
     types.simple,
   ]),
 };

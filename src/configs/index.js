@@ -45,5 +45,9 @@ export const BASE_URL = ROOT_ROUTE === '/' ? '' : ROOT_ROUTE;
 // isDev true only on localhost
 export const ENGINE_BASE = onLocal ? DEV_ENGINE_BASE : REMOTE_HOST_BASE;
 
+// TODO: this is runtime, defined after login; should be in some other place
+// TODO: now for dev/test hardcoded value
+export const isMaritime = true;
+
 console.log(`Server env is ${serverEnv}, and project is ${portal}`);
 console.log(`Root toute is ${ROOT_ROUTE}`);
