@@ -39,6 +39,13 @@ import iTractor from 'assets/images/v_icons_combi/traktor@3x.png';
 import iFarm from 'assets/images/v_icons_combi/farm@3x.png';
 import iUndefined from 'assets/images/v_icons_combi/uncknown@3x.png';
 
+const undefinedType = {
+  value: 'UNDEFINED',
+  text: 'Undefined',
+  icon: <Undefined />,
+  pic: iUndefined,
+};
+
 export const VEHICLE_KINDS = [
   {
     value: 'FARM',
@@ -131,13 +138,10 @@ export const VEHICLE_KINDS = [
     icon: <Tractor />,
     pic: iTractor,
   }, {
-    value: 'UNDEFINED',
-    text: 'Undefined',
-    icon: <Undefined />,
-    pic: iUndefined,
+    ...undefinedType,
   },
 ];
 
 export function getVehicleByValue(value) {
-  return VEHICLE_KINDS.filter(kind => kind.value === value)[0];
+  return VEHICLE_KINDS.filter(kind => kind.value === value)[0] || undefinedType;
 }
