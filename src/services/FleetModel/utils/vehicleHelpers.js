@@ -111,8 +111,7 @@ export function updateLocalVehicles(wsStatuses, getState) {
 }
 
 export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}, now) {
-  if (backEndObject.status !== 'active'
-    || !backEndObject.name) {
+  if (backEndObject.status !== 'active') {
     return null;
   }
 
@@ -150,6 +149,7 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}, now) {
     isDelayedWithIgnitionOff: false,
     isDelayed: checkLaggedVehicle(now, ts),
     kind: backEndObject.kind || 'UNDEFINED',
+    name: backEndObject.name || 'Noname',
   });
 
   return {
@@ -180,9 +180,11 @@ export function makeLocalVehicles(backEndVehiclesList, statsList) {
 
   backEndVehiclesList.forEach((aVehicle) => {
     const vehicleStats = getVehicleById(aVehicle.id, statsList).vehicle;
-    const { vehicle, isDead, isDelayed } = makeLocalVehicle(aVehicle, vehicleStats, now);
+    const localVehicle = makeLocalVehicle(aVehicle, vehicleStats, now);
 
-    if (vehicle !== null) {
+    if (localVehicle) {
+      const { vehicle, isDead, isDelayed } = localVehicle;
+
       localVehicles[aVehicle.id] = vehicle;
 
       if (isDead) {
