@@ -20,7 +20,7 @@ deployment:
   production:
     branch: production
     commands:
-      - ./ci/deploy.sh 'drvrappbeta@drvrappbeta.cloudapp.net' 'tajo' 'portal' '~/driver-server/static-root/public'
+      - ./ci/deploy.sh 'drvrprod@drvrprod2216.cloudapp.net' 'tajo' 'portal' '~/engine/static-root/public'
   ssreportsDev:
     branch: ssreports-dev
     commands:
