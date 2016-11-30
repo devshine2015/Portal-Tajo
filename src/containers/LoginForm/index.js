@@ -46,9 +46,14 @@ class LoginForm extends React.Component {
   onSubmit = (e) => {
     e.preventDefault();
 
+    const payload = {
+      username: this.state.username,
+      password: this.state.password,
+    };
+
     this.changeLoadingState(true);
 
-    this.props.login(this.state).then(() => {
+    this.props.login(payload).then(() => {
       this.changeLoadingState(false);
 
       this.props.goToRoot();
