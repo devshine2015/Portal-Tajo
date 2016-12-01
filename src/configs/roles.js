@@ -1,5 +1,21 @@
 import { portal } from 'configs';
 
+const uber = 'uber';
+const admin = 'admin';
+const manager = 'manager';
+const installer = 'installer';
+
+export default {
+  uber,
+  admin,
+  manager,
+  installer,
+};
+
+export const rolesEnum = [
+  '', uber, admin, manager, installer,
+];
+
 export const permissions = {
   /* user management abilities */
   USERS_SEE: 'able see list of users',
@@ -29,20 +45,22 @@ export const permissions = {
   /* end of devices management */
 };
 
+const uberAbilities = {
+  [permissions.USERS_SEE]: true,
+  [permissions.USERS_ADD_ANY]: true,
+  [permissions.USERS_EDIT_ANY]: true,
+  [permissions.USERS_DELETE_ANY]: true,
+  [permissions.DEVICES_SEE]: true,
+  [permissions.DEVICES_CREATE]: true,
+  [permissions.DEVICES_DEACTIVATE]: true,
+  [permissions.DEVICES_DETACH]: true,
+  [permissions.DEVICES_ATTACH]: true,
+};
+
 const rolesAbilities = {
   tajo: {
-    uber: {
-      [permissions.USERS_SEE]: true,
-      [permissions.USERS_ADD_ANY]: true,
-      [permissions.USERS_EDIT_ANY]: true,
-      [permissions.USERS_DELETE_ANY]: true,
-      [permissions.DEVICES_SEE]: true,
-      [permissions.DEVICES_CREATE]: true,
-      [permissions.DEVICES_DEACTIVATE]: true,
-      [permissions.DEVICES_DETACH]: true,
-      [permissions.DEVICES_ATTACH]: true,
-    },
-    admin: {
+    [uber]: uberAbilities,
+    [admin]: {
       [permissions.USERS_SEE]: true,
       [permissions.USERS_ADD_MANAGER]: true,
       [permissions.USERS_ADD_INSTALLER]: true,
@@ -54,7 +72,7 @@ const rolesAbilities = {
       [permissions.DEVICES_CREATE]: true,
       [permissions.DEVICES_DEACTIVATE]: true,
     },
-    manager: {
+    [manager]: {
       [permissions.USERS_SEE]: true,
       [permissions.USERS_ADD_INSTALLER]: true,
       [permissions.USERS_EDIT_INSTALLER]: true,
@@ -62,32 +80,23 @@ const rolesAbilities = {
       [permissions.DEVICES_SEE]: true,
       [permissions.DEVICES_CREATE]: true,
     },
-    installer: {
+    [installer]: {
       [permissions.DEVICES_SEE]: true,
     },
   },
 
   portal: {
-    uber: {
-      [permissions.DEVICES_SEE]: true,
-      [permissions.DEVICES_DETACH]: true,
-      [permissions.DEVICES_ATTACH]: true,
-    },
-    admin: {
+    [uber]: uberAbilities,
+    [admin]: {
       [permissions.DEVICES_SEE]: true,
     },
-    manager: {
+    [manager]: {
       [permissions.DEVICES_SEE]: true,
     },
-    installer: {},
+    [installer]: {},
   },
 };
 
 export function checkRolePermissions(role, permission) {
   return rolesAbilities[portal][role][permission];
 }
-
-export default {
-  permissions,
-  checkRolePermissions,
-};

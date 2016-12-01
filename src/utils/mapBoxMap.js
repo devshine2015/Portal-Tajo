@@ -41,6 +41,9 @@ export function createMapboxMap(domNode, view) {
 }
 
 export function hideLayer(containerLayer, layer, doHide) {
+  if (containerLayer === null) {
+    return;
+  }
   if (doHide) {
     if (containerLayer.hasLayer(layer)) {
       containerLayer.removeLayer(layer);

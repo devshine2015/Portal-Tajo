@@ -1,12 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
-
+import pageShape from 'containers/InnerPortal/PropTypes';
 import styles from './styles.css';
-
-// <li
-//   className={styles.menu__item}
-//   key={props.page.path}
-// >
 
 const MenuItem = (props) =>
   <Link
@@ -15,16 +10,12 @@ const MenuItem = (props) =>
     to={props.page.path}
     onClick={props.closeSidebar}
   >
-   {props.page.text}
+   {props.page.niceName}
   </Link>;
 
 MenuItem.propTypes = {
   closeSidebar: React.PropTypes.func.isRequired,
-  page: React.PropTypes.shape({
-    text: React.PropTypes.string.isRequired,
-    path: React.PropTypes.string.isRequired,
-    order: React.PropTypes.number.isRequired,
-  }).isRequired,
+  page: pageShape.isRequired,
 };
 
 export default MenuItem;

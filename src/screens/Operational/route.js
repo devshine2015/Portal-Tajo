@@ -1,9 +1,7 @@
-const NAME = 'map';
-
 const createRoute = ({
   path,
-  name = NAME,
-  niceName = NAME,
+  name,
+  niceName,
 }) => ({
   path,
   name,

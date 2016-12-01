@@ -8,7 +8,7 @@ import {
 } from './actions';
 
 const initialState = fromJS({
-  role: undefined,
+  role: '',
   username: undefined,
   fleet: undefined,
   settings: {

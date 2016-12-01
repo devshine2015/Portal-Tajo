@@ -90,12 +90,12 @@ const FullSummary = ({
       amount={amounts.deadAmount}
       helpText="vehicles never reported"
     />
-    <Amount
+    {/*<Amount
       icon={<Icon.DelayedIcon color={theme.palette.accent2Color} />}
       amount={amounts.delayedAmount}
       helpText="vehicles sending delayed messages"
       fullwidth={AVAILABLE_TYPES_COUNT % 2 !== 0}
-    />
+    />*/}
   </div>
 );
 

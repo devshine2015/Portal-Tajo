@@ -42,6 +42,7 @@ function _generateRawReport({ timePeriod, frequency, dateFormat }, dispatch, get
   const periodParamsWithOptions = Object.assign({}, getReportParams(timePeriod), {
     max: 20000,
     filter: 'PG',
+    tzoffset: new Date().getTimezoneOffset(),
   });
 
   return Promise.all(
@@ -73,8 +74,8 @@ function _generateRawReport({ timePeriod, frequency, dateFormat }, dispatch, get
       'Additional Info',
     ];
     let rows = [];
-    const startTime = moment.utc(periodParamsWithOptions.from).format(dateFormatWithTime);
-    const endTime = moment.utc(periodParamsWithOptions.to).format(dateFormatWithTime);
+    const startTime = moment(periodParamsWithOptions.from).format(dateFormatWithTime);
+    const endTime = moment(periodParamsWithOptions.to).format(dateFormatWithTime);
     const fileName = `events for period [${startTime} - ${endTime}]`;
 
     events.forEach(event => {

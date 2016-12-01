@@ -15,6 +15,8 @@ const initialState = fromJS({
   selectedGFId: '',
   hideGF: false,
   hideVehicles: false,
+  // what we have currently in PowerList Tabs
+  activeListType: '',
 });
 
 function contextReducer(state = initialState, action) {
@@ -24,23 +26,29 @@ function contextReducer(state = initialState, action) {
       return state;
     case contextActions.CTX_HIDE_GF:
       return state.set('hideGF', action.doHide);
+    case contextActions.CTX_HIDE_VEH:
+      return state.set('hideVehicles', action.doHide);
+    case contextActions.CTX_PL_TAB:
+      return state.set('activeListType', action.tabType);
     default:
       return state;
   }
 }
 
-export const ctxMapView = (state) =>
-  state.getIn(['mapView']);
+const _ctxReducer = state =>
+  state.getIn(['global', 'context']);
 
 export default contextReducer;
 
 export const ctxGetMap = state =>
-  state.getIn(['global', 'context']).map;
+  _ctxReducer(state).get('map');
 export const ctxGetSelectedVehicleId = state =>
-  state.getIn(['global', 'context']).selectedVehicleId;
+  _ctxReducer(state).get('selectedVehicleId');
 export const ctxGetSelectedGFId = state =>
-  state.getIn(['global', 'context']).selectedGFId;
+  _ctxReducer(state).get('selectedGFId');
 export const ctxGetHideGF = state =>
-  state.getIn(['global', 'context']).hideGF;
+  _ctxReducer(state).get('hideGF');
 export const ctxGetHideVehicles = state =>
-  state.getIn(['global', 'context']).hideVehicles;
+  _ctxReducer(state).get('hideVehicles');
+export const ctxGetPowListTabType = state =>
+  _ctxReducer(state).get('activeListType');

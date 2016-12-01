@@ -1,9 +1,7 @@
-const NAME = 'reports';
-
 const createRoute = ({
   path,
-  name = NAME,
-  niceName = NAME,
+  name,
+  niceName,
   errorHandler,
   injectReducer,
   loadModule,
@@ -21,7 +19,7 @@ const createRoute = ({
       const renderModule = loadModule(cb);
 
       importModules.then(([reducer, component]) => {
-        injectReducer(NAME, reducer.default);
+        injectReducer(name, reducer.default);
         renderModule(component);
       });
 

@@ -1,23 +1,7 @@
+import * as _configHelpers from './_helpers';
+
 const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080'; // for localhost
-const PROD_ENGINE_BASE = window.location.host;
-
-const chooseServerEnv = () => {
-  if (window.location.hostname.search('drvrapp.net') !== -1) {
-    return 'production';
-  } else if (window.location.hostname.search('drvrstage') !== -1) {
-    return 'stage';
-  }
-
-  return 'dev';
-};
-
-const chooseRoot = () => {
-  if (portal === 'tajo') {
-    return '/tajo';
-  }
-
-  return '/';
-};
+const REMOTE_HOST_BASE = window.location.host;
 
 // support or not some old stuff depends on environment
 // for example:
@@ -37,19 +21,29 @@ export const portal = process.env.DRVR_PROJECT;
 export const protocol = document.location.protocol;
 export const isSecure = protocol.search('https') !== -1;
 export const socketProtocol = isSecure ? 'wss' : 'ws';
-export const serverEnv = chooseServerEnv();
+// TODO: we are in the middle on renaming tajo->escape; update here when done
+export const isEscape = portal === 'tajo';
+// export const isSunshine = !isEscape;
+
+// environments definitions
+export const serverEnv = _configHelpers.chooseServerEnv();
 export const onProduction = serverEnv === 'production';
 export const onStage = serverEnv === 'stage';
 export const onDev = serverEnv === 'dev';
+export const onLocal = serverEnv === 'local';
+
 // use old local storage key notation for ssreports
 export const LOCAL_STORAGE_SESSION_KEY = useLegacy('session-key') ?
   'ngStorage-sessionId' : 'drvr_tajo-sessionId';
 
 // use to initiate root for react-router
-export const ROOT_ROUTE = chooseRoot();
+export const ROOT_ROUTE = _configHelpers.chooseRoot(serverEnv, portal);
 
 // use it for navigation throught app
 export const BASE_URL = ROOT_ROUTE === '/' ? '' : ROOT_ROUTE;
 
 // isDev true only on localhost
-export const ENGINE_BASE = onDev ? DEV_ENGINE_BASE : PROD_ENGINE_BASE;
+export const ENGINE_BASE = onLocal ? DEV_ENGINE_BASE : REMOTE_HOST_BASE;
+
+console.log(`Server env is ${serverEnv}, and project is ${portal}`);
+console.log(`Root toute is ${ROOT_ROUTE}`);

@@ -18,6 +18,7 @@ import Forklift from 'components/Icons/forklift.svg';
 import Tractor from 'components/Icons/tractor.svg';
 import Farm from 'components/Icons/farm.svg';
 import Undefined from 'components/Icons/undefined.svg';
+import Boat from 'components/Icons/boat.svg';
 
 import iSgv from 'assets/images/v_icons_combi/sgv@3x.png';
 import iSgvChilled from 'assets/images/v_icons_combi/sgv_chilled@3x.png';
@@ -38,6 +39,7 @@ import iForklift from 'assets/images/v_icons_combi/forklift@3x.png';
 import iTractor from 'assets/images/v_icons_combi/traktor@3x.png';
 import iFarm from 'assets/images/v_icons_combi/farm@3x.png';
 import iUndefined from 'assets/images/v_icons_combi/uncknown@3x.png';
+import iBoat from 'assets/images/v_icons_combi/boat@3x.png';
 
 const undefinedType = {
   value: 'UNDEFINED',
@@ -48,6 +50,11 @@ const undefinedType = {
 
 export const VEHICLE_KINDS = [
   {
+    value: 'BOAT',
+    text: 'Ship',
+    icon: <Boat />,
+    pic: iBoat,
+  }, {
     value: 'FARM',
     text: 'Farm implementation',
     icon: <Farm />,

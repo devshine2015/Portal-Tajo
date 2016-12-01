@@ -1,9 +1,7 @@
-const NAME = 'dashboard';
-
 const createRoute = ({
   path,
-  name = NAME,
-  niceName = NAME,
+  name,
+  niceName,
 }) => ({
   path,
   name,

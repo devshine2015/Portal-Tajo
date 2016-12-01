@@ -10,6 +10,8 @@ import Scrollable from 'components/Scrollable';
 import listTypes from 'components/InstancesList/types';
 import { vehiclesActions, gfActions } from 'services/FleetModel/actions';
 import { getSelectedVehicleId } from 'services/FleetModel/reducer';
+import { contextActions } from 'services/Global/actions';
+
 import * as listEvents from './events';
 import * as mapEvents from 'containers/MapFleet/events';
 import GFEditor from 'containers/GFEditor';
@@ -32,14 +34,10 @@ class OperationalPowerList extends React.Component {
     props.eventDispatcher.registerHandler(mapEvents.MAP_VEHICLE_SELECTED, this.onVehicleClick);
     props.eventDispatcher.registerHandler(mapEvents.MAP_GF_SELECTED, this.onGFClick);
   }
-  //
-  // TODO: done in MAP now - mounting order dependant, need be indepenent
-  // componentDidMount() {
-  //   const globalSelectedVehicleId = this.props.getSelectedVehicleId;
-  //   if (globalSelectedVehicleId !== '') {
-  //     this.onVehicleClick(globalSelectedVehicleId);
-  //   }
-  // }
+
+  componentDidMount() {
+    this.props.setListTypeFunc(this.state.selectedTab);
+  }
   onGFClick = (itemId, isExpanded = true) => {
     this.onItemClick(itemId, isExpanded, 'location');
   }
@@ -82,6 +80,7 @@ class OperationalPowerList extends React.Component {
   onTabChange = (value) => {
     if (value === listTypes.withVehicleDetails
     || value === listTypes.withGFDetails) {
+      this.props.setListTypeFunc(value);
       this.props.eventDispatcher.fireEvent(listEvents.OPS_LIST_TAB_SWITCH, value, () => {
         this.setState({
           selectedTab: value,
@@ -184,6 +183,7 @@ OperationalPowerList.propTypes = {
   setSelectedVehicleId: React.PropTypes.func.isRequired,
   getSelectedVehicleId: React.PropTypes.string.isRequired,
   isEditGF: React.PropTypes.bool.isRequired,
+  setListTypeFunc: React.PropTypes.func.isRequired,
 };
 
 const mapState = (state) => ({
@@ -194,6 +194,7 @@ const mapDispatch = {
   filterVehiclesFunc: vehiclesActions.filterVehicles,
   setSelectedVehicleId: vehiclesActions.setSelectedVehicleId,
   filterGFsFunc: gfActions.filterGFs,
+  setListTypeFunc: contextActions.ctxPowListTabType,
 };
 
 const PureOperationalPowerList = pure(OperationalPowerList);

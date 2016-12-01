@@ -35,12 +35,16 @@ const updateLocalVehicle = (vehicle, status, now) => {
   const sinceEpoch = new Date(status.ts).getTime();
   const hasPosition = !!status.pos;
   const isDead = !hasPosition;
-  const isDelayed = checkLaggedVehicle(now, sinceEpoch);
-
+  const ignitionOn = checkIgnition(status);
+  const isDelayedWithIgnitionOff = ignitionOn !== 1 && checkLaggedVehicle(now, sinceEpoch);
+  const isDelayed = ignitionOn === 1 ? checkLaggedVehicle(now, sinceEpoch) : false;
+  // const isDelayed = checkLaggedVehicle(now, sinceEpoch);
   const nextVehicle = vehicle.withMutations(s => {
     s.set('isDead', isDead)
      .set('isDelayed', isDelayed)
-     .set('lastUpdateSinceEpoch', sinceEpoch);
+     .set('lastUpdateSinceEpoch', sinceEpoch)
+     .set('ignitionOn', ignitionOn)
+     .set('isDelayedWithIgnitionOff', isDelayedWithIgnitionOff);
 
     if (status.temp !== undefined) {
       s.set('temp', status.temp.temperature);
@@ -140,6 +144,9 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}, now) {
     temp: hasTemp ? vehicleStats.temp.temperature : undefined,
     lastUpdateSinceEpoch: ts,
     isDead: !hasPos,
+    // TODO: what should be initilal ign status?
+    ignitionOn: 1,
+    isDelayedWithIgnitionOff: false,
     isDelayed: checkLaggedVehicle(now, ts),
     kind: backEndObject.kind || 'UNDEFINED',
     name: backEndObject.name || 'Noname',
@@ -160,6 +167,10 @@ export function checkLaggedVehicle(now, lastUpdate) {
   return deltaTMs > LAG_INDICAION_TRH_MS && deltaTMs < ZOMBIE_TIME_TRH_MS;
 }
 
+function checkIgnition(status) {
+  // ignitionOn values:  0- off; 1- on; 2- undefined
+  return status.ignOn !== undefined ? (status.ignOn ? 1 : 0) : 2;
+}
 export function makeLocalVehicles(backEndVehiclesList, statsList) {
   const localVehicles = {};
   const orderedVehicles = sortVehicles(backEndVehiclesList);

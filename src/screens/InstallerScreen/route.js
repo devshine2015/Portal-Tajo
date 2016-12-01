@@ -1,9 +1,7 @@
-const NAME = 'installer';
-
 const createRoute = ({
   path,
-  name = NAME,
-  niceName = NAME,
+  name,
+  niceName,
   errorHandler,
   injectReducer,
   loadModule,
@@ -24,7 +22,7 @@ const createRoute = ({
         installerReducer,
         installerScreenComponent,
       ]) => {
-        injectReducer(NAME, installerReducer.default);
+        injectReducer(name, installerReducer.default);
         renderModule(installerScreenComponent);
       });
 

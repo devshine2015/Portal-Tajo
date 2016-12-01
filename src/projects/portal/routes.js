@@ -3,33 +3,12 @@ import { getHooks } from 'utils/hooks';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { ROOT_ROUTE } from 'configs';
+import mainMenu from 'configs/mainMenu';
 import {
   errorHandler,
   loadModule,
   selectLocationState,
 } from 'utils/routerHelpers';
-
-const MAIN_MENU = [{
-  niceName: 'Review',
-  path: 'review',
-  order: 0,
-}, {
-  niceName: 'Operational',
-  path: 'map',
-  order: 1,
-}, {
-  niceName: 'Reports',
-  path: 'reports',
-  order: 3,
-}, {
-  niceName: 'Vehicles Editor',
-  path: 'vehicles',
-  order: 4,
-}, {
-  niceName: 'History',
-  path: 'history',
-  order: 5,
-}];
 
 export default function createRoutes(store) {
   const { injectReducer } = getHooks(store);
@@ -38,16 +17,12 @@ export default function createRoutes(store) {
     selectLocationState: selectLocationState(),
   });
 
-  const reviewScreen = require('screens/DashboardScreen/route')({
-    path: 'review',
-  });
+  const reviewScreen = require('screens/DashboardScreen/route')(mainMenu.portal.review);
 
-  const mapAndListRoute = require('screens/Operational/route')({
-    path: 'map',
-  });
+  const operationalRoute = require('screens/Operational/route')(mainMenu.portal.operational);
 
   const chronicleRoute = require('screens/Chronicle/route')({
-    path: 'history',
+    ...mainMenu.portal.history,
     injectReducer,
     errorHandler,
     loadModule,
@@ -56,14 +31,14 @@ export default function createRoutes(store) {
 
 
   const reportsRoute = require('screens/ReportsScreen/route')({
-    path: 'reports',
+    ...mainMenu.portal.reports,
     injectReducer,
     errorHandler,
     loadModule,
   });
 
   const vehiclesEditorRoute = require('screens/VehiclesManagerScreen/route')({
-    path: 'vehicles',
+    ...mainMenu.portal.vehicles,
     injectReducer,
     errorHandler,
     loadModule,
@@ -76,21 +51,21 @@ export default function createRoutes(store) {
   const rootRoute = require('screens/Root/route')({
     path: ROOT_ROUTE,
     dispatch: store.dispatch,
-    mainMenu: MAIN_MENU,
+    mainMenu: mainMenu.portal,
   });
 
   rootRoute.indexRoute = {
     component: require('screens/Operational').default,
-    protected: mapAndListRoute.protected,
+    protected: operationalRoute.protected,
   };
 
   rootRoute.childRoutes.push(
     loginRoute,
-    mapAndListRoute,
+    reviewScreen,
+    operationalRoute,
     reportsRoute,
     chronicleRoute,
     vehiclesEditorRoute,
-    reviewScreen,
   );
 
   return (

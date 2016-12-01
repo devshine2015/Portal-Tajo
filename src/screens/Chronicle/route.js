@@ -1,9 +1,7 @@
-const NAME = 'history';
-
 const createRoute = ({
   path,
-  name = NAME,
-  niceName = NAME,
+  name,
+  niceName,
 }) => ({
   path,
   name,
