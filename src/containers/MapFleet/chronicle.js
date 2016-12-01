@@ -131,7 +131,6 @@ class MapChronicle extends React.Component {
        key="gfEditHelper"
        theLayer={this.gfEditLayer}
      />);
-     
     //  <GooglePlacesSearch ownerMapObj={this.theMap} />
     return (
       <div className = {styles.mapContainer}>

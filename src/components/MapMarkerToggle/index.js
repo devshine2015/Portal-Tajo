@@ -24,7 +24,7 @@ const iconHoverColor = '#00695C';
 class MapMarkerToggle extends React.Component {
 
   onClick = () => {
-    switch (this.props.listType) {
+    switch (this.props.overrideListType || this.props.listType) {
       case listTypes.withGFDetails:
         this.props.doHideVehicles(!this.props.isHideVehicles);
         break;
