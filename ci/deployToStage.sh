@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 HOST='drvrstage@drvrstage.cloudapp.net'
 PUBLIC='~/engine/static-root/public'
 EXTRA_FOLDER=$1
