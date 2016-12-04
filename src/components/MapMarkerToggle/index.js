@@ -24,7 +24,7 @@ const iconHoverColor = '#00695C';
 class MapMarkerToggle extends React.Component {
 
   onClick = () => {
-    switch (this.props.listType) {
+    switch (this.props.overrideListType || this.props.listType) {
       case listTypes.withGFDetails:
         this.props.doHideVehicles(!this.props.isHideVehicles);
         break;
@@ -39,8 +39,8 @@ class MapMarkerToggle extends React.Component {
   hidePrefix = (isHide) =>
     isHide ? 'Show ' : 'Hide '
 
-  contentText = () => {
-    switch (this.props.listType) {
+  contentText = (forType) => {
+    switch (forType) {
       case listTypes.withGFDetails:
         return this.hidePrefix(this.props.isHideVehicles) + 'Vehicles';
       case listTypes.withVehicleDetails:
@@ -50,8 +50,8 @@ class MapMarkerToggle extends React.Component {
   }
   btnHideColor = (isHide) =>
     isHide ? '#ffffff' : '#f9f9f9';
-  btnColor = () => {
-    switch (this.props.listType) {
+  btnColor = (forType) => {
+    switch (forType) {
       case listTypes.withGFDetails:
         return this.btnHideColor(this.props.isHideVehicles);
       case listTypes.withVehicleDetails:
@@ -59,8 +59,8 @@ class MapMarkerToggle extends React.Component {
         return this.btnHideColor(this.props.isHideGF);
     }
   }
-  contentIcon = () => {
-    switch (this.props.listType) {
+  contentIcon = (forType) => {
+    switch (forType) {
       case listTypes.withGFDetails:
         return (<CarIcon color={iconColor} hoverColor={iconHoverColor} />);
       case listTypes.withVehicleDetails:
@@ -70,9 +70,10 @@ class MapMarkerToggle extends React.Component {
   }
 
   render() {
-    const iconBtnSyle = { backgroundColor: this.btnColor(), width: '36px',
-        height: '36px', padding: '0' };
-    const toolTip = this.contentText();
+    const typeToUse = this.props.overrideListType || this.props.listType;
+    const iconBtnSyle = { backgroundColor: this.btnColor(typeToUse),
+            width: '36px', height: '36px', padding: '0' };
+    const toolTip = this.contentText(typeToUse);
     return (
       <IconButton
         tooltip={toolTip}
@@ -81,7 +82,7 @@ class MapMarkerToggle extends React.Component {
         style={ iconBtnSyle }
         key="toggleBtn"
       >
-        {this.contentIcon()}
+        {this.contentIcon(typeToUse)}
       </IconButton>
     );
   }
@@ -89,6 +90,7 @@ class MapMarkerToggle extends React.Component {
 
 MapMarkerToggle.propTypes = {
   listType: React.PropTypes.string.isRequired,
+  overrideListType: React.PropTypes.string,
   doHideGF: React.PropTypes.func.isRequired,
   doHideVehicles: React.PropTypes.func.isRequired,
   isHideGF: React.PropTypes.bool.isRequired,
