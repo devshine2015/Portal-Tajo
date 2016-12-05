@@ -17,6 +17,7 @@ import * as mapEvents from 'containers/MapFleet/events';
 import GFEditor from 'containers/GFEditor';
 import { gfEditIsEditing } from 'containers/GFEditor/reducer';
 import { dimensions } from 'configs/theme';
+import { isMaritime } from 'configs';
 
 import styles from './styles.css';
 
@@ -124,6 +125,7 @@ class OperationalPowerList extends React.Component {
     // );
 
 
+    const vehType = isMaritime ? listTypes.maritime : listTypes.withVehicleDetails;
     return (
       <PowerList>
         <Tabs
@@ -136,7 +138,7 @@ class OperationalPowerList extends React.Component {
           value={this.state.selectedTab}
         >
           <Tab
-            label="Vehicles"
+            label={isMaritime ? 'Vessels' : 'Vehicles'}
             value={listTypes.withVehicleDetails}
           >
             <Filter filterFunc={this.props.filterVehiclesFunc} />
@@ -146,7 +148,7 @@ class OperationalPowerList extends React.Component {
                 currentExpandedItemId={this.state.currentExpandedVehicleId}
                 onItemClick={this.onVehicleClick}
                 data={this.props.vehicles}
-                type={listTypes.withVehicleDetails}
+                type={vehType}
               />
             </Scrollable>
           </Tab>
