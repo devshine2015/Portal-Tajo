@@ -40,7 +40,7 @@ function _generateRawReport({ timePeriod, frequency, dateFormat }, dispatch, get
   const vehiclesForRequest = getVehiclesForReport(getState());
   const selectedEvents = _getEvents(getState);
   const periodParamsWithOptions = Object.assign({}, getReportParams(timePeriod), {
-    max: 20000,
+    max: 40000,
     filter: 'PG',
     tzoffset: new Date().getTimezoneOffset(),
   });

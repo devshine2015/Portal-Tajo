@@ -43,7 +43,7 @@ function _requestHistory(vehicleId, dateFrom, dateTo, dispatch) {
   const { url, method } = endpoints.getEventsInTimeRange(vehicleId, {
     from: fromString,
     to: toString,
-    max: 20000,
+    max: 40000,
     filter: 'PG',
     tzoffset: tzOffset,
   });
