@@ -6,47 +6,26 @@ general:
   branches:
     ignore:
       - master
-      - verified_candidate
+      - /sandbox-.*/ # ignore all branches with sandbox prefix; like sandbox-feature1
 
 deployment:
-  development:
-    branch: dev
+  dev:
+    branch: dev-release
     commands:
-      - ./ci/deployToDev.sh
-
-  # Maksim's personal branch
-  dev_max:
-    branch: dev@max
-    owner: orelmax
+      - ./ci/deploy.sh 'ddsdev@ddsdev.cloudapp.net' 'tajo' 'portal' '~/driver-server/static-root/public'
+  stage:
+    branch: stage
     commands:
-      - ./ci/deployToDev.sh max
-
-  # Kirill's personal branch
-  dev_kirill:
-    branch: dev@karl
-    owner: kirill07
-    commands:
-      - ./ci/deployToDev.sh karl
-
-  # code, released at the end of previous sprint
-  stage_latest:
-    branch: stage@latest_release
-    commands:
-      - ./ci/deployToStage.sh
-  
-  # here current sprint code lives
-  stage_candidate:  
-    branch: stage@candidate
-    commands:
-      - ./ci/deployToStage.sh candidate
-  
-  # push here to try something on stage
-  stage_sandbox:
-    branch: stage@sandbox
-    commands:
-      - ./ci/deployToStage.sh sandbox
-
+      - ./ci/deploy.sh 'drvrstage@drvrstage.cloudapp.net' 'tajo' 'portal' '~/engine/static-root/public'
   production:
     branch: production
     commands:
-      - ./ci/deployToProd.sh
+      - ./ci/deploy.sh 'drvrprod@drvrprod2216.cloudapp.net' 'tajo' 'portal' '~/engine/static-root/public'
+  ssreportsDev:
+    branch: ssreports-dev
+    commands:
+      - ./ci/deployToOld.sh 'ddsdev@ddsdev.cloudapp.net'
+  ssreportsProd:
+    branch: ssreports-prod
+    commands:
+      - ./ci/deployToOld.sh 'drvrappbeta@drvrappbeta.cloudapp.net'
