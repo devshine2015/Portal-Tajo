@@ -47,7 +47,18 @@ export const ENGINE_BASE = onLocal ? DEV_ENGINE_BASE : REMOTE_HOST_BASE;
 
 // TODO: this is runtime, defined after login; should be in some other place
 // TODO: now for dev/test hardcoded value
-export const isMaritime = true;
+// TODO: probably this should be undef initially - handle it properly?
+// is it used before being set?
+
+export let isMaritime = false;
+export function checkSetMaritime(fleetName) {
+  isMaritime = fleetName.indexOf('maritime') !== -1;
+}
+
+// TODO: quick fix - just doubled prev limit - need some proven number
+// TODO: currently using same for hisotry (24hvr) and reports (arbitrary time range)
+// probably need something like limitPer24hvrs
+export const requestSamplesLimit = 40000;
 
 console.log(`Server env is ${serverEnv}, and project is ${portal}`);
 console.log(`Root toute is ${ROOT_ROUTE}`);

@@ -6,6 +6,8 @@ import { VelocityTransitionGroup } from 'velocity-react';
 require('velocity-animate');
 require('velocity-animate/velocity.ui');
 
+import { speedKmHToKnots } from 'utils/constants';
+
 import { isEscape } from 'configs';
 import ItemProperty from '../DetailItemProperty';
 import Divider from 'material-ui/Divider';
@@ -92,7 +94,7 @@ class ListItemMaritime extends React.Component {
         <Divider />
         <ItemProperty
           title="Speed"
-          value={`${this.props.speed.toFixed(1)} km/h`}
+          value={`${speedKmHToKnots(this.props.speed).toFixed(2)} kn`}
         />
         {this.props.temp &&
           <ItemProperty
@@ -151,7 +153,7 @@ class ListItemMaritime extends React.Component {
         onClick={this.onClick}
       >
         <h1>
-          {this.props.name + ': ship'}
+          {this.props.name}
         </h1>
 
         { this.inActivityIndicator() }

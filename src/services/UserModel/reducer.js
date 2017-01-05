@@ -18,6 +18,9 @@ const initialState = fromJS({
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
+    // TODO: please, lets use USER_FLEET_SET to set a fleet
+    // lets not use merge/spread
+    // see below for more
     case USER_SET:
     case loginActions.LOGIN_SUCCESS:
       return state.merge({ ...action.userData });
@@ -29,8 +32,15 @@ function userReducer(state = initialState, action) {
     case USER_SETTINGS_UPDATE:
       return state.mergeIn(['settings'], action.settings);
 
-    case USER_FLEET_SET:
-      return state.set('fleet', action.fleetName);
+    // KB: commented this out to clear the confusion
+    // fleet is set in loginActions.LOGIN_SUCCESS by merge
+    // which is cryptic when you try to find where thigs are setup
+    // lets not use merge/spread
+    // lets just cleraly declare what are we doing/setting, value by value
+    // make it easier for other people to figure out the loginActions
+    // ----------
+    // case USER_FLEET_SET:
+    //   return state.set('fleet', action.fleetName);
 
     default:
       return state;

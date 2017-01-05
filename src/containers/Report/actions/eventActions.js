@@ -1,6 +1,7 @@
 import moment from 'moment';
 import api from 'utils/api';
 import endpoints from 'configs/endpoints';
+import { requestSamplesLimit } from 'configs';
 import reporter from 'utils/reports';
 import { setLoader } from './loaderActions';
 import getVehiclesForReport from '../utils/reportVehicles';
@@ -40,7 +41,7 @@ function _generateRawReport({ timePeriod, frequency, dateFormat }, dispatch, get
   const vehiclesForRequest = getVehiclesForReport(getState());
   const selectedEvents = _getEvents(getState);
   const periodParamsWithOptions = Object.assign({}, getReportParams(timePeriod), {
-    max: 20000,
+    max: requestSamplesLimit,
     filter: 'PG',
     tzoffset: new Date().getTimezoneOffset(),
   });

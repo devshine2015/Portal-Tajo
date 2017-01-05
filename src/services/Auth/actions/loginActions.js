@@ -1,4 +1,4 @@
-import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
+import { LOCAL_STORAGE_SESSION_KEY, checkSetMaritime } from 'configs';
 import endpoints from 'configs/endpoints';
 import VERSIONS from 'configs/versions';
 import storage from 'utils/localStorage';
@@ -19,15 +19,17 @@ export const loginSuccess = ({
   role,
   settings,
   fleet,
-}) => ({
-  type: LOGIN_SUCCESS,
-  sessionId,
-  userData: {
-    role,
-    settings,
-    fleet,
-  },
-});
+}) => {
+  checkSetMaritime(fleet);
+  return {
+    type: LOGIN_SUCCESS,
+    sessionId,
+    userData: {
+      role,
+      settings,
+      fleet,
+    },
+  };};
 
 
 function _login(data, dispatch) {

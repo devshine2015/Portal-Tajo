@@ -1,6 +1,7 @@
 // import moment from 'moment';
 import api from 'utils/api';
 import endpoints from 'configs/endpoints';
+import { requestSamplesLimit } from 'configs';
 // import { setLoader } from './loaderActions';
 import createHistoryFrame from './../utils/chronicleVehicleFrame';
 import { getChronicleTimeFrame } from './../reducer';
@@ -43,7 +44,7 @@ function _requestHistory(vehicleId, dateFrom, dateTo, dispatch) {
   const { url, method } = endpoints.getEventsInTimeRange(vehicleId, {
     from: fromString,
     to: toString,
-    max: 20000,
+    max: requestSamplesLimit,
     filter: 'PG',
     tzoffset: tzOffset,
   });

@@ -10,3 +10,8 @@ export const NEW_GF_RADIUS = 100;
 export const ZOMBIE_TIME_TRH_MS = 1000 * 60 * 60 * 24; // 24h
 export const LAG_INDICAION_TRH_MS = 1000 * 60 * 5; // 5min
 //---
+// converting speed kmH to knots
+// 1 knot is 1.852 kilometres per hour
+export function speedKmHToKnots(speedKmH) {
+  return speedKmH / 1.852;
+}
