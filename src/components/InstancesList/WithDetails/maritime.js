@@ -6,7 +6,7 @@ import { VelocityTransitionGroup } from 'velocity-react';
 require('velocity-animate');
 require('velocity-animate/velocity.ui');
 
-import { speedKmHToKnots } from 'utils/constants';
+import { speedKmHToKnots, decimalDegToDMS } from 'utils/constants';
 
 import { isEscape } from 'configs';
 import ItemProperty from '../DetailItemProperty';
@@ -88,54 +88,48 @@ class ListItemMaritime extends React.Component {
 
   renderDetails() {
     if (!this.props.isExpanded) return null;
+    const reportDate = new Date(this.props.lastUpdateSinceEpoch);
+    const timeSinceReportMin = (Date.now() - reportDate) / 1000 / 60;
+    const estimatedTravel = this.props.speed * timeSinceReportMin / 60;
+    // <ItemProperty
+    //   title="Reporting Time"
+    //   value={`${reportDate.toISOString()}`}
+    // />
 
     return (
       <div>
         <Divider />
+        <ItemProperty
+          title="Call Sign"
+          value={`${this.props.licensePlate}`}
+        />
+        <ItemProperty
+          title="Tracking Interval"
+          value={`${this.props.trackigInterval}min`}
+        />
         <ItemProperty
           title="Speed"
-          value={`${speedKmHToKnots(this.props.speed).toFixed(2)} kn`}
-        />
-        {this.props.temp &&
-          <ItemProperty
-            title="Temperature"
-            value={`${this.props.temp.toFixed(1)}\xB0 C`}
-          />
-        }
-      </div>
-    );
-  }
-
-  renderMoreDetails() {
-    if (!this.props.isExpanded) return null;
-
-    return (
-      <div>
-        <Divider />
-        <ItemProperty
-          title="License Plate"
-          value={this.props.licensePlate}
+          value={`${speedKmHToKnots(this.props.speed).toFixed(3)}kn`}
         />
         <ItemProperty
-          title="Make"
-          value={this.props.make}
+          title="Heading"
+          value={`${this.props.heading}\xB0`}
         />
         <ItemProperty
-          title="Model"
-          value={this.props.model}
+          title="Latitude"
+          value={`${decimalDegToDMS(this.props.pos[0], false)}`}
         />
         <ItemProperty
-          title="Year"
-          value={this.props.year}
-        />
-        <Divider />
-        <ItemProperty
-          title="lat"
-          value={this.props.pos[0].toFixed(6)}
+          title="Longtitude"
+          value={`${decimalDegToDMS(this.props.pos[1], true)}`}
         />
         <ItemProperty
-          title="lon"
-          value={this.props.pos[1].toFixed(6)}
+          title="Time since report"
+          value={`${Math.round(timeSinceReportMin).toFixed(0)}min`}
+        />
+        <ItemProperty
+          title="Est Distance since report"
+          value={`${estimatedTravel.toFixed(1)}NM`}
         />
       </div>
     );
