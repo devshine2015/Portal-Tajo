@@ -19,6 +19,8 @@ import {
   getDeadList,
   getDelayedList,
 } from '../reducer';
+import { overrideMaritimeDemoData,
+  overrideMaritimeDemoVessel } from './maritimeDemoData';
 
 function getNextState(itWas, itNow) {
   let itWill;
@@ -32,6 +34,7 @@ function getNextState(itWas, itNow) {
 }
 
 const updateLocalVehicle = (vehicle, status, now) => {
+  overrideMaritimeDemoData(status);
   const sinceEpoch = new Date(status.ts).getTime();
   const hasPosition = !!status.pos;
   const isDead = !hasPosition;
@@ -64,6 +67,7 @@ const updateLocalVehicle = (vehicle, status, now) => {
   const willDead = getNextState(wasDead, isDead);
   const willDelayed = getNextState(wasDelayed, isDelayed);
 
+  overrideMaritimeDemoVessel(nextVehicle);
   return {
     nextVehicle,
     willDead,
@@ -114,6 +118,7 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}, now) {
   if (backEndObject.status !== 'active') {
     return null;
   }
+  overrideMaritimeDemoData(vehicleStats);
 
   const hasPos = vehicleStats.hasOwnProperty('pos');
 
@@ -152,6 +157,7 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}, now) {
     name: backEndObject.name || 'Noname',
   });
 
+  overrideMaritimeDemoVessel(theVehicle);
   return {
     vehicle: theVehicle,
     isDead: theVehicle.isDead,
