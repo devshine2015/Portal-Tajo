@@ -21,6 +21,7 @@ import {
 } from '../reducer';
 import { overrideMaritimeDemoData,
   overrideMaritimeDemoVessel } from './maritimeDemoData';
+import { vehiclesActions } from 'services/FleetModel/actions';
 
 function getNextState(itWas, itNow) {
   let itWill;
@@ -91,6 +92,31 @@ function updateList(list, nextState = undefined, id) {
   return list;
 }
 
+// TODO: quick implementation, needs optimisation (batch state upates, mergeIn..)
+export function localTick(dispatch, getState) {
+  const processedList = getProcessedVehicles(getState());
+//  debugger
+  const nowMs = Date.now();
+  const itrtr = processedList.values();
+  let next = itrtr.next();
+  while (!next.done) {
+    const vehicle = next.value;
+    next = itrtr.next();
+    const vehicleId = vehicle.get('id');
+    const speed = vehicle.get('speed');
+    const deltaTimeMs = nowMs - vehicle.get('lastUpdateSinceEpoch');
+    // estimated travel dist since last update, in meters
+    const delatDistKm = speed * (deltaTimeMs / 1000 / 60 / 60);
+    vehiclesActions.localUpdateVehicle({
+      id: vehicleId,
+      timeSinceUpdateMin: Math.round(deltaTimeMs / 1000 / 60),
+      estimatedTravelKm: delatDistKm,
+    },
+      dispatch
+    );
+  }
+}
+
 export function updateLocalVehicles(wsStatuses, getState) {
   const nextLocalVehicles = {};
   const processedList = getProcessedVehicles(getState());
@@ -155,6 +181,9 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}, now) {
     isDelayed: checkLaggedVehicle(now, ts),
     kind: backEndObject.kind || 'UNDEFINED',
     name: backEndObject.name || 'Noname',
+    // TODO: properly set initilal values
+    timeSinceUpdateMin: 1,
+    estimatedTravelKm: 10,
   });
 
   overrideMaritimeDemoVessel(theVehicle);

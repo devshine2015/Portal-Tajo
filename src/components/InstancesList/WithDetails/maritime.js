@@ -6,7 +6,9 @@ import { VelocityTransitionGroup } from 'velocity-react';
 require('velocity-animate');
 require('velocity-animate/velocity.ui');
 
-import { speedKmHToKnots, decimalDegToDMS } from 'utils/constants';
+import { speedKmHToKnots,
+  decimalDegToDMS,
+  kmToNauticalMiles } from 'utils/convertors';
 
 import { isEscape } from 'configs';
 import ItemProperty from '../DetailItemProperty';
@@ -88,9 +90,8 @@ class ListItemMaritime extends React.Component {
 
   renderDetails() {
     if (!this.props.isExpanded) return null;
-    const reportDate = new Date(this.props.lastUpdateSinceEpoch);
-    const timeSinceReportMin = (Date.now() - reportDate) / 1000 / 60;
-    const estimatedTravel = this.props.speed * timeSinceReportMin / 60;
+    // const reportDate = new Date(this.props.lastUpdateSinceEpoch);
+    const estimatedTravelNM = kmToNauticalMiles(this.props.estimatedTravelKm);
     // <ItemProperty
     //   title="Reporting Time"
     //   value={`${reportDate.toISOString()}`}
@@ -125,11 +126,11 @@ class ListItemMaritime extends React.Component {
         />
         <ItemProperty
           title="Time since report"
-          value={`${Math.round(timeSinceReportMin).toFixed(0)}min`}
+          value={`${this.props.timeSinceUpdateMin}min`}
         />
         <ItemProperty
           title="Est Distance since report"
-          value={`${estimatedTravel.toFixed(1)}NM`}
+          value={`${estimatedTravelNM.toFixed(1)}NM`}
         />
       </div>
     );

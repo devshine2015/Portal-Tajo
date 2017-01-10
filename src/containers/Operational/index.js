@@ -5,7 +5,7 @@ import TheMap from 'containers/MapFleet/realTime';
 import OperationalList from './components/OperationalPowerList';
 import FixedContent from 'components/FixedContent';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
-import { socketActions } from 'services/FleetModel/actions';
+import { socketActions, localTickActions } from 'services/FleetModel/actions';
 import createEventDispatcher from 'utils/eventDispatcher';
 
 import styles from './styles.css';
@@ -22,17 +22,23 @@ class Operational extends React.Component {
   componentDidMount() {
     if (this.props.vehicles.length > 0) {
       this.props.openFleetSocket();
+      // TODO: move it none layer higher -
+      // keep local tick alife all the time - actiual in any screen
+      this.props.startLocalTick();
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.vehicles.length === 0 && nextProps.vehicles.length > 0) {
       this.props.openFleetSocket();
+      this.props.startLocalTick();
     }
   }
 
   componentWillUnmount() {
     socketActions.closeFleetSocket();
+    // TODO: keep local tick alife all the time - actiual in any screen
+    localTickActions.stopLocalTick();
   }
 
   render() {
@@ -55,6 +61,7 @@ Operational.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
   gfs: React.PropTypes.array.isRequired,
   openFleetSocket: React.PropTypes.func.isRequired,
+  startLocalTick: React.PropTypes.func.isRequired,
 };
 
 const mapState = (state) => ({
@@ -63,6 +70,7 @@ const mapState = (state) => ({
 });
 const mapDispatch = {
   openFleetSocket: socketActions.openFleetSocket,
+  startLocalTick: localTickActions.startLocalTick,
 };
 
 const PureOperational = pure(Operational);
