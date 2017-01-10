@@ -1,8 +1,10 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { getVehicleByValue } from 'services/FleetModel/utils/vehiclesMap';
+import { hideLayer } from 'utils/mapBoxMap';
 import styles from './../styles.css';
 import { createPointerLine, showPointerLine } from './../../utils/pointerLineHelpers';
+import { isMaritime } from 'configs';
 // const iconPin = require('assets/images/v_icons_combi/pin.png');
 const iconPin = require('assets/images/v_icons_combi/pointer.png');
 // const iconPin = require('assets/images/v_icons_combi/pointerRightTilt.png');
@@ -38,6 +40,9 @@ class MapVehicle extends React.Component {
   setPosition(latLng) {
     this.theMarker.setLatLng(latLng);
     this.pointerLine.setLatLng(latLng);
+    if (this.theMoveCircle !== null) {
+      this.theMoveCircle.setLatLng(latLng);
+    }
   }
   createMarker() {
     // const iconH = 240 / 2;
@@ -80,6 +85,17 @@ class MapVehicle extends React.Component {
         icon: this.markerIcon,
         riseOnHover: true,
       });
+    this.theMoveCircle = isMaritime ? window.L.circle(this.props.theVehicle.pos,
+      10,
+      { opacity: 1,
+        fillOpacity: 0.3,
+        color: '#1f757d',
+        fillColor: '#1f757d',
+        dashArray: '5, 5',
+        weight: 1,
+       })
+       : null;
+
     const clickHandle = ((inThis) => (e) => {
       inThis.props.onClick(inThis.props.theVehicle.id);
 //      console.log('MARKER clicked ' + inThis.props.theVehicle.id);
@@ -109,21 +125,23 @@ class MapVehicle extends React.Component {
     showPointerLine(this.pointerLine, false);
   }
   toggle(doShow) {
-    if (doShow) {
-      if (!this.theLayer.hasLayer(this.theMarker)) {
-        this.theLayer.addLayer(this.theMarker);
-      }
-    } else {
-      if (this.theLayer.hasLayer(this.theMarker)) {
-        this.theLayer.removeLayer(this.theMarker);
-      }
-    }
+    hideLayer(this.theLayer, this.theMarker, !doShow);
   }
   expand(doExpand) {
     if (doExpand) {
       this.theMarker.setIcon(this.markerIconSelected).setZIndexOffset(20000);
+      if (this.theMoveCircle !== null) {
+        const radius = this.props.theVehicle.estimatedTravelKm * 1000;
+        // no display estimated move circle if distance is too small
+        if (radius < 25) {
+          return;
+        }
+        hideLayer(this.theLayer, this.theMoveCircle, false);
+        this.theMoveCircle.setRadius(this.props.theVehicle.estimatedTravelKm * 1000);
+      }
     } else {
       this.theMarker.setIcon(this.markerIcon).setZIndexOffset(0);
+      hideLayer(this.theLayer, this.theMoveCircle, true);
     }
   }
 
