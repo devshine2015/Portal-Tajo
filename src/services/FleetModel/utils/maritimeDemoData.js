@@ -24,7 +24,7 @@ export function overrideMaritimeDemoData(status) {
   status.pos.latlon.lng = 96.464976;
   // Most containerships are designed to travel at speeds around 24 knots
   // its 44.448 kmH
-  status.pos.speed = 44;
+  status.pos.speed = 24;
 }
 
 // demo helper to set all the proto maritime-specific props to vessel obj
