@@ -102,6 +102,16 @@ export function makeUpdateVehicleRequest(details, dispatch) {
   }, error => Promise.reject(error));
 }
 
+/**
+ * local update - local tick, recalculating time since last WS data,
+ * delay/nonErporting states, estimated travel dist since last update, etc...
+**/
+export function localUpdateVehicle(details, dispatch) {
+  dispatch(_vehicleUpdate({
+    ...details,
+  }, details.id));
+}
+
 export const attachDevice = (vehicleId, deviceId) => {
   const { url, method, apiVersion } = endpoints.attachDevice(vehicleId);
 
