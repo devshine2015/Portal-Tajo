@@ -94,17 +94,17 @@ function updateList(list, nextState = undefined, id) {
 
 // TODO: quick implementation, needs optimisation (batch state upates, mergeIn..)
 export function localTick(dispatch, getState) {
-  const processedList = getProcessedVehicles(getState());
+  const imProcessedList = getProcessedVehicles(getState());
 //  debugger
   const nowMs = Date.now();
-  const itrtr = processedList.values();
-  let next = itrtr.next();
+  const vehListIteator = imProcessedList.values();
+  let next = vehListIteator.next();
   while (!next.done) {
-    const vehicle = next.value;
-    next = itrtr.next();
-    const vehicleId = vehicle.get('id');
-    const speed = vehicle.get('speed');
-    const deltaTimeMs = nowMs - vehicle.get('lastUpdateSinceEpoch');
+    const imVehicle = next.value;
+    next = vehListIteator.next();
+    const vehicleId = imVehicle.get('id');
+    const speed = imVehicle.get('speed');
+    const deltaTimeMs = nowMs - imVehicle.get('lastUpdateSinceEpoch');
     // estimated travel dist since last update, in meters
     const delatDistKm = speed * (deltaTimeMs / 1000 / 60 / 60);
     vehiclesActions.localUpdateVehicle({
@@ -204,6 +204,7 @@ export function checkLaggedVehicle(now, lastUpdate) {
 
 function checkIgnition(status) {
   // ignitionOn values:  0- off; 1- on; 2- undefined
+  // eslint-disable-next-line no-nested-ternary
   return status.ignOn !== undefined ? (status.ignOn ? 1 : 0) : 2;
 }
 export function makeLocalVehicles(backEndVehiclesList, statsList) {
