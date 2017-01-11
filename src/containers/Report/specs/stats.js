@@ -18,7 +18,7 @@ const commonFields = {
   checkedByDefault: false,
   domain: 'stats',
   query: {
-    tzoffset: new Date().getTimezoneOffset(),
+    tzoffset: 0, // new Date().getTimezoneOffset(),
   },
   filterSimilar: _filterSimilar,
   calc: _calc,

@@ -45,7 +45,7 @@ function _requestHistory(vehicleId, dateFrom, dateTo, dispatch) {
     to: toString,
     max: 40000,
     filter: 'PG',
-    tzoffset: tzOffset,
+    tzoffset: 0, // tzOffset,
   });
   // setting loading state for local frame
   dispatch(_newVehicleChronicleFrame(vehicleId,
