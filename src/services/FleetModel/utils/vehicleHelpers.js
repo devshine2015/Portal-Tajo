@@ -19,8 +19,8 @@ import {
   getDeadList,
   getDelayedList,
 } from '../reducer';
-import { overrideMaritimeDemoData,
-  overrideMaritimeDemoVessel } from './maritimeDemoData';
+import { removeMeOverrideMaritimeDemoData,
+  removeMeOverrideMaritimeDemoVessel } from './maritimeDemoData';
 import { vehiclesActions } from 'services/FleetModel/actions';
 
 function getNextState(itWas, itNow) {
@@ -35,7 +35,7 @@ function getNextState(itWas, itNow) {
 }
 
 const updateLocalVehicle = (vehicle, status, now) => {
-  overrideMaritimeDemoData(status);
+  removeMeOverrideMaritimeDemoData(status);
   const sinceEpoch = new Date(status.ts).getTime();
   const hasPosition = !!status.pos;
   const isDead = !hasPosition;
@@ -68,7 +68,7 @@ const updateLocalVehicle = (vehicle, status, now) => {
   const willDead = getNextState(wasDead, isDead);
   const willDelayed = getNextState(wasDelayed, isDelayed);
 
-  overrideMaritimeDemoVessel(nextVehicle);
+  removeMeOverrideMaritimeDemoVessel(nextVehicle);
   return {
     nextVehicle,
     willDead,
@@ -94,17 +94,16 @@ function updateList(list, nextState = undefined, id) {
 
 // TODO: quick implementation, needs optimisation (batch state upates, mergeIn..)
 export function localTick(dispatch, getState) {
-  const processedList = getProcessedVehicles(getState());
-//  debugger
+  const imProcessedList = getProcessedVehicles(getState());
   const nowMs = Date.now();
-  const itrtr = processedList.values();
-  let next = itrtr.next();
+  const currentItr = imProcessedList.values();
+  let next = currentItr.next();
   while (!next.done) {
-    const vehicle = next.value;
-    next = itrtr.next();
-    const vehicleId = vehicle.get('id');
-    const speed = vehicle.get('speed');
-    const deltaTimeMs = nowMs - vehicle.get('lastUpdateSinceEpoch');
+    const imVehicle = next.value;
+    next = currentItr.next();
+    const vehicleId = imVehicle.get('id');
+    const speed = imVehicle.get('speed');
+    const deltaTimeMs = nowMs - imVehicle.get('lastUpdateSinceEpoch');
     // estimated travel dist since last update, in meters
     const delatDistKm = speed * (deltaTimeMs / 1000 / 60 / 60);
     vehiclesActions.localUpdateVehicle({
@@ -144,7 +143,7 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}, now) {
   if (backEndObject.status !== 'active') {
     return null;
   }
-  overrideMaritimeDemoData(vehicleStats);
+  removeMeOverrideMaritimeDemoData(vehicleStats);
 
   const hasPos = vehicleStats.hasOwnProperty('pos');
 
@@ -186,7 +185,7 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}, now) {
     estimatedTravelKm: 10,
   });
 
-  overrideMaritimeDemoVessel(theVehicle);
+  removeMeOverrideMaritimeDemoVessel(theVehicle);
   return {
     vehicle: theVehicle,
     isDead: theVehicle.isDead,
@@ -204,6 +203,7 @@ export function checkLaggedVehicle(now, lastUpdate) {
 
 function checkIgnition(status) {
   // ignitionOn values:  0- off; 1- on; 2- undefined
+  // eslint-disable-next-line no-nested-ternary
   return status.ignOn !== undefined ? (status.ignOn ? 1 : 0) : 2;
 }
 export function makeLocalVehicles(backEndVehiclesList, statsList) {
