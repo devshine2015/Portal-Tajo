@@ -4,8 +4,10 @@ import pure from 'recompose/pure';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
+import Checkbox from 'material-ui/Checkbox';
 import Form from 'components/Form';
-import { makeBackendGF } from 'services/FleetModel/utils/gfHelpers';
+import { makeBackendGF,
+    toggleDepotForGF } from 'services/FleetModel/utils/gfHelpers';
 import { gfEditGetSubject } from './reducer';
 import { gfEditClose, gfEditUpdate } from './actions';
 import { createGF } from 'services/FleetModel/actions/gfActions';
@@ -19,32 +21,15 @@ const FORM = 'editor';
 class GFEditor extends React.Component {
   constructor(props) {
     super(props);
-
-    /**
-     * Initial values for controlled inputs
-     **/
-    this.state = {
-      name: props.subjectGF.name,
-      address: props.subjectGF.address,
-      pos: props.subjectGF.pos,
-      radius: props.subjectGF.radius,
-    };
   }
   //
   // componentDidMount() {
   //   this.theLocation = makeLocalGF();
   // }
 
-  componentWillReceiveProps(nextProps) {
-    // TODO: not good
-    // do we need state here at all? - just use props.subjectGF
-    this.setState({ radius: nextProps.subjectGF.radius });
-  }
-
   componentDidUpdate() {
   }
   /**
-   * Just send state as data
    **/
   onSubmit = (e) => {
     e.preventDefault();
@@ -63,16 +48,15 @@ class GFEditor extends React.Component {
     this.props.gfEditClose();
   }
   /**
-   * Update state[field] with value
    **/
   onChange = (e, value) => {
     const field = e.target.name;
-    this.setState({
-      [field]: value, // .trim(),
-    });
-    // TODO: not good
-    // do we need state here at all?
     this.props.subjectGF[field] = value;
+    this.props.gfEditUpdate(this.props.subjectGF);
+  }
+
+  onCheckDepot = (e, isChecked) => {
+    toggleDepotForGF(this.props.subjectGF, isChecked);
     this.props.gfEditUpdate(this.props.subjectGF);
   }
 
@@ -88,21 +72,25 @@ class GFEditor extends React.Component {
             name="name"
             onChange={this.onChange}
             floatingLabelText="Location Name"
-            value={this.state.name}
+            value={this.props.subjectGF.name}
           />
           <TextField
             fullWidth
             name="address"
             onChange={this.onChange}
             floatingLabelText="Address"
-            value={this.state.address}
+            value={this.props.subjectGF.address}
           />
           <TextField
             fullWidth
             name="radius"
             onChange={this.onChange}
             floatingLabelText="Radius"
-            value={this.state.radius}
+            value={this.props.subjectGF.radius}
+          />
+          <Checkbox
+            label="is home depo"
+            onCheck={this.onCheckDepot}
           />
           <div className={styles.buttons}>
             <FlatButton
