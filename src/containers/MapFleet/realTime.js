@@ -18,7 +18,9 @@ import { contextMenuAddGFItems } from 'containers/GFEditor/utils';
 // TODO: remove; this must be in the global/contextReducer
 import { mapStoreSetView, mapStoreGetView } from './reducerAction';
 // TODO: remove over
-import { ctxGetHideGF, ctxGetHideVehicles, ctxGetPowListTabType } from 'services/Global/reducers/contextReducer';
+import { ctxGetHideGF,
+        ctxGetHideVehicles,
+        ctxGetPowListTabType } from 'services/Global/reducers/contextReducer';
 
 import { gfEditUpdate } from 'containers/GFEditor/actions';
 import { gfEditIsEditing } from 'containers/GFEditor/reducer';
