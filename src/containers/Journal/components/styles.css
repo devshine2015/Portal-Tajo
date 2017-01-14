@@ -1,0 +1,7 @@
+@media screen and (min-width: 100px) {
+ .logContainer {
+  background-color: rgb(62, 205, 192);
+  width: 100%;
+  height: 200px;
+ }
+}

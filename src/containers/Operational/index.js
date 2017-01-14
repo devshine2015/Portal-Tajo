@@ -2,6 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import TheMap from 'containers/MapFleet/realTime';
+import Journal from 'containers/Journal/components/Journal';
 import OperationalList from './components/OperationalPowerList';
 import FixedContent from 'components/FixedContent';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
@@ -50,6 +51,7 @@ class Operational extends React.Component {
             vehicles={this.props.vehicles}
           />
         <FixedContent containerClassName={styles.fixedContent}>
+        <Journal />
           <TheMap eventDispatcher={this.eventDispatcher} />
         </FixedContent>
       </div>
