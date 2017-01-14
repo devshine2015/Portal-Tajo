@@ -31,6 +31,7 @@ class MapVehicle extends React.Component {
 
   shouldComponentUpdate(nextProps) {
     return this.props.theVehicle.pos !== nextProps.theVehicle.pos
+      || this.props.theVehicle.estimatedTravelKm !== nextProps.theVehicle.estimatedTravelKm
       || this.props.theVehicle.filteredOut !== nextProps.theVehicle.filteredOut
       || this.props.isSelected !== nextProps.isSelected
       || (this.props.isSelected
