@@ -17,7 +17,7 @@ import { getInstanceChronicleFrameById } from 'containers/Chronicle/reducer';
 import { ctxGetHideGF } from 'services/Global/reducers/contextReducer';
 
 import { createMapboxMap, hideLayer } from 'utils/mapBoxMap';
-import { initiateGfEditingCallback } from 'containers/GFEditor/utils';
+import { contextMenuAddGFItems } from 'containers/GFEditor/utils';
 import { mapStoreSetView, mapStoreGetView } from './reducerAction';
 
 import { gfEditUpdate } from 'containers/GFEditor/actions';
@@ -54,8 +54,11 @@ class MapChronicle extends React.Component {
     if (this.theMap !== null) {
       return;
     }
-    this.theMap = createMapboxMap(ReactDOM.findDOMNode(this), this.props.mapStoreGetView);
-    this.theMap.on('contextmenu', initiateGfEditingCallback(this.theMap, this.props.gfEditUpdate));
+    this.theMap = createMapboxMap(ReactDOM.findDOMNode(this),
+      this.props.mapStoreGetView,
+      contextMenuAddGFItems(this.props.gfEditUpdate)
+    );
+    // this.theMap.on('contextmenu', initiateGfCircleEditingCallback(this.theMap, this.props.gfEditUpdate));
   }
 
   render() {

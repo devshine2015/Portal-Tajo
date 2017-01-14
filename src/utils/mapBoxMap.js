@@ -1,15 +1,24 @@
 require('mapbox.js'); // <-- auto-attaches to window.L
-require('leaflet/dist/leaflet.css');
-// require('leaflet-editable/handler/Edit.SimpleShape');
-// require('leaflet-editable/handler/Edit.Circle');
 require('leaflet-draw');
+require('leaflet-contextmenu');
+
+require('leaflet/dist/leaflet.css');
+require('leaflet-draw/dist/leaflet.draw.css');
+require('leaflet-contextmenu/dist/leaflet.contextmenu.css');
 
 import { MAPBOX_KEY } from 'utils/constants';
 
-export function createMapboxMap(domNode, view) {
+export function createMapboxMap(domNode, view, contextmenuItems) {
   let theMap = null;
   window.L.mapbox.accessToken = MAPBOX_KEY;
-  theMap = window.L.mapbox.map(domNode);
+  theMap = window.L.mapbox.map(domNode,
+    null,  // some mestiriouse argument...
+    {
+      contextmenu: true,
+      contextmenuWidth: 140,
+      contextmenuItems,
+    }
+  );
   theMap.setView(view.center, view.zoom);
 
   const tilesOSM = window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

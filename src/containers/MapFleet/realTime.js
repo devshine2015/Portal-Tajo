@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 
 import { createMapboxMap, hideLayer } from 'utils/mapBoxMap';
-import { initiateGfEditingCallback } from 'containers/GFEditor/utils';
+import { contextMenuAddGFItems } from 'containers/GFEditor/utils';
 
 // TODO: remove; this must be in the global/contextReducer
 import { mapStoreSetView, mapStoreGetView } from './reducerAction';
@@ -58,6 +58,7 @@ class MapFleet extends React.Component {
     this.theMap.addLayer(this.gfMarkersLayer);
     this.gfEditLayer = window.L.layerGroup();
     this.theMap.addLayer(this.gfEditLayer);
+    this.gfEditLayer.map = this.theMap;
 
 // providing continuous UX - same vehicle selected when switching from other screens
 // TODO: NOT GOOD - relies on Mounting order, expects powerList to be already up
@@ -78,8 +79,11 @@ class MapFleet extends React.Component {
     if (this.theMap !== null) {
       return;
     }
-    this.theMap = createMapboxMap(ReactDOM.findDOMNode(this), this.props.mapStoreGetView);
-    this.theMap.on('contextmenu', initiateGfEditingCallback(this.theMap, this.props.gfEditUpdate));
+    this.theMap = createMapboxMap(ReactDOM.findDOMNode(this),
+      this.props.mapStoreGetView,
+      contextMenuAddGFItems(this.props.gfEditUpdate)
+    );
+    // this.theMap.on('contextmenu', initiateGfEditingCallback(this.theMap, this.props.gfEditUpdate));
   }
 
 // when selected from the list
