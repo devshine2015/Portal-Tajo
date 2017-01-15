@@ -10,8 +10,6 @@ import { changeMainSidebarState } from 'containers/InnerPortal/actions';
 import FleetSummary from 'containers/FleetSummary';
 import translator from 'utils/translator';
 import { logout } from '../../actions';
-import JournalToggle from 'containers/Journal/components/JournalToggle';
-
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './phrases.lang';
@@ -38,7 +36,6 @@ function renderSummary(location) {
   return (
     <div className={styles.centerContainer}>
       <FleetSummary simple />
-      <JournalToggle />
     </div>
   );
 }
