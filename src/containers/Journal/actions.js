@@ -1,14 +1,14 @@
-export const JR_OPEN = 'jr/open';
-export const JR_ADD_ITEMS = 'jr/add';
+export const JR_OPEN = 'jrn/open';
+export const JR_ADD_ENTRIES = 'jrn/add';
 
-export const jrOpen = (doOpen) => (dispatch) =>
+export const jrnOpen = (doOpen) => (dispatch) =>
   dispatch({
     type: JR_OPEN,
     doOpen,
   });
 
-export const jrAddItems = (newItemsList) => (dispatch) =>
+export const jrnAddEntries = (newEntriesList) => (dispatch) =>
   dispatch({
-    type: JR_ADD_ITEMS,
-    newItemsList,
+    type: JR_ADD_ENTRIES,
+    newEntriesList,
   });

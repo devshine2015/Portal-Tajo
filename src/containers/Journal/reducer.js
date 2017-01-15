@@ -1,18 +1,27 @@
 import { fromJS } from 'immutable';
-import * as jrActions from './actions';
+import * as jrnActions from './actions';
 
 const initialState = fromJS({
-  items: [],
-  newItemsCount: 0,
+  entries: [],
+  newEntriesCount: 0,
   isOpened: false,
 });
 
 function journalReducer(state = initialState, action) {
   switch (action.type) {
-    case jrActions.JR_OPEN:
+    case jrnActions.JR_OPEN:
+      // if (!action.doOpen) {
+      //   return state.set('isOpened', action.doOpen);
+      // }
+      // // reset new count when openeing(showing)
+      // return state.set('isOpened', action.doOpen)
+      //   .set('newEntriesCount', 0);
       return state.set('isOpened', action.doOpen);
-    // case logActions.LOG_ADD_ITEMS:
-    //   return state.   ('logItems', action.logItems);
+    case jrnActions.JR_ADD_ENTRIES: {
+      const newList = state.get('entries').push(...action.newEntriesList);
+      return state.set('entries', newList)
+        .set('newEntriesCount', state.get('newEntriesCount') + action.newEntriesList.length);
+    }
     default:
       return state;
   }
@@ -23,7 +32,11 @@ const _journalReducer = state =>
 
 export default journalReducer;
 
-export const jrIsOpened = state =>
+export const jrnIsOpened = state =>
   _journalReducer(state).get('isOpened');
-export const jrNewCount = state =>
-  _journalReducer(state).get('newItemsCount');
+export const jrnNewCount = state =>
+  _journalReducer(state).get('newEntriesCount');
+export const jrnGetEntries = (state) => {
+  const theList = _journalReducer(state).get('entries');
+  return theList.toJS();
+};
