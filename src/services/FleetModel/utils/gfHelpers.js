@@ -17,17 +17,36 @@ import { ZERO_LOCATION, NEW_GF_RADIUS } from 'utils/constants';
 import { sortByName } from 'utils/sorting';
 
 export function makeBackendGF(inData) {
-  return {
+
+// const __backEndGF = {
+//     name: "test-poly-gf-123",
+//     kind: "poly",
+//     points: [{lat: 43.66357999284051,lng:161.51680106706948},
+//     {lat:44.004389983713736,lng:-105.11418985072132},
+//     {lat:29.657705069923352,lng:-93.4840957310216}],
+//     address:"some address asdf",
+//     status:"active"
+//   };
+  const backEndGF = {
     name: inData.name || '',
     address: inData.address || '',
-    center: {
+    status: 'active',
+  };
+  if (inData.isPolygon) {
+    backEndGF.kind = 'poly';
+//    backEndGF.points = inData.latLngs;
+    backEndGF.points = [];
+    inData.latLngs.forEach(latLng => {
+      backEndGF.points.push({ lat: latLng.lat, lng: latLng.lng });
+    });
+  } else {
+    backEndGF.center = {
       lat: inData.pos ? inData.pos.lat : ZERO_LOCATION[0],
       lng: inData.pos ? inData.pos.lng : ZERO_LOCATION[1],
-    },
-    radius: inData.radius ? parseInt(inData.radius, 10) : NEW_GF_RADIUS,
-    status: 'active',
-    // kind: inData.kind || '',
-  };
+    };
+    backEndGF.radius = inData.radius ? parseInt(inData.radius, 10) : NEW_GF_RADIUS;
+  }
+  return backEndGF;
 }
 export function makeLocalGF(srcGFObject) {
   const theGF = {};
@@ -38,15 +57,21 @@ export function makeLocalGF(srcGFObject) {
     theGF.id = srcGFObject.id;
   }
   theGF.address = srcGFObject.hasOwnProperty('address') ? srcGFObject.address : '';
-  // latlng
-  theGF.pos = [srcGFObject.center.lat, srcGFObject.center.lng];
-  theGF.radius = srcGFObject.hasOwnProperty('radius') ? srcGFObject.radius : 100;
-  theGF.kind = srcGFObject.hasOwnProperty('kind') ? srcGFObject.kind : '';
-
-  theGF.isPolygon = srcGFObject.hasOwnProperty('isPolygon') ? srcGFObject.isPolygon : false;
-  theGF.latLngs = [[srcGFObject.center.lat, srcGFObject.center.lng]];
+//  theGF.kind = srcGFObject.hasOwnProperty('kind') ? srcGFObject.kind : '';
   // synthetic
-  theGF.isDepot = false; // srcGFObject.hasOwnProperty('kind') ? srcGFObject.kind === GF_DEPOT_KIND : false;
+  theGF.isPolygon = srcGFObject.hasOwnProperty('isPolygon') ? srcGFObject.isPolygon : false;
+  theGF.isPolygon = theGF.isPolygon || srcGFObject.kind === 'poly';
+  theGF.isDepot = false; // srcGFObject.kind === GF_DEPOT_KIND : false;
+
+  if (theGF.isPolygon) {
+    theGF.latLngs = srcGFObject.points;
+    theGF.pos = [srcGFObject.points[0].lat, srcGFObject.points[0].lng];
+// theGF.radius = 100;
+  } else {
+    // is CIRCULAR? - use center and radius
+    theGF.pos = [srcGFObject.center.lat, srcGFObject.center.lng];
+    theGF.radius = srcGFObject.hasOwnProperty('radius') ? srcGFObject.radius : 100;
+  }
   return theGF;
 }
 

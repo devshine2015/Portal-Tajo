@@ -1,6 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { createPointerLine, showPointerLine } from './../../utils/pointerLineHelpers';
+import { hideLayer } from 'utils/mapBoxMap';
 import styles from './../styles.css';
 
 const iconSelected = require('assets/images/v_icons_combi/sqr@3x.png');
@@ -11,7 +12,9 @@ class MapGF extends React.Component {
     super(props);
     this.containerLayer = null;
     this.theMarker = null;
+    this.selectedMarker = null;
     this.theCircle = null;
+    this.thePolygon = null;
     this.pointerLine = null;
   }
 
@@ -22,13 +25,28 @@ class MapGF extends React.Component {
   componentWillUnmount() {
 // TODO: need to delete MapBox markers?
     this.toggle(false);
+    hideLayer(this.containerLayer, this.thePolygon, true);
     showPointerLine(this.pointerLine, false);
   }
   setPosition(latLng) {
-    this.theMarker.setLatLng(latLng);
-    this.theCircle.setLatLng(latLng);
+    if (this.theMarker !== null) {
+      this.theMarker.setLatLng(latLng);
+    }
+    if (this.theCircle !== null) {
+      this.theCircle.setLatLng(latLng);
+    }
   }
-  createMarker() {
+  createShapePoly() {
+    this.thePolygon = window.L.polygon(this.props.theGF.latLngs)
+      .setStyle({ weight: 2 });
+    this.containerLayer.addLayer(this.thePolygon);
+    const clickHandle = ((inThis) => () => {
+      inThis.props.onClick(inThis.props.theGF.id);
+    })(this);
+    this.thePolygon.on('click', clickHandle);
+    this.pointerLine = createPointerLine(this.props.theGF.pos, [0, 0]);
+  }
+  createShapeCircle() {
     const markerR = 12;
     this.theMarker = window.L.circleMarker(this.props.theGF.pos,
       { title: this.props.theGF.name })
@@ -37,10 +55,8 @@ class MapGF extends React.Component {
       inThis.props.onClick(inThis.props.theGF.id);
     })(this);
     this.theMarker.on('click', clickHandle).addTo(this.containerLayer);
-
     this.theCircle = window.L.circle(this.props.theGF.pos, this.props.theGF.radius)
       .setStyle({ color: this.context.muiTheme.palette.PLItemBackgroundColorExpanded });
-
     const iScale = 0.25;
     const headSz = 152 * iScale;
     this.selectedMarkerIcon = window.L.icon({
@@ -55,45 +71,49 @@ class MapGF extends React.Component {
         riseOnHover: true,
       });
     this.selectedMarker.setZIndexOffset(2000);
-
     this.pointerLine = createPointerLine(this.props.theGF.pos, [headSz / 2, 0]);
+  }
+  createMarker() {
+    if (this.props.theGF.isPolygon) {
+      this.createShapePoly();
+    } else {
+      this.createShapeCircle();
+    }
+
     this.containerLayer.addLayer(this.pointerLine);
     showPointerLine(this.pointerLine, false);
   }
   expand(doExpand) {
-    if (doExpand) {
-      this.theMarker.setStyle(
-        { color: this.context.muiTheme.palette.PLItemBackgroundColorExpanded });
-      this.containerLayer.addLayer(this.theCircle);
-      this.containerLayer.addLayer(this.selectedMarker);
+    hideLayer(this.containerLayer, this.theCircle, !doExpand);
+    hideLayer(this.containerLayer, this.selectedMarker, !doExpand);
 
-//      showPointerLine(this.pointerLine, true);
+    if (doExpand) {
+      if (this.theMarker !== null) {
+        this.theMarker.setStyle(
+          { color: this.context.muiTheme.palette.PLItemBackgroundColorExpanded });
+      }
+      if (this.thePolygon !== null) {
+        this.thePolygon.setStyle(
+        { color: '#e64a19'}); // this.context.muiTheme.palette.PLItemBackgroundColorExpanded });
+      }
     } else {
-      this.theMarker.setStyle({ color: '#03f' });
-      if (this.containerLayer.hasLayer(this.theCircle)) {
-        this.containerLayer.removeLayer(this.theCircle);
+      if (this.theMarker !== null) {
+        this.theMarker.setStyle({ color: '#03f' });
       }
-      if (this.containerLayer.hasLayer(this.selectedMarker)) {
-        this.containerLayer.removeLayer(this.selectedMarker);
+      if (this.thePolygon !== null) {
+        this.thePolygon.setStyle({ color: '#03f' });
       }
-//      showPointerLine(this.pointerLine, false);
     }
   }
   toggle(doShow) {
-    if (doShow) {
-      if (!this.containerLayer.hasLayer(this.theMarker)) {
-        this.containerLayer.addLayer(this.theMarker);
-      }
-    } else {
-      if (this.containerLayer.hasLayer(this.theMarker)) {
-        this.containerLayer.removeLayer(this.theMarker);
-      }
+    hideLayer(this.containerLayer, this.theMarker, !doShow);
+    if (!doShow) {
       this.expand(false);
     }
   }
 
   render() {
-    if (this.theMarker !== null) {
+    if (this.theCircle !== null || this.thePolygon !== null) {
       this.toggle(!this.props.theGF.filteredOut);
       this.setPosition(this.props.theGF.pos);
       this.expand(this.props.isSelected);

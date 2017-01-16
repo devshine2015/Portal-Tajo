@@ -52,11 +52,13 @@ class LocationWithDetails extends React.Component {
           title="Address"
           value={this.props.address}
         />
-        <ItemProperty
-          key="radius"
-          title="Radius"
-          value={this.props.radius.toFixed(0)}
-        />
+        {this.props.isPolygon ? null :
+          <ItemProperty
+            key="radius"
+            title="Radius"
+            value={this.props.radius.toFixed(0)}
+          />
+        }
         <Divider key="line02" />
         <IconButton
           tooltip="Delete"
@@ -99,10 +101,11 @@ class LocationWithDetails extends React.Component {
 LocationWithDetails.propTypes = {
   id: React.PropTypes.string.isRequired,
   isExpanded: React.PropTypes.bool,
+  isPolygon: React.PropTypes.bool.isRequired,
   name: React.PropTypes.string.isRequired,
   onClick: React.PropTypes.func.isRequired,
   pos: React.PropTypes.array.isRequired,
-  radius: React.PropTypes.number.isRequired,
+  radius: React.PropTypes.number,
   address: React.PropTypes.string.isRequired,
   deleteGF: React.PropTypes.func.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,

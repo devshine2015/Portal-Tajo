@@ -16,7 +16,7 @@ export function contextMenuAddGFItems(subjUpdateFunc) {
 
 function initiateGfPolygonEditingCallback(subjUpdateFunc) {
   return (e) => {
-    subjUpdateFunc(makeLocalGF({ center: e.latlng, isPolygon: true }));
+    subjUpdateFunc(makeLocalGF({ points: [e.latlng], kind: 'poly' }));
   };
 }
 
