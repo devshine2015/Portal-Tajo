@@ -1,4 +1,5 @@
 import { localTick } from '../utils/vehicleHelpers';
+import { isMaritime } from 'configs';
 
 export const FLEET_MODEL_LOCAL_TICK = 'portal/services/FLEET_MODEL_LOCAL_TICK';
 
@@ -11,6 +12,9 @@ const LOCAL_TICK_INTERVAL_MS = 1000 * 60;
 let localTickProcId = null;
 
 function _startLocalTick(dispatch, getState) {
+  if (!isMaritime) {
+    return;
+  }
   if (localTickProcId !== null) {
     return;
   }
