@@ -58,9 +58,6 @@ class MapFleet extends React.Component {
     this.theMap.addLayer(this.vehicleMarkersLayer);
     this.gfMarkersLayer = window.L.layerGroup();
     this.theMap.addLayer(this.gfMarkersLayer);
-    this.gfEditLayer = window.L.layerGroup();
-    this.theMap.addLayer(this.gfEditLayer);
-    this.gfEditLayer.map = this.theMap;
 
 // providing continuous UX - same vehicle selected when switching from other screens
 // TODO: NOT GOOD - relies on Mounting order, expects powerList to be already up
@@ -120,7 +117,6 @@ class MapFleet extends React.Component {
           this.props.isHideVehicles && this.props.activeListType === listTypes.withGFDetails;
     hideLayer(this.theMap, this.vehicleMarkersLayer, shouldHideVehicles);
     hideLayer(this.theMap, this.gfMarkersLayer, shouldHideGFs);
-    hideLayer(this.theMap, this.gfEditLayer, !this.props.gfEditMode);
 
     let vehicles = EMPTY_ARRAY;
     let gfs = EMPTY_ARRAY;
@@ -150,7 +146,7 @@ class MapFleet extends React.Component {
     const editGF = !this.props.gfEditMode ? false :
      (<EditGF
        key="gfEditHelper"
-       theLayer={this.gfEditLayer}
+       theMap={this.theMap}
      />);
 //      <GooglePlacesSearch ownerMapObj={this.theMap} />
     return (

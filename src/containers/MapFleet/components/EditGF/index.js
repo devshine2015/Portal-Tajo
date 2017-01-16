@@ -19,7 +19,9 @@ class EditGF extends React.Component {
   }
 
   componentDidMount() {
-    this.theLayer = this.props.theLayer;
+    this.theLayer = window.L.layerGroup();
+    this.props.theMap.addLayer(this.theLayer);
+
     if (this.props.subjectGF.isPolygon) {
       this.startPolygon();
       return;
@@ -28,17 +30,11 @@ class EditGF extends React.Component {
   }
 
   componentWillUnmount() {
-    if (this.theCircle !== null) {
-      this.theLayer.removeLayer(this.theCircle);
-      this.theCircle = null;
-    }
-    if (this.thePolygon !== null) {
-      this.theLayer.removeLayer(this.thePolygon);
-      this.thePolygon = null;
-    }
+    this.props.theMap.removeLayer(this.theLayer);
+    this.theLayer = null;
     if (this.polygonDrawer !== null) {
-      this.theLayer.map.off('draw:created', this.applyPolygon);
-      this.theLayer.map.off('draw:drawstop', this.onDrawStop);
+      this.props.theMap.off('draw:created', this.applyPolygon, this);
+      this.props.theMap.off('draw:drawstop', this.onDrawStop, this);
       this.polygonDrawer = null;
     }
   }
@@ -54,8 +50,8 @@ class EditGF extends React.Component {
     this.theLayer.addLayer(this.theCircle);
 
     // for circular GFs - make sure we are on some sane zoom level, not too far
-    if (this.theLayer.map.getZoom() < NEW_GF_REQUIRED_ZOOM_LEVEL) {
-      this.theLayer.map.setZoomAround(this.props.subjectGF.pos, NEW_GF_REQUIRED_ZOOM_LEVEL);
+    if (this.props.theMap.getZoom() < NEW_GF_REQUIRED_ZOOM_LEVEL) {
+      this.props.theMap.setZoomAround(this.props.subjectGF.pos, NEW_GF_REQUIRED_ZOOM_LEVEL);
     }
   }
 
@@ -74,10 +70,10 @@ class EditGF extends React.Component {
         clickable: true,
       },
     };
-    this.theLayer.map.on('draw:created', this.applyPolygon, this);
-    this.theLayer.map.on('draw:drawstop', this.onDrawStop, this);
+    this.props.theMap.on('draw:created', this.applyPolygon, this);
+    this.props.theMap.on('draw:drawstop', this.onDrawStop, this);
 
-    this.polygonDrawer = new window.L.Draw.Polygon(this.theLayer.map, polygonOptions);
+    this.polygonDrawer = new window.L.Draw.Polygon(this.props.theMap, polygonOptions);
     this.polygonDrawer.enable();
     this.polygonDrawer.addVertex(this.props.subjectGF.pos);
   }
@@ -130,7 +126,7 @@ class EditGF extends React.Component {
 }
 
 EditGF.propTypes = {
-  theLayer: React.PropTypes.object.isRequired,
+  theMap: React.PropTypes.object.isRequired,
   subjectGF: React.PropTypes.object.isRequired,
   gfEditUpdate: React.PropTypes.func.isRequired,
   gfEditClose: React.PropTypes.func.isRequired,

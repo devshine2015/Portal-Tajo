@@ -40,8 +40,6 @@ class MapChronicle extends React.Component {
     this.theMap.addLayer(this.vehicleMarkersLayer);
     this.gfMarkersLayer = window.L.layerGroup();
     this.theMap.addLayer(this.gfMarkersLayer);
-    this.gfEditLayer = window.L.layerGroup();
-    this.theMap.addLayer(this.gfEditLayer);
   }
 
   componentWillUnmount() {
@@ -65,7 +63,6 @@ class MapChronicle extends React.Component {
     const hideGF = this.props.gfEditMode || this.props.isHideGF;
     hideLayer(this.theMap, this.vehicleMarkersLayer, this.props.gfEditMode);
     hideLayer(this.theMap, this.gfMarkersLayer, hideGF);
-    hideLayer(this.theMap, this.gfEditLayer, !this.props.gfEditMode);
 
     let gfs = EMPTY_ARRAY;
     let chronPaths = EMPTY_ARRAY;
@@ -132,7 +129,7 @@ class MapChronicle extends React.Component {
     const editGF = !this.props.gfEditMode ? false :
      (<EditGF
        key="gfEditHelper"
-       theLayer={this.gfEditLayer}
+       theMap={this.theMap}
      />);
     //  <GooglePlacesSearch ownerMapObj={this.theMap} />
     return (
