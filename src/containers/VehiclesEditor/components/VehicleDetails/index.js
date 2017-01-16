@@ -10,6 +10,7 @@ import {
 import Form from 'components/Form';
 import ButtonWithProgress from 'components/ButtonWithProgress';
 import DeviceEditor from '../DeviceEditor';
+import VehicleAlerts from '../VehicleAlerts';
 import { VEHICLE_KINDS, getVehicleByValue } from 'services/FleetModel/utils/vehiclesMap';
 import translator from 'utils/translator';
 
@@ -224,6 +225,7 @@ class VehicleDetails extends React.Component {
             checked={this.state.isMiles}
             onCheck={this.onIsMilesChange}
           />
+          <VehicleAlerts />
           <div className={styles.buttons}>
             <ButtonWithProgress
               className={styles.buttons__button}
