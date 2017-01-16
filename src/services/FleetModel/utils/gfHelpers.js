@@ -65,8 +65,12 @@ export function makeLocalGF(srcGFObject) {
 
   if (theGF.isPolygon) {
     theGF.latLngs = srcGFObject.points;
+    // for polygon set POS to the leftMost point
     theGF.pos = [srcGFObject.points[0].lat, srcGFObject.points[0].lng];
-// theGF.radius = 100;
+    theGF.latLngs.forEach((latLng) => {
+      if (latLng.lng < theGF.pos[1])
+        theGF.pos = [latLng.lat, latLng.lng];
+    });
   } else {
     // is CIRCULAR? - use center and radius
     theGF.pos = [srcGFObject.center.lat, srcGFObject.center.lng];

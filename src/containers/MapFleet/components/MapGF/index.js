@@ -17,7 +17,6 @@ class MapGF extends React.Component {
     this.thePolygon = null;
     this.pointerLine = null;
   }
-
   componentDidMount() {
     this.containerLayer = this.props.theLayer;
     this.createMarker();
@@ -38,7 +37,7 @@ class MapGF extends React.Component {
   }
   createShapePoly() {
     this.thePolygon = window.L.polygon(this.props.theGF.latLngs)
-      .setStyle({ weight: 2 });
+      .setStyle({ weight: 1 });
     this.containerLayer.addLayer(this.thePolygon);
     const clickHandle = ((inThis) => () => {
       inThis.props.onClick(inThis.props.theGF.id);
@@ -49,14 +48,15 @@ class MapGF extends React.Component {
   createShapeCircle() {
     const markerR = 12;
     this.theMarker = window.L.circleMarker(this.props.theGF.pos,
-      { title: this.props.theGF.name })
+      { title: this.props.theGF.name, weight: 1 })
       .setRadius(markerR);
     const clickHandle = ((inThis) => () => {
       inThis.props.onClick(inThis.props.theGF.id);
     })(this);
     this.theMarker.on('click', clickHandle).addTo(this.containerLayer);
     this.theCircle = window.L.circle(this.props.theGF.pos, this.props.theGF.radius)
-      .setStyle({ color: this.context.muiTheme.palette.PLItemBackgroundColorExpanded });
+      .setStyle({ color: this.context.muiTheme.palette.PLItemBackgroundColorExpanded,
+          weight: 1, opacity: 1 });
     const iScale = 0.25;
     const headSz = 152 * iScale;
     this.selectedMarkerIcon = window.L.icon({
@@ -94,14 +94,14 @@ class MapGF extends React.Component {
       }
       if (this.thePolygon !== null) {
         this.thePolygon.setStyle(
-        { color: '#e64a19'}); // this.context.muiTheme.palette.PLItemBackgroundColorExpanded });
+        { color: '#e64a19', weight: 2, opacity: 1}); // this.context.muiTheme.palette.PLItemBackgroundColorExpanded });
       }
     } else {
       if (this.theMarker !== null) {
         this.theMarker.setStyle({ color: '#03f' });
       }
       if (this.thePolygon !== null) {
-        this.thePolygon.setStyle({ color: '#03f' });
+        this.thePolygon.setStyle({ color: '#03f', weight: 0.5 });
       }
     }
   }

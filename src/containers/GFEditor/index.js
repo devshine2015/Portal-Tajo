@@ -81,13 +81,15 @@ class GFEditor extends React.Component {
             floatingLabelText="Address"
             value={this.props.subjectGF.address}
           />
-          <TextField
-            fullWidth
-            name="radius"
-            onChange={this.onChange}
-            floatingLabelText="Radius"
-            value={this.props.subjectGF.radius}
-          />
+          {this.props.subjectGF.isPolygon ? null :
+            <TextField
+              fullWidth
+              name="radius"
+              onChange={this.onChange}
+              floatingLabelText="Radius"
+              value={this.props.subjectGF.radius}
+            />
+          }
           <Checkbox
             label="is home depo"
             onCheck={this.onCheckDepot}

@@ -104,7 +104,6 @@ LocationWithDetails.propTypes = {
   isPolygon: React.PropTypes.bool.isRequired,
   name: React.PropTypes.string.isRequired,
   onClick: React.PropTypes.func.isRequired,
-  pos: React.PropTypes.array.isRequired,
   radius: React.PropTypes.number,
   address: React.PropTypes.string.isRequired,
   deleteGF: React.PropTypes.func.isRequired,
