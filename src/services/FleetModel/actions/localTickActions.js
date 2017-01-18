@@ -1,4 +1,4 @@
-import { localTick } from '../utils/vehicleHelpers';
+import { localTick } from '../utils/localTickHelpers';
 import { isMaritime } from 'configs';
 
 export const FLEET_MODEL_LOCAL_TICK = 'portal/services/FLEET_MODEL_LOCAL_TICK';
@@ -7,7 +7,7 @@ export const startLocalTick = () => _startLocalTick;
 export const stopLocalTick = () => _stopLocalTick;
 
 // update once a minute or so
-const LOCAL_TICK_INTERVAL_MS = 1000 * 10;
+const LOCAL_TICK_INTERVAL_MS = 1000 * 60;
 
 let localTickProcId = null;
 
