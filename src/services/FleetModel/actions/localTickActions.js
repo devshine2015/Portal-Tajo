@@ -7,14 +7,14 @@ export const startLocalTick = () => _startLocalTick;
 export const stopLocalTick = () => _stopLocalTick;
 
 // update once a minute or so
-const LOCAL_TICK_INTERVAL_MS = 1000 * 60;
+const LOCAL_TICK_INTERVAL_MS = 1000 * 10;
 
 let localTickProcId = null;
 
 function _startLocalTick(dispatch, getState) {
-  if (!isMaritime) {
-    return;
-  }
+  // if (!isMaritime) {
+  //   return;
+  // }
   if (localTickProcId !== null) {
     return;
   }

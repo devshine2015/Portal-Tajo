@@ -35,16 +35,16 @@ function onMessageBatchingWithTimer(inEvent, dispatch, getState) {
   const data = JSON.parse(inEvent.data);
   if (batchQueue.length === 0) {
     window.setTimeout(() => {
-      console.log(`dispatching BATCH ${batchQueue.length}`);
-
+      // const t0 = performance.now();
       const { updates, deadList, delayedList } = updateLocalVehicles(batchQueue, getState);
 
-      dispatch(_updateStatusBatch2({
+      dispatch(_updateStatusBatch({
         updates,
         deadList,
         delayedList,
       }));
 
+      // console.log('dispatching BATCH '+batchQueue.length+' in: '+(performance.now() - t0).toFixed(2));
       batchQueue.length = 0;
     }, BATCHING_TIME_MS);
   }
@@ -58,7 +58,7 @@ function _closeSocket() {
   }
 }
 
-const _updateStatusBatch2 = ({
+const _updateStatusBatch = ({
   updates,
   deadList,
   delayedList,
