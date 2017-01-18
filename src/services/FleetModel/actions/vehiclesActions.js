@@ -14,6 +14,7 @@ import {
 export const FLEET_MODEL_VEHICLES_SET = 'portal/services/FLEET_MODEL_VEHICLES_SET';
 export const FLEET_MODEL_VEHICLES_FILTER = 'portal/services/FLEET_MODEL_VEHICLES_FILTER';
 export const FLEET_MODEL_VEHICLE_UPDATE = 'portal/services/FLEET_MODEL_VEHICLE_UPDATE';
+export const FLEET_MODEL_VEHICLES_UPDATE_LIST = 'portal/services/FLEET_MODEL_VEHICLES_UPDATE_LIST';
 export const FLEET_MODEL_VEHICLE_SELECT = 'portal/services/FLEET_MODEL_VEHICLE_SELECT';
 export const FLEET_MODEL_VEHICLE_ADD = 'portal/services/FLEET_MODEL_VEHICLE_ADD';
 export const FLEET_MODEL_ORDER_UPDATE = 'portal/services/FLEET_MODEL_ORDER_UPDATE';
@@ -112,6 +113,12 @@ export function localUpdateVehicle(details, dispatch) {
   }, details.id));
 }
 
+/**
+**/
+export function updateVehiclesList(imUpdatedVehicleMap, dispatch) {
+  dispatch(_vehiclesUpdateList(imUpdatedVehicleMap));
+}
+
 export const attachDevice = (vehicleId, deviceId) => {
   const { url, method, apiVersion } = endpoints.attachDevice(vehicleId);
 
@@ -157,5 +164,10 @@ const _vehicleUpdate = (details, id) => ({
 
 const _vehiclesFilterUpdate = (vehicles) => ({
   type: FLEET_MODEL_VEHICLES_FILTER,
+  vehicles,
+});
+
+const _vehiclesUpdateList = (vehicles) => ({
+  type: FLEET_MODEL_VEHICLES_UPDATE_LIST,
   vehicles,
 });

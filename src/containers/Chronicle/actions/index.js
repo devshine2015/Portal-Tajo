@@ -34,19 +34,16 @@ function _requestHistory(vehicleId, dateFrom, dateTo, dispatch) {
 // TODO: properly generate from and to
 //  const fromString = '2016-08-21T04:38:32.000+0000';// date.toString();
   let fromString = dateFrom.toISOString();
-  fromString = fromString.slice(0,-1) + '+0000';
+  fromString = fromString.slice(0, -1) + '+0000';
   let toString = dateTo.toISOString();
-  toString = toString.slice(0,-1) + '+0000';
-
-  const tzOffsetDate = new Date();
-  const tzOffset = tzOffsetDate.getTimezoneOffset();
+  toString = toString.slice(0, -1) + '+0000';
 
   const { url, method } = endpoints.getEventsInTimeRange(vehicleId, {
     from: fromString,
     to: toString,
     max: requestSamplesLimit,
     filter: 'PG',
-    tzoffset: tzOffset,
+    // tzoffset: new Date().getTimezoneOffset(),
   });
   // setting loading state for local frame
   dispatch(_newVehicleChronicleFrame(vehicleId,

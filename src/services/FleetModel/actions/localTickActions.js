@@ -1,4 +1,5 @@
-import { localTick } from '../utils/vehicleHelpers';
+import { localTick } from '../utils/localTickHelpers';
+import { isMaritime } from 'configs';
 
 export const startLocalTick = () => _startLocalTick;
 export const stopLocalTick = () => _stopLocalTick;
@@ -9,6 +10,9 @@ const LOCAL_TICK_INTERVAL_MS = 1000 * 60;
 let localTickProcId = null;
 
 function _startLocalTick(dispatch, getState) {
+  // if (!isMaritime) {
+  //   return;
+  // }
   if (localTickProcId !== null) {
     return;
   }

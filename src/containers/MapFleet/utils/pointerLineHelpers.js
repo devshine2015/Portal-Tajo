@@ -6,7 +6,7 @@ const _pointerLineWidth = 1000;
 
 export function createPointerLine(pos, anchor) {
   const pointerIcon = window.L.divIcon({ className: styles.pointerLine,
-    iconSize: [0, 2],
+    iconSize: [0, 1],
     iconAnchor: [_pointerLineWidth + anchor[0], anchor[1]] });
   const thePointer = window.L.marker(pos,
       { icon: pointerIcon });

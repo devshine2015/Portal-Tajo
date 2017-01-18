@@ -12,16 +12,16 @@
 // "status": "active"
 // "kind":    //optional
 import { Map } from 'immutable';
-import { ZOMBIE_TIME_TRH_MS, LAG_INDICAION_TRH_MS } from 'utils/constants';
+import { ZOMBIE_TIME_TRH_MIN, LAG_INDICAION_TRH_MIN } from 'utils/constants';
 import { sortByName } from 'utils/sorting';
 import {
   getProcessedVehicles,
   getDeadList,
   getDelayedList,
 } from '../reducer';
-import { overrideMaritimeDemoData,
-  overrideMaritimeDemoVessel } from './maritimeDemoData';
-import { vehiclesActions } from 'services/FleetModel/actions';
+import { removeMe_OverrideMaritimeDemoData,
+  removeMe_OverrideMaritimeDemoVessel } from './maritimeDemoData';
+import { vehicleClientUpdate } from './localTickHelpers';
 
 function getNextState(itWas, itNow) {
   let itWill;
@@ -34,21 +34,19 @@ function getNextState(itWas, itNow) {
   return itWill;
 }
 
-const updateLocalVehicle = (vehicle, status, now) => {
-  overrideMaritimeDemoData(status);
+const updateLocalVehicle = (imVehicle, status, now) => {
+  removeMe_OverrideMaritimeDemoData(status);
   const sinceEpoch = new Date(status.ts).getTime();
   const hasPosition = !!status.pos;
   const isDead = !hasPosition;
   const ignitionOn = checkIgnition(status);
-  const isDelayedWithIgnitionOff = ignitionOn !== 1 && checkLaggedVehicle(now, sinceEpoch);
-  const isDelayed = ignitionOn === 1 ? checkLaggedVehicle(now, sinceEpoch) : false;
-  // const isDelayed = checkLaggedVehicle(now, sinceEpoch);
-  const nextVehicle = vehicle.withMutations(s => {
+  const localTimings = vehicleClientUpdate(imVehicle, now, ignitionOn);
+  const imNextVehicle = imVehicle.withMutations(s => {
     s.set('isDead', isDead)
-     .set('isDelayed', isDelayed)
+     .set('isDelayed', localTimings.isDelayed)
      .set('lastUpdateSinceEpoch', sinceEpoch)
      .set('ignitionOn', ignitionOn)
-     .set('isDelayedWithIgnitionOff', isDelayedWithIgnitionOff);
+     .set('isDelayedWithIgnitionOff', localTimings.isDelayedWithIgnitionOff);
 
     if (status.temp !== undefined) {
       s.set('temp', status.temp.temperature);
@@ -62,15 +60,15 @@ const updateLocalVehicle = (vehicle, status, now) => {
     }
   });
 
-  const wasDead = vehicle.get('isDead');
-  const wasDelayed = vehicle.get('isDelayed');
+  const wasDead = imVehicle.get('isDead');
+  const wasDelayed = imVehicle.get('isDelayed');
 
   const willDead = getNextState(wasDead, isDead);
-  const willDelayed = getNextState(wasDelayed, isDelayed);
+  const willDelayed = getNextState(wasDelayed, localTimings.isDelayed);
 
-  overrideMaritimeDemoVessel(nextVehicle);
+  removeMe_OverrideMaritimeDemoVessel(imNextVehicle);
   return {
-    nextVehicle,
+    imNextVehicle,
     willDead,
     willDelayed,
   };
@@ -92,31 +90,6 @@ function updateList(list, nextState = undefined, id) {
   return list;
 }
 
-// TODO: quick implementation, needs optimisation (batch state upates, mergeIn..)
-export function localTick(dispatch, getState) {
-  const imProcessedList = getProcessedVehicles(getState());
-//  debugger
-  const nowMs = Date.now();
-  const vehListIteator = imProcessedList.values();
-  let next = vehListIteator.next();
-  while (!next.done) {
-    const imVehicle = next.value;
-    next = vehListIteator.next();
-    const vehicleId = imVehicle.get('id');
-    const speed = imVehicle.get('speed');
-    const deltaTimeMs = nowMs - imVehicle.get('lastUpdateSinceEpoch');
-    // estimated travel dist since last update, in meters
-    const delatDistKm = speed * (deltaTimeMs / 1000 / 60 / 60);
-    vehiclesActions.localUpdateVehicle({
-      id: vehicleId,
-      timeSinceUpdateMin: Math.round(deltaTimeMs / 1000 / 60),
-      estimatedTravelKm: delatDistKm,
-    },
-      dispatch
-    );
-  }
-}
-
 export function updateLocalVehicles(wsStatuses, getState) {
   const nextLocalVehicles = {};
   const processedList = getProcessedVehicles(getState());
@@ -126,8 +99,8 @@ export function updateLocalVehicles(wsStatuses, getState) {
 
   wsStatuses.forEach(status => {
     const localVehicle = processedList.get(status.id);
-    const { nextVehicle, willDead, willDelayed } = updateLocalVehicle(localVehicle, status, now);
-    nextLocalVehicles[status.id] = nextVehicle;
+    const { imNextVehicle, willDead, willDelayed } = updateLocalVehicle(localVehicle, status, now);
+    nextLocalVehicles[status.id] = imNextVehicle;
 
     deadList = updateList(deadList, willDead, status.id);
     delayedList = updateList(delayedList, willDelayed, status.id);
@@ -140,11 +113,11 @@ export function updateLocalVehicles(wsStatuses, getState) {
   };
 }
 
-export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}, now) {
+export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
   if (backEndObject.status !== 'active') {
     return null;
   }
-  overrideMaritimeDemoData(vehicleStats);
+  removeMe_OverrideMaritimeDemoData(vehicleStats);
 
   const hasPos = vehicleStats.hasOwnProperty('pos');
 
@@ -164,6 +137,7 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}, now) {
    *
    * https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
    **/
+   // TODO: cmon, lets change it - keep backEnd obj separately
   const theVehicle = Object.assign({}, backEndObject, {
     filteredOut: false,
     pos: [lt, ln],
@@ -178,7 +152,7 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}, now) {
     // TODO: what should be initilal ign status?
     ignitionOn: 1,
     isDelayedWithIgnitionOff: false,
-    isDelayed: checkLaggedVehicle(now, ts),
+    isDelayed: false, // - recalculate it properly on the first tick checkLaggedVehicle(now, ts),
     kind: backEndObject.kind || 'UNDEFINED',
     name: backEndObject.name || 'Noname',
     // TODO: properly set initilal values
@@ -186,7 +160,7 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}, now) {
     estimatedTravelKm: 10,
   });
 
-  overrideMaritimeDemoVessel(theVehicle);
+  removeMe_OverrideMaritimeDemoVessel(theVehicle);
   return {
     vehicle: theVehicle,
     isDead: theVehicle.isDead,
@@ -196,10 +170,9 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}, now) {
 
 //
 // delayed update? (comm coverage, expected to be ~45min)
-export function checkLaggedVehicle(now, lastUpdate) {
-  const deltaTMs = now - lastUpdate;
-
-  return deltaTMs > LAG_INDICAION_TRH_MS && deltaTMs < ZOMBIE_TIME_TRH_MS;
+export function checkLaggedVehicle(delayTimeMinutes) {
+  return delayTimeMinutes > LAG_INDICAION_TRH_MIN
+        && delayTimeMinutes < ZOMBIE_TIME_TRH_MIN;
 }
 
 function checkIgnition(status) {
@@ -222,7 +195,6 @@ export function makeLocalVehicles(backEndVehiclesList, statsList) {
       const { vehicle, isDead, isDelayed } = localVehicle;
 
       localVehicles[aVehicle.id] = vehicle;
-
       if (isDead) {
         deadList.push(aVehicle.id);
       }

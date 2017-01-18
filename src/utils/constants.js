@@ -7,7 +7,8 @@ export const ZERO_ZOOM = 12;
 export const NEW_GF_REQUIRED_ZOOM_LEVEL = 15;
 export const NEW_GF_RADIUS = 100;
 //---
-export const ZOMBIE_TIME_TRH_MS = 1000 * 60 * 60 * 24; // 24h
-export const LAG_INDICAION_TRH_MS = 1000 * 60 * 5; // 5min
+export const ZOMBIE_TIME_TRH_MIN = 60 * 24; // 24h
+export const LAG_INDICAION_TRH_MIN = 5; // 5min
+
 //
 // TODO: put those convertion helpers to some separate place

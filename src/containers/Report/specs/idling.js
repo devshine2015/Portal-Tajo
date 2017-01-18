@@ -42,7 +42,8 @@ const commonFields = {
   checkedByDefault: false,
   domain: 'idling',
   query: {
-    tzoffset: new Date().getTimezoneOffset(),
+// no need to pass tzoffset - from/to already in UTC
+//    tzoffset: new Date().getTimezoneOffset(),
   },
   filterSimilar: _filterSimilar,
   calc: _calc,

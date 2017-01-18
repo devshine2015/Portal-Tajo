@@ -17,7 +17,7 @@ import { getInstanceChronicleFrameById } from 'containers/Chronicle/reducer';
 import { ctxGetHideGF } from 'services/Global/reducers/contextReducer';
 
 import { createMapboxMap, hideLayer } from 'utils/mapBoxMap';
-import { initiateGfEditingCallback } from 'containers/GFEditor/utils';
+import { contextMenuAddGFItems } from 'containers/GFEditor/utils';
 import { mapStoreSetView, mapStoreGetView } from './reducerAction';
 
 import { gfEditUpdate } from 'containers/GFEditor/actions';
@@ -40,8 +40,6 @@ class MapChronicle extends React.Component {
     this.theMap.addLayer(this.vehicleMarkersLayer);
     this.gfMarkersLayer = window.L.layerGroup();
     this.theMap.addLayer(this.gfMarkersLayer);
-    this.gfEditLayer = window.L.layerGroup();
-    this.theMap.addLayer(this.gfEditLayer);
   }
 
   componentWillUnmount() {
@@ -54,15 +52,17 @@ class MapChronicle extends React.Component {
     if (this.theMap !== null) {
       return;
     }
-    this.theMap = createMapboxMap(ReactDOM.findDOMNode(this), this.props.mapStoreGetView);
-    this.theMap.on('contextmenu', initiateGfEditingCallback(this.theMap, this.props.gfEditUpdate));
+    this.theMap = createMapboxMap(ReactDOM.findDOMNode(this),
+      this.props.mapStoreGetView,
+      contextMenuAddGFItems(this.props.gfEditUpdate)
+    );
+    // this.theMap.on('contextmenu', initiateGfCircleEditingCallback(this.theMap, this.props.gfEditUpdate));
   }
 
   render() {
     const hideGF = this.props.gfEditMode || this.props.isHideGF;
     hideLayer(this.theMap, this.vehicleMarkersLayer, this.props.gfEditMode);
     hideLayer(this.theMap, this.gfMarkersLayer, hideGF);
-    hideLayer(this.theMap, this.gfEditLayer, !this.props.gfEditMode);
 
     let gfs = EMPTY_ARRAY;
     let chronPaths = EMPTY_ARRAY;
@@ -129,7 +129,7 @@ class MapChronicle extends React.Component {
     const editGF = !this.props.gfEditMode ? false :
      (<EditGF
        key="gfEditHelper"
-       theLayer={this.gfEditLayer}
+       theMap={this.theMap}
      />);
     //  <GooglePlacesSearch ownerMapObj={this.theMap} />
     return (

@@ -4,7 +4,7 @@
 
 import { isMaritime, isMaritimeDemoData } from 'configs';
 
-export function overrideMaritimeDemoData(status) {
+export function removeMe_OverrideMaritimeDemoData(status) {
   if (!isMaritime || !isMaritimeDemoData) {
     return;
   }
@@ -28,7 +28,7 @@ export function overrideMaritimeDemoData(status) {
 }
 
 // demo helper to set all the proto maritime-specific props to vessel obj
-export function overrideMaritimeDemoVessel(vessel) {
+export function removeMe_OverrideMaritimeDemoVessel(vessel) {
   if (!isMaritime || !isMaritimeDemoData) {
     return;
   }

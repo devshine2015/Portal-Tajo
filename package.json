@@ -58,6 +58,7 @@
     "font-awesome": "^4.7.0",
     "google-maps-api": "^2.0.1",
     "immutable": "^3.8.1",
+    "leaflet-contextmenu": "^1.2.1",
     "leaflet-draw": "^0.3.2",
     "leaflet.heat": "^0.2.0",
     "mapbox.js": "^2.4.0",

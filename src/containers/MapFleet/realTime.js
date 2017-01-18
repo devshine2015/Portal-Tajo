@@ -13,12 +13,14 @@ import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 
 import { createMapboxMap, hideLayer } from 'utils/mapBoxMap';
-import { initiateGfEditingCallback } from 'containers/GFEditor/utils';
+import { contextMenuAddGFItems } from 'containers/GFEditor/utils';
 
 // TODO: remove; this must be in the global/contextReducer
 import { mapStoreSetView, mapStoreGetView } from './reducerAction';
 // TODO: remove over
-import { ctxGetHideGF, ctxGetHideVehicles, ctxGetPowListTabType } from 'services/Global/reducers/contextReducer';
+import { ctxGetHideGF,
+        ctxGetHideVehicles,
+        ctxGetPowListTabType } from 'services/Global/reducers/contextReducer';
 
 import { gfEditUpdate } from 'containers/GFEditor/actions';
 import { gfEditIsEditing } from 'containers/GFEditor/reducer';
@@ -56,8 +58,6 @@ class MapFleet extends React.Component {
     this.theMap.addLayer(this.vehicleMarkersLayer);
     this.gfMarkersLayer = window.L.layerGroup();
     this.theMap.addLayer(this.gfMarkersLayer);
-    this.gfEditLayer = window.L.layerGroup();
-    this.theMap.addLayer(this.gfEditLayer);
 
 // providing continuous UX - same vehicle selected when switching from other screens
 // TODO: NOT GOOD - relies on Mounting order, expects powerList to be already up
@@ -78,8 +78,11 @@ class MapFleet extends React.Component {
     if (this.theMap !== null) {
       return;
     }
-    this.theMap = createMapboxMap(ReactDOM.findDOMNode(this), this.props.mapStoreGetView);
-    this.theMap.on('contextmenu', initiateGfEditingCallback(this.theMap, this.props.gfEditUpdate));
+    this.theMap = createMapboxMap(ReactDOM.findDOMNode(this),
+      this.props.mapStoreGetView,
+      contextMenuAddGFItems(this.props.gfEditUpdate)
+    );
+    // this.theMap.on('contextmenu', initiateGfEditingCallback(this.theMap, this.props.gfEditUpdate));
   }
 
 // when selected from the list
@@ -114,7 +117,6 @@ class MapFleet extends React.Component {
           this.props.isHideVehicles && this.props.activeListType === listTypes.withGFDetails;
     hideLayer(this.theMap, this.vehicleMarkersLayer, shouldHideVehicles);
     hideLayer(this.theMap, this.gfMarkersLayer, shouldHideGFs);
-    hideLayer(this.theMap, this.gfEditLayer, !this.props.gfEditMode);
 
     let vehicles = EMPTY_ARRAY;
     let gfs = EMPTY_ARRAY;
@@ -144,7 +146,7 @@ class MapFleet extends React.Component {
     const editGF = !this.props.gfEditMode ? false :
      (<EditGF
        key="gfEditHelper"
-       theLayer={this.gfEditLayer}
+       theMap={this.theMap}
      />);
 //      <GooglePlacesSearch ownerMapObj={this.theMap} />
     return (
