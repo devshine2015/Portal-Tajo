@@ -1,14 +1,13 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { getVehicleByValue } from 'services/FleetModel/utils/vehiclesMap';
-import { hideLayer } from 'utils/mapBoxMap';
+import { hideLayer, latLngMoveTo } from 'utils/mapBoxMap';
 import styles from './../styles.css';
 import { createPointerLine, showPointerLine } from './../../utils/pointerLineHelpers';
 import { isMaritime } from 'configs';
 // const iconPin = require('assets/images/v_icons_combi/pin.png');
 const iconPin = require('assets/images/v_icons_combi/pointer.png');
 // const iconPin = require('assets/images/v_icons_combi/pointerRightTilt.png');
-
 
 class MapVehicle extends React.Component {
   constructor(props) {
@@ -19,6 +18,7 @@ class MapVehicle extends React.Component {
     this.markerIconSelected = null;
     this.popUp = null;
     this.pointerLine = null;
+    this.theDirectionLine = null;
   }
 
   componentDidMount() {
@@ -96,6 +96,14 @@ class MapVehicle extends React.Component {
         weight: 1,
        })
        : null;
+    this.theDirectionLine = isMaritime ? window.L.polyline([this.props.theVehicle.pos,
+          this.props.theVehicle.pos],
+       { opacity: 1,
+         color: '#1f757d',
+         dashArray: '5, 5',
+         weight: 1,
+        })
+        : null;
 
     const clickHandle = ((inThis) => (e) => {
       inThis.props.onClick(inThis.props.theVehicle.id);
@@ -139,10 +147,16 @@ class MapVehicle extends React.Component {
         }
         hideLayer(this.theLayer, this.theMoveCircle, false);
         this.theMoveCircle.setRadius(this.props.theVehicle.estimatedTravelKm * 1000);
+        hideLayer(this.theLayer, this.theDirectionLine, false);
+        this.theDirectionLine.setLatLngs([this.props.theVehicle.pos,
+          latLngMoveTo(window.L.latLng(this.props.theVehicle.pos),
+            this.props.theVehicle.heading,
+            this.props.theVehicle.estimatedTravelKm)]);
       }
     } else {
       this.theMarker.setIcon(this.markerIcon).setZIndexOffset(0);
       hideLayer(this.theLayer, this.theMoveCircle, true);
+      hideLayer(this.theLayer, this.theDirectionLine, true);
     }
   }
 
