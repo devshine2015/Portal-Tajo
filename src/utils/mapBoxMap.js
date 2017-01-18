@@ -63,3 +63,27 @@ export function hideLayer(containerLayer, layer, doHide) {
     }
   }
 }
+
+//
+// http://stackoverflow.com/questions/2637023/how-to-calculate-the-latlng-of-a-point-a-certain-distance-away-from-another
+const _toRad = (nbr) => (nbr * Math.PI / 180);
+const _toDeg = (nbr) => (nbr * 180 / Math.PI);
+export function latLngMoveTo(startLatLng, _brng, _dist) {
+  const dist = _dist / 6371;
+  const brng = _toRad(_brng);
+
+  const lat1 = _toRad(startLatLng.lat);
+  const lon1 = _toRad(startLatLng.lng);
+
+  const lat2 = Math.asin(Math.sin(lat1) * Math.cos(dist) +
+                        Math.cos(lat1) * Math.sin(dist) * Math.cos(brng));
+
+  const lon2 = lon1 + Math.atan2(Math.sin(brng) * Math.sin(dist) *
+                                Math.cos(lat1),
+                                Math.cos(dist) - Math.sin(lat1) *
+                                Math.sin(lat2));
+
+  if (isNaN(lat2) || isNaN(lon2)) return startLatLng;
+
+  return window.L.latLng(_toDeg(lat2), _toDeg(lon2));
+}
