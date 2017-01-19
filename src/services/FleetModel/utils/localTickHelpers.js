@@ -3,7 +3,7 @@ import {
 } from '../reducer';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import { checkLaggedVehicle } from './vehicleHelpers';
-
+import { Map } from 'immutable';
 
 // TODO: needs better name, here we update/reevaluate all the
 // delay statuses, etc
@@ -32,7 +32,7 @@ export function localTick(dispatch, getState) {
   const nowMs = Date.now();
   const imProcessedList = getProcessedVehicles(getState());
   const vehItr = imProcessedList.values();
-  let imUpdatedProcessedList = null;
+  let imUpdatedProcessedList = new Map({});
   let currentIt = vehItr.next();
   const vehUpdater = tickUpdated => vh => {
     vh.set('estimatedTravelKm', tickUpdated.deltaDistKm)
@@ -47,11 +47,7 @@ export function localTick(dispatch, getState) {
     const tickUpdatedValues = vehicleClientUpdate(imVehicle, nowMs);
 //    const speed = imVehicle.get('speed');
     const imUpdatedVehicle = imVehicle.withMutations(vehUpdater(tickUpdatedValues));
-    if (imUpdatedProcessedList === null) {
-      imUpdatedProcessedList = imProcessedList.mergeIn([vehicleId], imUpdatedVehicle);
-    } else {
-      imUpdatedProcessedList = imUpdatedProcessedList.mergeIn([vehicleId], imUpdatedVehicle);
-    }
+    imUpdatedProcessedList = imUpdatedProcessedList.mergeIn([vehicleId], imUpdatedVehicle);
   }
   vehiclesActions.updateVehiclesList(imUpdatedProcessedList, dispatch);
   // console.log('localTick took ' + (performance.now() - t0).toFixed(2) + ' ms');
