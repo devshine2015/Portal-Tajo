@@ -55,7 +55,6 @@ export function checkSetMaritime(fleetName) {
   isMaritime = fleetName.indexOf('maritime') !== -1;
   // isMaritime = true;
 }
-export const isMaritimeDemoData = true;
 
 // TODO: quick fix - just doubled prev limit - need some proven number
 // TODO: currently using same for hisotry (24hvr) and reports (arbitrary time range)
