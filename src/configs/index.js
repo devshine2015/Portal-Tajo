@@ -53,7 +53,8 @@ export const ENGINE_BASE = onLocal ? DEV_ENGINE_BASE : REMOTE_HOST_BASE;
 export let isMaritime = false;
 export function checkSetMaritime(fleetName) {
   isMaritime = fleetName.indexOf('maritime') !== -1;
-  // isMaritime = true;
+  isMaritime = true;
+  
 }
 export const isMaritimeDemoData = true;
 
