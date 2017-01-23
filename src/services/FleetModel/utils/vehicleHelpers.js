@@ -213,7 +213,7 @@ export function makeLocalVehicles(backEndVehiclesList, statsList) {
   };
 }
 
-export function sortVehicles(vehicles) {
+export function sortVehicles(vehicles = []) {
   return vehicles
     .sort(sortByName)
     .map(obj => obj.id);

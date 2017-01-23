@@ -33,10 +33,6 @@ export const getFleetData = state =>
 export const getVehiclesAmount = state =>
   fromVehiclesReducer.getVehiclesAmount(vehicles(state));
 
-export const getVehicles = state =>
-  fromVehiclesReducer.getVehicles(vehicles(state));
-export const getVehiclesById = (state, ids = []) =>
-  fromVehiclesReducer.getVehiclesById(vehicles(state), ids);
 export const getVehiclesEx = state =>
   fromVehiclesReducer.getVehiclesEx(vehicles(state));
 export const getVehiclesExSorted = state =>
