@@ -138,7 +138,10 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
    * https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
    **/
    // TODO: cmon, lets change it - keep backEnd obj separately
-  const theVehicle = Object.assign({}, backEndObject, {
+  const theVehicle = Object.assign({}, {
+    original: backEndObject,
+  }, {
+    id: backEndObject.id,
     filteredOut: false,
     pos: [lt, ln],
     speed: hasPos ? vehicleStats.pos.speed : 0,
@@ -153,8 +156,8 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
     ignitionOn: 1,
     isDelayedWithIgnitionOff: false,
     isDelayed: false, // - recalculate it properly on the first tick checkLaggedVehicle(now, ts),
-    kind: backEndObject.kind || 'UNDEFINED',
-    name: backEndObject.name || 'Noname',
+    // kind: backEndObject.kind || 'UNDEFINED',
+    // name: backEndObject.name || 'Noname',
     // TODO: properly set initilal values
     timeSinceUpdateMin: 1,
     estimatedTravelKm: 10,

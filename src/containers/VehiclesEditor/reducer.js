@@ -22,4 +22,4 @@ export default combineReducers({
 });
 
 export const getLoaderState = (state) =>
-  state.getIn(['vehicleEditor', 'loader', 'isLoading']);
+  state.getIn(['vehicles', 'loader', 'isLoading']);
