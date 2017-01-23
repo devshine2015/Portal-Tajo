@@ -21,7 +21,7 @@ export const portal = process.env.DRVR_PROJECT;
 export const protocol = document.location.protocol;
 export const isSecure = protocol.search('https') !== -1;
 export const socketProtocol = isSecure ? 'wss' : 'ws';
-// TODO: we are in the middle on renaming tajo->escape; update here when done
+// TODO: we are in the middle of renaming tajo->escape; update here when done
 export const isEscape = portal === 'tajo';
 // export const isSunshine = !isEscape;
 
@@ -42,7 +42,7 @@ export const ROOT_ROUTE = _configHelpers.chooseRoot(serverEnv, portal);
 // use it for navigation throught app
 export const BASE_URL = ROOT_ROUTE === '/' ? '' : ROOT_ROUTE;
 
-// isDev true only on localhost
+// onLocal true only on localhost
 export const ENGINE_BASE = onLocal ? DEV_ENGINE_BASE : REMOTE_HOST_BASE;
 
 // TODO: this is runtime, defined after login; should be in some other place

@@ -26,7 +26,7 @@ const common = {
   },
 };
 
-const tajo = {
+const escapePortal = {
   dashboard: {
     name: 'dashboard',
     niceName: 'Dashboard',
@@ -49,7 +49,7 @@ const tajo = {
   },
 };
 
-const portal = {
+const sunshinePortal = {
   review: {
     name: 'review',
     niceName: 'Review',
@@ -63,6 +63,6 @@ const portal = {
 };
 
 export default {
-  tajo: Object.assign({}, common, tajo),
-  portal: Object.assign({}, common, portal),
+  escape: Object.assign({}, common, escapePortal),
+  sunshine: Object.assign({}, common, sunshinePortal),
 };

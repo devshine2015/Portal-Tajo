@@ -17,12 +17,12 @@ export default function createRoutes(store) {
     selectLocationState: selectLocationState(),
   });
 
-  const reviewScreen = require('screens/DashboardScreen/route')(mainMenu.portal.review);
+  const reviewScreen = require('screens/DashboardScreen/route')(mainMenu.sunshine.review);
 
-  const operationalRoute = require('screens/Operational/route')(mainMenu.portal.operational);
+  const operationalRoute = require('screens/Operational/route')(mainMenu.sunshine.operational);
 
   const chronicleRoute = require('screens/Chronicle/route')({
-    ...mainMenu.portal.history,
+    ...mainMenu.sunshine.history,
     injectReducer,
     errorHandler,
     loadModule,
@@ -31,14 +31,14 @@ export default function createRoutes(store) {
 
 
   const reportsRoute = require('screens/ReportsScreen/route')({
-    ...mainMenu.portal.reports,
+    ...mainMenu.sunshine.reports,
     injectReducer,
     errorHandler,
     loadModule,
   });
 
   const vehiclesEditorRoute = require('screens/VehiclesManagerScreen/route')({
-    ...mainMenu.portal.vehicles,
+    ...mainMenu.sunshine.vehicles,
     injectReducer,
     errorHandler,
     loadModule,
@@ -51,7 +51,7 @@ export default function createRoutes(store) {
   const rootRoute = require('screens/Root/route')({
     path: ROOT_ROUTE,
     dispatch: store.dispatch,
-    mainMenu: mainMenu.portal,
+    mainMenu: mainMenu.sunshine,
   });
 
   rootRoute.indexRoute = {
