@@ -1,5 +1,5 @@
 import React from 'react';
-import { portal } from 'configs';
+import { isEscape } from 'configs';
 import { css } from 'aphrodite/no-important';
 import EventsCalculator from 'containers/EventsCalculator';
 import FleetSummary from 'containers/FleetSummary';
@@ -8,7 +8,7 @@ import classes from './classes';
 
 function canShow(Component) {
   if (Component === EventsCalculator) {
-    return false && portal === 'tajo';
+    return false && isEscape;
   }
 
   if (Component === FleetSummary) {
