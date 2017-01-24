@@ -23,9 +23,10 @@ export const updateDetails = ({
 
   const selectedVehicle = getVehicleByIdFunc(getState())(selectedVehicleId);
   const updatedDetails = {
-    ...selectedVehicle,
+    ...selectedVehicle.original,
     ...data,
   };
+
   const details = cleanVehicle(updatedDetails);
 
   let newIndex;

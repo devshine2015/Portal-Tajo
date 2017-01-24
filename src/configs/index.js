@@ -51,7 +51,7 @@ export const ENGINE_BASE = onLocal ? DEV_ENGINE_BASE : REMOTE_HOST_BASE;
 // TODO: probably this should be undef initially - handle it properly?
 // is it used before being set?
 
-export let isMaritime = false;
+export let isMaritime = true;
 export function checkSetMaritime(fleetName) {
   isMaritime = onDev || fleetName.indexOf('maritime') !== -1;
 }

@@ -55,7 +55,7 @@ export const vehicleShape = shape({
 
     // amount of meters passed by vehicle since the last stop (?)
     // meters
-    lastTrip: number.isRequired,
+    lastTrip: number,
   }).isRequired,
 
   // latest temperature provided by device.

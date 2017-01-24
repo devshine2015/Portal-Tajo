@@ -30,12 +30,14 @@ export function removeMe_OverrideMaritimeDemoData(status) {
 
 let maritimeDemoCounter = 0;
 // demo helper to set all the proto maritime-specific props to vessel obj
-export function removeMe_OverrideMaritimeDemoVessel(vessel) {
+export function removeMe_OverrideMaritimeDemoVessel(imVessel) {
   if (!isMaritime || !isMaritimeDemoData) {
-    return;
+    return imVessel;
   }
-  vessel.kind = 'BOAT';
-  vessel.trackigInterval = 60; // how often it reports, minutes
-  vessel.heading = 139.3;
-  vessel.removeMeDemoCounter = maritimeDemoCounter++;
+
+  return imVessel.withMutations(s => {
+    s.set('kind', 'BOAT')
+     .set('trackigInterval', 60) // how often it reports, minutes
+     .set('heading', 130);
+  });
 }

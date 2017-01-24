@@ -17,8 +17,8 @@ function _formateDateForTable({ start, end }, frequency, dateFormat) {
 function _calculate(vehicle, { selectedTypes, period, frequency, dateFormat }) {
   return specsUtils.calcToReturn({
     date: _formateDateForTable(period, frequency, dateFormat),
-    name: vehicle.name,
-    license: vehicle.licensePlate,
+    name: vehicle.original.name,
+    license: vehicle.original.licensePlate,
   }, selectedTypes);
 }
 

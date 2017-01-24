@@ -19,8 +19,10 @@ import {
   getDeadList,
   getDelayedList,
 } from '../reducer';
-import { removeMe_OverrideMaritimeDemoData,
-  removeMe_OverrideMaritimeDemoVessel } from './maritimeDemoData';
+import {
+  removeMe_OverrideMaritimeDemoData,
+  removeMe_OverrideMaritimeDemoVessel,
+} from './maritimeDemoData';
 import { vehicleClientUpdate } from './localTickHelpers';
 
 function getNextState(itWas, itNow) {
@@ -34,16 +36,24 @@ function getNextState(itWas, itNow) {
   return itWill;
 }
 
-const updateLocalVehicle = (imVehicle, status, now) => {
+// create and update vehicle in single place
+function makeImmutableVehicle({
+  vehicleStats,
+  now = Date.now(),
+  imVehicle = new Map({}),
+  initilalValues = undefined,
+}) {
+  // for maritime demoing
+  removeMe_OverrideMaritimeDemoData(vehicleStats);
 
-  if (imVehicle.get('removeMeDemoCounter') === 0)
-    removeMe_OverrideMaritimeDemoData(status);
-
-  const sinceEpoch = new Date(status.ts).getTime();
-  const hasPosition = !!status.pos;
+  const sinceEpoch = new Date(vehicleStats.ts).getTime();
+  const hasPosition = vehicleStats.hasOwnProperty('pos');
+  const hasDist = vehicleStats.hasOwnProperty('dist');
+  const hasTemp = vehicleStats.hasOwnProperty('temp');
   const isDead = !hasPosition;
-  const ignitionOn = checkIgnition(status);
+  const ignitionOn = checkIgnition(vehicleStats);
   const localTimings = vehicleClientUpdate(imVehicle, now, ignitionOn);
+
   const imNextVehicle = imVehicle.withMutations(s => {
     s.set('isDead', isDead)
      .set('isDelayed', localTimings.isDelayed)
@@ -51,23 +61,46 @@ const updateLocalVehicle = (imVehicle, status, now) => {
      .set('ignitionOn', ignitionOn)
      .set('isDelayedWithIgnitionOff', localTimings.isDelayedWithIgnitionOff);
 
-    if (status.temp !== undefined) {
-      s.set('temp', status.temp.temperature);
+    if (hasTemp) {
+      s.set('temp', vehicleStats.temp.temperature);
+    } else {
+      s.set('temp', undefined);
     }
-    if (status.dist !== undefined) {
-      s.set('dist', status.dist);
+
+    if (hasDist) {
+      s.set('dist', vehicleStats.dist);
+    } else {
+      s.setIn(['dist', 'total'], 0)
+       .setIn(['dist', 'lastTrip'], 0);
     }
+
     if (hasPosition) {
-      s.set('pos', [status.pos.latlon.lat, status.pos.latlon.lng])
-       .set('speed', status.pos.speed);
+      s.set('pos', [vehicleStats.pos.latlon.lat, vehicleStats.pos.latlon.lng])
+       .set('speed', vehicleStats.pos.speed);
+    } else {
+      s.set('pos', [0, 0])
+       .set('speed', 0);
+    }
+
+    if (initilalValues) {
+      s.merge(initilalValues);
     }
   });
+
+  return removeMe_OverrideMaritimeDemoVessel(imNextVehicle);
+}
+
+const updateLocalVehicle = (imVehicle, vehicleStats, now) => {
+  const imNextVehicle = makeImmutableVehicle({ imVehicle, vehicleStats, now });
 
   const wasDead = imVehicle.get('isDead');
   const wasDelayed = imVehicle.get('isDelayed');
 
+  const isDead = imNextVehicle.get('isDead');
+  const isDelayed = imNextVehicle.get('isDelayed');
+
   const willDead = getNextState(wasDead, isDead);
-  const willDelayed = getNextState(wasDelayed, localTimings.isDelayed);
+  const willDelayed = getNextState(wasDelayed, isDelayed);
 
   return {
     imNextVehicle,
@@ -120,53 +153,24 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
     return null;
   }
 
-  const hasPos = vehicleStats.hasOwnProperty('pos');
-
-  const hasDist = vehicleStats.hasOwnProperty('dist');
-  const hasTemp = vehicleStats.hasOwnProperty('temp');
-  const ts = new Date(vehicleStats.ts).getTime();
-
-  const lt = hasPos ? vehicleStats.pos.latlon.lat : 0;
-  const ln = hasPos ? vehicleStats.pos.latlon.lng : 0;
-
-  /**
-   * Use Object.assign to automatically merge all backEndObject properties
-   * with custom local properties. In that case you won't need to know
-   * how exactly backEndObject changed, and still have possibility to create
-   * new custom properties. We use this model across whole applicatoin,
-   * so change it carefully.
-   *
-   * https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
-   **/
-   // TODO: cmon, lets change it - keep backEnd obj separately
-  const theVehicle = Object.assign({}, backEndObject, {
+  const initilalValues = {
     filteredOut: false,
-    pos: [lt, ln],
-    speed: hasPos ? vehicleStats.pos.speed : 0,
-    dist: {
-      total: hasDist && vehicleStats.dist.total || 0, // m
-      lastTrip: hasDist && vehicleStats.dist.lastTrip || 0, // m
-    },
-    temp: hasTemp ? vehicleStats.temp.temperature : undefined,
-    lastUpdateSinceEpoch: ts,
-    isDead: !hasPos,
-    // TODO: what should be initilal ign status?
     ignitionOn: 1,
     isDelayedWithIgnitionOff: false,
-    isDelayed: false, // - recalculate it properly on the first tick checkLaggedVehicle(now, ts),
-    kind: backEndObject.kind || 'UNDEFINED',
-    name: backEndObject.name || 'Noname',
-    // TODO: properly set initilal values
+    isDelayed: false,
     timeSinceUpdateMin: 1,
     estimatedTravelKm: 10,
-    // trackigInterval: 60, // how often it reports, minutes
-    // heading: 130,
-  });
+  };
+
+  const imVehicle = makeImmutableVehicle({ vehicleStats, initilalValues });
+  const imVehicleWithOriginal = imVehicle
+    .set('original', backEndObject)
+    .set('id', backEndObject.id);
 
   return {
-    vehicle: theVehicle,
-    isDead: theVehicle.isDead,
-    isDelayed: theVehicle.isDelayed,
+    vehicle: imVehicleWithOriginal,
+    isDead: imVehicle.get('isDead'),
+    isDelayed: imVehicle.get('isDelayed'),
   };
 }
 
@@ -221,8 +225,23 @@ let removeMe_counter = 0;
 
 export function sortVehicles(vehicles = []) {
   return vehicles
-    .sort(sortByName)
-    .map(obj => obj.id);
+    .sort((a, b) => {
+      if (Map.isMap(a)) a = a.toJS(); // eslint-disable-line no-param-reassign
+      if (Map.isMap(b)) b = b.toJS(); // eslint-disable-line no-param-reassign
+
+      if (a.hasOwnProperty('original')) {
+        return sortByName(a.original, b.original);
+      }
+
+      return sortByName(a, b);
+    })
+    .map(obj => {
+      if (Map.isMap(obj)) {
+        return obj.get('id');
+      }
+
+      return obj.id;
+    });
 }
 
 export function mockBackendVehicle(data) {

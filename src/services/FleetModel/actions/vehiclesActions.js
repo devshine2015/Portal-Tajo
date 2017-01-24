@@ -63,21 +63,20 @@ function _filterVehicles({ searchString }, dispatch, getState) {
 }
 
 // inject new vehicle to:
-// - fleet.vehicles.list
 // - fleet.vehicles.processedList
 // resort vehicles and update
 // - fleet.vehicles.orderedList
 function _addVehicle(vehicle, dispatch, getState) {
   const localVehicle = makeLocalVehicle(vehicle);
   const imVehiclesMap = getProcessedVehicles(getState());
-  const nextVehiclesMap = imVehiclesMap.set(vehicle.id, vehicle);
+  const nextVehiclesMap = imVehiclesMap.set(vehicle.id, localVehicle.vehicle);
   const orderedList = sortVehicles(nextVehiclesMap.toArray());
 
   dispatch({
     type: FLEET_MODEL_VEHICLE_ADD,
-    localVehicle,
+    localVehicle: localVehicle.vehicle,
     orderedList,
-    newVehicle: vehicle,
+    // newVehicle: vehicle,
     id: vehicle.id,
   });
 }
@@ -92,7 +91,7 @@ export function makeUpdateVehicleRequest(details, dispatch) {
     payload: details,
   }).then(() => {
     dispatch(_vehicleUpdate({
-      ...details,
+      original: details,
       dist: {
         total: details.odometer.value * 1000,
       },
@@ -107,7 +106,7 @@ export function makeUpdateVehicleRequest(details, dispatch) {
 **/
 export function localUpdateVehicle(details, dispatch) {
   dispatch(_vehicleUpdate({
-    ...details,
+    original: details,
   }, details.id));
 }
 

@@ -67,7 +67,7 @@ export const updateWithVehicles = () => (dispatch, getState) => {
     devicesWithVehicles[device.id] = {
       ...device,
       vehicleIsFault,
-      vehicleName: !!v ? v.get('name') : '',
+      vehicleName: !!v ? v.get('original').name : '',
     };
   });
 
