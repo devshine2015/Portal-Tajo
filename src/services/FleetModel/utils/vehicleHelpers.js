@@ -128,16 +128,6 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
   const lt = hasPos ? vehicleStats.pos.latlon.lat : 0;
   const ln = hasPos ? vehicleStats.pos.latlon.lng : 0;
 
-  /**
-   * Use Object.assign to automatically merge all backEndObject properties
-   * with custom local properties. In that case you won't need to know
-   * how exactly backEndObject changed, and still have possibility to create
-   * new custom properties. We use this model across whole applicatoin,
-   * so change it carefully.
-   *
-   * https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
-   **/
-   // TODO: cmon, lets change it - keep backEnd obj separately
   const theVehicle = Object.assign({}, {
     original: backEndObject,
   }, {
@@ -156,8 +146,6 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
     ignitionOn: 1,
     isDelayedWithIgnitionOff: false,
     isDelayed: false, // - recalculate it properly on the first tick checkLaggedVehicle(now, ts),
-    // kind: backEndObject.kind || 'UNDEFINED',
-    // name: backEndObject.name || 'Noname',
     // TODO: properly set initilal values
     timeSinceUpdateMin: 1,
     estimatedTravelKm: 10,
