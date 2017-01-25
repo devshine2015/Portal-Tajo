@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { List, Map } from 'immutable';
 import pure from 'recompose/pure';
 import Subheader from 'material-ui/Subheader';
-import { fetchUsers } from 'containers/UsersManager/actions';
+import { fetchUsers } from 'services/Users/actions';
 import {
   getUsers,
   getGrouping,
   getGroupBy,
-} from 'containers/UsersManager/reducer';
+} from 'services/Users/reducer';
 import UserItem from '../UserItem';
 
 import styles from './styles.css';
