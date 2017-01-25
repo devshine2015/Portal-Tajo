@@ -13,7 +13,6 @@ import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
 import AlertLagIcon from 'material-ui/svg-icons/action/watch-later';
 import { yellow700, blueGrey200 } from 'material-ui/styles/colors';
 
-import { vehicleOriginalShape } from 'services/FleetModel/PropTypes';
 import stylesBase from '../styles.css';
 import styles from './styles.css';
 
@@ -108,26 +107,24 @@ class ListItemVehicle extends React.Component {
   renderMoreDetails() {
     if (!this.props.isExpanded) return null;
 
-    const { original } = this.props;
-
     return (
       <div>
         <Divider />
         <ItemProperty
           title="License Plate"
-          value={original.licensePlate}
+          value={this.props.licensePlate}
         />
         <ItemProperty
           title="Make"
-          value={original.make}
+          value={this.props.make}
         />
         <ItemProperty
           title="Model"
-          value={original.model}
+          value={this.props.model}
         />
         <ItemProperty
           title="Year"
-          value={original.year}
+          value={this.props.year}
         />
         <Divider />
         <ItemProperty
@@ -146,16 +143,15 @@ class ListItemVehicle extends React.Component {
     const className = cs(stylesBase.listItemInn, {
       [styles.listItemInn_expanded]: this.props.isExpanded,
     });
-    const { isDead, isDelayed, isDelayedWithIgnitionOff, original } = this.props;
+    const { isDead, isDelayed, isDelayedWithIgnitionOff } = this.props;
     const needIndicator = isDead || isDelayed || isDelayedWithIgnitionOff;
-
     return (
       <div
         className={className}
         onClick={this.onClick}
       >
         <h1>
-          {isEscape ? `${original.name} ig:${this.props.ignitionOn}` : original.name}
+          {isEscape ? `${this.props.name} ig:${this.props.ignitionOn}` : this.props.name}
         </h1>
 
         { this.inActivityIndicator() }
@@ -186,11 +182,15 @@ ListItemVehicle.propTypes = {
   isDelayed: React.PropTypes.bool.isRequired,
   isDead: React.PropTypes.bool.isRequired,
   lastUpdateSinceEpoch: React.PropTypes.number.isRequired,
-  original: vehicleOriginalShape.isRequired,
+  name: React.PropTypes.string.isRequired,
   speed: React.PropTypes.number,
   pos: React.PropTypes.array,
   temp: React.PropTypes.number,
   dist: React.PropTypes.object,
+  licensePlate: React.PropTypes.string,
+  make: React.PropTypes.string,
+  model: React.PropTypes.string,
+  year: React.PropTypes.string,
   ignitionOn: React.PropTypes.number,
   isDelayedWithIgnitionOff: React.PropTypes.bool.isRequired,
 };

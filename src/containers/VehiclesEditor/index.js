@@ -114,8 +114,7 @@ class VehiclesEditor extends React.Component {
     /**
      * Provide data required by component
      **/
-    const vehicle = this.props.vehicles[selectedVehicleOriginalIndex];
-    const origins = vehicle.original;
+    const origins = this.props.vehicles[selectedVehicleOriginalIndex];
     const data = {
       kind: origins.kind,
       name: origins.name,
@@ -124,7 +123,7 @@ class VehiclesEditor extends React.Component {
       make: origins.make,
       deviceId: origins.deviceId,
       licensePlate: origins.licensePlate,
-      odometer: (vehicle.dist.total / 1000).toFixed(0),
+      odometer: (origins.dist.total / 1000).toFixed(0),
     };
 
     return (

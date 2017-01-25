@@ -25,7 +25,7 @@ function chooseItem(type, {
       return (
         <CheckboxItem
           id={item.id}
-          name={item.original.name}
+          name={item.name}
           onClick={onItemClick}
           isChecked={isChecked}
         />
@@ -71,7 +71,7 @@ function chooseItem(type, {
       return (
         <SimpleItem
           id={item.id}
-          name={item.original.name}
+          name={item.name}
           onClick={onItemClick}
         />
       );
