@@ -1,5 +1,5 @@
 export function sortByName(a = {}, b = {}) {
-  if (a.name === undefined || b.name === undefined) debugger;
+  if (a.name === undefined || b.name === undefined) return 0;
 
   const nameA = a.name.trim().toLowerCase();
   const nameB = b.name.trim().toLowerCase();

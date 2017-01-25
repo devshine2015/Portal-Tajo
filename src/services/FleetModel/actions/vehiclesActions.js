@@ -18,7 +18,6 @@ export const FLEET_MODEL_ORDER_UPDATE = 'portal/services/FLEET_MODEL_ORDER_UPDAT
 export const FLEET_MODEL_DETACH_DEVICE = 'portal/services/FLEET_MODEL_DETACH_DEVICE';
 export const FLEET_MODEL_ATTACH_DEVICE = 'portal/services/FLEET_MODEL_ATTACH_DEVICE';
 
-export const fetchVehicles = () => _fetchVehicles;
 export const updateDetails = (details = {}) => dispatch =>
   makeUpdateVehicleRequest(details, dispatch);
 export const filterVehicles = searchString => (dispatch, getState) =>
@@ -30,7 +29,7 @@ export const setSelectedVehicleId = (id) => ({
   id,
 });
 
-function _fetchVehicles(dispatch) {
+export const fetchVehicles = () => dispatch => {
   const urls = [{
     ...endpoints.getVehicles,
   }, {
@@ -41,18 +40,15 @@ function _fetchVehicles(dispatch) {
     urls.map(({ url, method }) =>
       api[method](url).then(toJson)
     )
-  ).then(([vehicles = [], { status } = {}]) => {
+  ).then(([vehicles = [], { status = [] } = {}]) => {
     const localObjects = makeLocalVehicles(vehicles, status);
 
-    dispatch(_vehiclesSet({
-      vehicles,
-      ...localObjects,
-    }));
+    dispatch(_vehiclesSet(localObjects));
   })
   .catch(e => {
     console.error(e);
   });
-}
+};
 
 
 function _filterVehicles({ searchString }, dispatch, getState) {
@@ -67,16 +63,15 @@ function _filterVehicles({ searchString }, dispatch, getState) {
 // resort vehicles and update
 // - fleet.vehicles.orderedList
 function _addVehicle(vehicle, dispatch, getState) {
-  const localVehicle = makeLocalVehicle(vehicle);
+  const imLocalVehicle = makeLocalVehicle(vehicle);
   const imVehiclesMap = getProcessedVehicles(getState());
-  const nextVehiclesMap = imVehiclesMap.set(vehicle.id, localVehicle.vehicle);
+  const nextVehiclesMap = imVehiclesMap.set(vehicle.id, imLocalVehicle);
   const orderedList = sortVehicles(nextVehiclesMap.toArray());
 
   dispatch({
     type: FLEET_MODEL_VEHICLE_ADD,
-    localVehicle: localVehicle.vehicle,
+    localVehicle: imLocalVehicle,
     orderedList,
-    // newVehicle: vehicle,
     id: vehicle.id,
   });
 }
@@ -140,14 +135,12 @@ function toJson(response) {
 
 const _vehiclesSet = ({
   deadList,
-  vehicles,
   delayedList,
   localVehicles,
   orderedVehicles,
 }) => ({
   type: FLEET_MODEL_VEHICLES_SET,
   deadList,
-  vehicles,
   delayedList,
   localVehicles,
   orderedVehicles,

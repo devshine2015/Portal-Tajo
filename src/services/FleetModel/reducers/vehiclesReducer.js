@@ -16,7 +16,7 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
   switch (action.type) {
     case vehiclesActions.FLEET_MODEL_VEHICLES_SET:
       return state.withMutations(s => {
-        s.set('processedList', fromJS(action.localVehicles))
+        s.set('processedList', new Map(action.localVehicles))
          .set('deadList', new List(action.deadList))
          .set('delayedList', new List(action.delayedList))
          .set('orderedList', new List(action.orderedVehicles));
@@ -25,7 +25,7 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
     case vehiclesActions.FLEET_MODEL_VEHICLE_ADD:
       return state.withMutations(s => {
         s.setIn(['processedList', action.id], action.localVehicle)
-         .set('orderedList', action.orderedList);
+         .set('orderedList', new List(action.orderedList));
       });
 
     case vehiclesActions.FLEET_MODEL_ORDER_UPDATE:
@@ -38,7 +38,7 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
       return state.mergeIn(['processedList'], action.vehicles);
 
     case vehiclesActions.FLEET_MODEL_VEHICLES_FILTER:
-      return state.set('processedList', fromJS(action.vehicles));
+      return state.set('processedList', new Map(action.vehicles));
 
     case vehiclesActions.FLEET_MODEL_VEHICLE_SELECT:
       return state.set('slectedVehicleId', action.id);

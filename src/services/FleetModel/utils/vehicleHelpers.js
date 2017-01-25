@@ -1,16 +1,3 @@
-// incoming backEnd vehicle obj:
-//
-// "id": "0691e788-72ac-4529-9308-e7a087d15f77",
-// "name": "Land Cruiser (#LC7)",
-// "licensePlate": "YGN 5J - 8987",
-// "make": "Toyota",
-// "model": "Landcruiser",
-// "year": "2000",
-// "created": "2015-12-17T15:18:03.760+0000",
-// "updated": "2016-07-13T12:16:09.547+0000",
-// "deviceId": "863286020885894",
-// "status": "active"
-// "kind":    //optional
 import { Map } from 'immutable';
 import { ZOMBIE_TIME_TRH_MIN, LAG_INDICAION_TRH_MIN } from 'utils/constants';
 import { sortByName } from 'utils/sorting';
@@ -36,14 +23,20 @@ function getNextState(itWas, itNow) {
   return itWill;
 }
 
-// create and update vehicle in single place
-function makeImmutableVehicle({
+/**
+ * create new immutable vehicle if imVehicle not defined,
+ * will update given imVehicle in other case.
+ *
+ * returns immutable map
+**/
+function _makeImmutableVehicle({
   vehicleStats,
   now = Date.now(),
   imVehicle = new Map({}),
   initilalValues = undefined,
 }) {
   // for maritime demoing
+  // remove next string when maritime demo will be finished
   removeMe_OverrideMaritimeDemoData(vehicleStats);
 
   const sinceEpoch = new Date(vehicleStats.ts).getTime();
@@ -82,16 +75,23 @@ function makeImmutableVehicle({
        .set('speed', 0);
     }
 
+    // initial values used after fetching
+    // for converting backend data to local model
     if (initilalValues) {
       s.merge(initilalValues);
     }
   });
 
+  // for maritime demoing.
+  // remove next string when maritime demo will be finished
   return removeMe_OverrideMaritimeDemoVessel(imNextVehicle);
+
+  // uncomment when maritime demo will be finished
+  // return imNextVehicle;
 }
 
 const updateLocalVehicle = (imVehicle, vehicleStats, now) => {
-  const imNextVehicle = makeImmutableVehicle({ imVehicle, vehicleStats, now });
+  const imNextVehicle = _makeImmutableVehicle({ imVehicle, vehicleStats, now });
 
   const wasDead = imVehicle.get('isDead');
   const wasDelayed = imVehicle.get('isDelayed');
@@ -162,16 +162,16 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
     estimatedTravelKm: 10,
   };
 
-  const imVehicle = makeImmutableVehicle({ vehicleStats, initilalValues });
-  const imVehicleWithOriginal = imVehicle
-    .set('original', backEndObject)
-    .set('id', backEndObject.id);
+  // for some vehicles kind is not defined
+  if (!backEndObject.hasOwnProperty('kind')) {
+    // eslint-disable-next-line no-param-reassign
+    backEndObject.kind = 'UNDEFINED';
+  }
 
-  return {
-    vehicle: imVehicleWithOriginal,
-    isDead: imVehicle.get('isDead'),
-    isDelayed: imVehicle.get('isDelayed'),
-  };
+  const imVehicle = _makeImmutableVehicle({ vehicleStats, initilalValues });
+
+  return imVehicle.set('original', backEndObject)
+                  .set('id', backEndObject.id);
 }
 
 //
@@ -186,7 +186,8 @@ function checkIgnition(status) {
   // eslint-disable-next-line no-nested-ternary
   return status.ignOn !== undefined ? (status.ignOn ? 1 : 0) : 2;
 }
-export function makeLocalVehicles(backEndVehiclesList, statsList) {
+
+export function makeLocalVehicles(backEndVehiclesList = [], statsList = []) {
   const localVehicles = {};
   const orderedVehicles = sortVehicles(backEndVehiclesList);
   const deadList = [];
@@ -195,21 +196,16 @@ export function makeLocalVehicles(backEndVehiclesList, statsList) {
 let removeMe_counter = 0;
   backEndVehiclesList.forEach((aVehicle) => {
     const vehicleStats = getVehicleById(aVehicle.id, statsList).vehicle;
-    if ((removeMe_counter++)===0)
-      removeMe_OverrideMaritimeDemoData(vehicleStats);
+    const imLocalVehicle = makeLocalVehicle(aVehicle, vehicleStats, now);
 
-    const localVehicle = makeLocalVehicle(aVehicle, vehicleStats, now);
+    if (imLocalVehicle) {
+      localVehicles[aVehicle.id] = imLocalVehicle;
 
-    if (localVehicle) {
-      const { vehicle, isDead, isDelayed } = localVehicle;
-      removeMe_OverrideMaritimeDemoVessel(vehicle);
-
-      localVehicles[aVehicle.id] = vehicle;
-      if (isDead) {
+      if (imLocalVehicle.get('isDead')) {
         deadList.push(aVehicle.id);
       }
 
-      if (isDelayed) {
+      if (imLocalVehicle.get('isDelayed')) {
         delayedList.push(aVehicle.id);
       }
     }
@@ -223,6 +219,13 @@ let removeMe_counter = 0;
   };
 }
 
+/**
+ * accept POJO (i.e. backEndVehiclesList)
+ * or immutable List of immutable Map
+ * each element MUST HAVE 'name' or 'original.name' property.
+ *
+ * returns array of ids of sorted elements
+**/
 export function sortVehicles(vehicles = []) {
   return vehicles
     .sort((a, b) => {
@@ -281,14 +284,14 @@ export function cleanVehicle(vehicle) {
 /**
  * Find vehicle by id and return its instance and index
  **/
-export function getVehicleById(id, allVehicles = []) {
+export function getVehicleById(id, array = []) {
   let vehicleIndex;
   let vehicle;
 
-  for (let i = 0; i < allVehicles.length; i++) {
-    if (allVehicles[i].id === id) {
+  for (let i = 0; i < array.length; i++) {
+    if (array[i].id === id) {
       vehicleIndex = i;
-      vehicle = allVehicles[i];
+      vehicle = array[i];
       break;
     }
   }
