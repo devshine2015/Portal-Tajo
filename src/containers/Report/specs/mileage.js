@@ -25,7 +25,8 @@ const fields = [{
   checkedByDefault: false,
   order: 3,
   query: {
-    // tzoffset: new Date().getTimezoneOffset(),
+    // for reports tzoffset is required by backend.
+    tzoffset: 0,
   },
   filterSimilar: _filterSimilar,
   calc: _calc,
