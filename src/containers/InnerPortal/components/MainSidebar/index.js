@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import Drawer from 'material-ui/Drawer';
 import { rolesEnum } from 'configs/roles';
-import MainMenu from 'components/MainMenu';
+import MainMenu from '../MainMenu';
 import { getDashboardPages, getSidebarState } from 'containers/InnerPortal/reducer';
 import { changeMainSidebarState } from 'containers/InnerPortal/actions';
 import { getUserRole } from 'services/UserModel/reducer';
