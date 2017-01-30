@@ -90,7 +90,6 @@ module.exports = require('./webpack.base')({
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
-        DRVR_PROJECT: JSON.stringify(process.env.DRVR_PROJECT),
       },
     }),
     // Put it in the end to capture all the HtmlWebpackPlugin's
