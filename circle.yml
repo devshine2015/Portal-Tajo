@@ -5,10 +5,14 @@ machine:
 general:
   branches:
     ignore:
-      - master
       - verified_candidate
 
 deployment:
+  master:
+    branch: master
+    commands:
+      - ./ci/versions.sh master patch
+
   development:
     branch: dev
     commands:
@@ -49,4 +53,4 @@ deployment:
   production:
     branch: production
     commands:
-      - ./ci/deploy.sh
+      - ./ci/deployToProd.sh
