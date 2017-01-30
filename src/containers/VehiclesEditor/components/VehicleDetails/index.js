@@ -154,7 +154,7 @@ class VehicleDetails extends React.Component {
             value={this.state.name}
           />
 
-          <div>
+          <div className={styles.kind}>
             <SelectField
               autoWidth
               hintText="Kind of Vehicle"
