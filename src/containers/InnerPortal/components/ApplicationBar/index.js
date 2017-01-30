@@ -5,6 +5,7 @@ import locationShape from 'react-router/lib/PropTypes';
 import { connect } from 'react-redux';
 import { AppBar, FlatButton } from 'material-ui';
 import { BASE_URL, isEscape } from 'configs';
+import CodebaseVersion from 'components/CodebaseVersion';
 import { changeMainSidebarState } from 'containers/InnerPortal/actions';
 import FleetSummary from 'containers/FleetSummary';
 import { logout } from '../../actions';
@@ -16,6 +17,12 @@ const hideSummaryOn = [
   `${BASE_URL}dashboard`,
   isEscape && BASE_URL,
 ];
+
+const STYLES = {
+  title: {
+    lineHeight: 'inherit',
+  },
+};
 
 function renderSummary(location) {
   const hide = hideSummaryOn.indexOf(location.pathname) !== -1;
@@ -31,6 +38,15 @@ function renderSummary(location) {
   );
 }
 
+function renderTitle(title) {
+  return (
+    <div className={styles.title}>
+      { title }
+      <CodebaseVersion />
+    </div>
+  );
+}
+
 const ApplicationBar = ({
   logout, // eslint-disable-line no-shadow
   title,
@@ -39,13 +55,14 @@ const ApplicationBar = ({
 }) => (
   <div className={styles.barContainer}>
     <AppBar
-      title={title}
+      title={renderTitle(title)}
       iconElementRight={
         <FlatButton
           label="Logout"
           onClick={logout}
         />
       }
+      titleStyle={STYLES.title}
       className={styles.bar}
       zDepth={0}
       onLeftIconButtonTouchTap={toggleSidebar}

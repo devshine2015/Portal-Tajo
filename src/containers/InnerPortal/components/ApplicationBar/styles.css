@@ -15,4 +15,11 @@
     left: 50%;
     transform: translateX(-50%);
   }
+
+  .title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
 }

@@ -18,11 +18,15 @@ function canShow(Component) {
   return false;
 }
 
-function renderGroup(component) {
+function renderGroup({
+  component,
+  title,
+  className = '',
+}) {
   return (
     <WidgetsGroup
-      containerClass={classes.dashboard__summaryGroup}
-      title="Fleet Summary"
+      containerClass={className}
+      title={title}
     >
       { component }
     </WidgetsGroup>
@@ -32,7 +36,11 @@ function renderGroup(component) {
 const DashboardScreen = () => (
   <div className={css(classes.dashboard)}>
     { canShow(EventsCalculator) && <EventsCalculator /> }
-    { canShow(FleetSummary) && renderGroup(<FleetSummary />) }
+    { canShow(FleetSummary) && renderGroup({
+      component: <FleetSummary />,
+      title: 'Fleet Summary',
+      className: classes.dashboard__summaryGroup,
+    }) }
   </div>
 );
 
