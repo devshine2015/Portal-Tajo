@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-BRANCH=$1
-V=$2
+V=$1
 
 npm version $V
 
-git push origin $BRANCH
+git config --global user.email "orelmax@gmail.com"
+git config --global user.name "$CIRCLE_USERNAME"
+
+git push origin $CIRCLE_BRANCH

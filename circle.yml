@@ -11,7 +11,7 @@ deployment:
   master:
     branch: master
     commands:
-      - ./ci/versions.sh master patch
+      - ./ci/versions.sh patch
 
   development:
     branch: dev
