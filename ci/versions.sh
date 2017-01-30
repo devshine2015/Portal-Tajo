@@ -1,12 +1,11 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-V=$1
+BRANCH = git symbolic-ref HEAD | sed 's!refs\/heads\/!!'
 
-ssh-add $HOME/.ssh/id_circleci_github
+if [ $BRANCH = 'master' ] then
+  VERSION='patch'
 
-git config --global user.email "circle@circle.drvr.co"
-git config --global user.name "$CIRCLE_USERNAME"
+  npm --no-git-tag-version version $VERSION
+fi
 
-npm version $V
-
-git push origin $CIRCLE_BRANCH
+exit 0

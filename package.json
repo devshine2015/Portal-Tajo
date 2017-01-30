@@ -13,8 +13,6 @@
     "clean:sunshine": "rimraf ./builds/dev/portal ./builds/prod/portal",
 
     "//": "production build tasks",
-    "prebuild:all": "mkdir ss",
-    "build:all": "touch ss/lol.txt",
     "build:escape": "cross-env DRVR_PROJECT=tajo webpack --config webpack/webpack.prod.js --color -p",
     "build:sunshine": "cross-env DRVR_PROJECT=portal webpack --config webpack/webpack.prod.js --color -p",
     

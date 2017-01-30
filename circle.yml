@@ -5,14 +5,10 @@ machine:
 general:
   branches:
     ignore:
+      - master
       - verified_candidate
 
 deployment:
-  master:
-    branch: master
-    commands:
-      - ./ci/versions.sh patch
-
   development:
     branch: dev
     commands:
