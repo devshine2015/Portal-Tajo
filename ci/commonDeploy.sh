@@ -4,7 +4,8 @@ TAJO='tajo'
 PORTAL='portal'
 HOST=$1
 PUBLIC=$2
-EXTRA_FOLDER=$3
+ENV=$3
+EXTRA_FOLDER=$4
 
 if [ ! -z $EXTRA_FOLDER ] ; then
   TARGET_FOLDER="$PUBLIC/$EXTRA_FOLDER"
@@ -17,8 +18,13 @@ PORTAL_FOLDER="builds/prod/$PORTAL"
 
 echo "rebuild static sources..."
 npm run clean
-npm run build:escape
-npm run build:sunshine
+if [ $ENV == 'production' ] ; then
+  npm run build:escape
+  npm run build:sunshine
+else
+  npm run build:escape-dev
+  npm run build:sunshine-dev
+fi
 
 
 if [ ! -z $EXTRA_FOLDER ] ; then
