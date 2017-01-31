@@ -4,8 +4,13 @@
 
 const webpack = require('webpack');
 const PACKAGE = require('../package.json');
+const cssnext = require('postcss-cssnext');
+const postcssFocus = require('postcss-focus');
+const postcssReporter = require('postcss-reporter');
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
 console.log(JSON.stringify(PACKAGE.version));
+console.log(NODE_ENV);
 
 module.exports = (options) => ({
   entry: options.entry,
@@ -13,14 +18,14 @@ module.exports = (options) => ({
     // put build into specified folder
     path: options.outputFolder,
     publicPath: '/',
-    sourceMapFilename: '[name].js.map',
+    sourceMapFilename: 'js/[name].js.map',
   }, options.output), // Merge with env dependent settings
   module: {
     loaders: [{
-      test: /\.js$/, // Transform all .js files required somewhere with Babel
-      loader: 'babel',
+      test: /\.js$|\.jsx$/, // Transform all .js files required somewhere with Babel
+      loader: 'babel-loader',
       exclude: /node_modules/,
-      query: options.babelQuery,
+      query: options.babelQuery || '',
     }, {
       // Transform our own .css files with PostCSS and CSS-modules
       test: /\.css$/,
@@ -58,7 +63,7 @@ module.exports = (options) => ({
       loader: 'json-loader',
     }, {
       test: /\.svg$/,
-      loader: 'babel!svg-react',
+      loader: 'svg-react-loader',
     }],
   },
   plugins: options.plugins.concat([
@@ -73,13 +78,24 @@ module.exports = (options) => ({
     // drop any unreachable code.
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+        NODE_ENV: JSON.stringify(NODE_ENV),
         DRVR_PROJECT: JSON.stringify(process.env.DRVR_PROJECT),
         DRVR_VERSION: JSON.stringify(PACKAGE.version),
       },
     }),
   ]),
-  postcss: () => options.postcssPlugins,
+
+  // Process the CSS with PostCSS
+  postcssPlugins: [
+    postcssFocus(), // Add a :focus to every :hover
+    cssnext({ // Allow future CSS features to be used, also auto-prefixes the CSS...
+      browsers: ['last 2 versions', 'IE > 10'], // ...based on this browser list
+    }),
+    postcssReporter({ // Posts messages from plugins to the terminal
+      clearMessages: true,
+    }),
+  ],
+
   resolve: {
     modules: ['src', 'node_modules'],
     extensions: [
@@ -95,6 +111,6 @@ module.exports = (options) => ({
   },
   devtool: options.devtool,
   target: 'web', // Make web variables accessible to webpack, e.g. window
-  stats: false, // Don't show stats in the console
+  stats: true, // Don't show stats in the console
   progress: true,
 });

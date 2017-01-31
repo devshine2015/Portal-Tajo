@@ -16,7 +16,7 @@ const app = express();
 var webpackConfig;
 
 if (isDev) {
-  webpackConfig = require('../webpack/webpack.dev');
+  webpackConfig = require('../webpack/webpack.local-dev');
 } else {
   webpackConfig = require('../webpack/webpack.prod');
 }
