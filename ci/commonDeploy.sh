@@ -18,7 +18,7 @@ PORTAL_FOLDER="builds/prod/$PORTAL"
 
 echo "rebuild static sources..."
 npm run clean
-if [ $ENV == 'production' ] ; then
+if [ "$ENV" == "production" ] ; then
   npm run build:escape
   npm run build:sunshine
 else
