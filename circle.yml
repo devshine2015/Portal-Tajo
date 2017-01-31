@@ -46,6 +46,9 @@ deployment:
     commands:
       - ./ci/deployToStage.sh sandbox
 
+// here we have wrong file name
+// will be fixed when mergin with master
+//
   production:
     branch: production
     commands:
