@@ -46,7 +46,9 @@ deployment:
     commands:
       - ./ci/deployToStage.sh sandbox
 
+# this is a direct commit to prod - should be overwritten/wiped with
+# the next proper merge, using ours strategy
   production:
     branch: production
     commands:
-      - ./ci/deploy.sh
+      - ./ci/deployToProd.sh
