@@ -2,7 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { css } from 'aphrodite/no-important';
 import Paper from 'material-ui/Paper';
-import { portal } from 'configs';
+import { isEscape } from 'configs';
 import theme from 'configs/theme';
 import Icon from '../Icons';
 import { amountsShape } from '../../PropTypes';
@@ -17,16 +17,16 @@ const STYLES = {
 
 const AMOUNT_TYPES_AVAILABILITY = {
   vehicles: true,
-  devices: portal === 'tajo',
+  devices: isEscape,
   dead: true,
   delayed: true,
 };
 
-function countAvailableTypes() {
-  return Object.values(AMOUNT_TYPES_AVAILABILITY).filter(v => v).length;
-}
+// function countAvailableTypes() {
+//   return Object.values(AMOUNT_TYPES_AVAILABILITY).filter(v => v).length;
+// }
 
-const AVAILABLE_TYPES_COUNT = countAvailableTypes();
+// const AVAILABLE_TYPES_COUNT = countAvailableTypes();
 
 const Amount = ({
   amount,

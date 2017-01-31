@@ -80,7 +80,7 @@ class DeviceSelector extends React.Component {
     super(props);
 
     this.state = {
-      searchText: '',
+      searchText: props.forcedValue || '',
       isRefreshing: false,
     };
   }

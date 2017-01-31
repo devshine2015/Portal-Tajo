@@ -6,8 +6,8 @@ import {
   RadioButtonGroup,
 } from 'material-ui/RadioButton';
 import Subheader from 'material-ui/Subheader';
-import { getGroupBy } from 'containers/UsersManager/reducer';
-import { changeGroupBy } from 'containers/UsersManager/actions';
+import { getGroupBy } from 'services/Users/reducer';
+import { changeGroupBy } from 'services/Users/actions';
 
 import styles from './styles.css';
 

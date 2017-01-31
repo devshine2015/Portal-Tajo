@@ -29,20 +29,10 @@
 
 import tinycolor from 'tinycolor2';
 
-import { white, darkBlack,
-  indigo500, indigo300,
-  blue600,
-  lightBlue800,
-  cyan500, cyan600, cyan700, cyan800, cyan900,
-  teal500, teal700, teal900,
-  blueGrey500,
-  deepOrange700, deepOrange800, deepOrange900,
-  yellow700,
-  brown500,
-  lime500, lime300,
-  green500, green700,
-  lightGreenA400, lightGreenA700,
- } from 'material-ui/styles/colors';
+import { white, blue600,
+  cyan700, teal500, teal700, teal900,
+  deepOrange700, yellow700,
+} from 'material-ui/styles/colors';
 
 const drvrDevTheme = {
   palette: {

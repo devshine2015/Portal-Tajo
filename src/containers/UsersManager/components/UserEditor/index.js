@@ -12,8 +12,8 @@ import {
 import {
   toggleNewUser,
   addNewUser,
-} from 'containers/UsersManager/actions';
-import { getIsLoading } from 'containers/UsersManager/reducer';
+} from 'services/Users/actions';
+import { getIsLoading } from 'services/Users/reducer';
 
 import styles from './styles.css';
 

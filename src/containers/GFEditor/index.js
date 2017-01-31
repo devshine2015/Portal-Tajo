@@ -90,11 +90,12 @@ class GFEditor extends React.Component {
               value={this.props.subjectGF.radius}
             />
           }
+          { true ? null :
           <Checkbox
-            label="is home depo"
+            label="is home depot"
             onCheck={this.onCheckDepot}
           />
-          <div className={styles.buttons}>
+          }          <div className={styles.buttons}>
             <FlatButton
               className={styles.buttons__button}
               onClick={this.onCancel}

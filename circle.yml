@@ -49,4 +49,4 @@ deployment:
   production:
     branch: production
     commands:
-      - ./ci/deploy.sh
+      - ./ci/deployToProd.sh

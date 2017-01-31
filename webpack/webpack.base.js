@@ -3,6 +3,9 @@
  */
 
 const webpack = require('webpack');
+const PACKAGE = require('../package.json');
+
+console.log(JSON.stringify(PACKAGE.version));
 
 module.exports = (options) => ({
   entry: options.entry,
@@ -72,6 +75,7 @@ module.exports = (options) => ({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         DRVR_PROJECT: JSON.stringify(process.env.DRVR_PROJECT),
+        DRVR_VERSION: JSON.stringify(PACKAGE.version),
       },
     }),
   ]),

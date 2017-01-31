@@ -6,10 +6,7 @@ import {
   sortVehicles,
 } from '../utils/vehicleHelpers';
 import { filterProcessedListByName } from '../utils/filtering';
-import {
-  getProcessedVehicles,
-  getVehicles,
-} from '../reducer';
+import { getProcessedVehicles } from '../reducer';
 
 export const FLEET_MODEL_VEHICLES_SET = 'portal/services/FLEET_MODEL_VEHICLES_SET';
 export const FLEET_MODEL_VEHICLES_FILTER = 'portal/services/FLEET_MODEL_VEHICLES_FILTER';
@@ -72,8 +69,9 @@ function _filterVehicles({ searchString }, dispatch, getState) {
 // - fleet.vehicles.orderedList
 function _addVehicle(vehicle, dispatch, getState) {
   const localVehicle = makeLocalVehicle(vehicle);
-  const vehicles = getVehicles(getState()).push(vehicle);
-  const orderedList = sortVehicles(vehicles);
+  const imVehiclesMap = getProcessedVehicles(getState());
+  const nextVehiclesMap = imVehiclesMap.set(vehicle.id, vehicle);
+  const orderedList = sortVehicles(nextVehiclesMap.toArray());
 
   dispatch({
     type: FLEET_MODEL_VEHICLE_ADD,

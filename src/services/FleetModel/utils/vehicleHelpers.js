@@ -219,7 +219,7 @@ let removeMe_counter = 0;
   };
 }
 
-export function sortVehicles(vehicles) {
+export function sortVehicles(vehicles = []) {
   return vehicles
     .sort(sortByName)
     .map(obj => obj.id);

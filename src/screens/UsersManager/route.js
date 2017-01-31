@@ -12,14 +12,14 @@ const createRoute = ({
   getComponent: (location, cb) => {
     require.ensure([], require => {
       const importModules = Promise.all([
-        require('containers/UsersManager/reducer'),
+        require('services/Users/reducer'),
         require('./index'),
       ]);
 
       const renderModule = loadModule(cb);
 
       importModules.then(([reducer, component]) => {
-        injectReducer(name, reducer.default);
+        injectReducer('usersManager', reducer.default);
         renderModule(component);
       });
 

@@ -2,7 +2,8 @@
 // some faked hardcoded data for sheeps/maritime demo
 //
 
-import { isMaritime, isMaritimeDemoData } from 'configs';
+import { isMaritime } from 'configs';
+const isMaritimeDemoData = true;
 
 export function removeMe_OverrideMaritimeDemoData(status) {
   if (!isMaritime || !isMaritimeDemoData) {

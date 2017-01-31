@@ -2,7 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import Icon from '../Icons';
 import { amountsShape } from '../../PropTypes';
-import { portal } from 'configs';
+import { isEscape } from 'configs';
 import theme from 'configs/theme';
 
 import styles from './styles.css';
@@ -43,7 +43,7 @@ const SimpleSummary = ({
       amount={amounts.vehiclesAmount}
       icon={<Icon.CarIcon color={theme.palette.primary3Color} />}
     />
-    { portal === 'tajo' &&
+    { isEscape &&
       <Amount
         amount={amounts.devicesAmount}
         icon={<Icon.DeviceIcon color={theme.palette.primary3Color} />}

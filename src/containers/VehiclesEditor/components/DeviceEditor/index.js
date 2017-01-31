@@ -48,7 +48,7 @@ class DeviceEditor extends React.Component {
 
     this.state = {
       imei: props.deviceId || '',
-      haveToReset: false,
+      haveToReset: true,
     };
   }
 
@@ -87,7 +87,7 @@ class DeviceEditor extends React.Component {
 
     let forcedValue = null;
 
-    if (this.state.haveToReset) {
+    if (this.state.haveToReset && !hasDevice) {
       forcedValue = '';
     } else if (hasDevice) {
       forcedValue = this.props.deviceId;

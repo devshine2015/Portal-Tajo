@@ -3,7 +3,6 @@ import * as vehiclesActions from '../actions/vehiclesActions';
 import * as socketActions from '../actions/socketActions';
 
 const vehiclesInitialState = fromJS({
-  list: new List(),
   processedList: new Map(),
   orderedList: new List(),
   deadList: new List(),
@@ -17,8 +16,7 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
   switch (action.type) {
     case vehiclesActions.FLEET_MODEL_VEHICLES_SET:
       return state.withMutations(s => {
-        s.set('list', new List(action.vehicles))
-         .set('processedList', fromJS(action.localVehicles))
+        s.set('processedList', fromJS(action.localVehicles))
          .set('deadList', new List(action.deadList))
          .set('delayedList', new List(action.delayedList))
          .set('orderedList', new List(action.orderedVehicles));
@@ -26,8 +24,7 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
 
     case vehiclesActions.FLEET_MODEL_VEHICLE_ADD:
       return state.withMutations(s => {
-        s.update('list', list => list.push(action.newVehicle))
-         .setIn(['processedList', action.id], action.localVehicle)
+        s.setIn(['processedList', action.id], action.localVehicle)
          .set('orderedList', action.orderedList);
       });
 
@@ -66,11 +63,6 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
 }
 
 export default vehiclesReducer;
-
-export const getVehicles = (state) =>
-  state.get('list');
-export const getVehiclesById = (state, ids = []) =>
-  state.get('list').filter(v => ids.indexOf(v.id) !== -1);
 
 export const getVehiclesEx = (state) => {
   const theObj = getProcessedVehicles(state);

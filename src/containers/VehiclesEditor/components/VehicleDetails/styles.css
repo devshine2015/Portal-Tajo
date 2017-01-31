@@ -5,6 +5,10 @@
     overflow-y: auto;
   }
 
+  .kind {
+    display: flex;
+  }
+
   .buttons {
     text-align: center;
     margin-top: 20px;

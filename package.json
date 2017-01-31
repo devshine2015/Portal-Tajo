@@ -1,7 +1,11 @@
 {
   "name": "drvr.co",
-  "version": "0.0.5",
+  "version": "1.0.9",
   "description": "common code base for DRVR portals",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/drvrteam/portal-tajo.git"
+  },
   "main": "index.js",
   "scripts": {
     "clean": "rimraf ./build ./builds",
