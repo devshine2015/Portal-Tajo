@@ -1,6 +1,6 @@
 {
   "name": "drvr.co",
-  "version": "1.0.13",
+  "version": "1.0.15",
   "description": "common code base for DRVR portals",
   "repository": {
     "type": "git",
@@ -11,12 +11,12 @@
     "clean": "rimraf ./build ./builds",
     "clean:escape": "rimraf ./builds/dev/tajo ./builds/prod/tajo",
     "clean:sunshine": "rimraf ./builds/dev/portal ./builds/prod/portal",
-    "//": "tasks for local development",
-    "shrink": "npm shrinkwrap --dev",
     "build:escape": "cross-env NODE_ENV=production DRVR_PROJECT=tajo webpack --config webpack/webpack.prod.js --color -p",
     "build:sunshine": "cross-env NODE_ENV=production DRVR_PROJECT=portal webpack --config webpack/webpack.prod.js --color -p",
     "build:escape-dev": "cross-env DRVR_PROJECT=tajo webpack --config webpack/webpack.dev.js --color",
     "build:sunshine-dev": "cross-env DRVR_PROJECT=portal webpack --config webpack/webpack.dev.js --color",
+    "//": "tasks for local development",
+    "shrink": "npm shrinkwrap --dev",
     "escape": "npm run start:tunnel:escape",
     "sunshine": "npm run start:tunnel:sunshine",
     "start:tunnel:escape": "cross-env DRVR_PROJECT=tajo node server -d",
