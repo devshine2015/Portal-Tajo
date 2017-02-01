@@ -21,13 +21,14 @@ export function removeMe_OverrideMaritimeDemoData(status) {
   if (status.pos.latlon === undefined) {
     status.pos.latlon = {};
   }
-  status.pos.latlon.lat = 16.422532;
-  status.pos.latlon.lng = 96.464976;
+  status.pos.latlon.lat = 13.6283645;
+  status.pos.latlon.lng = 98.2256268;
   // Most containerships are designed to travel at speeds around 24 knots
   // its 44.448 kmH
   status.pos.speed = 24;
 }
 
+let maritimeDemoCounter = 0;
 // demo helper to set all the proto maritime-specific props to vessel obj
 export function removeMe_OverrideMaritimeDemoVessel(vessel) {
   if (!isMaritime || !isMaritimeDemoData) {
@@ -35,5 +36,6 @@ export function removeMe_OverrideMaritimeDemoVessel(vessel) {
   }
   vessel.kind = 'BOAT';
   vessel.trackigInterval = 60; // how often it reports, minutes
-  vessel.heading = 130;
+  vessel.heading = 139.3;
+  vessel.removeMeDemoCounter = maritimeDemoCounter++;
 }

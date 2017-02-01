@@ -1,8 +1,6 @@
 import { localTick } from '../utils/localTickHelpers';
 import { isMaritime } from 'configs';
 
-export const FLEET_MODEL_LOCAL_TICK = 'portal/services/FLEET_MODEL_LOCAL_TICK';
-
 export const startLocalTick = () => _startLocalTick;
 export const stopLocalTick = () => _stopLocalTick;
 
@@ -32,7 +30,3 @@ function _stopLocalTick() {
   window.clearInterval(localTickProcId);
   localTickProcId = null;
 }
-
-const _localTick = () => ({
-  type: FLEET_MODEL_LOCAL_TICK,
-});

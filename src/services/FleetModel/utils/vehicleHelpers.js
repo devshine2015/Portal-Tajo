@@ -35,7 +35,10 @@ function getNextState(itWas, itNow) {
 }
 
 const updateLocalVehicle = (imVehicle, status, now) => {
-  removeMe_OverrideMaritimeDemoData(status);
+
+  if (imVehicle.get('removeMeDemoCounter') === 0)
+    removeMe_OverrideMaritimeDemoData(status);
+
   const sinceEpoch = new Date(status.ts).getTime();
   const hasPosition = !!status.pos;
   const isDead = !hasPosition;
@@ -66,7 +69,6 @@ const updateLocalVehicle = (imVehicle, status, now) => {
   const willDead = getNextState(wasDead, isDead);
   const willDelayed = getNextState(wasDelayed, localTimings.isDelayed);
 
-  removeMe_OverrideMaritimeDemoVessel(imNextVehicle);
   return {
     imNextVehicle,
     willDead,
@@ -96,10 +98,10 @@ export function updateLocalVehicles(wsStatuses, getState) {
   const now = Date.now();
   let deadList = getDeadList(getState());
   let delayedList = getDelayedList(getState());
-
   wsStatuses.forEach(status => {
     const localVehicle = processedList.get(status.id);
     const { imNextVehicle, willDead, willDelayed } = updateLocalVehicle(localVehicle, status, now);
+
     nextLocalVehicles[status.id] = imNextVehicle;
 
     deadList = updateList(deadList, willDead, status.id);
@@ -117,7 +119,6 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
   if (backEndObject.status !== 'active') {
     return null;
   }
-  removeMe_OverrideMaritimeDemoData(vehicleStats);
 
   const hasPos = vehicleStats.hasOwnProperty('pos');
 
@@ -158,9 +159,10 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
     // TODO: properly set initilal values
     timeSinceUpdateMin: 1,
     estimatedTravelKm: 10,
+    // trackigInterval: 60, // how often it reports, minutes
+    // heading: 130,
   });
 
-  removeMe_OverrideMaritimeDemoVessel(theVehicle);
   return {
     vehicle: theVehicle,
     isDead: theVehicle.isDead,
@@ -186,13 +188,17 @@ export function makeLocalVehicles(backEndVehiclesList, statsList) {
   const deadList = [];
   const delayedList = [];
   const now = Date.now();
-
+let removeMe_counter = 0;
   backEndVehiclesList.forEach((aVehicle) => {
     const vehicleStats = getVehicleById(aVehicle.id, statsList).vehicle;
+    if ((removeMe_counter++)===0)
+      removeMe_OverrideMaritimeDemoData(vehicleStats);
+
     const localVehicle = makeLocalVehicle(aVehicle, vehicleStats, now);
 
     if (localVehicle) {
       const { vehicle, isDead, isDelayed } = localVehicle;
+      removeMe_OverrideMaritimeDemoVessel(vehicle);
 
       localVehicles[aVehicle.id] = vehicle;
       if (isDead) {
