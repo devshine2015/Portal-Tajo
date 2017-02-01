@@ -27,8 +27,8 @@ module.exports = require('./webpack.base')({
   // We use ExtractTextPlugin so we get a seperate CSS file instead
   // of the CSS being in the JS and injected as a style tag
   cssLoaders: ExtractTextPlugin.extract({
-    // fallbackLoader: 'style-loader',
-    loader: 'css-loader',
+    fallbackLoader: 'style-loader',
+    loader: 'css-loader?modules&importLoaders=1!postcss-loader',
   }),
 
   plugins: [
