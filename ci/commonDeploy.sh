@@ -21,7 +21,7 @@ npm run clean
 
 echo $ENV
 
-if [ "$ENV" == "production" ] ; then
+if [ "$ENV" == "prod" ] ; then
   npm run build:escape
   npm run build:sunshine
 else
@@ -30,23 +30,23 @@ else
 fi
 
 
-if [ ! -z $EXTRA_FOLDER ] ; then
-  echo "Extra folder $EXTRA_FOLDER detected"
+# if [ ! -z $EXTRA_FOLDER ] ; then
+#   echo "Extra folder $EXTRA_FOLDER detected"
 
-  if (ssh $HOST "[ -d $PUBLIC/$EXTRA_FOLDER ]"); then
-    echo "$EXTRA_FOLDER already exists - remove and create again..."
-    ssh $HOST "cd $PUBLIC && rm -r $EXTRA_FOLDER && mkdir $EXTRA_FOLDER"
-  else
-    echo "$EXTRA_FOLDER not exist - creating..."
-    ssh $HOST "cd $PUBLIC && mkdir $EXTRA_FOLDER"
-  fi
+#   if (ssh $HOST "[ -d $PUBLIC/$EXTRA_FOLDER ]"); then
+#     echo "$EXTRA_FOLDER already exists - remove and create again..."
+#     ssh $HOST "cd $PUBLIC && rm -r $EXTRA_FOLDER && mkdir $EXTRA_FOLDER"
+#   else
+#     echo "$EXTRA_FOLDER not exist - creating..."
+#     ssh $HOST "cd $PUBLIC && mkdir $EXTRA_FOLDER"
+#   fi
 
-else
-  echo "erase root tajo and portal files..."
-  ssh $HOST "cd $PUBLIC && rm -r $TAJO js css fonts .htaccess index.html manifest.json favicon.ico"
-fi
+# else
+#   echo "erase root tajo and portal files..."
+#   ssh $HOST "cd $PUBLIC && rm -r $TAJO js css fonts .htaccess index.html manifest.json favicon.ico"
+# fi
 
 
-echo "copy static files to server..."
-scp -r $PORTAL_FOLDER/* $HOST:$TARGET_FOLDER
-scp -r $TAJO_FOLDER $HOST:$TARGET_FOLDER
+# echo "copy static files to server..."
+# scp -r $PORTAL_FOLDER/* $HOST:$TARGET_FOLDER
+# scp -r $TAJO_FOLDER $HOST:$TARGET_FOLDER
