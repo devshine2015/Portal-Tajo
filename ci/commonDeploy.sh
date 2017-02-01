@@ -21,7 +21,7 @@ npm run clean
 
 echo $ENV
 
-if [ "$ENV" == "production" ] ; then
+if [ "$ENV" == "prod" ] ; then
   npm run build:escape
   npm run build:sunshine
 else
