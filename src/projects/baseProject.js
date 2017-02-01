@@ -23,12 +23,6 @@ injectTapEventPlugin();
 
 require('sanitize.css/sanitize.css');
 
-// Install ServiceWorker and AppCache in the end since
-// it's not most important operation and if main code fails,
-// we do not want it installed
-import { install } from 'offline-plugin/runtime';
-install();
-
 export const renderProject = ({
   anchor,
   createRoutes,
