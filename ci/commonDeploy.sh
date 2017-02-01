@@ -13,11 +13,14 @@ else
   TARGET_FOLDER=$PUBLIC
 fi
 
-TAJO_FOLDER="builds/prod/$TAJO"
-PORTAL_FOLDER="builds/prod/$PORTAL"
+TAJO_FOLDER="builds/$ENV/$TAJO"
+PORTAL_FOLDER="builds/$ENV/$PORTAL"
 
 echo "rebuild static sources..."
 npm run clean
+
+echo $ENV
+
 if [ "$ENV" == "production" ] ; then
   npm run build:escape
   npm run build:sunshine
