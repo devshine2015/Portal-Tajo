@@ -2,15 +2,18 @@
  * COMMON WEBPACK CONFIGURATION
  */
 
+const path = require('path');
 const webpack = require('webpack');
 const PACKAGE = require('../package.json');
-const cssnext = require('postcss-cssnext');
-const postcssFocus = require('postcss-focus');
-const postcssReporter = require('postcss-reporter');
 const NODE_ENV = process.env.NODE_ENV || 'development';
+// const cssnext = require('postcss-cssnext');
+// const postcssFocus = require('postcss-focus');
+// const postcssReporter = require('postcss-reporter');
 
 console.log(JSON.stringify(PACKAGE.version));
 console.log(NODE_ENV);
+
+const devCssLoaders = 'style-loader!css-loader?localIdentName=[local]__[path][name]__[hash:base64:5]&modules&importLoaders=1&sourceMap!postcss-loader';
 
 module.exports = (options) => ({
   entry: options.entry,
@@ -21,16 +24,18 @@ module.exports = (options) => ({
     sourceMapFilename: 'js/[name].js.map',
   }, options.output), // Merge with env dependent settings
   module: {
-    loaders: [{
+    rules: [{
       test: /\.js$|\.jsx$/, // Transform all .js files required somewhere with Babel
-      loader: 'babel-loader',
       exclude: /node_modules/,
-      query: options.babelQuery || '',
+      use: [{
+        loader: 'babel-loader',
+        options: options.babelQuery || {},
+      }],
     }, {
       // Transform our own .css files with PostCSS and CSS-modules
       test: /\.css$/,
       exclude: /node_modules/,
-      loader: options.cssLoaders,
+      loader: options.cssLoaders || devCssLoaders,
     }, {
       // Do not transform vendor's CSS with CSS-modules
       // The point is that they remain in global scope.
@@ -39,28 +44,28 @@ module.exports = (options) => ({
       // So, no need for ExtractTextPlugin here.
       test: /\.css$/,
       include: /node_modules/,
-      loaders: ['style-loader', 'css-loader'],
+      use: [
+        'style-loader',
+        'css-loader',
+      ],
     }, {
       test: /\.jpe?g$|\.gif$|\.png$/i,
       loader: 'url-loader?limit=10000',
     }, {
       test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-      loader: 'file?name=fonts/[name].[hash].[ext]&mimetype=application/font-woff',
+      loader: 'file-loader?name=fonts/[name].[hash].[ext]&mimetype=application/font-woff',
     }, {
       test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-      loader: 'file?name=fonts/[name].[hash].[ext]&mimetype=application/font-woff',
+      loader: 'file-loader?name=fonts/[name].[hash].[ext]&mimetype=application/font-woff',
     }, {
       test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-      loader: 'file?name=fonts/[name].[hash].[ext]&mimetype=application/octet-stream',
+      loader: 'file-loader?name=fonts/[name].[hash].[ext]&mimetype=application/octet-stream',
     }, {
       test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-      loader: 'file?name=fonts/[name].[hash].[ext]',
+      loader: 'file-loader?name=fonts/[name].[hash].[ext]',
     }, {
       test: /\.html$/,
       loader: 'html-loader',
-    }, {
-      test: /\.json$/,
-      loader: 'json-loader',
     }, {
       test: /\.svg$/,
       loader: 'svg-react-loader',
@@ -70,7 +75,7 @@ module.exports = (options) => ({
     new webpack.optimize.CommonsChunkPlugin('common'),
     new webpack.ProvidePlugin({
       // make fetch available
-      fetch: 'exports?self.fetch!whatwg-fetch',
+      fetch: 'exports-loader?self.fetch!whatwg-fetch',
     }),
 
     // Always expose NODE_ENV to webpack, in order to use `process.env.NODE_ENV`
@@ -85,26 +90,17 @@ module.exports = (options) => ({
     }),
   ]),
 
-  // Process the CSS with PostCSS
-  postcssPlugins: [
-    postcssFocus(), // Add a :focus to every :hover
-    cssnext({ // Allow future CSS features to be used, also auto-prefixes the CSS...
-      browsers: ['last 2 versions', 'IE > 10'], // ...based on this browser list
-    }),
-    postcssReporter({ // Posts messages from plugins to the terminal
-      clearMessages: true,
-    }),
-  ],
-
   resolve: {
-    modules: ['src', 'node_modules'],
+    modules: [
+      path.join(__dirname, '../', 'src'),
+      'node_modules',
+    ],
     extensions: [
-      '',
       '.js',
       '.jsx',
       '.react.js',
     ],
-    packageMains: [
+    mainFields: [
       'jsnext:main',
       'main',
     ],
@@ -112,5 +108,5 @@ module.exports = (options) => ({
   devtool: options.devtool,
   target: 'web', // Make web variables accessible to webpack, e.g. window
   stats: true, // Don't show stats in the console
-  progress: true,
+  // progress: true,
 });

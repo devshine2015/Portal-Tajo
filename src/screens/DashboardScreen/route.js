@@ -16,4 +16,4 @@ const createRoute = ({
   protected: true,
 });
 
-module.exports = createRoute;
+export default createRoute;

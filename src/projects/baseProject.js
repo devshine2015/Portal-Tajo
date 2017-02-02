@@ -8,9 +8,9 @@
 import 'babel-polyfill';
 
 // Load the favicon, the manifest.json file and the .htaccess file
-import 'file?name=[name].[ext]!../favicon.ico';
-import 'file?name=[name].[ext]!../manifest.json'; // manifest for mobile devices
-import 'file?name=[name].[ext]!../.htaccess';
+import 'file-loader?name=[name].[ext]!../favicon.ico';
+import 'file-loader?name=[name].[ext]!../manifest.json'; // manifest for mobile devices
+import 'file-loader?name=[name].[ext]!../.htaccess';
 
 // Import all the third party stuff
 import React from 'react';

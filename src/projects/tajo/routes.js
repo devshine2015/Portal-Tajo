@@ -10,6 +10,17 @@ import {
   selectLocationState,
 } from 'utils/routerHelpers';
 
+import rootScreen from 'screens/Root/route';
+import operationalScreen from 'screens/Operational/route';
+import reportsScreen from 'screens/ReportsScreen/route';
+import promoScreen from 'screens/PromoTrackingScreen/route';
+import installerScreen from 'screens/InstallerScreen/route';
+import vehiclesManagerScreen from 'screens/VehiclesManagerScreen/route';
+import usersManagerScreen from 'screens/UsersManager/route';
+import devicesManagerScreen from 'screens/DevicesManager/route';
+import loginScreen from 'screens/LoginScreen/route';
+import dashboardScreen from 'screens/DashboardScreen/route';
+
 export default function createRoutes(store) {
   const { injectReducer } = getHooks(store);
 
@@ -17,59 +28,59 @@ export default function createRoutes(store) {
     selectLocationState: selectLocationState(),
   });
 
-  const operationalRoute = require('screens/Operational/route')({
+  const operationalRoute = operationalScreen({
     ...mainMenu.escape.operational,
   });
 
-  const reportsRoute = require('screens/ReportsScreen/route')({
+  const reportsRoute = reportsScreen({
     ...mainMenu.escape.reports,
     injectReducer,
     errorHandler,
     loadModule,
   });
 
-  const promoRoute = require('screens/PromoTrackingScreen/route')({
+  const promoRoute = promoScreen({
     ...mainMenu.escape.promos,
     injectReducer,
     errorHandler,
     loadModule,
   });
 
-  const installerRoute = require('screens/InstallerScreen/route')({
+  const installerRoute = installerScreen({
     ...mainMenu.escape.installer,
     injectReducer,
     errorHandler,
     loadModule,
   });
 
-  const vehiclesEditorRoute = require('screens/VehiclesManagerScreen/route')({
+  const vehiclesEditorRoute = vehiclesManagerScreen({
     ...mainMenu.escape.vehicles,
     injectReducer,
     errorHandler,
     loadModule,
   });
 
-  const usersManagerRoute = require('screens/UsersManager/route')({
+  const usersManagerRoute = usersManagerScreen({
     ...mainMenu.escape.users,
     injectReducer,
     errorHandler,
     loadModule,
   });
 
-  const devicesManagerRoute = require('screens/DevicesManager/route')({
+  const devicesManagerRoute = devicesManagerScreen({
     ...mainMenu.escape.devices,
     injectReducer,
     errorHandler,
     loadModule,
   });
 
-  const loginRoute = require('screens/LoginScreen/route')({
+  const loginRoute = loginScreen({
     path: 'login',
   });
 
-  const dashboardRoute = require('screens/DashboardScreen/route')(mainMenu.escape.dashboard);
+  const dashboardRoute = dashboardScreen(mainMenu.escape.dashboard);
 
-  const rootRoute = require('screens/Root/route')({
+  const rootRoute = rootScreen({
     path: ROOT_ROUTE,
     dispatch: store.dispatch,
     mainMenu: mainMenu.escape,

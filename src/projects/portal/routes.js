@@ -10,6 +10,14 @@ import {
   selectLocationState,
 } from 'utils/routerHelpers';
 
+import rootScreen from 'screens/Root/route';
+import operationalScreen from 'screens/Operational/route';
+import reportsScreen from 'screens/ReportsScreen/route';
+import vehiclesManagerScreen from 'screens/VehiclesManagerScreen/route';
+import loginScreen from 'screens/LoginScreen/route';
+import dashboardScreen from 'screens/DashboardScreen/route';
+import chronicleScreen from 'screens/Chronicle/route';
+
 export default function createRoutes(store) {
   const { injectReducer } = getHooks(store);
 
@@ -17,11 +25,11 @@ export default function createRoutes(store) {
     selectLocationState: selectLocationState(),
   });
 
-  const reviewScreen = require('screens/DashboardScreen/route')(mainMenu.sunshine.review);
+  const reviewScreen = dashboardScreen(mainMenu.sunshine.review);
 
-  const operationalRoute = require('screens/Operational/route')(mainMenu.sunshine.operational);
+  const operationalRoute = operationalScreen(mainMenu.sunshine.operational);
 
-  const chronicleRoute = require('screens/Chronicle/route')({
+  const chronicleRoute = chronicleScreen({
     ...mainMenu.sunshine.history,
     injectReducer,
     errorHandler,
@@ -30,25 +38,25 @@ export default function createRoutes(store) {
   });
 
 
-  const reportsRoute = require('screens/ReportsScreen/route')({
+  const reportsRoute = reportsScreen({
     ...mainMenu.sunshine.reports,
     injectReducer,
     errorHandler,
     loadModule,
   });
 
-  const vehiclesEditorRoute = require('screens/VehiclesManagerScreen/route')({
+  const vehiclesEditorRoute = vehiclesManagerScreen({
     ...mainMenu.sunshine.vehicles,
     injectReducer,
     errorHandler,
     loadModule,
   });
 
-  const loginRoute = require('screens/LoginScreen/route')({
+  const loginRoute = loginScreen({
     path: 'login',
   });
 
-  const rootRoute = require('screens/Root/route')({
+  const rootRoute = rootScreen({
     path: ROOT_ROUTE,
     dispatch: store.dispatch,
     mainMenu: mainMenu.sunshine,

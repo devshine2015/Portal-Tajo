@@ -3,7 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-
+// const cssLoaders = require('./cssConfigs');
 const PROJECT = process.env.DRVR_PROJECT;
 
 module.exports = require('./webpack.base')({
@@ -35,15 +35,16 @@ module.exports = require('./webpack.base')({
 
     // OccurrenceOrderPlugin is needed for long-term caching to work properly.
     // See http://mxs.is/googmv
-    new webpack.optimize.OccurrenceOrderPlugin(true),
+    // new webpack.optimize.OccurrenceOrderPlugin(true),
 
     // Merge all duplicate modules
-    new webpack.optimize.DedupePlugin(),
+    // new webpack.optimize.DedupePlugin(),
 
     // Minify and optimize the JavaScript
     new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
       compress: {
-        warnings: false, // ...but do not show warnings in the console (there is a lot of them)
+        warnings: false, // hide warnings in the console
       },
     }),
 
@@ -66,6 +67,11 @@ module.exports = require('./webpack.base')({
     }),
 
     // Extract the CSS into a seperate file
-    new ExtractTextPlugin('css/[name].[contenthash].css'),
+    // new ExtractTextPlugin({css/[name].[contenthash].css'),
+    new ExtractTextPlugin({
+      filename: 'css/[name].[contenthash].css',
+      disable: false,
+      allChunks: true,
+    }),
   ],
 });

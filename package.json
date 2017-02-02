@@ -1,6 +1,6 @@
 {
   "name": "drvr.co",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "description": "common code base for DRVR portals",
   "repository": {
     "type": "git",
@@ -85,7 +85,7 @@
     "sanitize.css": "3.3.0",
     "tinycolor2": "1.4.1",
     "velocity-react": "1.1.5",
-    "webpack": "2.1.0-beta.21",
+    "webpack": "2.2.1",
     "webpack-dev-middleware": "1.6.1",
     "webpack-hot-middleware": "2.10.0",
     "whatwg-fetch": "1.0.0"
@@ -118,7 +118,6 @@
     "html-loader": "0.4.3",
     "html-webpack-plugin": "2.17.0",
     "imports-loader": "0.6.5",
-    "json-loader": "0.5.4",
     "postcss-cssnext": "2.5.2",
     "postcss-focus": "1.0.0",
     "postcss-loader": "0.9.1",

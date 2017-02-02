@@ -9,4 +9,4 @@ const createRoute = ({ path, name = 'login' }) => ({
   protected: false,
 });
 
-module.exports = createRoute;
+export default createRoute;

@@ -43,4 +43,4 @@ const createRoute = ({
   },
 });
 
-module.exports = createRoute;
+export default createRoute;
