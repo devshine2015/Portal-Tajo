@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# update package version on each commit
+# if it made not in one of disallowed brunches
+
+BRANCH=$(git symbolic-ref HEAD | sed 's!refs\/heads\/!!')
+NOT_ALLOWED="dev stage@candidate stage@true_candidate production"
+
+# look for current brunch in the list of not_allowed branches
+IS_ALLOWED=$(echo $NOT_ALLOWED | grep -o "$BRANCH")
+
+# if current brunch has been found
+# in not_allowed list then
+# skip version bumping
+if [ ! -z $IS_ALLOWED ] ; then
+  echo "not allowed to bump version"
+  exit 0
+else
+  echo "bump version is allowed. Bumping..."
+
+  VERSION="patch"
+
+  # skip making autocommit and tagging
+  npm --no-git-tag-version version $VERSION
+
+  git add -A
+fi
+
+exit 0

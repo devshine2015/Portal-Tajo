@@ -1,6 +1,6 @@
 {
   "name": "drvr.co",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "common code base for DRVR portals",
   "repository": {
     "type": "git",
@@ -16,6 +16,8 @@
     "build:escape-dev": "cross-env DRVR_PROJECT=tajo webpack --config webpack/webpack.dev.js --color",
     "build:sunshine-dev": "cross-env DRVR_PROJECT=portal webpack --config webpack/webpack.dev.js --color",
     "//": "tasks for local development",
+    "postinstall": "npm run setup",
+    "setup": "cp ci/pre-commit .git/hooks",
     "shrink": "npm shrinkwrap --dev",
     "escape": "npm run start:tunnel:escape",
     "sunshine": "npm run start:tunnel:sunshine",
