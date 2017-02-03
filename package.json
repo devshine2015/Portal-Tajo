@@ -1,6 +1,6 @@
 {
   "name": "drvr.co",
-  "version": "1.0.27",
+  "version": "1.0.28",
   "description": "common code base for DRVR portals",
   "repository": {
     "type": "git",
@@ -85,6 +85,7 @@
     "eslint-config-airbnb": "7.0.0",
     "eslint-plugin-import": "1.14.0",
     "eslint-plugin-jsx-a11y": "0.6.2",
+    "eslint-plugin-mocha": "^4.8.0",
     "eslint-plugin-react": "4.3.0",
     "exports-loader": "0.6.3",
     "extract-text-webpack-plugin": "2.0.0-beta.4",
