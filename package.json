@@ -1,6 +1,6 @@
 {
   "name": "drvr.co",
-  "version": "1.0.28",
+  "version": "1.0.29",
   "description": "common code base for DRVR portals",
   "repository": {
     "type": "git",
@@ -11,6 +11,7 @@
     "clean": "rimraf ./build ./builds",
     "clean:escape": "rimraf ./builds/dev/tajo ./builds/prod/tajo",
     "clean:sunshine": "rimraf ./builds/dev/portal ./builds/prod/portal",
+    "commit": "git-cz",
     "build:escape": "cross-env NODE_ENV=production DRVR_PROJECT=tajo webpack --config webpack/webpack.prod.js --color -p",
     "build:sunshine": "cross-env NODE_ENV=production DRVR_PROJECT=portal webpack --config webpack/webpack.prod.js --color -p",
     "build:escape-dev": "cross-env DRVR_PROJECT=tajo webpack --config webpack/webpack.dev.js --color",
@@ -27,6 +28,11 @@
   },
   "author": "Maksim Orlov, Kirill Bulatsev",
   "license": "ISC",
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
   "dependencies": {
     "aphrodite": "1.0.0",
     "babel-polyfill": "6.13.0",
@@ -79,8 +85,10 @@
     "babel-preset-stage-0": "6.5.0",
     "chalk": "1.1.3",
     "classnames": "2.2.5",
+    "commitizen": "2.9.5",
     "cross-env": "1.0.8",
     "css-loader": "0.23.1",
+    "cz-conventional-changelog": "1.2.0",
     "eslint": "2.8.0",
     "eslint-config-airbnb": "7.0.0",
     "eslint-plugin-import": "1.14.0",

@@ -2,6 +2,8 @@
 
 Drvr portal, the Second version
 
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
 ---
 ## Naming Convention
 
