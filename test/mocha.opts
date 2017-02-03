@@ -1,2 +1,3 @@
+--NODE_ENV=test
 --require babel-register
 src/**/specs/*.spec.js

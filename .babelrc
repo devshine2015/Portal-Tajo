@@ -6,10 +6,7 @@
     "react",
     "stage-0",
     [
-      "es2015",
-      {
-        "modules": false
-      }
+      "es2015"
     ]
   ],
   "env": {
