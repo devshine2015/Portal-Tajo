@@ -1,6 +1,6 @@
 {
   "name": "drvr.co",
-  "version": "1.0.24",
+  "version": "1.0.25",
   "description": "common code base for DRVR portals",
   "repository": {
     "type": "git",
@@ -27,33 +27,6 @@
   },
   "author": "Maksim Orlov, Kirill Bulatsev",
   "license": "ISC",
-  "babel": {
-    "plugins": [
-      "transform-class-properties"
-    ],
-    "presets": [
-      "react",
-      "stage-0",
-      [
-        "es2015",
-        {
-          "modules": false
-        }
-      ]
-    ],
-    "env": {
-      "production": {
-        "only": [
-          "src"
-        ],
-        "plugins": [
-          "transform-react-remove-prop-types",
-          "transform-react-constant-elements",
-          "transform-react-inline-elements"
-        ]
-      }
-    }
-  },
   "dependencies": {
     "aphrodite": "1.0.0",
     "babel-polyfill": "6.13.0",
