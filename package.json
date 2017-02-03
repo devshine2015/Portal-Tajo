@@ -1,6 +1,6 @@
 {
   "name": "drvr.co",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "description": "common code base for DRVR portals",
   "repository": {
     "type": "git",
@@ -15,14 +15,15 @@
     "build:sunshine": "cross-env NODE_ENV=production DRVR_PROJECT=portal webpack --config webpack/webpack.prod.js --color -p",
     "build:escape-dev": "cross-env DRVR_PROJECT=tajo webpack --config webpack/webpack.dev.js --color",
     "build:sunshine-dev": "cross-env DRVR_PROJECT=portal webpack --config webpack/webpack.dev.js --color",
-    "//": "tasks for local development",
+    "//": "run test with config from './test/mocha.opts'",
     "postinstall": "npm run setup",
     "setup": "cp ci/pre-commit .git/hooks",
     "shrink": "npm shrinkwrap --dev",
     "escape": "npm run start:tunnel:escape",
     "sunshine": "npm run start:tunnel:sunshine",
     "start:tunnel:escape": "cross-env DRVR_PROJECT=tajo node server -d",
-    "start:tunnel:sunshine": "cross-env DRVR_PROJECT=portal node server -d"
+    "start:tunnel:sunshine": "cross-env DRVR_PROJECT=portal node server -d",
+    "test": "mocha"
   },
   "author": "Maksim Orlov, Kirill Bulatsev",
   "license": "ISC",
@@ -118,6 +119,7 @@
     "html-loader": "0.4.3",
     "html-webpack-plugin": "2.17.0",
     "imports-loader": "0.6.5",
+    "mocha": "^3.2.0",
     "postcss-cssnext": "2.5.2",
     "postcss-focus": "1.0.0",
     "postcss-loader": "0.9.1",
