@@ -12,6 +12,8 @@ import {
 } from './maritimeDemoData';
 import { vehicleClientUpdate } from './localTickHelpers';
 
+const isTest = process.env.NODE_ENV === 'test';
+
 function getNextState(itWas, itNow) {
   let itWill;
 
@@ -44,7 +46,7 @@ function _makeImmutableVehicle({
   const hasDist = vehicleStats.hasOwnProperty('dist');
   const hasTemp = vehicleStats.hasOwnProperty('temp');
   const isDead = !hasPosition;
-  const ignitionOn = checkIgnition(vehicleStats);
+  const ignitionOn = _checkIgnition(vehicleStats);
   const localTimings = vehicleClientUpdate(imVehicle, now, ignitionOn);
 
   const imNextVehicle = imVehicle.withMutations(s => {
@@ -181,7 +183,7 @@ export function checkLaggedVehicle(delayTimeMinutes) {
         && delayTimeMinutes < ZOMBIE_TIME_TRH_MIN;
 }
 
-function checkIgnition(status) {
+function _checkIgnition(status) {
   // ignitionOn values:  0- off; 1- on; 2- undefined
   // eslint-disable-next-line no-nested-ternary
   return status.ignOn !== undefined ? (status.ignOn ? 1 : 0) : 2;
@@ -193,7 +195,7 @@ export function makeLocalVehicles(backEndVehiclesList = [], statsList = []) {
   const deadList = [];
   const delayedList = [];
   const now = Date.now();
-let removeMe_counter = 0;
+
   backEndVehiclesList.forEach((aVehicle) => {
     const vehicleStats = getVehicleById(aVehicle.id, statsList).vehicle;
     const imLocalVehicle = makeLocalVehicle(aVehicle, vehicleStats, now);
@@ -301,3 +303,11 @@ export function getVehicleById(id, array = []) {
     vehicleIndex,
   };
 }
+
+export const _private = (() => {
+  if (!isTest) return null;
+
+  return {
+    _checkIgnition,
+  };
+})();
