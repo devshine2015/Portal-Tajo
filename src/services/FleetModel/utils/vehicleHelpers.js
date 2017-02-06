@@ -309,5 +309,6 @@ export const _private = (() => {
 
   return {
     _checkIgnition,
+    _makeImmutableVehicle,
   };
 })();
