@@ -2,9 +2,8 @@
 import chai from 'chai';
 import { Map } from 'immutable';
 import * as helpers from '../vehicleHelpers';
-import { stats } from './vehicle.mock';
 import { ZOMBIE_TIME_TRH_MIN, LAG_INDICAION_TRH_MIN } from 'utils/constants';
-
+import { hasNothing, normal } from './stats.mock';
 
 const should = chai.should(); // eslint-disable-line no-unused-vars
 
@@ -34,21 +33,26 @@ describe('Fleet model vehicle helpers', function() {
 
   describe('_makeImmutableVehicle()', function() {
     const _makeImmutableVehicle = helpers._private._makeImmutableVehicle;
-    let imResult;
+    let normalStats;
+    let badStats;
     let result;
-    let status;
+    let badResult;
 
     before('create vehicle', function() {
-      status = stats[0];
-      imResult = _makeImmutableVehicle({
-        vehicleStats: status,
+      normalStats = _makeImmutableVehicle({
+        vehicleStats: normal,
       });
 
-      result = imResult.toJS();
+      badStats = _makeImmutableVehicle({
+        vehicleStats: hasNothing,
+      });
+
+      badResult = badStats.toJS();
+      result = normalStats.toJS();
     });
 
     it('should return immutable Map', function() {
-      imResult.should.be.an.instanceOf(Map);
+      normalStats.should.be.an.instanceOf(Map);
     });
 
     it('should create vehicle with all required common properties', function() {
@@ -67,17 +71,20 @@ describe('Fleet model vehicle helpers', function() {
       result.should.have.ownProperty('speed');
     });
 
-    it('vehicle should not be dead', function() {
-      const hasPosition = status.hasOwnProperty('pos');
+    it('vehicle should be dead', function() {
+      const isAlive = hasNothing.hasOwnProperty('pos');
 
-      result.isDead.should.be.equal(!hasPosition);
+      badResult.isDead.should.be.equal(!isAlive);
     });
 
     it('vehicle should not be dead', function() {
-      const hasPosition = status.hasOwnProperty('pos');
+      const isDead = normal.hasOwnProperty('pos');
 
-      result.isDead.should.be.equal(!hasPosition);
+      result.isDead.should.be.equal(!isDead);
     });
+
+    // it('vehicle should not be delayed', function() {
+    // });
   });
 
   describe('checkLaggedVehicle()', function() {
@@ -104,5 +111,9 @@ describe('Fleet model vehicle helpers', function() {
 
       should.equal(result, false);
     });
+  });
+
+  describe('makeLocalVehicle()', function() {
+
   });
 });

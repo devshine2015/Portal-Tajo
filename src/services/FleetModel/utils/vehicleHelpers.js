@@ -195,8 +195,6 @@ export function makeLocalVehicles(backEndVehiclesList = [], statsList = []) {
     const vehicleStats = getVehicleById(aVehicle.id, statsList).vehicle;
     const imLocalVehicle = makeLocalVehicle(aVehicle, vehicleStats, now);
 
-    if (imLocalVehicle.get('ignitionOn') === undefined) debugger;
-
     if (imLocalVehicle) {
       localVehicles[aVehicle.id] = imLocalVehicle;
 
