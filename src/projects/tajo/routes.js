@@ -29,53 +29,60 @@ export default function createRoutes(store) {
     selectLocationState: selectLocationState(),
   });
 
-  const operationalRoute = operationalScreen({
-    ...mainMenu.escape.operational,
+  const operationalRoute = require('screens/Operational/route')({
+    ...mainMenu.tajo.operational,
   });
 
-  const reportsRoute = reportsScreen({
-    ...mainMenu.escape.reports,
+  const reportsRoute = require('screens/ReportsScreen/route')({
+    ...mainMenu.tajo.reports,
     injectReducer,
     errorHandler,
     loadModule,
   });
 
-  const promoRoute = promoScreen({
-    ...mainMenu.escape.promos,
+  const promoRoute = require('screens/PromoTrackingScreen/route')({
+    ...mainMenu.tajo.promos,
     injectReducer,
     errorHandler,
     loadModule,
   });
 
-  const installerRoute = installerScreen({
-    ...mainMenu.escape.installer,
+  const installerRoute = require('screens/InstallerScreen/route')({
+    ...mainMenu.tajo.installer,
     injectReducer,
     errorHandler,
     loadModule,
   });
 
-  const vehiclesEditorRoute = vehiclesManagerScreen({
-    ...mainMenu.escape.vehicles,
+  const vehiclesEditorRoute = require('screens/VehiclesManagerScreen/route')({
+    ...mainMenu.tajo.vehicles,
     injectReducer,
     errorHandler,
     loadModule,
   });
 
-  const usersManagerRoute = usersManagerScreen({
-    ...mainMenu.escape.users,
+  const usersManagerRoute = require('screens/UsersManager/route')({
+    ...mainMenu.tajo.users,
     injectReducer,
     errorHandler,
     loadModule,
   });
 
-  const devicesManagerRoute = devicesManagerScreen({
-    ...mainMenu.escape.devices,
+  const devicesManagerRoute = require('screens/DevicesManager/route')({
+    ...mainMenu.tajo.devices,
     injectReducer,
     errorHandler,
     loadModule,
   });
 
-  const loginRoute = loginScreen({
+  const alertsEditorRoute = require('screens/AlertsEditor/route')({
+    ...mainMenu.portal.alerts,
+    injectReducer,
+    errorHandler,
+    loadModule,
+  });
+
+  const loginRoute = require('screens/LoginScreen/route')({
     path: 'login',
   });
 
@@ -107,6 +114,7 @@ export default function createRoutes(store) {
     usersManagerRoute,
     devicesManagerRoute,
     settingsRoute,
+    alertsEditorRoute,
   );
 
   return (
