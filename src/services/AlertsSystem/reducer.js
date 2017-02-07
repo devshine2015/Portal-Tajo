@@ -1,5 +1,4 @@
-import { fromJS } from 'immutable';
-import { loginActions, commonActions } from 'services/Auth/actions';
+import { List, Map, fromJS } from 'immutable';
 import {
   ALRT_TYPES_SET,
   ALRT_CONDITON_ADD,
@@ -8,15 +7,14 @@ import {
 
 const initialState = fromJS({
   types: [],
-  conditions: [],
+  conditions: new Map(), // map by ids
   events: [], // what happened, pulling this periodicaly from backEnd
-// });
+});
 
 function alertsReducer(state = initialState, action) {
   switch (action.type) {
-    // case USER_SET:
-    // case loginActions.LOGIN_SUCCESS:
-    //   return state.merge({ ...action.userData });
+    case ALRT_CONDITON_ADD:
+      return state.setIn(['conditions', action.alertObj.id], action.alertObj)
     default:
       return state;
   }
@@ -24,5 +22,19 @@ function alertsReducer(state = initialState, action) {
 
 export default alertsReducer;
 
-export const getAlertsTypes = state =>
-  state.get('types').toJS();
+const _alertsRx = state =>
+  state.get('alerts');
+
+export const getAlertTypes = state =>
+  _alertsRx(state).get('types').toJS();
+
+export const getAlertConditions = state => {
+  const imObj = _alertsRx(state).get('conditions');
+  if (imObj.size === 0) {
+    return [];
+  }
+  const jsObj = imObj.toJS();
+  const aList = Object.values(jsObj);
+  return aList;
+};
+
