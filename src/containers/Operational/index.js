@@ -38,7 +38,7 @@ class Operational extends React.Component {
   componentWillUnmount() {
     // socketActions.closeFleetSocket();
     // TODO: keep local tick alife all the time - actiual in any screen
-    // localTickActions.stopLocalTick();
+    localTickActions.stopLocalTick();
   }
 
   render() {

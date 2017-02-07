@@ -39,12 +39,18 @@ const Icon = ({
       { icon }
     </div>
   );
-}
+};
+
+Icon.propTypes = {
+  isDead: React.PropTypes.bool.isRequired,
+  isDelayed: React.PropTypes.bool.isRequired,
+  isDelayedWithIgnitionOff: React.PropTypes.bool.isRequired,
+};
 
 const Warn = ({
   isDead,
   isDelayed,
-  isExpanded,
+  isExpanded = false,
   updateDate,
 }) => {
   let infoStr = '';
@@ -66,21 +72,30 @@ const Warn = ({
   );
 };
 
+Warn.propTypes = {
+  isDead: React.PropTypes.bool.isRequired,
+  isDelayed: React.PropTypes.bool.isRequired,
+  isExpanded: React.PropTypes.bool,
+  updateDate: React.PropTypes.number.isRequired,
+};
+
 class ListItemVehicle extends React.Component {
 
   onClick = () => {
-    this.props.onClick(this.props.id);
+    this.props.onClick(this.props.vehicle.id);
   }
 
   inActivityIndicator() {
-    if (!this.props.isDead && !this.props.isDelayed) return null;
+    const { vehicle, isExpanded } = this.props;
+
+    if (!vehicle.isDead && !vehicle.isDelayed) return null;
 
     return (
       <Warn
-        isExpanded={this.props.isExpanded}
-        isDead={this.props.isDead}
-        isDelayed={this.props.isDelayed}
-        updateDate={this.props.lastUpdateSinceEpoch}
+        isExpanded={isExpanded}
+        isDead={vehicle.isDead}
+        isDelayed={vehicle.isDelayed}
+        updateDate={vehicle.lastUpdateSinceEpoch}
       />
     );
   }
@@ -93,12 +108,12 @@ class ListItemVehicle extends React.Component {
         <Divider />
         <ItemProperty
           title="Speed"
-          value={`${this.props.speed.toFixed(1)} km/h`}
+          value={`${this.props.vehicle.speed.toFixed(1)} km/h`}
         />
-        {this.props.temp &&
+        {this.props.vehicle.temp &&
           <ItemProperty
             title="Temperature"
-            value={`${this.props.temp.toFixed(1)}\xB0 C`}
+            value={`${this.props.vehicle.temp.toFixed(1)}\xB0 C`}
           />
         }
       </div>
@@ -108,33 +123,35 @@ class ListItemVehicle extends React.Component {
   renderMoreDetails() {
     if (!this.props.isExpanded) return null;
 
+    const { vehicle } = this.props;
+
     return (
       <div>
         <Divider />
         <ItemProperty
           title="License Plate"
-          value={this.props.licensePlate}
+          value={vehicle.original.licensePlate}
         />
         <ItemProperty
           title="Make"
-          value={this.props.make}
+          value={vehicle.original.make}
         />
         <ItemProperty
           title="Model"
-          value={this.props.model}
+          value={vehicle.original.model}
         />
         <ItemProperty
           title="Year"
-          value={this.props.year}
+          value={vehicle.original.year}
         />
         <Divider />
         <ItemProperty
           title="lat"
-          value={this.props.pos[0].toFixed(6)}
+          value={vehicle.pos[0].toFixed(6)}
         />
         <ItemProperty
           title="lon"
-          value={this.props.pos[1].toFixed(6)}
+          value={vehicle.pos[1].toFixed(6)}
         />
       </div>
     );
@@ -144,15 +161,16 @@ class ListItemVehicle extends React.Component {
     const className = cs(stylesBase.listItemInn, {
       [styles.listItemInn_expanded]: this.props.isExpanded,
     });
-    const { isDead, isDelayed, isDelayedWithIgnitionOff } = this.props;
-    const needIndicator = isDead || isDelayed || isDelayedWithIgnitionOff;
+    const { vehicle } = this.props;
+    const needIndicator = vehicle.isDead || vehicle.isDelayed || vehicle.isDelayedWithIgnitionOff;
+
     return (
       <div
         className={className}
         onClick={this.onClick}
       >
         <h1>
-          {isEscape ? `${this.props.name} ig:${this.props.ignitionOn}` : this.props.name}
+          { isEscape ? `${vehicle.original.name} ig:${vehicle.ignitionOn}` : vehicle.original.name }
         </h1>
 
         { this.inActivityIndicator() }
@@ -166,9 +184,9 @@ class ListItemVehicle extends React.Component {
 
         { needIndicator && (
           <Icon
-            isDead={isDead}
-            isDelayed={isDelayed}
-            isDelayedWithIgnitionOff={isDelayedWithIgnitionOff}
+            isDead={vehicle.isDead}
+            isDelayed={vehicle.isDelayed}
+            isDelayedWithIgnitionOff={vehicle.isDelayedWithIgnitionOff}
           />
         )}
       </div>
