@@ -2,26 +2,20 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import LinearProgress from 'material-ui/LinearProgress';
 import { getInstanceChronicleFrameById } from 'containers/Chronicle/reducer';
-
-// import Divider from 'material-ui/Divider';
 
 import stylesTop from '../styles.css';
 import styles from './styles.css';
 
-import LinearProgress from 'material-ui/LinearProgress';
 
 class ChronicleListItem extends React.Component {
-  // shouldComponentUpdate(nextProps) {
-  //
-  // }
   onClick = () => {
     this.props.onClick(this.props.id);
   }
-  getChronocle = () => {
 
-  }
-  // <Divider key="line02" />
+  getChronocle = () => { }
+
   render() {
     const chronicleFrame = this.props.getInstanceChronicleFrameById(this.props.id);
     const className = classnames(stylesTop.listItemInn, {

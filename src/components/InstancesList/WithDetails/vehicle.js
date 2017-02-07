@@ -9,9 +9,9 @@ import Divider from 'material-ui/Divider';
 import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
 import AlertLagIcon from 'material-ui/svg-icons/action/watch-later';
 import { yellow700, blueGrey200 } from 'material-ui/styles/colors';
+import ItemProperty from '../DetailItemProperty';
 
 import { isEscape } from 'configs';
-import ItemProperty from '../DetailItemProperty';
 import { vehicleShape } from 'services/FleetModel/PropTypes';
 
 import stylesBase from '../styles.css';

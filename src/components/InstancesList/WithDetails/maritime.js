@@ -5,17 +5,19 @@ import moment from 'moment';
 import { VelocityTransitionGroup } from 'velocity-react';
 require('velocity-animate');
 require('velocity-animate/velocity.ui');
-
-import { speedKmHToKnots,
-  decimalDegToDMS,
-  kmToNauticalMiles } from 'utils/convertors';
-
-import { isEscape } from 'configs';
-import ItemProperty from '../DetailItemProperty';
 import Divider from 'material-ui/Divider';
 import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
 import AlertLagIcon from 'material-ui/svg-icons/action/watch-later';
 import { yellow700, blueGrey200 } from 'material-ui/styles/colors';
+import ItemProperty from '../DetailItemProperty';
+
+import {
+  speedKmHToKnots,
+  decimalDegToDMS,
+  kmToNauticalMiles,
+} from 'utils/convertors';
+import { isEscape } from 'configs';
+import { maritimeShape } from 'services/FleetModel/PropTypes';
 
 import stylesBase from '../styles.css';
 import styles from './styles.css';
@@ -42,12 +44,18 @@ const Icon = ({
       { icon }
     </div>
   );
-}
+};
+
+Icon.propTypes = {
+  isDead: React.PropTypes.bool.isRequired,
+  isDelayed: React.PropTypes.bool.isRequired,
+  isDelayedWithIgnitionOff: React.PropTypes.bool.isRequired,
+};
 
 const Warn = ({
   isDead,
   isDelayed,
-  isExpanded,
+  isExpanded = false,
   updateDate,
 }) => {
   let infoStr = '';
@@ -69,64 +77,70 @@ const Warn = ({
   );
 };
 
+Warn.propTypes = {
+  isDead: React.PropTypes.bool.isRequired,
+  isDelayed: React.PropTypes.bool.isRequired,
+  isExpanded: React.PropTypes.bool,
+  updateDate: React.PropTypes.number.isRequired,
+};
+
 class ListItemMaritime extends React.Component {
 
   onClick = () => {
-    this.props.onClick(this.props.id);
+    this.props.onClick(this.props.vehicle.id);
   }
 
   inActivityIndicator() {
-    if (!this.props.isDead && !this.props.isDelayed) return null;
+    const { vehicle, isExpanded } = this.props;
+
+    if (!vehicle.isDead && !vehicle.isDelayed) return null;
 
     return (
       <Warn
-        isExpanded={this.props.isExpanded}
-        isDead={this.props.isDead}
-        isDelayed={this.props.isDelayed}
-        updateDate={this.props.lastUpdateSinceEpoch}
+        isExpanded={isExpanded}
+        isDead={vehicle.isDead}
+        isDelayed={vehicle.isDelayed}
+        updateDate={vehicle.lastUpdateSinceEpoch}
       />
     );
   }
 
   renderDetails() {
     if (!this.props.isExpanded) return null;
-    // const reportDate = new Date(this.props.lastUpdateSinceEpoch);
-    const estimatedTravelNM = kmToNauticalMiles(this.props.estimatedTravelKm);
-    // <ItemProperty
-    //   title="Reporting Time"
-    //   value={`${reportDate.toISOString()}`}
-    // />
+
+    const { vehicle } = this.props;
+    const estimatedTravelNM = kmToNauticalMiles(vehicle.estimatedTravelKm);
 
     return (
       <div>
         <Divider />
         <ItemProperty
           title="Call Sign"
-          value={`${this.props.licensePlate}`}
+          value={`${vehicle.original.licensePlate}`}
         />
         <ItemProperty
           title="Tracking Interval"
-          value={`${this.props.trackigInterval}min`}
+          value={`${vehicle.trackigInterval}min`}
         />
         <ItemProperty
           title="Speed"
-          value={`${speedKmHToKnots(this.props.speed).toFixed(3)}kn`}
+          value={`${speedKmHToKnots(vehicle.speed).toFixed(3)}kn`}
         />
         <ItemProperty
           title="Heading"
-          value={`${this.props.heading}\xB0`}
+          value={`${vehicle.heading}\xB0`}
         />
         <ItemProperty
           title="Latitude"
-          value={`${decimalDegToDMS(this.props.pos[0], false)}`}
+          value={`${decimalDegToDMS(vehicle.pos[0], false)}`}
         />
         <ItemProperty
           title="Longtitude"
-          value={`${decimalDegToDMS(this.props.pos[1], true)}`}
+          value={`${decimalDegToDMS(vehicle.pos[1], true)}`}
         />
         <ItemProperty
           title="Time since report"
-          value={`${this.props.timeSinceUpdateMin}min`}
+          value={`${vehicle.timeSinceUpdateMin}min`}
         />
         <ItemProperty
           title="Est Distance since report"
@@ -140,15 +154,16 @@ class ListItemMaritime extends React.Component {
     const className = cs(stylesBase.listItemInn, {
       [styles.listItemInn_expanded]: this.props.isExpanded,
     });
-    const { isDead, isDelayed, isDelayedWithIgnitionOff } = this.props;
-    const needIndicator = isDead || isDelayed || isDelayedWithIgnitionOff;
+    const { vehicle } = this.props;
+    const needIndicator = vehicle.isDead || vehicle.isDelayed || vehicle.isDelayedWithIgnitionOff;
+
     return (
       <div
         className={className}
         onClick={this.onClick}
       >
         <h1>
-          {this.props.name}
+          {vehicle.original.name}
         </h1>
 
         { this.inActivityIndicator() }
@@ -162,9 +177,9 @@ class ListItemMaritime extends React.Component {
 
         { needIndicator && (
           <Icon
-            isDead={isDead}
-            isDelayed={isDelayed}
-            isDelayedWithIgnitionOff={isDelayedWithIgnitionOff}
+            isDead={vehicle.isDead}
+            isDelayed={vehicle.isDelayed}
+            isDelayedWithIgnitionOff={vehicle.isDelayedWithIgnitionOff}
           />
         )}
       </div>
@@ -174,22 +189,8 @@ class ListItemMaritime extends React.Component {
 
 ListItemMaritime.propTypes = {
   onClick: React.PropTypes.func.isRequired,
-  id: React.PropTypes.string.isRequired,
   isExpanded: React.PropTypes.bool,
-  isDelayed: React.PropTypes.bool.isRequired,
-  isDead: React.PropTypes.bool.isRequired,
-  lastUpdateSinceEpoch: React.PropTypes.number.isRequired,
-  name: React.PropTypes.string.isRequired,
-  speed: React.PropTypes.number,
-  pos: React.PropTypes.array,
-  temp: React.PropTypes.number,
-  dist: React.PropTypes.object,
-  licensePlate: React.PropTypes.string,
-  make: React.PropTypes.string,
-  model: React.PropTypes.string,
-  year: React.PropTypes.string,
-  ignitionOn: React.PropTypes.number,
-  isDelayedWithIgnitionOff: React.PropTypes.bool.isRequired,
+  vehicle: maritimeShape.isRequired,
 };
 
 const PureListItemMaritime = pure(ListItemMaritime);

@@ -7,7 +7,7 @@ const bool = React.PropTypes.bool;
 const arrayOf = React.PropTypes.arrayOf;
 const oneOf = React.PropTypes.oneOf;
 
-export const vehicleOriginalShape = shape({
+const _original = {
   id: string.isRequired,
   name: string,
   licensePlate: string.isRequired,
@@ -23,14 +23,15 @@ export const vehicleOriginalShape = shape({
   }),
   deviceId: string,
   status: string.isRequired,
-});
+};
 
-export const vehicleShape = shape({
+
+const _vehicle = {
   // taken from original.id
   id: string.isRequired,
 
   // original data from backend
-  original: vehicleOriginalShape.isRequired,
+  original: _original.isRequired,
 
   // true if not mathed search string and/or filter parameters.
   // usually updates by user input
@@ -99,4 +100,24 @@ export const vehicleShape = shape({
   // TODO - define the property.
   // 10 by default
   estimatedTravelKm: number.isRequired,
+};
+
+export const vehicleOriginalShape = shape(_original);
+
+export const vehicleShape = shape(_vehicle);
+
+export const maritimeShape = shape({
+  ..._vehicle,
+
+  // TODO - add description
+  estimatedTravelKm: number.isRequired,
+
+  // TODO - add description
+  timeSinceUpdateMin: number.isRequired,
+
+  // TODO - add description
+  trackigInterval: number.isRequired,
+
+  // TODO - add description
+  heading: number.isRequired,
 });

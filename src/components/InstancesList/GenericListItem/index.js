@@ -52,9 +52,10 @@ function chooseItem(type, {
     case types.vehicleChronicle: {
       return (
         <VehicleChronicleItem
+          id={item.id}
           onClick={onItemClick}
           isExpanded={isExpanded}
-          {...item}
+          name={item.original.name}
         />
       );
     }
@@ -63,7 +64,7 @@ function chooseItem(type, {
         <MaritimeItem
           onClick={onItemClick}
           isExpanded={isExpanded}
-          {...item}
+          vehicle={item}
         />
       );
     }
@@ -71,7 +72,7 @@ function chooseItem(type, {
       return (
         <SimpleItem
           id={item.id}
-          name={item.name}
+          name={item.original.name}
           onClick={onItemClick}
         />
       );

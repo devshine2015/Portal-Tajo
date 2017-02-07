@@ -82,7 +82,7 @@ class MapVehicle extends React.Component {
       className: styles.animatedS,
     });
     this.theMarker = window.L.marker(this.props.theVehicle.pos,
-      { title: this.props.theVehicle.name,
+      { title: this.props.theVehicle.original.name,
         icon: this.markerIcon,
         riseOnHover: true,
       });
@@ -119,7 +119,7 @@ class MapVehicle extends React.Component {
       autoPan: false,
       keepInView: false,
       zoomAnimation: true,
-    }).setContent(this.props.theVehicle.name);
+    }).setContent(this.props.theVehicle.original.name);
 
     // this.theMarker.bindPopup(this.popUp);
     // const hoverHandle = ((inThis) => (e) => {
