@@ -24,6 +24,11 @@ const common = {
     name: 'settings',
     path: 'settings',
   },
+  alerts: {
+    name: 'alerts',
+    niceName: 'Alerts Editor',
+    path: 'alerts',
+  },
 };
 
 const escapePortal = {
