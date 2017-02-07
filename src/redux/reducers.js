@@ -16,6 +16,7 @@ import authReducer from 'services/Auth/reducer';
 import globalReducer from 'services/Global/reducer';
 import userReducer from 'services/UserModel/reducer';
 import devicesReducer from 'services/Devices/reducer';
+import alertsSystemReducer from 'services/AlertsSystem/reducer';
 
 import { LOCATION_CHANGE } from 'react-router-redux';
 
@@ -50,6 +51,7 @@ export default function createReducer(asyncReducers) {
     gfEditor: gfEditorReducer,
     mapView: mapViewReducer,
     devices: devicesReducer,
+    alerts: alertsSystemReducer,
     ...asyncReducers,
   });
 }
