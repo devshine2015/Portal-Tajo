@@ -65,7 +65,7 @@ class MapVehicle extends React.Component {
     // const headAnchorW = pinW - headSz * 0.75;
     // const headAnchorH = headSz + pinAnchorH * 0.65;
 
-    const iconImg = getVehicleByValue(this.props.theVehicle.kind).pic;
+    const iconImg = getVehicleByValue(this.props.theVehicle.original.kind).pic;
 
     this.markerIcon = window.L.icon({
       iconUrl: iconImg,

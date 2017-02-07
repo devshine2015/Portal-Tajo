@@ -28,7 +28,6 @@ export function removeMe_OverrideMaritimeDemoData(status) {
   status.pos.speed = 24;
 }
 
-let maritimeDemoCounter = 0;
 // demo helper to set all the proto maritime-specific props to vessel obj
 export function removeMe_OverrideMaritimeDemoVessel(imVessel) {
   if (!isMaritime || !isMaritimeDemoData) {
@@ -36,7 +35,7 @@ export function removeMe_OverrideMaritimeDemoVessel(imVessel) {
   }
 
   return imVessel.withMutations(s => {
-    s.set('kind', 'BOAT')
+    s.setIn(['original', 'kind'], 'BOAT')
      .set('trackigInterval', 60) // how often it reports, minutes
      .set('heading', 130);
   });
