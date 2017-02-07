@@ -3,6 +3,8 @@ import chai from 'chai';
 import { Map } from 'immutable';
 import * as helpers from '../vehicleHelpers';
 import { stats } from './vehicle.mock';
+import { ZOMBIE_TIME_TRH_MIN, LAG_INDICAION_TRH_MIN } from 'utils/constants';
+
 
 const should = chai.should(); // eslint-disable-line no-unused-vars
 
@@ -75,6 +77,32 @@ describe('Fleet model vehicle helpers', function() {
       const hasPosition = status.hasOwnProperty('pos');
 
       result.isDead.should.be.equal(!hasPosition);
+    });
+  });
+
+  describe('checkLaggedVehicle()', function() {
+    it('vehicle should not be delayed', function() {
+      const minutes = LAG_INDICAION_TRH_MIN - 1;
+      const result = helpers.checkLaggedVehicle(minutes);
+
+      should.equal(result, false);
+    });
+
+    it('vehicle should be delayed', function() {
+      const del1 = LAG_INDICAION_TRH_MIN + 1;
+      const del2 = ZOMBIE_TIME_TRH_MIN - 1;
+      const result1 = helpers.checkLaggedVehicle(del1);
+      const result2 = helpers.checkLaggedVehicle(del2);
+
+      should.equal(result1, true);
+      should.equal(result2, true);
+    });
+
+    it('vehicle should be zombie', function() {
+      const minutes = ZOMBIE_TIME_TRH_MIN + 1;
+      const result = helpers.checkLaggedVehicle(minutes);
+
+      should.equal(result, false);
     });
   });
 });
