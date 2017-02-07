@@ -5,13 +5,14 @@ import moment from 'moment';
 import { VelocityTransitionGroup } from 'velocity-react';
 require('velocity-animate');
 require('velocity-animate/velocity.ui');
-
-import { isEscape } from 'configs';
-import ItemProperty from '../DetailItemProperty';
 import Divider from 'material-ui/Divider';
 import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
 import AlertLagIcon from 'material-ui/svg-icons/action/watch-later';
 import { yellow700, blueGrey200 } from 'material-ui/styles/colors';
+
+import { isEscape } from 'configs';
+import ItemProperty from '../DetailItemProperty';
+import { vehicleShape } from 'services/FleetModel/PropTypes';
 
 import stylesBase from '../styles.css';
 import styles from './styles.css';
@@ -177,22 +178,8 @@ class ListItemVehicle extends React.Component {
 
 ListItemVehicle.propTypes = {
   onClick: React.PropTypes.func.isRequired,
-  id: React.PropTypes.string.isRequired,
   isExpanded: React.PropTypes.bool,
-  isDelayed: React.PropTypes.bool.isRequired,
-  isDead: React.PropTypes.bool.isRequired,
-  lastUpdateSinceEpoch: React.PropTypes.number.isRequired,
-  name: React.PropTypes.string.isRequired,
-  speed: React.PropTypes.number,
-  pos: React.PropTypes.array,
-  temp: React.PropTypes.number,
-  dist: React.PropTypes.object,
-  licensePlate: React.PropTypes.string,
-  make: React.PropTypes.string,
-  model: React.PropTypes.string,
-  year: React.PropTypes.string,
-  ignitionOn: React.PropTypes.number,
-  isDelayedWithIgnitionOff: React.PropTypes.bool.isRequired,
+  vehicle: vehicleShape.isRequired,
 };
 
 const PureListItemVehicle = pure(ListItemVehicle);

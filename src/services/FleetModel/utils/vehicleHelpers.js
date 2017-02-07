@@ -35,7 +35,6 @@ function _makeImmutableVehicle({
   vehicleStats,
   now = Date.now(),
   imVehicle = new Map({}),
-  initilalValues = undefined,
 }) {
   // for maritime demoing
   // remove next string when maritime demo will be finished
@@ -46,8 +45,10 @@ function _makeImmutableVehicle({
   const hasDist = vehicleStats.hasOwnProperty('dist');
   const hasTemp = vehicleStats.hasOwnProperty('temp');
   const isDead = !hasPosition;
-  const ignitionOn = _checkIgnition(vehicleStats);
-  const localTimings = vehicleClientUpdate(imVehicle, now, ignitionOn);
+  const ignitionOn = checkIgnition(vehicleStats.ignOn);
+  const localTimings = vehicleClientUpdate({
+    imVehicle, now, ignitionOn,
+  });
 
   const imNextVehicle = imVehicle.withMutations(s => {
     s.set('isDead', isDead)
@@ -75,12 +76,6 @@ function _makeImmutableVehicle({
     } else {
       s.set('pos', [0, 0])
        .set('speed', 0);
-    }
-
-    // initial values used after fetching
-    // for converting backend data to local model
-    if (initilalValues) {
-      s.merge(initilalValues);
     }
   });
 
@@ -155,14 +150,14 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
     return null;
   }
 
-  const initilalValues = {
+  const initilalValues = new Map({
     filteredOut: false,
     ignitionOn: 1,
     isDelayedWithIgnitionOff: false,
     isDelayed: false,
     timeSinceUpdateMin: 1,
     estimatedTravelKm: 10,
-  };
+  });
 
   // for some vehicles kind is not defined
   if (!backEndObject.hasOwnProperty('kind')) {
@@ -170,10 +165,11 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
     backEndObject.kind = 'UNDEFINED';
   }
 
-  const imVehicle = _makeImmutableVehicle({ vehicleStats, initilalValues });
-
-  return imVehicle.set('original', backEndObject)
-                  .set('id', backEndObject.id);
+  return initilalValues.withMutations(s => {
+    s.merge(_makeImmutableVehicle({ vehicleStats }))
+     .set('original', backEndObject)
+     .set('id', backEndObject.id);
+  });
 }
 
 //
@@ -183,10 +179,9 @@ export function checkLaggedVehicle(delayTimeMinutes) {
         && delayTimeMinutes < ZOMBIE_TIME_TRH_MIN;
 }
 
-function _checkIgnition(status) {
+export function checkIgnition(ignOn) {
   // ignitionOn values:  0- off; 1- on; 2- undefined
-  // eslint-disable-next-line no-nested-ternary
-  return status.ignOn !== undefined ? (status.ignOn ? 1 : 0) : 2;
+  return ignOn !== undefined ? Number(ignOn) : 2;
 }
 
 export function makeLocalVehicles(backEndVehiclesList = [], statsList = []) {
@@ -199,6 +194,8 @@ export function makeLocalVehicles(backEndVehiclesList = [], statsList = []) {
   backEndVehiclesList.forEach((aVehicle) => {
     const vehicleStats = getVehicleById(aVehicle.id, statsList).vehicle;
     const imLocalVehicle = makeLocalVehicle(aVehicle, vehicleStats, now);
+
+    if (imLocalVehicle.get('ignitionOn') === undefined) debugger;
 
     if (imLocalVehicle) {
       localVehicles[aVehicle.id] = imLocalVehicle;
@@ -308,7 +305,6 @@ export const _private = (() => {
   if (!isTest) return null;
 
   return {
-    _checkIgnition,
     _makeImmutableVehicle,
   };
 })();

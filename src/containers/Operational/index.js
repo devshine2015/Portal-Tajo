@@ -21,7 +21,7 @@ class Operational extends React.Component {
 
   componentDidMount() {
     if (this.props.vehicles.length > 0) {
-      this.props.openFleetSocket();
+      // this.props.openFleetSocket();
       // TODO: move it none layer higher -
       // keep local tick alife all the time - actiual in any screen
       this.props.startLocalTick();
@@ -30,15 +30,15 @@ class Operational extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.vehicles.length === 0 && nextProps.vehicles.length > 0) {
-      this.props.openFleetSocket();
+      // this.props.openFleetSocket();
       this.props.startLocalTick();
     }
   }
 
   componentWillUnmount() {
-    socketActions.closeFleetSocket();
+    // socketActions.closeFleetSocket();
     // TODO: keep local tick alife all the time - actiual in any screen
-    localTickActions.stopLocalTick();
+    // localTickActions.stopLocalTick();
   }
 
   render() {

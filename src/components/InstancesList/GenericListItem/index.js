@@ -36,7 +36,7 @@ function chooseItem(type, {
         <DetailedVehicleItem
           onClick={onItemClick}
           isExpanded={isExpanded}
-          {...item}
+          vehicle={item}
         />
       );
     }
