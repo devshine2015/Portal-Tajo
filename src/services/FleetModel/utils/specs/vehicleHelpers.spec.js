@@ -191,4 +191,39 @@ describe('Fleet model vehicle helpers', function() {
       });
     });
   });
+
+  describe('sortVehicles()', function() {
+    const sortVehicles = helpers.sortVehicles;
+    const expected = ['1', '0'];
+
+    it('should sort raw backendObject and return array sorted by name', function() {
+      const dummyBackEndObject = [{
+        name: 'b',
+        id: '0',
+      }, {
+        name: 'aaa',
+        id: '1',
+      }];
+      const result = sortVehicles(dummyBackEndObject);
+
+      result.should.be.eql(expected);
+    });
+
+    it('should sort list of immutable map', function() {
+      const listOfMaps = [new Map({
+        id: '0',
+        original: {
+          name: 'b',
+        },
+      }), new Map({
+        id: '1',
+        original: {
+          name: 'aaa',
+        },
+      })];
+      const result = sortVehicles(listOfMaps);
+
+      result.should.be.eql(expected);
+    });
+  });
 });
