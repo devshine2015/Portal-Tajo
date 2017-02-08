@@ -160,4 +160,35 @@ describe('Fleet model vehicle helpers', function() {
       result.should.be.eql(expected);
     });
   });
+
+  describe('cleanVehicle()', function() {
+    const cleanVehicle = helpers.cleanVehicle;
+    const someVehicle = {
+      ololo: 1,
+      parampampam: 'blah',
+      year: 123,
+      model: 'model',
+      id: 'a1',
+    };
+
+    it('should not has unappropriate properties in result', function() {
+      const result = cleanVehicle(someVehicle);
+
+      result.should.not.have.property('ololo');
+      result.should.not.have.property('parampampam');
+    });
+
+    it('should return just props required by backend', function() {
+      const requiredBackEndProps = [
+        'id', 'name', 'licensePlate', 'make', 'model', 'kind',
+        'odometer', 'year', 'created', 'updated', 'deviceId',
+        'status',
+      ];
+      const result = cleanVehicle(someVehicle);
+
+      requiredBackEndProps.forEach(prop => {
+        result.should.have.property(prop);
+      });
+    });
+  });
 });
