@@ -246,7 +246,11 @@ export function sortVehicles(vehicles = []) {
     });
 }
 
-export function mockBackendVehicle(data) {
+/**
+ * return properties required by backend
+ * in order to modify vehicle
+ **/
+export function mockRequiredBackendProps(data) {
   const odo = data.isMiles ? data.odometer * 1.60934 : data.odometer;
 
   return {

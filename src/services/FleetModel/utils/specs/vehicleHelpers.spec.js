@@ -133,4 +133,31 @@ describe('Fleet model vehicle helpers', function() {
       result.should.be.equal(!isDead);
     });
   });
+
+  describe('getVehicleById()', function() {
+    const getVehicleById = helpers.getVehicleById;
+
+    it('should return \'vehicleIndex\' and \'vehicle\'', function() {
+      const result = getVehicleById();
+
+      result.should.have.property('vehicleIndex');
+      result.should.have.property('vehicle');
+    });
+
+    it('should return correct index and vehicle object', function() {
+      const list = [{
+        id: 'a',
+      }, {
+        id: 'b',
+      }];
+      const id = 'b';
+      const result = getVehicleById(id, list);
+      const expected = {
+        vehicleIndex: 1,
+        vehicle: list[1],
+      };
+
+      result.should.be.eql(expected);
+    });
+  });
 });
