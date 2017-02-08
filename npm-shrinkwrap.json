@@ -1,6 +1,6 @@
 {
   "name": "drvr.co",
-  "version": "1.0.40",
+  "version": "1.0.41",
   "dependencies": {
     "abab": {
       "version": "1.0.3",
