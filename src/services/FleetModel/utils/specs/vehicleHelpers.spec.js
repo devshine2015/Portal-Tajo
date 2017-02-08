@@ -226,4 +226,21 @@ describe('Fleet model vehicle helpers', function() {
       result.should.be.eql(expected);
     });
   });
+
+  describe('makeLocalVehicles()', function() {
+    const makeLocalVehicles = helpers.makeLocalVehicles;
+
+    it('should return appropriate properties', function() {
+      const result = makeLocalVehicles();
+
+      result.should.have.property('localVehicles')
+        .that.is.an('object');
+      result.should.have.property('orderedVehicles')
+        .that.is.an('array');
+      result.should.have.property('deadList')
+        .that.is.an('array');
+      result.should.have.property('delayedList')
+        .that.is.an('array');
+    });
+  });
 });
