@@ -14,7 +14,7 @@ import { vehicleClientUpdate } from './localTickHelpers';
 
 const isTest = process.env.NODE_ENV === 'test';
 
-function getNextState(itWas, itNow) {
+function _getNextState(itWas, itNow) {
   let itWill;
 
   if (itWas === itNow) itWill = undefined;
@@ -23,6 +23,10 @@ function getNextState(itWas, itNow) {
   }
 
   return itWill;
+}
+
+function _checkIsDead(hasPosition = false) {
+  return !hasPosition;
 }
 
 /**
@@ -44,7 +48,7 @@ function _makeImmutableVehicle({
   const hasPosition = vehicleStats.hasOwnProperty('pos');
   const hasDist = vehicleStats.hasOwnProperty('dist');
   const hasTemp = vehicleStats.hasOwnProperty('temp');
-  const isDead = !hasPosition;
+  const isDead = _checkIsDead(hasPosition);
   const ignitionOn = checkIgnition(vehicleStats.ignOn);
   const localTimings = vehicleClientUpdate({
     imVehicle, now, ignitionOn,
@@ -87,7 +91,7 @@ function _makeImmutableVehicle({
   // return imNextVehicle;
 }
 
-const updateLocalVehicle = (imVehicle, vehicleStats, now) => {
+const _updateLocalVehicle = (imVehicle, vehicleStats, now) => {
   const imNextVehicle = _makeImmutableVehicle({ imVehicle, vehicleStats, now });
 
   const wasDead = imVehicle.get('isDead');
@@ -96,8 +100,8 @@ const updateLocalVehicle = (imVehicle, vehicleStats, now) => {
   const isDead = imNextVehicle.get('isDead');
   const isDelayed = imNextVehicle.get('isDelayed');
 
-  const willDead = getNextState(wasDead, isDead);
-  const willDelayed = getNextState(wasDelayed, isDelayed);
+  const willDead = _getNextState(wasDead, isDead);
+  const willDelayed = _getNextState(wasDelayed, isDelayed);
 
   return {
     imNextVehicle,
@@ -106,7 +110,7 @@ const updateLocalVehicle = (imVehicle, vehicleStats, now) => {
   };
 };
 
-function updateList(list, nextState = undefined, id) {
+function _updateList(list, nextState = undefined, id) {
   if (nextState === undefined) return list;
 
   if (nextState) {
@@ -128,14 +132,15 @@ export function updateLocalVehicles(wsStatuses, getState) {
   const now = Date.now();
   let deadList = getDeadList(getState());
   let delayedList = getDelayedList(getState());
+
   wsStatuses.forEach(status => {
     const localVehicle = processedList.get(status.id);
-    const { imNextVehicle, willDead, willDelayed } = updateLocalVehicle(localVehicle, status, now);
+    const { imNextVehicle, willDead, willDelayed } = _updateLocalVehicle(localVehicle, status, now);
 
     nextLocalVehicles[status.id] = imNextVehicle;
 
-    deadList = updateList(deadList, willDead, status.id);
-    delayedList = updateList(delayedList, willDelayed, status.id);
+    deadList = _updateList(deadList, willDead, status.id);
+    delayedList = _updateList(delayedList, willDelayed, status.id);
   });
 
   return {
@@ -152,9 +157,6 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
 
   const initilalValues = new Map({
     filteredOut: false,
-    ignitionOn: 1,
-    isDelayedWithIgnitionOff: false,
-    isDelayed: false,
     timeSinceUpdateMin: 1,
     estimatedTravelKm: 10,
   });
@@ -304,5 +306,6 @@ export const _private = (() => {
 
   return {
     _makeImmutableVehicle,
+    _checkIsDead,
   };
 })();

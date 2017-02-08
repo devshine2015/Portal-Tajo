@@ -3,7 +3,8 @@ import chai from 'chai';
 import { Map } from 'immutable';
 import * as helpers from '../vehicleHelpers';
 import { ZOMBIE_TIME_TRH_MIN, LAG_INDICAION_TRH_MIN } from 'utils/constants';
-import { hasNothing, normal } from './stats.mock';
+import { hasNothingStats, normalStats } from './stats.mock';
+import { backEndObject } from './backend.mock';
 
 const should = chai.should(); // eslint-disable-line no-unused-vars
 
@@ -30,32 +31,56 @@ describe('Fleet model vehicle helpers', function() {
     });
   });
 
+  describe('checkLaggedVehicle()', function() {
+    it('should not be delayed', function() {
+      const minutes = LAG_INDICAION_TRH_MIN - 1;
+      const result = helpers.checkLaggedVehicle(minutes);
 
-  describe('_makeImmutableVehicle()', function() {
-    const _makeImmutableVehicle = helpers._private._makeImmutableVehicle;
-    let normalStats;
-    let badStats;
-    let result;
-    let badResult;
+      should.equal(result, false);
+    });
+
+    it('should be delayed', function() {
+      const del1 = LAG_INDICAION_TRH_MIN + 1;
+      const del2 = ZOMBIE_TIME_TRH_MIN - 1;
+      const result1 = helpers.checkLaggedVehicle(del1);
+      const result2 = helpers.checkLaggedVehicle(del2);
+
+      should.equal(result1, true);
+      should.equal(result2, true);
+    });
+
+    it('should be zombie', function() {
+      const minutes = ZOMBIE_TIME_TRH_MIN + 1;
+      const result = helpers.checkLaggedVehicle(minutes);
+
+      should.equal(result, false);
+    });
+  });
+
+  describe('makeLocalVehicle()', function() {
+    const makeLocalVehicle = helpers.makeLocalVehicle;
 
     before('create vehicle', function() {
-      normalStats = _makeImmutableVehicle({
-        vehicleStats: normal,
-      });
+    });
 
-      badStats = _makeImmutableVehicle({
-        vehicleStats: hasNothing,
-      });
+    it('should return null if vehicle has status different from \'active\'', function() {
+      const status = {
+        status: 'some_other_status',
+      };
+      const resultWitStatus = makeLocalVehicle(status);
 
-      badResult = badStats.toJS();
-      result = normalStats.toJS();
+      should.equal(resultWitStatus, null);
     });
 
     it('should return immutable Map', function() {
-      normalStats.should.be.an.instanceOf(Map);
+      const result = makeLocalVehicle(backEndObject);
+
+      result.should.be.an.instanceOf(Map);
     });
 
-    it('should create vehicle with all required common properties', function() {
+    it('vehicle should has all required properties', function() {
+      const result = makeLocalVehicle(backEndObject, normalStats).toJS();
+
       result.should.have.ownProperty('isDead');
       result.should.have.ownProperty('isDelayed');
       result.should.have.ownProperty('lastUpdateSinceEpoch');
@@ -69,51 +94,43 @@ describe('Fleet model vehicle helpers', function() {
         .that.is.an('array')
           .with.lengthOf(2);
       result.should.have.ownProperty('speed');
+      result.should.have.ownProperty('filteredOut');
+      result.should.have.ownProperty('timeSinceUpdateMin');
+      result.should.have.ownProperty('estimatedTravelKm');
     });
 
-    it('vehicle should be dead', function() {
-      const isAlive = hasNothing.hasOwnProperty('pos');
+    it('should has \'original\' and \'id\' properties', function() {
+      const result = makeLocalVehicle(backEndObject).toJS();
 
-      badResult.isDead.should.be.equal(!isAlive);
+      result.should.have.ownProperty('original');
+      result.should.have.property('id')
+        .that.is.equal(backEndObject.id);
+    });
+
+    it('should set kind explicitly if it is not defined', function() {
+      delete backEndObject.kind;
+
+      const kindResult = makeLocalVehicle(backEndObject).toJS();
+
+      kindResult.original.kind.should.be.equal('UNDEFINED');
+    });
+  });
+
+  describe('_checkIsDead()', function() {
+    const checkIsDead = helpers._private._checkIsDead;
+
+    it('vehicle should be dead', function() {
+      const isAlive = hasNothingStats.hasOwnProperty('pos');
+      const result = checkIsDead(isAlive);
+
+      result.should.be.equal(!isAlive);
     });
 
     it('vehicle should not be dead', function() {
-      const isDead = normal.hasOwnProperty('pos');
+      const isDead = normalStats.hasOwnProperty('pos');
+      const result = checkIsDead(isDead);
 
-      result.isDead.should.be.equal(!isDead);
+      result.should.be.equal(!isDead);
     });
-
-    // it('vehicle should not be delayed', function() {
-    // });
-  });
-
-  describe('checkLaggedVehicle()', function() {
-    it('vehicle should not be delayed', function() {
-      const minutes = LAG_INDICAION_TRH_MIN - 1;
-      const result = helpers.checkLaggedVehicle(minutes);
-
-      should.equal(result, false);
-    });
-
-    it('vehicle should be delayed', function() {
-      const del1 = LAG_INDICAION_TRH_MIN + 1;
-      const del2 = ZOMBIE_TIME_TRH_MIN - 1;
-      const result1 = helpers.checkLaggedVehicle(del1);
-      const result2 = helpers.checkLaggedVehicle(del2);
-
-      should.equal(result1, true);
-      should.equal(result2, true);
-    });
-
-    it('vehicle should be zombie', function() {
-      const minutes = ZOMBIE_TIME_TRH_MIN + 1;
-      const result = helpers.checkLaggedVehicle(minutes);
-
-      should.equal(result, false);
-    });
-  });
-
-  describe('makeLocalVehicle()', function() {
-
   });
 });

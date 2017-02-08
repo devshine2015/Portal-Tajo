@@ -91,15 +91,6 @@ const _vehicle = {
   // TODO: what should be initilal ign status?
   // 1 by default
   ignitionOn: oneOf([0, 1, 2]).isRequired,
-
-  // TODO - define the property.
-  // 1 by default
-  timeSinceUpdateMin: number.isRequired,
-
-  // for maritime (?)
-  // TODO - define the property.
-  // 10 by default
-  estimatedTravelKm: number.isRequired,
 };
 
 export const vehicleOriginalShape = shape(_original);
@@ -110,9 +101,11 @@ export const maritimeShape = shape({
   ..._vehicle,
 
   // TODO - add description
+  // 10 by default
   estimatedTravelKm: number.isRequired,
 
   // TODO - add description
+  // 1 by default
   timeSinceUpdateMin: number.isRequired,
 
   // TODO - add description

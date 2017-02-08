@@ -1,10 +1,10 @@
-export const hasNothing = {
+export const hasNothingStats = {
   id: 'cd51361a-9d26-4a36-917f-60fed7c82bcb',
   name: 'has nothing',
   ts: '2017-02-06T09:05:49.000+0000',
 };
 
-export const normal = {
+export const normalStats = {
   id: '5aff793a-f1d9-4169-9aec-f635fb2f4122',
   name: 'normal 1',
   ts: '2017-02-06T09:05:31.000+0000',
