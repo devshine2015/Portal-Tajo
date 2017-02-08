@@ -2,7 +2,7 @@ import api from 'utils/api';
 import endpoints from 'configs/endpoints';
 import { setLoaderState } from './loaderActions';
 import { vehiclesActions } from 'services/FleetModel/actions';
-import { mockBackendVehicle } from 'services/FleetModel/utils/vehicleHelpers';
+import { mockRequiredBackendProps } from 'services/FleetModel/utils/vehicleHelpers';
 
 export const INSTALLER_SUBMIT_SUCCESS = 'portal/Installer/INSTALLER_SUBMIT_SUCCESS';
 export const INSTALLER_SUBMIT_FAILURE = 'portal/Installer/INSTALLER_SUBMIT_FAILURE';
@@ -14,7 +14,7 @@ export const sendData = (formData, dispatch) => {
   dispatch(setLoaderState(true));
   const { method, url } = endpoints.createVehicle;
   const vehiclePayload = {
-    payload: mockBackendVehicle(formData),
+    payload: mockRequiredBackendProps(formData),
   };
 
   return api[method](url, vehiclePayload)
