@@ -51,6 +51,7 @@
     "mapbox.js": "2.4.0",
     "material-ui": "0.16.7",
     "moment": "2.13.0",
+    "node-polyglot": "2.2.2",
     "node-uuid": "1.4.7",
     "query-string": "4.2.3",
     "react": "15.4.2",
