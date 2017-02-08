@@ -13,6 +13,7 @@ const initialState = fromJS({
   fleet: undefined,
   settings: {
     dateFormat: undefined,
+    lang: 'en',
   },
 });
 
@@ -57,3 +58,5 @@ export const getUserSettings = state =>
   state.getIn(['user', 'settings']);
 export const getFleetName = state =>
   state.getIn(['user', 'fleet']);
+export const getLocale = state =>
+  state.getIn(['user', 'settings', 'lang']);

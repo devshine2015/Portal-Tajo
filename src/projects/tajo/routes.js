@@ -20,6 +20,7 @@ import usersManagerScreen from 'screens/UsersManager/route';
 import devicesManagerScreen from 'screens/DevicesManager/route';
 import loginScreen from 'screens/LoginScreen/route';
 import dashboardScreen from 'screens/DashboardScreen/route';
+import settingsScreen from 'screens/Settings/route';
 
 export default function createRoutes(store) {
   const { injectReducer } = getHooks(store);
@@ -78,6 +79,8 @@ export default function createRoutes(store) {
     path: 'login',
   });
 
+  const settingsRoute = settingsScreen(mainMenu.escape.settings);
+
   const dashboardRoute = dashboardScreen(mainMenu.escape.dashboard);
 
   const rootRoute = rootScreen({
@@ -103,6 +106,7 @@ export default function createRoutes(store) {
     vehiclesEditorRoute,
     usersManagerRoute,
     devicesManagerRoute,
+    settingsRoute,
   );
 
   return (

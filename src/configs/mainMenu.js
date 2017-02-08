@@ -24,6 +24,11 @@ const common = {
     niceName: 'Operational',
     path: 'map',
   },
+  settings: {
+    name: 'settings',
+    niceName: 'Settings',
+    path: 'settings',
+  },
 };
 
 const escapePortal = {
