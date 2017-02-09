@@ -4,7 +4,6 @@ import {
   TextField,
   SelectField,
   MenuItem,
-  // RaisedButton,
   FlatButton,
   Checkbox,
 } from 'material-ui';
@@ -51,7 +50,7 @@ class VehicleDetails extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.id !== nextProps.id) {
+    if (this.props.details.id !== nextProps.id) {
       this.setNewVehicleDetails(nextProps);
     }
   }
@@ -178,7 +177,7 @@ class VehicleDetails extends React.Component {
           />
 
           <DeviceEditor
-            vehicleId={this.props.id}
+            vehicleId={this.props.details.id}
             deviceId={this.state.deviceId}
             updateDeviceId={this.updateDeviceId}
           />
@@ -243,10 +242,10 @@ class VehicleDetails extends React.Component {
 
 VehicleDetails.propTypes = {
   // Id for detecting if vehicle and its details has been changed
-  id: React.PropTypes.string.isRequired,
   disabled: React.PropTypes.bool.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
   details: React.PropTypes.shape({
+    id: React.PropTypes.string.isRequired,
     deviceId: React.PropTypes.string,
     kind: React.PropTypes.string,
     name: React.PropTypes.string.isRequired,

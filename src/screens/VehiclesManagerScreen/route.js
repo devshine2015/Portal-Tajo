@@ -19,7 +19,7 @@ const createRoute = ({
       const renderModule = loadModule(cb);
 
       importModules.then(([reducer, component]) => {
-        injectReducer(name, reducer.default);
+        injectReducer('vehicleEditor', reducer.default);
         renderModule(component);
       });
 

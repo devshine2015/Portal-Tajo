@@ -114,16 +114,10 @@ class VehiclesEditor extends React.Component {
     /**
      * Provide data required by component
      **/
-    const origins = this.props.vehicles[selectedVehicleOriginalIndex];
+    const vehicle = this.props.vehicles[selectedVehicleOriginalIndex];
     const data = {
-      kind: origins.kind,
-      name: origins.name,
-      year: origins.year,
-      model: origins.model,
-      make: origins.make,
-      deviceId: origins.deviceId,
-      licensePlate: origins.licensePlate,
-      odometer: (origins.dist.total / 1000).toFixed(0),
+      ...vehicle.original,
+      odometer: (vehicle.dist.total / 1000).toFixed(0),
     };
 
     return (
@@ -131,7 +125,6 @@ class VehiclesEditor extends React.Component {
         <VehicleDetails
           isLoading={this.props.isLoading}
           details={data}
-          id={origins.id}
           onSave={this.onDetailsSave}
           onCancel={this.closeEditor}
           disabled={this.props.isLoading}
