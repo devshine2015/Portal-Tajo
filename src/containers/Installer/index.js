@@ -6,6 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
+import Content from 'components/Content';
 import Form from 'components/Form';
 import Dialog from './components/Dialog';
 import DeviceSelector from 'containers/DeviceSelector';
@@ -184,72 +185,74 @@ class Installer extends React.Component {
     }
 
     return (
-      <div className={styles.installer}>
-        <Form
-          name="bounder"
-          onSubmit={this.onSubmit}
-          className={styles.form}
-        >
-          <TextField
-            fullWidth
-            name="name"
-            onChange={this.onChange}
-            floatingLabelText="Vehicle Name"
-            required
-          />
-          <TextField
-            fullWidth
-            name="license"
-            onChange={this.onChange}
-            floatingLabelText="License Plate Number"
-            required
-          />
-          <DeviceSelector
-            onChange={this.updateState}
-            onSelect={this.onDeviceSelect}
-            hasError={this.state.noDeviceSelectedError}
-            forcedValue={this.state.haveToReset ? '' : null}
-          />
-          <TextField
-            fullWidth
-            name="odometer"
-            onChange={this.onChange}
-            floatingLabelText="Current Odometer value"
-            required
-            type="number"
-          />
-          <Checkbox
-            className={styles.odo}
-            label="ODO value in miles"
-            name="isMiles"
-            onCheck={this.onChange}
-          />
-          <div className={styles.buttons}>
-            <RaisedButton
-              className={styles.submitButton}
-              disabled={mainButtonDisabled}
-              onClick={this.onSubmit}
-              label={mainButtonText}
-              type="submit"
-              primary
+      <Content>
+        <div className={styles.installer}>
+          <Form
+            name="bounder"
+            onSubmit={this.onSubmit}
+            className={styles.form}
+          >
+            <TextField
+              fullWidth
+              name="name"
+              onChange={this.onChange}
+              floatingLabelText="Vehicle Name"
+              required
             />
-            <FlatButton
-              onClick={this.resetForm}
-              label="Reset"
+            <TextField
+              fullWidth
+              name="license"
+              onChange={this.onChange}
+              floatingLabelText="License Plate Number"
+              required
             />
-          </div>
-        </Form>
-        <OfflineData
-          sendData={this.props.sendFromStorage}
-          cleanData={this.props.cleanOfflineData}
-          isOnline={this.props.isOnline}
-        />
-        <Dialog
-          open={this.state.dialogIsOpen}
-          handleSend={this.sendFromDialog}
-          handleClose={this.closeDialog}
-        />
-      </div>
+            <DeviceSelector
+              onChange={this.updateState}
+              onSelect={this.onDeviceSelect}
+              hasError={this.state.noDeviceSelectedError}
+              forcedValue={this.state.haveToReset ? '' : null}
+            />
+            <TextField
+              fullWidth
+              name="odometer"
+              onChange={this.onChange}
+              floatingLabelText="Current Odometer value"
+              required
+              type="number"
+            />
+            <Checkbox
+              className={styles.odo}
+              label="ODO value in miles"
+              name="isMiles"
+              onCheck={this.onChange}
+            />
+            <div className={styles.buttons}>
+              <RaisedButton
+                className={styles.submitButton}
+                disabled={mainButtonDisabled}
+                onClick={this.onSubmit}
+                label={mainButtonText}
+                type="submit"
+                primary
+              />
+              <FlatButton
+                onClick={this.resetForm}
+                label="Reset"
+              />
+            </div>
+          </Form>
+          <OfflineData
+            sendData={this.props.sendFromStorage}
+            cleanData={this.props.cleanOfflineData}
+            isOnline={this.props.isOnline}
+          />
+          <Dialog
+            open={this.state.dialogIsOpen}
+            handleSend={this.sendFromDialog}
+            handleClose={this.closeDialog}
+          />
+        </div>
+      </Content>
     );
   }
 }

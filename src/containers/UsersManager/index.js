@@ -3,6 +3,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import Content from 'components/Content';
 import { permissions } from 'configs/roles';
 import permitted from 'utils/permissionsRequired';
 import { getIsAddingNewUser } from 'services/Users/reducer';
@@ -40,12 +41,14 @@ const UsersManager = ({
     : null;
 
   return (
-    <div className={styles.wrapper}>
-      <ToolsPanel />
-      { isAddingNewUser && <UserEditor editMode="create" /> }
-      <UsersList />
-      { addUserButton }
-    </div>
+    <Content>
+      <div className={styles.wrapper}>
+        <ToolsPanel />
+        { isAddingNewUser && <UserEditor editMode="create" /> }
+        <UsersList />
+        { addUserButton }
+      </div>
+    </Content>
   );
 };
 

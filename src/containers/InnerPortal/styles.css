@@ -6,8 +6,7 @@
     overflow-y: hidden;
   }
 
-  .content{
-    display: flex;
+  .content {
     flex: 1;
     overflow-y: auto;
     margin-top: 64px;

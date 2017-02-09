@@ -1,6 +1,6 @@
 import React from 'react';
 import { isEscape } from 'configs';
-import { css } from 'aphrodite/no-important';
+import Content from 'components/Content';
 import EventsCalculator from 'containers/EventsCalculator';
 import FleetSummary from 'containers/FleetSummary';
 import WidgetsGroup from './components/WidgetsGroup';
@@ -33,15 +33,24 @@ function renderGroup({
   );
 }
 
+renderGroup.propTypes = {
+  component: React.PropTypes.node.isRequired,
+  title: React.PropTypes.oneOfType([
+    React.PropTypes.string,
+    React.PropTypes.node,
+  ]).isRequired,
+  className: React.PropTypes.string,
+};
+
 const DashboardScreen = () => (
-  <div className={css(classes.dashboard)}>
+  <Content>
     { canShow(EventsCalculator) && <EventsCalculator /> }
     { canShow(FleetSummary) && renderGroup({
       component: <FleetSummary />,
       title: 'Fleet Summary',
       className: classes.dashboard__summaryGroup,
     }) }
-  </div>
+  </Content>
 );
 
 export default DashboardScreen;

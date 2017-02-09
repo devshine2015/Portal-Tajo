@@ -1,6 +1,10 @@
 import React from 'react';
-// import PortalReports from 'containers/Report';
+import Content from 'components/Content';
 
-const SettingsScreen = () => <div>Settings</div>;
+const SettingsScreen = () => (
+  <Content>
+    <div>Settings</div>
+  </Content>
+);
 
 export default SettingsScreen;

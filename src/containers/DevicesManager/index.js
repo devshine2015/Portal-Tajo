@@ -5,6 +5,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import { permissions } from 'configs/roles';
 import permitted from 'utils/permissionsRequired';
+import Content from 'components/Content';
 import DevicesList from './components/DevicesList';
 import Toolbox from './components/Toolbox';
 import DeviceCreator from './components/DeviceCreator';
@@ -43,15 +44,17 @@ const DevicesManager = ({
   }
 
   return (
-    <div className={styles.managerContainer}>
-      <Toolbox />
+    <Content>
+      <div className={styles.managerContainer}>
+        <Toolbox />
 
-      { isEditing && <DeviceCreator /> }
+        { isEditing && <DeviceCreator /> }
 
-      <DevicesList />
+        <DevicesList />
 
-      { !isEditing && renderAddButton(userPermittedTo, openEditor) }
-    </div>
+        { !isEditing && renderAddButton(userPermittedTo, openEditor) }
+      </div>
+    </Content>
   );
 };
 
