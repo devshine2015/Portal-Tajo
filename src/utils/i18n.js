@@ -24,6 +24,8 @@ export const extend = (translation) => {
 
 // set next locale if it's supported
 // set to 'en' in other case
+// 
+// returns locale have been setup
 export const setLocale = nextLocale => {
   const defLocale = 'en';
   const tNextLocale = _transformLocale(nextLocale);
@@ -36,4 +38,6 @@ export const setLocale = nextLocale => {
   // remove all previously registered phrases
   polyglot.clear();
   polyglot.locale(resultLocale);
+
+  return resultLocale;
 };

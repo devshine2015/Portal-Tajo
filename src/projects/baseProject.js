@@ -18,10 +18,14 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+// import { setLocale } from 'utils/i18n';
 
 injectTapEventPlugin();
 
 require('sanitize.css/sanitize.css');
+
+// set language on app initialisation
+// setLocale(navigator.language);
 
 export const renderProject = ({
   anchor,

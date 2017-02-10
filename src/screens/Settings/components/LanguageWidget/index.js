@@ -3,11 +3,15 @@ import { connect } from 'react-redux';
 import cs from 'classnames';
 import { css } from 'aphrodite/no-important';
 import Widget from 'components/Widget';
-import { localesSupported } from 'configs/locales';
+import { localesSupported, setLocale } from 'utils/i18n';
 import { updateUserSettings } from 'services/UserModel/actions';
 import { getLocale } from 'services/UserModel/reducer';
 
 import classes from './classes';
+
+// const MAIN_TEXT = 'main_language_settings_text';
+const MAIN_TEXT = 'Application language';
+const WIDGET_TITLE = 'Language';
 
 const LangOption = ({
   text,
@@ -36,9 +40,6 @@ LangOption.propTypes = {
   onClick: React.PropTypes.func.isRequired,
 };
 
-// const mainText = 'main_language_settings_text';
-const mainText = 'Application language';
-
 function _renderOptions({
   currentLanguage,
   changeLanguage,
@@ -53,14 +54,23 @@ function _renderOptions({
   ));
 }
 
+const _changeLocation = dispatch => nextLang => {
+  dispatch(updateUserSettings(true, {
+    lang: nextLang,
+  }))
+    .then(() => {
+      setLocale(nextLang);
+    });
+};
+
 const LanguageWidget = (props) => (
   <Widget
-    title="Language"
+    title={WIDGET_TITLE}
     containerClass={classes.languageWidget}
   >
     <div className={css(classes.lang)}>
       <div className={css(classes.lang__text)}>
-        { mainText }
+        { MAIN_TEXT }
       </div>
 
       <div className={css(classes.lang__options)}>
@@ -80,11 +90,7 @@ const mapState = state => ({
 });
 
 const mapDispatch = dispatch => ({
-  changeLanguage: nextLang => {
-    dispatch(updateUserSettings(true, {
-      lang: nextLang,
-    }));
-  },
+  changeLanguage: _changeLocation(dispatch),
 });
 
 export default connect(mapState, mapDispatch)(LanguageWidget);
