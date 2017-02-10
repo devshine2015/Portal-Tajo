@@ -35,7 +35,7 @@ const Widget = ({
 };
 
 Widget.propTypes = {
-  children: React.PropTypes.node,
+  children: React.PropTypes.any.isRequired,
   containerClass: React.PropTypes.object,
   title: titlePropType,
 };
