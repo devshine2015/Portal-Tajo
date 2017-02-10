@@ -22,10 +22,18 @@ describe('i18n translation util', function() {
   });
 
   it('should set locale', function() {
-    const locale = 'th';
+    const locale = 'en';
 
     setLocale(locale);
 
     polyglot.currentLocale.should.be.equal(locale);
+  });
+
+  it('should not set unsupported locale', function() {
+    const locale = 'fr';
+
+    setLocale(locale);
+
+    polyglot.currentLocale.should.be.equal('en');
   });
 });
