@@ -4,10 +4,11 @@ import cs from 'classnames';
 import { css } from 'aphrodite/no-important';
 import Widget from 'components/Widget';
 import { localesSupported, setLocale } from 'utils/i18n';
+import translator from 'utils/translator';
 import { updateUserSettings } from 'services/UserModel/actions';
-import { getLocale } from 'services/UserModel/reducer';
 
 import classes from './classes';
+import phrases, { phrasesShape } from './phrases.lang';
 
 // const MAIN_TEXT = 'main_language_settings_text';
 const MAIN_TEXT = 'Application language';
@@ -41,7 +42,7 @@ LangOption.propTypes = {
 };
 
 function _renderOptions({
-  currentLanguage,
+  currentLocale,
   changeLanguage,
 }) {
   return localesSupported.map(lang => (
@@ -49,48 +50,54 @@ function _renderOptions({
       text={lang}
       key={lang}
       onClick={changeLanguage}
-      isSelected={ currentLanguage === lang }
+      isSelected={ currentLocale === lang }
     />
   ));
 }
 
-const _changeLocation = dispatch => nextLang => {
+const _changeLocation = (dispatch, ownProps) => nextLang => {
+  if (ownProps.currentLocale === nextLang) return;
+
+  setLocale(nextLang);
+
   dispatch(updateUserSettings(true, {
     lang: nextLang,
-  }))
-    .then(() => {
-      setLocale(nextLang);
-    });
+  }));
 };
 
-const LanguageWidget = (props) => (
+const LanguageWidget = ({
+  translations,
+  ...rest,
+}) => (
   <Widget
-    title={WIDGET_TITLE}
+    title={translations.language_settings_title}
     containerClass={classes.languageWidget}
   >
     <div className={css(classes.lang)}>
       <div className={css(classes.lang__text)}>
-        { MAIN_TEXT }
+        { translations.language_settings_main_text }
       </div>
 
       <div className={css(classes.lang__options)}>
-        { _renderOptions(props) }
+        { _renderOptions(rest) }
       </div>
     </div>
   </Widget>
 );
 
 LanguageWidget.propTypes = {
-  currentLanguage: React.PropTypes.oneOf(localesSupported).isRequired,
+  currentLocale: React.PropTypes.oneOf(localesSupported).isRequired,
   changeLanguage: React.PropTypes.func.isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
-const mapState = state => ({
-  currentLanguage: getLocale(state),
+const mapState = null;
+
+const mapDispatch = (dispatch, ownProps) => ({
+  changeLanguage: _changeLocation(dispatch, ownProps),
 });
 
-const mapDispatch = dispatch => ({
-  changeLanguage: _changeLocation(dispatch),
-});
+const Connected = connect(mapState, mapDispatch)(LanguageWidget);
 
-export default connect(mapState, mapDispatch)(LanguageWidget);
+export default translator(phrases)(Connected);

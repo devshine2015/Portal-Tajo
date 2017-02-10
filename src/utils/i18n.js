@@ -18,13 +18,13 @@ function _isLocaleSupported(nextLocale = '') {
   return localesSupported.indexOf(nextLocale) !== -1;
 }
 
-export const extend = (translation) => {
-  polyglot.extend(translation);
+export const extend = phrases => {
+  polyglot.extend(phrases);
 };
 
 // set next locale if it's supported
 // set to 'en' in other case
-// 
+//
 // returns locale have been setup
 export const setLocale = nextLocale => {
   const defLocale = 'en';
