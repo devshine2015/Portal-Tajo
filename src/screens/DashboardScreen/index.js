@@ -19,7 +19,7 @@ function canShow(Component) {
 }
 
 const DashboardScreen = () => (
-  <Content>
+  <Content center>
     { canShow(EventsCalculator) && <EventsCalculator /> }
     { canShow(FleetSummary) && (
       <Widget

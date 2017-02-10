@@ -9,6 +9,10 @@ const classes = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
   },
+
+  content_center: {
+    alignItems: 'center',
+  },
 });
 
 export default classes;
