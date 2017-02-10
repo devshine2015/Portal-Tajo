@@ -1,13 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
-import { css } from 'aphrodite/no-important';
 import SimpleSummary from './components/SimpleSummary';
 import FullSummary from './components/FullSummary';
 import { getDevicesAmount } from 'services/Devices/reducer';
 import { getAmounts } from 'services/FleetModel/reducer';
 import { amountsShape } from './PropTypes';
-import classes from './classes';
 
 const FleetSummary = ({
   simple = false,

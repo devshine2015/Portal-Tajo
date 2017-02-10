@@ -1,7 +1,7 @@
 import { StyleSheet } from 'aphrodite/no-important';
 
 const classes = StyleSheet.create({
-  group: {
+  widget: {
     display: 'flex',
     flexDirection: 'column',
     maxWidth: 600,
@@ -10,13 +10,13 @@ const classes = StyleSheet.create({
       width: '100%',
     },
   },
-  group__title: {
+  widget__title: {
     fontSize: 18,
     color: '#999',
     fontWeight: 200,
     marginBottom: 10,
   },
-  group__inn: {
+  widget__inn: {
     display: 'flex',
     flex: 1,
   },

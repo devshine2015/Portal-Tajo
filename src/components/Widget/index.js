@@ -8,7 +8,7 @@ const titlePropType = React.PropTypes.oneOfType([
 ]);
 
 const GroupTitle = ({ title }) => (
-  <div className={css(classes.group__title)}>
+  <div className={css(classes.widget__title)}>
     { title }
   </div>
 );
@@ -17,31 +17,27 @@ GroupTitle.propTypes = {
   title: titlePropType,
 };
 
-const WidgetsGroup = ({
+const Widget = ({
   children,
-  group,
   containerClass,
   title,
 }) => {
-  if (!children && !group) return null;
-
-  const child = group || children;
+  if (!children) return null;
 
   return (
-    <div className={css(classes.group, containerClass)}>
+    <div className={css(classes.widget, containerClass)}>
       { title && <GroupTitle title={title} /> }
-      <div className={css(classes.group__inn)}>
-        { child }
+      <div className={css(classes.widget__inn)}>
+        { children }
       </div>
     </div>
   );
 };
 
-WidgetsGroup.propTypes = {
-  group: React.PropTypes.node,
+Widget.propTypes = {
   children: React.PropTypes.node,
   containerClass: React.PropTypes.object,
   title: titlePropType,
 };
 
-export default WidgetsGroup;
+export default Widget;
