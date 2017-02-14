@@ -2,8 +2,10 @@ import { Map } from 'immutable';
 import { isMaritime } from 'configs';
 import { getProcessedVehicles } from '../reducer';
 import {
-  checkLaggedVehicle,
+  checkIsDelayed,
   checkIgnition,
+  calcDeltaTimeMin,
+  getActivityStatus,
 } from './vehicleHelpers';
 
 const _vehUpdater = tickUpdated => vh => {
@@ -11,10 +13,6 @@ const _vehUpdater = tickUpdated => vh => {
     .set('timeSinceUpdateMin', tickUpdated.deltaTimeMin)
     .set('isDelayedWithIgnitionOff', tickUpdated.isDelayedWithIgnitionOff);
 };
-
-function _calcDeltaTimeMin(now, imVehicle) {
-  return (now - imVehicle.get('lastUpdateSinceEpoch')) / 1000 / 60;
-}
 
 // TODO: needs better name, here we update/reevaluate all the
 // delay statuses, etc
@@ -24,16 +22,19 @@ export function vehicleClientUpdate({
   now,
   ignitionOn,
 }) {
-  const deltaTimeMin = _calcDeltaTimeMin(now, imVehicle);
-
   // imVehicle could be empty if initial localTick
   // happens before fleetFetching will be finished
-  const isDelayed = imVehicle.size !== 0 ? checkLaggedVehicle(deltaTimeMin) : true;
+  // so assume vehicle is died for now
+  const isDead = imVehicle.size === 0;
+  const deltaTimeMin = calcDeltaTimeMin(now, imVehicle.get('lastUpdateSinceEpoch'));
+
+  const isDelayed = isDead ? false : checkIsDelayed(now, deltaTimeMin);
+  const activityStatus = getActivityStatus(isDead, isDelayed);
 
   // TODO -- just a combination of already defined props,
   // used just for displaying other type of warn icon =>
   // move isDelayedWithIgnitionOff definition to GenericListItem
-  const isDelayedWithIgnitionOff = ignitionOn !== 1 && isDelayed;
+  const isDelayedWithIgnitionOff = ignitionOn !== 1 && activityStatus === 'delayed';
 
   // what if during initial fleetModel creation
   // latest status timestamp will be old (like many days), no events will ever come
@@ -47,7 +48,7 @@ export function vehicleClientUpdate({
 
   return {
     isDelayedWithIgnitionOff,
-    isDelayed,
+    activityStatus,
     deltaTimeMin: Math.round(deltaTimeMin),
     deltaDistKm,
   };

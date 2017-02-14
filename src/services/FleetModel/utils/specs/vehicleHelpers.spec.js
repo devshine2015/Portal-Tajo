@@ -2,7 +2,7 @@
 import chai from 'chai';
 import { Map } from 'immutable';
 import * as helpers from '../vehicleHelpers';
-import { ZOMBIE_TIME_TRH_MIN, LAG_INDICAION_TRH_MIN } from 'utils/constants';
+import { LAG_INDICAION_TRH_MIN } from 'utils/constants';
 import { hasNothingStats, normalStats } from './stats.mock';
 import { backEndObject } from './backend.mock';
 
@@ -71,8 +71,8 @@ describe('Fleet model vehicle helpers', function() {
     it('vehicle should has all required properties', function() {
       const result = makeLocalVehicle(backEndObject, normalStats).toJS();
 
-      result.should.have.ownProperty('isDead');
-      result.should.have.ownProperty('isDelayed');
+      result.should.have.property('activityStatus')
+        .that.oneOf(['dead', 'delayed', 'ok']);
       result.should.have.ownProperty('lastUpdateSinceEpoch');
       result.should.have.ownProperty('ignitionOn');
       result.should.have.ownProperty('isDelayedWithIgnitionOff');

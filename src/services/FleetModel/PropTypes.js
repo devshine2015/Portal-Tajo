@@ -70,15 +70,17 @@ const _vehicle = {
   // made from original timestring passed from backend.
   lastUpdateSinceEpoch: number.isRequired,
 
-  // true, if ws message don't have position.
-  // updates by websocket.
-  isDead: bool.isRequired,
+  activityStatus: oneOf([
+    // normal state
+    'ok',
 
-  // true if delta between now() and lastUpdateSinceEpoch
-  // more than some predefined threshold for delayed vehicles
-  // and less for zombie
-  // false by default
-  isDelayed: bool.isRequired,
+    // if ws message don't have position.
+    'dead',
+
+    // if delta between now() and lastUpdateSinceEpoch
+    // more than some predefined threshold for delayed vehicles
+    'delayed',
+  ]),
 
   // TODO - define the property
   // false dy default

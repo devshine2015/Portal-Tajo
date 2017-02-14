@@ -14,19 +14,37 @@ import { vehicleClientUpdate } from './localTickHelpers';
 
 const isTest = process.env.NODE_ENV === 'test';
 
-function _getNextState(itWas, itNow) {
-  let itWill;
+// function _getNextState(itWas, itNow) {
+//   let itWill;
 
-  if (itWas === itNow) itWill = undefined;
-  else {
-    itWill = itNow;
-  }
+//   if (itWas === itNow) itWill = undefined;
+//   else {
+//     itWill = itNow;
+//   }
 
-  return itWill;
-}
+//   return itWill;
+// }
 
 function _checkIsDead(hasPosition = false) {
   return !hasPosition;
+}
+
+export function calcDeltaTimeMin(now, pastTimestamp) {
+  return (now - pastTimestamp) / 1000 / 60;
+}
+
+export function checkIsDelayed(now, pastTimestamp) {
+  const deltaTimeMin = calcDeltaTimeMin(now, pastTimestamp);
+
+  return checkLaggedVehicle(deltaTimeMin);
+}
+
+export function getActivityStatus(isDead, isDelayed) {
+  if (isDead) return 'dead';
+
+  if (isDelayed) return 'delayed';
+
+  return 'ok';
 }
 
 /**
@@ -48,15 +66,22 @@ function _makeImmutableVehicle({
   const hasPosition = vehicleStats.hasOwnProperty('pos');
   const hasDist = vehicleStats.hasOwnProperty('dist');
   const hasTemp = vehicleStats.hasOwnProperty('temp');
+
   const isDead = _checkIsDead(hasPosition);
+  // vehicle cannot be dead and delayed at same time
+  // so it's already dead than it cannot be delayed
+  const isDelayed = isDead ? false : checkIsDelayed(now, sinceEpoch);
+  const activityStatus = getActivityStatus(isDead, isDelayed);
+
   const ignitionOn = checkIgnition(vehicleStats.ignOn);
   const localTimings = vehicleClientUpdate({
     imVehicle, now, ignitionOn,
   });
 
   const imNextVehicle = imVehicle.withMutations(s => {
-    s.set('isDead', isDead)
-     .set('isDelayed', localTimings.isDelayed)
+    s.set('activityStatus', activityStatus)
+     // .set('isDead', isDead)
+     // .set('isDelayed', localTimings.isDelayed)
      .set('lastUpdateSinceEpoch', sinceEpoch)
      .set('ignitionOn', ignitionOn)
      .set('isDelayedWithIgnitionOff', localTimings.isDelayedWithIgnitionOff);
@@ -94,59 +119,101 @@ function _makeImmutableVehicle({
 const _updateLocalVehicle = (imVehicle, vehicleStats, now) => {
   const imNextVehicle = _makeImmutableVehicle({ imVehicle, vehicleStats, now });
 
-  const wasDead = imVehicle.get('isDead');
-  const wasDelayed = imVehicle.get('isDelayed');
+  const prevActivityStatus = imVehicle.get('activityStatus');
+  // const wasDelayed = imVehicle.get('isDelayed');
 
-  const isDead = imNextVehicle.get('isDead');
-  const isDelayed = imNextVehicle.get('isDelayed');
+  const nextActivityStatus = imNextVehicle.get('activityStatus');
+  // const isDelayed = imNextVehicle.get('isDelayed');
 
-  const willDead = _getNextState(wasDead, isDead);
-  const willDelayed = _getNextState(wasDelayed, isDelayed);
+  // const nextActivityStatus = _getNextState(prevActivityStatus, currentActivityStatus);
+  // const willDead = _getNextState(prevActivityStatus, isDead);
+  // const willDelayed = _getNextState(wasDelayed, isDelayed);
 
   return {
     imNextVehicle,
-    willDead,
-    willDelayed,
+    prevActivityStatus,
+    nextActivityStatus,
+    // willDead,
+    // willDelayed,
   };
 };
 
-function _updateList(list, nextState = undefined, id) {
-  if (nextState === undefined) return list;
+function _removeFromList(imList, id) {
+  const index = imList.indexOf(id);
 
-  if (nextState) {
-    // eslint-disable-next-line no-param-reassign
-    list = list.push(id);
-  } else {
-    const index = list.indexOf(id);
+  return imList.delete(index);
+}
 
-    // eslint-disable-next-line no-param-reassign
-    list = list.delete(index);
+function _updateLists(prevStatus, nextStatus, id, getState) {
+  const deadList = getDeadList(getState());
+  const delayedList = getDelayedList(getState());
+
+  if (nextStatus === prevStatus) {
+    return {
+      deadList,
+      delayedList,
+    };
   }
 
-  return list;
+  let nextDeadList;
+  let nextDelayedList;
+
+  if (prevStatus === 'dead' && nextStatus === 'delayed') {
+    nextDeadList = _removeFromList(deadList, id);
+
+    nextDelayedList = delayedList.push(id);
+  }
+
+  if (prevStatus === 'delayed' && nextStatus === 'dead') {
+    nextDelayedList = _removeFromList(delayedList, id);
+
+    nextDelayedList = deadList.push(id);
+  }
+
+  if (prevStatus === 'dead' && nextStatus === 'ok') {
+    nextDeadList = _removeFromList(deadList, id);
+  }
+
+  if (prevStatus === 'delayed' && nextStatus === 'ok') {
+    nextDelayedList = _removeFromList(delayedList, id);
+  }
+
+  if (prevStatus === 'ok' && nextStatus === 'dead') {
+    nextDeadList = deadList.push(id);
+  }
+
+  if (prevStatus === 'ok' && nextStatus === 'delayed') {
+    nextDelayedList = delayedList.push(id);
+  }
+
+  return {
+    delayedList: nextDelayedList,
+    deadList: nextDeadList,
+  };
 }
 
 export function updateLocalVehicles(wsStatuses, getState) {
   const nextLocalVehicles = {};
   const processedList = getProcessedVehicles(getState());
   const now = Date.now();
-  let deadList = getDeadList(getState());
-  let delayedList = getDelayedList(getState());
+  let lists = {};
 
-  wsStatuses.forEach(status => {
-    const localVehicle = processedList.get(status.id);
-    const { imNextVehicle, willDead, willDelayed } = _updateLocalVehicle(localVehicle, status, now);
+  wsStatuses.forEach(newStatus => {
+    const localVehicle = processedList.get(newStatus.id);
+    const {
+      imNextVehicle,
+      prevActivityStatus,
+      nextActivityStatus,
+    } = _updateLocalVehicle(localVehicle, newStatus, now);
 
-    nextLocalVehicles[status.id] = imNextVehicle;
+    nextLocalVehicles[newStatus.id] = imNextVehicle;
 
-    deadList = _updateList(deadList, willDead, status.id);
-    delayedList = _updateList(delayedList, willDelayed, status.id);
+    lists = _updateLists(prevActivityStatus, nextActivityStatus, newStatus.id, getState);
   });
 
   return {
     updates: new Map(nextLocalVehicles),
-    deadList,
-    delayedList,
+    ...lists,
   };
 }
 
@@ -198,12 +265,13 @@ export function makeLocalVehicles(backEndVehiclesList = [], statsList = []) {
 
     if (imLocalVehicle) {
       localVehicles[aVehicle.id] = imLocalVehicle;
+      const activityStatus = imLocalVehicle.get('activityStatus');
 
-      if (imLocalVehicle.get('isDead')) {
+      if (activityStatus === 'dead') {
         deadList.push(aVehicle.id);
       }
 
-      if (imLocalVehicle.get('isDelayed')) {
+      if (activityStatus === 'delayed') {
         delayedList.push(aVehicle.id);
       }
     }
