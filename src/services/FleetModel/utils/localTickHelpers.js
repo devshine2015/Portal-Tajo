@@ -36,12 +36,6 @@ export function vehicleClientUpdate({
   // move isDelayedWithIgnitionOff definition to GenericListItem
   const isDelayedWithIgnitionOff = ignitionOn !== 1 && activityStatus === 'delayed';
 
-  // what if during initial fleetModel creation
-  // latest status timestamp will be old (like many days), no events will ever come
-  // from vehicle (something broken) with ws,
-  // but it has ignitionOn !== 1 (0 or 2)?
-  // const isDelayed = ignitionOn === 1 ? isDelayed : false;
-
   // estimated travel dist since last update, in meters
   // calculate estimated distance only for maritime
   const deltaDistKm = isMaritime ? imVehicle.get('speed') * (deltaTimeMin / 60) : 0;

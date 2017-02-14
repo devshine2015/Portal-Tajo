@@ -25,17 +25,16 @@ import styles from './styles.css';
 const NEVER_REPORTED = 'never reported - check device';
 
 const Icon = ({
-  isDead,
-  isDelayed,
+  activityStatus,
   isDelayedWithIgnitionOff,
 }) => {
   let icon = null;
 
-  if (isDead) {
+  if (activityStatus === 'dead') {
     icon = <AlertIcon color={yellow700} />;
   } else if (isEscape && isDelayedWithIgnitionOff) {
     icon = <AlertLagIcon color={blueGrey200} />;
-  } else if (isDelayed) {
+  } else if (activityStatus === 'delayed') {
     icon = <AlertLagIcon color={yellow700} />;
   }
 
@@ -47,22 +46,22 @@ const Icon = ({
 };
 
 Icon.propTypes = {
-  isDead: React.PropTypes.bool.isRequired,
-  isDelayed: React.PropTypes.bool.isRequired,
+  activityStatus: React.PropTypes.oneOf([
+    'ok', 'dead', 'delayed',
+  ]).isRequired,
   isDelayedWithIgnitionOff: React.PropTypes.bool.isRequired,
 };
 
 const Warn = ({
-  isDead,
-  isDelayed,
+  activityStatus,
   isExpanded = false,
   updateDate,
 }) => {
   let infoStr = '';
 
-  if (isDead) {
+  if (activityStatus === 'dead') {
     infoStr = NEVER_REPORTED;
-  } else if (isDelayed) {
+  } else if (activityStatus === 'delayed') {
     infoStr = `Delayed ${moment().from(updateDate, true)}`;
   }
 
@@ -78,8 +77,9 @@ const Warn = ({
 };
 
 Warn.propTypes = {
-  isDead: React.PropTypes.bool.isRequired,
-  isDelayed: React.PropTypes.bool.isRequired,
+  activityStatus: React.PropTypes.oneOf([
+    'ok', 'dead', 'delayed',
+  ]).isRequired,
   isExpanded: React.PropTypes.bool,
   updateDate: React.PropTypes.number.isRequired,
 };
@@ -93,13 +93,12 @@ class ListItemMaritime extends React.Component {
   inActivityIndicator() {
     const { vehicle, isExpanded } = this.props;
 
-    if (!vehicle.isDead && !vehicle.isDelayed) return null;
+    if (vehicle.activityStatus === 'ok') return null;
 
     return (
       <Warn
         isExpanded={isExpanded}
-        isDead={vehicle.isDead}
-        isDelayed={vehicle.isDelayed}
+        activityStatus={vehicle.activityStatus}
         updateDate={vehicle.lastUpdateSinceEpoch}
       />
     );
@@ -155,7 +154,7 @@ class ListItemMaritime extends React.Component {
       [styles.listItemInn_expanded]: this.props.isExpanded,
     });
     const { vehicle } = this.props;
-    const needIndicator = vehicle.isDead || vehicle.isDelayed || vehicle.isDelayedWithIgnitionOff;
+    const needIndicator = vehicle.activityStatus !== 'ok' || vehicle.isDelayedWithIgnitionOff;
 
     return (
       <div
@@ -177,8 +176,7 @@ class ListItemMaritime extends React.Component {
 
         { needIndicator && (
           <Icon
-            isDead={vehicle.isDead}
-            isDelayed={vehicle.isDelayed}
+            activityStatus={vehicle.activityStatus}
             isDelayedWithIgnitionOff={vehicle.isDelayedWithIgnitionOff}
           />
         )}
