@@ -2,6 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import GenericListItem from './GenericListItem';
 import addCSSRule from 'utils/cssRule';
+import dateFormats from 'configs/dateFormats';
 import types from './types';
 
 import styles from './styles.css';
@@ -64,6 +65,10 @@ InstancesList.contextTypes = {
   muiTheme: React.PropTypes.object.isRequired,
 };
 
+InstancesList.defaultProps = {
+  dateFormat: dateFormats.default.value,
+};
+
 InstancesList.propTypes = {
   // Main data to display
   data: React.PropTypes.array.isRequired,
@@ -87,6 +92,8 @@ InstancesList.propTypes = {
   // scroll item into view if item are selected
   // somwhere else
   scrollIntoView: React.PropTypes.bool,
+
+  dateFormat: React.PropTypes.string.isRequired,
 };
 
 export default pure(InstancesList);

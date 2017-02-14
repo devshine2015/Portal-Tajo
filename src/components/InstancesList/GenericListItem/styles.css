@@ -1,9 +1,6 @@
 .list__item {
   transition: all .25s;
-  position: relative; /*need this to ceate stacking context*/
-  /*border-right: 3px solid #BF360C;*/
-   /*#006064; cyan900*/
-  /*#fd9e83;*/
+  position: relative;
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
 .list__item h1 {

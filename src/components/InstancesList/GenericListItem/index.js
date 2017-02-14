@@ -8,9 +8,18 @@ import DetailedGFItem from '../WithDetails/gf';
 import DetailedVehicleItem from '../WithDetails/vehicle';
 import VehicleChronicleItem from '../WithDetails/vehicleChronicle';
 import MaritimeItem from '../WithDetails/maritime';
+import StatusIcon from './StatusIcon';
 import types from '../types';
 
 import styles from './styles.css';
+
+function _needIndicator(item) {
+  const itIsTransport = item.hasOwnProperty('activityStatus');
+
+  if (!itIsTransport) return false;
+
+  return item.activityStatus !== 'ok' || item.isDelayedWithIgnitionOff;
+}
 
 function chooseItem(type, {
   onItemClick,
@@ -112,8 +121,17 @@ class GenericListItem extends React.Component {
       [styles.list__item_expanded]: isExpanded,
     });
 
+
     return (
       <li className={className}>
+
+        { _needIndicator(rest.item) && (
+          <StatusIcon
+            activityStatus={rest.item.activityStatus}
+            isDelayedWithIgnitionOff={rest.item.isDelayedWithIgnitionOff}
+          />
+        )}
+
         {chooseItem(this.props.type, { ...rest, isExpanded })}
       </li>
     );
@@ -124,6 +142,7 @@ GenericListItem.propTypes = {
   item: React.PropTypes.object.isRequired,
   isExpanded: React.PropTypes.bool.isRequired,
   onItemClick: React.PropTypes.func.isRequired,
+  dateFormat: React.PropTypes.string.isRequired,
   selectedItems: React.PropTypes.array,
   scrollIntoView: React.PropTypes.bool,
   uncheckOnUnmount: React.PropTypes.bool,
