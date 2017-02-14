@@ -12,20 +12,23 @@ const _vehUpdater = tickUpdated => vh => {
     .set('isDelayedWithIgnitionOff', tickUpdated.isDelayedWithIgnitionOff);
 };
 
-function _calcDeltaTimeMin(nowMs, imVehicle) {
-  return (nowMs - imVehicle.get('lastUpdateSinceEpoch')) / 1000 / 60;
+function _calcDeltaTimeMin(now, imVehicle) {
+  return (now - imVehicle.get('lastUpdateSinceEpoch')) / 1000 / 60;
 }
 
 // TODO: needs better name, here we update/reevaluate all the
 // delay statuses, etc
-// passing nowMs so we dont aquire it for every vehicle (optimisation?)
+// passing now so we dont aquire it for every vehicle (optimisation?)
 export function vehicleClientUpdate({
   imVehicle,
-  nowMs,
+  now,
   ignitionOn,
 }) {
-  const deltaTimeMin = _calcDeltaTimeMin(nowMs, imVehicle);
-  const isDelayed = checkLaggedVehicle(deltaTimeMin);
+  const deltaTimeMin = _calcDeltaTimeMin(now, imVehicle);
+
+  // imVehicle could be empty if initial localTick
+  // happens before fleetFetching will be finished
+  const isDelayed = imVehicle.size !== 0 ? checkLaggedVehicle(deltaTimeMin) : true;
 
   // TODO -- just a combination of already defined props,
   // used just for displaying other type of warn icon =>
@@ -50,10 +53,8 @@ export function vehicleClientUpdate({
   };
 }
 
-// TODO: this needs some optimisation/rethinking - probably
-// will be too slow on big fleets
 export function localTick(getState) {
-  const nowMs = Date.now();
+  const now = Date.now();
   const imProcessedList = getProcessedVehicles(getState());
   const vehItr = imProcessedList.values();
   let imUpdatedProcessedList = new Map({});
@@ -64,7 +65,7 @@ export function localTick(getState) {
     const vehicleId = imVehicle.get('id');
     const ignitionOn = checkIgnition(imVehicle.get('ignitionOn'));
     const tickUpdatedValues = vehicleClientUpdate({
-      nowMs,
+      now,
       imVehicle,
       ignitionOn,
     });

@@ -10,11 +10,11 @@ const LOCAL_TICK_INTERVAL_MS = 1000 * 60;
 
 let localTickProcId = null;
 
-function _performUpdates(dispatch, getState) {
+const _performUpdates = (dispatch, getState) => () => {
   const imUpdatedProcessedList = localTick(getState);
 
   dispatch(vehiclesActions.updateVehiclesList(imUpdatedProcessedList));
-}
+};
 
 function _startLocalTick(dispatch, getState) {
   // if (!isMaritime) {
