@@ -100,7 +100,7 @@ class Report extends React.Component {
       [this.periodFields.end.name]: this.periodFields.end.default,
       [this.periodFields.startTime.name]: this.periodFields.startTime.default,
       [this.periodFields.endTime.name]: this.periodFields.endTime.default,
-      tempDateFormat: props.userDateFormat || dateFormats.defaultFormat,
+      tempDateFormat: props.userDateFormat || dateFormats.default.value,
     };
 
     this.onChange = this.onChange.bind(this);

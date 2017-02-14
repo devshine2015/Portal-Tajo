@@ -60,3 +60,6 @@ export const getFleetName = state =>
   state.getIn(['user', 'fleet']);
 export const getLocale = state =>
   state.getIn(['user', 'settings', 'lang']);
+export const getDateFormat = state =>
+  state.getIn(['user', 'settings', 'dateFormat']);
+
