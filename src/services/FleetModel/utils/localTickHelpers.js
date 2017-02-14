@@ -1,4 +1,5 @@
 import { Map } from 'immutable';
+import { isMaritime } from 'configs';
 import { getProcessedVehicles } from '../reducer';
 import {
   checkLaggedVehicle,
@@ -22,23 +23,24 @@ export function vehicleClientUpdate({
   imVehicle,
   nowMs,
   ignitionOn,
-  isLocalTickUpdate = false,
 }) {
-  // what if during initial fleetModel creation
-  // latest status timestamp will be old (like many days), no events will ever come
-  // from vehicle (something broken) with ws,
-  // but it has ignitionOn = 1 (true)?
-  const deltaTimeMin = isLocalTickUpdate ? _calcDeltaTimeMin(nowMs, imVehicle) : 0;
+  const deltaTimeMin = _calcDeltaTimeMin(nowMs, imVehicle);
+  const isDelayed = checkLaggedVehicle(deltaTimeMin);
 
   // TODO -- just a combination of already defined props,
   // used just for displaying other type of warn icon =>
   // move isDelayedWithIgnitionOff definition to GenericListItem
-  const isDelayedWithIgnitionOff = ignitionOn !== 1 && checkLaggedVehicle(deltaTimeMin);
+  const isDelayedWithIgnitionOff = ignitionOn !== 1 && isDelayed;
 
-  const isDelayed = ignitionOn === 1 ? checkLaggedVehicle(deltaTimeMin) : false;
+  // what if during initial fleetModel creation
+  // latest status timestamp will be old (like many days), no events will ever come
+  // from vehicle (something broken) with ws,
+  // but it has ignitionOn !== 1 (0 or 2)?
+  // const isDelayed = ignitionOn === 1 ? isDelayed : false;
 
   // estimated travel dist since last update, in meters
-  const deltaDistKm = isLocalTickUpdate ? imVehicle.get('speed') * (deltaTimeMin / 60) : 0;
+  // calculate estimated distance only for maritime
+  const deltaDistKm = isMaritime ? imVehicle.get('speed') * (deltaTimeMin / 60) : 0;
 
   return {
     isDelayedWithIgnitionOff,
@@ -65,7 +67,6 @@ export function localTick(getState) {
       nowMs,
       imVehicle,
       ignitionOn,
-      isLocalTickUpdate: true,
     });
     const imUpdatedVehicle = imVehicle.withMutations(_vehUpdater(tickUpdatedValues));
 
