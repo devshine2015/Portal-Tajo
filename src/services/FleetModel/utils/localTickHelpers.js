@@ -1,5 +1,4 @@
 import { Map } from 'immutable';
-import { vehiclesActions } from 'services/FleetModel/actions';
 import { getProcessedVehicles } from '../reducer';
 import {
   checkLaggedVehicle,
@@ -23,18 +22,24 @@ export function vehicleClientUpdate({
   imVehicle,
   nowMs,
   ignitionOn,
-  isLocalTick = false,
+  isLocalTickUpdate = false,
 }) {
   // what if during initial fleetModel creation
   // latest status timestamp will be old (like many days), no events will ever come
   // from vehicle (something broken) with ws,
   // but it has ignitionOn = 1 (true)?
-  const deltaTimeMin = isLocalTick ? 0 : _calcDeltaTimeMin(nowMs, imVehicle);
+  const deltaTimeMin = isLocalTickUpdate ? _calcDeltaTimeMin(nowMs, imVehicle) : 0;
+
+  // TODO -- just a combination of already defined props,
+  // used just for displaying other type of warn icon =>
+  // move isDelayedWithIgnitionOff definition to GenericListItem
   const isDelayedWithIgnitionOff = ignitionOn !== 1 && checkLaggedVehicle(deltaTimeMin);
+
   const isDelayed = ignitionOn === 1 ? checkLaggedVehicle(deltaTimeMin) : false;
 
   // estimated travel dist since last update, in meters
-  const deltaDistKm = isLocalTick ? 0 : imVehicle.get('speed') * (deltaTimeMin / 60);
+  const deltaDistKm = isLocalTickUpdate ? imVehicle.get('speed') * (deltaTimeMin / 60) : 0;
+
   return {
     isDelayedWithIgnitionOff,
     isDelayed,
@@ -45,7 +50,7 @@ export function vehicleClientUpdate({
 
 // TODO: this needs some optimisation/rethinking - probably
 // will be too slow on big fleets
-export function localTick(dispatch, getState) {
+export function localTick(getState) {
   const nowMs = Date.now();
   const imProcessedList = getProcessedVehicles(getState());
   const vehItr = imProcessedList.values();
@@ -54,17 +59,37 @@ export function localTick(dispatch, getState) {
 
   while (!currentIt.done) {
     const imVehicle = currentIt.value;
-    currentIt = vehItr.next();
     const vehicleId = imVehicle.get('id');
     const ignitionOn = checkIgnition(imVehicle.get('ignitionOn'));
     const tickUpdatedValues = vehicleClientUpdate({
       nowMs,
       imVehicle,
       ignitionOn,
-      isLocalTick: true,
+      isLocalTickUpdate: true,
     });
     const imUpdatedVehicle = imVehicle.withMutations(_vehUpdater(tickUpdatedValues));
+
     imUpdatedProcessedList = imUpdatedProcessedList.mergeIn([vehicleId], imUpdatedVehicle);
+
+    currentIt = vehItr.next();
   }
-  vehiclesActions.updateVehiclesList(imUpdatedProcessedList, dispatch);
+
+  return imUpdatedProcessedList;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

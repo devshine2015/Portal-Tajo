@@ -35,7 +35,7 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
       return state.mergeIn(['processedList', action.id], action.details);
 
     case vehiclesActions.FLEET_MODEL_VEHICLES_UPDATE_LIST:
-      return state.mergeIn(['processedList'], action.vehicles);
+      return state.set('processedList', action.vehicles);
 
     case vehiclesActions.FLEET_MODEL_VEHICLES_FILTER:
       return state.set('processedList', new Map(action.vehicles));

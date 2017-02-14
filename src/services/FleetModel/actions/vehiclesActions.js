@@ -98,18 +98,21 @@ export function makeUpdateVehicleRequest(details, dispatch) {
 /**
  * local update - local tick, recalculating time since last WS data,
  * delay/nonErporting states, estimated travel dist since last update, etc...
+ *
+ * commented out since not used anywhere
 **/
-export function localUpdateVehicle(details, dispatch) {
-  dispatch(_vehicleUpdate({
-    original: details,
-  }, details.id));
-}
+// export function localUpdateVehicle(details, dispatch) {
+//   dispatch(_vehicleUpdate({
+//     original: details,
+//   }, details.id));
+// }
 
 /**
 **/
-export function updateVehiclesList(imUpdatedVehicleMap, dispatch) {
-  dispatch(_vehiclesUpdateList(imUpdatedVehicleMap));
-}
+export const updateVehiclesList = vehicles => ({
+  type: FLEET_MODEL_VEHICLES_UPDATE_LIST,
+  vehicles,
+});
 
 export const attachDevice = (vehicleId, deviceId) => {
   const { url, method, apiVersion } = endpoints.attachDevice(vehicleId);
@@ -154,10 +157,5 @@ const _vehicleUpdate = (details, id) => ({
 
 const _vehiclesFilterUpdate = (vehicles) => ({
   type: FLEET_MODEL_VEHICLES_FILTER,
-  vehicles,
-});
-
-const _vehiclesUpdateList = (vehicles) => ({
-  type: FLEET_MODEL_VEHICLES_UPDATE_LIST,
   vehicles,
 });

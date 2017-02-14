@@ -1,5 +1,6 @@
+import { vehiclesActions } from 'services/FleetModel/actions';
 import { localTick } from '../utils/localTickHelpers';
-import { isMaritime } from 'configs';
+// import { isMaritime } from 'configs';
 
 export const startLocalTick = () => _startLocalTick;
 export const stopLocalTick = () => _stopLocalTick;
@@ -9,6 +10,12 @@ const LOCAL_TICK_INTERVAL_MS = 1000 * 60;
 
 let localTickProcId = null;
 
+function _performUpdates(dispatch, getState) {
+  const imUpdatedProcessedList = localTick(getState);
+
+  dispatch(vehiclesActions.updateVehiclesList(imUpdatedProcessedList));
+}
+
 function _startLocalTick(dispatch, getState) {
   // if (!isMaritime) {
   //   return;
@@ -17,10 +24,9 @@ function _startLocalTick(dispatch, getState) {
     return;
   }
   // do the first tick right away - so we are actual
-  localTick(dispatch, getState);
-  localTickProcId = window.setInterval(() => {
-    localTick(dispatch, getState);
-  }, LOCAL_TICK_INTERVAL_MS);
+  _performUpdates(dispatch, getState);
+
+  localTickProcId = window.setInterval(_performUpdates(dispatch, getState), LOCAL_TICK_INTERVAL_MS);
 }
 
 function _stopLocalTick() {
