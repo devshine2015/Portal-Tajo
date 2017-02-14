@@ -1,5 +1,5 @@
 import { Map } from 'immutable';
-import { ZOMBIE_TIME_TRH_MIN, LAG_INDICAION_TRH_MIN } from 'utils/constants';
+import { LAG_INDICAION_TRH_MIN } from 'utils/constants';
 import { sortByName } from 'utils/sorting';
 import {
   getProcessedVehicles,
@@ -177,8 +177,7 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
 //
 // delayed update? (comm coverage, expected to be ~45min)
 export function checkLaggedVehicle(delayTimeMinutes) {
-  return delayTimeMinutes > LAG_INDICAION_TRH_MIN
-        && delayTimeMinutes < ZOMBIE_TIME_TRH_MIN;
+  return delayTimeMinutes > LAG_INDICAION_TRH_MIN;
 }
 
 export function checkIgnition(ignOn) {
