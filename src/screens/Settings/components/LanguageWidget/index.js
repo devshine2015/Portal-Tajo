@@ -3,16 +3,12 @@ import { connect } from 'react-redux';
 import cs from 'classnames';
 import { css } from 'aphrodite/no-important';
 import Widget from 'components/Widget';
-import { localesSupported, setLocale } from 'utils/i18n';
+import { localesSupported } from 'utils/i18n';
 import translator from 'utils/translator';
-import { updateUserSettings } from 'services/UserModel/actions';
+import { updateLanguage } from 'services/UserModel/actions';
 
 import classes from './classes';
 import phrases, { phrasesShape } from './phrases.lang';
-
-// const MAIN_TEXT = 'main_language_settings_text';
-const MAIN_TEXT = 'Application language';
-const WIDGET_TITLE = 'Language';
 
 const LangOption = ({
   text,
@@ -55,16 +51,6 @@ function _renderOptions({
   ));
 }
 
-const _changeLocation = (dispatch, ownProps) => nextLang => {
-  if (ownProps.currentLocale === nextLang) return;
-
-  setLocale(nextLang);
-
-  dispatch(updateUserSettings(true, {
-    lang: nextLang,
-  }));
-};
-
 const LanguageWidget = ({
   translations,
   ...rest,
@@ -95,7 +81,12 @@ LanguageWidget.propTypes = {
 const mapState = null;
 
 const mapDispatch = (dispatch, ownProps) => ({
-  changeLanguage: _changeLocation(dispatch, ownProps),
+  changeLanguage: nextLang => {
+    // do nothing is language the same
+    if (ownProps.currentLocale === nextLang) return;
+
+    dispatch(updateLanguage(nextLang));
+  },
 });
 
 const Connected = connect(mapState, mapDispatch)(LanguageWidget);

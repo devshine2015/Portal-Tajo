@@ -1,5 +1,6 @@
 import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
 import storage from 'utils/localStorage';
+import { setLocale } from 'utils/i18n';
 import { getAuthenticationSession } from 'services/Auth/reducer';
 
 export const USER_SET = 'portal/services/USER_SET';
@@ -21,10 +22,7 @@ export const setFleetName = fleetName => ({
   fleetName,
 });
 
-export const updateUserSettings = (saveToStorage, settings) => (dispatch, getState) =>
-  _updateUserSettings(saveToStorage, settings, dispatch, getState);
-
-function _updateUserSettings(saveToStorage, settings, dispatch, getState) {
+export const updateUserSettings = (saveToStorage, settings) => (dispatch, getState) => {
   const sessionId = getAuthenticationSession(getState());
 
   if (!saveToStorage) {
@@ -49,9 +47,21 @@ function _updateUserSettings(saveToStorage, settings, dispatch, getState) {
 
     return Promise.resolve();
   });
-}
+};
 
 const _userSettingsUpdate = settings => ({
   type: USER_SETTINGS_UPDATE,
   settings,
 });
+
+export const updateLanguage = nextLang => dispatch => {
+  // mark changes as savable to local storage
+  const saveToStorage = true;
+
+  // update polyglot.locale
+  setLocale(nextLang);
+
+  dispatch(updateUserSettings(saveToStorage, {
+    lang: nextLang,
+  }));
+};
