@@ -41,19 +41,9 @@ describe('Fleet model vehicle helpers', function() {
 
     it('should be delayed', function() {
       const del1 = LAG_INDICAION_TRH_MIN + 1;
-      const del2 = ZOMBIE_TIME_TRH_MIN - 1;
       const result1 = helpers.checkLaggedVehicle(del1);
-      const result2 = helpers.checkLaggedVehicle(del2);
 
       should.equal(result1, true);
-      should.equal(result2, true);
-    });
-
-    it('should be zombie', function() {
-      const minutes = ZOMBIE_TIME_TRH_MIN + 1;
-      const result = helpers.checkLaggedVehicle(minutes);
-
-      should.equal(result, false);
     });
   });
 
