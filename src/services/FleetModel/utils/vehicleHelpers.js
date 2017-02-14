@@ -14,17 +14,6 @@ import { vehicleClientUpdate } from './localTickHelpers';
 
 const isTest = process.env.NODE_ENV === 'test';
 
-// function _getNextState(itWas, itNow) {
-//   let itWill;
-
-//   if (itWas === itNow) itWill = undefined;
-//   else {
-//     itWill = itNow;
-//   }
-
-//   return itWill;
-// }
-
 function _checkIsDead(hasPosition = false) {
   return !hasPosition;
 }
@@ -80,8 +69,6 @@ function _makeImmutableVehicle({
 
   const imNextVehicle = imVehicle.withMutations(s => {
     s.set('activityStatus', activityStatus)
-     // .set('isDead', isDead)
-     // .set('isDelayed', localTimings.isDelayed)
      .set('lastUpdateSinceEpoch', sinceEpoch)
      .set('ignitionOn', ignitionOn)
      .set('isDelayedWithIgnitionOff', localTimings.isDelayedWithIgnitionOff);
@@ -120,21 +107,12 @@ const _updateLocalVehicle = (imVehicle, vehicleStats, now) => {
   const imNextVehicle = _makeImmutableVehicle({ imVehicle, vehicleStats, now });
 
   const prevActivityStatus = imVehicle.get('activityStatus');
-  // const wasDelayed = imVehicle.get('isDelayed');
-
   const nextActivityStatus = imNextVehicle.get('activityStatus');
-  // const isDelayed = imNextVehicle.get('isDelayed');
-
-  // const nextActivityStatus = _getNextState(prevActivityStatus, currentActivityStatus);
-  // const willDead = _getNextState(prevActivityStatus, isDead);
-  // const willDelayed = _getNextState(wasDelayed, isDelayed);
 
   return {
     imNextVehicle,
     prevActivityStatus,
     nextActivityStatus,
-    // willDead,
-    // willDelayed,
   };
 };
 

@@ -48,6 +48,11 @@ export function vehicleClientUpdate({
   };
 }
 
+// updates takes too long
+// TODO -- improve performance
+// examples:
+// action @ 17:11:16.166 portal/services/FLEET_MODEL_VEHICLES_UPDATE_LIST (in 243.00 ms)
+// action @ 17:12:16.168 portal/services/FLEET_MODEL_VEHICLES_UPDATE_LIST (in 172.00 ms)
 export function localTick(getState) {
   const now = Date.now();
   const imProcessedList = getProcessedVehicles(getState());
