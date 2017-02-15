@@ -1,4 +1,4 @@
-import { Map } from 'immutable';
+import { Map, fromJS } from 'immutable';
 import { LAG_INDICAION_TRH_MIN } from 'utils/constants';
 import { sortByName } from 'utils/sorting';
 import {
@@ -200,7 +200,7 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
     return null;
   }
 
-  const initilalValues = new Map({
+  const initilalValues = fromJS({
     filteredOut: false,
     timeSinceUpdateMin: 1,
     estimatedTravelKm: 10,
@@ -214,7 +214,7 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
 
   return initilalValues.withMutations(s => {
     s.merge(_makeImmutableVehicle({ vehicleStats }))
-     .set('original', backEndObject)
+     .set('original', fromJS(backEndObject))
      .set('id', backEndObject.id);
   });
 }
