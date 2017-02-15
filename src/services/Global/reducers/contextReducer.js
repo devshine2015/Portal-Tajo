@@ -5,6 +5,7 @@ import { ZERO_LOCATION, ZERO_ZOOM } from 'utils/constants';
 
 import { fromJS } from 'immutable';
 import { contextActions } from '../actions';
+import { vehiclesActions } from 'services/FleetModel/actions';
 
 const initialState = fromJS({
   map: {
@@ -17,6 +18,9 @@ const initialState = fromJS({
   hideVehicles: false,
   // what we have currently in PowerList Tabs
   activeListType: '',
+
+  // keep search value for vehicle across all screens
+  vehicleFilterString: '',
 });
 
 function contextReducer(state = initialState, action) {
@@ -30,6 +34,10 @@ function contextReducer(state = initialState, action) {
       return state.set('hideVehicles', action.doHide);
     case contextActions.CTX_PL_TAB:
       return state.set('activeListType', action.tabType);
+
+    case vehiclesActions.FLEET_MODEL_VEHICLES_FILTER:
+      return state.set('vehicleFilterString', action.searchString);
+
     default:
       return state;
   }
@@ -52,3 +60,6 @@ export const ctxGetHideVehicles = state =>
   _ctxReducer(state).get('hideVehicles');
 export const ctxGetPowListTabType = state =>
   _ctxReducer(state).get('activeListType');
+
+export const getVehicleFilterString = state =>
+  state.get('vehicleFilterString');

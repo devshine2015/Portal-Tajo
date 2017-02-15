@@ -2,16 +2,17 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import VehiclesList from 'components/InstancesList';
-import VehicleDetails from './components/VehicleDetails';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import FixedContent from 'components/FixedContent';
+import { showSnackbar } from 'containers/Snackbar/actions';
 import { getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
+import { getVehicleFilterString } from 'services/Global/reducer';
+import VehicleDetails from './components/VehicleDetails';
 import { getLoaderState } from './reducer';
 import { detailsActions } from './actions';
-import { showSnackbar } from 'containers/Snackbar/actions';
 
 import styles from './styles.css';
 
@@ -144,7 +145,10 @@ class VehiclesEditor extends React.Component {
         <PowerList
           scrollable
           filter={
-            <Filter filterFunc={this.props.filterFunc} />
+            <Filter
+              filterFunc={this.props.filterFunc}
+              defaultValue={this.props.vehicleFilterString}
+            />
           }
           content={
             <VehiclesList
@@ -169,12 +173,14 @@ VehiclesEditor.propTypes = {
   updateDetails: React.PropTypes.func.isRequired,
   filterFunc: React.PropTypes.func.isRequired,
   globalSelectedVehicleId: React.PropTypes.string.isRequired,
+  vehicleFilterString: React.PropTypes.string,
 };
 
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
   isLoading: getLoaderState(state),
   globalSelectedVehicleId: fromFleetReducer.getSelectedVehicleId(state),
+  vehicleFilterString: getVehicleFilterString(state),
 });
 const mapDispatch = {
   filterFunc: vehiclesActions.filterVehicles,

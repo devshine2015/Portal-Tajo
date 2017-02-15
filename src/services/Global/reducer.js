@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux-immutable';
 import onlineReducer, * as fromOnlineReducer from './reducers/onlineReducer';
 import errorsReducer, * as fromErrorsReducer from './reducers/errorsReducer';
-import contextReducer from './reducers/contextReducer';
+import contextReducer, * as fromContextReducer from './reducers/contextReducer';
 
 export default combineReducers({
   errors: errorsReducer,
@@ -14,3 +14,6 @@ export const getAppOnlineState = state =>
 
 export const getErrorMessage = state =>
   fromErrorsReducer.getErrorMessage(state.getIn(['global', 'errors']));
+
+export const getVehicleFilterString = state =>
+  fromContextReducer.getVehicleFilterString(state.getIn(['global', 'context']));

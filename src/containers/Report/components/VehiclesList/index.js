@@ -5,9 +5,10 @@ import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import VehiclesList from 'components/InstancesList';
 import listTypes from 'components/InstancesList/types';
-import { reportVehiclesActions } from '../../actions';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
+import { getVehicleFilterString } from 'services/Global/reducer';
+import { reportVehiclesActions } from '../../actions';
 import { getSelectedVehicles } from '../../reducer';
 
 class ReportsVehiclesList extends React.Component {
@@ -39,7 +40,10 @@ class ReportsVehiclesList extends React.Component {
         fixed={this.props.fixed}
         className={this.props.className}
         filter={
-          <Filter filterFunc={this.onFilter} />
+          <Filter
+            filterFunc={this.onFilter}
+            defaultValue={this.props.vehicleFilterString}
+          />
         }
         content={this.renderList()}
       />
@@ -55,11 +59,13 @@ ReportsVehiclesList.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
   selectedVehicles: React.PropTypes.array.isRequired,
   fixed: React.PropTypes.bool,
+  vehicleFilterString: React.PropTypes.string,
 };
 
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
   selectedVehicles: getSelectedVehicles(state).toArray(),
+  vehicleFilterString: getVehicleFilterString(state),
 });
 const mapDispatch = {
   chooseVehiclesForReport: reportVehiclesActions.chooseVehiclesForReport,

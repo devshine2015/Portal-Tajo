@@ -60,7 +60,7 @@ function _filterVehicles({ searchString }, dispatch, getState) {
   };
   const filteredVehicles = filterProcessedListByName(options);
 
-  dispatch(_vehiclesFilterUpdate(filteredVehicles));
+  dispatch(_vehiclesFilterUpdate(filteredVehicles, searchString));
 }
 
 // inject new vehicle to:
@@ -160,7 +160,8 @@ const _vehicleUpdate = (details, id) => ({
   id,
 });
 
-const _vehiclesFilterUpdate = (vehicles) => ({
+const _vehiclesFilterUpdate = (vehicles, searchString) => ({
   type: FLEET_MODEL_VEHICLES_FILTER,
   vehicles,
+  searchString,
 });

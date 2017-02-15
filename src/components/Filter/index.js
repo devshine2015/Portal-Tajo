@@ -42,6 +42,7 @@ class Filter extends React.Component {
           onChange={this.onFiltering}
           hintText="Search"
           underlineShow={false}
+          defaultValue={this.props.defaultValue}
         />
       </div>
     );
@@ -50,6 +51,8 @@ class Filter extends React.Component {
 
 Filter.propTypes = {
   filterFunc: React.PropTypes.func.isRequired,
+
+  defaultValue: React.PropTypes.string,
 
   // TODO -- think about presets
   presets: React.PropTypes.shape({}),

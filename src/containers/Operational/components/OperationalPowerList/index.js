@@ -11,6 +11,7 @@ import listTypes from 'components/InstancesList/types';
 import { vehiclesActions, gfActions } from 'services/FleetModel/actions';
 import { getSelectedVehicleId } from 'services/FleetModel/reducer';
 import { contextActions } from 'services/Global/actions';
+import { getVehicleFilterString } from 'services/Global/reducer';
 
 import * as listEvents from './events';
 import * as mapEvents from 'containers/MapFleet/events';
@@ -141,7 +142,10 @@ class OperationalPowerList extends React.Component {
             label={isMaritime ? 'Vessels' : 'Vehicles'}
             value={listTypes.withVehicleDetails}
           >
-            <Filter filterFunc={this.props.filterVehiclesFunc} />
+            <Filter
+              filterFunc={this.props.filterVehiclesFunc}
+              defaultValue={this.props.vehicleFilterString}
+            />
             <Scrollable offsetTop={dimensions.powerlistFilterHeight}>
               <ItemsList
                 scrollIntoView
@@ -157,6 +161,7 @@ class OperationalPowerList extends React.Component {
             value={listTypes.withGFDetails}
           >
             <Filter filterFunc={this.props.filterGFsFunc} />
+
             <Scrollable offsetTop={dimensions.powerlistFilterHeight}>
               <ItemsList
                 scrollIntoView
@@ -186,11 +191,13 @@ OperationalPowerList.propTypes = {
   getSelectedVehicleId: React.PropTypes.string.isRequired,
   isEditGF: React.PropTypes.bool.isRequired,
   setListTypeFunc: React.PropTypes.func.isRequired,
+  vehicleFilterString: React.PropTypes.string,
 };
 
 const mapState = (state) => ({
   getSelectedVehicleId: getSelectedVehicleId(state),
   isEditGF: gfEditIsEditing(state),
+  vehicleFilterString: getVehicleFilterString(state),
 });
 const mapDispatch = {
   filterVehiclesFunc: vehiclesActions.filterVehicles,
