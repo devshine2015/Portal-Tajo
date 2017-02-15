@@ -147,7 +147,7 @@ class Device extends React.Component {
           <Text
             notAttached={this.props.notAttached}
             vehicleId={this.props.original.vehicleId}
-            vehicleName={this.props.vehicleName}
+            // vehicleName={this.props.vehicleName}
             vehicleIsFault={this.props.vehicleIsFault}
           />
           { canDeactivate && renderActions(this.onDiactivate) }
@@ -173,7 +173,7 @@ Device.propTypes = {
   vehicleIsFault: React.PropTypes.bool.isRequired,
 
   // name of assotiated vehicle
-  vehicleName: React.PropTypes.string.isRequired,
+  // vehicleName: React.PropTypes.string.isRequired,
 
   // original properties from backend
   original: React.PropTypes.shape({

@@ -51,16 +51,6 @@ const endpoints = {
     method: 'put',
     apiVersion: 1,
   }),
-  attachDevice: id => ({
-    url: `vehicles/${id}/device`,
-    method: 'post',
-    apiVersion: 1,
-  }),
-  detachDevice: id => ({
-    url: `vehicles/${id}/device`,
-    method: 'delete',
-    apiVersion: 1,
-  }),
 
   // stats
   getStats: {
@@ -82,6 +72,16 @@ const endpoints = {
   },
   deactivate: id => ({
     url: `devices/${id}`,
+    method: 'delete',
+    apiVersion: 1,
+  }),
+  attachDevice: id => ({
+    url: `vehicles/${id}/device`,
+    method: 'post',
+    apiVersion: 1,
+  }),
+  detachDevice: id => ({
+    url: `vehicles/${id}/device`,
     method: 'delete',
     apiVersion: 1,
   }),

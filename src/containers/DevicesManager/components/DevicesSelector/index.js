@@ -35,6 +35,9 @@ DevicesSelector.propTypes = {
   // DevicesSelector is controlled input
   // must be provided with value
   value: React.PropTypes.string.isRequired,
+
+  // text to display as an error
+  errorText: React.PropTypes.string,
 };
 
 export default DevicesSelector;

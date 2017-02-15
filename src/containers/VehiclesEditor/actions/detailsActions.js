@@ -1,5 +1,9 @@
 import { vehiclesActions } from 'services/FleetModel/actions';
 import {
+  detachDevice,
+  attachDevice,
+} from 'services/Devices/actions';
+import {
   getVehicleByIdFunc,
   getVehiclesEx,
 } from 'services/FleetModel/reducer';
@@ -50,32 +54,29 @@ export const updateDetails = ({
         });
       }
 
-      // attach or detach device
-      let deviceFunction = () => Promise.resolve();
-
       // first - detach device if needed
       if (device.needDetach) {
-        deviceId = selectedVehicle.deviceId;
-        deviceFunction = vehiclesActions.detachDevice;
+        deviceId = selectedVehicle.original.deviceId;
+        dispatch(detachDevice(selectedVehicle.id, deviceId));
       } else if (device.needAttach) {
         deviceId = data.deviceId;
-        deviceFunction = vehiclesActions.attachDevice;
+        dispatch(attachDevice(selectedVehicle.id, deviceId));
       }
 
-      return deviceFunction(selectedVehicle.id, deviceId);
+      return Promise.resolve();
     })
     .then(() => {
-      let deviceFunction = () => Promise.resolve();
-
       // second - attach new device if needed
       if (device.needDetach && device.needAttach) {
         deviceId = data.deviceId;
-        deviceFunction = vehiclesActions.attachDevice;
+        dispatch(attachDevice(selectedVehicle.id, deviceId));
       }
 
-      return deviceFunction(selectedVehicle.id, deviceId);
+      return Promise.resolve();
     })
-    .then(() => Promise.resolve(newIndex), () => {
+    .then(() => Promise.resolve(newIndex), err => {
+      console.error(err);
+
       dispatch({
         type: VEHICLE_EDITOR_LOADER_RESET,
       });

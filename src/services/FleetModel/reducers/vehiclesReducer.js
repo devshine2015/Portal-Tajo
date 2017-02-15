@@ -4,9 +4,9 @@ import * as socketActions from '../actions/socketActions';
 
 const vehiclesInitialState = fromJS({
   processedList: new Map(),
-  orderedList: new List(),
-  deadList: new List(),
-  delayedList: new List(),
+  orderedList: new List([]),
+  deadList: new List([]),
+  delayedList: new List([]),
   // keep gloabl selelcted vehicle - to be persistent wneh switching screens/lists
   // TODO: move it to separate reducer (userContext?), with mapView params, etc
   selectedVehicleId: '',

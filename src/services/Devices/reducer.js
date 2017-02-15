@@ -4,6 +4,8 @@ import {
   DEVICES_FETCH_SUCCESS,
   DEVICES_DEVICE_ADD,
   DEVICES_UPDATE,
+  DEVICE_DETACHED,
+  DEVICE_ATTACHED,
 } from './actions';
 
 const initialState = fromJS({
@@ -42,6 +44,32 @@ function reducer(state = initialState, action) {
          .set('faultAmount', action.faultAmount)
          .set('notAttachedAmount', action.notAttachedAmount)
          .update('vacantDevices', list => list.delete(action.vacantDeviceIndex));
+      });
+
+    case DEVICE_ATTACHED:
+      return state.withMutations(st => {
+        const index = state.get('vacantDevices').keyOf(action.deviceId);
+
+        st.set('notAttachedAmount', getNotAttachedAmount(st) - 1)
+          .update('vacantDevices', list => list.delete(index))
+          .updateIn(['list', action.deviceId], device => {
+            device.notAttached = false;
+            device.original.vehicleId = action.vehicleId;
+
+            return device;
+          });
+      });
+
+    case DEVICE_DETACHED:
+      return state.withMutations(st => {
+        st.set('notAttachedAmount', getNotAttachedAmount(st) + 1)
+          .update('vacantDevices', list => list.push(action.deviceId))
+          .updateIn(['list', action.deviceId], device => {
+            device.notAttached = true;
+            device.original.vehicleId = '';
+
+            return device;
+          });
       });
 
     default:
