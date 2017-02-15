@@ -1,6 +1,6 @@
 {
   "name": "drvr.co",
-  "version": "1.1.13",
+  "version": "1.1.14",
   "dependencies": {
     "abab": {
       "version": "1.0.3",
@@ -4535,6 +4535,11 @@
       "version": "1.0.11",
       "from": "object-keys@>=1.0.8 <2.0.0",
       "resolved": "https://registry.npmjs.org/object-keys/-/object-keys-1.0.11.tgz"
+    },
+    "object-path": {
+      "version": "0.11.3",
+      "from": "object-path@latest",
+      "resolved": "https://registry.npmjs.org/object-path/-/object-path-0.11.3.tgz"
     },
     "object.omit": {
       "version": "2.0.1",

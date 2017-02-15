@@ -53,7 +53,12 @@ export const fetchVehicles = () => dispatch => {
 
 function _filterVehicles({ searchString }, dispatch, getState) {
   const originVehicles = getProcessedVehicles(getState()).toJS();
-  const filteredVehicles = filterProcessedListByName(originVehicles, searchString);
+  const options = {
+    searchString,
+    objectsList: originVehicles,
+    path: 'original.name',
+  };
+  const filteredVehicles = filterProcessedListByName(options);
 
   dispatch(_vehiclesFilterUpdate(filteredVehicles));
 }

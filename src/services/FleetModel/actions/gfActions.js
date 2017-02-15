@@ -70,7 +70,12 @@ function toJson(response) {
 
 function _filterGf({ searchString }, dispatch, getState) {
   const originGFs = getProcessedGFs(getState()).toJS();
-  const filteredVehicles = filterProcessedListByName(originGFs, searchString);
+  const options = {
+    objectsList: originGFs,
+    searchString,
+    path: 'name',
+  };
+  const filteredVehicles = filterProcessedListByName(options);
 
   dispatch(_gfsFilterUpdate(filteredVehicles));
 }
