@@ -9,7 +9,7 @@ const vehiclesInitialState = fromJS({
   delayedList: new List(),
   // keep gloabl selelcted vehicle - to be persistent wneh switching screens/lists
   // TODO: move it to separate reducer (userContext?), with mapView params, etc
-  slectedVehicleId: '',
+  selectedVehicleId: '',
 });
 
 function vehiclesReducer(state = vehiclesInitialState, action) {
@@ -41,7 +41,7 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
       return state.set('processedList', new Map(action.vehicles));
 
     case vehiclesActions.FLEET_MODEL_VEHICLE_SELECT:
-      return state.set('slectedVehicleId', action.id);
+      return state.set('selectedVehicleId', action.id);
 
     case socketActions.FLEET_MODEL_SOCKET_SET_BATCH: {
       return state.withMutations(s => {
@@ -85,7 +85,7 @@ export const getVehiclesExSorted = (state) => {
 export const getProcessedVehicles = (state) =>
   state.get('processedList');
 export const getSelectedVehicleId = (state) =>
-  state.get('slectedVehicleId');
+  state.get('selectedVehicleId');
 export const getVehiclesAmount = state =>
   state.get('processedList').size;
 

@@ -52,7 +52,7 @@ export const fetchVehicles = () => dispatch => {
 
 
 function _filterVehicles({ searchString }, dispatch, getState) {
-  const originVehicles = getProcessedVehicles(getState()).toJS();
+  const originVehicles = getProcessedVehicles(getState());
   const options = {
     searchString,
     objectsList: originVehicles,

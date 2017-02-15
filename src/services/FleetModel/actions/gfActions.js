@@ -69,7 +69,7 @@ function toJson(response) {
 }
 
 function _filterGf({ searchString }, dispatch, getState) {
-  const originGFs = getProcessedGFs(getState()).toJS();
+  const originGFs = getProcessedGFs(getState());
   const options = {
     objectsList: originGFs,
     searchString,

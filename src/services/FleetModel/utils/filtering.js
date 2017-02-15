@@ -1,20 +1,27 @@
-import objectPath from 'object-path';
+// import objectPath from 'object-path';
+import { Map } from 'immutable';
+
+function _itContainString(searchString, prop) {
+  return prop.toLowerCase().search(searchString) !== -1;
+}
 
 export const filterProcessedListByName = ({
-  objectsList = {},
+  objectsList = new Map(),
   searchString = '',
   path = '',
 }) => {
-  const result = Object.assign({}, objectsList);
+  const splitted = path.split('.');
 
-  for (const k in objectsList) {
-    if (objectsList.hasOwnProperty(k)) {
-      const obj = objectsList[k];
-      const propertyToSearch = objectPath.get(obj, path);
+  const next = objectsList.update(list =>
+    list.map(object =>
+      object.update(obj => {
+        const propertyToSearch = obj.getIn(splitted);
+        const itFilteredOut = !_itContainString(searchString, propertyToSearch);
 
-      result[k] = Object.assign({}, obj);
-      result[k].filteredOut = propertyToSearch.toLowerCase().search(searchString) === -1;
-    }
-  }
-  return result;
+        return obj.set('filteredOut', itFilteredOut);
+      })
+    )
+  );
+
+  return next;
 };
