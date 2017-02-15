@@ -3,10 +3,10 @@ import * as vehiclesActions from '../actions/vehiclesActions';
 import * as socketActions from '../actions/socketActions';
 
 const vehiclesInitialState = fromJS({
-  processedList: new Map(),
-  orderedList: new List([]),
-  deadList: new List([]),
-  delayedList: new List([]),
+  processedList: {},
+  orderedList: [],
+  deadList: [],
+  delayedList: [],
   // keep gloabl selelcted vehicle - to be persistent wneh switching screens/lists
   // TODO: move it to separate reducer (userContext?), with mapView params, etc
   selectedVehicleId: '',
