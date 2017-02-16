@@ -100,7 +100,7 @@ class Installer extends React.Component {
 
   updateState = (name, value) => {
     const fields = this.state.fields.set(name, value);
-    const cannotSubmit = validateForm(this.state.fields.toObject());
+    const cannotSubmit = validateForm(fields.toObject());
 
     this.setState({
       fields,
