@@ -113,7 +113,7 @@ function calcCommonEvents({ ev, type } = {}, {
 
   return [
     licensePlate, // license plate number
-    name,         // vehcile name
+    name,         // vehicle name
     prettyType,   // prettified event type
     moment(pos.posTime).format(dateFormat), // event time
     `${pos.latlon.lat}, ${pos.latlon.lng}`,   // event position
@@ -144,14 +144,17 @@ function calcGeofenceEvents({ ev, type } = {}, {
 const calculateVehicleRow = (event, options, noEvents = false) => {
   // return single row in case of no events
   if (noEvents) {
+    const NA = 'n/a';
+    const NO_DATA = 'no data';
+
     return [
-      options.licensePlate,
-      options.name,
-      'no data',
-      'no data',
-      'no data',
-      'no data',
-      'no data',
+      options.licensePlate || NA,
+      options.name || NA,
+      NO_DATA,
+      NO_DATA,
+      NO_DATA,
+      NO_DATA,
+      NO_DATA,
     ];
   }
 

@@ -59,8 +59,8 @@ function _generateRawReport({ timePeriod, frequency, dateFormat }, dispatch, get
         .then(res => res.json())
         .then(calculateVehicleRows({
           dateFormat: dateFormatWithTime,
-          name: v.name,
-          licensePlate: v.licensePlate,
+          name: v.original.name,
+          licensePlate: v.original.licensePlate,
           selectedEvents,
         }));
     })
