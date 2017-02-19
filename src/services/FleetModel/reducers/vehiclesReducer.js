@@ -62,6 +62,20 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
   }
 }
 
+function getSizeSafe(aList) {
+  if (aList === undefined) {
+    return 0;
+  }
+  return aList.size;
+}
+
+function getValuesSafe(aList) {
+  if (aList === undefined) {
+    return new List([]);
+  }
+  return aList;
+}
+
 export default vehiclesReducer;
 
 export const getVehiclesEx = (state) => {
@@ -87,22 +101,22 @@ export const getProcessedVehicles = (state) =>
 export const getSelectedVehicleId = (state) =>
   state.get('selectedVehicleId');
 export const getVehiclesAmount = state =>
-  state.get('processedList').size;
+  getSizeSafe(state.get('processedList'));
 
 export const hasProcessedVehicles = state =>
-  state.get('processedList').size > 0;
+  getSizeSafe(state.get('processedList')) > 0;
 
 export const getDeadList = state =>
-  state.get('deadList');
+  getValuesSafe(state.get('deadList'));
 
 export const getDeadAmount = state =>
-  state.get('deadList').size;
+  getSizeSafe(state.get('deadList'));
 
 export const getDelayedList = state =>
-  state.get('delayedList');
+  getValuesSafe(state.get('delayedList'));
 
 export const getDelayedAmount = state =>
-  state.get('delayedList').size;
+  getSizeSafe(state.get('delayedList'));
 
 export const getAmounts = state => ({
   deadAmount: getDeadAmount(state),
