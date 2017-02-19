@@ -34,14 +34,14 @@ describe('Fleet model vehicle helpers', function() {
   describe('checkLaggedVehicle()', function() {
     it('should not be delayed', function() {
       const minutes = LAG_INDICAION_TRH_MIN - 1;
-      const result = helpers.checkLaggedVehicle(minutes);
+      const result = helpers.checkLaggedVehicle(minutes, 1);
 
       should.equal(result, false);
     });
 
     it('should be delayed', function() {
       const del1 = LAG_INDICAION_TRH_MIN + 1;
-      const result1 = helpers.checkLaggedVehicle(del1);
+      const result1 = helpers.checkLaggedVehicle(del1, 1);
 
       should.equal(result1, true);
     });

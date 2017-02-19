@@ -9,6 +9,8 @@ export const NEW_GF_RADIUS = 100;
 //---
 export const ZOMBIE_TIME_TRH_MIN = 60 * 24; // 24h
 export const LAG_INDICAION_TRH_MIN = 5; // 5min
+// TODO: verify the number
+export const LAG_INDICAION_TRH_NOIGN_MIN = 95; //
 
 //
 // TODO: put those convertion helpers to some separate place

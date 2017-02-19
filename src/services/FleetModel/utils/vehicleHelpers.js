@@ -1,5 +1,5 @@
 import { Map, fromJS } from 'immutable';
-import { LAG_INDICAION_TRH_MIN } from 'utils/constants';
+import { LAG_INDICAION_TRH_MIN, LAG_INDICAION_TRH_NOIGN_MIN } from 'utils/constants';
 import { sortByName } from 'utils/sorting';
 import {
   getProcessedVehicles,
@@ -20,12 +20,6 @@ function _checkIsDead(hasPosition = false) {
 
 export function calcDeltaTimeMin(now, pastTimestamp) {
   return (now - pastTimestamp) / 1000 / 60;
-}
-
-export function checkIsDelayed(now, pastTimestamp) {
-  const deltaTimeMin = calcDeltaTimeMin(now, pastTimestamp);
-
-  return checkLaggedVehicle(deltaTimeMin);
 }
 
 export function getActivityStatus(isDead, isDelayed) {
@@ -57,12 +51,12 @@ function _makeImmutableVehicle({
   const hasTemp = vehicleStats.hasOwnProperty('temp');
 
   const isDead = _checkIsDead(hasPosition);
+  const ignitionOn = checkIgnition(vehicleStats.ignOn);
   // vehicle cannot be dead and delayed at same time
   // so it's already dead than it cannot be delayed
-  const isDelayed = isDead ? false : checkIsDelayed(now, sinceEpoch);
+  const isDelayed = isDead ? false : checkLaggedVehicle(calcDeltaTimeMin(now, sinceEpoch), ignitionOn);
   const activityStatus = getActivityStatus(isDead, isDelayed);
 
-  const ignitionOn = checkIgnition(vehicleStats.ignOn);
   const localTimings = vehicleClientUpdate({
     imVehicle, now, ignitionOn,
   });
@@ -221,8 +215,8 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
 
 //
 // delayed update? (comm coverage, expected to be ~45min)
-export function checkLaggedVehicle(delayTimeMinutes) {
-  return delayTimeMinutes > LAG_INDICAION_TRH_MIN;
+export function checkLaggedVehicle(delayTimeMinutes, ignitionStatus) {
+  return ignitionStatus === 1 ? delayTimeMinutes > LAG_INDICAION_TRH_MIN : delayTimeMinutes > LAG_INDICAION_TRH_NOIGN_MIN;
 }
 
 export function checkIgnition(ignOn) {

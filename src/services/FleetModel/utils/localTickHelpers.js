@@ -2,7 +2,7 @@ import { Map } from 'immutable';
 import { isMaritime } from 'configs';
 import { getProcessedVehicles } from '../reducer';
 import {
-  checkIsDelayed,
+  checkLaggedVehicle,
   checkIgnition,
   calcDeltaTimeMin,
   getActivityStatus,
@@ -28,7 +28,7 @@ export function vehicleClientUpdate({
   const isDead = imVehicle.size === 0;
   const deltaTimeMin = calcDeltaTimeMin(now, imVehicle.get('lastUpdateSinceEpoch'));
 
-  const isDelayed = isDead ? false : checkIsDelayed(now, deltaTimeMin);
+  const isDelayed = isDead ? false : checkLaggedVehicle(deltaTimeMin, ignitionOn);
   const activityStatus = getActivityStatus(isDead, isDelayed);
 
   // TODO -- just a combination of already defined props,
