@@ -127,8 +127,8 @@ function _updateLists(prevStatus, nextStatus, id, getState) {
     };
   }
 
-  let nextDeadList;
-  let nextDelayedList;
+  let nextDeadList = deadList;
+  let nextDelayedList = delayedList;
 
   if (prevStatus === 'dead' && nextStatus === 'delayed') {
     nextDeadList = _removeFromList(deadList, id);
