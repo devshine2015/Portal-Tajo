@@ -25,6 +25,12 @@ export default (phrases) => (Component) => {
       this.translations = _translate(phrases, props.currentLocale);
     }
 
+    componentWillReceiveProps(nextProps) {
+      if (nextProps.currentLocale !== this.props.currentLocale) {
+        this.translations = _translate(phrases, nextProps.currentLocale);
+      }
+    }
+
     render() {
       return (
         <Component
