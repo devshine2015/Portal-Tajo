@@ -11,7 +11,10 @@ import Form from 'components/Form';
 import ButtonWithProgress from 'components/ButtonWithProgress';
 import DeviceEditor from '../DeviceEditor';
 import { VEHICLE_KINDS, getVehicleByValue } from 'services/FleetModel/utils/vehiclesMap';
+import translator from 'utils/translator';
+
 import styles from './styles.css';
+import phrases, { phrasesShape } from './phrases.lang';
 
 const FORM = 'editor';
 const STYLES = {
@@ -114,6 +117,8 @@ class VehicleDetails extends React.Component {
   }
 
   renderKindMenuItems() {
+    const { translations } = this.props;
+
     return VEHICLE_KINDS.map(kind => {
       const Icon = () => React.cloneElement(kind.icon, {
         className: styles.vehicleIcon,
@@ -123,7 +128,7 @@ class VehicleDetails extends React.Component {
         <MenuItem
           key={kind.value}
           value={kind.value}
-          primaryText={kind.text}
+          primaryText={ translations[kind.value.toLowerCase()] }
           leftIcon={<Icon />}
           style={STYLES.menuItem}
         />
@@ -133,6 +138,7 @@ class VehicleDetails extends React.Component {
 
   render() {
     let SelectedKindIcon = () => null;
+    const { translations } = this.props;
 
     if (this.state.kind) {
       const selectedKind = getVehicleByValue(this.state.kind);
@@ -149,14 +155,14 @@ class VehicleDetails extends React.Component {
             fullWidth
             name="name"
             onChange={this.onChange}
-            floatingLabelText="Vehicle Name"
+            floatingLabelText={ translations.vehicle_name }
             value={this.state.name}
           />
 
           <div className={styles.kind}>
             <SelectField
               autoWidth
-              hintText="Kind of Vehicle"
+              hintText={ translations.vehicle_kind_hint }
               name="kind"
               value={this.state.kind}
               onChange={this.onKindChange}
@@ -172,7 +178,7 @@ class VehicleDetails extends React.Component {
             fullWidth
             name="licensePlate"
             onChange={this.onChange}
-            floatingLabelText="License Plate Number"
+            floatingLabelText={ translations.license }
             value={this.state.licensePlate}
           />
 
@@ -186,21 +192,21 @@ class VehicleDetails extends React.Component {
             fullWidth
             name="make"
             onChange={this.onChange}
-            floatingLabelText="Manufacturer"
+            floatingLabelText={ translations.manufacturer }
             value={this.state.make}
           />
           <TextField
             fullWidth
             name="model"
             onChange={this.onChange}
-            floatingLabelText="Model Name"
+            floatingLabelText={ translations.model_name }
             value={this.state.model}
           />
           <TextField
             fullWidth
             name="year"
             onChange={this.onChange}
-            floatingLabelText="Year of Manufacture"
+            floatingLabelText={ translations.year }
             value={this.state.year}
             type="number"
           />
@@ -208,12 +214,12 @@ class VehicleDetails extends React.Component {
             fullWidth
             name="odometer"
             onChange={this.onChange}
-            floatingLabelText="Odometer (km.)"
+            floatingLabelText={ translations.odometer_value }
             value={this.state.odometer}
             type="number"
           />
           <Checkbox
-            label="ODO value in miles"
+            label={ translations.odo_in_miles }
             name="isMiles"
             checked={this.state.isMiles}
             onCheck={this.onIsMilesChange}
@@ -224,14 +230,14 @@ class VehicleDetails extends React.Component {
               disabled={this.props.disabled}
               onClick={this.onSubmit}
               isLoading={this.props.isLoading}
-              label="Save"
+              label={ translations.save }
               type="submit"
               primary
             />
             <FlatButton
               className={styles.buttons__button}
               onClick={this.props.onCancel}
-              label="Cancel"
+              label={ translations.cancel }
             />
           </div>
         </Form>
@@ -260,6 +266,8 @@ VehicleDetails.propTypes = {
   }).isRequired,
   onSave: React.PropTypes.func.isRequired,
   onCancel: React.PropTypes.func.isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
-export default pure(VehicleDetails);
+export default pure(translator(phrases)(VehicleDetails));

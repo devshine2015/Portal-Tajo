@@ -1,9 +1,9 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import styles from './styles.css';
 import { setChronicleNormalizedT } from './../../actions';
 import { getNormalized100T } from './../../reducer';
+import translator from 'utils/translator';
 
 import IconButton from 'material-ui/IconButton';
 import PlayIcon1 from 'material-ui/svg-icons/av/play-arrow';
@@ -11,10 +11,10 @@ import PlayIcon2 from 'material-ui/svg-icons/av/forward-5';
 import PlayIcon3 from 'material-ui/svg-icons/av/forward-10';
 import PlayIcon4 from 'material-ui/svg-icons/av/forward-30';
 import PauseIcon from 'material-ui/svg-icons/av/pause';
-// import FFwdIcon from 'material-ui/svg-icons/av/fast-forward';
-// import FFwdIcon from 'material-ui/svg-icons/av/fast-forward';
+import { teal100, teal400, yellow700, yellow500 } from 'material-ui/styles/colors';
 
-import { red900, red500, teal100, teal400, yellow700, yellow500 } from 'material-ui/styles/colors';
+import styles from './styles.css';
+import phrases, { phrasesShape } from './phrases.lang';
 
 class PlaybackCtr extends React.Component {
 
@@ -110,38 +110,40 @@ class PlaybackCtr extends React.Component {
   }
 
   render() {
+    const { translations } = this.props;
+
     return (
       <div className={styles.containerBox}>
         <IconButton
-          tooltip="pause"
+          tooltip={ translations.pause }
           onClick={() => (this.playSpeed(0))}
           key="pauseBtn"
         >
            <PauseIcon color={this.getBtnColor(0)} hoverColor={this.getBtnHoverColor(0)} />
          </IconButton>
        <IconButton
-         tooltip="play"
+         tooltip={ translations.play }
          onClick={() => (this.playSpeed(1))}
          key="playBtn"
        >
           <PlayIcon1 color={this.getBtnColor(1)} hoverColor={this.getBtnHoverColor(1)} />
       </IconButton>
         <IconButton
-          tooltip="play2"
+          tooltip={ `${translations.play} 2` }
           onClick={() => (this.playSpeed(2))}
           key="playBtn2"
         >
            <PlayIcon2 color={this.getBtnColor(2)} hoverColor={this.getBtnHoverColor(2)} />
          </IconButton>
        <IconButton
-         tooltip="play3"
+         tooltip={ `${translations.play} 3` }
          onClick={() => (this.playSpeed(3))}
          key="playBtn3"
        >
           <PlayIcon3 color={this.getBtnColor(3)} hoverColor={this.getBtnHoverColor(3)} />
         </IconButton>
       <IconButton
-        tooltip="play4"
+        tooltip={ `${translations.play} 4` }
         onClick={() => (this.playSpeed(4))}
         key="playBtn4"
       >
@@ -156,12 +158,18 @@ PlaybackCtr.propTypes = {
   selectedVehicleId: React.PropTypes.string,
   setChronicleNormalizedT: React.PropTypes.func.isRequired,
   normalized100T: React.PropTypes.number.isRequired,
+
+  translations: phrasesShape.isRequired,
 };
+
 const mapState = (state) => ({
   normalized100T: getNormalized100T(state),
 });
 const mapDispatch = {
   setChronicleNormalizedT,
 };
+
 const PurePlaybackCtr = pure(PlaybackCtr);
-export default connect(mapState, mapDispatch)(PurePlaybackCtr);
+const Connected = connect(mapState, mapDispatch)(PurePlaybackCtr);
+
+export default translator(phrases)(Connected);

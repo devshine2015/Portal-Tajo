@@ -6,7 +6,6 @@ const number = React.PropTypes.number;
 const arrayOf = React.PropTypes.arrayOf;
 
 export default shape({
-  niceName: string.isRequired,
   name: string.isRequired,
   index: number.isRequired,
   path: string.isRequired,

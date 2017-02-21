@@ -10,8 +10,8 @@ const phrases = {
   },
 
   th: {
-    language_settings_main_text: 'Язык приложения',
-    language_settings_title: 'Язык',
+    language_settings_main_text: 'ภาษาของแอพพลิเคชั่น',
+    language_settings_title: 'ภาษา',
   },
 };
 

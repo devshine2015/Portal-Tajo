@@ -3,12 +3,11 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { hideLayer } from 'utils/mapBoxMap';
 import { generateInnerHTMLForHistoryMoment } from 'containers/Chronicle/utils/strings';
-// import { CHRONICLE_LOCAL_INCTANCE_STATE_VALID } from 'containers/Chronicle/actions';
-
 import { getNormalized100T } from 'containers/Chronicle/reducer';
+// import translator from 'utils/translator';
 
-// need to load those styles for leafLet popUp
 require('./styles.css');
+// import phrases, { phrasesShape } from './phrases.lang';
 
 
 class ChronicleMarker extends React.Component {
@@ -123,10 +122,15 @@ ChronicleMarker.propTypes = {
   chronicleFrame: React.PropTypes.object.isRequired,
   isSelected: React.PropTypes.bool.isRequired,
   normalized100T: React.PropTypes.number.isRequired,
+
+  // translations: phrasesShape.isRequired,
 };
+
 const mapState = (state) => ({
   normalized100T: getNormalized100T(state),
 });
 
 const PureChronicleMarker = pure(ChronicleMarker);
-export default connect(mapState)(PureChronicleMarker);
+const Connected = connect(mapState)(PureChronicleMarker);
+
+export default Connected;

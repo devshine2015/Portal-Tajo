@@ -4,7 +4,10 @@ import Content from 'components/Content';
 import Widget from 'components/Widget';
 import EventsCalculator from 'containers/EventsCalculator';
 import FleetSummary from 'containers/FleetSummary';
+import translator from 'utils/translator';
+
 import classes from './classes';
+import phrases, { phrasesShape } from './phrases.lang';
 
 function canShow(Component) {
   if (Component === EventsCalculator) {
@@ -18,13 +21,13 @@ function canShow(Component) {
   return false;
 }
 
-const DashboardScreen = () => (
+const DashboardScreen = ({ translations }) => (
   <Content center>
     { canShow(EventsCalculator) && <EventsCalculator /> }
     { canShow(FleetSummary) && (
       <Widget
         containerClass={classes.dashboard__summaryGroup}
-        title="Fleet Summary"
+        title={ translations.fleet_summary_title }
       >
         <FleetSummary />
       </Widget>
@@ -32,4 +35,8 @@ const DashboardScreen = () => (
   </Content>
 );
 
-export default DashboardScreen;
+DashboardScreen.propTypes = {
+  translations: phrasesShape.isRequired,
+};
+
+export default translator(phrases)(DashboardScreen);

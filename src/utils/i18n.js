@@ -7,7 +7,7 @@ export default polyglot;
 export const localesSupported = ['en', 'th'];
 
 // take main part of locale,
-// for example 'en' from 'en-US';
+// for example make 'en' from 'en-US';
 function _transformLocale(locale = '') {
   const l = locale.split('-');
 

@@ -12,33 +12,25 @@ import { gfEditGetSubject } from './reducer';
 import { gfEditClose, gfEditUpdate } from './actions';
 import { createGF } from 'services/FleetModel/actions/gfActions';
 import { showSnackbar } from 'containers/Snackbar/actions';
+import translator from 'utils/translator';
 
 import styles from './styles.css';
-
+import phrases, { phrasesShape } from './phrases.lang';
 
 const FORM = 'editor';
 
 class GFEditor extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  //
-  // componentDidMount() {
-  //   this.theLocation = makeLocalGF();
-  // }
 
-  componentDidUpdate() {
-  }
-  /**
-   **/
   onSubmit = (e) => {
     e.preventDefault();
+
     const gfObj = makeBackendGF({ ...this.props.subjectGF });
+
     this.props.createGF(gfObj, 1)
       .then(() => {
-        this.props.showSnackbar('Succesfully sended ✓', 3000);
+        this.props.showSnackbar(this.props.translations.send_success, 3000);
       }, () => {
-        this.props.showSnackbar('Something went wrong. Try later. ✓', 5000);
+        this.props.showSnackbar(this.props.translations.send_fail, 5000);
       });
     this.props.gfEditClose();
   }
@@ -71,44 +63,49 @@ class GFEditor extends React.Component {
             fullWidth
             name="name"
             onChange={this.onChange}
-            floatingLabelText="Location Name"
+            floatingLabelText={ this.props.translations.location_name }
             value={this.props.subjectGF.name}
           />
           <TextField
             fullWidth
             name="address"
             onChange={this.onChange}
-            floatingLabelText="Address"
+            floatingLabelText={ this.props.translations.address }
             value={this.props.subjectGF.address}
           />
-          {this.props.subjectGF.isPolygon ? null :
+
+          { this.props.subjectGF.isPolygon ? null :
             <TextField
               fullWidth
               name="radius"
               onChange={this.onChange}
-              floatingLabelText="Radius"
+              floatingLabelText={ this.props.translations.radius }
               value={this.props.subjectGF.radius}
             />
           }
-          { true ? null :
-          <Checkbox
-            label="is home depot"
-            onCheck={this.onCheckDepot}
-          />
-          }          <div className={styles.buttons}>
+
+          { true ? null : (
+            <Checkbox
+              label={ this.props.translations.home_depot }
+              onCheck={this.onCheckDepot}
+            />
+          )}
+
+          <div className={styles.buttons}>
             <FlatButton
               className={styles.buttons__button}
               onClick={this.onCancel}
-              label="Cancel"
+              label={ this.props.translations.cancel }
             />
             <RaisedButton
               className={styles.buttons__button}
               onClick={this.onSubmit}
-              label="Save"
+              label={ this.props.translations.save }
               type="submit"
               primary
             />
           </div>
+
         </Form>
       </div>
     );
@@ -121,6 +118,8 @@ GFEditor.propTypes = {
   gfEditUpdate: React.PropTypes.func.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,
   subjectGF: React.PropTypes.object.isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
 const mapState = (state) => ({
@@ -134,5 +133,6 @@ const mapDispatch = {
 };
 
 const PureGFEditor = pure(GFEditor);
+const Connected = connect(mapState, mapDispatch)(PureGFEditor);
 
-export default connect(mapState, mapDispatch)(PureGFEditor);
+export default translator(phrases)(Connected);

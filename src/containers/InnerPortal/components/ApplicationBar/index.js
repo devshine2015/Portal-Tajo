@@ -8,9 +8,11 @@ import { BASE_URL, isEscape } from 'configs';
 import CodebaseVersion from 'components/CodebaseVersion';
 import { changeMainSidebarState } from 'containers/InnerPortal/actions';
 import FleetSummary from 'containers/FleetSummary';
+import translator from 'utils/translator';
 import { logout } from '../../actions';
 
 import styles from './styles.css';
+import phrases, { phrasesShape } from './phrases.lang';
 
 const hideSummaryOn = [
   `${BASE_URL}review`,
@@ -52,13 +54,14 @@ const ApplicationBar = ({
   title,
   toggleSidebar,
   location,
+  translations,
 }) => (
   <div className={styles.barContainer}>
     <AppBar
       title={renderTitle(title)}
       iconElementRight={
         <FlatButton
-          label="Logout"
+          label={ translations.logout }
           onClick={logout}
         />
       }
@@ -76,6 +79,8 @@ ApplicationBar.propTypes = {
   title: React.PropTypes.string.isRequired,
   toggleSidebar: React.PropTypes.func.isRequired,
   location: React.PropTypes.shape(locationShape).isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
 const mapState = null;
@@ -86,4 +91,6 @@ const mapDispatch = {
 
 const PureApplicationBar = pure(withRouter(ApplicationBar));
 
-export default connect(mapState, mapDispatch)(PureApplicationBar);
+const Connected = connect(mapState, mapDispatch)(PureApplicationBar);
+
+export default translator(phrases)(Connected);

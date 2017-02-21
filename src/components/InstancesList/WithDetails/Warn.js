@@ -2,20 +2,21 @@ import React from 'react';
 import { css } from 'aphrodite/no-important';
 import moment from 'moment';
 import cs from 'classnames';
+import translator from 'utils/translator';
 
 import classes from './Warn.classes';
-
-const NEVER_REPORTED = 'never reported - check device';
+import phrases, { phrasesShape } from './Warn.phrases.lang';
 
 const Warn = ({
   activityStatus,
   isExpanded = false,
   updateDate,
+  translations,
 }) => {
   let infoStr = '';
 
   if (activityStatus === 'dead') {
-    infoStr = NEVER_REPORTED;
+    infoStr = translations.never_reported;
   } else if (activityStatus === 'delayed') {
     infoStr = `Delayed ${moment().from(updateDate, true)}`;
   }
@@ -37,6 +38,8 @@ Warn.propTypes = {
   ]).isRequired,
   isExpanded: React.PropTypes.bool,
   updateDate: React.PropTypes.number.isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
-export default Warn;
+export default translator(phrases)(Warn);

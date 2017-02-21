@@ -43,7 +43,6 @@ import iBoat from 'assets/images/v_icons_combi/boat@3x.png';
 
 const undefinedType = {
   value: 'UNDEFINED',
-  text: 'Undefined',
   icon: <Undefined />,
   pic: iUndefined,
 };
@@ -51,97 +50,78 @@ const undefinedType = {
 export const VEHICLE_KINDS = [
   {
     value: 'BOAT',
-    text: 'Ship',
     icon: <Boat />,
     pic: iBoat,
   }, {
     value: 'FARM',
-    text: 'Farm implementation',
     icon: <Farm />,
     pic: iFarm,
   }, {
     value: 'FORKLIFT',
-    text: 'Forklift',
     icon: <Forklift />,
     pic: iForklift,
   }, {
     value: 'HGV',
-    text: 'Heavy Goods Vehicle',
     icon: <Hgv />,
     pic: iHgv,
   }, {
     value: 'HGV_CHILLED',
-    text: 'Heavy Goods Vehicle Chilled',
     icon: <HgvChilled />,
     pic: iHgvChilled,
   }, {
     value: 'HGV_FROZEN',
-    text: 'Heavy Goods Vehicle Frozen',
     icon: <HgvFrozen />,
     pic: iHgvFrozen,
   }, {
     value: 'MGV',
-    text: 'Medium Goods Vehicle',
     icon: <Mgv />,
     pic: iMgv,
   }, {
     value: 'MGV_CHILLED',
-    text: 'Medium Goods Vehicle Chilled',
     icon: <MgvChilled />,
     pic: iMgvChilled,
   }, {
     value: 'MGV_FROZEN',
-    text: 'Medium Goods Vehicle Frozen',
     icon: <MgvFrozen />,
     pic: iMgvFrozen,
   }, {
     value: 'MINI_BUS',
-    text: 'Minibus',
     icon: <Minibus />,
     pic: iMinibus,
   }, {
     value: 'MOTORCYCLE',
-    text: 'Motorcycle',
     icon: <Motorcycle />,
     pic: iMotorcycle,
   }, {
     value: 'PASSENGER_CAR',
-    text: 'Passenger Car',
     icon: <Sedan />,
     pic: iSedan,
   }, {
     value: 'PICK_UP',
-    text: 'Pick-Up',
     icon: <Pickup />,
     pic: iPickup,
   }, {
     value: 'SGV',
-    text: 'Small Goods Vehicle',
     icon: <Sgv />,
     pic: iSgv,
   }, {
     value: 'SGV_CHILLED',
-    text: 'Small Goods Vehicle Chilled',
     icon: <SgvChilled />,
     pic: iSgvChilled,
   }, {
     value: 'SGV_FROZEN',
-    text: 'Small Goods Vehicle Frozen',
     icon: <SgvFrozen />,
     pic: iSgvFrozen,
   }, {
     value: 'SUV',
-    text: 'SUV',
     icon: <Suv />,
     pic: iSuv,
   }, {
     value: 'TAXI',
-    text: 'Taxi',
     icon: <Taxi />,
     pic: iTaxi,
   }, {
     value: 'TRACTOR',
-    text: 'Tractor',
     icon: <Tractor />,
     pic: iTractor,
   }, {

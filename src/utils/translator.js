@@ -18,12 +18,22 @@ function _translate(phrases, currentLocale) {
 }
 
 export default (phrases) => (Component) => {
-  const Translator = (props) => (
-    <Component
-      translations={_translate(phrases, props.currentLocale)}
-      {...props}
-    />
-  );
+  class Translator extends React.Component {
+    constructor(props) {
+      super(props);
+
+      this.translations = _translate(phrases, props.currentLocale);
+    }
+
+    render() {
+      return (
+        <Component
+          translations={this.translations}
+          {...this.props}
+        />
+      );
+    }
+  }
 
   Translator.propTypes = {
     currentLocale: React.PropTypes.oneOf(localesSupported).isRequired,

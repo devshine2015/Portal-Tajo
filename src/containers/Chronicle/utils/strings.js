@@ -3,32 +3,34 @@ import { makeStaticLableSVG, deviceAccessTime, imageTimer,
 
 //
 // need this for setting content of mapBox popUp
-export function generateInnerHTMLForHistoryMoment(momentData) {
-  let content = dateToChronicleLable(momentData.date)
-                        +'<br>'
-                        + speedToChronicleLable(momentData.speed);
+export function generateInnerHTMLForHistoryMoment(momentData, phrases = {}) {
+  let content = `${dateToChronicleLable(momentData.date)}<br>
+                 ${speedToChronicleLable(momentData.speed)}`;
+
   if (momentData.temperature !== null) {
-    content += '<br>'+temperatureToChronicleLable(momentData.temperature);
+    content += `<br> ${temperatureToChronicleLable(momentData.temperature)}`;
   }
-  content += '<hr>lat:'+'<span style="float:right">'+momentData.pos.lat.toFixed(6)+'</span>'
-  +'<br>lon:'+'<span style="float:right">'+momentData.pos.lng.toFixed(6)+'</span>';
+  content += `<hr>${phrases.lat || 'lat'}:<span style="float:right">${momentData.pos.lat.toFixed(6)}</span>
+              <br>
+              ${phrases.lng || 'lng'}:<span style="float:right">${momentData.pos.lng.toFixed(6)}</span>`;
+
   return content;
 }
 
 export function dateToChronicleLable(inDate) {
-  return makeStaticLableSVG(deviceAccessTime)+'<span style="float:right">'+dateToChronicleString(inDate)+'</span>';
+  return `${makeStaticLableSVG(deviceAccessTime)}<span style="float:right">${dateToChronicleString(inDate)}</span>`;
 }
 
 export function msToDurtationLable(duration) {
-  return makeStaticLableSVG(imageTimelapse)+'<span style="float:right">'+msToTimeIntervalString(duration)+'</span>';
+  return `${makeStaticLableSVG(imageTimelapse)}<span style="float:right">${msToTimeIntervalString(duration)}</span>`;
 }
 
 
 export function speedToChronicleLable(speed) {
-  return makeStaticLableSVG(notificationTimeToLeave)+'<span style="float:right">'+speed.toFixed(1) + 'km/h</span>';
+  return `${makeStaticLableSVG(notificationTimeToLeave)}<span style="float:right">${speed.toFixed(1)} km/h</span>`;
 }
 export function temperatureToChronicleLable(temp) {
-  return makeStaticLableSVG(placesAcUnit)+'<span style="float:right">' + temp.toFixed(1) + '&deg;C</span>';
+  return `${makeStaticLableSVG(placesAcUnit)}<span style="float:right">${temp.toFixed(1)} &deg;C</span>`;
 }
 
 function dateToChronicleString(inDate) {
@@ -51,10 +53,10 @@ export function msToTimeIntervalString(duration) {
   const hours = parseInt((duration / (1000 * 60 * 60)) % 24, 10);
 
   if (hours < 1) {
-    return minutes+'min'; // + ":" + seconds + "." + milliseconds;
+    return `${minutes}min`; // + ":" + seconds + "." + milliseconds;
   }
 //    hours = (hours < 10) ? "0" + hours : hours;
 //    minutes = (minutes < 10) ? "0" + minutes : minutes;
 //    seconds = (seconds < 10) ? "0" + seconds : seconds;
-  return hours+'h '+minutes+'min';
+  return `${hours}h ${minutes}min`;
 }

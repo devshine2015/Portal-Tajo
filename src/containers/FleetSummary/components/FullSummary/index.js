@@ -6,7 +6,10 @@ import { isEscape } from 'configs';
 import theme from 'configs/theme';
 import Icon from '../Icons';
 import { amountsShape } from '../../PropTypes';
+import translator from 'utils/translator';
+
 import classes from './classes';
+import phrases, { phrasesShape } from './phrases.lang';
 
 const STYLES = {
   icon: {
@@ -71,12 +74,13 @@ Amount.propTypes = {
 
 const FullSummary = ({
   amounts,
+  translations,
 }) => (
   <div className={css(classes.fullSummary)}>
     <Amount
       icon={<Icon.CarIcon color={theme.palette.primary3Color} />}
       amount={amounts.vehiclesAmount}
-      helpText="vehicles in fleet"
+      helpText={ translations.vehicles_amount }
     />
     { AMOUNT_TYPES_AVAILABILITY.devices &&
       <Amount
@@ -88,7 +92,7 @@ const FullSummary = ({
     <Amount
       icon={<Icon.NotReportedIcon color={theme.palette.accent2Color} />}
       amount={amounts.deadAmount}
-      helpText="vehicles never reported"
+      helpText={ translations.never_reported }
     />
     {/*<Amount
       icon={<Icon.DelayedIcon color={theme.palette.accent2Color} />}
@@ -101,6 +105,10 @@ const FullSummary = ({
 
 FullSummary.propTypes = {
   amounts: amountsShape.isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
-export default pure(FullSummary);
+const Pure = pure(FullSummary);
+
+export default translator(phrases)(Pure);

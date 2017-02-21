@@ -1,8 +1,10 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import TextField from 'material-ui/TextField';
+import translator from 'utils/translator';
 
 import styles from './styles.css';
+import phrases, { phrasesShape } from './phrases.lang';
 
 const STYLES = {
   inputStyle: {
@@ -40,7 +42,7 @@ class Filter extends React.Component {
           inputStyle={STYLES.inputStyle}
           hintStyle={STYLES.inputStyle}
           onChange={this.onFiltering}
-          hintText="Search"
+          hintText={ this.props.translations.search_placeholder }
           underlineShow={false}
           defaultValue={this.props.defaultValue}
         />
@@ -56,6 +58,10 @@ Filter.propTypes = {
 
   // TODO -- think about presets
   presets: React.PropTypes.shape({}),
+
+  translations: phrasesShape.isRequired,
 };
 
-export default pure(Filter);
+const Pure = pure(Filter);
+
+export default translator(phrases)(Pure);

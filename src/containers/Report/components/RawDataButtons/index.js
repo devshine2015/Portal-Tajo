@@ -6,6 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Toggle from 'material-ui/Toggle';
 import WarningDialog from '../WarningDialog';
 import { eventActions } from 'containers/Report/actions';
+import translator from 'utils/translator';
 import {
   getIsForced,
   getIsTooManyVehiclesSelected,
@@ -13,8 +14,7 @@ import {
 } from 'containers/Report/reducer';
 
 import styles from './styles.css';
-
-const warnMessage = 'I need to choose more vehicles';
+import phrases, { phrasesShape } from './phrases.lang';
 
 const STYLES = {
   toggleRoot: {
@@ -30,7 +30,13 @@ const STYLES = {
   },
 };
 
-const Hint = () => <div className={styles.hint}>*Pick up to 3 vehicles for getting events</div>;
+const Hint = ({
+  translations,
+}) => <div className={styles.hint}>*{ translations.hint_text }</div>;
+
+Hint.propTypes = {
+  translations: phrasesShape.isRequired,
+};
 
 class RawDataButtons extends React.Component {
 
@@ -86,14 +92,14 @@ class RawDataButtons extends React.Component {
         <div className={styles.top}>
           <RaisedButton
             className={btnClassName}
-            label="Save raw data"
+            label={ this.props.translations.save_btn_label }
             onClick={this.onPrimaryClick}
             disabled={btnIsDisabled}
             primary
           />
           <Toggle
             className={styles.toggle}
-            label={warnMessage}
+            label={ this.props.translations.toggle_warn }
             labelPosition="right"
             style={STYLES.toggleRoot}
             labelStyle={STYLES.toggleLabel}
@@ -101,7 +107,8 @@ class RawDataButtons extends React.Component {
             onToggle={this.onToggle}
           />
         </div>
-        <Hint />
+
+        <Hint translations={this.props.translations} />
 
         <WarningDialog
           open={this.state.dialogOpened}
@@ -137,6 +144,8 @@ RawDataButtons.propTypes = {
 
   // display amount of selected vehicles in dialog
   selectedVehiclesAmount: React.PropTypes.number.isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
 const mapState = state => ({
@@ -149,5 +158,6 @@ const mapDispatch = {
 };
 
 const PureRawDataButtons = pure(RawDataButtons);
+const Connected = connect(mapState, mapDispatch)(PureRawDataButtons);
 
-export default connect(mapState, mapDispatch)(PureRawDataButtons);
+export default translator(phrases)(Connected);

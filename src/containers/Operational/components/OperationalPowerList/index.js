@@ -2,7 +2,6 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { Tabs, Tab } from 'material-ui/Tabs';
-// import SwipeableViews from 'react-swipeable-views';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import ItemsList from 'components/InstancesList';
@@ -12,6 +11,7 @@ import { vehiclesActions, gfActions } from 'services/FleetModel/actions';
 import { getSelectedVehicleId } from 'services/FleetModel/reducer';
 import { contextActions } from 'services/Global/actions';
 import { getVehicleFilterString } from 'services/Global/reducer';
+import translator from 'utils/translator';
 
 import * as listEvents from './events';
 import * as mapEvents from 'containers/MapFleet/events';
@@ -21,6 +21,7 @@ import { dimensions } from 'configs/theme';
 import { isMaritime } from 'configs';
 
 import styles from './styles.css';
+import phrases, { phrasesShape } from './phrases.lang';
 
 class OperationalPowerList extends React.Component {
 
@@ -100,33 +101,9 @@ class OperationalPowerList extends React.Component {
       );
     }
 
-    // const theList = this.props.vehicles.map((aVeh)=>(<div key={aVeh.id}> {aVeh.name} </div>));
-    // return (
-    //   <PowerList>
-    //     <Tabs
-    //       inkBarStyle={{
-    //         backgroundColor: 'rgba(255,255,255,0.5)',
-    //       }}
-    //       className={styles.fullHeight}
-    //       contentContainerClassName={styles.contentFullHeight}
-    //       onChange={this.onTabChange}
-    //       value={this.state.selectedTab}
-    //     >
-    //       <Tab
-    //         label="Vehicles"
-    //         value={listTypes.withVehicleDetails}
-    //       >
-    //         <Filter filterFunc={this.props.filterVehiclesFunc} />
-    //         <Scrollable offsetTop={dimensions.powerlistFilterHeight}>
-    //           {theList}
-    //         </Scrollable>
-    //       </Tab>
-    //     </Tabs>
-    //   </PowerList>
-    // );
-
-
     const vehType = isMaritime ? listTypes.maritime : listTypes.withVehicleDetails;
+    const { translations } = this.props;
+
     return (
       <PowerList>
         <Tabs
@@ -139,7 +116,7 @@ class OperationalPowerList extends React.Component {
           value={this.state.selectedTab}
         >
           <Tab
-            label={isMaritime ? 'Vessels' : 'Vehicles'}
+            label={isMaritime ? translations.vehicles : translations.vessels}
             value={listTypes.withVehicleDetails}
           >
             <Filter
@@ -157,7 +134,7 @@ class OperationalPowerList extends React.Component {
             </Scrollable>
           </Tab>
           <Tab
-            label="Locations"
+            label={ translations.locations }
             value={listTypes.withGFDetails}
           >
             <Filter filterFunc={this.props.filterGFsFunc} />
@@ -192,6 +169,8 @@ OperationalPowerList.propTypes = {
   isEditGF: React.PropTypes.bool.isRequired,
   setListTypeFunc: React.PropTypes.func.isRequired,
   vehicleFilterString: React.PropTypes.string,
+
+  translations: phrasesShape.isRequired,
 };
 
 const mapState = (state) => ({
@@ -207,5 +186,6 @@ const mapDispatch = {
 };
 
 const PureOperationalPowerList = pure(OperationalPowerList);
+const Connected = connect(mapState, mapDispatch)(PureOperationalPowerList);
 
-export default connect(mapState, mapDispatch)(PureOperationalPowerList);
+export default translator(phrases)(Connected);

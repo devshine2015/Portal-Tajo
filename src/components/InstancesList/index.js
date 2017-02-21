@@ -4,8 +4,10 @@ import GenericListItem from './GenericListItem';
 import addCSSRule from 'utils/cssRule';
 import dateFormats from 'configs/dateFormats';
 import types from './types';
+import translator from 'utils/translator';
 
 import styles from './styles.css';
+import phrases, { phrasesShape } from './phrases.lang';
 
 let isStyleSheetRuleAdded = false;
 
@@ -94,6 +96,11 @@ InstancesList.propTypes = {
   scrollIntoView: React.PropTypes.bool,
 
   dateFormat: React.PropTypes.string.isRequired,
+
+  // translations for all types of lists
+  translations: phrasesShape.isRequired,
 };
 
-export default pure(InstancesList);
+const Pure = pure(InstancesList);
+
+export default translator(phrases)(Pure);

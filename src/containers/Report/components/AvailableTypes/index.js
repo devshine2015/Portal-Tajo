@@ -3,8 +3,10 @@ import pure from 'recompose/pure';
 import Checkbox from 'material-ui/Checkbox';
 import IconButton from 'material-ui/IconButton';
 import HelpIcon from 'material-ui/svg-icons/action/help-outline';
+import translator from 'utils/translator';
 
 import styles from './styles.css';
+import phrases, { phrasesShape } from './phrases.lang';
 
 const STYLES = {
   fieldRoot: {
@@ -49,10 +51,12 @@ class Field extends React.Component {
   }
 
   render() {
+    const label = this.props.translations[this.props.name];
+
     return (
       <Checkbox
         checked={this.props.isChecked}
-        label={this.props.label}
+        label={ label }
         labelStyle={STYLES.label}
         name={this.props.name}
         onCheck={this.injectProps}
@@ -73,9 +77,11 @@ Field.propTypes = {
   source: React.PropTypes.oneOf([
     'events', 'reports',
   ]).isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
-const PureField = pure(Field);
+const PureField = pure(translator(phrases)(Field));
 
 const AvailableTypes = ({
   checkedFields,

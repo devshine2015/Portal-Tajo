@@ -15,7 +15,7 @@
       pointer-events: none;
       }
     :global(div.leaflet-popup-content) {
-      min-width: 100px;
+      min-width: 120px;
       padding: 3px;
       margin: 0;
       font-weight: lighter;

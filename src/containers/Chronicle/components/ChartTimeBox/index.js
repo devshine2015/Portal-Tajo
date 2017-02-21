@@ -1,11 +1,14 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import styles from './styles.css';
 import { setChronicleNormalizedT } from './../../actions';
 import { getNormalized100T } from './../../reducer';
 import Chart from './../Chart';
 import MomentIndicator from './../MomentIndicator';
+import translator from 'utils/translator';
+
+import styles from './styles.css';
+import phrases, { phrasesShape } from './phrases.lang';
 
 class ChartTimeBox extends React.Component {
 
@@ -60,11 +63,13 @@ class ChartTimeBox extends React.Component {
     this.props.setChronicleNormalizedT(this.state.mouseNormalized100);
   }
   statusText() {
+    const { translations } = this.props;
+
     if (this.props.chronicleFrame.isLoading()) {
       return (
         <div className={styles.statusTextContainer}>
-          <h1> LOADING... </h1>
-          <span> please wait </span>
+          <h1>{ translations.loading }</h1>
+          <span>{ translations.please_wait }</span>
         </div>
       );
     }
@@ -72,8 +77,8 @@ class ChartTimeBox extends React.Component {
       || this.props.chronicleFrame.isEmpty()) {
       return (
         <div className={styles.statusTextContainer}>
-          <h1> NO DATA </h1>
-          <span> please select vehicle </span>
+          <h1>{ translations.no_data }</h1>
+          <span>{ translations.please_select_vehicle }</span>
         </div>
       );
     }
@@ -85,17 +90,17 @@ class ChartTimeBox extends React.Component {
       return (
         <div className={styles.infoTextContainer}>
           <div className={styles.infoPropContainer}>
-            <span>Max speed:</span>
+            <span>{ `${this.props.translations.max_speed}:` }</span>
             <span>{this.props.chronicleFrame.maxSpeed.toFixed(1)} km/h</span>
           </div>
           { !this.props.chronicleFrame.hasTemperature() ? false :
             <div>
               <div className={styles.infoPropContainer}>
-                <span>MaxT:</span>
+                <span>{ `${this.props.translations.max_temp}:` }</span>
                 <span>{this.props.chronicleFrame.maxTemp.toFixed(1)} &deg;C</span>
               </div>
               <div className={styles.infoPropContainer}>
-                <span>MinT:</span>
+                <span>{ `${this.props.translations.minTemp}:` }</span>
                 <span>{this.props.chronicleFrame.minTemp.toFixed(1)} &deg;C</span>
               </div>
             </div>
@@ -109,7 +114,8 @@ class ChartTimeBox extends React.Component {
     const isDisplayTimeHears = !this.props.chronicleFrame.isLoading()
           && this.props.chronicleFrame.isValid()
           && !this.props.chronicleFrame.isEmpty();
-    const stl = { left: this.props.normalized100T.toFixed(3) + '%' };
+    const stl = { left: `${this.props.normalized100T.toFixed(3)} %` };
+
     return (
       <div className={styles.containerBox}
         onMouseMove={this.mouseMove}
@@ -143,6 +149,8 @@ ChartTimeBox.propTypes = {
   chronicleFrame: React.PropTypes.object,
   setChronicleNormalizedT: React.PropTypes.func.isRequired,
   normalized100T: React.PropTypes.number.isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 const mapState = (state) => ({
   normalized100T: getNormalized100T(state),
@@ -150,5 +158,8 @@ const mapState = (state) => ({
 const mapDispatch = {
   setChronicleNormalizedT,
 };
+
 const PureChartTimeBox = pure(ChartTimeBox);
-export default connect(mapState, mapDispatch)(PureChartTimeBox);
+const Connected = connect(mapState, mapDispatch)(PureChartTimeBox);
+
+export default translator(phrases)(Connected);

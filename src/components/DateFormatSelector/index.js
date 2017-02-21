@@ -5,8 +5,10 @@ import {
   MenuItem,
 } from 'material-ui';
 import dateFormats from 'configs/dateFormats';
+import translator from 'utils/translator';
 
 import styles from './styles.css';
+import phrases, { phrasesShape } from './phrases.lang';
 
 function renderItems() {
   return dateFormats.formats.map(format => (
@@ -40,7 +42,7 @@ class DateFormatSelector extends React.Component {
       <div className={styles.selector}>
         <SelectField
           floatingLabelFixed
-          floatingLabelText="Choose date format for the report"
+          floatingLabelText={ this.props.translations.choose_date_format }
           onChange={this.onChange}
           value={this.state.value}
         >
@@ -56,6 +58,8 @@ DateFormatSelector.propTypes = {
     'yyyy-mm-dd', 'dd-mm-yyyy',
   ]).isRequired,
   onChange: React.PropTypes.func.isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
-export default pure(DateFormatSelector);
+export default pure(translator(phrases)(DateFormatSelector));

@@ -19,7 +19,10 @@ import {
   installerHasOfflineData,
 } from './reducer';
 import { showSnackbar } from 'containers/Snackbar/actions';
+import translator from 'utils/translator';
+
 import styles from './styles.css';
+import phrases, { phrasesShape } from './phrases.lang';
 
 const initialFields = new Map({
   name: null,
@@ -115,7 +118,7 @@ class Installer extends React.Component {
 
   submitForm = (fields) => {
     this.props.submitForm(fields).then(() => {
-      this.props.showSnackbar('Succesfully sended ✓', 2000);
+      this.props.showSnackbar(this.props.translations.send_success, 2000);
       this.resetForm();
     }, () => {
       this.saveLocally(fields);
@@ -124,11 +127,11 @@ class Installer extends React.Component {
 
   saveLocally = (fields) => {
     this.props.saveLocally(fields).then(() => {
-      this.props.showSnackbar('Saved locally ✓', 2000);
+      this.props.showSnackbar(this.props.translations.saved_locally, 2000);
       this.resetForm();
     }, error => {
       console.error(error);
-      this.props.showSnackbar('Cannot save to your device store', 2000);
+      this.props.showSnackbar(this.props.translations.cannot_save_locally, 2000);
     });
   }
 
@@ -177,11 +180,13 @@ class Installer extends React.Component {
   }
 
   render() {
-    let mainButtonText = this.props.isOnline ? 'Send' : 'Save Locally';
+    const { translations } = this.props;
+
+    let mainButtonText = this.props.isOnline ? translations.send : translations.save_locally;
     const mainButtonDisabled = this.state.cannotSubmit || this.props.isLoading;
 
     if (this.props.isLoading) {
-      mainButtonText = 'Sending...';
+      mainButtonText = `${translations.sending}...`;
     }
 
     return (
@@ -196,14 +201,14 @@ class Installer extends React.Component {
               fullWidth
               name="name"
               onChange={this.onChange}
-              floatingLabelText="Vehicle Name"
+              floatingLabelText={ translations.vehicle_name }
               required
             />
             <TextField
               fullWidth
               name="license"
               onChange={this.onChange}
-              floatingLabelText="License Plate Number"
+              floatingLabelText={ translations.license }
               required
             />
             <DeviceSelector
@@ -216,13 +221,13 @@ class Installer extends React.Component {
               fullWidth
               name="odometer"
               onChange={this.onChange}
-              floatingLabelText="Current Odometer value"
+              floatingLabelText={ translations.odo_value }
               required
               type="number"
             />
             <Checkbox
               className={styles.odo}
-              label="ODO value in miles"
+              label={ translations.odo_in_miles }
               name="isMiles"
               onCheck={this.onChange}
             />
@@ -237,7 +242,7 @@ class Installer extends React.Component {
               />
               <FlatButton
                 onClick={this.resetForm}
-                label="Reset"
+                label={ translations.reset }
               />
             </div>
           </Form>
@@ -267,6 +272,8 @@ Installer.propTypes = {
   sendFromStorage: React.PropTypes.func.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,
   submitForm: React.PropTypes.func.isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
 const mapState = (state) => ({
@@ -284,5 +291,6 @@ const mapDispatch = {
 };
 
 const PureInstaller = pure(Installer);
+const Connected = connect(mapState, mapDispatch)(PureInstaller);
 
-export default connect(mapState, mapDispatch)(PureInstaller);
+export default translator(phrases)(Connected);

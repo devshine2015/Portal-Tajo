@@ -3,17 +3,20 @@ import {
   Dialog,
   FlatButton,
 } from 'material-ui';
+import translator from 'utils/translator';
+
+import phrases, { phrasesShape } from './phrases.lang';
 
 function actions(props) {
   return [
     <FlatButton
-      label="Cancel"
+      label={ props.translations.cancel }
       keyboardFocused
       onTouchTap={props.onCancel}
     />,
     <FlatButton
       primary
-      label="Ok"
+      label={ props.translations.ok }
       onTouchTap={props.onOk}
     />,
   ];
@@ -22,15 +25,12 @@ function actions(props) {
 const WarningDialog = (props) => (
   <div>
     <Dialog
-      title="Warning about time and traffic consuming"
+      title={ props.translations.warn_title }
       actions={actions(props)}
       open={props.open}
       onRequestClose={props.onCancel}
     >
-      You chose {props.vehiclesAmount} vehicles.<br />
-      Generating and downloading events for all that
-      vehicles could take a lot of time and traffic.<br />
-      Are you sure?
+      { props.translations.warn_text }
     </Dialog>
   </div>
 );
@@ -48,6 +48,8 @@ WarningDialog.propTypes = {
 
   // amount of selected vehicles
   vehiclesAmount: React.PropTypes.number.isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
-export default WarningDialog;
+export default translator(phrases)(WarningDialog);

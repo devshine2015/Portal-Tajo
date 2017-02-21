@@ -13,6 +13,7 @@ import { vehicleShape } from 'services/FleetModel/PropTypes';
 
 import stylesBase from '../styles.css';
 import styles from './styles.css';
+import { vehicleDetailsShape } from '../phrases.lang';
 
 class ListItemVehicle extends React.Component {
 
@@ -37,17 +38,19 @@ class ListItemVehicle extends React.Component {
   renderDetails() {
     if (!this.props.isExpanded) return null;
 
+    const speed = `${this.props.vehicle.speed.toFixed(1)} ${this.props.translations.speed_km_h}`;
+
     return (
       <div>
         <Divider />
         <ItemProperty
-          title="Speed"
-          value={`${this.props.vehicle.speed.toFixed(1)} km/h`}
+          title={ this.props.translations.speed }
+          value={ speed }
         />
         {this.props.vehicle.temp &&
           <ItemProperty
-            title="Temperature"
-            value={`${this.props.vehicle.temp.toFixed(1)}\xB0 C`}
+            title={ this.props.translations.temperature }
+            value={`${this.props.vehicle.temp.toFixed(1)} \xB0C`}
           />
         }
       </div>
@@ -124,8 +127,8 @@ ListItemVehicle.propTypes = {
   onClick: React.PropTypes.func.isRequired,
   isExpanded: React.PropTypes.bool,
   vehicle: vehicleShape.isRequired,
+
+  translations: vehicleDetailsShape.isRequired,
 };
 
-const PureListItemVehicle = pure(ListItemVehicle);
-
-export default PureListItemVehicle;
+export default pure(ListItemVehicle);

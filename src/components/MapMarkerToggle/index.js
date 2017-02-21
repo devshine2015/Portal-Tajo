@@ -13,10 +13,11 @@ import LocationIcon from 'material-ui/svg-icons/social/location-city';
 import { ctxGetHideGF, ctxGetHideVehicles,
     ctxGetPowListTabType } from 'services/Global/reducers/contextReducer';
 import { contextActions } from 'services/Global/actions';
-
 import listTypes from 'components/InstancesList/types';
+import translator from 'utils/translator';
 
 import styles from './styles.css';
+import phrases, { phrasesShape } from './phrases.lang';
 
 const iconColor = '#535353';
 const iconHoverColor = '#00695C';
@@ -37,15 +38,17 @@ class MapMarkerToggle extends React.Component {
   }
 
   hidePrefix = (isHide) =>
-    isHide ? 'Show ' : 'Hide '
+    isHide ? this.props.translations.show_text : this.props.translations.hide_text
 
   contentText = (forType) => {
+    const { translations } = this.props;
+
     switch (forType) {
       case listTypes.withGFDetails:
-        return this.hidePrefix(this.props.isHideVehicles) + 'Vehicles';
+        return `${this.hidePrefix(this.props.isHideVehicles)} ${translations.vehicles_text}`;
       case listTypes.withVehicleDetails:
       default:
-        return this.hidePrefix(this.props.isHideGF) + 'Locations';
+        return `${this.hidePrefix(this.props.isHideGF)} ${translations.locations_text}`;
     }
   }
   btnHideColor = (isHide) =>
@@ -95,6 +98,8 @@ MapMarkerToggle.propTypes = {
   doHideVehicles: React.PropTypes.func.isRequired,
   isHideGF: React.PropTypes.bool.isRequired,
   isHideVehicles: React.PropTypes.bool.isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
 const mapState = (state) => ({
@@ -106,5 +111,8 @@ const mapDispatch = {
   doHideGF: contextActions.ctxHideGF,
   doHideVehicles: contextActions.ctxHideVehicles,
 };
+
 const PureMapMarkerToggle = pure(MapMarkerToggle);
-export default connect(mapState, mapDispatch)(PureMapMarkerToggle);
+const Connected = connect(mapState, mapDispatch)(PureMapMarkerToggle);
+
+export default translator(phrases)(Connected);

@@ -3,10 +3,11 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import DatePicker from 'material-ui/DatePicker';
 import ArrowIcon from 'material-ui/svg-icons/navigation/arrow-back';
-// import moment from 'moment';
-// import Period from 'containers/Report/components/Period';
-import styles from './styles.css';
 import { setChronicleTimeFrame } from './../../actions';
+import translator from 'utils/translator';
+
+import styles from './styles.css';
+import phrases, { phrasesShape } from './phrases.lang';
 
 class TimeFrame extends React.Component {
 
@@ -43,10 +44,16 @@ class TimeFrame extends React.Component {
             maxDate={new Date()}
           />
         </div>
+
         <div className={styles.tipTextContainer}>
-        <ArrowIcon color={'#accad8'} hoverColor={'#accad8'} style={{ fontSize: '32px' }} />
-        select date here
+          <ArrowIcon
+            color={'#accad8'}
+            hoverColor={'#accad8'}
+            style={{ fontSize: '32px' }}
+          />
+          { this.props.translations.select_date_text }
         </div>
+
       </div>
     );
   }
@@ -54,11 +61,16 @@ class TimeFrame extends React.Component {
 
 TimeFrame.propTypes = {
   setChronicleTimeFrame: React.PropTypes.func.isRequired,
+
+  translations: phrasesShape.isRequired,
 };
-const mapState = () => ({
-});
+
+const mapState = null;
 const mapDispatch = {
   setChronicleTimeFrame,
 };
+
 const PureTimeFrame = pure(TimeFrame);
-export default connect(mapState, mapDispatch)(PureTimeFrame);
+const Connected = connect(mapState, mapDispatch)(PureTimeFrame);
+
+export default translator(phrases)(Connected);

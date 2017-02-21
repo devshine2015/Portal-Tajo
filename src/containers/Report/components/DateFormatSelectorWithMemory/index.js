@@ -7,11 +7,10 @@ import RememberChoiceIconOpen from 'material-ui/svg-icons/action/lock-open';
 import { portal } from 'configs';
 import DateFormatSelector from 'components/DateFormatSelector';
 import { updateUserSettings } from 'services/UserModel/actions';
+import translator from 'utils/translator';
 
 import styles from './styles.css';
-
-const REMEMBER_ME = 'Remember my choice';
-const FORGET_ME = 'Forget my choice';
+import phrases, { phrasesShape } from './phrases.lang';
 
 /**
  * Here we face little subtle behaviour.
@@ -59,7 +58,10 @@ class DateFormatSelectorWithMemory extends React.Component {
   }
 
   render() {
-    const rememberText = this.state.haveToRemember ? FORGET_ME : REMEMBER_ME;
+    const { translations } = this.props;
+    const rememberText = this.state.haveToRemember ?
+      translations.forget_choice :
+      translations.remember_choice;
 
     if (portal === 'ssreports') {
       return (
@@ -99,6 +101,8 @@ DateFormatSelectorWithMemory.propTypes = {
   ]).isRequired,
   updateUserSettings: React.PropTypes.func.isRequired,
   onFormatChange: React.PropTypes.func.isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
 const mapState = null;
@@ -107,5 +111,6 @@ const mapDispatch = {
 };
 
 const PureDateFormatSelectorWithMemory = pure(DateFormatSelectorWithMemory);
+const Connected = connect(mapState, mapDispatch)(PureDateFormatSelectorWithMemory);
 
-export default connect(mapState, mapDispatch)(PureDateFormatSelectorWithMemory);
+export default translator(phrases)(Connected);

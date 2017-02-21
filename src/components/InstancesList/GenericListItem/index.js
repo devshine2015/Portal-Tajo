@@ -25,6 +25,7 @@ function chooseItem(type, {
   onItemClick,
   selectedItems,
   isExpanded,
+  translations,
   item,
 }) {
   switch (type) {
@@ -36,6 +37,7 @@ function chooseItem(type, {
           id={item.id}
           name={item.original.name}
           onClick={onItemClick}
+          translations={translations}
           isChecked={isChecked}
         />
       );
@@ -45,6 +47,7 @@ function chooseItem(type, {
         <DetailedVehicleItem
           onClick={onItemClick}
           isExpanded={isExpanded}
+          translations={translations}
           vehicle={item}
         />
       );
@@ -54,6 +57,7 @@ function chooseItem(type, {
         <DetailedGFItem
           onClick={onItemClick}
           isExpanded={isExpanded}
+          translations={translations}
           {...item}
         />
       );
@@ -64,6 +68,7 @@ function chooseItem(type, {
           id={item.id}
           onClick={onItemClick}
           isExpanded={isExpanded}
+          translations={translations}
           name={item.original.name}
         />
       );
@@ -73,6 +78,7 @@ function chooseItem(type, {
         <MaritimeItem
           onClick={onItemClick}
           isExpanded={isExpanded}
+          translations={translations}
           vehicle={item}
         />
       );
@@ -82,6 +88,7 @@ function chooseItem(type, {
         <SimpleItem
           id={item.id}
           name={item.original.name}
+          translations={translations}
           onClick={onItemClick}
         />
       );

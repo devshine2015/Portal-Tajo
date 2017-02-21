@@ -17,6 +17,7 @@ import vehiclesManagerScreen from 'screens/VehiclesManagerScreen/route';
 import loginScreen from 'screens/LoginScreen/route';
 import dashboardScreen from 'screens/DashboardScreen/route';
 import chronicleScreen from 'screens/Chronicle/route';
+import settingsScreen from 'screens/Settings/route';
 
 export default function createRoutes(store) {
   const { injectReducer } = getHooks(store);
@@ -52,6 +53,8 @@ export default function createRoutes(store) {
     loadModule,
   });
 
+  const settingsRoute = settingsScreen(mainMenu.sunshine.settings);
+
   const loginRoute = loginScreen({
     path: 'login',
   });
@@ -74,6 +77,7 @@ export default function createRoutes(store) {
     reportsRoute,
     chronicleRoute,
     vehiclesEditorRoute,
+    settingsRoute,
   );
 
   return (

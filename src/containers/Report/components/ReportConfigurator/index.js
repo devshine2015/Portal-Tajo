@@ -10,6 +10,7 @@ import moment from 'moment';
 import dateFormats from 'configs/dateFormats';
 import Form from 'components/Form';
 import { getUserSettings } from 'services/UserModel/reducer';
+import translator from 'utils/translator';
 import DateFormatSelectorWithMemory from '../DateFormatSelectorWithMemory';
 import Period from '../Period';
 import AvailableTypes from '../AvailableTypes';
@@ -28,6 +29,7 @@ import {
 } from 'containers/Report/reducer';
 
 import styles from './styles.css';
+import phrases, { phrasesShape } from './phrases.lang';
 
 const TOP_ROW_CLASS = cs(styles.row, styles.top);
 const FIELDS_ROW_CLASS = cs(styles.row, styles.form);
@@ -170,6 +172,8 @@ class Report extends React.Component {
   }
 
   render() {
+    const { translations } = this.props;
+
     return (
       <div className={styles.configurator}>
         <div className={TOP_ROW_CLASS}>
@@ -204,14 +208,14 @@ class Report extends React.Component {
               onChange={this.onSelectedFieldsChange}
               fields={this.props.availableReports}
               source="reports"
-              title="Customise Report"
+              title={ translations.customise_report }
             />
 
             { !this.props.isLoading && (
               <div className={styles.buttons}>
                 <RaisedButton
                   className={styles.button}
-                  label="Generate report"
+                  label={ translations.generate_report}
                   onClick={this.onSubmit}
                   disabled={this.props.isLoading}
                   primary
@@ -219,7 +223,7 @@ class Report extends React.Component {
                 { this.props.hasReport && (
                   <RaisedButton
                     className={styles.button}
-                    label="Save Generated"
+                    label={ translations.save_report }
                     onClick={this.props.saveReport}
                     secondary
                   />
@@ -236,7 +240,7 @@ class Report extends React.Component {
               onChange={this.onSelectedFieldsChange}
               fields={this.props.availableEvents}
               source="events"
-              title="Customise Raw Events"
+              title={ translations.customise_raw_events }
             />
 
             { !this.props.isLoading && (
@@ -277,6 +281,8 @@ Report.propTypes = {
   userDateFormat: React.PropTypes.oneOf([
     'yyyy-mm-dd', 'dd-mm-yyyy',
   ]),
+
+  translations: phrasesShape.isRequired,
 };
 
 const mapState = (state) => ({
@@ -294,5 +300,6 @@ const mapDispatch = {
 };
 
 const PureReport = pure(Report);
+const Connected = connect(mapState, mapDispatch)(PureReport);
 
-export default connect(mapState, mapDispatch)(PureReport);
+export default translator(phrases)(Connected);

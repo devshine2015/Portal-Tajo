@@ -9,13 +9,18 @@ import { deleteGF } from 'services/FleetModel/actions/gfActions';
 import { gfEditUpdate } from 'containers/GFEditor/actions';
 import { showSnackbar } from 'containers/Snackbar/actions';
 import DeletIcon from 'material-ui/svg-icons/action/delete-forever';
-import EditIcon from 'material-ui/svg-icons/maps/edit-location';
+// import EditIcon from 'material-ui/svg-icons/maps/edit-location';
 import IconButton from 'material-ui/IconButton';
 import Divider from 'material-ui/Divider';
 
-import { red900, red500, teal100, teal200, yellow700, yellow500 } from 'material-ui/styles/colors';
+import {
+  yellow700,
+  yellow500,
+} from 'material-ui/styles/colors';
+
 import stylesBase from '../styles.css';
 import styles from './styles.css';
+import { gfDetailsShape } from '../phrases.lang';
 
 class LocationWithDetails extends React.Component {
 
@@ -26,9 +31,9 @@ class LocationWithDetails extends React.Component {
 //    e.preventDefault();
     this.props.deleteGF(this.props.id, 1)
       .then(() => {
-        this.props.showSnackbar('Succesfully removed ✓', 3000);
+        this.props.showSnackbar(`${this.props.translations.remove_success} ✓`, 3000);
       }, () => {
-        this.props.showSnackbar('Remove failed. Try later. ✓', 5000);
+        this.props.showSnackbar(`${this.props.translations.remove_fail} ✘`, 5000);
       });
   }
   onEdit = () => {
@@ -49,19 +54,19 @@ class LocationWithDetails extends React.Component {
         <Divider key="line01" />
         <ItemProperty
           key="address"
-          title="Address"
+          title={ this.props.translations.address }
           value={this.props.address}
         />
         {this.props.isPolygon ? null :
           <ItemProperty
             key="radius"
-            title="Radius"
+            title={ this.props.translations.radius }
             value={this.props.radius.toFixed(0)}
           />
         }
         <Divider key="line02" />
         <IconButton
-          tooltip="Delete"
+          tooltip={ this.props.translations.delete }
           onClick={this.onDelete}
           className={styles.iconDelBtn}
           key="delBtn"
@@ -110,7 +115,10 @@ LocationWithDetails.propTypes = {
   showSnackbar: React.PropTypes.func.isRequired,
   gfEditUpdate: React.PropTypes.func.isRequired,
   gfById: React.PropTypes.func.isRequired,
+
+  translations: gfDetailsShape.isRequired,
 };
+
 const mapState = (state) => ({
   gfById: getGFByIdFunc(state),
 });

@@ -5,6 +5,9 @@ import pure from 'recompose/pure';
 import { showSnackbar } from 'containers/Snackbar/actions';
 import OfflineDataList from '../OfflineDataList';
 import { getOfflineData } from 'containers/Installer/reducer';
+import translator from 'utils/translator';
+
+import phrases, { phrasesShape } from './phrases.lang';
 
 class OfflineData extends React.Component {
 
@@ -37,17 +40,17 @@ class OfflineData extends React.Component {
   sendChecked = () => {
     this.props.sendData(this.state.indexes.toArray())
     .then(() => {
-      this.props.showSnackbar('Succesfully sended ✓', 2000);
+      this.props.showSnackbar(this.props.translations.send_success, 2000);
       this.resetIndexes();
     }, () => {
-      this.props.showSnackbar('Something went wrong. Try to send later.', 2000);
+      this.props.showSnackbar(this.props.translations.send_fail, 2000);
     });
   }
 
   cleanChecked = () => {
     this.props.cleanData(this.state.indexes.toArray())
     .then(() => {
-      this.props.showSnackbar('Succesfully cleaned ✓', 2000);
+      this.props.showSnackbar(this.props.translations.clean_success, 2000);
       this.resetIndexes();
     });
   }
@@ -80,6 +83,8 @@ OfflineData.propTypes = {
   isOnline: React.PropTypes.bool.isRequired,
   sendData: React.PropTypes.func.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
 const mapState = (state) => ({
@@ -90,5 +95,6 @@ const mapDispatch = {
 };
 
 const PureOfflineData = pure(OfflineData);
+const Connected = connect(mapState, mapDispatch)(PureOfflineData);
 
-export default connect(mapState, mapDispatch)(PureOfflineData);
+export default translator(phrases)(Connected);

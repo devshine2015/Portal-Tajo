@@ -10,12 +10,13 @@ const MenuItem = (props) =>
     to={props.page.path}
     onClick={props.closeSidebar}
   >
-   {props.page.niceName}
+   { props.niceName }
   </Link>;
 
 MenuItem.propTypes = {
   closeSidebar: React.PropTypes.func.isRequired,
   page: pageShape.isRequired,
+  niceName: React.PropTypes.string.isRequired,
 };
 
 export default MenuItem;

@@ -13,8 +13,10 @@ import { getVehicleFilterString } from 'services/Global/reducer';
 import VehicleDetails from './components/VehicleDetails';
 import { getLoaderState } from './reducer';
 import { detailsActions } from './actions';
+import translator from 'utils/translator';
 
 import styles from './styles.css';
+import phrases, { phrasesShape } from './phrases.lang';
 
 class VehiclesEditor extends React.Component {
 
@@ -58,10 +60,10 @@ class VehiclesEditor extends React.Component {
       this.setState({
         selectedVehicleOriginalIndex: newIndex,
       }, () => {
-        this.props.showSnackbar('Succesfully sended ✓', 3000);
+        this.props.showSnackbar(this.props.translations.send_success, 3000);
       });
     }, () => {
-      this.props.showSnackbar('Something went wrong. Try later. ✓', 5000);
+      this.props.showSnackbar(this.props.translations.send_fail, 5000);
     });
   }
 
@@ -174,6 +176,8 @@ VehiclesEditor.propTypes = {
   filterFunc: React.PropTypes.func.isRequired,
   globalSelectedVehicleId: React.PropTypes.string.isRequired,
   vehicleFilterString: React.PropTypes.string,
+
+  translations: phrasesShape.isRequired,
 };
 
 const mapState = (state) => ({
@@ -189,5 +193,6 @@ const mapDispatch = {
 };
 
 const PureVehiclesEditor = pure(VehiclesEditor);
+const Connected = connect(mapState, mapDispatch)(PureVehiclesEditor);
 
-export default connect(mapState, mapDispatch)(PureVehiclesEditor);
+export default translator(phrases)(Connected);
