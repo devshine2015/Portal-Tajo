@@ -10,5 +10,6 @@
     flex: 1;
     overflow-y: auto;
     margin-top: 64px;
+    height: 100%;
   }
 }
