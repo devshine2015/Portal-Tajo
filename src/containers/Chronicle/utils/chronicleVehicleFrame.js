@@ -1,6 +1,7 @@
 // TODO: huge room for optimizations here - locating samaples for time, etc..
 //
 import createFramePlayer from './chronicleFramePlayer';
+import moment from 'moment';
 
 const CHRONICLE_LOCAL_INCTANCE_STATE_NONE = 'chronLocStateNone';
 const CHRONICLE_LOCAL_INCTANCE_STATE_LOADING = 'chronLocStateLoading';
@@ -87,13 +88,13 @@ ChronicleVehicleFrame.prototype.parceData = function(events) {
     console.log('  EMPTY '+events.length);
     return;
   }
-
   let _dbgTime = 0;
   const dataSize = events.length;
   for (var i=0; i<dataSize; ++i) {
     const theEvent = events[i];
-    const eventDate = new Date(theEvent.ev.ts);
-    const eventTimeMs = eventDate.getTime() - this.dateFrom.getTime();
+    // const eventDate = new Date(theEvent.ev.ts);
+    const eventMomentTS = moment(theEvent.ev.ts).valueOf();
+    const eventTimeMs = eventMomentTS - this.dateFrom.getTime();
     _dbgTime = eventTimeMs;
     switch(theEvent.type){
       case 'vehicle-position':
@@ -116,7 +117,7 @@ ChronicleVehicleFrame.prototype.parceData = function(events) {
           continue;
         }
         this.stopEvents.push({ timeMs: eventTimeMs,
-            date: eventDate,
+            date: new Date(eventMomentTS),
             pos: window.L.latLng(theEvent.ev.pos.latlon.lat, theEvent.ev.pos.latlon.lng),
             period: theEvent.ev.stopPeriod,
             dateStr: theEvent.ev.pos.posTime });

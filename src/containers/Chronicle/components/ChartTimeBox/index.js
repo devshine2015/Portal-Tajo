@@ -114,7 +114,8 @@ class ChartTimeBox extends React.Component {
     const isDisplayTimeHears = !this.props.chronicleFrame.isLoading()
           && this.props.chronicleFrame.isValid()
           && !this.props.chronicleFrame.isEmpty();
-    const stl = { left: `${this.props.normalized100T.toFixed(3)} %` };
+     // eslint-disable-next-line prefer-template
+    const stl = { left: this.props.normalized100T.toFixed(3) + '%' };
 
     return (
       <div className={styles.containerBox}
