@@ -2,6 +2,7 @@
 import { makeLocalGF } from 'services/FleetModel/utils/gfHelpers';
 const iconCircle16 = require('assets/images/gf_add_icons/circle16.png');
 const iconPoly16 = require('assets/images/gf_add_icons/polygon16.png');
+const iconGMaps16 = require('assets/images/context_menu_icons/gmap16.png');
 
 
 export function contextMenuAddGFItems(subjUpdateFunc) {
@@ -11,7 +12,17 @@ export function contextMenuAddGFItems(subjUpdateFunc) {
   }, { text: 'Add Polygon GF',
     icon: iconPoly16,
     callback: initiateGfPolygonEditingCallback(subjUpdateFunc),
+  }, { text: 'Google Maps',
+    icon: iconGMaps16,
+    callback: openGMaps(subjUpdateFunc),
   }];
+}
+
+function openGMaps(subjUpdateFunc){
+   return (e) => {
+    // https://www.google.com/maps/@51.3317678,12.3902356,13.08z 
+    window.open(`https://www.google.com/maps/@${e.latlng.lat},${e.latlng.lng},15z`);
+  }; 
 }
 
 function initiateGfPolygonEditingCallback(subjUpdateFunc) {
