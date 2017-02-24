@@ -1,6 +1,7 @@
 @media screen and (min-width: 100px) {
   .intervals {
     display: flex;
+    margin-top: 5px;
   }
 
   .interval-col {
@@ -13,6 +14,7 @@
 
   .picker {
     width: 150px;
+    margin-bottom: 5px;
   }
   .picker > div {
     width: 100%;

@@ -1,10 +1,10 @@
 const formats = [{
   type: 'Burmese',
-  text: 'yyyy-mm-dd (Burmese)',
+  text: 'yyyy-mm-dd',
   value: 'yyyy-mm-dd',
 }, {
   type: 'Gregorian',
-  text: 'dd-mm-yyyy (Gregorian)',
+  text: 'dd-mm-yyyy',
   value: 'dd-mm-yyyy',
 }];
 
