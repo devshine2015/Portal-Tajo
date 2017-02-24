@@ -116,7 +116,7 @@ class OperationalPowerList extends React.Component {
           value={this.state.selectedTab}
         >
           <Tab
-            label={isMaritime ? translations.vehicles : translations.vessels}
+            label={isMaritime ? translations.vessels : translations.vehicles}
             value={listTypes.withVehicleDetails}
           >
             <Filter

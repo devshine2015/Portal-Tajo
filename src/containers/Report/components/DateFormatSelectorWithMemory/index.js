@@ -27,6 +27,7 @@ import phrases, { phrasesShape } from './phrases.lang';
  * tempDateFormat is coming from DateFormatSelector onChange handler
  * and reflect current selected format
  **/
+
 class DateFormatSelectorWithMemory extends React.Component {
 
   constructor(props) {
