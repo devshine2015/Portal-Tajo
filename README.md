@@ -2,7 +2,7 @@
 
 Drvr portal, the Second version
 
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![version](https://img.shields.io/badge/version-6.10.0-blue.svg)](http://drvr.co/)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![version](https://img.shields.io/badge/version-1.2.14-blue.svg)](http://drvr.co/)
 ---
 ## Naming Convention
 
