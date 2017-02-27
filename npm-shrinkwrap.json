@@ -1,6 +1,6 @@
 {
   "name": "drvr.co",
-  "version": "1.2.10",
+  "version": "1.2.11",
   "dependencies": {
     "abab": {
       "version": "1.0.3",
@@ -5388,9 +5388,9 @@
       "resolved": "https://registry.npmjs.org/querystring-es3/-/querystring-es3-0.2.1.tgz"
     },
     "ramda": {
-      "version": "0.21.0",
-      "from": "https://registry.npmjs.org/ramda/-/ramda-0.21.0.tgz",
-      "resolved": "https://registry.npmjs.org/ramda/-/ramda-0.21.0.tgz",
+      "version": "0.23.0",
+      "from": "ramda@latest",
+      "resolved": "https://registry.npmjs.org/ramda/-/ramda-0.23.0.tgz",
       "dev": true
     },
     "randomatic": {
@@ -5422,6 +5422,12 @@
       "version": "15.4.2",
       "from": "react-addons-shallow-compare@>=15.4.2 <16.0.0",
       "resolved": "https://registry.npmjs.org/react-addons-shallow-compare/-/react-addons-shallow-compare-15.4.2.tgz"
+    },
+    "react-addons-test-utils": {
+      "version": "15.4.2",
+      "from": "react-addons-test-utils@latest",
+      "resolved": "https://registry.npmjs.org/react-addons-test-utils/-/react-addons-test-utils-15.4.2.tgz",
+      "dev": true
     },
     "react-addons-transition-group": {
       "version": "15.4.2",
@@ -6045,7 +6051,15 @@
       "version": "0.4.0-beta.2",
       "from": "svg-react-loader@0.4.0-beta.2",
       "resolved": "https://registry.npmjs.org/svg-react-loader/-/svg-react-loader-0.4.0-beta.2.tgz",
-      "dev": true
+      "dev": true,
+      "dependencies": {
+        "ramda": {
+          "version": "0.21.0",
+          "from": "ramda@0.21.0",
+          "resolved": "https://registry.npmjs.org/ramda/-/ramda-0.21.0.tgz",
+          "dev": true
+        }
+      }
     },
     "svgo": {
       "version": "0.7.2",

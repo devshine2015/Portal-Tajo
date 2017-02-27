@@ -41,6 +41,12 @@ module.exports = require('./webpack.base')({
     presets: ['react-hmre'],
   },
 
+  externals: {
+    cheerio: 'window',
+    'react/lib/ExecutionEnvironment': true,
+    'react/lib/ReactContext': true,
+  },
+
   // Emit a source map for easier debugging
   devtool: 'inline-source-map',
 });
