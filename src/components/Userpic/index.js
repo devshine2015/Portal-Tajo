@@ -1,14 +1,13 @@
 import React from 'react';
+import R from 'ramda';
 import pure from 'recompose/pure';
 import Avatar from 'material-ui/Avatar';
 
-
-function takeFirstLetter(string) {
-  return string[0].toUpperCase();
-}
+const splitUsername = R.pipe(R.trim, R.split(' '));
+const takeFirstLetter = R.pipe(R.take(1), R.toUpper);
 
 function renderLetter(fallback, style, rest) {
-  const originalStrings = fallback.split(' ');
+  const originalStrings = splitUsername(fallback);
   let letters;
 
   if (originalStrings.length === 0) {
