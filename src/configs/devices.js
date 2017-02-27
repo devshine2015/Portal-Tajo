@@ -1,6 +1,7 @@
 import uuid from 'node-uuid';
+import R from 'ramda';
 
-const devices = [{
+const rawDevices = [{
   manufacturer: 'ATrack',
   model: 'AL7 (UG)',
   name: 'Drvr AL7 (UG)',
@@ -41,53 +42,48 @@ const devices = [{
   model: 'AX5 (2G)',
   name: 'Drvr AX5 (2G)',
 }, {
-  manufacturer: 'ATrack',
+  manufacturer: 'Queclink',
   model: 'GV65 N (2G)',
   name: 'Drvr GV65 N (2G)',
 }, {
-  manufacturer: 'ATrack',
+  manufacturer: 'Queclink',
   model: 'GV300W (UG)',
   name: 'Drvr GV300W (UG)',
 }, {
-  manufacturer: 'ATrack',
+  manufacturer: 'Calamp',
   model: 'Calamp',
   name: 'Drvr Calamp',
 }, {
-  manufacturer: 'ATrack',
-  model: 'Spot Trace (SAT)',
-  name: 'Drvr Spot Trace (SAT)',
+  manufacturer: 'Spot Trace',
+  model: 'Spot Trace 3030 (SAT)',
+  name: 'Drvr Spot Trace 3030 (SAT)',
 }, {
-  manufacturer: 'ATrack',
+  manufacturer: 'GlobalStar',
   model: 'Spot 3 (SAT)',
   name: 'Drvr Spot 3 (SAT)',
 }, {
-  manufacturer: 'ATrack',
+  manufacturer: 'GlobalStar',
+  model: 'SmartOne (SAT)',
+  name: 'Drvr SmartOne (SAT)',
+}, {
+  manufacturer: 'GlobalStar',
   model: 'SmartOne B (SAT)',
   name: 'Drvr SmartOne B (SAT)',
 }, {
-  manufacturer: 'ATrack',
-  model: 'SmartOne (SAT)',
-  name: 'Drvr SmartOne (SAT)',
+  manufacturer: 'GlobalStar',
+  model: 'SmartOne C (SAT)',
+  name: 'Drvr SmartOne C (SAT)',
 }];
 
-devices.forEach(d => {
-  d.id = uuid.v4();
-});
+let devices;
 
-function getById(id) {
-  let result;
+const addId = d => R.merge({ id: uuid.v4() }, d);
 
-  for (let i = 0; i < devices.length; i++) {
-    if (devices[i].id === id) {
-      result = devices[i];
-      break;
-    }
-  }
+(() => {
+  devices = R.map(addId, rawDevices);
+})();
 
-  return result;
-}
+export default devices;
 
-export default {
-  list: devices,
-  getById,
-};
+export const getById = id => R.filter(R.propEq('id', id), devices)[0];
+

@@ -8,7 +8,7 @@ import {
 } from 'material-ui';
 import DevicesSelector from '../DevicesSelector';
 import { creatorActions } from 'containers/DevicesManager/actions';
-import devices from 'configs/devices';
+import { getById as getDeviceByid } from 'configs/devices';
 
 import styles from './styles.css';
 
@@ -50,7 +50,7 @@ class DeviceCreator extends React.Component {
       return;
     }
 
-    const deviceName = devices.getById(this.state.modelId).name;
+    const deviceName = getDeviceByid(this.state.modelId).name;
 
     this.setState({
       errors: undefined,

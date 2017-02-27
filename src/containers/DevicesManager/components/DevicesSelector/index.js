@@ -3,7 +3,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import devices from 'configs/devices';
 
-const kinds = devices.list.map(device => (
+const kinds = devices.map(device => (
   <MenuItem
     key={device.id}
     value={device.id}
