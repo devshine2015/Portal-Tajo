@@ -3,23 +3,15 @@ import R from 'ramda';
 import pure from 'recompose/pure';
 import Avatar from 'material-ui/Avatar';
 
-const splitUsername = R.pipe(R.trim, R.split(' '));
-const takeFirstLetter = R.pipe(R.take(1), R.toUpper);
+const fallbackDefault = R.defaultTo('?');
+const splitUsername = R.pipe(fallbackDefault, R.trim, R.toUpper, R.split(' '));
+const firstTwoLettersToString = R.pipe(R.join(''), R.take(2));
 
 function renderLetter(fallback, style, rest) {
-  const originalStrings = splitUsername(fallback);
-  let letters;
+  const letters = R.map(R.take(1), splitUsername(fallback));
+  const result = firstTwoLettersToString(letters);
 
-  if (originalStrings.length === 0) {
-    letters = ['?'];
-  } else if (originalStrings.length === 1) {
-    letters = [takeFirstLetter(originalStrings[0])];
-  } else if (originalStrings.length > 1) {
-    originalStrings.length = 2;
-    letters = originalStrings.map(string => takeFirstLetter(string));
-  }
-
-  return <Avatar style={style} {...rest}>{letters.join()}</Avatar>;
+  return <Avatar style={style} {...rest}>{ result }</Avatar>;
 }
 
 function renderImage(src, style, rest) {
@@ -47,6 +39,10 @@ const Userpic = ({
   }
 
   return child;
+};
+
+Userpic.defaultProps = {
+  src: undefined,
 };
 
 Userpic.propTypes = {
