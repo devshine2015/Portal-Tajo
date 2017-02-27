@@ -1,6 +1,6 @@
 machine:
   node:
-    version: 6.2.2
+    version: 6.10.0
 
 general:
   branches:
@@ -27,12 +27,18 @@ deployment:
     owner: kirill07
     commands:
       - ./ci/deployToDev.sh karl
-
-  # code, released at the end of previous sprint
-  stage_latest:
-    branch: stage@latest_release
+  
+  # use it to test features before pushing to candidate
+  stage:
+    branch: stage
     commands:
       - ./ci/deployToStage.sh
+
+  # codebase of previous release
+  stage_prev_release:
+    branch: stage@prev_release
+    commands:
+      - ./ci/deployToStage.sh prev
   
   # here current sprint code lives
   stage_candidate:  

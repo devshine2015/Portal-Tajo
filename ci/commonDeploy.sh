@@ -4,6 +4,9 @@ TAJO='tajo'
 PORTAL='portal'
 HOST=$1
 PUBLIC=$2
+
+# server env defines hot to build sources
+# could be 'dev' or 'prod'
 SERVER_ENV=$3
 EXTRA_FOLDER=$4
 
