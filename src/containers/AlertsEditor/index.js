@@ -14,6 +14,14 @@ import styles from './styles.css';
 
 class AlertsEditor extends React.Component {
 
+  onChooseAlert = id => {
+    // this.setState({
+    //   ...this.getSelectedState({
+    //     id,
+    //     vehicles: this.props.vehicles,
+    //   }),
+    // });
+  }
 
   renderDetails() {
     return (
@@ -32,6 +40,8 @@ class AlertsEditor extends React.Component {
           content={
             <AlertsList
               data={this.props.alerts}
+              onItemClick={this.onChooseAlert}
+            
             />
           }
         />

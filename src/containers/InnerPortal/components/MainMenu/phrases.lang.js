@@ -16,6 +16,7 @@ const phrases = {
     devices: 'devices manager',
     review: 'review',
     history: 'history',
+    alerts: 'alerts editor',
   },
 
   th: {
@@ -30,6 +31,7 @@ const phrases = {
     devices: 'devices manager',
     review: 'ภาพรวม',
     history: 'ประวัติ',
+    alerts: 'alerts editor',
   },
 };
 
@@ -45,6 +47,7 @@ export const phrasesShape = shape({
   devices: string.isRequired,
   review: string.isRequired,
   history: string.isRequired,
+  alerts: string.isRequired,
 });
 
 export default phrases;

@@ -26,7 +26,6 @@ const common = {
   },
   alerts: {
     name: 'alerts',
-    niceName: 'Alerts Editor',
     path: 'alerts',
   },
 };
