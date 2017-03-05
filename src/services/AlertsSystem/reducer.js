@@ -14,7 +14,7 @@ const initialState = fromJS({
 function alertsReducer(state = initialState, action) {
   switch (action.type) {
     case ALRT_CONDITON_ADD:
-      return state.setIn(['conditions', action.alertObj.id], action.alertObj)
+      return state.setIn(['conditions', action.alertObj.id], action.alertObj);
     default:
       return state;
   }
@@ -36,5 +36,17 @@ export const getAlertConditions = state => {
   const jsObj = imObj.toJS();
   const aList = Object.values(jsObj);
   return aList;
+};
+
+export const getAlertConditionByIdFunc = state => id => {
+  const imObj = _alertsRx(state).get('conditions');
+  if (imObj.size === 0) {
+    return null;
+  }
+  const theObj = imObj.get(id);
+  if (theObj === undefined) {
+    return null;
+  }
+  return theObj;
 };
 
