@@ -14,8 +14,10 @@ import ButtonWithProgress from 'components/ButtonWithProgress';
 import { loginActions } from 'services/Auth/actions';
 import { errorsActions } from 'services/Global/actions';
 import { getErrorMessage } from 'services/Global/reducer';
+import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
+import phrases, { phrasesShape } from './PropTypes';
 
 const FORM_NAME = 'login';
 const Header = () => <h4 className={styles.header}>Login</h4>;
@@ -69,8 +71,9 @@ class LoginForm extends React.Component {
   }
 
   render() {
+    const { translations } = this.props;
     const isDisabled = !this.state.username || !this.state.password;
-    const buttonText = !this.state.isLoading ? 'Sign In' : 'Signing...';
+    const buttonText = !this.state.isLoading ? translations.signin : `${translations.signing}...`;
     const { isLoading } = this.state;
 
     return (
@@ -87,13 +90,13 @@ class LoginForm extends React.Component {
               <TextField
                 fullWidth
                 name="username"
-                placeholder="Username"
+                placeholder={ translations.username }
                 onChange={this.onChange}
               />
               <TextField
                 fullWidth
                 name="password"
-                placeholder="Password"
+                placeholder={ translations.password }
                 type="password"
                 onChange={this.onChange}
               />
@@ -121,6 +124,8 @@ LoginForm.propTypes = {
   errorMessage: React.PropTypes.string,
   resetError: React.PropTypes.func.isRequired,
   goToRoot: React.PropTypes.func.isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
 const PureLoginForm = pure(LoginForm);
@@ -134,4 +139,6 @@ const mapDispatch = dispatch => ({
   goToRoot: () => dispatch(push(`${BASE_URL}/`)),
 });
 
-export default connect(mapState, mapDispatch)(PureLoginForm);
+const Connected = connect(mapState, mapDispatch)(PureLoginForm);
+
+export default translate(phrases)(Connected);

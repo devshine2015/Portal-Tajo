@@ -164,6 +164,20 @@ const phrases = {
     home_depot: 'Is home depot',
     location_name: 'Location Name',
     // -- end GFEditor
+
+    // errors
+    ['Failed to fetch']: 'Server is temporaly down. Please try again later',
+    ['Not Found']: 'Resource is not found. Please contact with administrator',
+    ['Unauthorized']: 'Username/password combination is wrong.',
+    // -- end errors
+
+    // login form
+    username: 'Username',
+    password: 'Password',
+    login: 'Login',
+    signin: 'Sign in',
+    signing: 'Signing',
+    // -- end login form
   },
 
   th: {
