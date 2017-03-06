@@ -5,7 +5,7 @@ import FleetSummary from 'containers/FleetSummary';
 import { translate } from 'utils/i18n';
 
 import classes from './classes';
-import phrases, { phrasesShape } from './phrases.lang';
+import phrases, { phrasesShape } from './PropTypes';
 
 function canShow(Component) {
   if (Component === FleetSummary) {
@@ -29,9 +29,12 @@ const DashboardScreen = ({ translations }) => (
 );
 
 DashboardScreen.propTypes = {
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
 };
 
 DashboardScreen.displayName = 'DashboardScreen';
+DashboardScreen.defaultProps = {
+  translations: phrases,
+};
 
-export default translate(phrases)(DashboardScreen);
+export default translate()(DashboardScreen);

@@ -9,7 +9,7 @@ import { amountsShape } from '../../PropTypes';
 import { translate } from 'utils/i18n';
 
 import classes from './classes';
-import phrases, { phrasesShape } from './phrases.lang';
+import phrases, { phrasesShape } from './PropTypes';
 
 const STYLES = {
   icon: {
@@ -106,7 +106,10 @@ const FullSummary = ({
 FullSummary.propTypes = {
   amounts: amountsShape.isRequired,
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
+};
+FullSummary.defaultProps = {
+  translations: phrases,
 };
 
 const Pure = pure(FullSummary);

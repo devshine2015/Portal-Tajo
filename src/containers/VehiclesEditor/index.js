@@ -16,7 +16,7 @@ import { detailsActions } from './actions';
 import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
-import phrases, { phrasesShape } from './phrases.lang';
+import phrases, { phrasesShape } from './PropTypes';
 
 class VehiclesEditor extends React.Component {
 
@@ -177,7 +177,7 @@ VehiclesEditor.propTypes = {
   globalSelectedVehicleId: React.PropTypes.string.isRequired,
   vehicleFilterString: React.PropTypes.string,
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
 };
 
 const mapState = (state) => ({

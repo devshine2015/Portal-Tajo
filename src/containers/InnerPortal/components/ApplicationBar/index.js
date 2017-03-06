@@ -12,7 +12,7 @@ import { translate } from 'utils/i18n';
 import { logout } from '../../actions';
 
 import styles from './styles.css';
-import phrases, { phrasesShape } from './phrases.lang';
+import phrases, { phrasesShape } from './PropTypes';
 
 const hideSummaryOn = [
   `${BASE_URL}review`,
@@ -80,7 +80,10 @@ ApplicationBar.propTypes = {
   toggleSidebar: React.PropTypes.func.isRequired,
   location: React.PropTypes.shape(locationShape).isRequired,
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
+};
+ApplicationBar.defaultProps = {
+  translations: phrases,
 };
 
 const mapState = null;

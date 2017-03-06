@@ -14,7 +14,7 @@ import {
 } from 'containers/Report/reducer';
 
 import styles from './styles.css';
-import phrases, { phrasesShape } from './phrases.lang';
+import phrases, { phrasesShape } from './PropTypes';
 
 const STYLES = {
   toggleRoot: {
@@ -35,7 +35,7 @@ const Hint = ({
 }) => <div className={styles.hint}>*{ translations.hint_text }</div>;
 
 Hint.propTypes = {
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
 };
 
 class RawDataButtons extends React.Component {
@@ -145,7 +145,11 @@ RawDataButtons.propTypes = {
   // display amount of selected vehicles in dialog
   selectedVehiclesAmount: React.PropTypes.number.isRequired,
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
+};
+
+RawDataButtons.defaultProps = {
+  translations: phrases,
 };
 
 const mapState = state => ({

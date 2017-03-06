@@ -15,7 +15,7 @@ import { showSnackbar } from 'containers/Snackbar/actions';
 import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
-import phrases, { phrasesShape } from './phrases.lang';
+import phrases, { phrasesShape } from './PropTypes';
 
 const FORM = 'editor';
 
@@ -119,7 +119,7 @@ GFEditor.propTypes = {
   showSnackbar: React.PropTypes.func.isRequired,
   subjectGF: React.PropTypes.object.isRequired,
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
 };
 
 const mapState = (state) => ({

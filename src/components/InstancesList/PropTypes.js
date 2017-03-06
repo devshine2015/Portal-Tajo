@@ -4,35 +4,20 @@ const shape = PropTypes.shape;
 const string = PropTypes.string;
 
 const phrases = {
-  en: {
-    speed: 'speed',
-    speed_km_h: 'km/h',
-    temperature: 'temperature',
-    never_reported: 'never reported - check device',
-    remove_success: 'Succesfully removed',
-    remove_fail: 'Remove failed',
-    radius: 'Radius',
-    address: 'Address',
-    delete: 'Delete',
-    no_data: 'no data...',
-  },
-
-  th: {
-    speed: 'ความเร็ว',
-    speed_km_h: 'กม./ชม.',
-    temperature: 'อุณหภูมิ',
-    never_reported: 'ไม่ส่งข้อมูล - ตรวจสอบอุปกรณ์',
-    remove_success: 'ลบสำเร็จ',
-    remove_fail: 'ลบไม่สำเร็จ',
-    radius: 'ขนาดรัศมี',
-    address: 'Address',
-    delete: 'ลบ',
-    no_data: 'ไม่มีข้อมูล...',
-  },
+  speed: 'speed',
+  speed_km_h: 'km/h',
+  temperature: 'temperature',
+  device_never_reported: 'never reported - check device',
+  remove_success: 'Succesfully removed',
+  remove_fail: 'Remove failed',
+  radius: 'Radius',
+  address: 'Address',
+  delete: 'Delete',
+  no_history_data: 'no data...',
 };
 
 const _warnings = {
-  never_reported: string.isRequired,
+  device_never_reported: string.isRequired,
 };
 
 const _vehicleDetailsShape = {
@@ -50,7 +35,7 @@ const _gfDetailsShape = {
 };
 
 const _historyDetailsShape = {
-  no_data: string.isRequired,
+  no_history_data: string.isRequired,
 };
 
 export const vehicleDetailsShape = shape(_vehicleDetailsShape);

@@ -7,7 +7,7 @@ import OfflineDataList from '../OfflineDataList';
 import { getOfflineData } from 'containers/Installer/reducer';
 import { translate } from 'utils/i18n';
 
-import phrases, { phrasesShape } from './phrases.lang';
+import phrases, { phrasesShape } from './PropTypes';
 
 class OfflineData extends React.Component {
 
@@ -84,7 +84,10 @@ OfflineData.propTypes = {
   sendData: React.PropTypes.func.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
+};
+OfflineData.defaultProps = {
+  translations: phrases,
 };
 
 const mapState = (state) => ({

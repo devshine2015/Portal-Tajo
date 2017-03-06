@@ -14,7 +14,7 @@ import PauseIcon from 'material-ui/svg-icons/av/pause';
 import { teal100, teal400, yellow700, yellow500 } from 'material-ui/styles/colors';
 
 import styles from './styles.css';
-import phrases, { phrasesShape } from './phrases.lang';
+import phrases, { phrasesShape } from './PropTypes';
 
 class PlaybackCtr extends React.Component {
 
@@ -159,7 +159,7 @@ PlaybackCtr.propTypes = {
   setChronicleNormalizedT: React.PropTypes.func.isRequired,
   normalized100T: React.PropTypes.number.isRequired,
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
 };
 
 const mapState = (state) => ({

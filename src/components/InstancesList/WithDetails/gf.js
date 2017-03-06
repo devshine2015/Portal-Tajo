@@ -20,7 +20,7 @@ import {
 
 import stylesBase from '../styles.css';
 import styles from './styles.css';
-import { gfDetailsShape } from '../phrases.lang';
+import { gfDetailsShape } from '../PropTypes';
 
 class LocationWithDetails extends React.Component {
 

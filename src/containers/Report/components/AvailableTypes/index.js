@@ -6,7 +6,7 @@ import HelpIcon from 'material-ui/svg-icons/action/help-outline';
 import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
-import phrases, { phrasesShape } from './phrases.lang';
+import phrases, { phrasesShape } from './PropTypes';
 
 const STYLES = {
   fieldRoot: {
@@ -78,7 +78,11 @@ Field.propTypes = {
     'events', 'reports',
   ]).isRequired,
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
+};
+
+Field.defaultProps = {
+  translations: phrases,
 };
 
 const PureField = pure(translate(phrases)(Field));

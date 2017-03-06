@@ -29,7 +29,7 @@ import {
 } from 'containers/Report/reducer';
 
 import styles from './styles.css';
-import phrases, { phrasesShape } from './phrases.lang';
+import phrases, { phrasesShape } from './PropTypes';
 
 const TOP_ROW_CLASS = cs(styles.row, styles.top);
 const FIELDS_ROW_CLASS = cs(styles.row, styles.form);
@@ -282,7 +282,7 @@ Report.propTypes = {
     'yyyy-mm-dd', 'dd-mm-yyyy',
   ]),
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
 };
 
 const mapState = (state) => ({

@@ -10,7 +10,7 @@ import { updateUserSettings } from 'services/UserModel/actions';
 import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
-import phrases, { phrasesShape } from './phrases.lang';
+import phrases, { phrasesShape } from './PropTypes';
 
 /**
  * Here we face little subtle behaviour.
@@ -103,7 +103,11 @@ DateFormatSelectorWithMemory.propTypes = {
   updateUserSettings: React.PropTypes.func.isRequired,
   onFormatChange: React.PropTypes.func.isRequired,
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
+};
+
+DateFormatSelectorWithMemory.defaultProps = {
+  translations: phrases,
 };
 
 const mapState = null;

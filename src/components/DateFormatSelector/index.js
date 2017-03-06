@@ -8,7 +8,7 @@ import dateFormats from 'configs/dateFormats';
 import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
-import phrases, { phrasesShape } from './phrases.lang';
+import phrases, { phrasesShape } from './PropTypes';
 
 function renderItems() {
   return dateFormats.formats.map(format => (
@@ -59,7 +59,7 @@ DateFormatSelector.propTypes = {
   ]).isRequired,
   onChange: React.PropTypes.func.isRequired,
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
 };
 
 export default pure(translate(phrases)(DateFormatSelector));

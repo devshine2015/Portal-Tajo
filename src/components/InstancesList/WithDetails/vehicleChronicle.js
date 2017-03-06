@@ -7,7 +7,7 @@ import { getInstanceChronicleFrameById } from 'containers/Chronicle/reducer';
 
 import stylesTop from '../styles.css';
 import styles from './styles.css';
-import { historyDetailsShape } from '../phrases.lang';
+import { historyDetailsShape } from '../PropTypes';
 
 class ChronicleListItem extends React.Component {
   onClick = () => {

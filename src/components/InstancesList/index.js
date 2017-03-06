@@ -7,7 +7,7 @@ import types from './types';
 import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
-import phrases, { phrasesShape } from './phrases.lang';
+import phrases, { phrasesShape } from './PropTypes';
 
 let isStyleSheetRuleAdded = false;
 
@@ -98,7 +98,7 @@ InstancesList.propTypes = {
   dateFormat: React.PropTypes.string.isRequired,
 
   // translations for all types of lists
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
 };
 
 const Pure = pure(InstancesList);

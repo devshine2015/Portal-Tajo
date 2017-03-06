@@ -14,7 +14,7 @@ import { VEHICLE_KINDS, getVehicleByValue } from 'services/FleetModel/utils/vehi
 import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
-import phrases, { phrasesShape } from './phrases.lang';
+import phrases, { phrasesShape } from './PropTypes';
 
 const FORM = 'editor';
 const STYLES = {
@@ -267,7 +267,7 @@ VehicleDetails.propTypes = {
   onSave: React.PropTypes.func.isRequired,
   onCancel: React.PropTypes.func.isRequired,
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
 };
 
 export default pure(translate(phrases)(VehicleDetails));

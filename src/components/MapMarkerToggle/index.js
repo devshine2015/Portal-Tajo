@@ -17,7 +17,7 @@ import listTypes from 'components/InstancesList/types';
 import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
-import phrases, { phrasesShape } from './phrases.lang';
+import phrases, { phrasesShape } from './PropTypes';
 
 const iconColor = '#535353';
 const iconHoverColor = '#00695C';
@@ -45,10 +45,10 @@ class MapMarkerToggle extends React.Component {
 
     switch (forType) {
       case listTypes.withGFDetails:
-        return `${this.hidePrefix(this.props.isHideVehicles)} ${translations.vehicles_text}`;
+        return `${this.hidePrefix(this.props.isHideVehicles)} ${translations.vehicles}`;
       case listTypes.withVehicleDetails:
       default:
-        return `${this.hidePrefix(this.props.isHideGF)} ${translations.locations_text}`;
+        return `${this.hidePrefix(this.props.isHideGF)} ${translations.locations}`;
     }
   }
   btnHideColor = (isHide) =>
@@ -99,7 +99,7 @@ MapMarkerToggle.propTypes = {
   isHideGF: React.PropTypes.bool.isRequired,
   isHideVehicles: React.PropTypes.bool.isRequired,
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
 };
 
 const mapState = (state) => ({

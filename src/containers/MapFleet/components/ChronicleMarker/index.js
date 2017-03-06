@@ -7,7 +7,7 @@ import { getNormalized100T } from 'containers/Chronicle/reducer';
 // import { translate } from 'utils/i18n';
 
 require('./styles.css');
-// import phrases, { phrasesShape } from './phrases.lang';
+// import phrases, { phrasesShape } from './PropTypes';
 
 
 class ChronicleMarker extends React.Component {
@@ -123,7 +123,7 @@ ChronicleMarker.propTypes = {
   isSelected: React.PropTypes.bool.isRequired,
   normalized100T: React.PropTypes.number.isRequired,
 
-  // translations: phrasesShape,
+  // translations: phrasesShape.isRequired,
 };
 
 const mapState = (state) => ({

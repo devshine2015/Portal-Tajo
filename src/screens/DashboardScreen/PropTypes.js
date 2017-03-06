@@ -4,13 +4,7 @@ const shape = PropTypes.shape;
 const string = PropTypes.string;
 
 const phrases = {
-  en: {
-    fleet_summary_title: 'fleet summary',
-  },
-
-  th: {
-    fleet_summary_title: 'ภาพรวมกลุ่มยานพาหนะ',
-  },
+  fleet_summary_title: 'fleet summary',
 };
 
 export const phrasesShape = shape({

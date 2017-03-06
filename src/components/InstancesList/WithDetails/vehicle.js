@@ -13,7 +13,7 @@ import { vehicleShape } from 'services/FleetModel/PropTypes';
 
 import stylesBase from '../styles.css';
 import styles from './styles.css';
-import { vehicleDetailsShape } from '../phrases.lang';
+import { vehicleDetailsShape } from '../PropTypes';
 
 class ListItemVehicle extends React.Component {
 
@@ -57,42 +57,42 @@ class ListItemVehicle extends React.Component {
     );
   }
 
-  renderMoreDetails() {
-    if (!this.props.isExpanded) return null;
+  // renderMoreDetails() {
+  //   if (!this.props.isExpanded) return null;
 
-    const { vehicle } = this.props;
+  //   const { vehicle } = this.props;
 
-    return (
-      <div>
-        <Divider />
-        <ItemProperty
-          title="License Plate"
-          value={vehicle.original.licensePlate}
-        />
-        <ItemProperty
-          title="Make"
-          value={vehicle.original.make}
-        />
-        <ItemProperty
-          title="Model"
-          value={vehicle.original.model}
-        />
-        <ItemProperty
-          title="Year"
-          value={vehicle.original.year}
-        />
-        <Divider />
-        <ItemProperty
-          title="lat"
-          value={vehicle.pos[0].toFixed(6)}
-        />
-        <ItemProperty
-          title="lon"
-          value={vehicle.pos[1].toFixed(6)}
-        />
-      </div>
-    );
-  }
+  //   return (
+  //     <div>
+  //       <Divider />
+  //       <ItemProperty
+  //         title="License Plate"
+  //         value={vehicle.original.licensePlate}
+  //       />
+  //       <ItemProperty
+  //         title="Make"
+  //         value={vehicle.original.make}
+  //       />
+  //       <ItemProperty
+  //         title="Model"
+  //         value={vehicle.original.model}
+  //       />
+  //       <ItemProperty
+  //         title="Year"
+  //         value={vehicle.original.year}
+  //       />
+  //       <Divider />
+  //       <ItemProperty
+  //         title="lat"
+  //         value={vehicle.pos[0].toFixed(6)}
+  //       />
+  //       <ItemProperty
+  //         title="lon"
+  //         value={vehicle.pos[1].toFixed(6)}
+  //       />
+  //     </div>
+  //   );
+  // }
 
   render() {
     const className = cs(stylesBase.listItemInn, {

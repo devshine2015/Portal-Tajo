@@ -5,7 +5,7 @@ import {
 } from 'material-ui';
 import { translate } from 'utils/i18n';
 
-import phrases, { phrasesShape } from './phrases.lang';
+import phrases, { phrasesShape } from './PropTypes';
 
 function actions(props) {
   return [
@@ -49,7 +49,7 @@ WarningDialog.propTypes = {
   // amount of selected vehicles
   vehiclesAmount: React.PropTypes.number.isRequired,
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
 };
 
 export default translate(phrases)(WarningDialog);

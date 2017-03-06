@@ -6,7 +6,7 @@ import pageShape from 'containers/InnerPortal/PropTypes';
 import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
-import phrases, { phrasesShape } from './phrases.lang';
+import phrases, { phrasesShape } from './PropTypes';
 
 const EMPTY_ARRAY = [];
 
@@ -45,7 +45,11 @@ MainMenu.propTypes = {
   pages: React.PropTypes.arrayOf(pageShape).isRequired,
   role: React.PropTypes.oneOf(rolesEnum).isRequired,
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
+};
+
+MainMenu.defaultProps = {
+  translations: phrases,
 };
 
 const Pure = pure(MainMenu);

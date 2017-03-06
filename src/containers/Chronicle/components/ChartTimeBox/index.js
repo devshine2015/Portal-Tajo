@@ -8,7 +8,7 @@ import MomentIndicator from './../MomentIndicator';
 import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
-import phrases, { phrasesShape } from './phrases.lang';
+import { phrasesShape } from './PropTypes';
 
 class ChartTimeBox extends React.Component {
 
@@ -149,8 +149,20 @@ ChartTimeBox.propTypes = {
   setChronicleNormalizedT: React.PropTypes.func.isRequired,
   normalized100T: React.PropTypes.number.isRequired,
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
 };
+ChartTimeBox.defaultProps = {
+  translations: {
+    loading: 'LOADING...',
+    please_wait: 'please wait',
+    no_data: 'NO DATA',
+    please_select_vehicle: 'please select vehicle',
+    max_speed: 'Max speed',
+    max_temp: 'Max temp',
+    min_temp: 'Min temp',
+  },
+};
+
 const mapState = (state) => ({
   normalized100T: getNormalized100T(state),
 });
@@ -161,4 +173,4 @@ const mapDispatch = {
 const PureChartTimeBox = pure(ChartTimeBox);
 const Connected = connect(mapState, mapDispatch)(PureChartTimeBox);
 
-export default translate(phrases)(Connected);
+export default translate()(Connected);

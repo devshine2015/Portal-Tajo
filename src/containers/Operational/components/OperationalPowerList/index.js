@@ -21,7 +21,7 @@ import { dimensions } from 'configs/theme';
 import { isMaritime } from 'configs';
 
 import styles from './styles.css';
-import phrases, { phrasesShape } from './phrases.lang';
+import phrases, { phrasesShape } from './PropTypes';
 
 class OperationalPowerList extends React.Component {
 
@@ -170,7 +170,10 @@ OperationalPowerList.propTypes = {
   setListTypeFunc: React.PropTypes.func.isRequired,
   vehicleFilterString: React.PropTypes.string,
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
+};
+OperationalPowerList.defaultProps = {
+  translations: phrases,
 };
 
 const mapState = (state) => ({

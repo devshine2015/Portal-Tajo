@@ -6,7 +6,7 @@ const common = {
     path: 'reports',
   },
   vehicles: {
-    name: 'vehicles',
+    name: 'vehicles_editor',
     path: 'vehicles',
   },
   users: {

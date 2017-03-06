@@ -22,7 +22,7 @@ import { showSnackbar } from 'containers/Snackbar/actions';
 import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
-import phrases, { phrasesShape } from './phrases.lang';
+import phrases, { phrasesShape } from './PropTypes';
 
 const initialFields = new Map({
   name: null,
@@ -273,7 +273,11 @@ Installer.propTypes = {
   showSnackbar: React.PropTypes.func.isRequired,
   submitForm: React.PropTypes.func.isRequired,
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
+};
+
+Installer.defaultProps = {
+  translations: phrases,
 };
 
 const mapState = (state) => ({

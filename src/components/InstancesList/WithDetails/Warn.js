@@ -5,7 +5,7 @@ import cs from 'classnames';
 import { translate } from 'utils/i18n';
 
 import classes from './Warn.classes';
-import phrases, { phrasesShape } from './Warn.phrases.lang';
+import phrases, { phrasesShape } from './Warn.PropTypes';
 
 const Warn = ({
   activityStatus,
@@ -39,7 +39,11 @@ Warn.propTypes = {
   isExpanded: React.PropTypes.bool,
   updateDate: React.PropTypes.number.isRequired,
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
 };
 
-export default translate(phrases)(Warn);
+Warn.defaultProps = {
+  translations: phrases,
+};
+
+export default translate()(Warn);

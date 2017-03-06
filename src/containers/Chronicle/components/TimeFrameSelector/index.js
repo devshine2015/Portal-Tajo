@@ -7,7 +7,7 @@ import { setChronicleTimeFrame } from './../../actions';
 import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
-import phrases, { phrasesShape } from './phrases.lang';
+import phrases, { phrasesShape } from './PropTypes';
 
 class TimeFrame extends React.Component {
 
@@ -62,7 +62,7 @@ class TimeFrame extends React.Component {
 TimeFrame.propTypes = {
   setChronicleTimeFrame: React.PropTypes.func.isRequired,
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
 };
 
 const mapState = null;

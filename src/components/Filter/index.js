@@ -4,7 +4,7 @@ import TextField from 'material-ui/TextField';
 import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
-import phrases, { phrasesShape } from './phrases.lang';
+import phrases, { phrasesShape } from './PropTypes';
 
 const STYLES = {
   inputStyle: {
@@ -59,7 +59,7 @@ Filter.propTypes = {
   // TODO -- think about presets
   presets: React.PropTypes.shape({}),
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
 };
 
 const Pure = pure(Filter);
