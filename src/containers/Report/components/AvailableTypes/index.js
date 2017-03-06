@@ -3,7 +3,7 @@ import pure from 'recompose/pure';
 import Checkbox from 'material-ui/Checkbox';
 import IconButton from 'material-ui/IconButton';
 import HelpIcon from 'material-ui/svg-icons/action/help-outline';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './phrases.lang';
@@ -78,10 +78,10 @@ Field.propTypes = {
     'events', 'reports',
   ]).isRequired,
 
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
-const PureField = pure(translator(phrases)(Field));
+const PureField = pure(translate(phrases)(Field));
 
 const AvailableTypes = ({
   checkedFields,

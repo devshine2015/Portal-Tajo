@@ -12,7 +12,7 @@ import { gfEditGetSubject } from './reducer';
 import { gfEditClose, gfEditUpdate } from './actions';
 import { createGF } from 'services/FleetModel/actions/gfActions';
 import { showSnackbar } from 'containers/Snackbar/actions';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './phrases.lang';
@@ -119,7 +119,7 @@ GFEditor.propTypes = {
   showSnackbar: React.PropTypes.func.isRequired,
   subjectGF: React.PropTypes.object.isRequired,
 
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
 const mapState = (state) => ({
@@ -135,4 +135,4 @@ const mapDispatch = {
 const PureGFEditor = pure(GFEditor);
 const Connected = connect(mapState, mapDispatch)(PureGFEditor);
 
-export default translator(phrases)(Connected);
+export default translate(phrases)(Connected);

@@ -3,7 +3,7 @@ import {
   Dialog,
   FlatButton,
 } from 'material-ui';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 
 import phrases, { phrasesShape } from './phrases.lang';
 
@@ -49,7 +49,7 @@ WarningDialog.propTypes = {
   // amount of selected vehicles
   vehiclesAmount: React.PropTypes.number.isRequired,
 
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
-export default translator(phrases)(WarningDialog);
+export default translate(phrases)(WarningDialog);

@@ -5,7 +5,7 @@ import {
   MenuItem,
 } from 'material-ui';
 import dateFormats from 'configs/dateFormats';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './phrases.lang';
@@ -59,7 +59,7 @@ DateFormatSelector.propTypes = {
   ]).isRequired,
   onChange: React.PropTypes.func.isRequired,
 
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
-export default pure(translator(phrases)(DateFormatSelector));
+export default pure(translate(phrases)(DateFormatSelector));

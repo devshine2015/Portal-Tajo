@@ -10,7 +10,7 @@ import moment from 'moment';
 import dateFormats from 'configs/dateFormats';
 import Form from 'components/Form';
 import { getUserSettings } from 'services/UserModel/reducer';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 import DateFormatSelectorWithMemory from '../DateFormatSelectorWithMemory';
 import Period from '../Period';
 import AvailableTypes from '../AvailableTypes';
@@ -282,7 +282,7 @@ Report.propTypes = {
     'yyyy-mm-dd', 'dd-mm-yyyy',
   ]),
 
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
 const mapState = (state) => ({
@@ -302,4 +302,4 @@ const mapDispatch = {
 const PureReport = pure(Report);
 const Connected = connect(mapState, mapDispatch)(PureReport);
 
-export default translator(phrases)(Connected);
+export default translate(phrases)(Connected);

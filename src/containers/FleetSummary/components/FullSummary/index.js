@@ -6,7 +6,7 @@ import { isEscape } from 'configs';
 import theme from 'configs/theme';
 import Icon from '../Icons';
 import { amountsShape } from '../../PropTypes';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 
 import classes from './classes';
 import phrases, { phrasesShape } from './phrases.lang';
@@ -106,9 +106,9 @@ const FullSummary = ({
 FullSummary.propTypes = {
   amounts: amountsShape.isRequired,
 
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
 const Pure = pure(FullSummary);
 
-export default translator(phrases)(Pure);
+export default translate(phrases)(Pure);

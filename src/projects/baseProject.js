@@ -19,12 +19,14 @@ import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 // import { setLocale } from 'utils/i18n';
+import { TranslationProvider } from 'utils/i18n';
+import phrases, { locales } from 'configs/phrases';
 
 injectTapEventPlugin();
 
 require('sanitize.css/sanitize.css');
 
-// set language on app initialisation
+// set system language on app initialisation
 // setLocale(navigator.language);
 
 export const renderProject = ({
@@ -40,7 +42,9 @@ export const renderProject = ({
 
   ReactDOM.render(
     <Provider store={store}>
-      {createRoutes(store)}
+      <TranslationProvider phrases={phrases} locales={locales} >
+        {createRoutes(store)}
+      </TranslationProvider>
     </Provider>, anchor
   );
 };

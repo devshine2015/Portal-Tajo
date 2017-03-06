@@ -1,6 +1,6 @@
 import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
 import storage from 'utils/localStorage';
-import { setLocale } from 'utils/i18n';
+// import { setLocale } from 'utils/i18n';
 import { getAuthenticationSession } from 'services/Auth/reducer';
 
 export const USER_SET = 'portal/services/USER_SET';
@@ -59,7 +59,7 @@ export const updateLanguage = nextLang => dispatch => {
   const saveToStorage = true;
 
   // update polyglot.locale
-  setLocale(nextLang);
+  // setLocale(nextLang);
 
   dispatch(updateUserSettings(saveToStorage, {
     lang: nextLang,

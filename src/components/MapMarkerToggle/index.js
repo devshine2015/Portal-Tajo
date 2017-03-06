@@ -14,7 +14,7 @@ import { ctxGetHideGF, ctxGetHideVehicles,
     ctxGetPowListTabType } from 'services/Global/reducers/contextReducer';
 import { contextActions } from 'services/Global/actions';
 import listTypes from 'components/InstancesList/types';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './phrases.lang';
@@ -99,7 +99,7 @@ MapMarkerToggle.propTypes = {
   isHideGF: React.PropTypes.bool.isRequired,
   isHideVehicles: React.PropTypes.bool.isRequired,
 
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
 const mapState = (state) => ({
@@ -115,4 +115,4 @@ const mapDispatch = {
 const PureMapMarkerToggle = pure(MapMarkerToggle);
 const Connected = connect(mapState, mapDispatch)(PureMapMarkerToggle);
 
-export default translator(phrases)(Connected);
+export default translate(phrases)(Connected);

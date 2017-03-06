@@ -5,7 +5,7 @@ import { setChronicleNormalizedT } from './../../actions';
 import { getNormalized100T } from './../../reducer';
 import Chart from './../Chart';
 import MomentIndicator from './../MomentIndicator';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './phrases.lang';
@@ -149,7 +149,7 @@ ChartTimeBox.propTypes = {
   setChronicleNormalizedT: React.PropTypes.func.isRequired,
   normalized100T: React.PropTypes.number.isRequired,
 
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 const mapState = (state) => ({
   normalized100T: getNormalized100T(state),
@@ -161,4 +161,4 @@ const mapDispatch = {
 const PureChartTimeBox = pure(ChartTimeBox);
 const Connected = connect(mapState, mapDispatch)(PureChartTimeBox);
 
-export default translator(phrases)(Connected);
+export default translate(phrases)(Connected);

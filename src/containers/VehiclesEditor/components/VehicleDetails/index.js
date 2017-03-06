@@ -11,7 +11,7 @@ import Form from 'components/Form';
 import ButtonWithProgress from 'components/ButtonWithProgress';
 import DeviceEditor from '../DeviceEditor';
 import { VEHICLE_KINDS, getVehicleByValue } from 'services/FleetModel/utils/vehiclesMap';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './phrases.lang';
@@ -267,7 +267,7 @@ VehicleDetails.propTypes = {
   onSave: React.PropTypes.func.isRequired,
   onCancel: React.PropTypes.func.isRequired,
 
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
-export default pure(translator(phrases)(VehicleDetails));
+export default pure(translate(phrases)(VehicleDetails));

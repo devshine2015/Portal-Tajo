@@ -2,7 +2,7 @@ import React from 'react';
 import Content from 'components/Content';
 import Widget from 'components/Widget';
 import FleetSummary from 'containers/FleetSummary';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 
 import classes from './classes';
 import phrases, { phrasesShape } from './phrases.lang';
@@ -29,7 +29,9 @@ const DashboardScreen = ({ translations }) => (
 );
 
 DashboardScreen.propTypes = {
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
-export default translator(phrases)(DashboardScreen);
+DashboardScreen.displayName = 'DashboardScreen';
+
+export default translate(phrases)(DashboardScreen);

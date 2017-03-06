@@ -2,7 +2,7 @@ import React from 'react';
 import { css } from 'aphrodite/no-important';
 import moment from 'moment';
 import cs from 'classnames';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 
 import classes from './Warn.classes';
 import phrases, { phrasesShape } from './Warn.phrases.lang';
@@ -39,7 +39,7 @@ Warn.propTypes = {
   isExpanded: React.PropTypes.bool,
   updateDate: React.PropTypes.number.isRequired,
 
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
-export default translator(phrases)(Warn);
+export default translate(phrases)(Warn);

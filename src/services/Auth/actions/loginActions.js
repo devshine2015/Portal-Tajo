@@ -3,7 +3,7 @@ import endpoints from 'configs/endpoints';
 import VERSIONS from 'configs/versions';
 import storage from 'utils/localStorage';
 import api from 'utils/api';
-import { setLocale } from 'utils/i18n';
+// import { setLocale } from 'utils/i18n';
 import commonActions from './commonActions';
 import { getAuthenticationSession } from '../reducer';
 import { getFleetName } from 'services/UserModel/reducer';
@@ -25,9 +25,9 @@ export const loginSuccess = ({
 
   if (!settings.lang) {
     // eslint-disable-next-line no-param-reassign
-    settings.lang = setLocale(navigator.language);
+    // settings.lang = setLocale(navigator.language);
   } else {
-    setLocale(settings.lang);
+    // setLocale(settings.lang);
   }
 
   return {

@@ -4,7 +4,7 @@ import GenericListItem from './GenericListItem';
 import addCSSRule from 'utils/cssRule';
 import dateFormats from 'configs/dateFormats';
 import types from './types';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './phrases.lang';
@@ -98,9 +98,9 @@ InstancesList.propTypes = {
   dateFormat: React.PropTypes.string.isRequired,
 
   // translations for all types of lists
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
 const Pure = pure(InstancesList);
 
-export default translator(phrases)(Pure);
+export default translate(phrases)(Pure);

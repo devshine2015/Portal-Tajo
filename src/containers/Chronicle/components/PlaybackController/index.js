@@ -3,7 +3,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { setChronicleNormalizedT } from './../../actions';
 import { getNormalized100T } from './../../reducer';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 
 import IconButton from 'material-ui/IconButton';
 import PlayIcon1 from 'material-ui/svg-icons/av/play-arrow';
@@ -159,7 +159,7 @@ PlaybackCtr.propTypes = {
   setChronicleNormalizedT: React.PropTypes.func.isRequired,
   normalized100T: React.PropTypes.number.isRequired,
 
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
 const mapState = (state) => ({
@@ -172,4 +172,4 @@ const mapDispatch = {
 const PurePlaybackCtr = pure(PlaybackCtr);
 const Connected = connect(mapState, mapDispatch)(PurePlaybackCtr);
 
-export default translator(phrases)(Connected);
+export default translate(phrases)(Connected);

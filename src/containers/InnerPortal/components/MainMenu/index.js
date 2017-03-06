@@ -3,7 +3,7 @@ import pure from 'recompose/pure';
 import { rolesEnum } from 'configs/roles';
 import MenuItem from './components/ManuItem';
 import pageShape from 'containers/InnerPortal/PropTypes';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './phrases.lang';
@@ -45,9 +45,9 @@ MainMenu.propTypes = {
   pages: React.PropTypes.arrayOf(pageShape).isRequired,
   role: React.PropTypes.oneOf(rolesEnum).isRequired,
 
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
 const Pure = pure(MainMenu);
 
-export default translator(phrases)(Pure);
+export default translate(phrases)(Pure);

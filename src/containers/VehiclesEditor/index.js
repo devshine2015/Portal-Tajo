@@ -13,7 +13,7 @@ import { getVehicleFilterString } from 'services/Global/reducer';
 import VehicleDetails from './components/VehicleDetails';
 import { getLoaderState } from './reducer';
 import { detailsActions } from './actions';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './phrases.lang';
@@ -177,7 +177,7 @@ VehiclesEditor.propTypes = {
   globalSelectedVehicleId: React.PropTypes.string.isRequired,
   vehicleFilterString: React.PropTypes.string,
 
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
 const mapState = (state) => ({
@@ -195,4 +195,4 @@ const mapDispatch = {
 const PureVehiclesEditor = pure(VehiclesEditor);
 const Connected = connect(mapState, mapDispatch)(PureVehiclesEditor);
 
-export default translator(phrases)(Connected);
+export default translate(phrases)(Connected);

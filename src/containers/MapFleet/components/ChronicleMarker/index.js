@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { hideLayer } from 'utils/mapBoxMap';
 import { generateInnerHTMLForHistoryMoment } from 'containers/Chronicle/utils/strings';
 import { getNormalized100T } from 'containers/Chronicle/reducer';
-// import translator from 'utils/translator';
+// import { translate } from 'utils/i18n';
 
 require('./styles.css');
 // import phrases, { phrasesShape } from './phrases.lang';
@@ -123,7 +123,7 @@ ChronicleMarker.propTypes = {
   isSelected: React.PropTypes.bool.isRequired,
   normalized100T: React.PropTypes.number.isRequired,
 
-  // translations: phrasesShape.isRequired,
+  // translations: phrasesShape,
 };
 
 const mapState = (state) => ({

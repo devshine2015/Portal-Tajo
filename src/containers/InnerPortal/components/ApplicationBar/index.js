@@ -8,7 +8,7 @@ import { BASE_URL, isEscape } from 'configs';
 import CodebaseVersion from 'components/CodebaseVersion';
 import { changeMainSidebarState } from 'containers/InnerPortal/actions';
 import FleetSummary from 'containers/FleetSummary';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 import { logout } from '../../actions';
 
 import styles from './styles.css';
@@ -80,7 +80,7 @@ ApplicationBar.propTypes = {
   toggleSidebar: React.PropTypes.func.isRequired,
   location: React.PropTypes.shape(locationShape).isRequired,
 
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
 const mapState = null;
@@ -93,4 +93,4 @@ const PureApplicationBar = pure(withRouter(ApplicationBar));
 
 const Connected = connect(mapState, mapDispatch)(PureApplicationBar);
 
-export default translator(phrases)(Connected);
+export default translate(phrases)(Connected);

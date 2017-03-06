@@ -5,7 +5,7 @@ import pure from 'recompose/pure';
 import { showSnackbar } from 'containers/Snackbar/actions';
 import OfflineDataList from '../OfflineDataList';
 import { getOfflineData } from 'containers/Installer/reducer';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 
 import phrases, { phrasesShape } from './phrases.lang';
 
@@ -84,7 +84,7 @@ OfflineData.propTypes = {
   sendData: React.PropTypes.func.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,
 
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
 const mapState = (state) => ({
@@ -97,4 +97,4 @@ const mapDispatch = {
 const PureOfflineData = pure(OfflineData);
 const Connected = connect(mapState, mapDispatch)(PureOfflineData);
 
-export default translator(phrases)(Connected);
+export default translate(phrases)(Connected);

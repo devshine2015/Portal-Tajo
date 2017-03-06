@@ -6,7 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Toggle from 'material-ui/Toggle';
 import WarningDialog from '../WarningDialog';
 import { eventActions } from 'containers/Report/actions';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 import {
   getIsForced,
   getIsTooManyVehiclesSelected,
@@ -35,7 +35,7 @@ const Hint = ({
 }) => <div className={styles.hint}>*{ translations.hint_text }</div>;
 
 Hint.propTypes = {
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
 class RawDataButtons extends React.Component {
@@ -145,7 +145,7 @@ RawDataButtons.propTypes = {
   // display amount of selected vehicles in dialog
   selectedVehiclesAmount: React.PropTypes.number.isRequired,
 
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
 const mapState = state => ({
@@ -160,4 +160,4 @@ const mapDispatch = {
 const PureRawDataButtons = pure(RawDataButtons);
 const Connected = connect(mapState, mapDispatch)(PureRawDataButtons);
 
-export default translator(phrases)(Connected);
+export default translate(phrases)(Connected);

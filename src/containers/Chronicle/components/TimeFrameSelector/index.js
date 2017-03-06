@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import DatePicker from 'material-ui/DatePicker';
 import ArrowIcon from 'material-ui/svg-icons/navigation/arrow-back';
 import { setChronicleTimeFrame } from './../../actions';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './phrases.lang';
@@ -62,7 +62,7 @@ class TimeFrame extends React.Component {
 TimeFrame.propTypes = {
   setChronicleTimeFrame: React.PropTypes.func.isRequired,
 
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
 const mapState = null;
@@ -73,4 +73,4 @@ const mapDispatch = {
 const PureTimeFrame = pure(TimeFrame);
 const Connected = connect(mapState, mapDispatch)(PureTimeFrame);
 
-export default translator(phrases)(Connected);
+export default translate(phrases)(Connected);

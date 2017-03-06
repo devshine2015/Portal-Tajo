@@ -11,7 +11,7 @@ import { vehiclesActions, gfActions } from 'services/FleetModel/actions';
 import { getSelectedVehicleId } from 'services/FleetModel/reducer';
 import { contextActions } from 'services/Global/actions';
 import { getVehicleFilterString } from 'services/Global/reducer';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 
 import * as listEvents from './events';
 import * as mapEvents from 'containers/MapFleet/events';
@@ -170,7 +170,7 @@ OperationalPowerList.propTypes = {
   setListTypeFunc: React.PropTypes.func.isRequired,
   vehicleFilterString: React.PropTypes.string,
 
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
 const mapState = (state) => ({
@@ -188,4 +188,4 @@ const mapDispatch = {
 const PureOperationalPowerList = pure(OperationalPowerList);
 const Connected = connect(mapState, mapDispatch)(PureOperationalPowerList);
 
-export default translator(phrases)(Connected);
+export default translate(phrases)(Connected);

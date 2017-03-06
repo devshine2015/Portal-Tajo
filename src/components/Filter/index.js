@@ -1,7 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import TextField from 'material-ui/TextField';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './phrases.lang';
@@ -59,9 +59,9 @@ Filter.propTypes = {
   // TODO -- think about presets
   presets: React.PropTypes.shape({}),
 
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
 const Pure = pure(Filter);
 
-export default translator(phrases)(Pure);
+export default translate(phrases)(Pure);

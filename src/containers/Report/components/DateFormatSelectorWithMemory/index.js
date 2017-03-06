@@ -7,7 +7,7 @@ import RememberChoiceIconOpen from 'material-ui/svg-icons/action/lock-open';
 import { portal } from 'configs';
 import DateFormatSelector from 'components/DateFormatSelector';
 import { updateUserSettings } from 'services/UserModel/actions';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './phrases.lang';
@@ -103,7 +103,7 @@ DateFormatSelectorWithMemory.propTypes = {
   updateUserSettings: React.PropTypes.func.isRequired,
   onFormatChange: React.PropTypes.func.isRequired,
 
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
 const mapState = null;
@@ -114,4 +114,4 @@ const mapDispatch = {
 const PureDateFormatSelectorWithMemory = pure(DateFormatSelectorWithMemory);
 const Connected = connect(mapState, mapDispatch)(PureDateFormatSelectorWithMemory);
 
-export default translator(phrases)(Connected);
+export default translate(phrases)(Connected);

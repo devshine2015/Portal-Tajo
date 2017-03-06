@@ -1,14 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import cs from 'classnames';
 import { css } from 'aphrodite/no-important';
 import Widget from 'components/Widget';
-import { localesSupported } from 'utils/i18n';
-import translator from 'utils/translator';
-import { updateLanguage } from 'services/UserModel/actions';
+import { translate } from 'utils/i18n';
+import { locales } from 'configs/phrases';
 
 import classes from './classes';
-import phrases, { phrasesShape } from './phrases.lang';
+import { phrasesShape } from './PropTypes';
 
 const LangOption = ({
   text,
@@ -37,23 +35,21 @@ LangOption.propTypes = {
   onClick: React.PropTypes.func.isRequired,
 };
 
-function _renderOptions({
-  currentLocale,
-  changeLanguage,
-}) {
-  return localesSupported.map(lang => (
+function _renderOptions(translator) {
+  return locales.map(lang => (
     <LangOption
       text={lang}
       key={lang}
-      onClick={changeLanguage}
-      isSelected={ currentLocale === lang }
+      onClick={translator.setLocale}
+      isSelected={ translator.getLocale() === lang }
     />
   ));
 }
 
 const LanguageWidget = ({
   translations,
-  ...rest,
+}, {
+  translator,
 }) => (
   <Widget
     title={translations.language_settings_title}
@@ -65,30 +61,27 @@ const LanguageWidget = ({
       </div>
 
       <div className={css(classes.lang__options)}>
-        { _renderOptions(rest) }
+        { _renderOptions(translator) }
       </div>
     </div>
   </Widget>
 );
 
-LanguageWidget.propTypes = {
-  currentLocale: React.PropTypes.oneOf(localesSupported).isRequired,
-  changeLanguage: React.PropTypes.func.isRequired,
+LanguageWidget.contextTypes = {
+  translator: React.PropTypes.object.isRequired,
+};
 
+LanguageWidget.propTypes = {
   translations: phrasesShape.isRequired,
 };
 
-const mapState = null;
-
-const mapDispatch = (dispatch, ownProps) => ({
-  changeLanguage: nextLang => {
-    // do nothing is language the same
-    if (ownProps.currentLocale === nextLang) return;
-
-    dispatch(updateLanguage(nextLang));
+LanguageWidget.defaultProps = {
+  translations: {
+    language_settings_title: 'Language',
+    language_settings_main_text: 'Application language',
   },
-});
+};
 
-const Connected = connect(mapState, mapDispatch)(LanguageWidget);
+LanguageWidget.displayName = 'LanguageWidget';
 
-export default translator(phrases)(Connected);
+export default translate()(LanguageWidget);

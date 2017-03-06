@@ -19,7 +19,7 @@ import {
   installerHasOfflineData,
 } from './reducer';
 import { showSnackbar } from 'containers/Snackbar/actions';
-import translator from 'utils/translator';
+import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './phrases.lang';
@@ -273,7 +273,7 @@ Installer.propTypes = {
   showSnackbar: React.PropTypes.func.isRequired,
   submitForm: React.PropTypes.func.isRequired,
 
-  translations: phrasesShape.isRequired,
+  translations: phrasesShape,
 };
 
 const mapState = (state) => ({
@@ -293,4 +293,4 @@ const mapDispatch = {
 const PureInstaller = pure(Installer);
 const Connected = connect(mapState, mapDispatch)(PureInstaller);
 
-export default translator(phrases)(Connected);
+export default translate(phrases)(Connected);
