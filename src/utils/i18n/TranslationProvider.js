@@ -14,6 +14,12 @@ class Translator {
     this.p = new Polyglot({
       phrases,
       locale: transformLocale(window.navigator.language || DEFAULT_LOCALE),
+      allowMissing: true,
+      onMissingKey: key => {
+        const phrase = key.split('.')[1];
+
+        return this.p.t(`${DEFAULT_LOCALE}.${phrase}`);
+      },
     });
 
     this.subscribtions = {};
