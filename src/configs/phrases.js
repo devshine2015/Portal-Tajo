@@ -181,32 +181,44 @@ const phrases = {
   },
 
   th: {
+    // language widget
     language_settings_main_text: 'ภาษาของแอพพลิเคชั่น',
     language_settings_title: 'ภาษา',
+    // -- end language widget
 
+    // chronicle
     loading: 'กำลังโหลด...',
     please_wait: 'โปรดรอ',
     no_data: 'ไม่มีข้อมูล',
     please_select_vehicle: 'โปรดเลือกยานพาหนะ',
-
     max_speed: 'ความเร็วสูงสุด',
     max_temp: 'อุณหภูมิสูงสุด',
     min_temp: 'อุณหภูมิต่ำสุด',
+    // -- end chronicle
 
+    // appBar
     logout: 'ลงชื่อออก',
+    // -- end appBar
 
+    // main menu
     reports: 'รายงาน',
     vehicles_editor: 'จัดการยานพาหนะ',
     operational: 'ปฏิบัติการ',
     settings: 'ตั้งค่า',
     review: 'ภาพรวม',
     history: 'ประวัติ',
+    // -- end main menu
 
+    // dashboard screen
     fleet_summary_title: 'ภาพรวมกลุ่มยานพาหนะ',
+    // --end dashboard screen
 
+    // fleet summary
     vehicles_amount: 'คัน ในฟลีท',
     never_reported: 'คัน ไม่ส่งข้อมูล',
+    // -- end fleet summary
 
+    // installer
     vehicle_name: 'ชื่อยานพาหนะ',
     license: 'เลขทะเบียน',
     odo_value: 'เลขมาตรระยะทางปัจจุบัน',
@@ -220,11 +232,15 @@ const phrases = {
     reset: 'รีเซ็ต',
     send_fail: 'เกิดข้อผิดพลาดบางอย่าง ลองอีกครั้ง',
     clean_success: 'ล้างสำเร็จ ✓',
+    // -- end installer
 
+    // operational
     vehicles: 'ยานพาหนะ',
     locations: 'สถานที่',
     vessels: 'เรือ',
+    // -- end operational
 
+    // report available types
     date: 'วันที่',
     name: 'ชื่อยานพาหนะ',
     mileage: 'ระยะทาง (กิโลเมตร)',
@@ -238,33 +254,45 @@ const phrases = {
     ignition: 'สถานะ เปิด/ปิด เครื่องยนต์',
     'vehicle-1wire-temperature': 'อุณหภูมิ',
     geofences: 'ผ่าน Geofence (เร็วๆ นี้)',
+    // -- end report available types
 
+    // report date selector with memory
     choose_date_format: 'เลือกรูปแบบวันที่สำหรับรายงาน',
     remember_choice: 'จำการตั้งค่า',
     forget_choice: 'ล้างการตั้งค่า',
+    // -- end report date selector with memory
 
+    // report raw buttons
     save_btn_label: 'บันทึกข้อมูล',
     toggle_warn: 'ต้องการเลือกยานพาหนะเพิ่มเติม',
     hint_text: 'เลือกยานพาหนะสูงสุด 3 รายการ',
+    // -- end report raw buttons
 
+    // report configurator
     customise_report: 'รายงานกำหนดเอง',
     generate_report: 'สร้างรายงาน',
     save_report: 'บันทึกรายงาน',
     customise_raw_events: 'ข้อมูลเหตุการณ์กำหนดเอง',
+    // -- end report configurator
 
+    // report warning dialog
     ok: 'ตกลง',
     cancel: 'ยกเลิก',
     warn_text: `เลือก ยานพาหนะ\n
                 รายงานจะใช้เวลาดำเนินการและดาวน์โหลดมากกว่าปกติ\n
                 ต้องการดำเนินการต่อหรือไม่?`,
+    // -- end report warning dialog
 
+    // vehicle details
     manufacturer: 'ผู้ผลิต',
     model_name: 'รุ่น',
     year: 'ปีที่ผลิต',
     odometer_value: 'มาตรวัดระยะทาง (กิโลเมตร)',
     vehicle_kind_hint: 'ประเภทของยานพาหนะ',
     save: 'บันทึก',
+    // -- end vehicle details
 
+    // vehicle kinds
     undefined: 'ไม่กำหนด',
     boat: 'เรือ',
     farm: 'รถฟาร์ม',
@@ -285,12 +313,14 @@ const phrases = {
     suv: 'รถตรวจการ',
     taxi: 'แท็กซี่',
     tractor: 'แทร็กเตอร์',
+    // -- end vehicle kinds
 
+    // mapMarkerToggle
     hide_text: 'ซ่อน',
     show_text: 'แสดง',
-    vehicles_text: 'ยานพาหนะ',
-    locations_text: 'สถานที่',
+    // -- end mapMarkerToggle
 
+    // instancesList
     speed: 'ความเร็ว',
     speed_km_h: 'กม./ชม.',
     temperature: 'อุณหภูมิ',
@@ -301,8 +331,11 @@ const phrases = {
     address: 'ที่อยู่',
     delete: 'ลบ',
     no_history_data: 'ไม่มีข้อมูล...',
+    // -- end instancesList
 
+    // GFEditor
     location_name: 'ชื่อสถานที่',
+    // -- end GFEditor
   },
 };
 
