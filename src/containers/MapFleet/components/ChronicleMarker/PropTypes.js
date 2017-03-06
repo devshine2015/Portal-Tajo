@@ -4,15 +4,8 @@ const shape = PropTypes.shape;
 const string = PropTypes.string;
 
 const phrases = {
-  en: {
-    lat: 'lat',
-    lng: 'lng',
-  },
-
-  th: {
-    lat: 'ละติจูด',
-    lng: 'ลองติจูด',
-  },
+  lat: 'lat',
+  lng: 'lng',
 };
 
 export const phrasesShape = shape({

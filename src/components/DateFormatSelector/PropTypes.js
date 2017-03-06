@@ -4,13 +4,7 @@ const shape = PropTypes.shape;
 const string = PropTypes.string;
 
 const phrases = {
-  en: {
-    choose_date_format: 'Choose date format for the report',
-  },
-
-  th: {
-    choose_date_format: 'เลือกรูปแบบวันที่สำหรับรายงาน',
-  },
+  choose_date_format: 'Choose date format for the report',
 };
 
 export const phrasesShape = shape({

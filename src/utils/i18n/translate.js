@@ -26,7 +26,7 @@ export default (phrases = {}) => Component => {
     constructor(props, context) {
       super(props, context);
 
-      this.componentName = Component.displayName || Component.Name;
+      this.componentName = Component.displayName || Component.name;
       this.phrases = extractPhrasesFromDefaultProps(Component, phrases);
 
       this.state = {

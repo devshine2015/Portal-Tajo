@@ -178,6 +178,24 @@ const phrases = {
     signin: 'Sign in',
     signing: 'Signing',
     // -- end login form
+
+    // filter
+    search_placeholder: 'search',
+    // -- end filter
+
+    // playback
+    pause: 'Pause',
+    play: 'Play',
+    // -- end playback
+
+    // time frame selector
+    select_date_text: 'select date here',
+    // -- end time frame selector
+
+    // chronicle marker
+    lat: 'lat',
+    lng: 'lng',
+    // -- end chronicle marker
   },
 
   th: {
@@ -336,6 +354,24 @@ const phrases = {
     // GFEditor
     location_name: 'ชื่อสถานที่',
     // -- end GFEditor
+
+    // filter
+    search_placeholder: 'ค้นหา',
+    // -- end filter
+
+    // playback
+    pause: 'หยุด',
+    play: 'เล่น',
+    // -- end playback
+
+    // time frame selector
+    select_date_text: 'เลือกวันที่',
+    // -- end time frame selector
+
+    // chronicle marker
+    lat: 'ละติจูด',
+    lng: 'ลองติจูด',
+    // -- end chronicle marker
   },
 };
 

@@ -16,7 +16,7 @@ const Warn = ({
   let infoStr = '';
 
   if (activityStatus === 'dead') {
-    infoStr = translations.never_reported;
+    infoStr = translations.device_never_reported;
   } else if (activityStatus === 'delayed') {
     infoStr = `Delayed ${moment().from(updateDate, true)}`;
   }

@@ -4,15 +4,8 @@ const shape = PropTypes.shape;
 const string = PropTypes.string;
 
 const phrases = {
-  en: {
-    pause: 'Pause',
-    play: 'Play',
-  },
-
-  th: {
-    pause: 'หยุด',
-    play: 'เล่น',
-  },
+  pause: 'Pause',
+  play: 'Play',
 };
 
 export const phrasesShape = shape({
