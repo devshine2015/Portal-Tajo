@@ -1,12 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import cs from 'classnames';
 import { css } from 'aphrodite/no-important';
 import Widget from 'components/Widget';
 import { translate } from 'utils/i18n';
 import { locales } from 'configs/phrases';
+import { updateUserSettings } from 'services/UserModel/actions';
 
 import classes from './classes';
-import { phrasesShape } from './PropTypes';
+import phrases, { phrasesShape } from './PropTypes';
 
 const LangOption = ({
   text,
@@ -35,53 +37,68 @@ LangOption.propTypes = {
   onClick: React.PropTypes.func.isRequired,
 };
 
-function _renderOptions(translator) {
+function _renderOptions(currentLocale, onClick) {
   return locales.map(lang => (
     <LangOption
       text={lang}
       key={lang}
-      onClick={translator.setLocale}
-      isSelected={ translator.getLocale() === lang }
+      onClick={onClick}
+      isSelected={ currentLocale === lang }
     />
   ));
 }
 
-const LanguageWidget = ({
-  translations,
-}, {
-  translator,
-}) => (
-  <Widget
-    title={translations.language_settings_title}
-    containerClass={classes.languageWidget}
-  >
-    <div className={css(classes.lang)}>
-      <div className={css(classes.lang__text)}>
-        { translations.language_settings_main_text }
-      </div>
+class LanguageWidget extends React.PureComponent {
 
-      <div className={css(classes.lang__options)}>
-        { _renderOptions(translator) }
-      </div>
-    </div>
-  </Widget>
-);
+  onLanguaegeChange = nextLang => {
+    this.props.updateUserSettings(true, {
+      lang: nextLang,
+    });
+
+    this.context.translator.setLocale(nextLang);
+  }
+
+  render() {
+    const { translations } = this.props;
+    const currentLocale = this.context.translator.getLocale();
+
+    return (
+      <Widget
+        title={translations.language_settings_title}
+        containerClass={classes.languageWidget}
+      >
+        <div className={css(classes.lang)}>
+          <div className={css(classes.lang__text)}>
+            { translations.language_settings_main_text }
+          </div>
+
+          <div className={css(classes.lang__options)}>
+            { _renderOptions(currentLocale, this.onLanguaegeChange) }
+          </div>
+        </div>
+      </Widget>
+    );
+  }
+}
 
 LanguageWidget.contextTypes = {
   translator: React.PropTypes.object.isRequired,
 };
 
 LanguageWidget.propTypes = {
+  updateUserSettings: React.PropTypes.func.isRequired,
+
   translations: phrasesShape.isRequired,
 };
 
 LanguageWidget.defaultProps = {
-  translations: {
-    language_settings_title: 'Language',
-    language_settings_main_text: 'Application language',
-  },
+  translations: phrases,
 };
 
 LanguageWidget.displayName = 'LanguageWidget';
 
-export default translate()(LanguageWidget);
+const mapDispatch = { updateUserSettings };
+
+const Translated = translate(phrases)(LanguageWidget);
+
+export default connect(null, mapDispatch)(Translated);
