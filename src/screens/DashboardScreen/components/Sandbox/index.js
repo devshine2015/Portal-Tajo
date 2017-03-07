@@ -8,6 +8,7 @@ const STYLES = {
   width: '100%',
   border: '1px solid #ccc',
   marginTop: 20,
+  padding: 20,
 };
 
 class D3Sandbox extends React.Component {
@@ -28,6 +29,7 @@ class D3Sandbox extends React.Component {
   }
 
   render() {
+    console.dir(this.state.d3);
     return (
       <div style={STYLES}>
         Dashboard
