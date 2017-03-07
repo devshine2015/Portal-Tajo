@@ -69,6 +69,7 @@ InstancesList.contextTypes = {
 
 InstancesList.defaultProps = {
   dateFormat: dateFormats.default.value,
+  translations: phrases,
 };
 
 InstancesList.propTypes = {
