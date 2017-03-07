@@ -29,7 +29,6 @@ class D3Sandbox extends React.Component {
   }
 
   render() {
-    console.dir(this.state.d3);
     return (
       <div style={STYLES}>
         Dashboard
