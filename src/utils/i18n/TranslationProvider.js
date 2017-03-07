@@ -9,14 +9,14 @@ function _isLocaleSupported(nextLocale = '', supportedLocalesList = []) {
 const DEFAULT_LOCALE = 'en';
 
 class Translator {
-  constructor(phrases, locales) {
+  constructor({ phrases, locales, locale }) {
     this._locales = locales || [DEFAULT_LOCALE];
     this.p = new Polyglot({
       phrases,
-      locale: transformLocale(window.navigator.language || DEFAULT_LOCALE),
+      locale: transformLocale(locale || window.navigator.language || DEFAULT_LOCALE),
       allowMissing: true,
       onMissingKey: key => {
-        const phrase = key.split('.')[1];
+        const phrase = key.split('.')[1] || 'undefined';
 
         return this.p.t(`${DEFAULT_LOCALE}.${phrase}`);
       },
@@ -58,13 +58,17 @@ class TranslationProvider extends React.Component {
   constructor(props, context) {
     super(props, context);
 
-    this.translator = new Translator(props.phrases, props.locales);
+    this.translator = new Translator(props);
   }
 
   getChildContext() {
     return {
       translator: this.translator,
     };
+  }
+
+  componentWillUpdate(nextProps) {
+    this.translator.setLocale(nextProps.locale);
   }
 
   render() {

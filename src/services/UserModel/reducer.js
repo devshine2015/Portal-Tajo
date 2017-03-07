@@ -13,7 +13,7 @@ const initialState = fromJS({
   fleet: undefined,
   settings: {
     dateFormat: undefined,
-    lang: 'en',
+    lang: undefined,
   },
 });
 

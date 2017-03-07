@@ -6,7 +6,10 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import InnerPortal from 'containers/InnerPortal';
 import { onlineActions } from 'services/Global/actions';
 import { localActions } from 'services/Auth/actions';
+import { getLocale } from 'services/UserModel/reducer';
 import drvrDevTheme from 'configs/theme';
+import { TranslationProvider } from 'utils/i18n';
+import phrases, { locales } from 'configs/phrases';
 
 // need this for global styling
 require('./styles.css');
@@ -45,6 +48,7 @@ class App extends React.Component {
 
   render() {
     let children = this.props.children;
+
     const screenProtected = screenIsProtected(this.props.routes);
 
     if (screenProtected) {
@@ -56,9 +60,15 @@ class App extends React.Component {
     }
 
     return (
-      <MuiThemeProvider muiTheme={muiTheme}>
-        {children}
-      </MuiThemeProvider>
+      <TranslationProvider
+        phrases={phrases}
+        locales={locales}
+        locale={this.props.locale}
+      >
+        <MuiThemeProvider muiTheme={muiTheme}>
+          {children}
+        </MuiThemeProvider>
+      </TranslationProvider>
     );
   }
 }
@@ -68,6 +78,7 @@ App.contextTypes = {
 };
 
 App.propTypes = {
+  locale: React.PropTypes.string,
   changeOnlineState: React.PropTypes.func.isRequired,
   checkUserAuthentication: React.PropTypes.func.isRequired,
   children: React.PropTypes.node,
@@ -78,7 +89,9 @@ App.propTypes = {
   ).isRequired,
 };
 
-const mapState = () => ({});
+const mapState = state => ({
+  locale: getLocale(state),
+});
 const mapDispatch = {
   changeOnlineState: onlineActions.changeOnlineState,
   checkUserAuthentication: localActions.checkUserAuthentication,
