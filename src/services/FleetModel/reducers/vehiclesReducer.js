@@ -52,10 +52,10 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
     }
 
     case vehiclesActions.FLEET_MODEL_DETACH_DEVICE:
-      return state.deleteIn(['processedList', action.id, 'deviceId']);
+      return state.deleteIn(['processedList', action.id, 'original', 'deviceId']);
 
     case vehiclesActions.FLEET_MODEL_ATTACH_DEVICE:
-      return state.setIn(['processedList', action.id, 'deviceId'], action.deviceId);
+      return state.setIn(['processedList', action.id, 'original', 'deviceId'], action.deviceId);
 
     default:
       return state;
