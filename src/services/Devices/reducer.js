@@ -50,7 +50,7 @@ function reducer(state = initialState, action) {
       return state.withMutations(st => {
         const index = state.get('vacantDevices').keyOf(action.deviceId);
 
-        st.set('notAttachedAmount', getNotAttachedAmount(st) - 1)
+        st.set('notAttachedAmount', st.get('notAttachedAmount') - 1)
           .update('vacantDevices', list => list.delete(index))
           .updateIn(['list', action.deviceId], device => {
             device.notAttached = false;
@@ -62,7 +62,7 @@ function reducer(state = initialState, action) {
 
     case DEVICE_DETACHED:
       return state.withMutations(st => {
-        st.set('notAttachedAmount', getNotAttachedAmount(st) + 1)
+        st.set('notAttachedAmount', st.get('notAttachedAmount') + 1)
           .update('vacantDevices', list => list.push(action.deviceId))
           .updateIn(['list', action.deviceId], device => {
             device.notAttached = true;

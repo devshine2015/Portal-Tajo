@@ -47,7 +47,7 @@ class DeviceEditor extends React.Component {
     super(props);
 
     this.state = {
-      imei: props.deviceId || '',
+      imei: props.deviceId,
       haveToReset: true,
     };
   }
@@ -77,6 +77,7 @@ class DeviceEditor extends React.Component {
   updateImeiState = (value = '') => {
     this.setState({
       imei: value,
+      haveToReset: true,
     });
   }
 
@@ -96,7 +97,6 @@ class DeviceEditor extends React.Component {
     const inputField = (
       <DeviceSelector
         disabled={!canAttach}
-        hasError={false}
         canRefresh={false}
         forcedValue={forcedValue}
         onSelect={this.onNewDeviceSelect}
@@ -126,7 +126,7 @@ DeviceEditor.propTypes = {
   deviceId: React.PropTypes.string,
 
   // id of vehicle
-  vehicleId: React.PropTypes.string.isRequired,
+  // vehicleId: React.PropTypes.string.isRequired,
 
   userPermittedTo: React.PropTypes.object,
 

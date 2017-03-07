@@ -27,10 +27,10 @@ function getOdo({ odometer, isMiles }) {
 }
 
 function setVehicleState(props) {
-  return {
-    ...props.details,
+  return Object.assign({}, props.details, {
+    deviceId: props.details.deviceId || '',
     isMiles: false,
-  };
+  });
 }
 
 function checkIfDeviceChanged(state, props) {
@@ -142,7 +142,7 @@ class VehicleDetails extends React.Component {
           />
 
           <DeviceEditor
-            vehicleId={this.props.details.id}
+            // vehicleId={this.props.details.id}
             deviceId={this.state.deviceId}
             updateDeviceId={this.updateDeviceId}
           />

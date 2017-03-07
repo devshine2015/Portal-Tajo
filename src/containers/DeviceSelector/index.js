@@ -85,11 +85,11 @@ class DeviceSelector extends React.Component {
     };
   }
 
-  componentWillMount() {
-    if (this.props.devices.size === 0) {
-      this.props.fetchDevices();
-    }
-  }
+  // componentWillMount() {
+  //   if (this.props.devices.size === 0) {
+  //     this.props.fetchDevices();
+  //   }
+  // }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.forcedValue !== null) {
@@ -203,13 +203,14 @@ class DeviceSelector extends React.Component {
 }
 
 DeviceSelector.propTypes = {
+  // component may take new 
   fetchDevices: React.PropTypes.func.isRequired,
 
   // value to set by force from parent component
   forcedValue: React.PropTypes.string,
 
   // true if no device has been chosen
-  hasError: React.PropTypes.bool.isRequired,
+  hasError: React.PropTypes.bool,
 
   // whether textField disabled or not
   disabled: React.PropTypes.bool,
@@ -234,10 +235,17 @@ DeviceSelector.propTypes = {
   // list of all devices
   devices: React.PropTypes.instanceOf(Map).isRequired,
 
-  // array of ids
+  // list of devices ids not
+  // attached to any vehicle
   vacantDevices: React.PropTypes.arrayOf(
     React.PropTypes.string
   ).isRequired,
+};
+
+DeviceSelector.defaultProps = {
+  disabled: false,
+  canRefresh: true,
+  hasError: false,
 };
 
 const mapState = state => ({
