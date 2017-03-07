@@ -2,27 +2,22 @@ import React from 'react';
 import pure from 'recompose/pure';
 import {
   TextField,
-  SelectField,
-  MenuItem,
   FlatButton,
   Checkbox,
 } from 'material-ui';
 import Form from 'components/Form';
 import ButtonWithProgress from 'components/ButtonWithProgress';
 import DeviceEditor from '../DeviceEditor';
-import { VEHICLE_KINDS, getVehicleByValue } from 'services/FleetModel/utils/vehiclesMap';
+import VehicleKindSelector from '../VehicleKindSelector';
 import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
-import phrases, { phrasesShape } from './PropTypes';
+import phrases, {
+  phrasesShape,
+  detailsShape,
+} from './PropTypes';
 
 const FORM = 'editor';
-const STYLES = {
-  menuItem: {
-    paddingTop: 5,
-    paddingBottom: 5,
-  },
-};
 
 function getOdo({ odometer, isMiles }) {
   // convert miles to kilometres
@@ -116,34 +111,8 @@ class VehicleDetails extends React.Component {
     });
   }
 
-  renderKindMenuItems() {
-    const { translations } = this.props;
-
-    return VEHICLE_KINDS.map(kind => {
-      const Icon = () => React.cloneElement(kind.icon, {
-        className: styles.vehicleIcon,
-      });
-
-      return (
-        <MenuItem
-          key={kind.value}
-          value={kind.value}
-          primaryText={ translations[kind.value.toLowerCase()] }
-          leftIcon={<Icon />}
-          style={STYLES.menuItem}
-        />
-      );
-    });
-  }
-
   render() {
-    let SelectedKindIcon = () => null;
     const { translations } = this.props;
-
-    if (this.state.kind) {
-      const selectedKind = getVehicleByValue(this.state.kind);
-      SelectedKindIcon = () => selectedKind.icon;
-    }
 
     return (
       <div className={styles.details}>
@@ -159,20 +128,10 @@ class VehicleDetails extends React.Component {
             value={this.state.name}
           />
 
-          <div className={styles.kind}>
-            <SelectField
-              autoWidth
-              hintText={ translations.vehicle_kind_hint }
-              name="kind"
-              value={this.state.kind}
-              onChange={this.onKindChange}
-            >
-              {this.renderKindMenuItems()}
-            </SelectField>
-            <span className={styles.selectedKindIcon}>
-              <SelectedKindIcon />
-            </span>
-          </div>
+          <VehicleKindSelector
+            kind={this.state.kind}
+            onChange={this.onKindChange}
+          />
 
           <TextField
             fullWidth
@@ -250,20 +209,7 @@ VehicleDetails.propTypes = {
   // Id for detecting if vehicle and its details has been changed
   disabled: React.PropTypes.bool.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
-  details: React.PropTypes.shape({
-    id: React.PropTypes.string.isRequired,
-    deviceId: React.PropTypes.string,
-    kind: React.PropTypes.string,
-    name: React.PropTypes.string.isRequired,
-    make: React.PropTypes.string.isRequired,
-    model: React.PropTypes.string.isRequired,
-    year: React.PropTypes.string.isRequired,
-    licensePlate: React.PropTypes.string.isRequired,
-    odometer: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number,
-    ]).isRequired,
-  }).isRequired,
+  details: detailsShape.isRequired,
   onSave: React.PropTypes.func.isRequired,
   onCancel: React.PropTypes.func.isRequired,
 
