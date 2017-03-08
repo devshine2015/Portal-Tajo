@@ -51,6 +51,11 @@ const endpoints = {
     method: 'put',
     apiVersion: 1,
   }),
+  disableVehicle: id => ({
+    url: `vehicles/${id}`,
+    method: 'delete',
+    apiVersion: 1,
+  }),
 
   // stats
   getStats: {

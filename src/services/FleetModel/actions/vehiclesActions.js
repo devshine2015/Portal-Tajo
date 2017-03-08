@@ -14,6 +14,7 @@ export const FLEET_MODEL_VEHICLE_UPDATE = 'portal/services/FLEET_MODEL_VEHICLE_U
 export const FLEET_MODEL_VEHICLES_UPDATE_LIST = 'portal/services/FLEET_MODEL_VEHICLES_UPDATE_LIST';
 export const FLEET_MODEL_VEHICLE_SELECT = 'portal/services/FLEET_MODEL_VEHICLE_SELECT';
 export const FLEET_MODEL_VEHICLE_ADD = 'portal/services/FLEET_MODEL_VEHICLE_ADD';
+export const FLEET_MODEL_VEHICLE_DISABLE = 'portal/services/FLEET_MODEL_VEHICLE_DISABLE';
 export const FLEET_MODEL_ORDER_UPDATE = 'portal/services/FLEET_MODEL_ORDER_UPDATE';
 export const FLEET_MODEL_DETACH_DEVICE = 'portal/services/FLEET_MODEL_DETACH_DEVICE';
 export const FLEET_MODEL_ATTACH_DEVICE = 'portal/services/FLEET_MODEL_ATTACH_DEVICE';
@@ -100,6 +101,17 @@ export function makeUpdateVehicleRequest(details, dispatch) {
   }, error => Promise.reject(error));
 }
 
+export const disableVehicle = vehicleId => dispatch => {
+  const { url, method } = endpoints.disableVehicle(vehicleId);
+
+  return api[method](url)
+    .then(() => {
+      dispatch(_vehicleDisable(vehicleId));
+
+      return Promise.resolve();
+    }, error => Promise.reject(error));
+};
+
 /**
  * local update - local tick, recalculating time since last WS data,
  * delay/nonErporting states, estimated travel dist since last update, etc...
@@ -112,8 +124,6 @@ export function makeUpdateVehicleRequest(details, dispatch) {
 //   }, details.id));
 // }
 
-/**
-**/
 export const updateVehiclesList = vehicles => ({
   type: FLEET_MODEL_VEHICLES_UPDATE_LIST,
   vehicles,
@@ -146,4 +156,9 @@ const _vehiclesFilterUpdate = (vehicles, searchString) => ({
   type: FLEET_MODEL_VEHICLES_FILTER,
   vehicles,
   searchString,
+});
+
+const _vehicleDisable = id => ({
+  type: FLEET_MODEL_VEHICLE_DISABLE,
+  id,
 });

@@ -76,6 +76,10 @@ class VehiclesEditor extends React.Component {
     });
   }
 
+  onVehicleDisable = () => {
+    console.log(this.state.selectedVehicleId);
+  }
+
   getSelectedState = ({
     id,
     vehicles,
@@ -130,6 +134,7 @@ class VehiclesEditor extends React.Component {
           details={data}
           onSave={this.onDetailsSave}
           onCancel={this.closeEditor}
+          onDisable={this.onVehicleDisable}
           disabled={this.props.isLoading}
         />
       </FixedContent>
@@ -176,6 +181,7 @@ VehiclesEditor.propTypes = {
   filterFunc: React.PropTypes.func.isRequired,
   globalSelectedVehicleId: React.PropTypes.string.isRequired,
   vehicleFilterString: React.PropTypes.string,
+  disableVehicle: React.PropTypes.func.isRequired,
 
   translations: phrasesShape.isRequired,
 };
@@ -188,6 +194,7 @@ const mapState = (state) => ({
 });
 const mapDispatch = {
   filterFunc: vehiclesActions.filterVehicles,
+  disableVehicle: vehiclesActions.disableVehicle,
   updateDetails: detailsActions.updateDetails,
   showSnackbar,
 };

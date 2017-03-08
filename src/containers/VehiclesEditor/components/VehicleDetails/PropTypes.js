@@ -17,6 +17,7 @@ const phrases = {
   vehicle_kind_hint: 'Kind of the Vehicle',
   save: 'Save',
   cancel: 'Cancel',
+  disable: 'disable',
 };
 
 export const phrasesShape = shape({
@@ -31,6 +32,7 @@ export const phrasesShape = shape({
   save: string.isRequired,
   cancel: string.isRequired,
   vehicle_kind_hint: string.isRequired,
+  disable: string.isRequired,
 });
 
 export const detailsShape = shape({

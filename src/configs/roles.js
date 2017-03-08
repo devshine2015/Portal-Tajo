@@ -43,6 +43,10 @@ export const permissions = {
   DEVICES_ATTACH: 'able attach device to vehicle',
   DEVICES_DETACH: 'able detach device from vehicle',
   /* end of devices management */
+
+  /* vehicles management abilities */
+  VEHICLE_DISABLE: 'able to disable vehicle',
+  /* end of vehicles management */
 };
 
 const uberAbilities = {
@@ -55,6 +59,7 @@ const uberAbilities = {
   [permissions.DEVICES_DEACTIVATE]: true,
   [permissions.DEVICES_DETACH]: true,
   [permissions.DEVICES_ATTACH]: true,
+  [permissions.VEHICLE_DISABLE]: true,
 };
 
 const rolesAbilities = {
@@ -71,6 +76,7 @@ const rolesAbilities = {
       [permissions.DEVICES_SEE]: true,
       [permissions.DEVICES_CREATE]: true,
       [permissions.DEVICES_DEACTIVATE]: true,
+      [permissions.VEHICLE_DISABLE]: true,
     },
     [manager]: {
       [permissions.USERS_SEE]: true,
@@ -82,6 +88,7 @@ const rolesAbilities = {
     },
     [installer]: {
       [permissions.DEVICES_SEE]: true,
+      [permissions.VEHICLE_DISABLE]: true,
     },
   },
 

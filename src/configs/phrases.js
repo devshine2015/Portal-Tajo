@@ -117,6 +117,7 @@ const phrases = {
     odometer_value: 'Odometer (km.)',
     vehicle_kind_hint: 'Kind of the Vehicle',
     save: 'Save',
+    disable: 'disable',
     // -- end vehicle details
 
     // vehicle kinds

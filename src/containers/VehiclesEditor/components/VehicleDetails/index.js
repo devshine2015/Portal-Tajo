@@ -5,11 +5,14 @@ import {
   FlatButton,
   Checkbox,
 } from 'material-ui';
+import { permissions } from 'configs/roles';
 import Form from 'components/Form';
 import ButtonWithProgress from 'components/ButtonWithProgress';
 import DeviceEditor from '../DeviceEditor';
 import VehicleKindSelector from '../VehicleKindSelector';
+import VehicleDisabler from '../VehicleDisabler';
 import { translate } from 'utils/i18n';
+import permitted from 'utils/permissionsRequired';
 
 import styles from './styles.css';
 import phrases, {
@@ -18,6 +21,10 @@ import phrases, {
 } from './PropTypes';
 
 const FORM = 'editor';
+
+const PERMISSIONS = [
+  permissions.VEHICLE_DISABLE,
+];
 
 function getOdo({ odometer, isMiles }) {
   // convert miles to kilometres
@@ -113,6 +120,7 @@ class VehicleDetails extends React.Component {
 
   render() {
     const { translations } = this.props;
+    const canDisable = this.props.userPermittedTo[permissions.VEHICLE_DISABLE];
 
     return (
       <div className={styles.details}>
@@ -198,6 +206,21 @@ class VehicleDetails extends React.Component {
               onClick={this.props.onCancel}
               label={ translations.cancel }
             />
+
+            { canDisable && (
+              <VehicleDisabler
+                className={styles.buttons__button}
+                label={translations.disable}
+                disabled={this.props.disabled}
+                isLoading={this.props.isLoading}
+                disableVehicle={this.props.onDisable}
+                meta={{
+                  vehicleName: this.props.details.name,
+                  vehicleId: this.props.details.id,
+                  deviceId: this.props.details.deviceId,
+                }}
+              />
+            )}
           </div>
         </Form>
       </div>
@@ -206,14 +229,21 @@ class VehicleDetails extends React.Component {
 }
 
 VehicleDetails.propTypes = {
-  // Id for detecting if vehicle and its details has been changed
   disabled: React.PropTypes.bool.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
   details: detailsShape.isRequired,
   onSave: React.PropTypes.func.isRequired,
   onCancel: React.PropTypes.func.isRequired,
+  onDisable: React.PropTypes.func.isRequired,
 
   translations: phrasesShape.isRequired,
+
+  userPermittedTo: React.PropTypes.shape({
+    [permissions.VEHICLE_DISABLE]: React.PropTypes.bool.isRequired,
+  }),
 };
 
-export default pure(translate(phrases)(VehicleDetails));
+const Translated = translate(phrases)(VehicleDetails);
+const WithPermissions = permitted(PERMISSIONS)(Translated);
+
+export default pure(WithPermissions);

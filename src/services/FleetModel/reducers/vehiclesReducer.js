@@ -57,6 +57,19 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
     case vehiclesActions.FLEET_MODEL_ATTACH_DEVICE:
       return state.setIn(['processedList', action.id, 'original', 'deviceId'], action.deviceId);
 
+    case vehiclesActions.FLEET_MODEL_VEHICLE_DISABLE: {
+      const orderedListIndex = state.get('orderedList').indexOf(action.id);
+      const deadListIndex = state.get('deadList').indexOf(action.id);
+      const delayedListIndex = state.get('delayedList').indexOf(action.id);
+
+      return state.withMutations(s => {
+        s.deleteIn(['processedList', action.id])
+         .deleteIn(['orderedList', orderedListIndex])
+         .deleteIn(['deadList', deadListIndex])
+         .deleteIn(['delayedList', delayedListIndex]);
+      });
+    }
+
     default:
       return state;
   }
