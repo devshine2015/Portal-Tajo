@@ -8,6 +8,7 @@ const phrases = {
   password: 'Password',
   login: 'Login',
   signin: 'Sign in',
+  signing: 'signing',
 };
 
 export const phrasesShape = shape({

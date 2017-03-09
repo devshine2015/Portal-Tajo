@@ -88,7 +88,6 @@ const rolesAbilities = {
     },
     [installer]: {
       [permissions.DEVICES_SEE]: true,
-      [permissions.VEHICLE_DISABLE]: true,
     },
   },
 
