@@ -144,6 +144,8 @@ export const attachDevice = (vehicleId, deviceId) => dispatch => {
   })
     .then(() => {
       dispatch(_deviceAttached(vehicleId, deviceId));
+
+      return Promise.resolve();
     }, err => {
       console.error(err);
     });
@@ -158,6 +160,8 @@ export const detachDevice = (vehicleId, deviceId) => dispatch => {
   })
     .then(() => {
       dispatch(_deviceDetached(deviceId));
+
+      return Promise.resolve();
     }, err => {
       console.error(err);
     });
