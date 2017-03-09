@@ -1,5 +1,6 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import { connect } from 'react-redux';
 import {
   TextField,
   SelectField,
@@ -9,7 +10,10 @@ import {
 } from 'material-ui';
 import Form from 'components/Form';
 import ButtonWithProgress from 'components/ButtonWithProgress';
-import { ALERT_KINDS, getAlertByValue } from 'services/AlertsSystem/alertKinds';
+import { showSnackbar } from 'containers/Snackbar/actions';
+import * as alertKinds from 'services/AlertsSystem/alertKinds';
+import { makeAlertConditionBackEndObject } from 'services/AlertsSystem/alertConditionHelper';
+import { createAlertConditions } from 'services/AlertsSystem/actions';
 
 import styles from './styles.css';
 
@@ -24,7 +28,6 @@ const STYLES = {
 function setAlertState(props) {
   return {
     maxTemp: 1,
-    minTemp: -5,
     speedLimit: 45,
     ...props.details,
   };
@@ -49,27 +52,10 @@ class AlertDetails extends React.Component {
   onCancel = () => {
     this.props.onCancel();
   }
-  /**
-   * this is what back-end alert condition model looks like
-   "id":"String",      // stable id assigned upon creation
-   "kind":"String",    // type of alert condition
-   ...
-   // condition specific fields
-   ...
-   "status":"active|inactive", // status of alert condition, active upon creation
-                               // deleted conditions transitions to inactive
-                               // but still can be referenced by id for eventual consistency
-   "created":"ISO8601",        // creation timestamp
-   "updatedBy":"UserId",       // user created/updated alert condition
-   "updated":"ISO8601",        // optional update timestamp (??? if conditions will be mutable)
-   "meta": ["k":"v", ...]      // optional associated metadata for consumer, passed with
-   **/
+
   onSubmit = (e) => {
     e.preventDefault();
-    const toSave = Object.assign({}, this.state);
-
-    
-
+    this.postNew(makeAlertConditionBackEndObject(this.state));
     this.props.onSave();
   }
 
@@ -77,11 +63,11 @@ class AlertDetails extends React.Component {
    * Update state[field] with value
    **/
   onChange = (e, value) => {
-    // const field = e.target.name;
+    const field = e.target.name;
 
-    // this.setState({
-    //   [field]: value,
-    // });
+    this.setState({
+      [field]: value,
+    });
   }
 
   onKindChange = (e, key, value) => {
@@ -97,8 +83,17 @@ class AlertDetails extends React.Component {
     this.setState(setAlertState(nextProps));
   }
 
+  postNew = (newAlert) => {
+    this.props.createAlertConditions([newAlert])
+    .then(() => {
+      this.props.showSnackbar('New Alert created successfuly', 3000);
+    }, () => {
+      this.props.showSnackbar('Failed to create new ALERT', 5000);
+    });
+  }
+
   renderKindMenuItems() {
-    return ALERT_KINDS.map(kind => {
+    return alertKinds.ALERT_KINDS.map(kind => {
       const Icon = () => React.cloneElement(kind.icon, {
         className: styles.vehicleIcon,
       });
@@ -107,7 +102,7 @@ class AlertDetails extends React.Component {
         <MenuItem
           key={kind.value}
           value={kind.value}
-          primaryText={ kind.value.toLowerCase() }
+          primaryText={ kind.niceName.toLowerCase() }
           leftIcon={<Icon />}
           style={STYLES.menuItem}
         />
@@ -117,32 +112,25 @@ class AlertDetails extends React.Component {
 
   renderKindDetails() {
     switch (this.state.kind) {
-      case 'TEMPERATURE':
-        return (<div> <TextField
+      case alertKinds._ALERT_KIND_TEMPERATURE:
+        return (<TextField
           fullWidth
-          name="tempMin"
-          onChange={this.onChange}
-          floatingLabelText={ "min temperature" }
-          value={this.state.minTemp}
-          type="number"
-        />
-        <TextField
-          fullWidth
-          name="tempMax"
+          name="maxTemp"
           onChange={this.onChange}
           floatingLabelText={ "max temperature" }
           value={this.state.maxTemp}
           type="number"
-        /> </div>);
-      case 'SPEED':
-        return (<TextField
-          fullWidth
-          name="speedLimit"
-          onChange={this.onChange}
-          floatingLabelText={ "speed limit" }
-          value={this.state.speedLimit}
-          type="number"
         />);
+      /*case alertKinds._ALERT_KIND_GF_ENTER:
+        return (<SelectField
+              autoWidth
+              hintText="select geofence"
+              name="geoFence"
+              value={this.state.kind}
+              onChange={this.onKindChange}
+            >
+              {this.renderKindMenuItems()}
+            </SelectField>);*/
       default:
         return null;
     }
@@ -152,7 +140,7 @@ class AlertDetails extends React.Component {
     let SelectedKindIcon = () => null;
 
     if (this.state.kind) {
-      const selectedKind = getAlertByValue(this.state.kind);
+      const selectedKind = alertKinds.getAlertByKind(this.state.kind);
       SelectedKindIcon = () => selectedKind.icon;
     }
 
@@ -217,6 +205,17 @@ AlertDetails.propTypes = {
   }).isRequired,
   onSave: React.PropTypes.func.isRequired,
   onCancel: React.PropTypes.func.isRequired,
+  createAlertConditions: React.PropTypes.func.isRequired,
+  showSnackbar: React.PropTypes.func.isRequired,
 };
 
-export default pure(AlertDetails);
+const mapState = (state) => ({
+});
+
+const mapDispatch = {
+  createAlertConditions,
+  showSnackbar,
+};
+// export default pure(AlertDetails);
+const PureAlertDetails = pure(AlertDetails);
+export default connect(mapState, mapDispatch)(PureAlertDetails);
