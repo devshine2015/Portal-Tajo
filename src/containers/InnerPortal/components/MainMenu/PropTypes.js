@@ -15,6 +15,7 @@ const phrases = {
   devices: 'devices manager',
   review: 'review',
   history: 'history',
+  alerts_editor: 'alerts editor',
 };
 
 export const phrasesShape = shape({
@@ -29,6 +30,7 @@ export const phrasesShape = shape({
   devices: string.isRequired,
   review: string.isRequired,
   history: string.isRequired,
+  alerts_editor: string.isRequired,
 });
 
 export default phrases;

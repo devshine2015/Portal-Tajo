@@ -87,7 +87,7 @@ function chooseItem(type, {
       return (
         <SimpleItem
           id={item.id}
-          name={item.original.name}
+          name={item.original ? item.original.name : item.name}
           translations={translations}
           onClick={onItemClick}
         />

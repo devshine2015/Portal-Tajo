@@ -31,6 +31,7 @@ const phrases = {
     devices: 'devices manager',
     review: 'review',
     history: 'history',
+    alerts_editor: 'alerts editor',
     // -- end main menu
 
     // dashboard screen
@@ -226,6 +227,7 @@ const phrases = {
     settings: 'ตั้งค่า',
     review: 'ภาพรวม',
     history: 'ประวัติ',
+    alerts_editor: 'alerts editor',
     // -- end main menu
 
     // dashboard screen

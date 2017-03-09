@@ -1,0 +1,32 @@
+@media screen and (min-width: 100px) {
+  .chip {
+    margin: 4px;
+  }
+  .alertsList {
+    width: 200px;
+    height: 300px;
+    border-radius: 4px;
+    /*border: solid 1px #009688;*/
+    background-color: #009688;
+    overflow: scroll;
+    position: absolute;
+    right: 0px;
+    top: -300px;
+    /*margin-top: 12px;
+    margin: 15px;
+    padding: 12px;*/
+  }
+  .wrapper {
+    /*width: 100%;
+    border-radius: 3px;
+    border: solid 1px gray;
+    margin-top: 12px;*/
+    margin: 15px;
+    padding: 12px;
+    position: relative;
+  }
+  .chipsWrapper {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}

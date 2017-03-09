@@ -21,6 +21,7 @@ import devicesManagerScreen from 'screens/DevicesManager/route';
 import loginScreen from 'screens/LoginScreen/route';
 import dashboardScreen from 'screens/DashboardScreen/route';
 import settingsScreen from 'screens/Settings/route';
+import alertsEditorScreen from 'screens/AlertsEditor/route';
 
 export default function createRoutes(store) {
   const { injectReducer } = getHooks(store);
@@ -75,6 +76,13 @@ export default function createRoutes(store) {
     loadModule,
   });
 
+  const alertsEditorRoute = alertsEditorScreen({
+    ...mainMenu.escape.alerts,
+    injectReducer,
+    errorHandler,
+    loadModule,
+  });
+
   const loginRoute = loginScreen({
     path: 'login',
   });
@@ -107,6 +115,7 @@ export default function createRoutes(store) {
     usersManagerRoute,
     devicesManagerRoute,
     settingsRoute,
+    alertsEditorRoute,
   );
 
   return (
