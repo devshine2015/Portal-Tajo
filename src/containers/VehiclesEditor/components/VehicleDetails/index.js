@@ -221,7 +221,9 @@ class VehicleDetails extends React.Component {
                 }}
               />
             )}
+
           </div>
+
         </Form>
       </div>
     );

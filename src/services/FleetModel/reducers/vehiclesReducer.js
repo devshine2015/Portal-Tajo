@@ -57,6 +57,7 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
     case vehiclesActions.FLEET_MODEL_ATTACH_DEVICE:
       return state.setIn(['processedList', action.id, 'original', 'deviceId'], action.deviceId);
 
+    // remove all references to the vehicle
     case vehiclesActions.FLEET_MODEL_VEHICLE_DISABLE: {
       const orderedListIndex = state.get('orderedList').indexOf(action.id);
       const deadListIndex = state.get('deadList').indexOf(action.id);
@@ -66,7 +67,8 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
         s.deleteIn(['processedList', action.id])
          .deleteIn(['orderedList', orderedListIndex])
          .deleteIn(['deadList', deadListIndex])
-         .deleteIn(['delayedList', delayedListIndex]);
+         .deleteIn(['delayedList', delayedListIndex])
+         .set('selectedVehicleId', '');
       });
     }
 

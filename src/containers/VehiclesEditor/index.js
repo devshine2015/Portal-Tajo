@@ -77,7 +77,13 @@ class VehiclesEditor extends React.Component {
   }
 
   onVehicleDisable = () => {
-    console.log(this.state.selectedVehicleId);
+    this.props.disableVehicle(this.state.selectedVehicleId)
+      .then(() => {
+        this.setState({
+          selectedVehicleOriginalIndex: 0,
+          selectedVehicleId: this.props.vehicles[0].id,
+        });
+      });
   }
 
   getSelectedState = ({
