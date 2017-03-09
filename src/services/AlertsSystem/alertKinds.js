@@ -1,8 +1,6 @@
 import React from 'react';
-
-// import Sgv from 'components/Icons/sgv.svg';
-// import SgvFrozen from 'components/Icons/sgv_frozen.svg';
-import Undefined from 'components/Icons/undefined.svg';
+import Undefined from 'material-ui/svg-icons/content/gesture';
+// import Undefined from 'components/Icons/undefined.svg';
 import IconSnow from 'material-ui/svg-icons/places/ac-unit';
 import IconLocation from 'material-ui/svg-icons/maps/pin-drop';
 
