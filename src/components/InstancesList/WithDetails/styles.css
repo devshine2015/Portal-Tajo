@@ -1,5 +1,18 @@
 @media screen and (min-width: 100px) {
-
+  .check {
+    margin-top: 3px; 
+    color: #FFFFFF;
+    font-size: 14px;
+  }
+  .lableStyle{
+    float: left;
+    position: relative;
+    display: block;
+    width: calc(100% - 60px);
+    line-height: 24px;
+    color:#ffffff;
+    font-family: Roboto, sans-serif;    
+  }
   .listItemNoChronicle {
       background-color: #1f757d;;
       border-bottom-color: rgb(70, 70, 70);
