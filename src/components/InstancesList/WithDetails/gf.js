@@ -3,6 +3,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { VelocityTransitionGroup } from 'velocity-react';
+import Checkbox from 'material-ui/Checkbox';
 import ItemProperty from '../DetailItemProperty';
 import { getGFByIdFunc } from 'services/FleetModel/reducer';
 import { deleteGF } from 'services/FleetModel/actions/gfActions';
@@ -21,6 +22,15 @@ import {
 import stylesBase from '../styles.css';
 import styles from './styles.css';
 import { gfDetailsShape } from '../PropTypes';
+
+const stylesCheck = {
+  labelStyle: {
+    color: 'white',
+  },
+  iconStyle: {
+    fill: 'white',
+  },
+};
 
 class LocationWithDetails extends React.Component {
 
@@ -65,6 +75,20 @@ class LocationWithDetails extends React.Component {
           />
         }
         <Divider key="line02" />
+        <Checkbox
+          labelStyle={stylesCheck.labelStyle}
+          iconStyle={stylesCheck.iconStyle}
+          label="Alert on enter"
+          name="alertEnter"
+          onCheck={this.onChange}
+        />
+        <Checkbox
+          labelStyle={stylesCheck.labelStyle}
+          iconStyle={stylesCheck.iconStyle}
+          label="Alert on exit"
+          name="alertExit"
+          onCheck={this.onChange}
+        />
         <IconButton
           tooltip={ this.props.translations.delete }
           onClick={this.onDelete}
