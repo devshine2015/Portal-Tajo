@@ -34,7 +34,7 @@ class ChronicleListItem extends React.Component {
         }
         { chronicleFrame.isEmpty() ?
           <div >
-            { this.props.translations.no_data }
+            { this.props.translations.no_history_data }
           </div>
           : false
         }

@@ -8,7 +8,7 @@ import MomentIndicator from './../MomentIndicator';
 import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
-import { phrasesShape } from './PropTypes';
+import phrases, { phrasesShape } from './PropTypes';
 
 class ChartTimeBox extends React.Component {
 
@@ -100,7 +100,7 @@ class ChartTimeBox extends React.Component {
                 <span>{this.props.chronicleFrame.maxTemp.toFixed(1)} &deg;C</span>
               </div>
               <div className={styles.infoPropContainer}>
-                <span>{ `${this.props.translations.minTemp}:` }</span>
+                <span>{ `${this.props.translations.min_temp}:` }</span>
                 <span>{this.props.chronicleFrame.minTemp.toFixed(1)} &deg;C</span>
               </div>
             </div>
@@ -173,4 +173,4 @@ const mapDispatch = {
 const PureChartTimeBox = pure(ChartTimeBox);
 const Connected = connect(mapState, mapDispatch)(PureChartTimeBox);
 
-export default translate()(Connected);
+export default translate(phrases)(Connected);
