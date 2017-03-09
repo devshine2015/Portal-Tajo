@@ -1,5 +1,4 @@
 import React from 'react';
-import R from 'ramda';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import VehiclesList from 'components/InstancesList';
@@ -9,7 +8,6 @@ import FixedContent from 'components/FixedContent';
 import { showSnackbar } from 'containers/Snackbar/actions';
 import { getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
 import { vehiclesActions } from 'services/FleetModel/actions';
-import { detachDevice } from 'services/Devices/actions';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { getVehicleFilterString } from 'services/Global/reducer';
 import VehicleDetails from './components/VehicleDetails';
@@ -81,20 +79,13 @@ class VehiclesEditor extends React.Component {
   onVehicleDisable = () => {
     const vehicle = this.props.vehicles[this.state.selectedVehicleOriginalIndex];
 
-    this.props.disableVehicle(vehicle.id)
-      .then(() => {
-        if (R.has('deviceId', vehicle.original)) {
-          return this.props.detachDevice(vehicle.id, vehicle.original.deviceId);
-        }
-
-        return Promise.resolve();
-      })
-      .then(() => {
-        this.setState({
-          selectedVehicleOriginalIndex: 0,
-          selectedVehicleId: this.props.vehicles[0].id,
-        });
-      });
+    // do optimistic update
+    this.setState({
+      selectedVehicleOriginalIndex: 0,
+      selectedVehicleId: this.props.vehicles[0].id,
+    }, () => {
+      this.props.disableVehicle(vehicle);
+    });
   }
 
   getSelectedState = ({
@@ -199,7 +190,6 @@ VehiclesEditor.propTypes = {
   globalSelectedVehicleId: React.PropTypes.string.isRequired,
   vehicleFilterString: React.PropTypes.string,
   disableVehicle: React.PropTypes.func.isRequired,
-  detachDevice: React.PropTypes.func.isRequired,
 
   translations: phrasesShape.isRequired,
 };
@@ -212,10 +202,9 @@ const mapState = (state) => ({
 });
 const mapDispatch = {
   filterFunc: vehiclesActions.filterVehicles,
-  disableVehicle: vehiclesActions.disableVehicle,
+  disableVehicle: detailsActions.disableVehicleAndDevice,
   updateDetails: detailsActions.updateDetails,
   showSnackbar,
-  detachDevice,
 };
 
 const PureVehiclesEditor = pure(VehiclesEditor);

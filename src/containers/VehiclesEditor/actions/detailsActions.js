@@ -1,3 +1,4 @@
+import R from 'ramda';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import {
   detachDevice,
@@ -84,3 +85,13 @@ export const updateDetails = ({
       return Promise.reject();
     });
 };
+
+export const disableVehicleAndDevice = vehicle => dispatch =>
+  dispatch(vehiclesActions.disableVehicle(vehicle.id))
+    .then(() => {
+      if (R.has('deviceId', vehicle.original)) {
+        return dispatch(detachDevice(vehicle.id, vehicle.original.deviceId));
+      }
+
+      return Promise.resolve();
+    }, console.error);
