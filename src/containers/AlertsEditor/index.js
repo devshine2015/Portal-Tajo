@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import AlertsList from 'components/InstancesList';
 import PowerList from 'components/PowerList';
 import FixedContent from 'components/FixedContent';
-import { showSnackbar } from 'containers/Snackbar/actions';
 import { getAlertConditions, getAlertConditionByIdFunc } from 'services/AlertsSystem/reducer';
 import { _NEW_ALERT_ID_, makeNewAlertConditionTemplate } from 'services/AlertsSystem/alertConditionHelper';
 
@@ -26,7 +25,6 @@ class AlertsEditor extends React.Component {
   }
 
   onChooseAlert = id => {
-    console.log(`chze ${id}`);
     this.setState({ id });
   }
 
