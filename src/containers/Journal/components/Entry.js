@@ -1,6 +1,6 @@
 import React from 'react';
 import pure from 'recompose/pure';
-import { textForEventType } from 'containers/Journal/EntryTypes';
+import { textForEventType } from 'containers/Journal/entryTypes';
 
 import styles from './styles.css';
 
