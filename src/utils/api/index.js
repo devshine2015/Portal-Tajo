@@ -1,7 +1,7 @@
 import qs from 'query-string';
 import { protocol, socketProtocol, ENGINE_BASE } from 'configs';
 import { getAuthenticationSession } from 'services/Auth/reducer';
-import { getErrorMessage } from 'services/Global/reducer';
+import { getErrorType } from 'services/Global/reducer';
 import { errorsActions } from 'services/Global/actions';
 import { getFleetName } from 'services/UserModel/reducer';
 import prepareRequest from './makeRequest';
@@ -55,7 +55,7 @@ class API {
     optionalFleet,
     host,
   } = {}) {
-    const hasError = !!getErrorMessage(this.getState());
+    const hasError = !!getErrorType(this.getState());
 
     // reset error if have some
     if (hasError) {

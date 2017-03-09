@@ -2,15 +2,17 @@ import { fromJS } from 'immutable';
 import { errorsActions } from '../actions';
 
 const initialState = fromJS({
-  message: '',
+  type: '',
 });
 
 function errorsReducer(state = initialState, action) {
   switch (action.type) {
     case errorsActions.GLOBAL_ERROR_SET:
-      return state.set('message', action.error.message);
+      return fromJS(action.error);
+
     case errorsActions.GLOBAL_ERROR_RESET:
-      return state.set('message', '');
+      return initialState;
+
     default:
       return state;
   }
@@ -18,5 +20,7 @@ function errorsReducer(state = initialState, action) {
 
 export default errorsReducer;
 
-export const getErrorMessage = state =>
-  state.get('message');
+export const getErrorType = state =>
+  state.get('type');
+
+export const getError = state => state;

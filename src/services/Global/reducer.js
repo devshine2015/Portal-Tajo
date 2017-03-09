@@ -12,8 +12,11 @@ export default combineReducers({
 export const getAppOnlineState = state =>
   fromOnlineReducer.getAppOnlineState(state.getIn(['global', 'online']));
 
-export const getErrorMessage = state =>
-  fromErrorsReducer.getErrorMessage(state.getIn(['global', 'errors']));
+export const getError = state =>
+  fromErrorsReducer.getError(state.getIn(['global', 'errors']));
+
+export const getErrorType = state =>
+  fromErrorsReducer.getErrorType(state.getIn(['global', 'errors']));
 
 export const getVehicleFilterString = state =>
   fromContextReducer.getVehicleFilterString(state.getIn(['global', 'context']));

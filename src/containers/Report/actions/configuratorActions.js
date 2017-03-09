@@ -7,14 +7,8 @@ import {
   getAvailableEventIndex,
 } from '../reducer';
 
-export const CONFIGURATOR_ERROR_SET = 'portal/Report/CONFIGURATOR_ERROR_SET';
-
 export const updateSelectedTypes = params => (dispatch, getState) =>
   _updateSelectedTypes(params, dispatch, getState);
-export const setErrorMessage = message => ({
-  type: CONFIGURATOR_ERROR_SET,
-  message,
-});
 
 function _updateSelectedTypes({ field, value, index, source }, dispatch, getState) {
   let selectedIndex;

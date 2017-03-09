@@ -13,14 +13,18 @@ import SimpleError from 'components/Error';
 import ButtonWithProgress from 'components/ButtonWithProgress';
 import { loginActions } from 'services/Auth/actions';
 import { errorsActions } from 'services/Global/actions';
-import { getErrorMessage } from 'services/Global/reducer';
+import { getErrorType } from 'services/Global/reducer';
 import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './PropTypes';
 
 const FORM_NAME = 'login';
-const Header = () => <h4 className={styles.header}>Login</h4>;
+const Header = ({ text }) => <h4 className={styles.header}>{ text }</h4>;
+
+Header.propTypes = {
+  text: React.PropTypes.string.isRequired,
+};
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -39,7 +43,7 @@ class LoginForm extends React.Component {
     this.setState({
       [name]: value,
     }, () => {
-      if (this.props.errorMessage !== '') {
+      if (this.props.errorType !== '') {
         this.props.resetError();
       }
     });
@@ -80,7 +84,7 @@ class LoginForm extends React.Component {
       <div className={styles.loginContainer}>
         <Paper>
           <div className={styles.paper__inn}>
-            <Header />
+            <Header text={translations.login} />
             <Divider />
             <Form
               name={FORM_NAME}
@@ -111,7 +115,7 @@ class LoginForm extends React.Component {
               />
 
             </Form>
-            { this.props.errorMessage !== '' && <SimpleError message={this.props.errorMessage} />}
+            { this.props.errorType !== '' && <SimpleError type={this.props.errorType} />}
           </div>
         </Paper>
       </div>
@@ -121,7 +125,7 @@ class LoginForm extends React.Component {
 
 LoginForm.propTypes = {
   login: React.PropTypes.func.isRequired,
-  errorMessage: React.PropTypes.string,
+  errorType: React.PropTypes.string,
   resetError: React.PropTypes.func.isRequired,
   goToRoot: React.PropTypes.func.isRequired,
 
@@ -131,7 +135,7 @@ LoginForm.propTypes = {
 const PureLoginForm = pure(LoginForm);
 
 const mapState = (state) => ({
-  errorMessage: getErrorMessage(state),
+  errorType: getErrorType(state),
 });
 const mapDispatch = dispatch => ({
   login: data => dispatch(loginActions.login(data)),

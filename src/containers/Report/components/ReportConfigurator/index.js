@@ -9,6 +9,7 @@ import {
 import moment from 'moment';
 import dateFormats from 'configs/dateFormats';
 import Form from 'components/Form';
+import SimpleError from 'components/Error';
 import { getUserSettings } from 'services/UserModel/reducer';
 import { translate } from 'utils/i18n';
 import DateFormatSelectorWithMemory from '../DateFormatSelectorWithMemory';
@@ -16,6 +17,7 @@ import Period from '../Period';
 import AvailableTypes from '../AvailableTypes';
 import ProgressBar from '../ProgressBar';
 import RawDataButtons from '../RawDataButtons';
+import { getErrorType } from 'services/Global/reducer';
 import {
   reportActions,
   configuratorActions,
@@ -25,7 +27,6 @@ import {
   getLoadingState,
   getAvailableReports,
   getAvailableEvents,
-  getErrorMessage,
 } from 'containers/Report/reducer';
 
 import styles from './styles.css';
@@ -257,9 +258,9 @@ class Report extends React.Component {
 
         { this.props.isLoading && <ProgressBar /> }
 
-        { this.props.error && (
-          <div className={styles.error}>
-            {this.props.error}
+        { this.props.errorType && (
+          <div className={styles.errorWrapper}>
+            <SimpleError type={this.props.errorType} />
           </div>
         )}
       </div>
@@ -277,7 +278,7 @@ Report.propTypes = {
   updateSelectedTypesFields: React.PropTypes.func.isRequired,
   swipeGeneratedData: React.PropTypes.func.isRequired,
   saveRawData: React.PropTypes.func.isRequired,
-  error: React.PropTypes.string,
+  errorType: React.PropTypes.string,
   userDateFormat: React.PropTypes.oneOf([
     'yyyy-mm-dd', 'dd-mm-yyyy',
   ]),
@@ -289,7 +290,7 @@ const mapState = (state) => ({
   availableReports: getAvailableReports(state),
   availableEvents: getAvailableEvents(state),
   isLoading: getLoadingState(state),
-  error: getErrorMessage(state),
+  errorType: getErrorType(state),
   userDateFormat: getUserSettings(state).get('dateFormat'),
 });
 const mapDispatch = {

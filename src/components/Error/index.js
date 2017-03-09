@@ -1,16 +1,26 @@
 import React from 'react';
-import pure from 'recompose/pure';
+import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
+import phrases, { phrasesShape } from './PropTypes';
 
-const Error = ({ message }) => (
+const Error = ({
+  type,
+  translations,
+}) => (
   <div className={styles.error}>
-    {message}
+    { translations[type] }
   </div>
 );
 
 Error.propTypes = {
-  message: React.PropTypes.string.isRequired,
+  type: React.PropTypes.string.isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
-export default pure(Error);
+Error.defaultProps = {
+  translations: phrases,
+};
+
+export default translate()(Error);

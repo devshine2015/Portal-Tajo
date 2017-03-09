@@ -24,6 +24,10 @@
   .buttons {
     margin-top: 15px;
   }
+
+  .errorWrapper {
+    margin: 35px 0 -20px;
+  }
 }
 
 @media screen and (min-width: 768px) {

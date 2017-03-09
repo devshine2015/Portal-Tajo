@@ -356,6 +356,20 @@ const phrases = {
     location_name: 'ชื่อสถานที่',
     // -- end GFEditor
 
+    // errors
+    ['Failed to fetch']: 'เซิร์ฟเวอร์ขัดข้อง โปรดลองอีกครั้ง',
+    ['Not Found']: 'ไม่พบข้อมูล โปรดติดต่อผู้ดูแลระบบ',
+    ['Unauthorized']: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง',
+    // -- end errors
+
+    // login form
+    username: 'ชื่อผู้ใช้',
+    password: 'รหัสผ่าน',
+    login: 'เข้าสู่ระบบ',
+    signin: 'ลงชื่อเข้าใช้',
+    signing: 'กำลังลงชื่อเข้าใช้',
+    // -- end login form
+
     // filter
     search_placeholder: 'ค้นหา',
     // -- end filter

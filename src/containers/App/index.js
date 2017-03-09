@@ -63,7 +63,7 @@ class App extends React.Component {
       <TranslationProvider
         phrases={phrases}
         locales={locales}
-        locale={this.props.locale}
+        locale={this.props.locale || 'en'}
       >
         <MuiThemeProvider muiTheme={muiTheme}>
           {children}

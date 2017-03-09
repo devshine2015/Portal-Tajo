@@ -71,8 +71,6 @@ export const getIsTooManyVehiclesSelected = state =>
 export const getIsForced = state =>
   fromConfigReducer.getIsForced(getConfigurator(state));
 
-export const getErrorMessage = state =>
-  fromConfigReducer.getErrorMessage(getConfigurator(state));
 export const getLoadingState = state =>
   fromConfigReducer.getLoadingState(getConfigurator(state));
 
