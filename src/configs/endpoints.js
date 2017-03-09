@@ -126,6 +126,18 @@ const endpoints = {
   monitor: {
     url: 'status/monitor',
   },
+
+  // alerts system
+  createAlertConditions: {
+    url: 'alert-conditions',
+    method: 'post',
+    apiVersion: 1.120,
+  },
+  getAlertConditions: {
+    url: 'alert-conditions',
+    method: 'get',
+    apiVersion: 1.120,
+  },
 };
 
 export default {
