@@ -4,6 +4,7 @@ ESCAPE='tajo'
 SUNSHINE='portal'
 HOST=$1
 PUBLIC=$2
+BACKUP_FOLDER='public_backup'
 
 # server env defines how to build sources
 # could be 'dev' or 'prod'
@@ -48,12 +49,12 @@ else
 
   if [ $SERVER_ENV = "prod" ] ; then
     echo "Creating backup copy of current runnnig version..."
-    backupFolder = 'public_backup'
+    
     # 0. cd to public folder
     # 1. create backup folder if it not exist
     # 2. remove content of backup folder
     # 3. copy content from public folder to backup folder
-    ssh $HOST "cd $PUBLIC && mkdir -p ../$backupFolder && rm -r ../$backupFolder/* && cp -r ./* ../$backupFolder"    
+    ssh $HOST "cd $PUBLIC && mkdir -p ../$BACKUP_FOLDER && rm -rf ../$BACKUP_FOLDER/* && cp -r ./* ../$BACKUP_FOLDER"    
   fi
 
   echo "erase root escape and sunshine files..."
