@@ -59,6 +59,7 @@ class Operational extends React.Component {
   }
 }
 
+
 Operational.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
   gfs: React.PropTypes.array.isRequired,
