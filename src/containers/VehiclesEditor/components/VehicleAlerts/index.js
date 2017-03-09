@@ -14,6 +14,8 @@ import IconRun from 'material-ui/svg-icons/maps/directions-run';
 import IconProblem from 'material-ui/svg-icons/action/report-problem';
 import IconLocation from 'material-ui/svg-icons/maps/pin-drop';
 import IconLocationOff from 'material-ui/svg-icons/maps/place';
+import AlertsList from './alertsList';
+
 import styles from './styles.css';
 
 const stylesChip = {
@@ -32,9 +34,12 @@ function handleTouchTap() {
 }
 
 class VehicleAlerts extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  // }
+  constructor(props) {
+    super(props);
+    this.state = {
+      isAdding: false,
+    };
+  }
 
   // componentWillReceiveProps(nextProps) {
   //   if (this.props.id !== nextProps.id) {
@@ -42,17 +47,21 @@ class VehicleAlerts extends React.Component {
   //   }
   // }
 
+  onAddClick = () => {
+    this.setState({ isAdding: !this.state.isAdding });
+  }
+
   render() {
     return (
       <Paper zDepth={2} className={styles.wrapper}>
       <span >ALERTS</span>
-      <FloatingActionButton style={stylesAddBtn}>
+      <FloatingActionButton style={stylesAddBtn} onClick={this.onAddClick}>
         <ContentAdd />
       </FloatingActionButton>
+      {this.state.isAdding ? <AlertsList /> : null}
       <div className={styles.chipsWrapper}>
           <Chip
             onRequestDelete={handleRequestDelete}
-            onTouchTap={handleTouchTap}
             style={stylesChip}
           >
             <Avatar color="#156671" icon={<IconSnow />} />
@@ -60,7 +69,6 @@ class VehicleAlerts extends React.Component {
           </Chip>
           <Chip
             onRequestDelete={handleRequestDelete}
-            onTouchTap={handleTouchTap}
             style={stylesChip}
           >
             <Avatar color="#156671" icon={<IconSnow />} />
@@ -68,7 +76,6 @@ class VehicleAlerts extends React.Component {
           </Chip>
           <Chip
             onRequestDelete={handleRequestDelete}
-            onTouchTap={handleTouchTap}
             style={stylesChip}
           >
             <Avatar color="#156671" icon={<IconEnter />} />
