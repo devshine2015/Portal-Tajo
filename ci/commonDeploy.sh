@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-TAJO='tajo'
-PORTAL='portal'
+ESCAPE='tajo'
+SUNSHINE='portal'
 HOST=$1
 PUBLIC=$2
 
-# server env defines hot to build sources
+# server env defines how to build sources
 # could be 'dev' or 'prod'
 SERVER_ENV=$3
 EXTRA_FOLDER=$4
@@ -16,8 +16,8 @@ else
   TARGET_FOLDER=$PUBLIC
 fi
 
-TAJO_FOLDER="builds/$SERVER_ENV/$TAJO"
-PORTAL_FOLDER="builds/$SERVER_ENV/$PORTAL"
+ESCAPE_FOLDER="builds/$SERVER_ENV/$ESCAPE"
+SUNSHINE_FOLDER="builds/$SERVER_ENV/$SUNSHINE"
 
 echo "rebuild static sources..."
 npm run clean
@@ -45,11 +45,22 @@ if [ ! -z $EXTRA_FOLDER ] ; then
   fi
 
 else
-  echo "erase root tajo and portal files..."
-  ssh $HOST "cd $PUBLIC && rm -r $TAJO js css fonts .htaccess index.html manifest.json favicon.ico"
+
+  if [ $SERVER_ENV = "prod" ] ; then
+    echo "Creating backup copy of current runnnig version..."
+    backupFolder = 'public_backup'
+    # 0. cd to public folder
+    # 1. create backup folder if it not exist
+    # 2. remove content of backup folder
+    # 3. copy content from public folder to backup folder
+    ssh $HOST "cd $PUBLIC && mkdir -p ../$backupFolder && rm -r ../$backupFolder/* && cp -r ./* ../$backupFolder"    
+  fi
+
+  echo "erase root escape and sunshine files..."
+  ssh $HOST "cd $PUBLIC && rm -r $ESCAPE js css fonts .htaccess index.html manifest.json favicon.ico"
 fi
 
 
 echo "copy static files to server..."
-scp -r $PORTAL_FOLDER/* $HOST:$TARGET_FOLDER
-scp -r $TAJO_FOLDER $HOST:$TARGET_FOLDER
+scp -r $SUNSHINE_FOLDER/* $HOST:$TARGET_FOLDER
+scp -r $ESCAPE_FOLDER $HOST:$TARGET_FOLDER
