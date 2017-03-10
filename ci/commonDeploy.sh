@@ -47,7 +47,7 @@ if [ ! -z $EXTRA_FOLDER ] ; then
 
 else
 
-  if [ $SERVER_ENV = "prod" ] ; then
+  if [ $SERVER_ENV = "dev" ] ; then
     echo "Creating backup copy of current runnnig version..."
     
     # 0. cd to public folder
@@ -58,7 +58,7 @@ else
   fi
 
   echo "erase root escape and sunshine files..."
-  ssh $HOST "cd $PUBLIC && rm -r $ESCAPE js css fonts .htaccess index.html manifest.json favicon.ico"
+  ssh $HOST "cd $PUBLIC && rm -r ./*"
 fi
 
 
