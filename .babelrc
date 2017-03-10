@@ -20,10 +20,5 @@
         "transform-react-inline-elements"
       ]
     },
-    "development": {
-      "presets": [
-        "react-hmre"
-      ]
-    }
   }
 }
