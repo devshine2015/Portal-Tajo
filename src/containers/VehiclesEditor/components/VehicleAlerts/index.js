@@ -1,5 +1,6 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
@@ -15,6 +16,9 @@ import IconProblem from 'material-ui/svg-icons/action/report-problem';
 import IconLocation from 'material-ui/svg-icons/maps/pin-drop';
 import IconLocationOff from 'material-ui/svg-icons/maps/place';
 import AlertsList from './alertsList';
+import { getVehicleAlertConditions, getAlertConditionByIdFunc } from 'services/AlertsSystem/reducer';
+import { fetchVehicleAlertConditions } from 'services/AlertsSystem/actions';
+import * as alertKinds from 'services/AlertsSystem/alertKinds';
 
 import styles from './styles.css';
 
@@ -25,10 +29,6 @@ const stylesAddBtn = {
   float: 'right',
 };
 
-function handleRequestDelete() {
-//  alert('You clicked the delete button.');
-}
-
 function handleTouchTap() {
 //  alert('You clicked the Chip.');
 }
@@ -38,96 +38,80 @@ class VehicleAlerts extends React.Component {
     super(props);
     this.state = {
       isAdding: false,
+      alerts: [],
     };
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (this.props.id !== nextProps.id) {
-  //     this.setNewVehicleDetails(nextProps);
-  //   }
-  // }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.vehicleId !== nextProps.vehicleId) {
+      this.props.fetchVehicleAlertConditions(nextProps.vehicleId)
+        .then(() => {
+          const vehAlertIds = this.props.getVehicleAlerts(this.props.vehicleId);
+          this.setState({ alerts: vehAlertIds });
+        });
+    }
+  }
+
+  onRemoveClick = (alertId) => {
+    this.setState({ alerts: this.state.alerts.filter((el) => (el !== alertId)) });
+  }
+  doAddAlert = (alertId) => {
+    this.setState({ alerts: this.state.alerts.concat([alertId]) });
+  }
 
   onAddClick = () => {
     this.setState({ isAdding: !this.state.isAdding });
   }
-
+// Temp -15&#8451;..-8&#8451;
   render() {
+    const vehAlerts = this.state.alerts.map(alertId => {
+      const alertObj = this.props.alertById(alertId);
+      const alertKindData = alertKinds.getAlertByKind(alertObj.kind);
+      return (<Chip
+        key={alertId}
+        onRequestDelete={ () => (this.onRemoveClick(alertId)) }
+        style={stylesChip}
+      >
+          <Avatar color="#156671" icon={alertKindData.icon} />
+            {alertObj.name}
+          </Chip>);
+    });
+
     return (
       <Paper zDepth={2} className={styles.wrapper}>
       <span >ALERTS</span>
       <FloatingActionButton style={stylesAddBtn} onClick={this.onAddClick}>
         <ContentAdd />
       </FloatingActionButton>
-      {this.state.isAdding ? <AlertsList /> : null}
+      {!this.state.isAdding ? null :
+          <AlertsList vehicleId={this.props.vehicleId}
+            vehicleAlerts={this.state.alerts}
+            doAddAlert={this.doAddAlert}
+          />}
       <div className={styles.chipsWrapper}>
-          <Chip
-            onRequestDelete={handleRequestDelete}
-            style={stylesChip}
-          >
-            <Avatar color="#156671" icon={<IconSnow />} />
-            Temp -15&#8451;..-8&#8451;
-          </Chip>
-          <Chip
-            onRequestDelete={handleRequestDelete}
-            style={stylesChip}
-          >
-            <Avatar color="#156671" icon={<IconSnow />} />
-            Temp -3&#8451;..+5&#8451;
-          </Chip>
-          <Chip
-            onRequestDelete={handleRequestDelete}
-            style={stylesChip}
-          >
-            <Avatar color="#156671" icon={<IconEnter />} />
-            Enter Depot
-          </Chip>
-          <Chip
-            onRequestDelete={handleRequestDelete}
-            onTouchTap={handleTouchTap}
-            style={stylesChip}
-          >
-            <Avatar color="#156671" icon={<IconTrLight />} />
-            Traffic Jam
-          </Chip>
-          <Chip
-            onRequestDelete={handleRequestDelete}
-            onTouchTap={handleTouchTap}
-            style={stylesChip}
-          >
-            <Avatar color="#156671" icon={<IconRun />} />
-            Overspeeding
-          </Chip>
-          <Chip
-            onRequestDelete={handleRequestDelete}
-            onTouchTap={handleTouchTap}
-            style={stylesChip}
-          >
-            <Avatar color="#156671" icon={<IconProblem />} />
-            Vehicle Touble Code
-          </Chip>
-          <Chip
-            onRequestDelete={handleRequestDelete}
-            onTouchTap={handleTouchTap}
-            style={stylesChip}
-          >
-            <Avatar color="#156671" icon={<IconLocation />} />
-            Entered Hiedan Junction
-          </Chip>
-          <Chip
-            onRequestDelete={handleRequestDelete}
-            onTouchTap={handleTouchTap}
-            style={stylesChip}
-          >
-            <Avatar color="#156671" icon={<IconLocationOff />} />
-            Left Hiedan Junction
-          </Chip>
+        {vehAlerts}
         </div>
       </Paper>
     );
   }
 }
 
-// VehicleAlerts.propTypes = {
-// };
+VehicleAlerts.propTypes = {
+  vehicleId: React.PropTypes.string.isRequired,
+  getVehicleAlerts: React.PropTypes.func.isRequired,
+  fetchVehicleAlertConditions: React.PropTypes.func.isRequired,
+  alertById: React.PropTypes.func.isRequired,
+};
 
-export default pure(VehicleAlerts);
+const mapState = (state) => ({
+  getVehicleAlerts: getVehicleAlertConditions(state),
+  alertById: getAlertConditionByIdFunc(state),
+});
+const mapDispatch = {
+  fetchVehicleAlertConditions,
+};
+
+const PureVehicleAlerts = pure(VehicleAlerts);
+
+export default connect(mapState, mapDispatch)(PureVehicleAlerts);
+

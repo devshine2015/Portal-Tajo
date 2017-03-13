@@ -25,12 +25,16 @@ import { makeLocalAlertCondition } from './alertConditionHelper';
 
 export const ALRT_TYPES_SET = 'alrt/typesSet';
 export const ALRT_CONDITON_ADD = 'alrt/conditionAdd';
-export const ALRT_EVEENTS_ADD = 'alrt/eventsAdd';
+export const ALRT_EVENTS_ADD = 'alrt/eventsAdd';
+export const ALRT_VEHICLE_ADD = 'alrt/vehEventsAdd';
 
 export const createAlertConditions = (newAlerts) => (dispatch) =>
   _createAlertRequest(newAlerts, dispatch);
 
 export const fetchAlertConditions = () => _fetchAlerts;
+
+export const fetchVehicleAlertConditions = (vehicleId) => (dispatch) =>
+  _fetchVehicleAlerConditions(vehicleId, dispatch);
 
 function _fetchAlerts(dispatch) {
   const { url, method } = endpoints.getAlertConditions;
@@ -44,11 +48,26 @@ function _fetchAlerts(dispatch) {
       console.error(e);
     });
 }
-
 function _addAlerts(dispatch, backEndAlerts) {
   backEndAlerts.forEach((aElement) => {
     dispatch(_conditionAdd(makeLocalAlertCondition(aElement)));
   }, this);
+}
+
+function _fetchVehicleAlerConditions(vehicleId, dispatch) {
+  const { url, method } = endpoints.getVehicleAlertConditions(vehicleId);
+
+  return api[method](url)
+    .then(toJson)
+    .then(alerts => {
+      _setVehicleAlertConditions(dispatch, vehicleId, alerts);
+    })
+    .catch(e => {
+      console.error(e);
+    });
+}
+function _setVehicleAlertConditions(dispatch, vehicleId, alertsList) {
+  dispatch(_vehicleAlerts(vehicleId, alertsList));
 }
 
 function toJson(response) {
@@ -76,4 +95,10 @@ function _createAlertRequest(alertObject, dispatch) {
 const _conditionAdd = (alertObj) => ({
   type: ALRT_CONDITON_ADD,
   alertObj,
+});
+
+const _vehicleAlerts = (vehicleId, alertsList) => ({
+  type: ALRT_VEHICLE_ADD,
+  vehicleId,
+  alertsList,
 });

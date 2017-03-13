@@ -143,6 +143,11 @@ const endpoints = {
     method: 'get',
     apiVersion: 1.120,
   },
+  getVehicleAlertConditions: (id) => ({
+    url: `vehicles/${id}/alert-conditions`,
+    method: 'get',
+    apiVersion: 1,
+  }),
 };
 
 export default {

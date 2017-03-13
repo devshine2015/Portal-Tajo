@@ -18,8 +18,8 @@ import IconLocationOff from 'material-ui/svg-icons/maps/place';
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import { makeAlertConditionBackEndObject } from 'services/AlertsSystem/alertConditionHelper';
 import { createAlertConditions } from 'services/AlertsSystem/actions';
-import { getAlertConditions, getAlertConditionByIdFunc } from 'services/AlertsSystem/reducer';
-
+import { getAlertConditions, getAlertConditionByIdFunc,
+  getVehicleAlertConditions } from 'services/AlertsSystem/reducer';
 
 import styles from './styles.css';
 
@@ -40,20 +40,25 @@ class AlertsList extends React.Component {
   //   }
   // }
             // <Avatar color="#156671" icon={<IconSnow />} />
-  onItemClick = () => {
+  onItemClick = (alertId) => {
     // add condition to the vehicle
+    this.props.doAddAlert(alertId);
   }
 
+  vehicleHasAlert = (alertId) => (
+    this.props.vehicleAlerts
+          .find(el => el === alertId) !== undefined
+  )
 
   render() {
-    const alertsToPick = this.props.alerts.map(item => (
-          <Chip key={item.id}
-            onTouchTap={this.onItemClick}
-            style={stylesChip}
-          >
+    const alertsToPick = this.props.alerts.map(item => (this.vehicleHasAlert(item.id) ? null :
+       (<Chip key={item.id}
+         onTouchTap={() => this.onItemClick(item.id)}
+         style={stylesChip}
+      >
            <Avatar color="#156671" icon={alertKinds.getAlertByKind(item.kind).icon} />
             {item.name}
-          </Chip>));
+          </Chip>)));
     return (
       <div className={styles.alertsList}>
         {alertsToPick}
@@ -63,8 +68,10 @@ class AlertsList extends React.Component {
 }
 
 AlertsList.propTypes = {
-  // isLoading: React.PropTypes.bool.isRequired,
-  // showSnackbar: React.PropTypes.func.isRequired,
+  vehicleId: React.PropTypes.string.isRequired,
+  vehicleAlerts: React.PropTypes.array.isRequired,
+  doAddAlert: React.PropTypes.func.isRequired,
+  // getVehicleAlerts: React.PropTypes.func.isRequired,
   alerts: React.PropTypes.array.isRequired,
   alertById: React.PropTypes.func.isRequired,
 };
@@ -72,6 +79,7 @@ AlertsList.propTypes = {
 const mapState = (state) => ({
   alerts: getAlertConditions(state),
   alertById: getAlertConditionByIdFunc(state),
+ // getVehicleAlerts: getVehicleAlertConditions(state),
   // isLoading: getLoaderState(state),
 });
 const mapDispatch = {

@@ -192,7 +192,7 @@ class VehicleDetails extends React.Component {
             checked={this.state.isMiles}
             onCheck={this.onIsMilesChange}
           />
-          <VehicleAlerts />
+          <VehicleAlerts vehicleId={this.props.details.id} />
           <div className={styles.buttons}>
             <ButtonWithProgress
               className={styles.buttons__button}
