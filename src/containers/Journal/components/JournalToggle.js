@@ -12,7 +12,7 @@ import styles from './styles.css';
 
 import { createJournalEntry,
   createJournalEntryTxt } from 'containers/Journal/entryHelpers';
-import * as EntryTypes from 'containers/Journal/EntryTypes';
+import * as EntryTypes from 'containers/Journal/entryTypes';
 
 let _dbgFakeCount = 0;
 let _dbgFakeNames = [
