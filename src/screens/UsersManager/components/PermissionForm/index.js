@@ -1,7 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { css } from 'aphrodite/no-important';
 import TextField from 'material-ui/TextField';
 import FormComponents from '../FormComponents';
+import { permissionsActions } from 'services/Users/actions';
 
 import classes from './classes';
 
@@ -16,24 +18,22 @@ class PermissionsForm extends React.Component {
     };
   }
 
-  onFleetChange = (e, key, value) => {
-    this.updateState('fleet', value);
-  }
-
-  onRoleChange = (e, key, value) => {
-    this.updateState('role', value);
-  }
-
   onSubmit = e => {
     e.preventDefault();
 
-    // this.props.addNewUser(this.state);
+    const { action, resource, desc } = this.state;
+    const payload = {
+      name: `${action}:${resource}`,
+      desc,
+    };
+
+    this.props.createPermission(payload);
   }
 
   onType = e => {
-    // const { name, value } = e.target;
+    const { name, value } = e.target;
 
-    // this.updateState(name, value);
+    this.updateState(name, value.trim());
   }
 
   onCancel = () => {
@@ -90,9 +90,11 @@ class PermissionsForm extends React.Component {
           </div>
 
           <TextField
+            onChange={this.onType}
             hintText="Description"
             multiLine
             fullWidth
+            name="desc"
             rows={2}
           />
 
@@ -111,6 +113,11 @@ class PermissionsForm extends React.Component {
 
 PermissionsForm.propTypes = {
   closeForm: React.PropTypes.func.isRequired,
+  createPermission: React.PropTypes.func.isRequired,
 };
 
-export default PermissionsForm;
+const mapDispatch = {
+  createPermission: permissionsActions.createPermission,
+};
+
+export default connect(null, mapDispatch)(PermissionsForm);

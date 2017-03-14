@@ -6,13 +6,8 @@ import {
   TextField,
   SelectField,
   MenuItem,
-  RaisedButton,
-  FlatButton,
 } from 'material-ui';
-import {
-  toggleNewUser,
-  addNewUser,
-} from 'services/Users/actions';
+import { usersActions } from 'services/Users/actions';
 import { getIsLoading } from 'services/Users/reducer';
 import FormComponents from '../FormComponents';
 
@@ -170,8 +165,8 @@ const mapState = state => ({
   isLoading: getIsLoading(state),
 });
 const mapDispatch = {
-  toggleNewUser,
-  addNewUser,
+  toggleNewUser: usersActions.toggleNewUser,
+  addNewUser: usersActions.addNewUser,
 };
 
 const PureUserEditor = pure(UserEditor);

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { List, Map } from 'immutable';
 import pure from 'recompose/pure';
 import Subheader from 'material-ui/Subheader';
-import { fetchUsers } from 'services/Users/actions';
+import { usersActions } from 'services/Users/actions';
 import {
   getUsers,
   getGrouping,
@@ -94,7 +94,7 @@ const mapState = state => ({
   groupBy: getGroupBy(state),
 });
 const mapDispatch = {
-  fetchUsers,
+  fetchUsers: usersActions.fetchUsers,
 };
 
 const PureUsersList = pure(UsersList);

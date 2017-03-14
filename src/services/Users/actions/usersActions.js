@@ -5,7 +5,7 @@ import {
   getUsers,
   getGroupBy,
   getGrouping,
-} from './reducer';
+} from '../reducer';
 
 export const USERS_MANAGER_USERS_SET = 'portal/UsersManager/USERS_MANAGER_USERS_SET';
 export const USERS_MANAGER_GROUPBY_CHANGE = 'portal/UsersManager/USERS_MANAGER_GROUPBY_CHANGE';

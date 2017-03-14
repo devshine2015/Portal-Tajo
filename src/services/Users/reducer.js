@@ -1,61 +1,30 @@
-import { fromJS, Map, List } from 'immutable';
-import {
-  USERS_MANAGER_USERS_SET,
-  USERS_MANAGER_GROUPBY_CHANGE,
-  USERS_MANAGER_NEW_USER_TOGGLE,
-  USERS_MANAGER_NEW_USER_ADD,
-} from './actions';
+import { combineReducers } from 'redux-immutable';
+import usersReducer, * as fromUsersReducer from './reducers/users';
+import permissionsReducer, * as fromPermissionsReducer from './reducers/permissions';
 
-const initialState = fromJS({
-  users: new List(),
-  grouped: new Map(),
-  groupBy: 'fleet',
-  isAddingNewUser: false,
-  isLoading: false,
+export default combineReducers({
+  users: usersReducer,
+  permissions: permissionsReducer,
 });
 
-function reducer(state = initialState, action) {
-  switch (action.type) {
-    // initial settings:
-    // group by fleet name by default
-    // set users as is
-    case USERS_MANAGER_USERS_SET:
-      return state.withMutations(s => {
-        s.set('users', new List(action.users))
-         .set('grouped', new Map(action.grouped));
-      });
-    case USERS_MANAGER_GROUPBY_CHANGE:
-      return state.withMutations(s => {
-        s.set('groupBy', action.groupBy)
-         .set('grouped', new Map(action.grouped));
-      });
-    case USERS_MANAGER_NEW_USER_TOGGLE:
-      return state.withMutations(s => {
-        s.set('isAddingNewUser', action.nextState)
-         .set('isLoading', action.isLoading);
-      });
-    case USERS_MANAGER_NEW_USER_ADD:
-      return state.withMutations(s => {
-        s.set('grouped', new Map(action.grouped))
-         .set('isLoading', action.isLoading)
-         .set('users', new List(action.users));
-      });
-    default:
-      return state;
-  }
+function users(state) {
+  return state.getIn(['usersManager', 'users']);
 }
 
-export default reducer;
+function permissions(state) {
+  return state.getIn(['usersManager', 'permissions']);
+}
 
 export const getUsers = state =>
-  state.getIn(['usersManager', 'users']);
+  fromUsersReducer.getUsers(users(state));
 export const getGroupBy = state =>
-  state.getIn(['usersManager', 'groupBy']);
+  fromUsersReducer.getGroupBy(users(state));
 export const getGrouping = state =>
-  state.getIn(['usersManager', 'grouped']);
-
+  fromUsersReducer.getGrouping(users(state));
 export const getIsAddingNewUser = state =>
-  state.getIn(['usersManager', 'isAddingNewUser']);
-
+  fromUsersReducer.getIsAddingNewUser(users(state));
 export const getIsLoading = state =>
-  state.getIn(['usersManager', 'isLoading']);
+  fromUsersReducer.getIsLoading(users(state));
+
+export const getPermissions = state =>
+  fromPermissionsReducer.getPermissions(permissions(state));

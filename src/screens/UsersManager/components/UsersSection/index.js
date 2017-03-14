@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { permissions } from 'configs/roles';
 import permitted from 'utils/permissionsRequired';
 import { getIsAddingNewUser } from 'services/Users/reducer';
-import { toggleNewUser } from 'services/Users/actions';
+import { usersActions } from 'services/Users/actions';
 import UsersList from '../UsersList';
 // import ToolsPanel from '../ToolsPanel';
 import UserEditor from '../UserEditor';
@@ -60,7 +60,7 @@ const mapState = state => ({
   isAddingNewUser: getIsAddingNewUser(state),
 });
 const mapDispatch = dispatch => ({
-  showNewUserCreator: () => dispatch(toggleNewUser(true)),
+  showNewUserCreator: () => dispatch(usersActions.toggleNewUser(true)),
 });
 
 const PureUsersSection = pure(permitted(PERMISSIONS)(UsersSection));
