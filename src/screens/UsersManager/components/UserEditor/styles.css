@@ -17,17 +17,6 @@
   .inputWrapper {
     width: 100%;
   }
-
-  .buttons {
-    text-align: center;
-  }
-
-  .header {
-    margin: 0;
-    font-weight: 400;
-    font-size: 18px;
-    color: rgba(0, 0, 0, 0.541176);
-  }
 }
 
 @media screen and (min-width: 500px) {
@@ -38,10 +27,6 @@
 
   .inputWrapper:nth-child(2n-1) {
     margin-right: 16px;
-  }
-
-  .buttons {
-    text-align: right;
   }
 }
 

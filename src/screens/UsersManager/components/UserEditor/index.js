@@ -14,6 +14,7 @@ import {
   addNewUser,
 } from 'services/Users/actions';
 import { getIsLoading } from 'services/Users/reducer';
+import FormComponents from '../FormComponents';
 
 import styles from './styles.css';
 
@@ -75,6 +76,12 @@ class UserEditor extends React.Component {
     });
   }
 
+  focus = ref => {
+    if (!ref) return;
+
+    ref.focus();
+  }
+
   render() {
     const { username, password, role, fleet } = this.state;
     const disabled = !!username && !!password && !!role && !!fleet;
@@ -82,7 +89,9 @@ class UserEditor extends React.Component {
 
     return (
       <div className={styles.editor}>
-        <h3 className={styles.header}>Add new user</h3>
+        <FormComponents.Header>
+          Add new user
+        </FormComponents.Header>
         <form
           name="userEditor"
           className={styles.form}
@@ -95,6 +104,7 @@ class UserEditor extends React.Component {
                 floatingLabelText="Username"
                 name="username"
                 onChange={this.onType}
+                ref={this.focus}
               />
             </div>
             <div className={styles.inputWrapper}>
@@ -133,20 +143,14 @@ class UserEditor extends React.Component {
               </SelectField>
             </div>
           </div>
-          <div className={styles.buttons}>
-            <RaisedButton
-              onClick={this.onSubmit}
-              label={submitButtonText}
-              type="submit"
-              disabled={this.props.isLoading || !disabled}
-              secondary
-            />
-            <FlatButton
-              label="Cancel"
-              type="reset"
-              onClick={this.onCancel}
-            />
-          </div>
+
+          <FormComponents.Buttons
+            onSubmit={this.onSubmit}
+            onCancel={this.onCancel}
+            disabled={this.props.isLoading || !disabled}
+            mainLabel={submitButtonText}
+          />
+
         </form>
       </div>
     );
