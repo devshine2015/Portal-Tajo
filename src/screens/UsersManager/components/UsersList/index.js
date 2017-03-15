@@ -81,7 +81,9 @@ function renderGroups({ currentGrouping, users, permissionsRenderer }) {
 class UsersList extends React.Component {
 
   componentWillMount() {
-    this.props.fetchUsers(this.props.groupBy);
+    if (this.props.users.size === 0) {
+      this.props.fetchUsers(this.props.groupBy);
+    }
   }
 
   assignPermission = (permissionId, userIndex, permissionAssigned) => {
