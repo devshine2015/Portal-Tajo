@@ -20,11 +20,21 @@ const ListHeader = () => (
 
 class PermissionsList extends React.Component {
 
+  componentWillMount() {
+    if (this.props.allPermissions === undefined) {
+      if (this.props.showForm) {
+        this.props.showForm();
+      }
+    }
+  }
+
   onPermissionDelete = index => {
     this.props.deletePermission(index);
   }
 
   renderPermissions() {
+    if (this.props.allPermissions === undefined) return null;
+
     return this.props.allPermissions.map((perm, i) => (
       <li
         className={css(classes.list__item)}
@@ -40,6 +50,10 @@ class PermissionsList extends React.Component {
   }
 
   render() {
+    if (this.props.allPermissions === undefined) {
+      return null;
+    }
+
     return (
       <ul className={css(classes.list)}>
         <ListHeader />
@@ -50,8 +64,9 @@ class PermissionsList extends React.Component {
 }
 
 PermissionsList.propTypes = {
-  allPermissions: React.PropTypes.instanceOf(List).isRequired,
+  allPermissions: React.PropTypes.instanceOf(List),
   deletePermission: React.PropTypes.func.isRequired,
+  showForm: React.PropTypes.func,
 };
 
 const mapState = state => ({

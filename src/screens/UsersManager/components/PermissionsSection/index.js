@@ -27,15 +27,17 @@ class PermissionsSection extends React.Component {
       <div>
         <SectionHeader
           label="Permissions"
-          action={(<MainActionButton
-            label="Add permission"
-            onClick={this.showForm}
-          />)}
+          action={!this.state.showForm && (
+            <MainActionButton
+              label="Add permission"
+              onClick={this.showForm}
+            />
+          )}
         />
 
         { this.state.showForm && <PermissionForm closeForm={this.closeForm} /> }
 
-        <PermissionsList />
+        <PermissionsList showForm={this.showForm} />
       </div>
     );
   }

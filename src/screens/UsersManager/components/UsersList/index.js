@@ -23,7 +23,9 @@ const STYLES = {
 };
 
 const renderAllPermissons = (allPermissions, onClick) => (userPermissions = [], userIndex) => {
-  if (allPermissions.size === 0) return null;
+  if (allPermissions === undefined || allPermissions.size === 0) {
+    return null;
+  }
 
   return (
     <UserPermissionsList
@@ -115,7 +117,7 @@ UsersList.propTypes = {
   fetchUsers: React.PropTypes.func.isRequired,
   users: React.PropTypes.instanceOf(List).isRequired,
   currentGrouping: React.PropTypes.instanceOf(Map).isRequired,
-  allPermissions: React.PropTypes.instanceOf(List).isRequired,
+  allPermissions: React.PropTypes.instanceOf(List),
   assignPermission: React.PropTypes.func.isRequired,
 };
 
