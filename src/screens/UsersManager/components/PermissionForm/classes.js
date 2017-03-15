@@ -1,6 +1,10 @@
 import { StyleSheet } from 'aphrodite/no-important';
 
 const classes = StyleSheet.create({
+  editor: {
+    marginBottom: 30,
+  },
+
   row: {
     display: 'flex',
   },

@@ -7,15 +7,19 @@ import { permissionsActions } from 'services/Users/actions';
 
 import classes from './classes';
 
+const initialState = {
+  action: undefined,
+  resource: undefined,
+  desc: undefined,
+};
+
 class PermissionsForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      action: undefined,
-      resource: undefined,
-      desc: undefined,
-    };
+    this.form = undefined;
+
+    this.state = initialState;
   }
 
   onSubmit = e => {
@@ -27,7 +31,11 @@ class PermissionsForm extends React.Component {
       desc,
     };
 
-    this.props.createPermission(payload);
+    this.setState(initialState, () => {
+      this.props.createPermission(payload);
+      // this.form.reset();
+      this.props.closeForm();
+    });
   }
 
   onType = e => {
@@ -52,6 +60,10 @@ class PermissionsForm extends React.Component {
     ref.focus();
   }
 
+  keepFormRef = ref => {
+    this.form = ref;
+  }
+
   render() {
     const { action, resource, desc } = this.state;
     const disabled = !!action && !!resource && !!desc;
@@ -66,6 +78,7 @@ class PermissionsForm extends React.Component {
           name="permissionEditor"
           className={css(classes.form)}
           onSubmit={this.onSubmit}
+          ref={this.keepFormRef}
         >
           <div className={css(classes.row)}>
             <div className={css(classes.inputWrapper)}>

@@ -4,17 +4,22 @@ const classes = StyleSheet.create({
   permission: {
     display: 'flex',
     alignItems: 'center',
+    padding: '0 20px',
+    fontSize: 14,
+    transition: 'background-color .25s',
+
+    ':hover': {
+      backgroundColor: '#f1f1f1',
+    },
   },
 
   permission__name: {
     flex: 1,
-    flextGrow: 0,
     paddingRight: 20,
   },
   permission__desc: {
     flex: 1,
-    flextGrow: 0,
-    fontSize: 14,
+    paddingRight: 20,
   },
   permission__actions: {},
 });

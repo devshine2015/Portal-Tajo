@@ -8,6 +8,16 @@ import { permissionsActions } from 'services/Users/actions';
 
 import classes from './classes';
 
+const ListHeader = () => (
+  <li className={css(classes.list__header)}>
+    <div className={css(classes.header)}>
+      <div className={css(classes.header__name)}>name</div>
+      <div className={css(classes.header__desc)}>description</div>
+      <div className={css(classes.header__acton)}>action</div>
+    </div>
+  </li>
+);
+
 class PermissionsList extends React.Component {
 
   onPermissionDelete = index => {
@@ -32,6 +42,7 @@ class PermissionsList extends React.Component {
   render() {
     return (
       <ul className={css(classes.list)}>
+        <ListHeader />
         { this.renderPermissions() }
       </ul>
     );
