@@ -11,6 +11,8 @@ export const USERS_MANAGER_USERS_SET = 'portal/UsersManager/USERS_MANAGER_USERS_
 export const USERS_MANAGER_GROUPBY_CHANGE = 'portal/UsersManager/USERS_MANAGER_GROUPBY_CHANGE';
 export const USERS_MANAGER_NEW_USER_TOGGLE = 'portal/UsersManager/USERS_MANAGER_NEW_USER_TOGGLE';
 export const USERS_MANAGER_NEW_USER_ADD = 'portal/UsersManager/USERS_MANAGER_NEW_USER_ADD';
+export const USERS_MANAGER_PERMISSION_ASSIGN = 'portal/UsersManager/USERS_MANAGER_PERMISSION_ASSIGN';
+export const USERS_MANAGER_PERMISSION_UNASSIGN = 'portal/UsersManager/USERS_MANAGER_PERMISSION_UNASSIGN';
 
 export const fetchUsers = groupBy => dispatch => {
   const { url, method, apiVersion } = endpoints.getAllUsers;
@@ -69,6 +71,18 @@ export const changeGroupBy = newGroupBy => (dispatch, getState) => {
   const grouped = _changeGroupBy(newGroupBy, users);
 
   dispatch(_usersGroupUpdate(newGroupBy, grouped));
+};
+
+export const assignPermission = (permissionId, userIndex, isAssigned) => {
+  const type = isAssigned ?
+                USERS_MANAGER_PERMISSION_UNASSIGN :
+                USERS_MANAGER_PERMISSION_ASSIGN;
+
+  return ({
+    index: userIndex,
+    type,
+    permissionId,
+  });
 };
 
 function _changeGroupBy(groupBy, users) {

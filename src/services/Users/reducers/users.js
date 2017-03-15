@@ -4,6 +4,8 @@ import {
   USERS_MANAGER_GROUPBY_CHANGE,
   USERS_MANAGER_NEW_USER_TOGGLE,
   USERS_MANAGER_NEW_USER_ADD,
+  USERS_MANAGER_PERMISSION_ASSIGN,
+  USERS_MANAGER_PERMISSION_UNASSIGN,
 } from '../actions/usersActions';
 
 const initialState = fromJS({
@@ -21,7 +23,7 @@ function reducer(state = initialState, action) {
     // set users as is
     case USERS_MANAGER_USERS_SET:
       return state.withMutations(s => {
-        s.set('users', new List(action.users))
+        s.set('users', fromJS(action.users))
          .set('grouped', new Map(action.grouped));
       });
     case USERS_MANAGER_GROUPBY_CHANGE:
@@ -38,8 +40,26 @@ function reducer(state = initialState, action) {
       return state.withMutations(s => {
         s.set('grouped', new Map(action.grouped))
          .set('isLoading', action.isLoading)
-         .set('users', new List(action.users));
+         .set('users', fromJS(action.users));
       });
+    case USERS_MANAGER_PERMISSION_ASSIGN: {
+      const nextState = state.updateIn(['users', action.index], user => {
+        let nextUser = user;
+
+        if (!user.has('permissions')) {
+          nextUser = user.set('permissions', new List());
+        }
+
+        return nextUser.update('permissions', perms => perms.push(action.permissionId));
+      });
+
+      return nextState;
+    }
+    case USERS_MANAGER_PERMISSION_UNASSIGN:
+      return state.updateIn(['users', action.index, 'permissions'], perms =>
+        perms.delete(perms.indexOf(action.permissionId))
+      );
+
     default:
       return state;
   }

@@ -6,6 +6,10 @@ import classes from './classes';
 
 class UserPermissionsList extends React.Component {
 
+  onPermissionClick = (permissionId, isActive) => {
+    this.props.onPermissionClick(permissionId, this.props.userIndex, isActive);
+  }
+
   renderPermissions() {
     return this.props.allPermissions.map(perm => {
       const userHasThisPermission = this.props.userPermissions.indexOf(perm.id) !== -1;
@@ -18,7 +22,7 @@ class UserPermissionsList extends React.Component {
           <PermissionChip
             {...perm}
             isActive={userHasThisPermission}
-            // onClick
+            onClick={this.onPermissionClick}
           />
         </li>
       );
@@ -42,7 +46,8 @@ class UserPermissionsList extends React.Component {
 UserPermissionsList.propTypes = {
   allPermissions: React.PropTypes.array.isRequired,
   userPermissions: React.PropTypes.array.isRequired,
-  userId: React.PropTypes.string.isRequired,
+  userIndex: React.PropTypes.number.isRequired,
+  onPermissionClick: React.PropTypes.func.isRequired,
 };
 
 export default UserPermissionsList;

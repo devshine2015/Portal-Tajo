@@ -65,6 +65,8 @@ const UserItem = ({
   fleet,
   status,
   renderPermissions,
+  index,
+  permissions, // eslint-disable-line no-shadow
 }) => (
   <Card>
     <CardHeader
@@ -75,7 +77,7 @@ const UserItem = ({
       showExpandableButton
     />
     <CardText expandable>
-      { renderPermissions([], username) }
+      { renderPermissions(permissions, index) }
     </CardText>
 
     { renderActions(userPermittedTo) }
@@ -89,6 +91,12 @@ UserItem.propTypes = {
   status: React.PropTypes.string.isRequired,
   fleet: React.PropTypes.string.isRequired,
   renderPermissions: React.PropTypes.func.isRequired,
+  index: React.PropTypes.number.isRequired,
+  permissions: React.PropTypes.array,
+};
+
+UserItem.defaultProps = {
+  permissions: [],
 };
 
 export default pure(permitted(PERMISSIONS)(UserItem));

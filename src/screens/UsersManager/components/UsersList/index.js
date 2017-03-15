@@ -22,17 +22,22 @@ const STYLES = {
   },
 };
 
-const renderAllPermissons = (allPermissions) => (userPermissions = [], userId) => (
-  <UserPermissionsList
-    allPermissions={allPermissions.toJS()}
-    userPermissions={userPermissions}
-    userId={userId}
-  />
-);
+const renderAllPermissons = (allPermissions, onClick) => (userPermissions = [], userIndex) => {
+  if (allPermissions.size === 0) return null;
+
+  return (
+    <UserPermissionsList
+      allPermissions={allPermissions.toJS()}
+      userPermissions={userPermissions}
+      userIndex={userIndex}
+      onPermissionClick={onClick}
+    />
+  );
+};
 
 function renderUsers(groupIndexies, allUsers, permissionsRenderer) {
   return groupIndexies.map(index => {
-    const user = allUsers.get(index);
+    const user = allUsers.get(index).toJS();
 
     return (
       <li
@@ -41,6 +46,7 @@ function renderUsers(groupIndexies, allUsers, permissionsRenderer) {
       >
         <UserItem
           {...user}
+          index={index}
           renderPermissions={permissionsRenderer}
         />
       </li>
@@ -51,6 +57,7 @@ function renderUsers(groupIndexies, allUsers, permissionsRenderer) {
 function renderGroups({ currentGrouping, users, permissionsRenderer }) {
   const groups = currentGrouping.keys();
   const k = [];
+
   for (let group of groups) {
     // get indexies of users from group
     const usersIndexies = currentGrouping.get(group);
@@ -77,6 +84,10 @@ class UsersList extends React.Component {
     this.props.fetchUsers(this.props.groupBy);
   }
 
+  assignPermission = (permissionId, userIndex, permissionAssigned) => {
+    this.props.assignPermission(permissionId, userIndex, permissionAssigned);
+  }
+
   render() {
     const { users, currentGrouping, allPermissions } = this.props;
 
@@ -84,7 +95,7 @@ class UsersList extends React.Component {
       return null;
     }
 
-    const permissionsRenderer = renderAllPermissons(allPermissions);
+    const permissionsRenderer = renderAllPermissons(allPermissions, this.assignPermission);
     const groups = renderGroups({ currentGrouping, users, permissionsRenderer });
 
     return (
@@ -103,6 +114,7 @@ UsersList.propTypes = {
   users: React.PropTypes.instanceOf(List).isRequired,
   currentGrouping: React.PropTypes.instanceOf(Map).isRequired,
   allPermissions: React.PropTypes.instanceOf(List).isRequired,
+  assignPermission: React.PropTypes.func.isRequired,
 };
 
 const mapState = state => ({
@@ -113,6 +125,7 @@ const mapState = state => ({
 });
 const mapDispatch = {
   fetchUsers: usersActions.fetchUsers,
+  assignPermission: usersActions.assignPermission,
 };
 
 const PureUsersList = pure(UsersList);

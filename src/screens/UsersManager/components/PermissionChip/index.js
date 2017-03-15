@@ -3,11 +3,17 @@ import Chip from 'material-ui/Chip';
 import SvgIconDone from 'material-ui/svg-icons/action/done';
 import theme from 'configs/theme';
 
-// import styles from './styles.css';
-
 const chipProps = {
   name: React.PropTypes.string.isRequired,
   onClick: React.PropTypes.func.isRequired,
+};
+
+const STYLES = {
+  done: {
+    marginLeft: 5,
+    height: 16,
+    weight: 16,
+  },
 };
 
 const Active = ({ name, onClick }) => (
@@ -18,7 +24,7 @@ const Active = ({ name, onClick }) => (
   >
     { name }
 
-    <SvgIconDone color="white" style={{ marginLeft: 5 }} />
+    <SvgIconDone color="white" style={STYLES.done} />
   </Chip>
 );
 
@@ -38,7 +44,7 @@ Available.propTypes = chipProps;
 class PermissionChip extends React.Component {
 
   onClick = () => {
-    console.log(`clicked ${this.props.id}`);
+    this.props.onClick(this.props.id, this.props.isActive);
   }
 
   render() {
