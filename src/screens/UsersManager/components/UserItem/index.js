@@ -4,6 +4,7 @@ import {
   Card,
   CardActions,
   CardHeader,
+  CardText,
 } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import Userpic from 'components/Userpic';
@@ -63,13 +64,20 @@ const UserItem = ({
   username,
   fleet,
   status,
+  renderPermissions,
 }) => (
   <Card>
     <CardHeader
       avatar={renderUserpic(status, username)}
       title={username}
       subtitle={renderSubtitle(role, fleet)}
+      actAsExpander
+      showExpandableButton
     />
+    <CardText expandable>
+      { renderPermissions([], username) }
+    </CardText>
+
     { renderActions(userPermittedTo) }
   </Card>
 );
@@ -80,6 +88,7 @@ UserItem.propTypes = {
   username: React.PropTypes.string.isRequired,
   status: React.PropTypes.string.isRequired,
   fleet: React.PropTypes.string.isRequired,
+  renderPermissions: React.PropTypes.func.isRequired,
 };
 
 export default pure(permitted(PERMISSIONS)(UserItem));
