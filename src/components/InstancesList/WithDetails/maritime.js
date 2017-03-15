@@ -2,8 +2,6 @@ import React from 'react';
 import pure from 'recompose/pure';
 import cs from 'classnames';
 import { VelocityTransitionGroup } from 'velocity-react';
-require('velocity-animate');
-require('velocity-animate/velocity.ui');
 import Divider from 'material-ui/Divider';
 import ItemProperty from '../DetailItemProperty';
 import Warn from './Warn';

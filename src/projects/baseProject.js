@@ -21,6 +21,8 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 injectTapEventPlugin();
 
+require('velocity-animate');
+require('velocity-animate/velocity.ui');
 require('sanitize.css/sanitize.css');
 
 export const renderProject = ({
