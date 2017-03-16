@@ -53,6 +53,9 @@ class VehicleDetails extends React.Component {
      * Initial values for controlled inputs
      **/
     this.state = setVehicleState(props);
+
+    // TODO: some hook to save/post whatever we have in alerts controller
+    this.alertsSaveHook = null;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -81,6 +84,10 @@ class VehicleDetails extends React.Component {
     });
 
     this.props.onSave(toSave, nameChanged, device);
+
+    if (this.alertsSaveHook !== null) {
+      this.alertsSaveHook();
+    }
   }
 
   onIsMilesChange = (e, isCheked) => {
@@ -117,6 +124,10 @@ class VehicleDetails extends React.Component {
     this.setState({
       deviceId,
     });
+  }
+
+  registerAlertsSave = saveAlerts => {
+    this.alertsSaveHook = saveAlerts;
   }
 
   render() {
@@ -192,7 +203,10 @@ class VehicleDetails extends React.Component {
             checked={this.state.isMiles}
             onCheck={this.onIsMilesChange}
           />
-          <VehicleAlerts vehicleId={this.props.details.id} />
+          <VehicleAlerts
+            vehicleId={this.props.details.id}
+            saveHook={this.registerAlertsSave}
+          />
           <div className={styles.buttons}>
             <ButtonWithProgress
               className={styles.buttons__button}

@@ -6,14 +6,16 @@ import {
   SelectField,
   MenuItem,
   FlatButton,
+  DropDownMenu,
   Checkbox,
 } from 'material-ui';
 import Form from 'components/Form';
 import ButtonWithProgress from 'components/ButtonWithProgress';
 import { showSnackbar } from 'containers/Snackbar/actions';
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
-import { makeAlertConditionBackEndObject } from 'services/AlertsSystem/alertConditionHelper';
-import { createAlertConditions } from 'services/AlertsSystem/actions';
+import { makeAlertConditionBackEndObject, _NEW_LOCAL_ALERT_ID_ } from 'services/AlertsSystem/alertConditionHelper';
+import { createAlertConditions, updateAlertCondition } from 'services/AlertsSystem/actions';
+import { getGFsExSorted } from 'services/FleetModel/reducer';
 
 import styles from './styles.css';
 
@@ -29,6 +31,7 @@ function setAlertState(props) {
   return {
     maxTemp: 1,
     speedLimit: 45,
+    gfId: props.gfs[0].id,
     ...props.details,
   };
 }
@@ -55,8 +58,13 @@ class AlertDetails extends React.Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    this.postNew(makeAlertConditionBackEndObject(this.state));
-    this.props.onSave();
+    if (this.props.details.id === _NEW_LOCAL_ALERT_ID_) {
+      this.postNew(makeAlertConditionBackEndObject(this.state));
+      this.props.onSave();
+    }
+    else {
+      this.putExisting(makeAlertConditionBackEndObject(this.state));
+    }
   }
 
   /**
@@ -69,6 +77,7 @@ class AlertDetails extends React.Component {
       [field]: value,
     });
   }
+  onChangeGF = (event, index, gfId) => this.setState({ gfId });
 
   onKindChange = (e, key, value) => {
     this.setState({
@@ -89,6 +98,15 @@ class AlertDetails extends React.Component {
       this.props.showSnackbar('New Alert created successfuly', 3000);
     }, () => {
       this.props.showSnackbar('Failed to create new ALERT', 5000);
+    });
+  }
+
+  putExisting = (newAlert) => {
+    this.props.updateAlertCondition(newAlert)
+    .then(() => {
+      this.props.showSnackbar('Alert updated successfuly', 3000);
+    }, () => {
+      this.props.showSnackbar('Failed to change alert ALERT', 5000);
     });
   }
 
@@ -121,16 +139,29 @@ class AlertDetails extends React.Component {
           value={this.state.maxTemp}
           type="number"
         />);
-      /*case alertKinds._ALERT_KIND_GF_ENTER:
-        return (<SelectField
-              autoWidth
-              hintText="select geofence"
-              name="geoFence"
-              value={this.state.kind}
-              onChange={this.onKindChange}
-            >
-              {this.renderKindMenuItems()}
-            </SelectField>);*/
+      case alertKinds._ALERT_KIND_GF: {
+        const gfsArray = this.props.gfs;
+        // const gfs = gfsArray.map((aGF) => (<MenuItem primaryText={aGF.name} />));
+        const gfs = gfsArray.map((aGF) => (<MenuItem value={aGF.id} key={aGF.id} primaryText={aGF.name} />));
+        return (<div>
+          <DropDownMenu maxHeight={300} value={this.state.gfId} onChange={this.onChangeGF}>
+            {gfs}
+          </DropDownMenu>
+          <Checkbox
+            label="Alert on Enter"
+            name="onEnter"
+            checked={this.state.onEnter}
+            onCheck={this.onChange}
+          />
+          <Checkbox
+            label="Alert on Exit"
+            name="onExit"
+            checked={this.state.onExit}
+            onCheck={this.onChange}
+          />
+          </div>
+          );
+      }
       default:
         return null;
     }
@@ -206,14 +237,18 @@ AlertDetails.propTypes = {
   onSave: React.PropTypes.func.isRequired,
   onCancel: React.PropTypes.func.isRequired,
   createAlertConditions: React.PropTypes.func.isRequired,
+  updateAlertCondition: React.PropTypes.func.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,
+  gfs: React.PropTypes.array.isRequired,
 };
 
 const mapState = (state) => ({
+  gfs: getGFsExSorted(state),
 });
 
 const mapDispatch = {
   createAlertConditions,
+  updateAlertCondition,
   showSnackbar,
 };
 // export default pure(AlertDetails);

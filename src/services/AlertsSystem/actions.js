@@ -31,10 +31,16 @@ export const ALRT_VEHICLE_ADD = 'alrt/vehEventsAdd';
 export const createAlertConditions = (newAlerts) => (dispatch) =>
   _createAlertRequest(newAlerts, dispatch);
 
+export const updateAlertCondition = (newAlerts) => (dispatch) =>
+  _updateAlertRequest(newAlerts, dispatch);
+
 export const fetchAlertConditions = () => _fetchAlerts;
 
 export const fetchVehicleAlertConditions = (vehicleId) => (dispatch) =>
   _fetchVehicleAlerConditions(vehicleId, dispatch);
+
+export const postVehicleAlertConditions = (vehicleId, alerts) => (dispatch) =>
+  _postVehicleAlerConditions(vehicleId, alerts, dispatch);
 
 function _fetchAlerts(dispatch) {
   const { url, method } = endpoints.getAlertConditions;
@@ -70,6 +76,18 @@ function _setVehicleAlertConditions(dispatch, vehicleId, alertsList) {
   dispatch(_vehicleAlerts(vehicleId, alertsList));
 }
 
+function _postVehicleAlerConditions(vehicleId, alerts, dispatch) {
+  const { url, method } = endpoints.postVehicleAlertConditions(vehicleId);
+
+  return api[method](url, {
+    payload: alerts,
+  }).then(() => {
+    _setVehicleAlertConditions(dispatch, vehicleId, alerts);
+ // this.props.fetchVehicleAlertConditions(nextProps.vehicleId)
+    return Promise.resolve();
+  }, error => Promise.reject(error));
+}
+
 function toJson(response) {
   return response.json();
 }
@@ -83,6 +101,20 @@ function toJson(response) {
  **/
 function _createAlertRequest(alertObject, dispatch) {
   const { url, method } = endpoints.createAlertConditions;
+
+  return api[method](url, {
+    payload: alertObject,
+  }).then(() => {
+    _fetchAlerts(dispatch);
+    return Promise.resolve();
+  }, error => Promise.reject(error));
+}
+
+/**
+ * PUT - update existing Alert
+ **/
+function _updateAlertRequest(alertObject, dispatch) {
+  const { url, method } = endpoints.updateAlertConditions(alertObject.id);
 
   return api[method](url, {
     payload: alertObject,

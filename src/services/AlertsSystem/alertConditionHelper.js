@@ -11,11 +11,19 @@ export const _dev_makeLocalAlertCondition = (id, name, kind) => (
     }
 );
 
+const safeGetFromMeta = (originObject, propName, defValue) => (
+    originObject.meta === undefined || originObject.meta[propName] === undefined ?
+                defValue : originObject.meta[propName]
+);
+
 export const makeLocalAlertCondition = (originObject) => (
     { id: originObject.id,
-        name: originObject.meta === undefined || originObject.meta.name === undefined ?
-                'No Name' : originObject.meta.name,
+        name: safeGetFromMeta(originObject, 'name', 'No Name'),
         kind: originObject.kind,
+        maxTemp: originObject.aboveTemp || 0,
+        gfId: originObject.gfId || '',
+        onEnter: safeGetFromMeta(originObject, 'onEnter', false) === 'true',
+        onExit: safeGetFromMeta(originObject, 'onExit', false) === 'true',
     }
 );
 
@@ -35,6 +43,7 @@ export const makeAlertConditionBackEndObject = (inState) => (
 
 const makeGenericAlrt = (inState) => (
   {
+    id: inState.id,
     kind: inState.kind,
 // "2017-03-06T17:51:59.298+01:00"
 //    created: moment().format('YYYY-MM-DD[T]HH:mm:ss.SSSZ'),

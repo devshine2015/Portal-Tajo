@@ -57,7 +57,7 @@ export const getAlertConditionByIdFunc = state => id => {
 export const getVehicleAlertConditions = state => vehicleId => {
   const vehAlerts = _alertsRx(state).getIn(['vehicleAlerts', vehicleId]);
   if (vehAlerts === undefined) {
-    return [];
+    return null;
   }
   return vehAlerts;
 };

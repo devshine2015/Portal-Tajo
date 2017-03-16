@@ -138,6 +138,11 @@ const endpoints = {
     method: 'post',
     apiVersion: 1.120,
   },
+  updateAlertConditions: (id) => ({
+    url: `alert-conditions/${id}`,
+    method: 'put',
+    apiVersion: 1.120,
+  }),
   getAlertConditions: {
     url: 'alert-conditions',
     method: 'get',
@@ -146,7 +151,12 @@ const endpoints = {
   getVehicleAlertConditions: (id) => ({
     url: `vehicles/${id}/alert-conditions`,
     method: 'get',
-    apiVersion: 1,
+    apiVersion: 1.120,
+  }),
+  postVehicleAlertConditions: (id) => ({
+    url: `vehicles/${id}/alert-conditions`,
+    method: 'post',
+    apiVersion: 1.120,
   }),
 };
 
