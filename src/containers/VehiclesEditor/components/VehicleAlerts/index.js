@@ -41,40 +41,44 @@ class VehicleAlerts extends React.Component {
     this.state = {
       isAdding: false,
       isLoading: true,
-      alerts: [],      
+      alerts: [],
     };
     this.props.saveHook(this.saveAlerts);
+    this.fetchAlerts(props.vehicleId);
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.vehicleId !== nextProps.vehicleId) {
       const vehAlertIds = this.props.getVehicleAlerts(nextProps.vehicleId);
-      if (vehAlertIds===null) {
+      if (vehAlertIds === null) {
         this.setState({ alerts: [],
             isLoading: true });
-        this.props.fetchVehicleAlertConditions(nextProps.vehicleId)
-          .then(() => {
-            // const vehAlertIds = this.props.getVehicleAlerts(nextProps.vehicleId);
-            this.setState({ alerts: this.props.getVehicleAlerts(nextProps.vehicleId),
-            isLoading: false });
-          });
-        } else {
+        this.fetchAlerts(nextProps.vehicleId);
+      } else {
         this.setState({ alerts: vehAlertIds,
-            isLoading: false  });      
-        }
+            isLoading: false });
+      }
     }
   }
-  onRemoveClick = (alertId) => {
+  onRemoveClick = alertId => {
     this.setState({ alerts: this.state.alerts.filter((el) => (el !== alertId)) });
   }
   onAddClick = () => {
     this.setState({ isAdding: !this.state.isAdding });
   }
-  doAddAlert = (alertId) => {
+  doAddAlert = alertId => {
     this.setState({ alerts: this.state.alerts.concat([alertId]) });
   }
   saveAlerts = () => {
     this.props.postVehicleAlertConditions(this.props.vehicleId, this.state.alerts);
+  }
+  fetchAlerts = vehicleId => {
+    this.props.fetchVehicleAlertConditions(vehicleId)
+      .then(() => {
+        // const vehAlertIds = this.props.getVehicleAlerts(nextProps.vehicleId);
+        this.setState({ alerts: this.props.getVehicleAlerts(vehicleId),
+        isLoading: false });
+      });
   }
 // Temp -15&#8451;..-8&#8451;
   render() {
