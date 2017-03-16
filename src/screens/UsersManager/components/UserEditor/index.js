@@ -52,7 +52,8 @@ class UserEditor extends React.Component {
   onSubmit = e => {
     e.preventDefault();
 
-    this.props.addNewUser(this.state);
+    this.props.addNewUser(this.state)
+      .then(() => this.props.closeForm());
   }
 
   onType = e => {
@@ -62,7 +63,8 @@ class UserEditor extends React.Component {
   }
 
   onCancel = () => {
-    this.props.toggleNewUser(false);
+    // this.props.toggleNewUser(false);
+    this.props.closeForm();
   }
 
   updateState = (name, value) => {
@@ -156,16 +158,20 @@ UserEditor.propTypes = {
   addNewUser: React.PropTypes.func.isRequired,
   editMode: React.PropTypes.oneOf([
     'create', 'edit',
-  ]).isRequired,
-  toggleNewUser: React.PropTypes.func.isRequired,
+  ]),
+  closeForm: React.PropTypes.func.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
+};
+
+UserEditor.defaultProps = {
+  editMode: 'create',
 };
 
 const mapState = state => ({
   isLoading: getIsLoading(state),
 });
 const mapDispatch = {
-  toggleNewUser: usersActions.toggleNewUser,
+  // toggleNewUser: usersActions.toggleNewUser,
   addNewUser: usersActions.addNewUser,
 };
 
