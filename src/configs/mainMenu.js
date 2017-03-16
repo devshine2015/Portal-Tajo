@@ -25,7 +25,7 @@ const common = {
     path: 'settings',
   },
   alerts: {
-    name: 'alerts',
+    name: 'alerts_editor',
     path: 'alerts',
   },
 };
