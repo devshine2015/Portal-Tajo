@@ -1,4 +1,5 @@
 import roles from 'configs/roles';
+import { isAlerts } from 'configs';
 
 const common = {
   reports: {

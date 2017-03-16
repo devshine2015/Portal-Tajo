@@ -56,6 +56,10 @@ export function checkSetMaritime(fleetName) {
   isMaritime = fleetName.indexOf('maritime') !== -1;
 }
 
+// TODO: this is to toggle alerts while in development
+// remove this when Alerts System done/released
+export const isAlerts = true;
+
 // TODO: quick fix - just doubled prev limit - need some proven number
 // TODO: currently using same for hisotry (24hvr) and reports (arbitrary time range)
 // probably need something like limitPer24hvrs

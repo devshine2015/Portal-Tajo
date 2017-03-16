@@ -75,20 +75,6 @@ class LocationWithDetails extends React.Component {
           />
         }
         <Divider key="line02" />
-        <Checkbox
-          labelStyle={stylesCheck.labelStyle}
-          iconStyle={stylesCheck.iconStyle}
-          label="Alert on enter"
-          name="alertEnter"
-          onCheck={this.onChange}
-        />
-        <Checkbox
-          labelStyle={stylesCheck.labelStyle}
-          iconStyle={stylesCheck.iconStyle}
-          label="Alert on exit"
-          name="alertExit"
-          onCheck={this.onChange}
-        />
         <IconButton
           tooltip={ this.props.translations.delete }
           onClick={this.onDelete}
@@ -101,6 +87,21 @@ class LocationWithDetails extends React.Component {
     }
     return false;
   }
+
+        // <Checkbox
+        //   labelStyle={stylesCheck.labelStyle}
+        //   iconStyle={stylesCheck.iconStyle}
+        //   label="Alert on enter"
+        //   name="alertEnter"
+        //   onCheck={this.onChange}
+        // />
+        // <Checkbox
+        //   labelStyle={stylesCheck.labelStyle}
+        //   iconStyle={stylesCheck.iconStyle}
+        //   label="Alert on exit"
+        //   name="alertExit"
+        //   onCheck={this.onChange}
+        // />
 
 
   render() {

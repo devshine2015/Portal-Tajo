@@ -21,6 +21,7 @@ import AlertsList from './alertsList';
 import { getVehicleAlertConditions, getAlertConditionByIdFunc } from 'services/AlertsSystem/reducer';
 import { fetchVehicleAlertConditions, postVehicleAlertConditions } from 'services/AlertsSystem/actions';
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
+import { isAlerts } from 'configs';
 
 import styles from './styles.css';
 
@@ -82,6 +83,8 @@ class VehicleAlerts extends React.Component {
   }
 // Temp -15&#8451;..-8&#8451;
   render() {
+    if (!isAlerts) return null;
+
     const vehAlerts = this.state.alerts.map(alertId => {
       const alertObj = this.props.alertById(alertId);
       const alertKindData = alertKinds.getAlertByKind(alertObj.kind);

@@ -20,6 +20,8 @@ import chronicleScreen from 'screens/Chronicle/route';
 import settingsScreen from 'screens/Settings/route';
 import alersEditorScreen from 'screens/AlertsEditor/route';
 
+import { isAlerts } from 'configs';
+
 export default function createRoutes(store) {
   const { injectReducer } = getHooks(store);
 
@@ -81,8 +83,14 @@ export default function createRoutes(store) {
     chronicleRoute,
     vehiclesEditorRoute,
     settingsRoute,
-    alertsEditorRoute,
+// TODO: uncomment when releasing alerts system
+//    alertsEditorRoute,
   );
+
+// TODO: uncomment alertsEditorRoute above when removing isAlert dev flag
+  if (isAlerts) {
+    rootRoute.childRoutes.push(alertsEditorRoute);
+  }
 
   return (
     <Router
