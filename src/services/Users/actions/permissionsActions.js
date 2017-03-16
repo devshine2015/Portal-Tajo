@@ -1,19 +1,19 @@
 import uuid from 'node-uuid';
 
 export const PERMISSIONS_FETCH_SUCCESS = 'services/usersManager/PERMISSIONS_FETCH_SUCCESS';
-export const PERMISSIONS_CREATE = 'services/UsersManager/PERMISSIONS_CREATE';
-export const PERMISSIONS_DELETE = 'services/UsersManager/PERMISSIONS_DELETE';
+export const PERMISSION_CREATE = 'services/UsersManager/PERMISSION_CREATE';
+export const PERMISSION_DELETE = 'services/UsersManager/PERMISSION_DELETE';
 
 export const createPermission = payload => {
   payload.id = uuid.v4();
 
   return ({
-    type: PERMISSIONS_CREATE,
+    type: PERMISSION_CREATE,
     permission: payload,
   });
 };
 
 export const deletePermission = index => ({
-  type: PERMISSIONS_DELETE,
+  type: PERMISSION_DELETE,
   index,
 });

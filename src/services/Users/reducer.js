@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux-immutable';
 import usersReducer, * as fromUsersReducer from './reducers/users';
 import permissionsReducer, * as fromPermissionsReducer from './reducers/permissions';
+import rolesReducer, * as fromRolesReducer from './reducers/rolesReducer';
 
 export default combineReducers({
   users: usersReducer,
   permissions: permissionsReducer,
+  roles: rolesReducer,
 });
 
 function users(state) {
@@ -13,6 +15,10 @@ function users(state) {
 
 function permissions(state) {
   return state.getIn(['usersManager', 'permissions']);
+}
+
+function roles(state) {
+  return state.getIn(['usersManager', 'roles']);
 }
 
 export const getUsers = state =>
@@ -28,3 +34,6 @@ export const getIsLoading = state =>
 
 export const getPermissions = state =>
   fromPermissionsReducer.getPermissions(permissions(state));
+
+export const getRoles = state =>
+  fromRolesReducer.getPermissions(roles(state));

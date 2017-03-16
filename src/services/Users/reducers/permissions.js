@@ -11,7 +11,7 @@ function permissionsReducer(state = initialState, action) {
     case permissionsActions.PERMISSIONS_FETCH_SUCCESS:
       return state.set('list', new List(action.permissions));
 
-    case permissionsActions.PERMISSIONS_CREATE:
+    case permissionsActions.PERMISSION_CREATE:
       return state.update('list', list => {
         let nextList = list;
 
@@ -22,7 +22,7 @@ function permissionsReducer(state = initialState, action) {
         return nextList.push(fromJS(action.permission));
       });
 
-    case permissionsActions.PERMISSIONS_DELETE:
+    case permissionsActions.PERMISSION_DELETE:
       return state.update('list', list => list.remove(action.index));
 
     default:
