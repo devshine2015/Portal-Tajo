@@ -55,6 +55,7 @@ class VehicleDetails extends React.Component {
     this.state = setVehicleState(props);
 
     // TODO: some hook to save/post whatever we have in alerts controller
+    // the whole alerts seuUP workflow needs change - MVP for now
     this.alertsSaveHook = null;
   }
 
