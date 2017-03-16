@@ -5,6 +5,7 @@ import Layout from 'components/Layout';
 import Submenu from './components/Submenu';
 import UsersSection from './components/UsersSection';
 import PermissionsSection from './components/PermissionsSection';
+import RolesSection from './components/RolesSection';
 
 import classes from './classes';
 
@@ -12,6 +13,10 @@ const SUBSECTIONS = [{
   label: 'Users',
   value: 'users',
   component: () => <UsersSection />,
+}, {
+  label: 'Roles',
+  value: 'roles',
+  component: () => <RolesSection />,
 }, {
   label: 'Permissions',
   value: 'permissions',

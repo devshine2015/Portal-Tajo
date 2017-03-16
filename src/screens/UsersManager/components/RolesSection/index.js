@@ -3,13 +3,13 @@ import Section from '../Section';
 import PermissionForm from '../PermissionForm';
 import PermissionsList from '../PermissionsList';
 
-const PermissionsSection = () => (
+const RolesSection = () => (
   <Section
     listComponent={<PermissionsList />}
     formComponent={<PermissionForm />}
-    actionButtonLabel="Add permission"
-    headerLabel="Permissions"
+    actionButtonLabel="Add role"
+    headerLabel="Roles"
   />
 );
 
-export default PermissionsSection;
+export default RolesSection;
