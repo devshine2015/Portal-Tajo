@@ -80,16 +80,16 @@ class AuthProvider extends React.Component {
       })
   )
 
-  logout = () => {
-
-    this.unauthenticate();
+  logout = () => (
+    logout()
+      .then(this.unauthenticate())
 
     // if (typeof cb === 'function') {
     //   cb();
     // } else if (typeof this.props.onLogoutSuccess === 'function') {
     //   this.props.onLogoutSuccess();
     // }
-  }
+  )
 
   render() {
     return this.props.children;

@@ -11,3 +11,12 @@ export const login = payload => {
   return api[method](url, options)
     .then(res => res.json());
 };
+
+export const logout = () => {
+  const { url, method, apiVersion } = endpoints.logout;
+  const options = {
+    apiVersion,
+  };
+
+  return api[method](url, options);
+};

@@ -9,7 +9,6 @@ import CodebaseVersion from 'components/CodebaseVersion';
 import { changeMainSidebarState } from 'containers/InnerPortal/actions';
 import FleetSummary from 'containers/FleetSummary';
 import { translate } from 'utils/i18n';
-import { logout } from '../../actions';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './PropTypes';
@@ -50,11 +49,12 @@ function renderTitle(title) {
 }
 
 const ApplicationBar = ({
-  logout, // eslint-disable-line no-shadow
   title,
   toggleSidebar,
   location,
   translations,
+}, {
+  logout,
 }) => (
   <div className={styles.barContainer}>
     <AppBar
@@ -74,8 +74,11 @@ const ApplicationBar = ({
   </div>
 );
 
-ApplicationBar.propTypes = {
+ApplicationBar.contextTypes = {
   logout: React.PropTypes.func.isRequired,
+};
+
+ApplicationBar.propTypes = {
   title: React.PropTypes.string.isRequired,
   toggleSidebar: React.PropTypes.func.isRequired,
   location: React.PropTypes.shape(locationShape).isRequired,
@@ -88,7 +91,6 @@ ApplicationBar.defaultProps = {
 
 const mapState = null;
 const mapDispatch = {
-  logout,
   toggleSidebar: changeMainSidebarState,
 };
 
