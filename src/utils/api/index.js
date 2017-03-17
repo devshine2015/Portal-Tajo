@@ -1,9 +1,11 @@
 import qs from 'query-string';
 import { protocol, socketProtocol, ENGINE_BASE } from 'configs';
-import { getAuthenticationSession } from 'services/Auth/reducer';
+import {
+  getSessionToken,
+  getFleetName,
+} from 'services/Session/reducer';
 import { getErrorType } from 'services/Global/reducer';
 import { errorsActions } from 'services/Global/actions';
-import { getFleetName } from 'services/UserModel/reducer';
 import prepareRequest from './makeRequest';
 import errorsHandler from './errorsHandler';
 
@@ -65,7 +67,7 @@ class API {
     const fleet = optionalFleet || getFleetName(this.getState());
     const urlToInvoke = makeUrl(apiVersion, url, fleet, host);
     const headers = Object.assign({}, HEADERS, {
-      ['DRVR-SESSION']: getAuthenticationSession(this.getState()),
+      ['DRVR-SESSION']: getSessionToken(this.getState()),
     }, {
       ...optionalHeaders,
     });
@@ -77,7 +79,7 @@ class API {
   invokeWebSocket(url, options) {
     const fleet = getFleetName(this.getState());
     const sessionId = {
-      ['DRVR-SESSION']: getAuthenticationSession(this.getState()),
+      ['DRVR-SESSION']: getSessionToken(this.getState()),
     };
     const params = Object.assign({}, { ...sessionId }, { ...options });
     const query = params ? `?${qs.stringify(params)}` : '';

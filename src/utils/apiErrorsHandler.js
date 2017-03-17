@@ -1,4 +1,4 @@
-import { commonActions } from 'services/Auth/actions';
+import { commonActions } from 'services/Session/actions';
 
 class APIErrors {
   constructor() {

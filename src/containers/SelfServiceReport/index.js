@@ -12,7 +12,7 @@ import { fleetNameActions } from 'services/Global/actions';
 import {
   localActions,
   loginActions,
-} from 'services/Auth/actions';
+} from 'services/Session/actions';
 import storage from 'utils/localStorage';
 
 import styles from './styles.css';

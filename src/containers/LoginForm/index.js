@@ -7,11 +7,11 @@ import {
   Paper,
   Divider,
 } from 'material-ui';
-import { push } from 'react-router-redux';
-import { BASE_URL } from 'configs';
+// import { push } from 'react-router-redux';
+// import { BASE_URL } from 'configs';
 import SimpleError from 'components/Error';
 import ButtonWithProgress from 'components/ButtonWithProgress';
-import { loginActions } from 'services/Auth/actions';
+// import { loginActions } from 'services/Session/actions';
 import { errorsActions } from 'services/Global/actions';
 import { getErrorType } from 'services/Global/reducer';
 import { translate } from 'utils/i18n';
@@ -27,8 +27,8 @@ Header.propTypes = {
 };
 
 class LoginForm extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.state = {
       username: null,
@@ -59,11 +59,9 @@ class LoginForm extends React.Component {
 
     this.changeLoadingState(true);
 
-    this.props.login(payload).then(() => {
-      this.changeLoadingState(false);
+    this.context.login(payload).then(null, err => {
+      if (err) console.error(err);
 
-      this.props.goToRoot();
-    }, () => {
       this.changeLoadingState(false);
     });
   }
@@ -123,11 +121,15 @@ class LoginForm extends React.Component {
   }
 }
 
-LoginForm.propTypes = {
+LoginForm.contextTypes = {
   login: React.PropTypes.func.isRequired,
+};
+
+LoginForm.propTypes = {
+  // login: React.PropTypes.func.isRequired,
   errorType: React.PropTypes.string,
   resetError: React.PropTypes.func.isRequired,
-  goToRoot: React.PropTypes.func.isRequired,
+  // goToRoot: React.PropTypes.func.isRequired,
 
   translations: phrasesShape.isRequired,
 };
@@ -138,9 +140,9 @@ const mapState = (state) => ({
   errorType: getErrorType(state),
 });
 const mapDispatch = dispatch => ({
-  login: data => dispatch(loginActions.login(data)),
+  // login: data => dispatch(loginActions.login(data)),
   resetError: () => dispatch(errorsActions.resetError()),
-  goToRoot: () => dispatch(push(`${BASE_URL}/`)),
+  // goToRoot: () => dispatch(push(`${BASE_URL}/`)),
 });
 
 const Connected = connect(mapState, mapDispatch)(PureLoginForm);

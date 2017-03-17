@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { checkRolePermissions } from 'configs/roles';
-import { getUserRole } from 'services/UserModel/reducer';
+import { getUserRole } from 'services/Session/reducer';
 
 function checkAllPermissions(role, permissions) {
   const result = {};

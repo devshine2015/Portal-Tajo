@@ -10,7 +10,7 @@ import moment from 'moment';
 import dateFormats from 'configs/dateFormats';
 import Form from 'components/Form';
 import SimpleError from 'components/Error';
-import { getUserSettings } from 'services/UserModel/reducer';
+import { getUserSettings } from 'services/Session/reducer';
 import { translate } from 'utils/i18n';
 import DateFormatSelectorWithMemory from '../DateFormatSelectorWithMemory';
 import Period from '../Period';

@@ -6,7 +6,7 @@ import RememberChoiceIcon from 'material-ui/svg-icons/action/lock';
 import RememberChoiceIconOpen from 'material-ui/svg-icons/action/lock-open';
 import { portal } from 'configs';
 import DateFormatSelector from 'components/DateFormatSelector';
-import { updateUserSettings } from 'services/UserModel/actions';
+import { updateUserSettings } from 'services/Session/actions';
 import { translate } from 'utils/i18n';
 
 import styles from './styles.css';

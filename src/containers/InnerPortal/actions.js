@@ -1,5 +1,5 @@
 import { replace } from 'react-router-redux';
-import { loginActions } from 'services/Auth/actions';
+import { loginActions } from 'services/Session/actions';
 import { LOCAL_STORAGE_SESSION_KEY, BASE_URL } from 'configs';
 import storage from 'utils/localStorage';
 
