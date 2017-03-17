@@ -7,17 +7,10 @@ import {
 import validateSession from './validateSession';
 import { login, logout } from './restCalls';
 
-// class Authenticator {
-//   constructor() {
-
-//   }
-// }
-
 class AuthProvider extends React.Component {
   constructor(props, context) {
     super(props, context);
 
-    // this.authenticator = new Authenticator(props);
     this.state = {
       authenticated: false,
     };
@@ -32,7 +25,6 @@ class AuthProvider extends React.Component {
   }
 
   componentWillMount() {
-    // if !this.noAthenticated
     readSessionFromLocalStorage(this.props.storageKey)
       .then(validateSession)
       .then(session => (
@@ -43,8 +35,6 @@ class AuthProvider extends React.Component {
   isAuthenticated = () => this.state.authenticated
 
   authenticate = session => {
-    console.warn('authenticating');
-
     this.setState({
       authenticated: true,
     }, () => {
@@ -57,8 +47,6 @@ class AuthProvider extends React.Component {
   }
 
   unauthenticate = () => {
-    console.warn('unauthenticating');
-
     this.setState({
       authenticated: false,
     }, () => {
@@ -83,12 +71,6 @@ class AuthProvider extends React.Component {
   logout = () => (
     logout()
       .then(this.unauthenticate())
-
-    // if (typeof cb === 'function') {
-    //   cb();
-    // } else if (typeof this.props.onLogoutSuccess === 'function') {
-    //   this.props.onLogoutSuccess();
-    // }
   )
 
   render() {
@@ -101,7 +83,6 @@ AuthProvider.propTypes = {
   storageKey: React.PropTypes.string.isRequired,
   onLoginSuccess: React.PropTypes.func,
   onLogoutSuccess: React.PropTypes.func,
-  // onFail: React.PropTypes.func,
 };
 
 AuthProvider.childContextTypes = {

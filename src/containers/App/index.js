@@ -11,6 +11,8 @@ import {
   cleanSession,
 } from 'services/Session/actions';
 import { getLocale } from 'services/Session/reducer';
+import { commonFleetActions } from 'services/FleetModel/actions';
+import { fetchDevices } from 'services/Devices/actions';
 import {
   LOCAL_STORAGE_SESSION_KEY,
   BASE_URL,
@@ -34,16 +36,11 @@ function screenIsProtected(routes = []) {
 
 const muiTheme = getMuiTheme(drvrDevTheme);
 
-// const URLS = {
-//   failure: 'login',
-// };
-
 class App extends React.Component {
 
   componentDidMount() {
     window.addEventListener('offline', this.handleOnlineState);
     window.addEventListener('online', this.handleOnlineState);
-    // this.props.checkUserAuthentication({ urls: URLS });
   }
 
   componentWillUnmount() {
@@ -52,7 +49,9 @@ class App extends React.Component {
   }
 
   onLoginSuccess = session => {
-    this.props.saveSession(session);
+    this.props.saveSession(session)
+      .then(this.props.fetchFleet)
+      .then(this.props.fetchDevices);
 
     this.props.replace(`${BASE_URL}/`);
   }
@@ -107,9 +106,10 @@ App.contextTypes = {
 App.propTypes = {
   locale: React.PropTypes.string,
   changeOnlineState: React.PropTypes.func.isRequired,
-  // checkUserAuthentication: React.PropTypes.func.isRequired,
   saveSession: React.PropTypes.func.isRequired,
   cleanSession: React.PropTypes.func.isRequired,
+  fetchDevices: React.PropTypes.func.isRequired,
+  fetchFleet: React.PropTypes.func.isRequired,
   children: React.PropTypes.node,
   replace: React.PropTypes.func.isRequired,
   routes: React.PropTypes.arrayOf(
@@ -122,12 +122,14 @@ App.propTypes = {
 const mapState = state => ({
   locale: getLocale(state),
 });
-const mapDispatch = dispatch => ({
-  changeOnlineState: () => dispatch(onlineActions.changeOnlineState()),
-  saveSession: session => dispatch(setSession(session)),
-  cleanSession: () => dispatch(cleanSession()),
-  replace: url => dispatch(replace(url)),
-});
+const mapDispatch = {
+  changeOnlineState: onlineActions.changeOnlineState,
+  saveSession: setSession,
+  cleanSession,
+  replace,
+  fetchDevices,
+  fetchFleet: commonFleetActions.fetchFleet,
+};
 
 const PureApp = pure(App);
 

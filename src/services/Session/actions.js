@@ -1,3 +1,4 @@
+import R from 'ramda';
 import {
   LOCAL_STORAGE_SESSION_KEY,
   checkSetMaritime,
@@ -9,12 +10,19 @@ export const SESSION_SET = 'services/Session/SESSION_SET';
 export const SESSION_CLEAN = 'services/Session/SESSION_CLEAN';
 export const SESSION_SETTINGS_UPDATE = 'services/Session/SESSION_SETTINGS_UPDATE';
 
-export const setSession = session => {
-  checkSetMaritime(session.fleet);
-  return {
+const takeFleetName = R.propOr('', 'fleet');
+
+export const setSession = session => dispatch => {
+  // new Promise(resolve => {
+  checkSetMaritime(takeFleetName(session));
+
+  dispatch({
     type: SESSION_SET,
     session,
-  };
+  });
+
+  return Promise.resolve();
+  // })
 };
 
 export const cleanSession = () => ({
