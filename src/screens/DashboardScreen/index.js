@@ -6,6 +6,8 @@ import { onProduction, onStage } from 'configs';
 import { translate } from 'utils/i18n';
 import D3Sandbox from './components/Sandbox';
 
+import RunningLogo from 'components/animated/RunningLogo';
+
 import classes from './classes';
 import phrases, { phrasesShape } from './PropTypes';
 
@@ -18,6 +20,10 @@ function canShow(Component) {
     return true;
   }
 
+  if ((Component === RunningLogo) && !onProduction && !onStage) {
+    return true;
+  }
+  
   return false;
 }
 
@@ -33,6 +39,8 @@ const DashboardScreen = ({ translations }) => (
     )}
 
     { canShow(D3Sandbox) && <D3Sandbox /> }
+    { canShow(RunningLogo) && <RunningLogo radius={40} color='darkorange' /> }
+
   </Content>
 );
 
