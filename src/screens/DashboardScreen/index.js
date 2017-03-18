@@ -40,6 +40,7 @@ const DashboardScreen = ({ translations }) => (
 
     { canShow(D3Sandbox) && <D3Sandbox /> }
     { canShow(RunningLogo) && <RunningLogo radius={40} color='darkorange' /> }
+    { canShow(RunningLogo) && <RunningLogo radius={40} color='darkorange' is3D /> }
 
   </Content>
 );

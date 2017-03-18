@@ -16,7 +16,7 @@ class RoadLines extends React.Component {
 
     this.segLen = '30%';
     this.segStep = 45;
-    this.segCount = 4;
+    this.segCount = 7;
 
     this.aniSpeed = 0.005;   //
   }
@@ -102,7 +102,8 @@ class RoadLines extends React.Component {
     const lines = this.generateRoadLines();
     const baseStyle = {
       left: `${this.props.leftRightSway || 0}%`,
-    };     
+      transform: this.props.is3D ? 'rotateX(45deg)' : '',
+    };
     return (
       <div className={styles.roadLine} style={baseStyle} >
         {lines}
@@ -115,10 +116,8 @@ class RoadLines extends React.Component {
 RoadLines.propTypes = {
   color: React.PropTypes.string.isRequired,
   leftRightSway: React.PropTypes.number,
-    // vehicles: React.PropTypes.array.isRequired,
-  // gfs: React.PropTypes.array.isRequired,
-  // openFleetSocket: React.PropTypes.func.isRequired,
-  // startLocalTick: React.PropTypes.func.isRequired,
+  driveSpeed: React.PropTypes.number,
+  is3D: React.PropTypes.bool,
 };
 
 export default pure(RoadLines);
