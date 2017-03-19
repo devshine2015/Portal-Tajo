@@ -1,0 +1,23 @@
+@media screen and (min-width: 100px) {
+ .roundFrame {
+    position: relative;
+    border-radius: 50%;
+ }
+ .innerCircle {
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    left: 10%;
+    top: 10%;
+    border-radius: 50%;
+ }
+ .clipCircle {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    left: 5%;
+    top: 5%;
+    clip-path: circle(50% at center);
+    overflow: hidden;
+ }
+}

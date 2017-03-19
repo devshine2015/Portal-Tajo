@@ -1,0 +1,15 @@
+@media screen and (min-width: 100px) {
+ .roadLine {
+     margin: 0 auto;
+     width: 12%;
+     height: 100%;
+     position: relative;
+}
+ .roadLineSeg {
+  position: absolute;
+  width: 100%;
+  /*left: 100px;*/
+  /*bottom: 20px;*/
+ }
+
+}
