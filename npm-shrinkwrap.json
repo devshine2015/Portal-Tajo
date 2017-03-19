@@ -4211,11 +4211,6 @@
       "from": "node-uuid@1.4.7",
       "resolved": "https://registry.npmjs.org/node-uuid/-/node-uuid-1.4.7.tgz"
     },
-    "noisejs": {
-      "version": "2.1.0",
-      "from": "noisejs@latest",
-      "resolved": "https://registry.npmjs.org/noisejs/-/noisejs-2.1.0.tgz"
-    },
     "normalize-package-data": {
       "version": "2.3.5",
       "from": "normalize-package-data@>=2.3.2 <3.0.0",
