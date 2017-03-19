@@ -23,12 +23,38 @@ function canShow(Component) {
   if ((Component === RunningLogo) && !onProduction && !onStage) {
     return true;
   }
-  
+
   return false;
 }
 
+const logoContainerStyle = {flex: '1' };
+
 const DashboardScreen = ({ translations }) => (
   <Content center>
+    { canShow(RunningLogo) &&
+      <div style={{ display: 'flex', flexDirection: 'row', margin: '60px 40px 20px 40px', width: '100%' }}>
+          <div style={logoContainerStyle}>
+            <RunningLogo radius={60} color="darkorange" swayRange={20} />
+          </div>
+          <div style={logoContainerStyle}>
+            <RunningLogo radius={60} color="darkorange" swayRange={10} turnRange={10} is3D />
+          </div>
+          <div style={logoContainerStyle}>
+            <RunningLogo radius={20} swayRange={10} />
+          </div>
+        </div>
+      }
+    { canShow(RunningLogo) &&
+      <div style={{ display: 'inline-flex', marginTop: '140px', marginBottom: '160px' }}>
+          <div style={{ paddingRight: '5px', position: 'relative', top: '2px' }}>
+            <RunningLogo radius={10} color="#009688" />
+          </div>
+          <div style={{ padding: '0', color: '#009688' }}>
+            loading...
+          </div>
+        </div>
+      }
+
     { canShow(FleetSummary) && (
       <Widget
         containerClass={classes.dashboard__summaryGroup}
@@ -37,10 +63,7 @@ const DashboardScreen = ({ translations }) => (
         <FleetSummary />
       </Widget>
     )}
-
     { canShow(D3Sandbox) && <D3Sandbox /> }
-    { canShow(RunningLogo) && <RunningLogo radius={40} color='darkorange' /> }
-    { canShow(RunningLogo) && <RunningLogo radius={40} color='darkorange' is3D /> }
 
   </Content>
 );
