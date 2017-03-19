@@ -74,8 +74,14 @@ class MapMarkerToggle extends React.Component {
 
   render() {
     const typeToUse = this.props.overrideListType || this.props.listType;
-    const iconBtnSyle = { backgroundColor: this.btnColor(typeToUse),
-            width: '36px', height: '36px', padding: '0' };
+    const iconBtnSyle = {
+      backgroundColor: this.btnColor(typeToUse),
+      width: 36,
+      height: 36,
+      padding: 0,
+      position: 'absolute',
+      zIndex: 1000,
+    };
     const toolTip = this.contentText(typeToUse);
     return (
       <IconButton

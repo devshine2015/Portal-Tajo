@@ -148,10 +148,10 @@ class MapFleet extends React.Component {
        key="gfEditHelper"
        theMap={this.theMap}
      />);
-//      <GooglePlacesSearch ownerMapObj={this.theMap} />
     return (
       <div className = {styles.mapContainer}>
       <MapMarkerToggle />
+      <GooglePlacesSearch ownerMapObj={this.theMap} />
       {gfs}
       {vehicles}
       {editGF}

@@ -46,14 +46,20 @@ class GooglePlacesSearch extends React.Component {
         }
   // use the first one
         const place = places[0];
+
+        const bounds = new window.google.maps.LatLngBounds();
+
+        bounds.union(place.geometry.viewport);
+
+        const northeast = bounds.getNorthEast();
+        const southwest = bounds.getSouthWest();
+
         const posOfInterest = window.L.latLng(place.geometry.location.lat(),
             place.geometry.location.lng());
-        const bounds = this.props.ownerMapObj.getBounds();
-        if (!bounds.contains(posOfInterest)) {
-          this.props.ownerMapObj.panTo(posOfInterest);
-        }
-      // if(_this.resultListener!==null)
-      //   _this.resultListener( mapBoxPos );
+        this.props.ownerMapObj.fitBounds([
+          [northeast.lat(), northeast.lng()],
+          [southwest.lat(), southwest.lng()],
+        ]);
         if (this.searchPin === null) {
           // this.searchPin = window.L.circleMarker(posOfInterest,
           //   {

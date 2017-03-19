@@ -1,6 +1,6 @@
 {
   "name": "drvr.co",
-  "version": "1.2.55",
+  "version": "1.2.56",
   "description": "common code base for DRVR portals",
   "repository": {
     "type": "git",
@@ -48,10 +48,10 @@
     "google-maps-api": "2.0.1",
     "immutable": "3.8.1",
     "jwt-decode": "^2.1.0",
-    "leaflet-contextmenu": "1.2.1",
-    "leaflet-draw": "0.3.2",
+    "leaflet-contextmenu": "^1.4.0",
+    "leaflet-draw": "^0.4.9",
     "leaflet.heat": "0.2.0",
-    "mapbox.js": "2.4.0",
+    "mapbox.js": "^3.0.1",
     "material-ui": "0.16.7",
     "moment": "2.13.0",
     "node-polyglot": "2.2.2",
