@@ -5,9 +5,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
 import IconButton from 'material-ui/IconButton';
-// import CarIcon from 'material-ui/svg-icons/maps/directions-car';
 import CarIcon from 'material-ui/svg-icons/maps/local-shipping';
-// import LocationIcon from 'material-ui/svg-icons/social/location-city';
 import LocationIcon from 'material-ui/svg-icons/social/location-city';
 
 import { ctxGetHideGF, ctxGetHideVehicles,
@@ -16,7 +14,6 @@ import { contextActions } from 'services/Global/actions';
 import listTypes from 'components/InstancesList/types';
 import { translate } from 'utils/i18n';
 
-import styles from './styles.css';
 import phrases, { phrasesShape } from './PropTypes';
 
 const iconColor = '#535353';
@@ -79,15 +76,14 @@ class MapMarkerToggle extends React.Component {
       width: 36,
       height: 36,
       padding: 0,
-      position: 'absolute',
-      zIndex: 1000,
     };
     const toolTip = this.contentText(typeToUse);
+
     return (
       <IconButton
         tooltip={toolTip}
+        tooltipPosition="bottom-right"
         onClick={this.onClick}
-        className={styles.iconBtn}
         style={ iconBtnSyle }
         key="toggleBtn"
       >

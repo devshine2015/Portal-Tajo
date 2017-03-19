@@ -1,15 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { css } from 'aphrodite/no-important';
+import { connect } from 'react-redux';
 import pure from 'recompose/pure';
-import styles from './styles.css';
-
-import GooglePlacesSearch from 'components/GooglePlacesSearch';
-import MapMarkerToggle from 'components/MapMarkerToggle';
 
 import MapVehicle from './components/MapVehicle';
 import MapGF from './components/MapGF';
 import EditGF from './components/EditGF';
-import { connect } from 'react-redux';
+import CustomControls from './components/CustomControls';
+import GooglePlacesSearch from './components/GooglePlacesSearch';
+import MapMarkerToggle from './components/MapMarkerToggle';
+
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 
 import { createMapboxMap, hideLayer } from 'utils/mapBoxMap';
@@ -28,6 +29,8 @@ import { gfEditIsEditing } from 'containers/GFEditor/reducer';
 import * as mapEvents from './events';
 import * as listEvents from 'containers/Operational/components/OperationalPowerList/events';
 import listTypes from 'components/InstancesList/types';
+
+import classes from './classes';
 
 const selectForMe = (meThis, hookId) => (id) => {
   meThis.selectMarker(hookId, id);
@@ -148,13 +151,27 @@ class MapFleet extends React.Component {
        key="gfEditHelper"
        theMap={this.theMap}
      />);
+
     return (
-      <div className = {styles.mapContainer}>
-      <MapMarkerToggle />
-      <GooglePlacesSearch ownerMapObj={this.theMap} />
-      {gfs}
-      {vehicles}
-      {editGF}
+      <div className={css(classes.mapContainer)}>
+
+        <CustomControls>
+          <CustomControls.Control>
+            <MapMarkerToggle />
+          </CustomControls.Control>
+          <CustomControls.Control sizes={{
+            width: 'auto',
+            height: 'auto',
+          }}
+          >
+            <GooglePlacesSearch ownerMapObj={this.theMap} />
+          </CustomControls.Control>
+        </CustomControls>
+
+        {gfs}
+        {vehicles}
+        {editGF}
+
       </div>
     );
   }
