@@ -17,16 +17,18 @@ class RunningLogo extends React.Component {
       aniT: 0,
     };
     this.mainStyle = {
-      backgroundColor: this.props.colorIn || 'white',
-      borderColor: this.props.color || 'black',
+      // backgroundColor: this.props.colorIn || 'white',
+      backgroundColor: this.props.color,
       width: this.props.radius * 2,
       height: this.props.radius * 2,
     };
-    this.innerStyle = {
-      backgroundColor: this.mainStyle.borderColor,
+    this.clipCircleStyle = !this.props.is3D ? {} : {
+      perspective: '25px',
+      perspectiveOrigin: '50% 40%',
     };
-    this.borderStyle = {
-      borderColor: this.mainStyle.borderColor,
+    this.clipCircleStyle.backgroundColor = this.props.colorIn;
+    this.innerStyle = {
+      backgroundColor: this.mainStyle.backgroundColor,
     };
 
     this.aniSpeed = 0.0003;
@@ -69,20 +71,13 @@ class RunningLogo extends React.Component {
     // const leftRight = 10 * this.noiseGen.simplex2(this.state.aniT, 3);
     const offsetValue = this.noiseGen.getVal(this.state.aniT - 0.05);
     const turnValue = -this.noiseGen.getVal(this.state.aniT);
-    const leftRight = 10 * offsetValue;
-    const clipCircleStyle = !this.props.is3D ? {} : {
-      perspective: '25px',
-      perspectiveOrigin: '50% 40%',
-    };
-    this.mainStyle.transform = `rotate(${turnValue * 5}deg)`;
+    const leftRight = this.props.swayRange * offsetValue;
+    this.mainStyle.transform = `rotate(${turnValue * this.props.turnRange}deg)`;
     return (
       <div className={styles.roundFrame} style={this.mainStyle}>
-        <div className={styles.innerCircle} style={this.innerStyle}>
-        </div>
-        <div className={styles.clipCircle} style={clipCircleStyle}>
-          <RoadLines color={this.mainStyle.backgroundColor} leftRightSway={leftRight} is3D={this.props.is3D} />
-        </div>
-        <div className={styles.borderCircle} style={this.borderStyle}>
+        <div className={styles.clipCircle} style={this.clipCircleStyle}>
+          <div className={styles.innerCircle} style={this.innerStyle} />
+          <RoadLines color={this.clipCircleStyle.backgroundColor} leftRightSway={leftRight} is3D={this.props.is3D} />
         </div>
       </div>
     );
@@ -90,11 +85,23 @@ class RunningLogo extends React.Component {
 }
 
 RunningLogo.propTypes = {
-  radius: React.PropTypes.number.isRequired,
+  radius: React.PropTypes.number,
   color: React.PropTypes.string,
   colorIn: React.PropTypes.string,
   driveSpeed: React.PropTypes.number,
+  turnRange: React.PropTypes.number,
+  swayRange: React.PropTypes.number,
   is3D: React.PropTypes.bool,
+};
+
+RunningLogo.defaultProps = {
+  radius: 15,
+  colorIn: 'white',
+  color: 'darkslategrey',
+  driveSpeed: 1,
+  turnRange: 0,
+  swayRange: 0,
+  is3D: false,
 };
 
 export default pure(RunningLogo);

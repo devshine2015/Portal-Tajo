@@ -1,6 +1,7 @@
 @media screen and (min-width: 100px) {
  .roundFrame {
     position: relative;
+    border-radius: 50%;
  }
  .innerCircle {
     position: absolute;
@@ -12,16 +13,11 @@
  }
  .clipCircle {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 90%;
+    height: 90%;
+    left: 5%;
+    top: 5%;
     clip-path: circle(50% at center);
     overflow: hidden;
- }
- .borderCircle {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    border: solid 5px #00675d;  
  }
 }

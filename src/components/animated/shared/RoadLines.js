@@ -16,7 +16,7 @@ class RoadLines extends React.Component {
 
     this.segLen = '30%';
     this.segStep = 45;
-    this.segCount = 7;
+    this.segCount = this.props.is3D ? 7 : 3;
 
     this.aniSpeed = 0.005;   //
   }
