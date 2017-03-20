@@ -1,11 +1,11 @@
 import React from 'react';
 import Section from '../Section';
 import RoleForm from '../RoleForm';
-import PermissionsList from '../PermissionsList';
+import RolesList from '../RolesList';
 
 const RolesSection = () => (
   <Section
-    listComponent={<PermissionsList />}
+    listComponent={<RolesList />}
     formComponent={<RoleForm />}
     actionButtonLabel="Add role"
     headerLabel="Roles"

@@ -19,6 +19,7 @@ import {
 import drvrDevTheme from 'configs/theme';
 import { TranslationProvider } from 'utils/i18n';
 import { AuthProvider } from 'utils/auth';
+import { auth0Api } from 'utils/api';
 import phrases, { locales } from 'configs/phrases';
 
 // need this for global styling
@@ -61,6 +62,8 @@ class App extends React.Component {
 
     const needRedirect = this.state.initialLocation === '/login';
 
+    auth0Api.setAccessToken(session.sessionId);
+
     if (needRedirect) {
       this.context.router.replace(`${BASE_URL}/`);
     }
@@ -69,7 +72,14 @@ class App extends React.Component {
   onLogoutSuccess = () => {
     this.props.cleanSession();
 
-    this.context.router.replace(`${BASE_URL}/login`);
+    // we need reset it
+    // to support login flow
+    this.setState({
+      initialLocation: '/login',
+    }, () => {
+      auth0Api.setAccessToken();
+      this.context.router.replace(`${BASE_URL}/login`);
+    });
   }
 
   handleOnlineState = (e) => {
