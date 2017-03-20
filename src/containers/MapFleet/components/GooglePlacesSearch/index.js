@@ -12,6 +12,11 @@ const googleMapsAPI = require('google-maps-api')('AIzaSyA-97-nJq7i1hy46cjHJSeOwk
 const iconPointer = require('assets/images/v_icons_combi/pointerArrow.png');
 
 const STYLES = {
+  icon: {
+    padding: 6,
+    width: 36,
+    height: 36,
+  },
   input: {
     paddingRight: 20,
   },
@@ -147,7 +152,7 @@ class GooglePlacesSearch extends React.Component {
     const searchIconClassName = css(classes.icon,
       isOpened ? classes.icon_hide : classes.icon_show,
     );
-    const closeIconClassName = css(classes.icon, classes.icon_close,
+    const closeIconClassName = css(classes.icon,
       isOpened ? classes.icon_show : classes.icon_hide,
     );
 
@@ -156,10 +161,14 @@ class GooglePlacesSearch extends React.Component {
         <SearchIcon
           className={searchIconClassName}
           onClick={this.onSearchClick}
+          style={STYLES.icon}
+          hoverColor={this.context.muiTheme.palette.primary1Color}
         />
         <CloseSearchIcon
           className={closeIconClassName}
           onClick={this.onCloseClick}
+          style={STYLES.icon}
+          hoverColor={this.context.muiTheme.palette.accent1Color}
         />
         <TextField
           fullWidth
@@ -173,15 +182,16 @@ class GooglePlacesSearch extends React.Component {
           name="places"
           onChange={this.onChange}
           ref={this.saveRef}
+          placeholder="Search for places"
         />
       </div>
     );
   }
 }
 
-// GooglePlacesSearch.contextTypes = {
-//   muiTheme: React.PropTypes.object.isRequired,
-// };
+GooglePlacesSearch.contextTypes = {
+  muiTheme: React.PropTypes.object.isRequired,
+};
 GooglePlacesSearch.propTypes = {
   ownerMapObj: React.PropTypes.object,
 };

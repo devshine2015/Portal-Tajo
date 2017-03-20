@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { css } from 'aphrodite/no-important';
 import pure from 'recompose/pure';
 
 import CustomControls from './components/CustomControls';
@@ -25,7 +24,7 @@ import { gfEditIsEditing } from 'containers/GFEditor/reducer';
 
 import listTypes from 'components/InstancesList/types';
 
-import classes from './classes';
+import styles from './styles.css';
 
 const EMPTY_ARRAY = [];
 
@@ -135,7 +134,7 @@ class MapChronicle extends React.Component {
      />);
     //  <GooglePlacesSearch ownerMapObj={this.theMap} />
     return (
-      <div className = {css(classes.mapContainer)}>
+      <div className = {styles.mapContainer}>
 
       <CustomControls>
         <CustomControls.Control>

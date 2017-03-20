@@ -19,6 +19,14 @@ import phrases, { phrasesShape } from './PropTypes';
 const iconColor = '#535353';
 const iconHoverColor = '#00695C';
 
+const STYLES = {
+  iconBtn: {
+    width: 36,
+    height: 36,
+    padding: 0,
+  },
+};
+
 class MapMarkerToggle extends React.Component {
 
   onClick = () => {
@@ -50,6 +58,7 @@ class MapMarkerToggle extends React.Component {
   }
   btnHideColor = (isHide) =>
     isHide ? '#ffffff' : '#f9f9f9';
+
   btnColor = (forType) => {
     switch (forType) {
       case listTypes.withGFDetails:
@@ -71,12 +80,6 @@ class MapMarkerToggle extends React.Component {
 
   render() {
     const typeToUse = this.props.overrideListType || this.props.listType;
-    const iconBtnSyle = {
-      backgroundColor: this.btnColor(typeToUse),
-      width: 36,
-      height: 36,
-      padding: 0,
-    };
     const toolTip = this.contentText(typeToUse);
 
     return (
@@ -84,7 +87,7 @@ class MapMarkerToggle extends React.Component {
         tooltip={toolTip}
         tooltipPosition="bottom-right"
         onClick={this.onClick}
-        style={ iconBtnSyle }
+        style={ STYLES.iconBtn }
         key="toggleBtn"
       >
         {this.contentIcon(typeToUse)}

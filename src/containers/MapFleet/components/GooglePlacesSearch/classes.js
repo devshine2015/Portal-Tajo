@@ -23,11 +23,9 @@ const classes = StyleSheet.create({
   icon: {
     transition: 'opacity .25s',
     position: 'absolute',
-    right: 5,
+    right: 0,
     top: '50%',
     transform: 'translateY(-50%)',
-    width: 24,
-    height: 24,
     cursor: 'pointer',
     zIndex: 10,
   },

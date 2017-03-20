@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { css } from 'aphrodite/no-important';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 
@@ -30,7 +29,7 @@ import * as mapEvents from './events';
 import * as listEvents from 'containers/Operational/components/OperationalPowerList/events';
 import listTypes from 'components/InstancesList/types';
 
-import classes from './classes';
+import styles from './styles.css';
 
 const selectForMe = (meThis, hookId) => (id) => {
   meThis.selectMarker(hookId, id);
@@ -153,7 +152,7 @@ class MapFleet extends React.Component {
      />);
 
     return (
-      <div className={css(classes.mapContainer)}>
+      <div className={styles.mapContainer}>
 
         <CustomControls>
           <CustomControls.Control>
