@@ -1,4 +1,5 @@
 import React from 'react';
+import pure from 'recompose/pure';
 import { css } from 'aphrodite/no-important';
 import TextField from 'material-ui/TextField';
 import SearchIcon from 'material-ui/svg-icons/action/search';
@@ -40,7 +41,7 @@ class GooglePlacesSearch extends React.Component {
   }
 
   onChange = (e) => {
-    const value = e.target.value.trim();
+    const value = e.target.value;
     const isClearing = value.length < this.state.value.length;
 
     this.setState({
@@ -146,6 +147,7 @@ class GooglePlacesSearch extends React.Component {
   }
 
   render() {
+    console.log('rerender');
     const { isOpened } = this.state;
     const containerClassName = css(classes.container,
       isOpened ? classes.container_open : classes.container_closed
@@ -197,4 +199,4 @@ GooglePlacesSearch.propTypes = {
   ownerMapObj: React.PropTypes.object,
 };
 
-export default GooglePlacesSearch;
+export default pure(GooglePlacesSearch);
