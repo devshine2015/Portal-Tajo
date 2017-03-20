@@ -65,6 +65,7 @@ class GooglePlacesSearch extends React.Component {
       value: '',
     }, () => {
       this.textField.blur();
+      this.hideMarker(true);
     });
   }
 
