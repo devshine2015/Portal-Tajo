@@ -6,7 +6,7 @@ import { rolesEnum } from 'configs/roles';
 import MainMenu from '../MainMenu';
 import { getDashboardPages, getSidebarState } from 'containers/InnerPortal/reducer';
 import { changeMainSidebarState } from 'containers/InnerPortal/actions';
-import { getUserRole } from 'services/UserModel/reducer';
+import { getUserRole } from 'services/Session/reducer';
 
 import styles from './styles.css';
 

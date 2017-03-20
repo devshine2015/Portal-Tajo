@@ -12,9 +12,9 @@ import reportReducer from 'containers/Report/reducer';
 import chronicleReducer from 'containers/Chronicle/reducer';
 import gfEditorReducer from 'containers/GFEditor/reducer';
 import mapViewReducer from 'containers/MapFleet/reducerAction';
-import authReducer from 'services/Auth/reducer';
+import sessionReducer from 'services/Session/reducer';
 import globalReducer from 'services/Global/reducer';
-import userReducer from 'services/UserModel/reducer';
+// import userReducer from 'services/UserModel/reducer';
 import devicesReducer from 'services/Devices/reducer';
 import alertsSystemReducer from 'services/AlertsSystem/reducer';
 
@@ -40,14 +40,14 @@ function routerReducer(state = routeInitialState, action) {
  */
 export default function createReducer(asyncReducers) {
   return combineReducers({
-    auth: authReducer,
+    session: sessionReducer,
     global: globalReducer,
     route: routerReducer,
     inner: innerPortalReducer,
     snackbar: snackbarReducer,
     fleet: fleetReducer,
     chronicle: chronicleReducer,
-    user: userReducer,
+    // user: userReducer,
     gfEditor: gfEditorReducer,
     mapView: mapViewReducer,
     devices: devicesReducer,
@@ -58,7 +58,7 @@ export default function createReducer(asyncReducers) {
 
 export const createSelfServiceReducer = (asyncReducers) =>
   combineReducers({
-    auth: authReducer,
+    session: sessionReducer,
     global: globalReducer,
     fleet: fleetReducer,
     reports: reportReducer,

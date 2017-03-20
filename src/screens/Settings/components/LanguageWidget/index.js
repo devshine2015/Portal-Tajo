@@ -5,7 +5,7 @@ import { css } from 'aphrodite/no-important';
 import Widget from 'components/Widget';
 import { translate } from 'utils/i18n';
 import { locales } from 'configs/phrases';
-import { updateUserSettings } from 'services/UserModel/actions';
+import { updateUserSettings } from 'services/Session/actions';
 
 import classes from './classes';
 import phrases, { phrasesShape } from './PropTypes';

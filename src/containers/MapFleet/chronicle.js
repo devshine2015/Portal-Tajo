@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import pure from 'recompose/pure';
-import styles from './styles.css';
 
-import GooglePlacesSearch from 'components/GooglePlacesSearch';
-import MapMarkerToggle from 'components/MapMarkerToggle';
-
+import CustomControls from './components/CustomControls';
+import GooglePlacesSearch from './components/GooglePlacesSearch';
+import MapMarkerToggle from './components/MapMarkerToggle';
 import ChroniclePath from './components/ChroniclePath';
 import ChronicleMarker from './components/ChronicleMarker';
 import ChronicleEventMarker from './components/ChronicleEventMarker';
@@ -24,6 +23,8 @@ import { gfEditUpdate } from 'containers/GFEditor/actions';
 import { gfEditIsEditing } from 'containers/GFEditor/reducer';
 
 import listTypes from 'components/InstancesList/types';
+
+import styles from './styles.css';
 
 const EMPTY_ARRAY = [];
 
@@ -134,7 +135,19 @@ class MapChronicle extends React.Component {
     //  <GooglePlacesSearch ownerMapObj={this.theMap} />
     return (
       <div className = {styles.mapContainer}>
-      <MapMarkerToggle overrideListType = {listTypes.withVehicleDetails} />
+
+      <CustomControls>
+        <CustomControls.Control>
+          <MapMarkerToggle overrideListType = {listTypes.withVehicleDetails} />
+        </CustomControls.Control>
+        <CustomControls.Control sizes={{
+          width: 'auto',
+          height: 'auto',
+        }}
+        >
+          <GooglePlacesSearch ownerMapObj={this.theMap} />
+        </CustomControls.Control>
+      </CustomControls>
       {gfs}
       {chronPaths}
       {chronMarkers}

@@ -2,38 +2,17 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import SnackbarNotification from 'containers/Snackbar';
-import styles from './styles.css';
 import ApplicationBar from './components/ApplicationBar';
 import MainSidebar from './components/MainSidebar';
-import { getFleetName } from 'services/UserModel/reducer';
-import { getIsUserAuthenticated } from 'services/Auth/reducer';
-import { localActions } from 'services/Auth/actions';
-import { commonFleetActions } from 'services/FleetModel/actions';
-import { fetchDevices } from 'services/Devices/actions';
+import { getFleetName } from 'services/Session/reducer';
 
-const URLS = {
-  failure: 'login',
-};
+import styles from './styles.css';
 
 class InnerPortal extends React.Component {
 
-  componentDidMount() {
-    this.checkUserAuthentication();
-  }
-
-  checkUserAuthentication() {
-    this.props.checkUserAuthentication({ urls: URLS }).then(isAuthenticated => {
-      if (isAuthenticated) {
-        this.props.fetchFleet()
-        .then(() => this.props.fetchDevices());
-      }
-    });
-  }
-
   render() {
-    // check here to hide InnerPortal
-    // from unauthenticated users for sure
-    if (this.props.isAuthenticated) {
+    // hide InnerPortal from unauthenticated users
+    if (this.context.authenticated()) {
       return (
         <div className={styles.innerPortal}>
 
@@ -55,13 +34,13 @@ class InnerPortal extends React.Component {
   }
 }
 
+InnerPortal.contextTypes = {
+  authenticated: React.PropTypes.func.isRequired,
+};
+
 InnerPortal.propTypes = {
-  checkUserAuthentication: React.PropTypes.func.isRequired,
-  children: React.PropTypes.node,
-  fetchFleet: React.PropTypes.func.isRequired,
-  fetchDevices: React.PropTypes.func.isRequired,
+  children: React.PropTypes.node.isRequired,
   fleet: React.PropTypes.string,
-  isAuthenticated: React.PropTypes.bool.isRequired,
   showPortalsList: React.PropTypes.bool,
 };
 
@@ -69,12 +48,7 @@ const PureInnerPortal = pure(InnerPortal);
 
 const mapState = (state) => ({
   fleet: getFleetName(state),
-  isAuthenticated: getIsUserAuthenticated(state),
 });
-const mapDispatch = {
-  fetchDevices,
-  checkUserAuthentication: localActions.checkUserAuthentication,
-  fetchFleet: commonFleetActions.fetchFleet,
-};
+const mapDispatch = null;
 
 export default connect(mapState, mapDispatch)(PureInnerPortal);

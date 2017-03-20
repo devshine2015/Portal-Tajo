@@ -5,10 +5,20 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import InnerPortal from 'containers/InnerPortal';
 import { onlineActions } from 'services/Global/actions';
-import { localActions } from 'services/Auth/actions';
-import { getLocale } from 'services/UserModel/reducer';
+import {
+  setSession,
+  cleanSession,
+} from 'services/Session/actions';
+import { getLocale } from 'services/Session/reducer';
+import { commonFleetActions } from 'services/FleetModel/actions';
+import { fetchDevices } from 'services/Devices/actions';
+import {
+  LOCAL_STORAGE_SESSION_KEY,
+  BASE_URL,
+} from 'configs';
 import drvrDevTheme from 'configs/theme';
 import { TranslationProvider } from 'utils/i18n';
+import { AuthProvider } from 'utils/auth';
 import phrases, { locales } from 'configs/phrases';
 
 // need this for global styling
@@ -19,27 +29,47 @@ function screenIsProtected(routes = []) {
   const lastRoute = routes[routes.length - 1];
 
   // if screen don't have 'protected' property
-  // recon it as protected by default
+  // consider it as protected by default
   return Object.hasOwnProperty.call(lastRoute, 'protected') ? lastRoute.protected : true;
 }
 
 const muiTheme = getMuiTheme(drvrDevTheme);
 
-const URLS = {
-  failure: 'login',
-};
-
 class App extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      initialLocation: context.router.location.pathname,
+    };
+  }
 
   componentDidMount() {
     window.addEventListener('offline', this.handleOnlineState);
     window.addEventListener('online', this.handleOnlineState);
-    this.props.checkUserAuthentication({ urls: URLS });
   }
 
   componentWillUnmount() {
     window.removeEventListener('offline', this.handleOnlineState);
     window.removeEventListener('online', this.handleOnlineState);
+  }
+
+  onLoginSuccess = session => {
+    this.props.saveSession(session)
+      .then(this.props.fetchFleet)
+      .then(this.props.fetchDevices);
+
+    const needRedirect = this.state.initialLocation === '/login';
+
+    if (needRedirect) {
+      this.context.router.replace(`${BASE_URL}/`);
+    }
+  }
+
+  onLogoutSuccess = () => {
+    this.props.cleanSession();
+
+    this.context.router.replace(`${BASE_URL}/login`);
   }
 
   handleOnlineState = (e) => {
@@ -60,15 +90,21 @@ class App extends React.Component {
     }
 
     return (
-      <TranslationProvider
-        phrases={phrases}
-        locales={locales}
-        locale={this.props.locale || 'en'}
+      <AuthProvider
+        storageKey={LOCAL_STORAGE_SESSION_KEY}
+        onLoginSuccess={this.onLoginSuccess}
+        onLogoutSuccess={this.onLogoutSuccess}
       >
-        <MuiThemeProvider muiTheme={muiTheme}>
-          {children}
-        </MuiThemeProvider>
-      </TranslationProvider>
+        <TranslationProvider
+          phrases={phrases}
+          locales={locales}
+          locale={this.props.locale || 'en'}
+        >
+          <MuiThemeProvider muiTheme={muiTheme}>
+            {children}
+          </MuiThemeProvider>
+        </TranslationProvider>
+      </AuthProvider>
     );
   }
 }
@@ -80,7 +116,10 @@ App.contextTypes = {
 App.propTypes = {
   locale: React.PropTypes.string,
   changeOnlineState: React.PropTypes.func.isRequired,
-  checkUserAuthentication: React.PropTypes.func.isRequired,
+  saveSession: React.PropTypes.func.isRequired,
+  cleanSession: React.PropTypes.func.isRequired,
+  fetchDevices: React.PropTypes.func.isRequired,
+  fetchFleet: React.PropTypes.func.isRequired,
   children: React.PropTypes.node,
   routes: React.PropTypes.arrayOf(
     React.PropTypes.shape({
@@ -94,7 +133,10 @@ const mapState = state => ({
 });
 const mapDispatch = {
   changeOnlineState: onlineActions.changeOnlineState,
-  checkUserAuthentication: localActions.checkUserAuthentication,
+  saveSession: setSession,
+  cleanSession,
+  fetchDevices,
+  fetchFleet: commonFleetActions.fetchFleet,
 };
 
 const PureApp = pure(App);
