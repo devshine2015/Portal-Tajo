@@ -8,6 +8,9 @@ class RoadLines extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.reqId = null;
+
     this.state = {
       isPlaying: false,
       aniT: 0,
@@ -25,9 +28,9 @@ class RoadLines extends React.Component {
     this.play(true);
   }
 
-  // componentWillUnmount() {
-  //   // localTickActions.stopLocalTick();
-  // }
+  componentWillUnmount() {
+    this.play(false);
+  }
 
   isPlaying = () => (
     this.state.isPlaying
@@ -35,11 +38,14 @@ class RoadLines extends React.Component {
 
   aniStep = timestamp => {
     if (!this.lastTime) this.lastTime = timestamp;
+
     const aStep = timestamp - this.lastTime;
     this.lastTime = timestamp;
     const advancedT = this.state.aniT + aStep * this.aniSpeed;
+
     this.setState({ aniT: advancedT - Math.floor(advancedT) });
-    window.requestAnimationFrame(this.aniStep);
+
+    this.reqId = window.requestAnimationFrame(this.aniStep);
   }
 
   aniStepFixed = () => {
@@ -71,9 +77,14 @@ class RoadLines extends React.Component {
     // when do - make sure actual frame time used
     // for speed/advance calculations
 //    this.animationProc = window.setInterval(this.aniStepFixed, 33);
-    window.requestAnimationFrame(this.aniStep);
+    if (doPlay) {
+      this.reqId = window.requestAnimationFrame(this.aniStep);
+    } else {
+      window.cancelAnimationFrame(this.reqId);
+    }
+
     this.setState({
-      isPlaying: true,
+      isPlaying: doPlay,
     });
   }
 

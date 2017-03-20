@@ -12,10 +12,14 @@ class RunningLogo extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       isPlaying: false,
       aniT: 0,
     };
+
+    this.reqId = null;
+
     this.mainStyle = {
       // backgroundColor: this.props.colorIn || 'white',
       backgroundColor: this.props.color,
@@ -43,27 +47,38 @@ class RunningLogo extends React.Component {
     this.play(true);
   }
 
-  // componentWillUnmount() {
-  //   // localTickActions.stopLocalTick();
-  // }
+  componentWillUnmount() {
+    this.play(false);
+  }
 
   isPlaying = () => (
     this.state.isPlaying
   );
+
   aniStep = timestamp => {
     if (!this.lastTime) this.lastTime = timestamp;
+
     const aStep = timestamp - this.lastTime;
+
     this.lastTime = timestamp;
     this.setState({ aniT: this.state.aniT + aStep * this.aniSpeed });
-    window.requestAnimationFrame(this.aniStep);
+
+    this.reqId = window.requestAnimationFrame(this.aniStep);
   }
+
   play = doPlay => {
     if (doPlay === this.isPlaying()) {
       return;
     }
-    window.requestAnimationFrame(this.aniStep);
+
+    if (doPlay) {
+      this.reqId = window.requestAnimationFrame(this.aniStep);
+    } else {
+      window.cancelAnimationFrame(this.reqId);
+    }
+
     this.setState({
-      isPlaying: true,
+      isPlaying: doPlay,
     });
   }
 
