@@ -1,7 +1,6 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import { replace } from 'react-router-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import InnerPortal from 'containers/InnerPortal';
@@ -37,6 +36,13 @@ function screenIsProtected(routes = []) {
 const muiTheme = getMuiTheme(drvrDevTheme);
 
 class App extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      initialLocation: context.router.location.pathname,
+    };
+  }
 
   componentDidMount() {
     window.addEventListener('offline', this.handleOnlineState);
@@ -53,13 +59,17 @@ class App extends React.Component {
       .then(this.props.fetchFleet)
       .then(this.props.fetchDevices);
 
-    this.props.replace(`${BASE_URL}/`);
+    const needRedirect = this.state.initialLocation === '/login';
+
+    if (needRedirect) {
+      this.context.router.replace(`${BASE_URL}/`);
+    }
   }
 
   onLogoutSuccess = () => {
     this.props.cleanSession();
 
-    this.props.replace(`${BASE_URL}/login`);
+    this.context.router.replace(`${BASE_URL}/login`);
   }
 
   handleOnlineState = (e) => {
@@ -111,7 +121,6 @@ App.propTypes = {
   fetchDevices: React.PropTypes.func.isRequired,
   fetchFleet: React.PropTypes.func.isRequired,
   children: React.PropTypes.node,
-  replace: React.PropTypes.func.isRequired,
   routes: React.PropTypes.arrayOf(
     React.PropTypes.shape({
       protected: React.PropTypes.bool,
@@ -126,7 +135,6 @@ const mapDispatch = {
   changeOnlineState: onlineActions.changeOnlineState,
   saveSession: setSession,
   cleanSession,
-  replace,
   fetchDevices,
   fetchFleet: commonFleetActions.fetchFleet,
 };
