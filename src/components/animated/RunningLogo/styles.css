@@ -17,7 +17,7 @@
     height: 90%;
     left: 5%;
     top: 5%;
-    clip-path: circle(50% at center);
+    border-radius: 50%;
     overflow: hidden;
  }
 }
