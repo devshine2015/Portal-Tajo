@@ -12,7 +12,6 @@ const initialState = fromJS({
   users: new List(),
   grouped: new Map(),
   groupBy: 'fleet',
-  isAddingNewUser: false,
   isLoading: false,
 });
 
@@ -32,10 +31,8 @@ function reducer(state = initialState, action) {
          .set('grouped', new Map(action.grouped));
       });
     case USERS_MANAGER_NEW_USER_TOGGLE:
-      return state.withMutations(s => {
-        s.set('isAddingNewUser', action.nextState)
-         .set('isLoading', action.isLoading);
-      });
+      return state.set('isLoading', action.isLoading);
+
     case USERS_MANAGER_NEW_USER_ADD:
       return state.withMutations(s => {
         s.set('grouped', new Map(action.grouped))
@@ -73,9 +70,6 @@ export const getGroupBy = state =>
   state.get('groupBy');
 export const getGrouping = state =>
   state.get('grouped');
-
-export const getIsAddingNewUser = state =>
-  state.get('isAddingNewUser');
 
 export const getIsLoading = state =>
   state.get('isLoading');
