@@ -1,16 +1,18 @@
 import React from 'react';
+import { css } from 'aphrodite/no-important';
 import {
   Card,
   CardActions,
   CardHeader,
   CardText,
-} from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
+  FlatButton,
+} from 'material-ui';
 import Userpic from 'components/Userpic';
+import UserItemDetails from '../UserItemDetails';
 import { permissions as globalPermissions } from 'configs/roles';
 import permitted from 'utils/permissionsRequired';
 
-import styles from './styles.css';
+import classes from './classes';
 
 const PERMISSIONS = [
   globalPermissions.USERS_EDIT_ANY,
@@ -21,74 +23,119 @@ function userCan(permission, userPermittedTo) {
   return userPermittedTo[permission];
 }
 
-function renderActions(userPermittedTo) {
+function makeLastActiveString(lastActive) {
+  let lastActiveDate = 'never';
+
+  if (lastActive) {
+    lastActiveDate = new Date(lastActive).toLocaleString();
+  }
+
+  return `Last login: ${lastActiveDate}`;
+}
+
+function renderActions({
+  userPermittedTo,
+  lastActive,
+  onExpand,
+}) {
   const canEdit = userCan(globalPermissions.USERS_EDIT_ANY, userPermittedTo);
   const canDelete = userCan(globalPermissions.USERS_DELETE_ANY, userPermittedTo);
   const canDoNothing = !canDelete && !canEdit;
 
   if (canDoNothing) return null;
 
-  let EditButton = () => <FlatButton className={styles.button} label="Edit (not working)" />;
-  let DeleteButton = () => <FlatButton className={styles.button} label="Delete (not working)" />;
+  let EditButton = () =>
+    <FlatButton className={css(classes.button)} label="Edit" />;
+  let DeleteButton = () =>
+    <FlatButton className={css(classes.button)} label="Delete (not working)" />;
 
   return (
-    <CardActions className={styles.actions}>
-      { canEdit && <EditButton />}
-      { canDelete && <DeleteButton />}
+    <CardActions className={css(classes.actions)} actAsExpander>
+      <div className={css(classes.lastActive)}>
+        { makeLastActiveString(lastActive) }
+      </div>
+
+      <div className={css(classes.actions__buttons)}>
+        { canEdit && <EditButton onTouchTap={onExpand} />}
+        { canDelete && <DeleteButton />}
+      </div>
     </CardActions>
   );
 }
 
-function renderUserpic(status, username) {
-  const backgroundColor = status === 'active' ? 'green' : 'red';
+renderActions.propTypes = {
+  userPermittedTo: React.PropTypes.object,
+  onExpand: React.PropTypes.func.isRequired,
+  lastActive: React.PropTypes.string,
+};
 
-  return <Userpic backgroundColor={backgroundColor}>{username}</Userpic>;
-}
+renderActions.defaultProps = {
+  lastActive: undefined,
+};
 
-function renderSubtitle(role, fleet) {
+function renderSubtitle(role/* , fleet*/) {
   return (
     <dl>
-      <dt className={styles.title}>Fleet:&nbsp;</dt>
-      <dd className={styles.detail}>{fleet}</dd>
-      <br />
-      <dt className={styles.title}>Role:&nbsp;</dt>
-      <dd className={styles.detail}>{role}</dd>
+      {/* <dt className={css(classes.title)}>Fleet:&nbsp;</dt>
+      <dd className={css(classes.detail)}>{fleet}</dd>
+      <br /> */}
+      <dt className={css(classes.title)}>Role:&nbsp;</dt>
+      <dd className={css(classes.detail)}>{role}</dd>
     </dl>
   );
 }
 
-const UserItem = ({
-  userPermittedTo = [],
-  username,
-  role,
-  status,
-  permissions,
-  fleet,
-  renderPermissions,
-  index,
-}) => (
-  <Card>
-    <CardHeader
-      avatar={renderUserpic(status, username)}
-      title={username}
-      subtitle={renderSubtitle(role, fleet)}
-      actAsExpander
-      showExpandableButton
-    />
-    <CardText expandable>
-      { renderPermissions(permissions, index) }
-    </CardText>
-    { renderActions(userPermittedTo) }
-  </Card>
-);
+class UserItem extends React.Component {
+
+  state = {
+    expanded: null,
+  }
+
+  handleExpandChange = expanded => {
+    this.setState({ expanded });
+  }
+
+  handleExpand = () => {
+    this.setState({
+      expanded: true,
+    });
+  }
+
+  render() {
+    const { profile } = this.props;
+    const title = profile.nickname || profile.name || profile.email;
+
+    return (
+      <Card
+        expanded={this.state.expanded}
+        onExpandChange={this.handleExpandChange}
+      >
+        <CardHeader
+          avatar={<Userpic src={profile.picture} />}
+          title={title}
+          subtitle={renderSubtitle()}
+          actAsExpander
+          showExpandableButton
+        />
+        <CardText expandable>
+          {/* renderPermissions(permissions, index) */}
+
+          <UserItemDetails profile={profile} />
+
+        </CardText>
+        { renderActions({
+          userPermittedTo: this.props.userPermittedTo,
+          lastActive: profile.last_login,
+          onExpand: this.handleExpand,
+        }) }
+      </Card>
+    );
+  }
+}
 
 UserItem.propTypes = {
-  role: React.PropTypes.string.isRequired,
-  username: React.PropTypes.string.isRequired,
-  status: React.PropTypes.string.isRequired,
-  fleet: React.PropTypes.string.isRequired,
+  profile: React.PropTypes.object.isRequired,
   permissions: React.PropTypes.array,
-  // user: React.PropTypes.instanceOf(Map).isRequired,
   userPermittedTo: React.PropTypes.object,
   renderPermissions: React.PropTypes.func.isRequired,
   index: React.PropTypes.number.isRequired,
