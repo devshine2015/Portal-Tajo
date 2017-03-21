@@ -36,10 +36,11 @@
     background-color: #009688;
   }
   .menu__item:nth-child(6) {
-    background-color: rgb(180,124,118);
+    background-color: #227A07;
+     /*#4b8a36;*/
   }
   .menu__item:nth-child(7) {
-    background-color: #4b8a36;
+    background-color: #7A2607;
   }
   .menu__item:nth-child(8) {
     background-color: #4f2895;
