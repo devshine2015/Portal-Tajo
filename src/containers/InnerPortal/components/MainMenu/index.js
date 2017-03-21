@@ -1,5 +1,6 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import { isMwa } from 'configs';
 import { rolesEnum } from 'configs/roles';
 import MenuItem from './components/ManuItem';
 import pageShape from 'containers/InnerPortal/PropTypes';
@@ -22,6 +23,7 @@ const MainMenu = ({
 
     if (includes.length && includes.indexOf(role) === -1) return null;
     if (excludes.length && excludes.indexOf(role) !== -1) return null;
+    if (!isMwa && page.name === 'users') return null;
 
     return (
       <MenuItem

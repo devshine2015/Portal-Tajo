@@ -5,6 +5,7 @@ import {
   saveSession,
 } from './authLocalStorage';
 import validateSession from './validateSession';
+import { takeProfile } from './tokenHelpers';
 import { login, logout } from './restCalls';
 
 class AuthProvider extends React.Component {
@@ -41,7 +42,9 @@ class AuthProvider extends React.Component {
       saveSession(this.props.storageKey, session);
 
       if (typeof this.props.onLoginSuccess === 'function') {
-        this.props.onLoginSuccess(session);
+        const profile = takeProfile(session);
+
+        this.props.onLoginSuccess(profile, session.id_token);
       }
     });
   }

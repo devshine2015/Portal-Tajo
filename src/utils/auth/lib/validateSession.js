@@ -1,14 +1,7 @@
-import { isTokenExpired } from './checkExpiration';
-
-/**
- *
- * Users, authenticated via auth0 has
- * id_token and access_token inside session data.
- *
- **/
-function sessionHasJWT(session) {
-  return Object.hasOwnProperty.call(session, 'id_token');
-}
+import {
+  isTokenExpired,
+  sessionHasJWT,
+} from './tokenHelpers';
 
 function validateSession(session) {
   const hasJWT = sessionHasJWT(session);

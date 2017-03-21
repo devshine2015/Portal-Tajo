@@ -63,13 +63,13 @@ class App extends React.Component {
     window.removeEventListener('online', this.handleOnlineState);
   }
 
-  onLoginSuccess = session => {
-    this.props.saveSession(session)
+  onLoginSuccess = (profile, idToken = undefined) => {
+    this.props.saveSession(profile)
       .then(this.props.fetchFleet)
       .then(this.props.fetchDevices);
 
-    if (isMwa) {
-      auth0Api.setAccessToken(session.id_token);
+    if (isMwa && idToken) {
+      auth0Api.setAccessToken(idToken);
     }
 
     if (needRedirect(this.state.initialLocation)) {

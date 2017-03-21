@@ -1,5 +1,5 @@
 import { List } from 'immutable';
-import api from 'utils/api';
+import api, { auth0Api } from 'utils/api';
 import endpoints from 'configs/endpoints';
 import {
   getUsers,
@@ -15,18 +15,19 @@ export const USERS_MANAGER_PERMISSION_ASSIGN = 'portal/UsersManager/USERS_MANAGE
 export const USERS_MANAGER_PERMISSION_UNASSIGN = 'portal/UsersManager/USERS_MANAGER_PERMISSION_UNASSIGN';
 
 export const fetchUsers = groupBy => dispatch => {
-  const { url, method, apiVersion } = endpoints.getAllUsers;
+  const { url, method } = endpoints.getAllUsers;
 
-  return api[method](url, { apiVersion })
+  return auth0Api[method](url)
     .then(res => res.json())
     .then(users => {
+      debugger;
       // sort alphaberically by grouping property
-      users.sort((a, b) => _sortByGrouping(groupBy, a, b));
+      // users.sort((a, b) => _sortByGrouping(groupBy, a, b));
 
-      // group users into groups
-      const grouped = _changeGroupBy(groupBy, users);
+      // // group users into groups
+      // const grouped = _changeGroupBy(groupBy, users);
 
-      dispatch(_usersSet(users, grouped));
+      // dispatch(_usersSet(users, grouped));
     });
 };
 
