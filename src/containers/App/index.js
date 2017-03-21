@@ -68,7 +68,9 @@ class App extends React.Component {
       .then(this.props.fetchFleet)
       .then(this.props.fetchDevices);
 
-    auth0Api.setAccessToken(session.sessionId);
+    if (isMwa) {
+      auth0Api.setAccessToken(session.id_token);
+    }
 
     if (needRedirect(this.state.initialLocation)) {
       this.context.router.replace(`${BASE_URL}/`);
