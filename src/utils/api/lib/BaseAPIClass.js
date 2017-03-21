@@ -20,7 +20,7 @@ class BaseAPIClass {
 
   _prepareRequest = (method, urlToInvoke, headers, payload) =>
     prepareRequest(method, urlToInvoke, headers, payload)
-      .catch(this.errorsHandler)
+      .catch(this._errorsHandler)
 }
 
 export default BaseAPIClass;

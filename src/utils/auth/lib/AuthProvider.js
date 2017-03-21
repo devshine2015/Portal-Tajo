@@ -58,8 +58,8 @@ class AuthProvider extends React.Component {
     });
   }
 
-  login = payload => (
-    login(payload)
+  login = (payload, options = {}) => (
+    login(payload, options)
       .then(validateSession)
       .then(profile => {
         this.authenticate(profile);
@@ -68,8 +68,8 @@ class AuthProvider extends React.Component {
       })
   )
 
-  logout = () => (
-    logout()
+  logout = (options = {}) => (
+    logout(options)
       .then(this.unauthenticate())
   )
 

@@ -6,7 +6,7 @@ export function getTokenExpirationDate(token) {
   try {
     decoded = decode(token);
   } catch (e) {
-    return new Date();
+    return null;
   }
 
   if (!decoded.exp) {
@@ -27,5 +27,5 @@ export function isTokenExpired(token) {
     return true;
   }
 
-  return (date.valueOf() > new Date().valueOf());
+  return (new Date().valueOf() > date.valueOf());
 }
