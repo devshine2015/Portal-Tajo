@@ -115,15 +115,14 @@ const endpoints = {
 
   // users
   getAllUsers: {
-    url: 'admin/users',
+    url: 'users',
     method: 'get',
-    apiVersion: 1.1,
   },
-  addNewUser: {
-    url: 'admin/users',
-    method: 'post',
-    apiVersion: 1.1,
-  },
+  // addNewUser: {
+  //   url: 'admin/users',
+  //   method: 'post',
+  //   apiVersion: 1.1,
+  // },
 
   // events
   getEventsInTimeRange: (id, params) => ({
