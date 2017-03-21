@@ -2,7 +2,10 @@ import React from 'react';
 import { getHooks } from 'utils/hooks';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
-import { ROOT_ROUTE } from 'configs';
+import {
+  ROOT_ROUTE,
+  isAlerts,
+} from 'configs';
 import mainMenu from 'configs/mainMenu';
 import {
   errorHandler,
@@ -19,8 +22,6 @@ import dashboardScreen from 'screens/DashboardScreen/route';
 import chronicleScreen from 'screens/Chronicle/route';
 import settingsScreen from 'screens/Settings/route';
 import alersEditorScreen from 'screens/AlertsEditor/route';
-
-import { isAlerts } from 'configs';
 
 export default function createRoutes(store) {
   const { injectReducer } = getHooks(store);
@@ -64,6 +65,10 @@ export default function createRoutes(store) {
     path: 'login',
   });
 
+  const mwaLoginRoute = loginScreen({
+    path: 'mwa',
+  });
+
   const rootRoute = rootScreen({
     path: ROOT_ROUTE,
     dispatch: store.dispatch,
@@ -77,6 +82,7 @@ export default function createRoutes(store) {
 
   rootRoute.childRoutes.push(
     loginRoute,
+    mwaLoginRoute,
     reviewScreen,
     operationalRoute,
     reportsRoute,

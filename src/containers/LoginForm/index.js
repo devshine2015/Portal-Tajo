@@ -7,14 +7,13 @@ import {
   Paper,
   Divider,
 } from 'material-ui';
-// import { push } from 'react-router-redux';
-// import { BASE_URL } from 'configs';
 import SimpleError from 'components/Error';
 import ButtonWithProgress from 'components/ButtonWithProgress';
-// import { loginActions } from 'services/Session/actions';
 import { errorsActions } from 'services/Global/actions';
 import { getErrorType } from 'services/Global/reducer';
 import { translate } from 'utils/i18n';
+import { isMwa } from 'configs';
+import endpoints from 'configs/endpoints';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './PropTypes';
@@ -59,7 +58,9 @@ class LoginForm extends React.Component {
 
     this.changeLoadingState(true);
 
-    this.context.login(payload).then(null, err => {
+    const loginDescriptor = isMwa ? endpoints.loginAuth0 : endpoints.login;
+
+    this.context.login(payload, loginDescriptor).then(null, err => {
       if (err) console.error(err);
 
       this.changeLoadingState(false);

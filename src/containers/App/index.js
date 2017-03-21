@@ -15,6 +15,8 @@ import { fetchDevices } from 'services/Devices/actions';
 import {
   LOCAL_STORAGE_SESSION_KEY,
   BASE_URL,
+  checkSetMwa,
+  isMwa,
 } from 'configs';
 import drvrDevTheme from 'configs/theme';
 import { TranslationProvider } from 'utils/i18n';
@@ -34,6 +36,10 @@ function screenIsProtected(routes = []) {
   return Object.hasOwnProperty.call(lastRoute, 'protected') ? lastRoute.protected : true;
 }
 
+function needRedirect(fromLocation) {
+  return fromLocation === '/login' || fromLocation === '/mwa';
+}
+
 const muiTheme = getMuiTheme(drvrDevTheme);
 
 class App extends React.Component {
@@ -43,6 +49,8 @@ class App extends React.Component {
     this.state = {
       initialLocation: context.router.location.pathname,
     };
+
+    checkSetMwa(context.router.location.pathname);
   }
 
   componentDidMount() {
@@ -60,11 +68,9 @@ class App extends React.Component {
       .then(this.props.fetchFleet)
       .then(this.props.fetchDevices);
 
-    const needRedirect = this.state.initialLocation === '/login';
-
     auth0Api.setAccessToken(session.sessionId);
 
-    if (needRedirect) {
+    if (needRedirect(this.state.initialLocation)) {
       this.context.router.replace(`${BASE_URL}/`);
     }
   }
@@ -72,13 +78,15 @@ class App extends React.Component {
   onLogoutSuccess = () => {
     this.props.cleanSession();
 
+    const loginUrl = isMwa ? '/mwa' : '/login';
+
     // we need reset it
     // to support login flow
     this.setState({
-      initialLocation: '/login',
+      initialLocation: loginUrl,
     }, () => {
       auth0Api.setAccessToken();
-      this.context.router.replace(`${BASE_URL}/login`);
+      this.context.router.replace(`${BASE_URL}${loginUrl}`);
     });
   }
 

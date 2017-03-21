@@ -7,6 +7,11 @@ const endpoints = {
     method: 'post',
     apiVersion: 1.1,
   },
+  loginAuth0: {
+    url: 'login/auth0',
+    method: 'post',
+    apiVersion: 1.1,
+  },
   logout: {
     url: 'login',
     method: 'delete',

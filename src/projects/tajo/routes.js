@@ -87,6 +87,10 @@ export default function createRoutes(store) {
     path: 'login',
   });
 
+  const mwaLoginRoute = loginScreen({
+    path: 'mwa',
+  });
+
   const settingsRoute = settingsScreen(mainMenu.escape.settings);
 
   const dashboardRoute = dashboardScreen(mainMenu.escape.dashboard);
@@ -106,6 +110,7 @@ export default function createRoutes(store) {
   // order of menu depends of pushing order
   rootRoute.childRoutes.push(
     loginRoute,
+    mwaLoginRoute,
     dashboardRoute,
     operationalRoute,
     installerRoute,

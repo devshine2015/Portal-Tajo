@@ -5,6 +5,7 @@ import locationShape from 'react-router/lib/PropTypes';
 import { connect } from 'react-redux';
 import { AppBar, FlatButton } from 'material-ui';
 import { BASE_URL, isEscape } from 'configs';
+import endpoints from 'configs/endpoints';
 import CodebaseVersion from 'components/CodebaseVersion';
 import { changeMainSidebarState } from 'containers/InnerPortal/actions';
 import FleetSummary from 'containers/FleetSummary';
@@ -48,6 +49,8 @@ function renderTitle(title) {
   );
 }
 
+const _onLogoutClick = cb => () => cb(endpoints.logout);
+
 const ApplicationBar = ({
   title,
   toggleSidebar,
@@ -62,7 +65,7 @@ const ApplicationBar = ({
       iconElementRight={
         <FlatButton
           label={ translations.logout }
-          onClick={logout}
+          onClick={_onLogoutClick(logout)}
         />
       }
       titleStyle={STYLES.title}
