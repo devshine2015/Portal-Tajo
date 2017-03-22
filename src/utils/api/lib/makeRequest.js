@@ -18,10 +18,10 @@ export default function prepareRequest(method, url, headers, payload) {
   let query;
   let body;
 
-  if (method === 'get' || method === 'head') {
+  if (method === 'GET' || method === 'HEAD') {
     const string = JSON.stringify(payload);
     query = string ? `?${string}` : '';
-  } else if (method === 'post' || method === 'put' || method === 'delete') {
+  } else if (method === 'POST' || method === 'PUT' || method === 'PATCH') {
     body = JSON.stringify(payload);
   }
 

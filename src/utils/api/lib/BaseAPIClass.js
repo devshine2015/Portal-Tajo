@@ -7,7 +7,7 @@ class BaseAPIClass {
     this.dispatch = undefined;
 
     ['get', 'post', 'patch', 'delete'].forEach(method => {
-      this[method] = (url, payload) => this._invoke(method, url, payload);
+      this[method] = (url, payload) => this._invoke(method.toUpperCase(), url, payload);
     });
   }
 
