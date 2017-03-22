@@ -1,12 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
+import DetailPopupForm from '../DetailPopupForm';
+// import { VelocityComponent } from 'velocity-react';
+// import AnimatedLoadingLogo from 'components/animated';
 import FormComponents from '../FormComponents';
 import { usersActions } from 'services/Users/actions';
+
+// import classes from './classes';
 
 class EmailForm extends React.Component {
   state = {
     email: undefined,
+    isFetching: false,
   }
 
   onSubmit = e => {
@@ -14,10 +20,14 @@ class EmailForm extends React.Component {
 
     // validate email here
 
-    this.props.changeEmail(this.props.userId, {
-      email: this.state.email,
-    })
-      .then(() => this.props.closeForm());
+    this.setState({
+      isFetching: true,
+    }, () => {
+      this.props.changeEmail(this.props.userId, {
+        email: this.state.email,
+      })
+        .then(() => this.props.closeForm());
+    });
   }
 
   onChange = e => {
@@ -34,10 +44,10 @@ class EmailForm extends React.Component {
 
   render() {
     return (
-      <form>
-        <FormComponents.Header center>
-          Change email
-        </FormComponents.Header>
+      <DetailPopupForm
+        headerText="Change email"
+        isFetching={this.state.isFetching}
+      >
         <TextField
           hintText="New email"
           onChange={this.onChange}
@@ -50,7 +60,7 @@ class EmailForm extends React.Component {
           disabled={!!this.state.email}
           mainLabel="Submit"
         />
-      </form>
+      </DetailPopupForm>
     );
   }
 }

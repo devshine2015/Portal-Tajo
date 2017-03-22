@@ -64,13 +64,16 @@ export const changeEmail = (userId, payload) => dispatch => {
     client_id: 'qlvnewPDcVdLge4ah7Rkp0lL9Lzikj7B',
   });
 
-  return auth0Api[method](url, enrichedPayload)
-    .then(res => res.json())
-    .then(user => {
-      dispatch(_userUpdated(user, userId));
+  return new Promise(resolve => {
+    window.setTimeout(resolve, 3000);
+  });
+  // return auth0Api[method](url, enrichedPayload)
+  //   .then(res => res.json())
+  //   .then(user => {
+  //     dispatch(_userUpdated(user, userId));
 
-      return Promise.resolve();
-    });
+  //     return Promise.resolve();
+  //   });
 };
 
 const _usersSet = users => ({
