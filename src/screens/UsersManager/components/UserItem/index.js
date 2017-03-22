@@ -33,43 +33,50 @@ function makeLastActiveString(lastActive) {
   return `Last login: ${lastActiveDate}`;
 }
 
-function renderActions({
+function Actions({
   userPermittedTo,
   lastActive,
-  onExpand,
+  expandToggle,
+  isExpanded,
 }) {
   const canEdit = userCan(globalPermissions.USERS_EDIT_ANY, userPermittedTo);
   const canDelete = userCan(globalPermissions.USERS_DELETE_ANY, userPermittedTo);
   const canDoNothing = !canDelete && !canEdit;
+  const toggleButtonLabel = isExpanded ? 'Close' : 'Open';
 
   if (canDoNothing) return null;
 
-  let EditButton = () =>
-    <FlatButton className={css(classes.button)} label="Edit" />;
+  let ToggleButton = () =>
+    <FlatButton
+      className={css(classes.button)}
+      label={toggleButtonLabel}
+      onTouchTap={expandToggle}
+    />;
   let DeleteButton = () =>
     <FlatButton className={css(classes.button)} label="Delete (not working)" />;
 
   return (
-    <CardActions className={css(classes.actions)} actAsExpander>
+    <CardActions className={css(classes.actions)}>
       <div className={css(classes.lastActive)}>
         { makeLastActiveString(lastActive) }
       </div>
 
       <div className={css(classes.actions__buttons)}>
-        { canEdit && <EditButton onTouchTap={onExpand} />}
+        { canEdit && <ToggleButton />}
         { canDelete && <DeleteButton />}
       </div>
     </CardActions>
   );
 }
 
-renderActions.propTypes = {
+Actions.propTypes = {
   userPermittedTo: React.PropTypes.object,
-  onExpand: React.PropTypes.func.isRequired,
+  expandToggle: React.PropTypes.func.isRequired,
   lastActive: React.PropTypes.string,
+  isExpanded: React.PropTypes.bool.isRequired,
 };
 
-renderActions.defaultProps = {
+Actions.defaultProps = {
   lastActive: undefined,
 };
 
@@ -101,6 +108,12 @@ class UserItem extends React.Component {
     });
   }
 
+  handleExpandToggle = () => {
+    this.setState({
+      expanded: !this.state.expanded,
+    });
+  }
+
   render() {
     const { profile } = this.props;
     const title = profile.nickname || profile.name || profile.email;
@@ -123,11 +136,12 @@ class UserItem extends React.Component {
           <UserItemDetails profile={profile} />
 
         </CardText>
-        { renderActions({
-          userPermittedTo: this.props.userPermittedTo,
-          lastActive: profile.last_login,
-          onExpand: this.handleExpand,
-        }) }
+        <Actions
+          userPermittedTo={this.props.userPermittedTo}
+          lastActive={profile.last_login}
+          expandToggle={this.handleExpandToggle}
+          isExpanded={this.state.expanded}
+        />
       </Card>
     );
   }

@@ -29,8 +29,8 @@
 
 import tinycolor from 'tinycolor2';
 
-import { white, blue600,
-  cyan700, teal500, teal700, teal900,
+import { white, blue600, cyan700,
+  teal300, teal500, teal700, teal900,
   deepOrange700, yellow700,
 } from 'material-ui/styles/colors';
 
@@ -39,6 +39,7 @@ const drvrDevTheme = {
     primary1Color: teal500, // '#FFB300'
     primary2Color: teal700,
     primary3Color: teal900,
+    primary4Color: teal300,
     accent1Color: deepOrange700,
     accent2Color: yellow700,
     // accent3Color: grey500,

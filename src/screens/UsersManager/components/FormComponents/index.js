@@ -7,14 +7,19 @@ import { css } from 'aphrodite/no-important';
 
 import classes from './classes';
 
-const Header = ({ children }) => (
-  <h3 className={css(classes.header)}>
+const Header = ({ children, center }) => (
+  <h3 className={css(classes.header, center && classes.header_center)}>
     { children }
   </h3>
 );
 
 Header.propTypes = {
   children: React.PropTypes.any.isRequired,
+  center: React.PropTypes.bool,
+};
+
+Header.defaultProps = {
+  center: false,
 };
 
 const Buttons = ({

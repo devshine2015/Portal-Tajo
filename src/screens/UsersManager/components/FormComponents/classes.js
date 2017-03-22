@@ -8,6 +8,10 @@ const classes = StyleSheet.create({
     color: 'rgba(0, 0, 0, 0.541176)',
   },
 
+  header_center: {
+    textAlign: 'center',
+  },
+
   buttons: {
     textAlign: 'center',
   },

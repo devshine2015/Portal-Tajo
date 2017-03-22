@@ -9,7 +9,7 @@ import RolesSection from './components/RolesSection';
 
 import classes from './classes';
 
-const HIDE_SUBMENU = 'hide subsections until basic authentication with auth0 will be implemented';
+const SHOW_SUBMENU = false;
 
 const SUBSECTIONS = [{
   label: 'Users',
@@ -43,7 +43,7 @@ class UsersManager extends React.Component {
       <Content>
         <Layout.Row>
 
-        { !HIDE_SUBMENU && (
+        { SHOW_SUBMENU && (
           <div className={css(classes.sidebar)}>
             <Submenu
               subsections={SUBSECTIONS}
