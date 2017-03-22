@@ -1,8 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import FormComponents from '../FormComponents';
 
-class EmailForm extends React.Component {
+class PasswordForm extends React.Component {
   state = {
     newPass: undefined,
     repeat: undefined,
@@ -25,6 +26,12 @@ class EmailForm extends React.Component {
       repeatedCorrectly: value === this.state.newPass,
       repeat: value,
     });
+  }
+
+  onSubmit = e => {
+    e.preventDefault();
+
+    this.props.closeForm();
   }
 
   focus = ref => {
@@ -54,8 +61,8 @@ class EmailForm extends React.Component {
         />
 
         <FormComponents.Buttons
-          onSubmit={this.props.onSubmit}
-          onCancel={this.props.onCancel}
+          onSubmit={this.onSubmit}
+          onCancel={this.props.closeForm}
           disabled={this.state.repeatedCorrectly}
           mainLabel="Submit"
         />
@@ -64,4 +71,11 @@ class EmailForm extends React.Component {
   }
 }
 
-export default EmailForm;
+PasswordForm.propTypes = {
+  closeForm: React.PropTypes.func.isRequired,
+};
+
+const mapState = null;
+const mapDispatch = null;
+
+export default connect(mapState, mapDispatch)(PasswordForm);

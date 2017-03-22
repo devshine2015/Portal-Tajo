@@ -118,12 +118,18 @@ const endpoints = {
     url: 'users',
     method: 'get',
   },
-  // addNewUser: {
-  //   url: 'admin/users',
-  //   method: 'post',
-  //   apiVersion: 1.1,
-  // },
-
+  updateUser: id => ({
+    url: `users/${id}`,
+    method: 'patch',
+  }),
+  createUser: {
+    url: 'users',
+    method: 'post',
+  },
+  deleteUser: id => ({
+    url: `users/${id}`,
+    method: 'delete',
+  }),
   // events
   getEventsInTimeRange: (id, params) => ({
     url: `vehicles/${id}/events?${qs.stringify(params)}`,

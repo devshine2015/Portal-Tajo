@@ -1,6 +1,6 @@
 import React from 'react';
 import Section from '../Section';
-import UserForm from '../UserEditor';
+import UserForm from '../NewUserForm';
 import UsersList from '../UsersList';
 
 const UsersSection = () => (

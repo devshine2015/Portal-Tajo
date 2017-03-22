@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { css } from 'aphrodite/no-important';
 import {
   Card,
@@ -10,17 +11,18 @@ import {
 import Userpic from 'components/Userpic';
 import UserItemDetails from '../UserItemDetails';
 import { permissions as globalPermissions } from 'configs/roles';
-import permitted from 'utils/permissionsRequired';
+import { usersActions } from 'services/Users/actions';
+// import permitted from 'utils/permissionsRequired';
 
 import classes from './classes';
 
-const PERMISSIONS = [
-  globalPermissions.USERS_EDIT_ANY,
-  globalPermissions.USERS_DELETE_ANY,
-];
+// const PERMISSIONS = [
+//   globalPermissions.USERS_EDIT_ANY,
+//   globalPermissions.USERS_DELETE_ANY,
+// ];
 
 function userCan(permission, userPermittedTo) {
-  return userPermittedTo[permission];
+  return true; //userPermittedTo[permission];
 }
 
 function makeLastActiveString(lastActive) {
@@ -38,6 +40,7 @@ function Actions({
   lastActive,
   expandToggle,
   isExpanded,
+  deleteUser,
 }) {
   const canEdit = userCan(globalPermissions.USERS_EDIT_ANY, userPermittedTo);
   const canDelete = userCan(globalPermissions.USERS_DELETE_ANY, userPermittedTo);
@@ -53,7 +56,11 @@ function Actions({
       onTouchTap={expandToggle}
     />;
   let DeleteButton = () =>
-    <FlatButton className={css(classes.button)} label="Delete (not working)" />;
+    <FlatButton
+      className={css(classes.button)}
+      label="Delete"
+      onTouchTap={deleteUser}
+    />;
 
   return (
     <CardActions className={css(classes.actions)}>
@@ -72,6 +79,7 @@ function Actions({
 Actions.propTypes = {
   userPermittedTo: React.PropTypes.object,
   expandToggle: React.PropTypes.func.isRequired,
+  deleteUser: React.PropTypes.func.isRequired,
   lastActive: React.PropTypes.string,
   isExpanded: React.PropTypes.bool.isRequired,
 };
@@ -96,6 +104,10 @@ class UserItem extends React.Component {
 
   state = {
     expanded: null,
+  }
+
+  onDeleteClick = () => {
+    this.props.deleteUser(this.props.profile.user_id);
   }
 
   handleExpandChange = expanded => {
@@ -140,7 +152,8 @@ class UserItem extends React.Component {
           userPermittedTo={this.props.userPermittedTo}
           lastActive={profile.last_login}
           expandToggle={this.handleExpandToggle}
-          isExpanded={this.state.expanded}
+          isExpanded={!!this.state.expanded}
+          deleteUser={this.onDeleteClick}
         />
       </Card>
     );
@@ -153,10 +166,16 @@ UserItem.propTypes = {
   userPermittedTo: React.PropTypes.object,
   renderPermissions: React.PropTypes.func.isRequired,
   index: React.PropTypes.number.isRequired,
+  deleteUser: React.PropTypes.func.isRequired,
 };
 
 UserItem.defaultProps = {
   permissions: [],
 };
 
-export default permitted(PERMISSIONS)(UserItem);
+const mapState = null;
+const mapDispatch = {
+  deleteUser: usersActions.deleteUser,
+};
+
+export default connect(mapState, mapDispatch)(UserItem);

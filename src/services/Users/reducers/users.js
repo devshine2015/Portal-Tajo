@@ -1,7 +1,8 @@
 import { fromJS, List } from 'immutable';
 import {
   USERS_MANAGER_USERS_SET,
-  USERS_MANAGER_NEW_USER_ADD,
+  USERS_MANAGER_USER_CREATED,
+  USERS_MANAGER_USER_DELETED,
   USERS_MANAGER_PERMISSION_ASSIGN,
   USERS_MANAGER_PERMISSION_UNASSIGN,
 } from '../actions/usersActions';
@@ -16,8 +17,17 @@ function reducer(state = initialState, action) {
     case USERS_MANAGER_USERS_SET:
       return state.set('usersList', fromJS(action.users));
 
-    case USERS_MANAGER_NEW_USER_ADD:
-      return state;
+    case USERS_MANAGER_USER_CREATED:
+      return state.update('usersList', list =>
+        list.push(fromJS(action.user)));
+
+    case USERS_MANAGER_USER_DELETED: {
+      const index = state.get('usersList').findIndex((val) =>
+        val.user_id === action.id
+      );
+
+      return state.update('usersList', list => list.delete(index));
+    }
 
     case USERS_MANAGER_PERMISSION_ASSIGN: {
       const nextState = state.updateIn(['usersList', action.index], user => {

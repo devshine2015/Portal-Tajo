@@ -116,8 +116,8 @@ class UserItemDetails extends React.Component {
     if (isEmailEditing) {
       return (
         <EmailForm
-          onSubmit={this.closeForm}
-          onCancel={this.closeForm}
+          closeForm={this.closeForm}
+          userId={this.props.profile.user_id}
         />
       );
     }
@@ -125,8 +125,8 @@ class UserItemDetails extends React.Component {
     if (isPasswordEditing) {
       return (
         <PasswordForm
-          onSubmit={this.closeForm}
-          onCancel={this.closeForm}
+          closeForm={this.closeForm}
+          userId={this.props.profile.user_id}
         />
       );
     }
@@ -173,6 +173,7 @@ UserItemDetails.propTypes = {
   profile: React.PropTypes.shape({
     email: React.PropTypes.string.isRequired,
     email_verified: React.PropTypes.bool,
+    user_id: React.PropTypes.string.isRequired,
   }).isRequired,
 };
 

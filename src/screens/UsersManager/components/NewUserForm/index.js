@@ -4,7 +4,7 @@ import pure from 'recompose/pure';
 import portals from 'configs/portals';
 import {
   TextField,
-  SelectField,
+  // SelectField,
   MenuItem,
 } from 'material-ui';
 import { usersActions } from 'services/Users/actions';
@@ -13,31 +13,30 @@ import FormComponents from '../FormComponents';
 
 import styles from './styles.css';
 
-const roles = [
-  <MenuItem key={1} value="uber" primaryText="Uber" />,
-  <MenuItem key={2} value="admin" primaryText="Administrator" />,
-  <MenuItem key={3} value="manager" primaryText="Manager" />,
-  <MenuItem key={4} value="installer" primaryText="Installer" />,
-];
+// const roles = [
+//   <MenuItem key={1} value="uber" primaryText="Uber" />,
+//   <MenuItem key={2} value="admin" primaryText="Administrator" />,
+//   <MenuItem key={3} value="manager" primaryText="Manager" />,
+//   <MenuItem key={4} value="installer" primaryText="Installer" />,
+// ];
 
-const fleets = portals.map(portal => (
-  <MenuItem
-    key={portal.fleet}
-    value={portal.fleet}
-    primaryText={portal.niceName}
-  />
-));
+// const fleets = portals.map(portal => (
+//   <MenuItem
+//     key={portal.fleet}
+//     value={portal.fleet}
+//     primaryText={portal.niceName}
+//   />
+// ));
 
-class UserEditor extends React.Component {
+class NewUserForm extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      username: null,
+      email: null,
       password: null,
-      role: 'installer',
-      fleet: null,
-      status: 'active',
+      // role: 'installer',
+      // fleet: null,
     };
   }
 
@@ -52,7 +51,7 @@ class UserEditor extends React.Component {
   onSubmit = e => {
     e.preventDefault();
 
-    this.props.addNewUser(this.state)
+    this.props.createUser(this.state)
       .then(() => this.props.closeForm());
   }
 
@@ -63,7 +62,6 @@ class UserEditor extends React.Component {
   }
 
   onCancel = () => {
-    // this.props.toggleNewUser(false);
     this.props.closeForm();
   }
 
@@ -98,8 +96,8 @@ class UserEditor extends React.Component {
             <div className={styles.inputWrapper}>
               <TextField
                 fullWidth
-                floatingLabelText="Username"
-                name="username"
+                floatingLabelText="Email"
+                name="email"
                 onChange={this.onType}
                 ref={this.focus}
               />
@@ -114,7 +112,7 @@ class UserEditor extends React.Component {
               />
             </div>
           </div>
-          <div className={styles.row}>
+          {/* <div className={styles.row}>
             <div className={styles.inputWrapper}>
               <SelectField
                 fullWidth
@@ -139,7 +137,7 @@ class UserEditor extends React.Component {
                 {roles}
               </SelectField>
             </div>
-          </div>
+          </div>*/}
 
           <FormComponents.Buttons
             onSubmit={this.onSubmit}
@@ -154,8 +152,8 @@ class UserEditor extends React.Component {
   }
 }
 
-UserEditor.propTypes = {
-  addNewUser: React.PropTypes.func.isRequired,
+NewUserForm.propTypes = {
+  createUser: React.PropTypes.func.isRequired,
   editMode: React.PropTypes.oneOf([
     'create', 'edit',
   ]),
@@ -163,7 +161,7 @@ UserEditor.propTypes = {
   isLoading: React.PropTypes.bool.isRequired,
 };
 
-UserEditor.defaultProps = {
+NewUserForm.defaultProps = {
   editMode: 'create',
 };
 
@@ -171,10 +169,9 @@ const mapState = state => ({
   isLoading: getIsLoading(state),
 });
 const mapDispatch = {
-  // toggleNewUser: usersActions.toggleNewUser,
-  addNewUser: usersActions.addNewUser,
+  createUser: usersActions.createUser,
 };
 
-const PureUserEditor = pure(UserEditor);
+const PureNewUserForm = pure(NewUserForm);
 
-export default connect(mapState, mapDispatch)(PureUserEditor);
+export default connect(mapState, mapDispatch)(PureNewUserForm);
