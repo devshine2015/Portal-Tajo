@@ -6,6 +6,7 @@ export const USERS_MANAGER_USER_CREATED = 'portal/UsersManager/USERS_MANAGER_USE
 export const USERS_MANAGER_USER_DELETED = 'portal/UsersManager/USERS_MANAGER_USER_DELETED';
 export const USERS_MANAGER_PERMISSION_ASSIGN = 'portal/UsersManager/USERS_MANAGER_PERMISSION_ASSIGN';
 export const USERS_MANAGER_PERMISSION_UNASSIGN = 'portal/UsersManager/USERS_MANAGER_PERMISSION_UNASSIGN';
+export const USERS_MANAGER_USER_UPDATED = 'portal/UsersManager/USERS_MANAGER_USER_UPDATED';
 
 export const fetchUsers = () => dispatch => {
   const { url, method } = endpoints.getAllUsers;
@@ -18,11 +19,11 @@ export const fetchUsers = () => dispatch => {
 export const createUser = payload => dispatch => {
   const { url, method } = endpoints.createUser;
 
-  const enchantedPayload = Object.assign({}, payload, {
+  const enrichedPayload = Object.assign({}, payload, {
     connection: 'Username-Password-Authentication',
   });
 
-  return auth0Api[method](url, enchantedPayload)
+  return auth0Api[method](url, enrichedPayload)
     .then(res => res.json())
     .then(user => {
       dispatch(_userCreated(user));
@@ -43,31 +44,6 @@ export const deleteUser = userId => dispatch => {
       return Promise.resolve();
     });
 };
-// export const addNewUser = payload => (dispatch, getState) => {
-//   const groupBy = getGroupBy(getState());
-//   const grouped = getGrouping(getState());
-//   const users = getUsers(getState());
-
-//   // assume POST requiest will be successful
-//   // update store ASAP
-//   const newUsers = users.push(payload);
-//   const newGrouping = grouped.update(payload[groupBy], array => (
-//     array.push(newUsers.size - 1)
-//   ));
-
-//   // don't wait for request
-//   dispatch(_newUserAdd(newUsers, newGrouping, true));
-
-//   const { url, method, apiVersion } = endpoints.addNewUser;
-
-//   return api[method](url, { payload, apiVersion })
-//     .then(() => Promise.resolve(true), () => {
-//       // retain changes on error
-//       dispatch(_newUserAdd(users, grouped, false));
-
-//       return Promise.resolve(false);
-//     });
-// };
 
 export const assignPermission = (permissionId, userIndex, isAssigned) => {
   const type = isAssigned ?
@@ -83,10 +59,17 @@ export const assignPermission = (permissionId, userIndex, isAssigned) => {
 
 export const changeEmail = (userId, payload) => dispatch => {
   const { url, method } = endpoints.updateUser(userId);
+  const enrichedPayload = Object.assign({}, payload, {
+    connection: 'Username-Password-Authentication',
+    client_id: 'qlvnewPDcVdLge4ah7Rkp0lL9Lzikj7B',
+  });
 
-  return auth0Api[method](url, payload)
-    .then(result => {
-      console.log(result);
+  return auth0Api[method](url, enrichedPayload)
+    .then(res => res.json())
+    .then(user => {
+      dispatch(_userUpdated(user, userId));
+
+      return Promise.resolve();
     });
 };
 
@@ -102,5 +85,11 @@ const _userCreated = user => ({
 
 const _userDeleted = id => ({
   type: USERS_MANAGER_USER_DELETED,
+  id,
+});
+
+const _userUpdated = (user, id) => ({
+  type: USERS_MANAGER_USER_UPDATED,
+  user,
   id,
 });

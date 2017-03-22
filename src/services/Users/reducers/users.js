@@ -5,12 +5,19 @@ import {
   USERS_MANAGER_USER_DELETED,
   USERS_MANAGER_PERMISSION_ASSIGN,
   USERS_MANAGER_PERMISSION_UNASSIGN,
+  USERS_MANAGER_USER_UPDATED,
 } from '../actions/usersActions';
 
 const initialState = fromJS({
   usersList: new List(),
   isLoading: false,
 });
+
+function findUserIndex(state, userId) {
+  return state.get('usersList').findIndex((val) =>
+    val.user_id === userId
+  );
+}
 
 function reducer(state = initialState, action) {
   switch (action.type) {
@@ -22,11 +29,15 @@ function reducer(state = initialState, action) {
         list.push(fromJS(action.user)));
 
     case USERS_MANAGER_USER_DELETED: {
-      const index = state.get('usersList').findIndex((val) =>
-        val.user_id === action.id
-      );
+      const index = findUserIndex(state, action.id);
 
       return state.update('usersList', list => list.delete(index));
+    }
+
+    case USERS_MANAGER_USER_UPDATED: {
+      const index = findUserIndex(state, action.id);
+
+      return state.mergeIn(['usersList', index], action.user);
     }
 
     case USERS_MANAGER_PERMISSION_ASSIGN: {

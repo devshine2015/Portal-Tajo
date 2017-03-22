@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { css } from 'aphrodite/no-important';
+import { VelocityComponent } from 'velocity-react';
 import {
   Card,
   CardActions,
@@ -104,11 +105,20 @@ class UserItem extends React.Component {
 
   state = {
     expanded: null,
+    isDEleting: false,
   }
 
   onDeleteClick = () => {
-    this.props.deleteUser(this.props.profile.user_id);
+    this.setState({
+      isDeleting: true,
+    }, () => {
+      window.setTimeout(() => {
+        this.props.deleteUser(this.props.profile.user_id);
+      }, this.duration);
+    });
   }
+
+  duration = 500
 
   handleExpandChange = expanded => {
     this.setState({ expanded });
@@ -129,33 +139,41 @@ class UserItem extends React.Component {
   render() {
     const { profile } = this.props;
     const title = profile.nickname || profile.name || profile.email;
+    const animation = `transition.slideLeftBig${(this.state.isDeleting ? 'Out' : 'In')}`;
 
     return (
-      <Card
-        expanded={this.state.expanded}
-        onExpandChange={this.handleExpandChange}
+      <VelocityComponent
+        runOnMount
+        animation={animation}
+        duration={this.duration}
+        key={profile.user_id}
       >
-        <CardHeader
-          avatar={<Userpic src={profile.picture} />}
-          title={title}
-          subtitle={renderSubtitle()}
-          actAsExpander
-          showExpandableButton
-        />
-        <CardText expandable>
-          {/* renderPermissions(permissions, index) */}
+        <Card
+          expanded={this.state.expanded}
+          onExpandChange={this.handleExpandChange}
+        >
+          <CardHeader
+            avatar={<Userpic src={profile.picture} />}
+            title={title}
+            subtitle={renderSubtitle()}
+            actAsExpander
+            showExpandableButton
+          />
+          <CardText expandable>
+            {/* renderPermissions(permissions, index) */}
 
-          <UserItemDetails profile={profile} />
+            <UserItemDetails profile={profile} />
 
-        </CardText>
-        <Actions
-          userPermittedTo={this.props.userPermittedTo}
-          lastActive={profile.last_login}
-          expandToggle={this.handleExpandToggle}
-          isExpanded={!!this.state.expanded}
-          deleteUser={this.onDeleteClick}
-        />
-      </Card>
+          </CardText>
+          <Actions
+            userPermittedTo={this.props.userPermittedTo}
+            lastActive={profile.last_login}
+            expandToggle={this.handleExpandToggle}
+            isExpanded={!!this.state.expanded}
+            deleteUser={this.onDeleteClick}
+          />
+        </Card>
+      </VelocityComponent>
     );
   }
 }
