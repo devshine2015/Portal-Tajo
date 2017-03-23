@@ -1,7 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { css } from 'aphrodite/no-important';
-import { VelocityComponent } from 'velocity-react';
+import {
+  VelocityComponent,
+  VelocityTransitionGroup,
+} from 'velocity-react';
 import {
   Card,
   CardActions,
@@ -138,6 +141,16 @@ function renderSubtitle(role/* , fleet*/) {
   );
 }
 
+const enterExpandAnimation = {
+  animation: 'slideDown',
+  duration: 300,
+  style: { height: '' },
+};
+const leaveExpandAnimation = {
+  animation: 'slideUp',
+  duration: 300,
+};
+
 class UserItem extends React.Component {
 
   state = {
@@ -212,12 +225,20 @@ class UserItem extends React.Component {
               actAsExpander
               showExpandableButton
             />
-            <CardText expandable>
-              {/* renderPermissions(permissions, index) */}
+            <VelocityTransitionGroup
+              component="div"
+              enter={enterExpandAnimation}
+              leave={leaveExpandAnimation}
+            >
+              { this.state.expanded && (
+                <CardText expandable>
+                  {/* renderPermissions(permissions, index) */}
 
-              <UserItemDetails profile={profile} />
+                  <UserItemDetails profile={profile} />
 
-            </CardText>
+                </CardText>
+              )}
+            </VelocityTransitionGroup>
             <Actions
               userPermittedTo={this.props.userPermittedTo}
               lastActive={profile.last_login}
