@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardText,
   FlatButton,
+  Dialog,
 } from 'material-ui';
 import Userpic from 'components/Userpic';
 import UserItemDetails from '../UserItemDetails';
@@ -21,6 +22,42 @@ import classes from './classes';
 //   globalPermissions.USERS_EDIT_ANY,
 //   globalPermissions.USERS_DELETE_ANY,
 // ];
+
+const DeleteUserDialog = ({
+  handleClose,
+  handleConfirm,
+  open,
+}) => {
+  const actions = [
+    <FlatButton
+      label="Cancel"
+      primary
+      onTouchTap={handleClose}
+    />,
+    <FlatButton
+      label="Confirm"
+      primary
+      onTouchTap={handleConfirm}
+    />,
+  ];
+
+  return (
+    <Dialog
+      actions={actions}
+      open={open}
+      onRequestClose={handleClose}
+    >
+      You are going to completely remove user out of the system.<br />
+      Please confirm this action.
+    </Dialog>
+  );
+};
+
+DeleteUserDialog.propTypes = {
+  handleClose: React.PropTypes.func.isRequired,
+  handleConfirm: React.PropTypes.func.isRequired,
+  open: React.PropTypes.bool.isRequired,
+};
 
 function userCan(permission, userPermittedTo) {
   return true; //userPermittedTo[permission];
@@ -46,7 +83,7 @@ function Actions({
   const canEdit = userCan(globalPermissions.USERS_EDIT_ANY, userPermittedTo);
   const canDelete = userCan(globalPermissions.USERS_DELETE_ANY, userPermittedTo);
   const canDoNothing = !canDelete && !canEdit;
-  const toggleButtonLabel = isExpanded ? 'Close' : 'Open';
+  const toggleButtonLabel = isExpanded ? 'Close' : 'Details';
 
   if (canDoNothing) return null;
 
@@ -106,10 +143,13 @@ class UserItem extends React.Component {
   state = {
     expanded: null,
     isDEleting: false,
+    dialogIsOpen: false,
   }
 
-  onDeleteClick = () => {
+  onDeleteConfirm = () => {
     this.setState({
+      dialogIsOpen: false,
+      expanded: false,
       isDeleting: true,
     }, () => {
       window.setTimeout(() => {
@@ -136,6 +176,18 @@ class UserItem extends React.Component {
     });
   }
 
+  handleClose = () => {
+    this.setState({
+      dialogIsOpen: false,
+    });
+  }
+
+  handleOpen = () => {
+    this.setState({
+      dialogIsOpen: true,
+    });
+  }
+
   render() {
     const { profile } = this.props;
     const title = profile.nickname || profile.name || profile.email;
@@ -148,31 +200,39 @@ class UserItem extends React.Component {
         duration={this.duration}
         key={profile.user_id}
       >
-        <Card
-          expanded={this.state.expanded}
-          onExpandChange={this.handleExpandChange}
-        >
-          <CardHeader
-            avatar={<Userpic src={profile.picture} />}
-            title={title}
-            subtitle={renderSubtitle()}
-            actAsExpander
-            showExpandableButton
-          />
-          <CardText expandable>
-            {/* renderPermissions(permissions, index) */}
+        <div>
+          <Card
+            expanded={this.state.expanded}
+            onExpandChange={this.handleExpandChange}
+          >
+            <CardHeader
+              avatar={<Userpic src={profile.picture} />}
+              title={title}
+              subtitle={renderSubtitle()}
+              actAsExpander
+              showExpandableButton
+            />
+            <CardText expandable>
+              {/* renderPermissions(permissions, index) */}
 
-            <UserItemDetails profile={profile} />
+              <UserItemDetails profile={profile} />
 
-          </CardText>
-          <Actions
-            userPermittedTo={this.props.userPermittedTo}
-            lastActive={profile.last_login}
-            expandToggle={this.handleExpandToggle}
-            isExpanded={!!this.state.expanded}
-            deleteUser={this.onDeleteClick}
+            </CardText>
+            <Actions
+              userPermittedTo={this.props.userPermittedTo}
+              lastActive={profile.last_login}
+              expandToggle={this.handleExpandToggle}
+              isExpanded={!!this.state.expanded}
+              deleteUser={this.handleOpen}
+            />
+          </Card>
+
+          <DeleteUserDialog
+            open={this.state.dialogIsOpen}
+            handleConfirm={this.onDeleteConfirm}
+            handleClose={this.handleClose}
           />
-        </Card>
+        </div>
       </VelocityComponent>
     );
   }
