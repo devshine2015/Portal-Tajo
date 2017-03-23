@@ -69,14 +69,13 @@ class PermissionsForm extends React.Component {
     const disabled = !!action && !!resource && !!desc;
 
     return (
-      <div className={css(classes.editor)}>
+      <div>
         <FormComponents.Header>
           New permission
         </FormComponents.Header>
 
         <form
           name="permissionEditor"
-          className={css(classes.form)}
           onSubmit={this.onSubmit}
           ref={this.keepFormRef}
         >

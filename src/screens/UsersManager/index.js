@@ -9,7 +9,7 @@ import RolesSection from './components/RolesSection';
 
 import classes from './classes';
 
-const SHOW_SUBMENU = false;
+const SHOW_SUBMENU = true;
 
 const SUBSECTIONS = [{
   label: 'Users',

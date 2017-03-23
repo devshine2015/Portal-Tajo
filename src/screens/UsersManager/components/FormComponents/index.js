@@ -27,8 +27,12 @@ const Buttons = ({
   onCancel,
   disabled,
   mainLabel,
+  rootStyles,
 }) => (
-  <div className={css(classes.buttons)}>
+  <div
+    className={css(classes.buttons)}
+    style={rootStyles}
+  >
     <RaisedButton
       onClick={onSubmit}
       label={mainLabel}
@@ -49,6 +53,7 @@ Buttons.propTypes = {
   onCancel: React.PropTypes.func.isRequired,
   disabled: React.PropTypes.bool.isRequired,
   mainLabel: React.PropTypes.string.isRequired,
+  rootStyles: React.PropTypes.object,
 };
 
 const FormComponents = {

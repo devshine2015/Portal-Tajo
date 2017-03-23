@@ -14,6 +14,7 @@ const classes = StyleSheet.create({
 
   buttons: {
     textAlign: 'center',
+    marginTop: 10,
   },
 });
 

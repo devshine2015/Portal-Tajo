@@ -1,6 +1,10 @@
 import React from 'react';
+import { css } from 'aphrodite/no-important';
+import { VelocityTransitionGroup } from 'velocity-react';
 import SectionHeader from '../SectionHeader';
 import MainActionButton from '../MainActionButton';
+
+import classes from './classes';
 
 class Section extends React.Component {
   constructor(props) {
@@ -31,6 +35,16 @@ class Section extends React.Component {
   }
 
   render() {
+    const enterAnimation = {
+      animation: 'slideDown',
+      duration: 400,
+      style: { height: '' },
+    };
+    const leaveAnimation = {
+      animation: 'slideUp',
+      duration: 400,
+    };
+
     return (
       <div>
         <SectionHeader
@@ -43,7 +57,19 @@ class Section extends React.Component {
           )}
         />
 
-        { this.state.showForm && <this.FormComponent /> }
+        <VelocityTransitionGroup
+          component="div"
+          enter={enterAnimation}
+          leave={leaveAnimation}
+        >
+          { this.state.showForm && (
+            <div className={css(classes.formWrapper)}>
+              <div className={css(classes.formWrapper__inn)}>
+                <this.FormComponent />
+              </div>
+            </div>
+          )}
+        </VelocityTransitionGroup>
 
         <this.ListComponent />
       </div>
