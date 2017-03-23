@@ -11,7 +11,7 @@ const DetailPopupForm = ({
   headerText,
   isFetching,
 }) => {
-  const animation = `transition.fade${(isFetching ? 'In' : 'Out')}`;
+  const animation = `transition.flipX${(isFetching ? 'In' : 'Out')}`;
 
   return (
     <div className={css(classes.form)}>

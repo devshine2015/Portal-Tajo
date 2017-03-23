@@ -1,5 +1,5 @@
 import qs from 'query-string';
-import api from 'utils/api';
+import { api } from 'utils/api';
 import endpoints from 'configs/endpoints';
 import reporter from 'utils/reports';
 import {

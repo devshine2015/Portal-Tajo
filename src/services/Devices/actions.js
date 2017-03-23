@@ -1,4 +1,4 @@
-import api from 'utils/api';
+import { api } from 'utils/api';
 import endpoints from 'configs/endpoints';
 import { getProcessedVehicles } from 'services/FleetModel/reducer';
 import {

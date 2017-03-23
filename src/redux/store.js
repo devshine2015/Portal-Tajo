@@ -6,7 +6,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { fromJS } from 'immutable';
 import thunk from 'redux-thunk';
 import { routerMiddleware } from 'react-router-redux';
-import api, { auth0Api } from 'utils/api';
+import { api, auth0Api } from 'utils/api';
 
 const devtools = window.devToolsExtension || (() => noop => noop);
 const isDev = process.env.NODE_ENV !== 'production';

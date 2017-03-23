@@ -20,7 +20,7 @@
   // }
 
 import endpoints from 'configs/endpoints';
-import api from 'utils/api';
+import { api } from 'utils/api';
 import { makeLocalAlertCondition } from './alertConditionHelper';
 
 export const ALRT_TYPES_SET = 'alrt/typesSet';

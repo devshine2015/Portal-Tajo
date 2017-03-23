@@ -1,5 +1,5 @@
 import endpoints from 'configs/endpoints';
-import api from 'utils/api';
+import { api } from 'utils/api';
 import { updateLocalVehicles } from '../utils/vehicleHelpers';
 
 export const FLEET_MODEL_SOCKET_SET = 'portal/services/FLEET_MODEL_SOCKET_SET';

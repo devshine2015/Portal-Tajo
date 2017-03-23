@@ -6,7 +6,7 @@ class BaseAPIClass {
     this.getState = undefined;
     this.dispatch = undefined;
 
-    ['get', 'post', 'patch', 'delete'].forEach(method => {
+    ['get', 'post', 'patch', 'put', 'delete'].forEach(method => {
       this[method] = (url, payload) => this._invoke(method.toUpperCase(), url, payload);
     });
   }
