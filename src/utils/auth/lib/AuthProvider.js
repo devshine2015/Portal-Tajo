@@ -35,11 +35,13 @@ class AuthProvider extends React.Component {
 
   isAuthenticated = () => this.state.authenticated
 
-  authenticate = session => {
+  authenticate = (session, save = false) => {
     this.setState({
       authenticated: true,
     }, () => {
-      saveSession(this.props.storageKey, session);
+      if (save) {
+        saveSession(this.props.storageKey, session);
+      }
 
       if (typeof this.props.onLoginSuccess === 'function') {
         const profile = takeProfile(session);
@@ -65,7 +67,7 @@ class AuthProvider extends React.Component {
     login(payload, options)
       .then(validateSession)
       .then(profile => {
-        this.authenticate(profile);
+        this.authenticate(profile, true);
 
         return profile;
       })

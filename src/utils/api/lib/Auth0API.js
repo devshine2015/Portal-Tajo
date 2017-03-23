@@ -12,12 +12,12 @@ class Auth0API extends BaseAPIClass {
   constructor() {
     super();
 
-    this.accessToken = undefined;
+    this.accessToken = `Bearer ${token}`;
   }
 
   setAccessToken = (accessToken = undefined) => {
     if (accessToken) {
-      this.accessToken = `Bearer ${token}`;
+      this.accessToken = `Bearer ${accessToken}`;
     } else {
       this.accessToken = undefined;
     }

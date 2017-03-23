@@ -14,8 +14,8 @@ const initialState = fromJS({
 });
 
 function findUserIndex(state, userId) {
-  return state.get('usersList').findIndex((val) =>
-    val.user_id === userId
+  return state.get('usersList').findIndex(user =>
+    user.get('user_id') === userId
   );
 }
 
@@ -37,7 +37,7 @@ function reducer(state = initialState, action) {
     case USERS_MANAGER_USER_UPDATED: {
       const index = findUserIndex(state, action.id);
 
-      return state.mergeIn(['usersList', index], action.user);
+      return state.mergeIn(['usersList', index], fromJS(action.user));
     }
 
     case USERS_MANAGER_PERMISSION_ASSIGN: {

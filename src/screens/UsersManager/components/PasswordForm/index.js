@@ -2,12 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import FormComponents from '../FormComponents';
+import DetailPopupForm from '../DetailPopupForm';
+import { usersActions } from 'services/Users/actions';
 
 class PasswordForm extends React.Component {
   state = {
     newPass: undefined,
     repeat: undefined,
     repeatedCorrectly: false,
+    isFetching: false,
   }
 
   onPasswordChange = e => {
@@ -31,7 +34,14 @@ class PasswordForm extends React.Component {
   onSubmit = e => {
     e.preventDefault();
 
-    this.props.closeForm();
+    this.setState({
+      isFetching: true,
+    }, () => {
+      this.props.changePassword(this.props.userId, {
+        password: this.state.newPass,
+      })
+      .then(() => this.props.closeForm());
+    });
   }
 
   focus = ref => {
@@ -42,10 +52,10 @@ class PasswordForm extends React.Component {
 
   render() {
     return (
-      <form>
-        <FormComponents.Header center>
-          Change password
-        </FormComponents.Header>
+      <DetailPopupForm
+        headerText="Change password"
+        isFetching={this.state.isFetching}
+      >
         <TextField
           hintText="New password"
           onChange={this.onPasswordChange}
@@ -66,16 +76,20 @@ class PasswordForm extends React.Component {
           disabled={this.state.repeatedCorrectly}
           mainLabel="Submit"
         />
-      </form>
+      </DetailPopupForm>
     );
   }
 }
 
 PasswordForm.propTypes = {
   closeForm: React.PropTypes.func.isRequired,
+  userId: React.PropTypes.string.isRequired,
+  changePassword: React.PropTypes.func.isRequired,
 };
 
 const mapState = null;
-const mapDispatch = null;
+const mapDispatch = {
+  changePassword: usersActions.changePassword,
+};
 
 export default connect(mapState, mapDispatch)(PasswordForm);

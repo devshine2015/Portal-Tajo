@@ -2,12 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import DetailPopupForm from '../DetailPopupForm';
-// import { VelocityComponent } from 'velocity-react';
-// import AnimatedLoadingLogo from 'components/animated';
 import FormComponents from '../FormComponents';
 import { usersActions } from 'services/Users/actions';
-
-// import classes from './classes';
 
 class EmailForm extends React.Component {
   state = {

@@ -12,7 +12,7 @@ export const fetchUsers = () => dispatch => {
   const { url, method } = endpoints.getAllUsers;
 
   return auth0Api[method](url)
-    .then(res => res.json())
+    .then(toJson)
     .then(users => dispatch(_usersSet(users)));
 };
 
@@ -24,7 +24,7 @@ export const createUser = payload => dispatch => {
   });
 
   return auth0Api[method](url, enrichedPayload)
-    .then(res => res.json())
+    .then(toJson)
     .then(user => {
       dispatch(_userCreated(user));
 
@@ -57,24 +57,41 @@ export const assignPermission = (permissionId, userIndex, isAssigned) => {
   });
 };
 
-export const changeEmail = (userId, payload) => dispatch => {
+function _updateUserCall(userId, payload) {
   const { url, method } = endpoints.updateUser(userId);
+
+  return auth0Api[method](url, payload)
+    .then(toJson);
+}
+
+export const changeEmail = (userId, payload) => dispatch => {
   const enrichedPayload = Object.assign({}, payload, {
     connection: 'Username-Password-Authentication',
     client_id: 'qlvnewPDcVdLge4ah7Rkp0lL9Lzikj7B',
   });
 
-  return new Promise(resolve => {
-    window.setTimeout(resolve, 3000);
-  });
-  // return auth0Api[method](url, enrichedPayload)
-  //   .then(res => res.json())
-  //   .then(user => {
-  //     dispatch(_userUpdated(user, userId));
+  return _updateUserCall(userId, enrichedPayload)
+    .then(user => {
+      dispatch(_userUpdated(user, userId));
 
-  //     return Promise.resolve();
-  //   });
+      return Promise.resolve();
+    });
 };
+
+export const changePassword = (userId, payload) => dispatch => {
+  const enrichedPayload = Object.assign({}, payload, {
+    connection: 'Username-Password-Authentication',
+  });
+
+  return _updateUserCall(userId, enrichedPayload)
+    .then(user => {
+      dispatch(_userUpdated(user, userId));
+
+      return Promise.resolve();
+    });
+};
+
+const toJson = res => res.json();
 
 const _usersSet = users => ({
   type: USERS_MANAGER_USERS_SET,
