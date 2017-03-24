@@ -2,7 +2,6 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import InnerPortal from 'containers/InnerPortal';
 import { onlineActions } from 'services/Global/actions';
 import {
@@ -15,10 +14,13 @@ import { fetchDevices } from 'services/Devices/actions';
 import {
   LOCAL_STORAGE_SESSION_KEY,
   BASE_URL,
+  checkSetMwa,
+  isMwa,
 } from 'configs';
 import drvrDevTheme from 'configs/theme';
 import { TranslationProvider } from 'utils/i18n';
 import { AuthProvider } from 'utils/auth';
+import { auth0Api } from 'utils/api';
 import phrases, { locales } from 'configs/phrases';
 
 // need this for global styling
@@ -33,7 +35,9 @@ function screenIsProtected(routes = []) {
   return Object.hasOwnProperty.call(lastRoute, 'protected') ? lastRoute.protected : true;
 }
 
-const muiTheme = getMuiTheme(drvrDevTheme);
+function needRedirect(fromLocation) {
+  return fromLocation === '/login' || fromLocation === '/mwa';
+}
 
 class App extends React.Component {
   constructor(props, context) {
@@ -42,6 +46,8 @@ class App extends React.Component {
     this.state = {
       initialLocation: context.router.location.pathname,
     };
+
+    checkSetMwa(context.router.location.pathname);
   }
 
   componentDidMount() {
@@ -54,14 +60,16 @@ class App extends React.Component {
     window.removeEventListener('online', this.handleOnlineState);
   }
 
-  onLoginSuccess = session => {
-    this.props.saveSession(session)
+  onLoginSuccess = (profile, idToken = undefined) => {
+    this.props.saveSession(profile)
       .then(this.props.fetchFleet)
       .then(this.props.fetchDevices);
 
-    const needRedirect = this.state.initialLocation === '/login';
+    if (isMwa && idToken) {
+      auth0Api.setAccessToken(idToken);
+    }
 
-    if (needRedirect) {
+    if (needRedirect(this.state.initialLocation)) {
       this.context.router.replace(`${BASE_URL}/`);
     }
   }
@@ -69,7 +77,16 @@ class App extends React.Component {
   onLogoutSuccess = () => {
     this.props.cleanSession();
 
-    this.context.router.replace(`${BASE_URL}/login`);
+    const loginUrl = isMwa ? '/mwa' : '/login';
+
+    // we need reset it
+    // to support login flow
+    this.setState({
+      initialLocation: loginUrl,
+    }, () => {
+      auth0Api.setAccessToken();
+      this.context.router.replace(`${BASE_URL}${loginUrl}`);
+    });
   }
 
   handleOnlineState = (e) => {
@@ -100,7 +117,7 @@ class App extends React.Component {
           locales={locales}
           locale={this.props.locale || 'en'}
         >
-          <MuiThemeProvider muiTheme={muiTheme}>
+          <MuiThemeProvider muiTheme={drvrDevTheme}>
             {children}
           </MuiThemeProvider>
         </TranslationProvider>

@@ -1,4 +1,3 @@
-import { commonActions } from 'services/Session/actions';
 import { errorsActions } from 'services/Global/actions';
 import getLocalType from 'configs/errors';
 
@@ -12,17 +11,6 @@ function errorsHandler(error, dispatch) {
     toReject.error = error.response;
   } else {
     toReject.error = error;
-  }
-
-  if (error && error.response && error.response.status) {
-    // special codes
-    switch (error.response.status) {
-      case 403: {
-        dispatch(commonActions.eraseAuth());
-        break;
-      }
-      default: break;
-    }
   }
 
   // make not internal error available everywhere;

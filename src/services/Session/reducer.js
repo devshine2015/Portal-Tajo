@@ -8,11 +8,22 @@ import {
 const initialState = fromJS({
   sessionId: undefined,
   fleet: undefined,
-  role: undefined,
+  role: 'uber',
   settings: {
     dateFormat: undefined,
     lang: undefined,
   },
+
+  /**
+   *
+   * keep roles and permissions
+   * for displaying it ...later... in user profile...
+   * don't rely on it for checking permissions
+   * use context of AuthProvider instead.
+   *
+   **/
+  roles: [],
+  permissions: [],
 });
 
 function reducer(state = initialState, action) {
@@ -21,7 +32,7 @@ function reducer(state = initialState, action) {
       return initialState;
 
     case SESSION_SET:
-      return fromJS(action.session);
+      return state.mergeDeep(action.session);
 
     case SESSION_SETTINGS_UPDATE:
       return state.mergeIn(['settings'], action.settings);

@@ -1,11 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { css } from 'aphrodite/no-important';
 import TextField from 'material-ui/TextField';
 import FormComponents from '../FormComponents';
 import { rolesActions } from 'services/Users/actions';
-
-import classes from './classes';
 
 const initialState = {
   name: undefined,
@@ -63,14 +60,13 @@ class RoleForm extends React.Component {
     const disabled = !!name && !!desc;
 
     return (
-      <div className={css(classes.editor)}>
+      <div>
         <FormComponents.Header>
           New role
         </FormComponents.Header>
 
         <form
           name="roleEditor"
-          className={css(classes.form)}
           onSubmit={this.onSubmit}
           ref={this.keepFormRef}
         >

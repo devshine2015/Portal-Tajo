@@ -27,8 +27,6 @@ export const getGroupBy = state =>
   fromUsersReducer.getGroupBy(users(state));
 export const getGrouping = state =>
   fromUsersReducer.getGrouping(users(state));
-export const getIsAddingNewUser = state =>
-  fromUsersReducer.getIsAddingNewUser(users(state));
 export const getIsLoading = state =>
   fromUsersReducer.getIsLoading(users(state));
 

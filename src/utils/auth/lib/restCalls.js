@@ -1,8 +1,10 @@
-import api from 'utils/api';
-import endpoints from 'configs/endpoints';
+import { api } from 'utils/api';
 
-export const login = payload => {
-  const { url, method, apiVersion } = endpoints.login;
+export const login = (payload, {
+  url,
+  method,
+  apiVersion,
+}) => {
   const options = {
     apiVersion,
     payload,
@@ -12,8 +14,11 @@ export const login = payload => {
     .then(res => res.json());
 };
 
-export const logout = () => {
-  const { url, method, apiVersion } = endpoints.logout;
+export const logout = ({
+  url,
+  method,
+  apiVersion,
+}) => {
   const options = {
     apiVersion,
   };

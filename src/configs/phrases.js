@@ -22,13 +22,13 @@ const phrases = {
     // main menu
     reports: 'reports',
     vehicles_editor: 'vehicles editor',
-    users: 'users manager',
+    users: 'users',
     operational: 'operational',
     settings: 'settings',
     dashboard: 'dashboard',
     installer: 'installer',
     promos: 'promos',
-    devices: 'devices manager',
+    devices_manager: 'devices manager',
     review: 'review',
     history: 'history',
     alerts_editor: 'alerts editor',
@@ -198,6 +198,31 @@ const phrases = {
     lat: 'lat',
     lng: 'lng',
     // -- end chronicle marker
+
+    // users manager
+    add_user: 'add user',
+    choose_role: 'choose role',
+    email: 'email',
+    add_new_user: 'add new user',
+    update: 'update',
+    create: 'create',
+    role: 'role',
+    close: 'close',
+    details: 'details',
+    last_login: 'Last login',
+    never: 'never',
+    confirm_delete_str1: 'You are going to completely remove user out of the system',
+    confirm_delete_str2: 'Please confirm this action',
+    confirm: 'confirm',
+    change_email: 'change email',
+    verified: 'verified',
+    change_password: 'change password',
+    new_email: 'New email',
+    submit: 'submit',
+    new_password: 'New password',
+    repeat_password: 'Repeat password',
+    changing: 'changing',
+    // --end users manager
   },
 
   th: {

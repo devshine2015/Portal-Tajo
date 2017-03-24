@@ -1,26 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { List, Map } from 'immutable';
+import { List } from 'immutable';
 import pure from 'recompose/pure';
-import Subheader from 'material-ui/Subheader';
 import { usersActions } from 'services/Users/actions';
 import {
   getUsers,
-  getGrouping,
-  getGroupBy,
   getPermissions,
 } from 'services/Users/reducer';
 import UserItem from '../UserItem';
 import UserPermissionsList from '../UserPermissionsList';
+import AnimatedLogo from 'components/animated';
 
 import styles from './styles.css';
-
-const STYLES = {
-  subheader: {
-    fontSize: 16,
-    textTransform: 'capitalize',
-  },
-};
 
 const renderAllPermissons = (allPermissions, onClick) => (userPermissions = [], userIndex) => {
   if (allPermissions === undefined || allPermissions.size === 0) {
@@ -37,17 +28,17 @@ const renderAllPermissons = (allPermissions, onClick) => (userPermissions = [], 
   );
 };
 
-function renderUsers(groupIndexies, allUsers, permissionsRenderer) {
-  return groupIndexies.map(index => {
-    const user = allUsers.get(index).toJS();
+function renderUsers({ users, permissionsRenderer }) {
+  return users.toArray().map((u, index) => {
+    const user = u.toJS();
 
     return (
       <li
-        key={index}
+        key={user.user_id}
         className={styles.list__item}
       >
         <UserItem
-          {...user}
+          profile={user}
           index={index}
           renderPermissions={permissionsRenderer}
         />
@@ -56,36 +47,34 @@ function renderUsers(groupIndexies, allUsers, permissionsRenderer) {
   });
 }
 
-function renderGroups({ currentGrouping, users, permissionsRenderer }) {
-  const groups = currentGrouping.keys();
-  const k = [];
-
-  for (let group of groups) {
-    // get indexies of users from group
-    const usersIndexies = currentGrouping.get(group);
-
-    k.push(
-      <div
-        className={styles.group}
-        key={group}
-      >
-        <Subheader style={STYLES.subheader}>{group}</Subheader>
-        <ul className={styles.list}>
-          { renderUsers(usersIndexies, users, permissionsRenderer) }
-        </ul>
-      </div>
-    );
-  }
-
-  return k;
-}
+renderUsers.propTypes = {
+  users: React.PropTypes.instanceOf(List).isRequired,
+  permissionsRenderer: React.PropTypes.func.isRequired,
+};
 
 class UsersList extends React.Component {
 
+  state = {
+    isFetching: false,
+  }
+
   componentWillMount() {
     if (this.props.users.size === 0) {
-      this.props.fetchUsers(this.props.groupBy);
+      this.fetchUsers();
     }
+  }
+
+  fetchUsers = () => {
+    this.setState({
+      isFetching: true,
+    }, () => {
+      this.props.fetchUsers()
+        .then(() => {
+          this.setState({
+            isFetching: false,
+          });
+        });
+    });
   }
 
   assignPermission = (permissionId, userIndex, permissionAssigned) => {
@@ -93,38 +82,40 @@ class UsersList extends React.Component {
   }
 
   render() {
-    const { users, currentGrouping, allPermissions } = this.props;
+    const { users, allPermissions } = this.props;
 
-    if (users.size === 0) {
+    if (users.size === 0 && !this.state.isFetching) {
       return null;
     }
 
+    if (this.state.isFetching) {
+      return <AnimatedLogo.FullscreenLogo />;
+    }
+
     const permissionsRenderer = renderAllPermissons(allPermissions, this.assignPermission);
-    const groups = renderGroups({ currentGrouping, users, permissionsRenderer });
+    const usersList = renderUsers({ users, permissionsRenderer });
 
     return (
-      <div className={styles.groups}>
-        { groups }
-      </div>
+      <ul className={styles.list}>
+        { usersList }
+      </ul>
     );
   }
 }
 
 UsersList.propTypes = {
-  groupBy: React.PropTypes.oneOf([
-    'fleet', 'role',
-  ]).isRequired,
   fetchUsers: React.PropTypes.func.isRequired,
   users: React.PropTypes.instanceOf(List).isRequired,
-  currentGrouping: React.PropTypes.instanceOf(Map).isRequired,
   allPermissions: React.PropTypes.instanceOf(List),
   assignPermission: React.PropTypes.func.isRequired,
 };
 
+UsersList.defaultProps = {
+  allPermissions: new List([]),
+};
+
 const mapState = state => ({
   users: getUsers(state),
-  currentGrouping: getGrouping(state),
-  groupBy: getGroupBy(state),
   allPermissions: getPermissions(state),
 });
 const mapDispatch = {

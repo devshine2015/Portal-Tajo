@@ -147,7 +147,6 @@ class GooglePlacesSearch extends React.Component {
   }
 
   render() {
-    console.log('rerender');
     const { isOpened } = this.state;
     const containerClassName = css(classes.container,
       isOpened ? classes.container_open : classes.container_closed

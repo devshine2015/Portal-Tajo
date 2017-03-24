@@ -17,7 +17,6 @@ import * as listEvents from './events';
 import * as mapEvents from 'containers/MapFleet/events';
 import GFEditor from 'containers/GFEditor';
 import { gfEditIsEditing } from 'containers/GFEditor/reducer';
-import { dimensions } from 'configs/theme';
 import { isMaritime } from 'configs';
 
 import styles from './styles.css';
@@ -123,7 +122,7 @@ class OperationalPowerList extends React.Component {
               filterFunc={this.props.filterVehiclesFunc}
               defaultValue={this.props.vehicleFilterString}
             />
-            <Scrollable offsetTop={dimensions.powerlistFilterHeight}>
+            <Scrollable>
               <ItemsList
                 scrollIntoView
                 currentExpandedItemId={this.state.currentExpandedVehicleId}
@@ -139,7 +138,7 @@ class OperationalPowerList extends React.Component {
           >
             <Filter filterFunc={this.props.filterGFsFunc} />
 
-            <Scrollable offsetTop={dimensions.powerlistFilterHeight}>
+            <Scrollable>
               <ItemsList
                 scrollIntoView
                 currentExpandedItemId={this.state.currentExpandedGFId}
@@ -155,9 +154,6 @@ class OperationalPowerList extends React.Component {
   }
 }
 
-OperationalPowerList.contextTypes = {
-  muiTheme: React.PropTypes.object.isRequired,
-};
 OperationalPowerList.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
   gfs: React.PropTypes.array.isRequired,

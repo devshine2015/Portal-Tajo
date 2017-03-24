@@ -1,4 +1,4 @@
-import api from 'utils/api';
+import { api } from 'utils/api';
 import endpoints from 'configs/endpoints';
 import { setLoaderState } from './loaderActions';
 import { vehiclesActions } from 'services/FleetModel/actions';

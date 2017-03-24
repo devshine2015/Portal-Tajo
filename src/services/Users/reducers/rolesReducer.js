@@ -2,7 +2,16 @@ import { fromJS, List } from 'immutable';
 import { rolesActions } from '../actions';
 
 const initialState = fromJS({
-  list: undefined,
+  list: [{
+    text: 'uber',
+    id: 'uber',
+  }, {
+    text: 'admin',
+    id: 'admin',
+  }, {
+    text: 'executive',
+    id: 'executive',
+  }],
   isLoading: false,
 });
 

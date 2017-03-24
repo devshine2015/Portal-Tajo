@@ -15,6 +15,8 @@ const MainMenu = ({
   closeSidebar,
   role,
   translations,
+}, {
+  permissions,
 }) => {
   const menuItems = pages.map(page => {
     const includes = page.includeRoles || EMPTY_ARRAY;
@@ -22,6 +24,7 @@ const MainMenu = ({
 
     if (includes.length && includes.indexOf(role) === -1) return null;
     if (excludes.length && excludes.indexOf(role) !== -1) return null;
+    if (page.name === 'users' && permissions.indexOf('view:users_manager') === -1) return null;
 
     return (
       <MenuItem
@@ -38,6 +41,10 @@ const MainMenu = ({
       {menuItems}
     </ul>
   );
+};
+
+MainMenu.contextTypes = {
+  permissions: React.PropTypes.array.isRequired,
 };
 
 MainMenu.propTypes = {

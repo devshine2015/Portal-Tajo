@@ -22,6 +22,7 @@ import loginScreen from 'screens/LoginScreen/route';
 import dashboardScreen from 'screens/DashboardScreen/route';
 import settingsScreen from 'screens/Settings/route';
 import alertsEditorScreen from 'screens/AlertsEditor/route';
+import notFoundScreen from 'screens/NotFound/route';
 
 export default function createRoutes(store) {
   const { injectReducer } = getHooks(store);
@@ -87,9 +88,17 @@ export default function createRoutes(store) {
     path: 'login',
   });
 
+  const mwaLoginRoute = loginScreen({
+    path: 'mwa',
+  });
+
   const settingsRoute = settingsScreen(mainMenu.escape.settings);
 
   const dashboardRoute = dashboardScreen(mainMenu.escape.dashboard);
+
+  const notFoundRoute = notFoundScreen({
+    path: 'not-found',
+  });
 
   const rootRoute = rootScreen({
     path: ROOT_ROUTE,
@@ -106,6 +115,7 @@ export default function createRoutes(store) {
   // order of menu depends of pushing order
   rootRoute.childRoutes.push(
     loginRoute,
+    mwaLoginRoute,
     dashboardRoute,
     operationalRoute,
     installerRoute,
@@ -116,12 +126,14 @@ export default function createRoutes(store) {
     devicesManagerRoute,
     settingsRoute,
     alertsEditorRoute,
+    notFoundRoute,
   );
 
   return (
     <Router
       history={history}
       routes={rootRoute}
+      onError={errorHandler}
     />
   );
 }

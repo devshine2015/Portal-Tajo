@@ -16,9 +16,27 @@ class Translator {
       locale: transformLocale(locale || window.navigator.language || DEFAULT_LOCALE),
       allowMissing: true,
       onMissingKey: key => {
-        const phrase = key.split('.')[1] || 'undefined';
+        const splitted = key.split('.');
+        let phrase;
+        let phraseLocale;
 
-        return this.p.t(`${DEFAULT_LOCALE}.${phrase}`);
+        if (splitted.length > 1) {
+          phraseLocale = splitted[0];
+          phrase = splitted[1];
+        }
+
+        // some phraseLocale provided, but not found
+        // try with default phraseLocale
+        if (phraseLocale && (phraseLocale !== DEFAULT_LOCALE)) {
+          return this.p.t(`${DEFAULT_LOCALE}.${phrase}`);
+        }
+
+        // even default translation not provided
+        if (phraseLocale && (phraseLocale === DEFAULT_LOCALE)) {
+          return phrase;
+        }
+
+        return key;
       },
     });
 

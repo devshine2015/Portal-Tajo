@@ -1,6 +1,10 @@
 import React from 'react';
+import { css } from 'aphrodite/no-important';
+import { VelocityTransitionGroup } from 'velocity-react';
 import SectionHeader from '../SectionHeader';
 import MainActionButton from '../MainActionButton';
+
+import classes from './classes';
 
 class Section extends React.Component {
   constructor(props) {
@@ -10,9 +14,9 @@ class Section extends React.Component {
       showForm: false,
       formMode: 'create',
     };
-    this.FormComponent = () => React.cloneElement(props.formComponent, {
-      closeForm: this.closeForm,
-    });
+    // this.FormComponent = () => React.cloneElement(props.formComponent, {
+    //   closeForm: this.closeForm,
+    // });
     this.ListComponent = () => React.cloneElement(props.listComponent, {
       showForm: this.showForm,
     });
@@ -31,6 +35,16 @@ class Section extends React.Component {
   }
 
   render() {
+    const enterAnimation = {
+      animation: 'slideDown',
+      duration: 400,
+      style: { height: '' },
+    };
+    const leaveAnimation = {
+      animation: 'slideUp',
+      duration: 400,
+    };
+
     return (
       <div>
         <SectionHeader
@@ -43,7 +57,22 @@ class Section extends React.Component {
           )}
         />
 
-        { this.state.showForm && <this.FormComponent /> }
+        <VelocityTransitionGroup
+          component="div"
+          enter={enterAnimation}
+          leave={leaveAnimation}
+        >
+          { this.state.showForm && (
+            <div className={css(classes.formWrapper)}>
+              <div className={css(classes.formWrapper__inn)}>
+                { this.props.renderForm({
+                  isOpened: this.state.showForm,
+                  closeForm: this.closeForm,
+                })}
+              </div>
+            </div>
+          )}
+        </VelocityTransitionGroup>
 
         <this.ListComponent />
       </div>
@@ -52,7 +81,7 @@ class Section extends React.Component {
 }
 
 Section.propTypes = {
-  formComponent: React.PropTypes.any.isRequired,
+  renderForm: React.PropTypes.func.isRequired,
   listComponent: React.PropTypes.any.isRequired,
   headerLabel: React.PropTypes.string.isRequired,
   actionButtonLabel: React.PropTypes.string.isRequired,

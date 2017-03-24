@@ -1,76 +1,48 @@
-import { List } from 'immutable';
-import api from 'utils/api';
+import { auth0Api } from 'utils/api';
 import endpoints from 'configs/endpoints';
-import {
-  getUsers,
-  getGroupBy,
-  getGrouping,
-} from '../reducer';
 
 export const USERS_MANAGER_USERS_SET = 'portal/UsersManager/USERS_MANAGER_USERS_SET';
-export const USERS_MANAGER_GROUPBY_CHANGE = 'portal/UsersManager/USERS_MANAGER_GROUPBY_CHANGE';
-export const USERS_MANAGER_NEW_USER_TOGGLE = 'portal/UsersManager/USERS_MANAGER_NEW_USER_TOGGLE';
-export const USERS_MANAGER_NEW_USER_ADD = 'portal/UsersManager/USERS_MANAGER_NEW_USER_ADD';
+export const USERS_MANAGER_USER_CREATED = 'portal/UsersManager/USERS_MANAGER_USER_CREATED';
+export const USERS_MANAGER_USER_DELETED = 'portal/UsersManager/USERS_MANAGER_USER_DELETED';
 export const USERS_MANAGER_PERMISSION_ASSIGN = 'portal/UsersManager/USERS_MANAGER_PERMISSION_ASSIGN';
 export const USERS_MANAGER_PERMISSION_UNASSIGN = 'portal/UsersManager/USERS_MANAGER_PERMISSION_UNASSIGN';
+export const USERS_MANAGER_USER_UPDATED = 'portal/UsersManager/USERS_MANAGER_USER_UPDATED';
 
-export const fetchUsers = groupBy => dispatch => {
-  const { url, method, apiVersion } = endpoints.getAllUsers;
+export const fetchUsers = () => dispatch => {
+  const { url, method } = endpoints.getAllUsers;
 
-  return api[method](url, { apiVersion })
-    .then(res => res.json())
-    .then(users => {
-      // sort alphaberically by grouping property
-      users.sort((a, b) => _sortByGrouping(groupBy, a, b));
+  return auth0Api[method](url)
+    .then(toJson)
+    .then(users => dispatch(_usersSet(users)));
+};
 
-      // group users into groups
-      const grouped = _changeGroupBy(groupBy, users);
+export const createUser = payload => dispatch => {
+  const { url, method } = endpoints.createUser;
 
-      dispatch(_usersSet(users, grouped));
+  const enrichedPayload = Object.assign({}, payload, {
+    connection: 'Username-Password-Authentication',
+  });
+
+  return auth0Api[method](url, enrichedPayload)
+    .then(toJson)
+    .then(user => {
+      dispatch(_userCreated(user));
+
+      return Promise.resolve();
     });
 };
 
-export const toggleNewUser = nextState => ({
-  type: USERS_MANAGER_NEW_USER_TOGGLE,
-  isLoading: false,
-  nextState,
-});
+export const deleteUser = userId => dispatch => {
+  const { url, method } = endpoints.deleteUser(userId);
 
-export const addNewUser = payload => (dispatch, getState) => {
-  const groupBy = getGroupBy(getState());
-  const grouped = getGrouping(getState());
-  const users = getUsers(getState());
+  return auth0Api[method](url)
+    .then(res => {
+      if (res.status === 204) {
+        dispatch(_userDeleted(userId));
+      }
 
-  // assume POST requiest will be successful
-  // update store ASAP
-  const newUsers = users.push(payload);
-  const newGrouping = grouped.update(payload[groupBy], array => (
-    array.push(newUsers.size - 1)
-  ));
-
-  // don't wait for request
-  dispatch(_newUserAdd(newUsers, newGrouping, true));
-
-  const { url, method, apiVersion } = endpoints.addNewUser;
-
-  return api[method](url, { payload, apiVersion })
-    .then(() => {
-      dispatch(toggleNewUser(false));
-
-      return Promise.resolve(true);
-    }, () => {
-      // retain changes on error
-      dispatch(_newUserAdd(users, grouped, false));
-
-      return Promise.resolve(false);
+      return Promise.resolve();
     });
-};
-
-export const changeGroupBy = newGroupBy => (dispatch, getState) => {
-  const users = getUsers(getState());
-  const grouped = _changeGroupBy(newGroupBy, users);
-
-  dispatch(_usersGroupUpdate(newGroupBy, grouped));
 };
 
 export const assignPermission = (permissionId, userIndex, isAssigned) => {
@@ -85,61 +57,59 @@ export const assignPermission = (permissionId, userIndex, isAssigned) => {
   });
 };
 
-function _changeGroupBy(groupBy, users) {
-  const grouped = {};
+function _updateUserCall(userId, payload) {
+  const { url, method } = endpoints.updateUser(userId);
 
-  users.forEach((user, i) => _group.call(grouped, groupBy, user, i));
-
-  return grouped;
+  return auth0Api[method](url, payload)
+    .then(toJson);
 }
 
-const _usersSet = (users, grouped) => ({
+export const changeEmail = (userId, payload) => dispatch => {
+  const enrichedPayload = Object.assign({}, payload, {
+    connection: 'Username-Password-Authentication',
+    client_id: 'qlvnewPDcVdLge4ah7Rkp0lL9Lzikj7B',
+  });
+
+  return _updateUserCall(userId, enrichedPayload)
+    .then(user => {
+      dispatch(_userUpdated(user, userId));
+
+      return Promise.resolve();
+    });
+};
+
+export const changePassword = (userId, payload) => dispatch => {
+  const enrichedPayload = Object.assign({}, payload, {
+    connection: 'Username-Password-Authentication',
+  });
+
+  return _updateUserCall(userId, enrichedPayload)
+    .then(user => {
+      dispatch(_userUpdated(user, userId));
+
+      return Promise.resolve();
+    });
+};
+
+const toJson = res => res.json();
+
+const _usersSet = users => ({
   type: USERS_MANAGER_USERS_SET,
   users,
-  grouped,
 });
 
-const _usersGroupUpdate = (groupBy, grouped) => ({
-  type: USERS_MANAGER_GROUPBY_CHANGE,
-  groupBy,
-  grouped,
+const _userCreated = user => ({
+  type: USERS_MANAGER_USER_CREATED,
+  user,
 });
 
-const _newUserAdd = (users, grouped, isLoading) => ({
-  type: USERS_MANAGER_NEW_USER_ADD,
-  users,
-  grouped,
-  isLoading,
+const _userDeleted = id => ({
+  type: USERS_MANAGER_USER_DELETED,
+  id,
 });
 
-// create object:
-// if groupBy = fleet
-// {
-//    psl: List([0,3,5]),
-//    test: List([1,2,4,6]),
-// }
-function _group(groupBy, user, index) {
-  const groupProp = user[groupBy];
-  let list = this[groupProp];
-
-  if (!list) {
-    list = new List();
-  }
-
-  this[groupProp] = list.push(index);
-}
-
-function _sortByGrouping(groupingProp, a, b) {
-  const propA = a[groupingProp].toLowerCase();
-  const propB = b[groupingProp].toLowerCase();
-
-  if (propA < propB) {
-    return -1;
-  }
-
-  if (propA > propB) {
-    return 1;
-  }
-
-  return 0;
-}
+const _userUpdated = (user, id) => ({
+  type: USERS_MANAGER_USER_UPDATED,
+  user,
+  id,
+});

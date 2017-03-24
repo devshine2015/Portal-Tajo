@@ -1,13 +1,24 @@
-import { isTokenExpired } from './checkExpiration';
+import {
+  isTokenExpired,
+  sessionHasJWT,
+} from './tokenHelpers';
 
 function validateSession(session) {
-  const tokenExpired = isTokenExpired(session.sessionId);
+  const hasJWT = sessionHasJWT(session);
 
-  if (tokenExpired) {
-    return Promise.reject();
+  // don't validate regular sessions
+  if (hasJWT) {
+    const tokenExpired = isTokenExpired(session.id_token);
+
+    if (tokenExpired) {
+      return Promise.reject();
+    }
   }
 
-  return Promise.resolve(session);
+  return Promise.resolve({
+    session,
+    hasJWT,
+  });
 }
 
 export default validateSession;

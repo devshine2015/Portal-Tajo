@@ -6,6 +6,15 @@ export const loadModule = (cb) => (componentModule) => {
 };
 
 export function errorHandler(error) {
+  if (error === 'NotFound') {
+    if (Object.hasOwnProperty.call(this, 'router')) {
+      this.router.replace('/not-found');
+    }
+
+    return;
+  }
+
+  // eslint-disable-next-line
   console.error(error);
 }
 

@@ -1,49 +1,47 @@
-import { fromJS, Map, List } from 'immutable';
+import { fromJS, List } from 'immutable';
 import {
   USERS_MANAGER_USERS_SET,
-  USERS_MANAGER_GROUPBY_CHANGE,
-  USERS_MANAGER_NEW_USER_TOGGLE,
-  USERS_MANAGER_NEW_USER_ADD,
+  USERS_MANAGER_USER_CREATED,
+  USERS_MANAGER_USER_DELETED,
   USERS_MANAGER_PERMISSION_ASSIGN,
   USERS_MANAGER_PERMISSION_UNASSIGN,
+  USERS_MANAGER_USER_UPDATED,
 } from '../actions/usersActions';
 
 const initialState = fromJS({
-  users: new List(),
-  grouped: new Map(),
-  groupBy: 'fleet',
-  isAddingNewUser: false,
+  usersList: new List(),
   isLoading: false,
 });
 
+function findUserIndex(state, userId) {
+  return state.get('usersList').findIndex(user =>
+    user.get('user_id') === userId
+  );
+}
+
 function reducer(state = initialState, action) {
   switch (action.type) {
-    // initial settings:
-    // group by fleet name by default
-    // set users as is
     case USERS_MANAGER_USERS_SET:
-      return state.withMutations(s => {
-        s.set('users', fromJS(action.users))
-         .set('grouped', new Map(action.grouped));
-      });
-    case USERS_MANAGER_GROUPBY_CHANGE:
-      return state.withMutations(s => {
-        s.set('groupBy', action.groupBy)
-         .set('grouped', new Map(action.grouped));
-      });
-    case USERS_MANAGER_NEW_USER_TOGGLE:
-      return state.withMutations(s => {
-        s.set('isAddingNewUser', action.nextState)
-         .set('isLoading', action.isLoading);
-      });
-    case USERS_MANAGER_NEW_USER_ADD:
-      return state.withMutations(s => {
-        s.set('grouped', new Map(action.grouped))
-         .set('isLoading', action.isLoading)
-         .set('users', fromJS(action.users));
-      });
+      return state.set('usersList', fromJS(action.users));
+
+    case USERS_MANAGER_USER_CREATED:
+      return state.update('usersList', list =>
+        list.push(fromJS(action.user)));
+
+    case USERS_MANAGER_USER_DELETED: {
+      const index = findUserIndex(state, action.id);
+
+      return state.update('usersList', list => list.delete(index));
+    }
+
+    case USERS_MANAGER_USER_UPDATED: {
+      const index = findUserIndex(state, action.id);
+
+      return state.mergeIn(['usersList', index], fromJS(action.user));
+    }
+
     case USERS_MANAGER_PERMISSION_ASSIGN: {
-      const nextState = state.updateIn(['users', action.index], user => {
+      const nextState = state.updateIn(['usersList', action.index], user => {
         let nextUser = user;
 
         if (!user.has('permissions')) {
@@ -56,7 +54,7 @@ function reducer(state = initialState, action) {
       return nextState;
     }
     case USERS_MANAGER_PERMISSION_UNASSIGN:
-      return state.updateIn(['users', action.index, 'permissions'], perms =>
+      return state.updateIn(['usersList', action.index, 'permissions'], perms =>
         perms.delete(perms.indexOf(action.permissionId))
       );
 
@@ -68,14 +66,11 @@ function reducer(state = initialState, action) {
 export default reducer;
 
 export const getUsers = state =>
-  state.get('users');
+  state.get('usersList');
 export const getGroupBy = state =>
   state.get('groupBy');
 export const getGrouping = state =>
   state.get('grouped');
-
-export const getIsAddingNewUser = state =>
-  state.get('isAddingNewUser');
 
 export const getIsLoading = state =>
   state.get('isLoading');

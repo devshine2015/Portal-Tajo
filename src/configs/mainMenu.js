@@ -1,5 +1,4 @@
 import roles from 'configs/roles';
-import { isAlerts } from 'configs';
 
 const common = {
   reports: {
@@ -45,7 +44,7 @@ const escapePortal = {
     path: 'promos',
   },
   devices: {
-    name: 'devices',
+    name: 'devices_manager',
     path: 'devices',
   },
 };

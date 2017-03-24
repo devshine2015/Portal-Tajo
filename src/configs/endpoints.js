@@ -7,6 +7,11 @@ const endpoints = {
     method: 'post',
     apiVersion: 1.1,
   },
+  loginAuth0: {
+    url: 'login/auth0',
+    method: 'post',
+    apiVersion: 1.1,
+  },
   logout: {
     url: 'login',
     method: 'delete',
@@ -110,16 +115,21 @@ const endpoints = {
 
   // users
   getAllUsers: {
-    url: 'admin/users',
+    url: 'users',
     method: 'get',
-    apiVersion: 1.1,
   },
-  addNewUser: {
-    url: 'admin/users',
+  updateUser: id => ({
+    url: `users/${id}`,
+    method: 'patch',
+  }),
+  createUser: {
+    url: 'users',
     method: 'post',
-    apiVersion: 1.1,
   },
-
+  deleteUser: id => ({
+    url: `users/${id}`,
+    method: 'delete',
+  }),
   // events
   getEventsInTimeRange: (id, params) => ({
     url: `vehicles/${id}/events?${qs.stringify(params)}`,

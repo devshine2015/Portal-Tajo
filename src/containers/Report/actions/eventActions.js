@@ -1,5 +1,5 @@
 import moment from 'moment';
-import api from 'utils/api';
+import { api } from 'utils/api';
 import endpoints from 'configs/endpoints';
 import { requestSamplesLimit } from 'configs';
 import reporter from 'utils/reports';

@@ -52,6 +52,16 @@ export const ENGINE_BASE = onLocal ? DEV_ENGINE_BASE : REMOTE_HOST_BASE;
 // is it used before being set?
 
 export let isMaritime = false;
+export let isMwa = false;
+export const checkSetMwa = (itIsMwa = undefined) => {
+  // set ismwa if argument exist
+  if (itIsMwa !== undefined) {
+    if (typeof itIsMwa === 'string') {
+      isMwa = itIsMwa.indexOf('mwa') !== -1;
+    }
+  }
+};
+
 export function checkSetMaritime(fleetName) {
   isMaritime = fleetName.indexOf('maritime') !== -1;
 }

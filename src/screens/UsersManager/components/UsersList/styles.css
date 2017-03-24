@@ -1,13 +1,5 @@
 @media screen and (min-width: 100px) {
 
-  .groups {
-    margin-top: 5px;
-  }
-
-  .group {
-    padding: 0 1px;
-  }
-
   .list {
     list-style: none;
   }

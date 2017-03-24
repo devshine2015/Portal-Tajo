@@ -1,5 +1,5 @@
 import endpoints from 'configs/endpoints';
-import api from 'utils/api';
+import { api } from 'utils/api';
 import { makeLocalGFs } from '../utils/gfHelpers';
 import { getProcessedGFs } from '../reducer';
 import { filterProcessedListByName } from '../utils/filtering';
