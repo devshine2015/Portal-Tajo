@@ -2,7 +2,6 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import InnerPortal from 'containers/InnerPortal';
 import { onlineActions } from 'services/Global/actions';
 import {
@@ -39,8 +38,6 @@ function screenIsProtected(routes = []) {
 function needRedirect(fromLocation) {
   return fromLocation === '/login' || fromLocation === '/mwa';
 }
-
-const muiTheme = getMuiTheme(drvrDevTheme);
 
 class App extends React.Component {
   constructor(props, context) {
@@ -120,7 +117,7 @@ class App extends React.Component {
           locales={locales}
           locale={this.props.locale || 'en'}
         >
-          <MuiThemeProvider muiTheme={muiTheme}>
+          <MuiThemeProvider muiTheme={drvrDevTheme}>
             {children}
           </MuiThemeProvider>
         </TranslationProvider>

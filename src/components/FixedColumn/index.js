@@ -1,21 +1,21 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import classnames from 'classnames';
-import { dimensions } from 'configs/theme';
 
 import styles from './styles.css';
-
-const STYLES = {
-  container: {
-    top: dimensions.appBarHeigth,
-  },
-};
 
 const FixedColumn = ({
   children,
   containerClassName,
   style,
+}, {
+  muiTheme,
 }) => {
+  const STYLES = {
+    container: {
+      top: muiTheme.spacing.appBarHeigth,
+    },
+  };
   const newClassName = classnames(styles.column, containerClassName);
   const st = Object.assign({}, STYLES.container, style);
 
@@ -27,6 +27,10 @@ const FixedColumn = ({
       {children}
     </div>
   );
+};
+
+FixedColumn.contextTypes = {
+  muiTheme: React.PropTypes.object.isRequired,
 };
 
 FixedColumn.propTypes = {

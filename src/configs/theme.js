@@ -28,7 +28,7 @@
 // lower visual prominence with an opacity of 38%.
 
 import tinycolor from 'tinycolor2';
-
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { white, blue600, cyan700,
   teal300, teal500, teal700, teal900,
   deepOrange700, yellow700,
@@ -60,11 +60,10 @@ const drvrDevTheme = {
 //    PLItemBackgroundColorExpanded: cyan500,
 //    PLItemBackgroundColorExpandedHover: tinycolor(cyan500).setAlpha(0.85).toRgbString(),
   },
+  spacing: {
+    appBarHeigth: 64,
+    powerlistFilterHeight: 50,
+  },
 };
 
-export default drvrDevTheme;
-
-export const dimensions = {
-  appBarHeigth: 64,
-  powerlistFilterHeight: 50,
-};
+export default getMuiTheme(drvrDevTheme);
