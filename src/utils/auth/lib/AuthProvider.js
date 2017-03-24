@@ -23,37 +23,13 @@ const roles = [
   'Admin',
 ];
 
-class AuthProvider extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-
+class Auth {
+  constructor() {
     this.roles = [];
     this.permissions = [];
 
     // flag, indicating if authorization is needed
     this.isAuth0 = false;
-
-    this.state = {
-      authenticated: false,
-    };
-  }
-
-  getChildContext() {
-    return {
-      login: this.login,
-      logout: this.logout,
-      authenticated: this.isAuthenticated,
-      permissions: this.getPermissions,
-      roles: this.getRoles,
-    };
-  }
-
-  componentWillMount() {
-    readSessionFromLocalStorage(this.props.storageKey)
-      .then(validateSession)
-      .then(({ session, hasJWT }) => (
-        this.authenticate(session, hasJWT)
-      ), this.unauthenticate);
   }
 
   getRoles() {
@@ -66,6 +42,44 @@ class AuthProvider extends React.Component {
     if (!this.isAuth0) return true;
 
     return this.permissions;
+  }
+}
+
+/**
+ *
+ * same instance of Auth as used in AuthProvider
+ * can be used outside of react components
+ *
+ **/
+export const auth = new Auth();
+
+class AuthProvider extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.auth = auth;
+
+    this.state = {
+      authenticated: false,
+    };
+  }
+
+  getChildContext() {
+    return {
+      login: this.login,
+      logout: this.logout,
+      authenticated: this.isAuthenticated,
+      permissions: this.auth.getPermissions,
+      roles: this.auth.getRoles,
+    };
+  }
+
+  componentWillMount() {
+    readSessionFromLocalStorage(this.props.storageKey)
+      .then(validateSession)
+      .then(({ session, hasJWT }) => (
+        this.authenticate(session, hasJWT)
+      ), this.unauthenticate);
   }
 
   unauthenticate = () => {
@@ -91,11 +105,11 @@ class AuthProvider extends React.Component {
       }
 
       if (hasJWT) {
-        this.isAuth0 = true;
+        this.auth.isAuth0 = true;
       }
 
-      this.roles = roles;
-      this.permissions = permissions;
+      this.auth.roles = roles;
+      this.auth.permissions = permissions;
 
       if (typeof this.props.onLoginSuccess === 'function') {
         let profile = takeProfile(session);
