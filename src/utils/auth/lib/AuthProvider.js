@@ -18,7 +18,7 @@ const permissions = [
   'edit:vehicle',
   'add:user',
   'edit:user',
-  'view:users_managers',
+  'view:users_manager',
 ];
 const roles = [
   'Admin',
@@ -94,8 +94,8 @@ class AuthProvider extends React.Component {
       login: this.login,
       logout: this.logout,
       authenticated: this.isAuthenticated,
-      permissions: this.auth.getPermissions,
-      roles: this.auth.getRoles,
+      permissions: this.auth.permissions,
+      roles: this.auth.roles,
     };
   }
 
@@ -194,13 +194,11 @@ AuthProvider.childContextTypes = {
 
   authenticated: React.PropTypes.func,
 
-  // return roles list for current session roles.
-  // if it's not auth0 session return true.
-  roles: React.PropTypes.func,
+  // get roles list for current session.
+  roles: React.PropTypes.array,
 
-  // return roles list for current session permissions.
-  // if it's not auth0 session return true.
-  permissions: React.PropTypes.func,
+  // get permissions list for current session.
+  permissions: React.PropTypes.array,
 };
 
 export default AuthProvider;
