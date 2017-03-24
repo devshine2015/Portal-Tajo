@@ -7,6 +7,8 @@ function extractPhrasesFromDefaultProps(Component, customPhrases) {
     return R.keys(Component.defaultProps.translations);
   }
 
+  if (customPhrases.length) return customPhrases;
+
   return R.keys(customPhrases);
 }
 
