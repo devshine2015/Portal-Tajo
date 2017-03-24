@@ -13,7 +13,6 @@ export const SESSION_SETTINGS_UPDATE = 'services/Session/SESSION_SETTINGS_UPDATE
 const takeFleetName = R.propOr('', 'fleet');
 
 export const setSession = session => dispatch => {
-  // new Promise(resolve => {
   checkSetMaritime(takeFleetName(session));
 
   dispatch({
@@ -22,7 +21,6 @@ export const setSession = session => dispatch => {
   });
 
   return Promise.resolve();
-  // })
 };
 
 export const cleanSession = () => ({

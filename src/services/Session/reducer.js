@@ -13,6 +13,17 @@ const initialState = fromJS({
     dateFormat: undefined,
     lang: undefined,
   },
+
+  /**
+   *
+   * keep roles and permissions
+   * for displaying it ...later... in user profile...
+   * don't rely on it for checking permissions
+   * use context of AuthProvider instead.
+   *
+   **/
+  roles: [],
+  permissions: [],
 });
 
 function reducer(state = initialState, action) {
