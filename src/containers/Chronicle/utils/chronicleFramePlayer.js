@@ -20,7 +20,7 @@ function ChronicleFramePlayer(chronicleFrame) {
 
 //
 //-----------------------------------------------------------------------
-ChronicleFramePlayer.prototype.kill = function( ){
+ChronicleFramePlayer.prototype.kill = function () {
   // stop playback
   this.play(false);
 
@@ -35,14 +35,14 @@ ChronicleFramePlayer.prototype.kill = function( ){
 //
 //  NOTE:
 // !!!callbacks are not called now
-ChronicleFramePlayer.prototype.addUpdateCallback = function( callBack ){
+ChronicleFramePlayer.prototype.addUpdateCallback = function (callBack) {
   this.updateCallbacks.push(callBack);
 };
 
 //
 // LoopCallbackFunctionu(  );
 //-----------------------------------------------------------------------
-ChronicleFramePlayer.prototype.addLoopCallback = function(callBack){
+ChronicleFramePlayer.prototype.addLoopCallback = function (callBack) {
   this.loopCallbacks.push(callBack);
 };
 
@@ -50,20 +50,20 @@ ChronicleFramePlayer.prototype.addLoopCallback = function(callBack){
 //
 //-----------------------------------------------------------------------
 //
-ChronicleFramePlayer.prototype.setPlaybackSpeed = function( speed ){
+ChronicleFramePlayer.prototype.setPlaybackSpeed = function (speed) {
   this.playbackSpeed = speed;
 };
 
 //
 //-----------------------------------------------------------------------
-ChronicleFramePlayer.prototype.isPlaying = function(){
+ChronicleFramePlayer.prototype.isPlaying = function () {
   return this.animationProc !== null;
 };
 
 //
 //
 //-----------------------------------------------------------------------
-ChronicleFramePlayer.prototype.play = function(doPlay){
+ChronicleFramePlayer.prototype.play = function (doPlay) {
   if (!doPlay) {
     if (this.isPlaying()) {
       window.clearInterval(this.animationProc);
@@ -77,18 +77,18 @@ ChronicleFramePlayer.prototype.play = function(doPlay){
   }
   const _this = this;
   // trying 30fps
-  this.animationProc = window.setInterval(function(){ _this.advance(_this.playbackSpeed); }, 33);
+  this.animationProc = window.setInterval(function () { _this.advance(_this.playbackSpeed); }, 33);
 };
 
 //
 //
 //-----------------------------------------------------------------------
-ChronicleFramePlayer.prototype.advance = function(step){
+ChronicleFramePlayer.prototype.advance = function (step) {
   this.normalizedTime100 += step;
-  if (this.normalizedTime100>=100) {
+  if (this.normalizedTime100 >= 100) {
     //      loop
     this.normalizedTime100 = 0;
-    this.loopCallbacks.forEach(function(updater){ updater(); });
+    this.loopCallbacks.forEach(function (updater) { updater(); });
     return;
   }
   this.update();
@@ -97,7 +97,7 @@ ChronicleFramePlayer.prototype.advance = function(step){
 //
 //
 //-----------------------------------------------------------------------
-ChronicleFramePlayer.prototype.gotoTime100 = function(time100) {
+ChronicleFramePlayer.prototype.gotoTime100 = function (time100) {
   if (this.normalizedTime100 === time100) {
     return;
   }
@@ -108,7 +108,7 @@ ChronicleFramePlayer.prototype.gotoTime100 = function(time100) {
 //
 //
 //-----------------------------------------------------------------------
-ChronicleFramePlayer.prototype.update = function() {
+ChronicleFramePlayer.prototype.update = function () {
   this.frameData = this.getMomentDataAtNormalized(this.normalizedTime100);
   // const _this = this;
   //
@@ -120,7 +120,7 @@ ChronicleFramePlayer.prototype.update = function() {
 //
 //
 //-----------------------------------------------------------------------
-ChronicleFramePlayer.prototype.getMomentDataAtNormalized = function(normalizedTime100) {
+ChronicleFramePlayer.prototype.getMomentDataAtNormalized = function (normalizedTime100) {
   const timeMs = this.chronicleFrame.timeRangeMs * normalizedTime100 / 100;
   return {
       // Date object here
@@ -138,11 +138,11 @@ ChronicleFramePlayer.prototype.getMomentDataAtNormalized = function(normalizedTi
 //   speed
 //   teperature
 // }
-ChronicleFramePlayer.prototype.getCurrentMomentData = function( ) {
+ChronicleFramePlayer.prototype.getCurrentMomentData = function () {
   return this.frameData;
 };
 
-ChronicleFramePlayer.prototype.findNormilized100TForPos = function(refPos) {
+ChronicleFramePlayer.prototype.findNormilized100TForPos = function (refPos) {
   const theSample = this.chronicleFrame.findSampleForPos(refPos);
   return 100 * theSample.timeMs / this.chronicleFrame.timeRangeMs;
 };
