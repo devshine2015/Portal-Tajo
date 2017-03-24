@@ -9,6 +9,7 @@ import {
 } from 'services/Users/reducer';
 import UserItem from '../UserItem';
 import UserPermissionsList from '../UserPermissionsList';
+import AnimatedLogo from 'components/animated';
 
 import styles from './styles.css';
 
@@ -53,10 +54,27 @@ renderUsers.propTypes = {
 
 class UsersList extends React.Component {
 
+  state = {
+    isFetching: false,
+  }
+
   componentWillMount() {
     if (this.props.users.size === 0) {
-      this.props.fetchUsers();
+      this.fetchUsers();
     }
+  }
+
+  fetchUsers = () => {
+    this.setState({
+      isFetching: true,
+    }, () => {
+      this.props.fetchUsers()
+        .then(() => {
+          this.setState({
+            isFetching: false,
+          });
+        });
+    });
   }
 
   assignPermission = (permissionId, userIndex, permissionAssigned) => {
@@ -66,8 +84,12 @@ class UsersList extends React.Component {
   render() {
     const { users, allPermissions } = this.props;
 
-    if (users.size === 0) {
+    if (users.size === 0 && !this.state.isFetching) {
       return null;
+    }
+
+    if (this.state.isFetching) {
+      return <AnimatedLogo.FullscreenLogo />;
     }
 
     const permissionsRenderer = renderAllPermissons(allPermissions, this.assignPermission);

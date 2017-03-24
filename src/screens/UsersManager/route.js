@@ -12,7 +12,7 @@ const createRoute = ({
   name,
   niceName,
   getComponent: (location, cb) => {
-    if (!auth.authorize('view:users_manager')) {
+    if (auth.authorize('view:users_manager')) {
       require.ensure([], require => {
         const importModules = Promise.all([
           require('services/Users/reducer'),

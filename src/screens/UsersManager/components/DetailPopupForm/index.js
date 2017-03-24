@@ -1,7 +1,7 @@
 import React from 'react';
 import { css } from 'aphrodite/no-important';
 import { VelocityComponent } from 'velocity-react';
-import AnimatedLoadingLogo from 'components/animated';
+import AnimatedLogo from 'components/animated';
 import FormComponents from '../FormComponents';
 import { translate } from 'utils/i18n';
 
@@ -31,7 +31,7 @@ const DetailPopupForm = ({
         duration={300}
       >
         <div className={css(classes.loaderWrapper)}>
-          <AnimatedLoadingLogo loadingText={`${translations.changing}...`} />
+          <AnimatedLogo.LoadingLogo loadingText={`${translations.changing}...`} />
         </div>
       </VelocityComponent>
     </div>
