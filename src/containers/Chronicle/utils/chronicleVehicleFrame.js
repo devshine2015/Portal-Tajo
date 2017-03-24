@@ -42,7 +42,7 @@ function ChronicleVehicleFrame(dateFrom, dateTo, events, inState) {
   this.player = createFramePlayer(this);
 
   // TODO: ? need more checks here - type of event, etc?
-  this.state = this.posData.length > 0 || this.temperatureData.length > 0 ?
+  this.state = this.hasPositions() || this.hasTemperature() ?
       CHRONICLE_LOCAL_INCTANCE_STATE_OK_DATA
       : CHRONICLE_LOCAL_INCTANCE_STATE_OK_EMPTY;
 }
@@ -90,7 +90,7 @@ ChronicleVehicleFrame.prototype.parceData = function (events) {
   }
   let _dbgTime = 0;
   const dataSize = events.length;
-  for (var i = 0; i < dataSize; ++i) {
+  for (let i = 0; i < dataSize; ++i) {
     const theEvent = events[i];
     // const eventDate = new Date(theEvent.ev.ts);
     const eventMomentTS = moment(theEvent.ev.ts).valueOf();
@@ -175,7 +175,10 @@ ChronicleVehicleFrame.prototype.getSpeedAtMs = function (timeMs) {
 //
 //-----------------------------------------------------------------------
 ChronicleVehicleFrame.prototype.getSpeedAtLastPos = function () {
-//  return this.speedData[idx===undefined ? this.lastFoundIdx : idx].v;
+  // no movement/speed in current timeFrame (only temp or events...)
+  if (!this.hasPositions()) {
+    return 0;
+  }
   if (this.lastFoundIdxT.t <= 0) {
     return this.speedData[this.lastFoundIdxT.idx].v;
   }
@@ -189,6 +192,9 @@ ChronicleVehicleFrame.prototype.getSpeedAtLastPos = function () {
 //
 //-----------------------------------------------------------------------
 ChronicleVehicleFrame.prototype.getPosAtMs = function (timeMs) {
+  if (!this.hasPositions()) {
+    return null;
+  }
   this.lastFoundIdxT = this.findSampleIdxWithT(Math.floor(timeMs), this.posData);
   if (this.lastFoundIdxT.t <= 0) {
     return this.posData[this.lastFoundIdxT.idx].pos;
@@ -215,6 +221,12 @@ ChronicleVehicleFrame.prototype.getTemperatureAtMs = function (timeMs) {
 ChronicleVehicleFrame.prototype.hasTemperature = function () {
   return this.temperatureData.length > 5;
 };
+//
+//
+//-----------------------------------------------------------------------
+ChronicleVehicleFrame.prototype.hasPositions = function () {
+  return this.posData.length > 5;
+};
 
 //
 //
@@ -229,10 +241,10 @@ ChronicleVehicleFrame.prototype.findSample = function (requestMs, data) {
 
   for (; dataIdx >= 0 && dataIdx < dataSz - 1; dataIdx += stepDir)
     if (data[dataIdx].timeMs <= requestMs && data[dataIdx + 1].timeMs > requestMs) {
-    this.lastFoundIdx = dataIdx;
+      this.lastFoundIdx = dataIdx;
     // interpolate here?
-    return data[dataIdx];
-  }
+      return data[dataIdx];
+    }
   return (dataIdx < 0) ? data[0] : data[dataSz - 1];
 };
 

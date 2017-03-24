@@ -83,7 +83,7 @@ class MapChronicle extends React.Component {
       ));
       chronPaths = this.props.vehicles.map((v) => {
         const vehCronicleFrame = this.props.getInstanceChronicleFrameById(v.id);
-        if (!vehCronicleFrame.isValid() || vehCronicleFrame.isEmpty()) {
+        if (!vehCronicleFrame.isValid() || !vehCronicleFrame.hasPositions()) {
           return false;
         }
         return (
@@ -98,7 +98,7 @@ class MapChronicle extends React.Component {
       });
       chronMarkers = this.props.vehicles.map((v) => {
         const vehCronicleFrame = this.props.getInstanceChronicleFrameById(v.id);
-        if (!vehCronicleFrame.isValid() || vehCronicleFrame.isEmpty()) {
+        if (!vehCronicleFrame.isValid() || !vehCronicleFrame.hasPositions()) {
           return false;
         }
         return (
@@ -115,7 +115,7 @@ class MapChronicle extends React.Component {
         const vehCronicleFrame = this.props
                     .getInstanceChronicleFrameById(this.props.selectedVehicle.id);
         if (vehCronicleFrame.isValid()
-        && !vehCronicleFrame.isEmpty()
+        && vehCronicleFrame.hasPositions()
         && vehCronicleFrame.stopEvents.length > 0) {
           stopEvents = vehCronicleFrame.stopEvents.map((v, idx) => (
             <ChronicleEventMarker
