@@ -22,6 +22,7 @@ import dashboardScreen from 'screens/DashboardScreen/route';
 import chronicleScreen from 'screens/Chronicle/route';
 import settingsScreen from 'screens/Settings/route';
 import alersEditorScreen from 'screens/AlertsEditor/route';
+import notFoundScreen from 'screens/NotFound/route';
 
 export default function createRoutes(store) {
   const { injectReducer } = getHooks(store);
@@ -69,6 +70,10 @@ export default function createRoutes(store) {
     path: 'mwa',
   });
 
+  const notFoundRoute = notFoundScreen({
+    path: 'not-found',
+  });
+
   const rootRoute = rootScreen({
     path: ROOT_ROUTE,
     dispatch: store.dispatch,
@@ -89,6 +94,7 @@ export default function createRoutes(store) {
     chronicleRoute,
     vehiclesEditorRoute,
     settingsRoute,
+    notFoundRoute,
 // TODO: uncomment when releasing alerts system
 //    alertsEditorRoute,
   );
@@ -102,6 +108,7 @@ export default function createRoutes(store) {
     <Router
       history={history}
       routes={rootRoute}
+      onError={errorHandler}
     />
   );
 }
