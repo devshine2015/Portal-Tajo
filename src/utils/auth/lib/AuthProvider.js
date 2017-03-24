@@ -18,6 +18,7 @@ const permissions = [
   'edit:vehicle',
   'add:user',
   'edit:user',
+  'view:users_managers',
 ];
 const roles = [
   'Admin',
@@ -33,15 +34,39 @@ class Auth {
   }
 
   getRoles() {
-    if (!this.isAuth0) return true;
+    // uncomment next line when backend will work with permissons and roles
+    // if (!this.isAuth0) return true;
 
     return this.roles;
   }
 
   getPermissions() {
-    if (!this.isAuth0) return true;
+    // uncomment next line when backend will work with permissons and roles
+    // if (!this.isAuth0) return true;
 
     return this.permissions;
+  }
+
+  _chekPermission(permission) {
+    return this.permissions.indexOf(permission) !== -1;
+  }
+
+  authorize = (perms = []) => {
+    if (typeof perms === 'string') {
+      return this._chekPermission(perms);
+    }
+
+    if (perms.length === 1) {
+      return this._chekPermission(perms[0]);
+    }
+
+    const result = {};
+
+    perms.forEach(p => {
+      result[p] = this._chekPermission(p);
+    });
+
+    return result;
   }
 }
 
