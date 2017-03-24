@@ -17,8 +17,10 @@ import Userpic from 'components/Userpic';
 import UserItemDetails from '../UserItemDetails';
 import { permissions as globalPermissions } from 'configs/roles';
 import { usersActions } from 'services/Users/actions';
+import { translate } from 'utils/i18n';
 // import permitted from 'utils/permissionsRequired';
 
+import phrases, { phrasesShape } from './PropTypes';
 import classes from './classes';
 
 // const PERMISSIONS = [
@@ -30,15 +32,16 @@ const DeleteUserDialog = ({
   handleClose,
   handleConfirm,
   open,
+  translations,
 }) => {
   const actions = [
     <FlatButton
-      label="Cancel"
+      label={translations.cancel}
       primary
       onTouchTap={handleClose}
     />,
     <FlatButton
-      label="Confirm"
+      label={translations.confirm}
       primary
       onTouchTap={handleConfirm}
     />,
@@ -50,8 +53,8 @@ const DeleteUserDialog = ({
       open={open}
       onRequestClose={handleClose}
     >
-      You are going to completely remove user out of the system.<br />
-      Please confirm this action.
+      {`${translations.confirm_delete_str1}.`}<br />
+      {`${translations.confirm_delete_str2}.`}
     </Dialog>
   );
 };
@@ -60,20 +63,21 @@ DeleteUserDialog.propTypes = {
   handleClose: React.PropTypes.func.isRequired,
   handleConfirm: React.PropTypes.func.isRequired,
   open: React.PropTypes.bool.isRequired,
+  translations: phrasesShape.isRequired,
 };
 
 function userCan(permission, userPermittedTo) {
   return true; //userPermittedTo[permission];
 }
 
-function makeLastActiveString(lastActive) {
-  let lastActiveDate = 'never';
+function makeLastActiveString(lastActive, translations) {
+  let lastActiveDate = translations.never;
 
   if (lastActive) {
     lastActiveDate = new Date(lastActive).toLocaleString();
   }
 
-  return `Last login: ${lastActiveDate}`;
+  return `${translations.last_login}: ${lastActiveDate}`;
 }
 
 function Actions({
@@ -82,11 +86,13 @@ function Actions({
   expandToggle,
   isExpanded,
   deleteUser,
+  translations,
 }) {
   const canEdit = userCan(globalPermissions.USERS_EDIT_ANY, userPermittedTo);
   const canDelete = userCan(globalPermissions.USERS_DELETE_ANY, userPermittedTo);
   const canDoNothing = !canDelete && !canEdit;
-  const toggleButtonLabel = isExpanded ? 'Close' : 'Details';
+  const toggleButtonLabel = isExpanded ?
+    translations.close : translations.details;
 
   if (canDoNothing) return null;
 
@@ -99,14 +105,14 @@ function Actions({
   let DeleteButton = () =>
     <FlatButton
       className={css(classes.button)}
-      label="Delete"
+      label={translations.delete}
       onTouchTap={deleteUser}
     />;
 
   return (
     <CardActions className={css(classes.actions)}>
       <div className={css(classes.lastActive)}>
-        { makeLastActiveString(lastActive) }
+        { makeLastActiveString(lastActive, translations) }
       </div>
 
       <div className={css(classes.actions__buttons)}>
@@ -123,23 +129,12 @@ Actions.propTypes = {
   deleteUser: React.PropTypes.func.isRequired,
   lastActive: React.PropTypes.string,
   isExpanded: React.PropTypes.bool.isRequired,
+  translations: phrasesShape,
 };
 
 Actions.defaultProps = {
   lastActive: undefined,
 };
-
-function renderSubtitle(role/* , fleet*/) {
-  return (
-    <dl>
-      {/* <dt className={css(classes.title)}>Fleet:&nbsp;</dt>
-      <dd className={css(classes.detail)}>{fleet}</dd>
-      <br /> */}
-      <dt className={css(classes.title)}>Role:&nbsp;</dt>
-      <dd className={css(classes.detail)}>{role}</dd>
-    </dl>
-  );
-}
 
 const enterExpandAnimation = {
   animation: 'slideDown',
@@ -165,6 +160,7 @@ class UserItem extends React.Component {
       expanded: false,
       isDeleting: true,
     }, () => {
+      // wait until animation finish
       window.setTimeout(() => {
         this.props.deleteUser(this.props.profile.user_id);
       }, this.duration);
@@ -201,6 +197,20 @@ class UserItem extends React.Component {
     });
   }
 
+  renderSubtitle() {
+    return (
+      <dl>
+        {/* <dt className={css(classes.title)}>Fleet:&nbsp;</dt>
+        <dd className={css(classes.detail)}>{fleet}</dd>
+        <br /> */}
+        <dt className={css(classes.title)}>
+          {`${this.props.translations.role}:`}
+        </dt>
+        <dd className={css(classes.detail)}>{this.props.profile.role}</dd>
+      </dl>
+    );
+  }
+
   render() {
     const { profile } = this.props;
     const title = profile.nickname || profile.name || profile.email;
@@ -221,7 +231,7 @@ class UserItem extends React.Component {
             <CardHeader
               avatar={<Userpic src={profile.picture} />}
               title={title}
-              subtitle={renderSubtitle()}
+              subtitle={this.renderSubtitle()}
               actAsExpander
               showExpandableButton
             />
@@ -245,6 +255,7 @@ class UserItem extends React.Component {
               expandToggle={this.handleExpandToggle}
               isExpanded={!!this.state.expanded}
               deleteUser={this.handleOpen}
+              translations={this.props.translations}
             />
           </Card>
 
@@ -252,6 +263,7 @@ class UserItem extends React.Component {
             open={this.state.dialogIsOpen}
             handleConfirm={this.onDeleteConfirm}
             handleClose={this.handleClose}
+            translations={this.props.translations}
           />
         </div>
       </VelocityComponent>
@@ -266,6 +278,8 @@ UserItem.propTypes = {
   renderPermissions: React.PropTypes.func.isRequired,
   index: React.PropTypes.number.isRequired,
   deleteUser: React.PropTypes.func.isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
 UserItem.defaultProps = {
@@ -277,4 +291,6 @@ const mapDispatch = {
   deleteUser: usersActions.deleteUser,
 };
 
-export default connect(mapState, mapDispatch)(UserItem);
+const Translated = translate(phrases)(UserItem);
+
+export default connect(mapState, mapDispatch)(Translated);

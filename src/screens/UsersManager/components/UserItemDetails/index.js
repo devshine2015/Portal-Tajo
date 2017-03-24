@@ -4,8 +4,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { VelocityComponent } from 'velocity-react';
 import EmailForm from '../EmailForm';
 import PasswordForm from '../PasswordForm';
+import { translate } from 'utils/i18n';
 
 import classes from './classes';
+import phrases, { phrasesShape } from './PropTypes';
 
 const Overlay = ({ children }) => (
   <div className={css(classes.overlay)}>
@@ -19,28 +21,33 @@ Overlay.propTypes = {
   children: React.PropTypes.any,
 };
 
-const EmailVerified = () => (
+const EmailVerified = ({ text }) => (
   <span className={css(classes.verified)}>
-    verified
+    { text }
   </span>
 );
+
+EmailVerified.propTypes = {
+  text: React.PropTypes.string.isRequired,
+};
 
 const EmailDetails = ({
   email,
   isVerified,
   openEmailForm,
+  translations,
 }) => (
   <div>
     <dt className={css(classes.details__title)}>
-      Email:
+      {`${translations.email}:`}
     </dt>
 
     <dd className={css(classes.details__detail)}>
       { email }
-      { isVerified ? <EmailVerified /> : null }
+      { isVerified ? <EmailVerified text={translations.verified} /> : null }
     </dd>
     <RaisedButton
-      label="Change email"
+      label={translations.change_email}
       secondary
       className={css(classes.details__button)}
       onClick={openEmailForm}
@@ -52,19 +59,24 @@ EmailDetails.propTypes = {
   email: React.PropTypes.string.isRequired,
   isVerified: React.PropTypes.bool,
   openEmailForm: React.PropTypes.func.isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
-const PasswordDetails = ({ openPasswordForm }) => (
+const PasswordDetails = ({
+  openPasswordForm,
+  translations,
+}) => (
   <div>
     <dt className={css(classes.details__title)}>
-      Password:
+      {`${translations.password}:`}
     </dt>
 
     <dd className={css(classes.details__detail)}>
       ••••••••••
     </dd>
     <RaisedButton
-      label="Change password"
+      label={translations.change_password}
       secondary
       className={css(classes.details__button)}
       onClick={openPasswordForm}
@@ -74,9 +86,8 @@ const PasswordDetails = ({ openPasswordForm }) => (
 
 PasswordDetails.propTypes = {
   openPasswordForm: React.PropTypes.func.isRequired,
+  translations: phrasesShape.isRequired,
 };
-
-PasswordDetails.propTypes = {};
 
 class UserItemDetails extends React.Component {
 
@@ -146,10 +157,14 @@ class UserItemDetails extends React.Component {
               email={this.props.profile.email}
               isVerified={this.props.profile.email_verified}
               openEmailForm={this.openEmailForm}
+              translations={this.props.translations}
             />
           </div>
           <div className={css(classes.details__col)}>
-            <PasswordDetails openPasswordForm={this.openPasswordForm} />
+            <PasswordDetails
+              openPasswordForm={this.openPasswordForm}
+              translations={this.props.translations}
+            />
           </div>
 
         </div>
@@ -175,6 +190,8 @@ UserItemDetails.propTypes = {
     email_verified: React.PropTypes.bool,
     user_id: React.PropTypes.string.isRequired,
   }).isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
-export default UserItemDetails;
+export default translate(phrases)(UserItemDetails);

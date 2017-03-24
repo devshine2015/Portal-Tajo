@@ -4,6 +4,9 @@ import TextField from 'material-ui/TextField';
 import DetailPopupForm from '../DetailPopupForm';
 import FormComponents from '../FormComponents';
 import { usersActions } from 'services/Users/actions';
+import { translate } from 'utils/i18n';
+
+import phrases, { phrasesShape } from './PropTypes';
 
 class EmailForm extends React.Component {
   state = {
@@ -41,11 +44,11 @@ class EmailForm extends React.Component {
   render() {
     return (
       <DetailPopupForm
-        headerText="Change email"
+        headerText={this.props.translations.change_email}
         isFetching={this.state.isFetching}
       >
         <TextField
-          hintText="New email"
+          hintText={this.props.translations.new_email}
           onChange={this.onChange}
           ref={this.focus}
         />
@@ -54,7 +57,7 @@ class EmailForm extends React.Component {
           onSubmit={this.onSubmit}
           onCancel={this.props.closeForm}
           disabled={!!this.state.email}
-          mainLabel="Submit"
+          mainLabel={this.props.translations.submit}
         />
       </DetailPopupForm>
     );
@@ -65,6 +68,8 @@ EmailForm.propTypes = {
   closeForm: React.PropTypes.func.isRequired,
   changeEmail: React.PropTypes.func.isRequired,
   userId: React.PropTypes.string.isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
 const mapState = null;
@@ -72,4 +77,6 @@ const mapDispatch = {
   changeEmail: usersActions.changeEmail,
 };
 
-export default connect(mapState, mapDispatch)(EmailForm);
+const Translated = translate(phrases)(EmailForm);
+
+export default connect(mapState, mapDispatch)(Translated);

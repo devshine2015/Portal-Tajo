@@ -10,6 +10,9 @@ import {
 import { usersActions } from 'services/Users/actions';
 import { getIsLoading } from 'services/Users/reducer';
 import FormComponents from '../FormComponents';
+import { translate } from 'utils/i18n';
+
+import phrases, { phrasesShape } from './PropTypes';
 
 const roles = [
   <MenuItem key={1} value="uber" primaryText="Uber" />,
@@ -29,6 +32,8 @@ const roles = [
 class NewUserForm extends React.Component {
   constructor(props) {
     super(props);
+
+    this.input = null;
 
     this.state = {
       email: null,
@@ -63,27 +68,41 @@ class NewUserForm extends React.Component {
     this.props.closeForm();
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.isOpened && nextProps.isOpened) {
+      this.input.focus();
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.isOpened) {
+      this.input.focus();
+    }
+  }
+
   updateState = (name, value) => {
     this.setState({
       [name]: value,
     });
   }
 
-  focus = ref => {
+  saveInput = ref => {
     if (!ref) return;
 
-    ref.focus();
+    this.input = ref;
   }
 
   render() {
+    const { translations } = this.props;
     const { username, password, role, fleet } = this.state;
     const disabled = !!username && !!password && !!role && !!fleet;
-    const submitButtonText = this.props.editMode === 'create' ? 'Create' : 'Update';
+    const submitButtonText = this.props.editMode === 'create' ?
+      translations.create : translations.update;
 
     return (
       <div>
         <FormComponents.Header>
-          Add new user
+          { translations.add_new_user }
         </FormComponents.Header>
         <form
           name="userEditor"
@@ -91,14 +110,14 @@ class NewUserForm extends React.Component {
         >
           <TextField
             fullWidth
-            floatingLabelText="Email"
+            floatingLabelText={translations.email}
             name="email"
             onChange={this.onType}
-            ref={this.focus}
+            ref={this.saveInput}
           />
           <TextField
             fullWidth
-            floatingLabelText="Password"
+            floatingLabelText={translations.password}
             name="password"
             type="password"
             onChange={this.onType}
@@ -116,7 +135,7 @@ class NewUserForm extends React.Component {
           <SelectField
             fullWidth
             floatingLabelFixed
-            floatingLabelText="Choose role"
+            floatingLabelText={translations.choose_role}
             name="role"
             value={this.state.role}
             onChange={this.onRoleChange}
@@ -144,6 +163,8 @@ NewUserForm.propTypes = {
   ]),
   closeForm: React.PropTypes.func.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
+  isOpened: React.PropTypes.bool.isRequired,
+  translations: phrasesShape.isRequired,
 };
 
 NewUserForm.defaultProps = {
@@ -157,6 +178,7 @@ const mapDispatch = {
   createUser: usersActions.createUser,
 };
 
-const PureNewUserForm = pure(NewUserForm);
+const Translated = translate(phrases)(NewUserForm);
+const PureNewUserForm = pure(Translated);
 
 export default connect(mapState, mapDispatch)(PureNewUserForm);

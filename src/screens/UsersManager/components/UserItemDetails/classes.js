@@ -20,6 +20,7 @@ const classes = StyleSheet.create({
   details__title: {
     fontWeight: 500,
     color: 'rgba(0, 0, 0, 0.541176)',
+    textTransform: 'capitalize',
   },
 
   details__button: {

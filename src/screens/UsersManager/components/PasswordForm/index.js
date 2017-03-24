@@ -4,6 +4,9 @@ import TextField from 'material-ui/TextField';
 import FormComponents from '../FormComponents';
 import DetailPopupForm from '../DetailPopupForm';
 import { usersActions } from 'services/Users/actions';
+import { translate } from 'utils/i18n';
+
+import phrases, { phrasesShape } from './PropTypes';
 
 class PasswordForm extends React.Component {
   state = {
@@ -53,18 +56,18 @@ class PasswordForm extends React.Component {
   render() {
     return (
       <DetailPopupForm
-        headerText="Change password"
+        headerText={this.props.translations.change_password}
         isFetching={this.state.isFetching}
       >
         <TextField
-          hintText="New password"
+          hintText={this.props.translations.new_password}
           onChange={this.onPasswordChange}
           type="password"
           name="newPass"
           ref={this.focus}
         />
         <TextField
-          hintText="Repeat password"
+          hintText={this.props.translations.repeat_password}
           onChange={this.onRepeatType}
           type="password"
           name="repeat"
@@ -74,7 +77,7 @@ class PasswordForm extends React.Component {
           onSubmit={this.onSubmit}
           onCancel={this.props.closeForm}
           disabled={this.state.repeatedCorrectly}
-          mainLabel="Submit"
+          mainLabel={this.props.translations.submit}
         />
       </DetailPopupForm>
     );
@@ -85,6 +88,8 @@ PasswordForm.propTypes = {
   closeForm: React.PropTypes.func.isRequired,
   userId: React.PropTypes.string.isRequired,
   changePassword: React.PropTypes.func.isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
 const mapState = null;
@@ -92,4 +97,6 @@ const mapDispatch = {
   changePassword: usersActions.changePassword,
 };
 
-export default connect(mapState, mapDispatch)(PasswordForm);
+const Translated = translate(phrases)(PasswordForm);
+
+export default connect(mapState, mapDispatch)(Translated);

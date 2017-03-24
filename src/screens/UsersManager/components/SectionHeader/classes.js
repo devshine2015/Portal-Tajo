@@ -10,6 +10,7 @@ const classes = StyleSheet.create({
     fontWeight: 400,
     fontSize: 26,
     flexGrow: 1,
+    textTransform: 'capitalize',
   },
 
   actionWrapper: {},
