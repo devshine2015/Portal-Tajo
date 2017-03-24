@@ -15,7 +15,10 @@ function validateSession(session) {
     }
   }
 
-  return Promise.resolve(session);
+  return Promise.resolve({
+    session,
+    hasJWT,
+  });
 }
 
 export default validateSession;
