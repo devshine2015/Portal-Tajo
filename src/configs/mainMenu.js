@@ -44,7 +44,7 @@ const escapePortal = {
     path: 'promos',
   },
   devices: {
-    name: 'devices',
+    name: 'devices_manager',
     path: 'devices',
   },
 };

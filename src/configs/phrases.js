@@ -28,7 +28,7 @@ const phrases = {
     dashboard: 'dashboard',
     installer: 'installer',
     promos: 'promos',
-    devices: 'devices manager',
+    devices_manager: 'devices manager',
     review: 'review',
     history: 'history',
     alerts_editor: 'alerts editor',
