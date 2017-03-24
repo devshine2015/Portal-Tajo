@@ -6,7 +6,7 @@ import moment from 'moment';
 const CHRONICLE_LOCAL_INCTANCE_STATE_NONE = 'chronLocStateNone';
 const CHRONICLE_LOCAL_INCTANCE_STATE_LOADING = 'chronLocStateLoading';
 const CHRONICLE_LOCAL_INCTANCE_STATE_OK_EMPTY = 'chronLocStateOk';
-const CHRONICLE_LOCAL_INCTANCE_STATE_OK_DATA = 'chronLocStateEmpty';
+const CHRONICLE_LOCAL_INCTANCE_STATE_OK_DATA = 'chronLocStateData';
 
 
 function ChronicleVehicleFrame(dateFrom, dateTo, events, inState) {
@@ -42,7 +42,7 @@ function ChronicleVehicleFrame(dateFrom, dateTo, events, inState) {
   this.player = createFramePlayer(this);
 
   // TODO: ? need more checks here - type of event, etc?
-  this.state = this.posData.length > 0 ?
+  this.state = this.posData.length > 0 || this.temperatureData.length > 0 ?
       CHRONICLE_LOCAL_INCTANCE_STATE_OK_DATA
       : CHRONICLE_LOCAL_INCTANCE_STATE_OK_EMPTY;
 }
@@ -52,7 +52,7 @@ function ChronicleVehicleFrame(dateFrom, dateTo, events, inState) {
 //
 // STATUS checkers here
 //
-ChronicleVehicleFrame.prototype.isValid = function( ){
+ChronicleVehicleFrame.prototype.isValid = function () {
   return this.state === CHRONICLE_LOCAL_INCTANCE_STATE_OK_DATA
       || this.state === CHRONICLE_LOCAL_INCTANCE_STATE_OK_EMPTY;
 };
@@ -60,21 +60,21 @@ ChronicleVehicleFrame.prototype.isValid = function( ){
 //
 //
 //-----------------------------------------------------------------------
-ChronicleVehicleFrame.prototype.isLoading = function( ){
+ChronicleVehicleFrame.prototype.isLoading = function () {
   return this.state === CHRONICLE_LOCAL_INCTANCE_STATE_LOADING;
 };
 
 //
 //
 //-----------------------------------------------------------------------
-ChronicleVehicleFrame.prototype.isEmpty = function( ){
+ChronicleVehicleFrame.prototype.isEmpty = function () {
   return this.state === CHRONICLE_LOCAL_INCTANCE_STATE_OK_EMPTY;
 };
 
 //
 //
 //-----------------------------------------------------------------------
-ChronicleVehicleFrame.prototype.isStatic = function( ){
+ChronicleVehicleFrame.prototype.isStatic = function () {
 // TODO: need more checks here - type of event, etc
   return this.isValid() && this.posData.length === 1;
 };
@@ -82,21 +82,21 @@ ChronicleVehicleFrame.prototype.isStatic = function( ){
 //
 //
 //-----------------------------------------------------------------------
-ChronicleVehicleFrame.prototype.parceData = function(events) {
-  if (events.length<10) {
-    console.log('history frame for '+this.dateFrom+' - '+this.dateTo);
-    console.log('  EMPTY '+events.length);
+ChronicleVehicleFrame.prototype.parceData = function (events) {
+  if (events.length < 10) {
+    console.log('history frame for ' + this.dateFrom + ' - ' + this.dateTo);
+    console.log('  EMPTY ' + events.length);
     return;
   }
   let _dbgTime = 0;
   const dataSize = events.length;
-  for (var i=0; i<dataSize; ++i) {
+  for (var i = 0; i < dataSize; ++i) {
     const theEvent = events[i];
     // const eventDate = new Date(theEvent.ev.ts);
     const eventMomentTS = moment(theEvent.ev.ts).valueOf();
     const eventTimeMs = eventMomentTS - this.dateFrom.getTime();
     _dbgTime = eventTimeMs;
-    switch(theEvent.type){
+    switch (theEvent.type) {
       case 'vehicle-position':
         this.posData.push({ timeMs: eventTimeMs,
           pos: window.L.latLng(theEvent.ev.pos.latlon.lat, theEvent.ev.pos.latlon.lng) });
@@ -104,10 +104,10 @@ ChronicleVehicleFrame.prototype.parceData = function(events) {
         this.maxSpeed = Math.max(this.maxSpeed, theEvent.ev.pos.speed);
         break;
       case 'vehicle-1wire-temperature':
-        if( theEvent.ev.tempInfo!=null && !isNaN(theEvent.ev.tempInfo) ){
-          this.temperatureData.push({timeMs: eventTimeMs, t: theEvent.ev.tempInfo});
-          this.maxTemp = Math.max( this.maxTemp, theEvent.ev.tempInfo );
-          this.minTemp = Math.min( this.minTemp, theEvent.ev.tempInfo );
+        if (theEvent.ev.tempInfo != null && !isNaN(theEvent.ev.tempInfo)) {
+          this.temperatureData.push({ timeMs: eventTimeMs, t: theEvent.ev.tempInfo });
+          this.maxTemp = Math.max(this.maxTemp, theEvent.ev.tempInfo);
+          this.minTemp = Math.min(this.minTemp, theEvent.ev.tempInfo);
         }
         break;
       case 'vehicle-stop-stats': {
@@ -126,46 +126,47 @@ ChronicleVehicleFrame.prototype.parceData = function(events) {
     }
   }
 
-  var firstSample = this.posData[0];
-  this.posData.splice(0, 0, { timeMs: 0,
-                              pos: firstSample.pos});
-  this.speedData.splice(0, 0, {timeMs: 0, v: 0});
+  if (this.posData.length > 0) {
+    const firstSample = this.posData[0];
+    this.posData.splice(0, 0, { timeMs: 0,
+                                pos: firstSample.pos });
+    this.speedData.splice(0, 0, { timeMs: 0, v: 0 });
 
-  var lastSample = this.posData[this.posData.length-1];
-  this.posData.push({timeMs: lastSample.timeMs+1,
-    pos: lastSample.pos});
-  this.speedData.push({timeMs: lastSample.timeMs+1, v: 0});
-
-  console.log('history frame for '+this.dateFrom+' - '+this.dateTo);
-  console.log(' dataTimeRangeMs '+_dbgTime+' of '+  this.timeRangeMs );
-  console.log('  history frame total: '+dataSize+' pos: '+this.posData.length+' temp: '+this.temperatureData.length);
-  console.log('  -- stops: '+this.stopEvents.length);
-  console.log(' temp range '+this.minTemp+' .. '+this.maxTemp);
-  console.log(' maxSpeed '+this.maxSpeed);
-}
+    const lastSample = this.posData[this.posData.length - 1];
+    this.posData.push({ timeMs: lastSample.timeMs + 1,
+      pos: lastSample.pos });
+    this.speedData.push({ timeMs: lastSample.timeMs + 1, v: 0 });
+  }
+  console.log('history frame for ' + this.dateFrom + ' - ' + this.dateTo);
+  console.log(' dataTimeRangeMs ' + _dbgTime + ' of ' + this.timeRangeMs);
+  console.log('  history frame total: ' + dataSize + ' pos: ' + this.posData.length + ' temp: ' + this.temperatureData.length);
+  console.log('  -- stops: ' + this.stopEvents.length);
+  console.log(' temp range ' + this.minTemp + ' .. ' + this.maxTemp);
+  console.log(' maxSpeed ' + this.maxSpeed);
+};
 
 //
 //
 //-----------------------------------------------------------------------
-ChronicleVehicleFrame.prototype.kill = function( ){
+ChronicleVehicleFrame.prototype.kill = function () {
   // if(this.player!=null)
   //   this.player.kill();
   // this.player = null;
-}
+};
 
 //
 //
 //-----------------------------------------------------------------------
-ChronicleVehicleFrame.prototype.getDateAtMs = function( timeMs ){
+ChronicleVehicleFrame.prototype.getDateAtMs = function (timeMs) {
   var aDate = new Date(timeMs + this.dateFrom00.getTime());
   return aDate;
-}
+};
 
 
 //
 //
 //-----------------------------------------------------------------------
-ChronicleVehicleFrame.prototype.getSpeedAtMs = function( timeMs ){
+ChronicleVehicleFrame.prototype.getSpeedAtMs = function (timeMs) {
   const speedSample = this.findSample(Math.floor(timeMs), this.speedData);
   return speedSample.v;
 };
@@ -173,7 +174,7 @@ ChronicleVehicleFrame.prototype.getSpeedAtMs = function( timeMs ){
 //
 //
 //-----------------------------------------------------------------------
-ChronicleVehicleFrame.prototype.getSpeedAtLastPos = function() {
+ChronicleVehicleFrame.prototype.getSpeedAtLastPos = function () {
 //  return this.speedData[idx===undefined ? this.lastFoundIdx : idx].v;
   if (this.lastFoundIdxT.t <= 0) {
     return this.speedData[this.lastFoundIdxT.idx].v;
@@ -187,7 +188,7 @@ ChronicleVehicleFrame.prototype.getSpeedAtLastPos = function() {
 //
 //
 //-----------------------------------------------------------------------
-ChronicleVehicleFrame.prototype.getPosAtMs = function(timeMs) {
+ChronicleVehicleFrame.prototype.getPosAtMs = function (timeMs) {
   this.lastFoundIdxT = this.findSampleIdxWithT(Math.floor(timeMs), this.posData);
   if (this.lastFoundIdxT.t <= 0) {
     return this.posData[this.lastFoundIdxT.idx].pos;
@@ -218,7 +219,7 @@ ChronicleVehicleFrame.prototype.hasTemperature = function () {
 //
 //
 //-----------------------------------------------------------------------
-ChronicleVehicleFrame.prototype.findSample = function( requestMs, data ){
+ChronicleVehicleFrame.prototype.findSample = function (requestMs, data) {
   if (requestMs <= 0) {
     return data[0];
   }
@@ -227,7 +228,7 @@ ChronicleVehicleFrame.prototype.findSample = function( requestMs, data ){
   const stepDir = requestMs < data[dataIdx].timeMs ? -1 : 1;
 
   for (; dataIdx >= 0 && dataIdx < dataSz - 1; dataIdx += stepDir)
-  if (data[dataIdx].timeMs<=requestMs && data[dataIdx + 1].timeMs>requestMs) {
+    if (data[dataIdx].timeMs <= requestMs && data[dataIdx + 1].timeMs > requestMs) {
     this.lastFoundIdx = dataIdx;
     // interpolate here?
     return data[dataIdx];
@@ -238,7 +239,7 @@ ChronicleVehicleFrame.prototype.findSample = function( requestMs, data ){
 //
 //
 //-----------------------------------------------------------------------
-ChronicleVehicleFrame.prototype.findSampleIdxWithT = function (requestMs, data){
+ChronicleVehicleFrame.prototype.findSampleIdxWithT = function (requestMs, data) {
 
   if (requestMs <= 0) {
     return { idx: 0,
