@@ -10,9 +10,9 @@ export function generateInnerHTMLForHistoryMoment(momentData, phrases = {}) {
   if (momentData.temperature !== null) {
     content += `<br> ${temperatureToChronicleLable(momentData.temperature)}`;
   }
-  content += `<hr>${phrases.lat || 'lat'}:<span style="float:right">${momentData.pos.lat.toFixed(6)}</span>
-              <br>
-              ${phrases.lng || 'lng'}:<span style="float:right">${momentData.pos.lng.toFixed(6)}</span>`;
+  // content += `<hr>${phrases.lat || 'lat'}:<span style="float:right">${momentData.pos.lat.toFixed(6)}</span>
+  //             <br>
+  //             ${phrases.lng || 'lng'}:<span style="float:right">${momentData.pos.lng.toFixed(6)}</span>`;
 
   return content;
 }
