@@ -7,8 +7,6 @@ import MapVehicle from './components/MapVehicle';
 import { mapGFMarkerMaker } from './components/MapGF';
 import EditGF from './components/EditGF';
 import CustomControls from './components/CustomControls';
-import GooglePlacesSearch from './components/GooglePlacesSearch';
-import MapMarkerToggle from './components/MapMarkerToggle';
 
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 
@@ -108,10 +106,10 @@ class MapFleet extends React.Component {
       cb();
     });
   }
-  makeGFMarkers = (v) => (mapGFMarkerMaker(v, this.gfMarkersLayer, selectForMe(this, mapEvents.MAP_GF_SELECTED),
+  makeGFMarker = (v) => (mapGFMarkerMaker(v, this.gfMarkersLayer, selectForMe(this, mapEvents.MAP_GF_SELECTED),
     this.state.selectedLocationId === v.id, this.state.detailedList === listTypes.withGFDetails));
 
-  makeVehicleMarkers = (v) => (
+  makeVehicleMarker = (v) => (
         <MapVehicle
           key={v.id}
           isSelected={this.state.selectedVehicleId === v.id}
@@ -124,7 +122,9 @@ class MapFleet extends React.Component {
 
   render() {
     if (this.theMap === null) {
-      return (<div className={styles.mapContainer} />);
+      return (<div className = {styles.mapContainer}>
+              <CustomControls theMap={this.theMap} />
+              </div>);
     }
 
     const shouldHideGFs = this.props.gfEditMode ||
@@ -143,21 +143,10 @@ class MapFleet extends React.Component {
     return (
       <div className={styles.mapContainer}>
 
-        <CustomControls>
-          <CustomControls.Control>
-            <MapMarkerToggle />
-          </CustomControls.Control>
-          <CustomControls.Control sizes={{
-            width: 'auto',
-            height: 'auto',
-          }}
-          >
-            <GooglePlacesSearch ownerMapObj={this.theMap} />
-          </CustomControls.Control>
-        </CustomControls>
+        <CustomControls theMap={this.theMap} />
 
-        {this.props.gfs.map(this.makeGFMarkers)}
-        {this.props.vehicles.map(this.makeVehicleMarkers)}
+        {this.props.gfs.map(this.makeGFMarker)}
+        {this.props.vehicles.map(this.makeVehicleMarker)}
         {editGF}
 
       </div>

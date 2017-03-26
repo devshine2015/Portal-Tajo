@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import pure from 'recompose/pure';
 
 import CustomControls from './components/CustomControls';
-import GooglePlacesSearch from './components/GooglePlacesSearch';
-import MapMarkerToggle from './components/MapMarkerToggle';
 import ChroniclePath from './components/ChroniclePath';
 import ChronicleMarker from './components/ChronicleMarker';
 import ChronicleEventMarker from './components/ChronicleEventMarker';
@@ -60,7 +58,7 @@ class MapChronicle extends React.Component {
   }
 
   // make all the on-map markers - helpers for render
-  makeChronoPaths = (v) => {
+  makeChronoPath = (v) => {
     const vehCronicleFrame = this.props.getInstanceChronicleFrameById(v.id);
     if (!vehCronicleFrame.isValid() || !vehCronicleFrame.hasPositions()) {
       return false;
@@ -75,7 +73,7 @@ class MapChronicle extends React.Component {
           />
         );
   };
-  makeChronoMarkers = (v) => {
+  makeChronoMarker = (v) => {
     const vehCronicleFrame = this.props.getInstanceChronicleFrameById(v.id);
     if (!vehCronicleFrame.isValid() || !vehCronicleFrame.hasPositions()) {
       return false;
@@ -90,18 +88,20 @@ class MapChronicle extends React.Component {
         />
         );
   }
-  makeChronoEventMarkers = (v, idx) => (
+  makeChronoEventMarker = (v, idx) => (
             <ChronicleEventMarker
               key={`${this.props.selectedVehicle.id + idx}CrSt`}
               theLayer={this.theMap}
               chronicleEvent={v}
             />
           );
-  makeGFMarkers = (v) => (mapGFMarkerMaker(v, this.gfMarkersLayer));
+  makeGFMarker = (v) => (mapGFMarkerMaker(v, this.gfMarkersLayer));
 
   render() {
     if (this.theMap === null) {
-      return (<div className = {styles.mapContainer} />);
+      return (<div className = {styles.mapContainer}>
+              <CustomControls theMap={this.theMap} overrideListType={listTypes.withVehicleDetails} />
+              </div>);
     }
     const hideGF = this.props.gfEditMode || this.props.isHideGF;
     hideLayer(this.theMap, this.vehicleMarkersLayer, this.props.gfEditMode);
@@ -115,7 +115,7 @@ class MapChronicle extends React.Component {
       if (vehCronicleFrame.isValid()
       && vehCronicleFrame.hasPositions()
       && vehCronicleFrame.stopEvents.length > 0) {
-        stopEvents = vehCronicleFrame.stopEvents.map(this.makeChronoEventMarkers);
+        stopEvents = vehCronicleFrame.stopEvents.map(this.makeChronoEventMarker);
       }
     }
 
@@ -128,21 +128,10 @@ class MapChronicle extends React.Component {
     return (
       <div className = {styles.mapContainer}>
 
-      <CustomControls>
-        <CustomControls.Control>
-          <MapMarkerToggle overrideListType = {listTypes.withVehicleDetails} />
-        </CustomControls.Control>
-        <CustomControls.Control sizes={{
-          width: 'auto',
-          height: 'auto',
-        }}
-        >
-          <GooglePlacesSearch ownerMapObj={this.theMap} />
-        </CustomControls.Control>
-      </CustomControls>
-      {this.props.gfs.map(this.makeGFMarkers)}
-      {this.props.vehicles.map(this.makeChronoPaths)}
-      {this.props.vehicles.map(this.makeChronoMarkers)}
+      <CustomControls theMap={this.theMap} overrideListType={listTypes.withVehicleDetails} />
+      {this.props.gfs.map(this.makeGFMarker)}
+      {this.props.vehicles.map(this.makeChronoPath)}
+      {this.props.vehicles.map(this.makeChronoMarker)}
       {editGF}
       {stopEvents}
       </div>

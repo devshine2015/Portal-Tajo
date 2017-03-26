@@ -2,6 +2,8 @@ import React from 'react';
 import { css } from 'aphrodite/no-important';
 
 import classes from './classes';
+import GooglePlacesSearch from '../GooglePlacesSearch';
+import MapMarkerToggle from '../MapMarkerToggle';
 
 const Control = ({ children, sizes }) => (
   <div
@@ -29,18 +31,31 @@ Control.propTypes = {
 Control.defaultProps = {
   sizes: {},
 };
+          // <MapMarkerToggle overrideListType = {listTypes.withVehicleDetails} />
 
 const CustomControls = ({
-  children,
+  theMap,
+  overrideListType,
 }) => (
   <div className={css(classes.customControls)}>
-    { children }
+        <Control>
+          <MapMarkerToggle overrideListType={overrideListType}/>
+        </Control>
+        <Control sizes={{
+          width: 'auto',
+          height: 'auto',
+        }}
+        >
+          <GooglePlacesSearch ownerMapObj={theMap} />
+        </Control>
   </div>
 );
 
 CustomControls.propTypes = {
-  children: React.PropTypes.any,
+  theMap: React.PropTypes.object.isRequired,
+  overrideListType: React.PropTypes.string,
 };
-CustomControls.Control = Control;
+
+// CustomControls.Control = Control;
 
 export default CustomControls;
