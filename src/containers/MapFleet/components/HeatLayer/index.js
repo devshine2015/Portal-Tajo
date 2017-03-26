@@ -6,7 +6,6 @@ import styles from './styles.css';
 import ChroniclePath from './components/ChroniclePath';
 import ChronicleMarker from './components/ChronicleMarker';
 import ChronicleEventMarker from './components/ChronicleEventMarker';
-import MapGF from './components/MapGF';
 import EditGF from './components/EditGF';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';

@@ -8,7 +8,8 @@ import MapMarkerToggle from './components/MapMarkerToggle';
 import ChroniclePath from './components/ChroniclePath';
 import ChronicleMarker from './components/ChronicleMarker';
 import ChronicleEventMarker from './components/ChronicleEventMarker';
-import MapGF from './components/MapGF';
+// import MapGF from './components/MapGF';
+import { mapGFMarkerMaker } from './components/MapGF';
 import EditGF from './components/EditGF';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
@@ -25,8 +26,6 @@ import { gfEditIsEditing } from 'containers/GFEditor/reducer';
 import listTypes from 'components/InstancesList/types';
 
 import styles from './styles.css';
-
-const EMPTY_ARRAY = [];
 
 class MapChronicle extends React.Component {
 
@@ -60,79 +59,72 @@ class MapChronicle extends React.Component {
     // this.theMap.on('contextmenu', initiateGfCircleEditingCallback(this.theMap, this.props.gfEditUpdate));
   }
 
-  render() {
-    const hideGF = this.props.gfEditMode || this.props.isHideGF;
-    hideLayer(this.theMap, this.vehicleMarkersLayer, this.props.gfEditMode);
-    hideLayer(this.theMap, this.gfMarkersLayer, hideGF);
-
-    let gfs = EMPTY_ARRAY;
-    let chronPaths = EMPTY_ARRAY;
-    let chronMarkers = EMPTY_ARRAY;
-    let stopEvents = EMPTY_ARRAY;
-
-    if (this.theMap !== null) {
-      gfs = this.props.gfs.map((v) => (
-        <MapGF
-          key={v.id}
-          isSelected={false}
-          isDetailViewActivated={false}
-          theLayer={this.gfMarkersLayer}
-          theGF={v}
-          onClick={ () => {} }
-        />
-      ));
-      chronPaths = this.props.vehicles.map((v) => {
-        const vehCronicleFrame = this.props.getInstanceChronicleFrameById(v.id);
-        if (!vehCronicleFrame.isValid() || !vehCronicleFrame.hasPositions()) {
-          return false;
-        }
-        return (
+  // make all the on-map markers - helpers for render
+  makeChronoPaths = (v) => {
+    const vehCronicleFrame = this.props.getInstanceChronicleFrameById(v.id);
+    if (!vehCronicleFrame.isValid() || !vehCronicleFrame.hasPositions()) {
+      return false;
+    }
+    return (
           <ChroniclePath
-            key={v.id + 'CrP'}
+            key={`${v.id}CrP`}
             theLayer={this.theMap}
             chronicleFrame={vehCronicleFrame}
             isSelected={this.props.selectedVehicle !== null
               && this.props.selectedVehicle.id === v.id}
           />
         );
-      });
-      chronMarkers = this.props.vehicles.map((v) => {
-        const vehCronicleFrame = this.props.getInstanceChronicleFrameById(v.id);
-        if (!vehCronicleFrame.isValid() || !vehCronicleFrame.hasPositions()) {
-          return false;
-        }
-        return (
+  };
+  makeChronoMarkers = (v) => {
+    const vehCronicleFrame = this.props.getInstanceChronicleFrameById(v.id);
+    if (!vehCronicleFrame.isValid() || !vehCronicleFrame.hasPositions()) {
+      return false;
+    }
+    return (
         <ChronicleMarker
-          key={v.id + 'CrM'}
+          key={`${v.id}CrM`}
           theLayer={this.theMap}
           chronicleFrame={vehCronicleFrame}
           isSelected={this.props.selectedVehicle !== null
             && this.props.selectedVehicle.id === v.id}
         />
         );
-      });
-      if (this.props.selectedVehicle !== null) {
-        const vehCronicleFrame = this.props
-                    .getInstanceChronicleFrameById(this.props.selectedVehicle.id);
-        if (vehCronicleFrame.isValid()
-        && vehCronicleFrame.hasPositions()
-        && vehCronicleFrame.stopEvents.length > 0) {
-          stopEvents = vehCronicleFrame.stopEvents.map((v, idx) => (
+  }
+  makeChronoEventMarkers = (v, idx) => (
             <ChronicleEventMarker
-              key={this.props.selectedVehicle.id + idx + 'CrSt'}
+              key={`${this.props.selectedVehicle.id + idx}CrSt`}
               theLayer={this.theMap}
               chronicleEvent={v}
             />
-          ));
-        }
+          );
+  makeGFMarkers = (v) => (mapGFMarkerMaker(v, this.gfMarkersLayer));
+
+  render() {
+    if (this.theMap === null) {
+      return (<div className = {styles.mapContainer} />);
+    }
+    const hideGF = this.props.gfEditMode || this.props.isHideGF;
+    hideLayer(this.theMap, this.vehicleMarkersLayer, this.props.gfEditMode);
+    hideLayer(this.theMap, this.gfMarkersLayer, hideGF);
+
+    let stopEvents = [];
+
+    if (this.props.selectedVehicle !== null) {
+      const vehCronicleFrame = this.props
+                  .getInstanceChronicleFrameById(this.props.selectedVehicle.id);
+      if (vehCronicleFrame.isValid()
+      && vehCronicleFrame.hasPositions()
+      && vehCronicleFrame.stopEvents.length > 0) {
+        stopEvents = vehCronicleFrame.stopEvents.map(this.makeChronoEventMarkers);
       }
     }
+
     const editGF = !this.props.gfEditMode ? false :
      (<EditGF
        key="gfEditHelper"
        theMap={this.theMap}
      />);
-    //  <GooglePlacesSearch ownerMapObj={this.theMap} />
+
     return (
       <div className = {styles.mapContainer}>
 
@@ -148,9 +140,9 @@ class MapChronicle extends React.Component {
           <GooglePlacesSearch ownerMapObj={this.theMap} />
         </CustomControls.Control>
       </CustomControls>
-      {gfs}
-      {chronPaths}
-      {chronMarkers}
+      {this.props.gfs.map(this.makeGFMarkers)}
+      {this.props.vehicles.map(this.makeChronoPaths)}
+      {this.props.vehicles.map(this.makeChronoMarkers)}
       {editGF}
       {stopEvents}
       </div>

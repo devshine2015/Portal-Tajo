@@ -94,7 +94,7 @@ class MapGF extends React.Component {
       }
       if (this.thePolygon !== null) {
         this.thePolygon.setStyle(
-        { color: '#e64a19', weight: 2, opacity: 1}); // this.context.muiTheme.palette.PLItemBackgroundColorExpanded });
+        { color: '#e64a19', weight: 2, opacity: 1 }); // this.context.muiTheme.palette.PLItemBackgroundColorExpanded });
       }
     } else {
       if (this.theMarker !== null) {
@@ -138,4 +138,17 @@ MapGF.propTypes = {
 };
 const PureMapGF = pure(MapGF);
 
-export default PureMapGF;
+// export default PureMapGF;
+
+export const mapGFMarkerMaker = (v, gfLayer, onClick = () => {}, isSelected = false, isDetailView = false) => (
+      <PureMapGF
+        key={v.id}
+        isSelected={false}
+        isDetailViewActivated={false}
+        theLayer={gfLayer}
+        theGF={v}
+        onClick={onClick}
+        isSelected={isSelected}
+        isDetailViewActivated={isDetailView}
+      />
+    );

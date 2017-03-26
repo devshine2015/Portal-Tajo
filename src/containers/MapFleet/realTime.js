@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 
 import MapVehicle from './components/MapVehicle';
-import MapGF from './components/MapGF';
+import { mapGFMarkerMaker } from './components/MapGF';
 import EditGF from './components/EditGF';
 import CustomControls from './components/CustomControls';
 import GooglePlacesSearch from './components/GooglePlacesSearch';
@@ -34,8 +34,6 @@ import styles from './styles.css';
 const selectForMe = (meThis, hookId) => (id) => {
   meThis.selectMarker(hookId, id);
 };
-
-const EMPTY_ARRAY = [];
 
 class MapFleet extends React.Component {
   constructor(props) {
@@ -84,7 +82,6 @@ class MapFleet extends React.Component {
       this.props.mapStoreGetView,
       contextMenuAddGFItems(this.props.gfEditUpdate)
     );
-    // this.theMap.on('contextmenu', initiateGfEditingCallback(this.theMap, this.props.gfEditUpdate));
   }
 
 // when selected from the list
@@ -111,20 +108,10 @@ class MapFleet extends React.Component {
       cb();
     });
   }
+  makeGFMarkers = (v) => (mapGFMarkerMaker(v, this.gfMarkersLayer, selectForMe(this, mapEvents.MAP_GF_SELECTED),
+    this.state.selectedLocationId === v.id, this.state.detailedList === listTypes.withGFDetails));
 
-  render() {
-    const shouldHideGFs = this.props.gfEditMode ||
-          this.props.isHideGF && this.props.activeListType === listTypes.withVehicleDetails;
-    const shouldHideVehicles = this.props.gfEditMode ||
-          this.props.isHideVehicles && this.props.activeListType === listTypes.withGFDetails;
-    hideLayer(this.theMap, this.vehicleMarkersLayer, shouldHideVehicles);
-    hideLayer(this.theMap, this.gfMarkersLayer, shouldHideGFs);
-
-    let vehicles = EMPTY_ARRAY;
-    let gfs = EMPTY_ARRAY;
-
-    if (this.theMap !== null) {
-      vehicles = this.props.vehicles.map((v) => (
+  makeVehicleMarkers = (v) => (
         <MapVehicle
           key={v.id}
           isSelected={this.state.selectedVehicleId === v.id}
@@ -133,18 +120,20 @@ class MapFleet extends React.Component {
           theVehicle={v}
           onClick={selectForMe(this, mapEvents.MAP_VEHICLE_SELECTED)}
         />
-      ));
-      gfs = this.props.gfs.map((v) => (
-        <MapGF
-          key={v.id}
-          isSelected={this.state.selectedLocationId === v.id}
-          isDetailViewActivated={this.state.detailedList === listTypes.withGFDetails}
-          theLayer={this.gfMarkersLayer}
-          theGF={v}
-          onClick={selectForMe(this, mapEvents.MAP_GF_SELECTED)}
-        />
-      ));
+      );
+
+  render() {
+    if (this.theMap === null) {
+      return (<div className={styles.mapContainer} />);
     }
+
+    const shouldHideGFs = this.props.gfEditMode ||
+          this.props.isHideGF && this.props.activeListType === listTypes.withVehicleDetails;
+    const shouldHideVehicles = this.props.gfEditMode ||
+          this.props.isHideVehicles && this.props.activeListType === listTypes.withGFDetails;
+    hideLayer(this.theMap, this.vehicleMarkersLayer, shouldHideVehicles);
+    hideLayer(this.theMap, this.gfMarkersLayer, shouldHideGFs);
+
     const editGF = !this.props.gfEditMode ? false :
      (<EditGF
        key="gfEditHelper"
@@ -167,8 +156,8 @@ class MapFleet extends React.Component {
           </CustomControls.Control>
         </CustomControls>
 
-        {gfs}
-        {vehicles}
+        {this.props.gfs.map(this.makeGFMarkers)}
+        {this.props.vehicles.map(this.makeVehicleMarkers)}
         {editGF}
 
       </div>
