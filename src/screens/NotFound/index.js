@@ -1,9 +1,16 @@
 import React from 'react';
+import { translate } from 'utils/i18n';
 
-const NotFound = () => (
+import phrases, { phrasesShape } from './PropTypes';
+
+const NotFound = (props) => (
   <div>
-    Not Found
+    { props.translations.not_found }
   </div>
 );
 
-export default NotFound;
+NotFound.propTypes = {
+  translations: phrasesShape.isRequired,
+};
+
+export default translate(phrases)(NotFound);

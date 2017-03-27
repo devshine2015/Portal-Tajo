@@ -8,4 +8,10 @@
   .list__item:not(:last-child) {
     margin-bottom: 15px;
   }
+
+  .error {
+    color: orangered;
+    font-size: 18px;
+    text-align: center;
+  }
 }
