@@ -2,12 +2,13 @@
 // switching screens/views (different map instances)
 // since its tiny - puting all in a single file for now
 // import { fromJS } from 'immutable';
-import { ZERO_LOCATION, ZERO_ZOOM } from 'utils/constants';
+import { ZERO_LOCATION, ZERO_LOCATION_MWA, ZERO_ZOOM } from 'utils/constants';
+import { isMwa } from 'configs';
 
 const MAP_STOREVIEW = 'map/storeView';
 const mapInitialState = {
-  center: ZERO_LOCATION,
-  zoom: ZERO_ZOOM,
+  // center: isMwa ? ZERO_LOCATION_MWA : ZERO_LOCATION,
+  // zoom: ZERO_ZOOM,
 };
 
 export default function mapReducer(state = mapInitialState, action) {
@@ -21,8 +22,17 @@ export default function mapReducer(state = mapInitialState, action) {
       return state;
   }
 }
-export const mapStoreGetView = (state) =>
-  state.getIn(['mapView']);
+// TODO: implement proper fleet-based default locations mechanism
+export const mapStoreGetView = (state) => {
+  const mapView = state.getIn(['mapView']);
+  if (mapView.center === undefined) {
+    return {
+      center: isMwa ? ZERO_LOCATION_MWA : ZERO_LOCATION,
+      zoom: ZERO_ZOOM,
+    };
+  }
+  return mapView;
+};
 
 export const mapStoreSetView = (center, zoom) => (dispatch) =>
   dispatch({
