@@ -58,6 +58,8 @@ export const checkSetMwa = (itIsMwa = undefined) => {
   if (itIsMwa !== undefined) {
     if (typeof itIsMwa === 'string') {
       isMwa = itIsMwa.indexOf('mwa') !== -1;
+    } else if (typeof itIsMwa === 'boolian') {
+      isMwa = itIsMwa;
     }
   }
 };
