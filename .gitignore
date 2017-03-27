@@ -16,6 +16,9 @@ npm-debug.log
 *.sublime-project
 *.sublime-workspace
 
+# vscode
+.vscode/
+
 # OSX
 #
 .DS_Store
