@@ -6,6 +6,7 @@ require('leaflet/dist/leaflet.css');
 require('leaflet-draw/dist/leaflet.draw.css');
 require('leaflet-contextmenu/dist/leaflet.contextmenu.css');
 
+import { isMwa } from 'configs';
 import { MAPBOX_KEY } from 'utils/constants';
 
 export function createMapboxMap(domNode, view, contextmenuItems) {
@@ -24,6 +25,19 @@ export function createMapboxMap(domNode, view, contextmenuItems) {
   const tilesOSM = window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
   });
+
+  let layers = {};
+  if (isMwa) {
+    const overlayLayer = window.L.tileLayer.wms(
+    'http://gisonline.mwa.co.th:2558/arcgis/services/wmsservice/MapServer/WMSServer',
+      {
+        format: 'image/png',
+        transparent: true,
+        layers: '32,38,39,47,48',
+        zIndex: '500',
+      }).setOpacity(0.5).addTo(theMap);
+    layers = { MWA: overlayLayer };
+  }
   window.L.control.layers({
     // StreetsDef: window.L.mapbox.tileLayer('mapbox.streets'),
     Streets: tilesOSM.addTo(theMap),
@@ -37,7 +51,7 @@ export function createMapboxMap(domNode, view, contextmenuItems) {
     Outdoors: window.L.mapbox.tileLayer('mapbox.outdoors'),
     // Pencil: window.L.mapbox.tileLayer('mapbox.pencil'),
   },
-  {},
+  layers,
   { position: 'topleft' }).addTo(theMap);
 
   // do this to resize map on div

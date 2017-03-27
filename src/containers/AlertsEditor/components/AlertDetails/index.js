@@ -30,8 +30,9 @@ const STYLES = {
 function setAlertState(props) {
   return {
     maxTemp: 1,
-    speedLimit: 45,
-    gfId: props.gfs[0].id,
+    maxSpeed: 45,
+    odoValue: 10000,
+    gfId: props.gfs.length > 0 ? props.gfs[0].id : '',
     ...props.details,
   };
 }
@@ -136,6 +137,22 @@ class AlertDetails extends React.Component {
           onChange={this.onChange}
           floatingLabelText={ "max temperature" }
           value={this.state.maxTemp}
+          type="number"
+        />);
+      case alertKinds._ALERT_KIND_SPEEDING:
+        return (<TextField
+          name="maxSpeed"
+          onChange={this.onChange}
+          floatingLabelText={ "max speed" }
+          value={this.state.maxSpeed}
+          type="number"
+        />);
+      case alertKinds._ALERT_KIND_ODO:
+        return (<TextField
+          name="odoValue"
+          onChange={this.onChange}
+          floatingLabelText={ "odometr value" }
+          value={this.state.odoValue}
           type="number"
         />);
       case alertKinds._ALERT_KIND_GF: {

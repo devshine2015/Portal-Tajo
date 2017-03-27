@@ -31,7 +31,6 @@ Control.propTypes = {
 Control.defaultProps = {
   sizes: {},
 };
-          // <MapMarkerToggle overrideListType = {listTypes.withVehicleDetails} />
 
 const CustomControls = ({
   theMap,
@@ -39,7 +38,7 @@ const CustomControls = ({
 }) => (
   <div className={css(classes.customControls)}>
         <Control>
-          <MapMarkerToggle overrideListType={overrideListType}/>
+          <MapMarkerToggle overrideListType={overrideListType} />
         </Control>
         <Control sizes={{
           width: 'auto',
@@ -52,7 +51,7 @@ const CustomControls = ({
 );
 
 CustomControls.propTypes = {
-  theMap: React.PropTypes.object.isRequired,
+  theMap: React.PropTypes.object,
   overrideListType: React.PropTypes.string,
 };
 
