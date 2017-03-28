@@ -1,8 +1,14 @@
 import qs from 'query-string';
 
 const apis = {
-  managmentAPI: 'mgmtApi',
-  authorizationExtAPI: 'authExtApi',
+  managmentAPI: {
+    name: 'mgmtApi',
+    url: 'https://drvr.auth0.com/api/v2',
+  },
+  authorizationExtAPI: {
+    name: 'authExtApi',
+    url: 'https://drvr.us.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api',
+  },
 };
 
 const endpoints = {
@@ -126,24 +132,24 @@ const endpoints = {
 
   // users managment
   getAllUsers: {
-    url: '/api/v2/users',
+    url: `${apis.managmentAPI.url}/users`,
     method: 'get',
-    extName: apis.managmentAPI,
+    extName: apis.managmentAPI.name,
   },
   updateUser: id => ({
-    url: `/api/v2/users/${id}`,
+    url: `${apis.managmentAPI.url}/users/${id}`,
     method: 'patch',
-    extName: apis.managmentAPI,
+    extName: apis.managmentAPI.name,
   }),
   createUser: {
-    url: '/api/v2/users',
+    url: `${apis.managmentAPI.url}/users`,
     method: 'post',
-    extName: apis.managmentAPI,
+    extName: apis.managmentAPI.name,
   },
   deleteUser: id => ({
-    url: `/api/v2/users/${id}`,
+    url: `${apis.managmentAPI.url}/users/${id}`,
     method: 'delete',
-    extName: apis.managmentAPI,
+    extName: apis.managmentAPI.name,
   }),
   getAuthExtentionAccessToken: {
     url: 'auth0/token/auth',
@@ -165,6 +171,11 @@ const endpoints = {
     method: 'post',
     apiVersion: 1.1,
   },
+  assignRoleToUser: id => ({
+    url: `${apis.authorizationExtAPI.url}/api`,
+    method: 'patch',
+    extName: apis.authorizationExtAPI.name,
+  }),
 
   // events
   getEventsInTimeRange: (id, params) => ({

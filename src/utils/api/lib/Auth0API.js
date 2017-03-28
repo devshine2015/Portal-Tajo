@@ -1,6 +1,5 @@
 import BaseAPIClass from './BaseAPIClass';
 
-const auth0Domain = 'https://drvr.auth0.com';
 const HEADERS = {
   'content-type': 'application/json',
   accept: 'application/json',
@@ -62,13 +61,12 @@ class Auth0API extends BaseAPIClass {
   }
 
   _invoke = (method, url, {
-    payload,
+    payload = {},
     extName = undefined,
-  }) => {
+  } = {}) => {
     const headers = Object.assign({}, HEADERS, _attachAuthorizationHeader(this, extName));
-    const urlToInvoke = `${auth0Domain}${url}`;
 
-    return this._prepareRequest(method, urlToInvoke, headers, payload);
+    return this._prepareRequest(method, url, headers, payload);
   }
 
   clean() {
