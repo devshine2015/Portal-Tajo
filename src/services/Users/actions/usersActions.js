@@ -20,17 +20,25 @@ export const fetchUsers = () => dispatch => {
     .then(users => dispatch(_usersSet(users)));
 };
 
-export const createUser = payload => dispatch => {
+export const createUser = ({
+  fleet,
+  role,
+  ...rest,
+}) => dispatch => {
   const { url, method, extName } = endpoints.createUser;
-  const enrichedPayload = Object.assign({}, payload, {
+  const enrichedPayload = Object.assign({}, rest, {
     connection: 'Username-Password-Authentication',
   });
+
+  if (fleet) {
+    enrichedPayload.user_metadata = { fleet };
+  }
 
   return auth0Api[method](url, { payload: enrichedPayload, extName })
     .then(toJson)
     .then(user => {
       dispatch(_userCreated(user));
-      dispatch(assignRole(user.user_id));
+      dispatch(assignRole(user.user_id, role));
 
       return Promise.resolve();
     });

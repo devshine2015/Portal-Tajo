@@ -29,7 +29,7 @@ export const fetchRoles = accessToken => dispatch => {
     });
 };
 
-export const assignRole = (userId, role = "867e817c-75dd-4ceb-9f65-ef925b65e089") => dispatch => {
+export const assignRole = (userId, role) => dispatch => {
   const { url, method, extName } = endpoints.assignRoleToUser(userId);
   const payload = [role];
 

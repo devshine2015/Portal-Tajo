@@ -223,6 +223,7 @@ const phrases = {
     new_password: 'New password',
     repeat_password: 'Repeat password',
     changing: 'changing',
+    choose_fleet: 'choose fleet',
     // --end users manager
 
     // 404 page

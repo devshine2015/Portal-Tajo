@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import {
   TextField,
-  // SelectField,
-  // MenuItem,
 } from 'material-ui';
 import { usersActions } from 'services/Users/actions';
 import {
@@ -14,35 +12,24 @@ import {
 } from 'services/Users/reducer';
 import FormComponents from '../FormComponents';
 import RolesSelector from '../RolesSelector';
+import FleetSelector from '../FleetSelector';
 import { translate } from 'utils/i18n';
 
 import phrases, { phrasesShape } from './PropTypes';
-
-// const fleets = portals.map(portal => (
-//   <MenuItem
-//     key={portal.fleet}
-//     value={portal.fleet}
-//     primaryText={portal.niceName}
-//   />
-// ));
 
 class NewUserForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.input = null;
+    this.input = undefined;
 
     this.state = {
-      email: null,
-      password: null,
-      // role: 'installer',
-      // fleet: null,
+      email: undefined,
+      password: undefined,
+      role: undefined,
+      fleet: 'mwa',
     };
   }
-
-  // onFleetChange = (e, key, value) => {
-    // this.updateState('fleet', value);
-  // }
 
   componentDidMount() {
     if (this.props.isOpened) {
@@ -75,6 +62,10 @@ class NewUserForm extends React.Component {
 
   onRoleChange = (e, key, value) => {
     this.updateState('role', value);
+  }
+
+  onFleetChange = (e, key, value) => {
+    this.updateState('fleet', value);
   }
 
   updateState = (name, value) => {
@@ -124,16 +115,10 @@ class NewUserForm extends React.Component {
             onChange={this.onRoleChange}
             value={this.state.role}
           />
-          {/* <SelectField
-            fullWidth
-            floatingLabelFixed
-            floatingLabelText="Choose fleet"
-            name="fleet"
-            value={this.state.fleet}
+          <FleetSelector
             onChange={this.onFleetChange}
-          >
-            {fleets}
-          </SelectField> */}
+            value={this.state.fleet}
+          />
 
           <FormComponents.Buttons
             onSubmit={this.onSubmit}
