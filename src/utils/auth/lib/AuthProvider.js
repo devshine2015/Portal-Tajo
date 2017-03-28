@@ -6,7 +6,12 @@ import {
   saveSession,
 } from './authLocalStorage';
 import validateSession from './validateSession';
-import { login, logout, fetchProfile } from './restCalls';
+import {
+  login,
+  additionalLogin,
+  logout,
+  fetchProfile,
+} from './restCalls';
 
 class Auth {
   constructor() {
@@ -156,7 +161,15 @@ class AuthProvider extends React.Component {
           return fetchProfile(session.id_token)
             .then(profile => ({
               profile: Object.assign({}, profile, session),
-            }));
+            }))
+            .then(({ profile }) =>
+              additionalLogin()
+                .then(res => ({
+                  profile: Object.assign({}, profile, {
+                    sessionId: res.sessionId,
+                  }),
+                }))
+            );
         }
 
         return { profile: session };
