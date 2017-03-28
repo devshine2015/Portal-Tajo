@@ -24,7 +24,7 @@ function _startLocalTick(dispatch, getState) {
     return;
   }
   // do the first tick right away - so we are actual
-  _performUpdates(dispatch, getState);
+  _performUpdates(dispatch, getState)();
 
   localTickProcId = window.setInterval(_performUpdates(dispatch, getState), LOCAL_TICK_INTERVAL_MS);
 }
