@@ -1,4 +1,5 @@
 import React from 'react';
+import R from 'ramda';
 import {
   readSessionFromLocalStorage,
   cleanLocalStorage,
@@ -34,7 +35,7 @@ class Auth {
     return this.permissions.indexOf(permission) !== -1;
   }
 
-  authorize = (perms = []) => {
+  authorizeWithPerms = (perms = []) => {
     if (typeof perms === 'string') {
       return this._chekPermission(perms);
     }
@@ -50,6 +51,14 @@ class Auth {
     });
 
     return result;
+  }
+
+  authorizeWithRole = (askedRole = '') => {
+    const findRole = role => R.toLower(role) === R.toLower(askedRole);
+    const filterRoles = roles => R.filter(findRole, roles);
+    const isAuthorized = () => filterRoles(this.roles).length === 1;
+
+    return isAuthorized();
   }
 }
 
@@ -79,6 +88,8 @@ class AuthProvider extends React.Component {
       authenticated: this.isAuthenticated,
       permissions: this.auth.permissions,
       roles: this.auth.roles,
+      authorizeWithRole: this.auth.authorizeWithRole,
+      authorizeWithPerms: this.auth.authorizeWithPerms,
     };
   }
 
@@ -194,6 +205,12 @@ AuthProvider.childContextTypes = {
 
   // get permissions list for current session.
   permissions: React.PropTypes.array,
+
+  // interface to authorization with role
+  authorizeWithRole: React.PropTypes.func,
+
+  // interface to authorization with permission(s)
+  authorizeWithPerms: React.PropTypes.func,
 };
 
 export default AuthProvider;

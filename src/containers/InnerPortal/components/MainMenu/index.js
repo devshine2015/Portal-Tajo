@@ -18,12 +18,13 @@ const MainMenu = ({
 }, {
   permissions,
 }) => {
+  const lowercasedRole = role.toLowerCase();
   const menuItems = pages.map(page => {
     const includes = page.includeRoles || EMPTY_ARRAY;
     const excludes = page.excludeRoles || EMPTY_ARRAY;
 
-    if (includes.length && includes.indexOf(role) === -1) return null;
-    if (excludes.length && excludes.indexOf(role) !== -1) return null;
+    if (includes.length && includes.indexOf(lowercasedRole) === -1) return null;
+    if (excludes.length && excludes.indexOf(lowercasedRole) !== -1) return null;
     if (page.name === 'users' && permissions.indexOf('view:users_manager') === -1) return null;
 
     return (

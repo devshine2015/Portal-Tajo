@@ -9,7 +9,7 @@ const createRoute = ({
   name,
   niceName,
   getComponent: (location, cb) => {
-    if (auth.authorize('view:users_manager')) {
+    if (auth.authorizeWithPerms('view:users_manager')) {
       require.ensure([], require => {
         cb(null, require('./index').default);
       }, 'usersManager');

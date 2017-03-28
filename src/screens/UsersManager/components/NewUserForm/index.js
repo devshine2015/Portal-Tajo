@@ -1,25 +1,22 @@
 import React from 'react';
+import { Map } from 'immutable';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
-// import portals from 'configs/portals';
 import {
   TextField,
-  SelectField,
-  MenuItem,
+  // SelectField,
+  // MenuItem,
 } from 'material-ui';
 import { usersActions } from 'services/Users/actions';
-import { getIsLoading } from 'services/Users/reducer';
+import {
+  getIsLoading,
+  getRoles,
+} from 'services/Users/reducer';
 import FormComponents from '../FormComponents';
+import RolesSelector from '../RolesSelector';
 import { translate } from 'utils/i18n';
 
 import phrases, { phrasesShape } from './PropTypes';
-
-const roles = [
-  <MenuItem key={1} value="uber" primaryText="Uber" />,
-  <MenuItem key={2} value="admin" primaryText="Administrator" />,
-  <MenuItem key={3} value="manager" primaryText="Manager" />,
-  <MenuItem key={4} value="installer" primaryText="Installer" />,
-];
 
 // const fleets = portals.map(portal => (
 //   <MenuItem
@@ -47,8 +44,16 @@ class NewUserForm extends React.Component {
     // this.updateState('fleet', value);
   // }
 
-  onRoleChange = (e, key, value) => {
-    // this.updateState('role', value);
+  componentDidMount() {
+    if (this.props.isOpened) {
+      this.input.focus();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.isOpened && nextProps.isOpened) {
+      this.input.focus();
+    }
   }
 
   onSubmit = e => {
@@ -68,16 +73,8 @@ class NewUserForm extends React.Component {
     this.props.closeForm();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.isOpened && nextProps.isOpened) {
-      this.input.focus();
-    }
-  }
-
-  componentDidMount() {
-    if (this.props.isOpened) {
-      this.input.focus();
-    }
+  onRoleChange = (e, key, value) => {
+    this.updateState('role', value);
   }
 
   updateState = (name, value) => {
@@ -122,7 +119,12 @@ class NewUserForm extends React.Component {
             type="password"
             onChange={this.onType}
           />
-          {/*<SelectField
+          <RolesSelector
+            allRoles={this.props.roles}
+            onChange={this.onRoleChange}
+            value={this.state.role}
+          />
+          {/* <SelectField
             fullWidth
             floatingLabelFixed
             floatingLabelText="Choose fleet"
@@ -131,17 +133,7 @@ class NewUserForm extends React.Component {
             onChange={this.onFleetChange}
           >
             {fleets}
-          </SelectField>*/}
-          <SelectField
-            fullWidth
-            floatingLabelFixed
-            floatingLabelText={translations.choose_role}
-            name="role"
-            value={this.state.role}
-            onChange={this.onRoleChange}
-          >
-            {roles}
-          </SelectField>
+          </SelectField> */}
 
           <FormComponents.Buttons
             onSubmit={this.onSubmit}
@@ -165,6 +157,7 @@ NewUserForm.propTypes = {
   isLoading: React.PropTypes.bool.isRequired,
   isOpened: React.PropTypes.bool.isRequired,
   translations: phrasesShape.isRequired,
+  roles: React.PropTypes.instanceOf(Map).isRequired,
 };
 
 NewUserForm.defaultProps = {
@@ -173,6 +166,7 @@ NewUserForm.defaultProps = {
 
 const mapState = state => ({
   isLoading: getIsLoading(state),
+  roles: getRoles(state),
 });
 const mapDispatch = {
   createUser: usersActions.createUser,
