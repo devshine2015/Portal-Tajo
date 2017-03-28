@@ -51,8 +51,8 @@ class Operational extends React.Component {
             vehicles={this.props.vehicles}
           />
         <FixedContent containerClassName={styles.fixedContent}>
-        <Journal />
           <TheMap eventDispatcher={this.eventDispatcher} />
+          <Journal />
         </FixedContent>
       </div>
     );

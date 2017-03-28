@@ -48,7 +48,7 @@ class AlertDetails extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.details.id !== nextProps.id) {
+    if (this.props.details.id !== nextProps.details.id) {
       this.setNewAlertDetails(nextProps);
     }
   }

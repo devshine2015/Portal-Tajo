@@ -22,6 +22,8 @@ export const makeLocalAlertCondition = (originObject) => (
         name: safeGetFromMeta(originObject, 'name', 'No Name'),
         kind: originObject.kind,
         maxTemp: originObject.aboveTemp || 0,
+        maxSpeed: originObject.maxSpeed || 0,
+        odoValue: originObject.odoValue || 0,
         gfId: originObject.gfId || '',
         onEnter: safeGetFromMeta(originObject, 'onEnter', false) === 'true',
         onExit: safeGetFromMeta(originObject, 'onExit', false) === 'true',

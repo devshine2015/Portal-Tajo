@@ -1,6 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { textForEventType } from 'containers/Journal/entryTypes';
+import * as alertKinds from 'services/AlertsSystem/alertKinds';
 
 import styles from './styles.css';
 
@@ -14,10 +15,14 @@ class Entry extends React.Component {
   }
 
   render() {
+    const alertKindObj = alertKinds.getAlertByKind(this.props.entryObj.eventKind);
     return (
       <div className={styles.journalEntry}>
         <span className={styles.journalEntrySpanT}>
           {this.props.entryObj.localTime}
+        </span>
+        <span className={styles.journalEntrySpan}>
+          {alertKindObj.icon}
         </span>
         <span className={styles.journalEntrySpanName}>
           {this.props.entryObj.ownerName}

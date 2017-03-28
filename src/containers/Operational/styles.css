@@ -8,5 +8,6 @@
 
  .fixedContent {
   padding: 0;
+  flex-direction: row;
  }
 }
