@@ -9,6 +9,7 @@ import {
   cleanSession,
   fetchAccessTokens,
 } from 'services/Session/actions';
+import { fetchRolesAndPermissions } from 'services/Users/actions';
 import { getLocale } from 'services/Session/reducer';
 import { commonFleetActions } from 'services/FleetModel/actions';
 import { fetchDevices } from 'services/Devices/actions';
@@ -80,7 +81,10 @@ class App extends React.Component {
       }
 
       if (isMwa) {
-        this.props.fetchAccessTokens();
+        this.props.fetchAccessTokens()
+          .then(tokens =>
+            this.props.fetchRolesAndPermissions(tokens)
+          );
       }
     });
   }
@@ -156,6 +160,7 @@ App.propTypes = {
     })
   ).isRequired,
   fetchAccessTokens: React.PropTypes.func.isRequired,
+  fetchRolesAndPermissions: React.PropTypes.func.isRequired,
 };
 
 const mapState = state => ({
@@ -167,6 +172,7 @@ const mapDispatch = {
   cleanSession,
   fetchDevices,
   fetchAccessTokens,
+  fetchRolesAndPermissions,
   fetchFleet: commonFleetActions.fetchFleet,
 };
 

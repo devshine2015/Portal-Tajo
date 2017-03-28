@@ -32,6 +32,11 @@ export const getIsLoading = state =>
 
 export const getPermissions = state =>
   fromPermissionsReducer.getPermissions(permissions(state));
+export const getPermissionsList = state =>
+  fromPermissionsReducer.getPermissionsList(permissions(state));
 
+export const getRolesList = state =>
+  fromRolesReducer.getRolesList(roles(state));
 export const getRoles = state =>
-  fromRolesReducer.getPermissions(roles(state));
+  fromRolesReducer.getRoles(roles(state));
+

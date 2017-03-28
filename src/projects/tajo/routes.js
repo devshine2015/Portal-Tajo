@@ -63,12 +63,7 @@ export default function createRoutes(store) {
     loadModule,
   });
 
-  const usersManagerRoute = usersManagerScreen({
-    ...mainMenu.escape.users,
-    injectReducer,
-    errorHandler,
-    loadModule,
-  });
+  const usersManagerRoute = usersManagerScreen(mainMenu.escape.users);
 
   const devicesManagerRoute = devicesManagerScreen({
     ...mainMenu.escape.devices,

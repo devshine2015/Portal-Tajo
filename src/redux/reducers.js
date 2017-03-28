@@ -14,7 +14,7 @@ import gfEditorReducer from 'containers/GFEditor/reducer';
 import mapViewReducer from 'containers/MapFleet/reducerAction';
 import sessionReducer from 'services/Session/reducer';
 import globalReducer from 'services/Global/reducer';
-// import userReducer from 'services/UserModel/reducer';
+import usersReducer from 'services/Users/reducer';
 import devicesReducer from 'services/Devices/reducer';
 import alertsSystemReducer from 'services/AlertsSystem/reducer';
 
@@ -47,7 +47,7 @@ export default function createReducer(asyncReducers) {
     snackbar: snackbarReducer,
     fleet: fleetReducer,
     chronicle: chronicleReducer,
-    // user: userReducer,
+    users: usersReducer,
     gfEditor: gfEditorReducer,
     mapView: mapViewReducer,
     devices: devicesReducer,

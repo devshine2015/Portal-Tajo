@@ -1,17 +1,25 @@
 import { fromJS, List } from 'immutable';
-import { permissionsActions } from '../actions';
+import {
+  PERMISSIONS_FETCH_SUCCESS,
+  PERMISSION_CREATE,
+  PERMISSION_DELETE,
+} from '../actions/permissionsActions';
 
 const initialState = fromJS({
   list: undefined,
+  map: undefined,
   isLoading: false,
 });
 
 function permissionsReducer(state = initialState, action) {
   switch (action.type) {
-    case permissionsActions.PERMISSIONS_FETCH_SUCCESS:
-      return state.set('list', new List(action.permissions));
+    case PERMISSIONS_FETCH_SUCCESS:
+      return state.withMutations(s => {
+        s.set('list', fromJS(action.permsList))
+         .set('map', fromJS(action.permsMap));
+      });
 
-    case permissionsActions.PERMISSION_CREATE:
+    case PERMISSION_CREATE:
       return state.update('list', list => {
         let nextList = list;
 
@@ -22,7 +30,7 @@ function permissionsReducer(state = initialState, action) {
         return nextList.push(fromJS(action.permission));
       });
 
-    case permissionsActions.PERMISSION_DELETE:
+    case PERMISSION_DELETE:
       return state.update('list', list => list.remove(action.index));
 
     default:
@@ -33,4 +41,6 @@ function permissionsReducer(state = initialState, action) {
 export default permissionsReducer;
 
 export const getPermissions = state =>
+  state.get('map');
+export const getPermissionsList = state =>
   state.get('list');

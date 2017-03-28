@@ -1,26 +1,25 @@
 import { fromJS, List } from 'immutable';
-import { rolesActions } from '../actions';
+import {
+  ROLES_FETCH_SUCCESS,
+  ROLE_CREATE,
+  ROLE_DELETE,
+} from '../actions/rolesActions';
 
 const initialState = fromJS({
-  list: [{
-    text: 'uber',
-    id: 'uber',
-  }, {
-    text: 'admin',
-    id: 'admin',
-  }, {
-    text: 'executive',
-    id: 'executive',
-  }],
+  list: undefined,
+  map: undefined,
   isLoading: false,
 });
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case rolesActions.ROLES_FETCH_SUCCESS:
-      return state.set('list', new List(action.roles));
+    case ROLES_FETCH_SUCCESS:
+      return state.withMutations(s => {
+        s.set('list', fromJS(action.rolesList))
+         .set('map', fromJS(action.rolesMap));
+      });
 
-    case rolesActions.ROLE_CREATE:
+    case ROLE_CREATE:
       return state.update('list', list => {
         let nextList = list;
 
@@ -31,7 +30,7 @@ function reducer(state = initialState, action) {
         return nextList.push(fromJS(action.role));
       });
 
-    case rolesActions.ROLE_DELETE:
+    case ROLE_DELETE:
       return state.update('list', list => list.remove(action.index));
 
     default:
@@ -42,4 +41,6 @@ function reducer(state = initialState, action) {
 export default reducer;
 
 export const getRoles = state =>
+  state.get('map');
+export const getRolesList = state =>
   state.get('list');

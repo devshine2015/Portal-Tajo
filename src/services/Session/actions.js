@@ -95,7 +95,11 @@ export const fetchAccessTokens = () => dispatch => {
     .then(token => {
       cacheToken(token, 'mgmtApi');
     })
-    .then(() => dispatch(_accessTokensSet(tokens)));
+    .then(() => {
+      dispatch(_accessTokensSet(tokens));
+
+      return Promise.resolve(tokens);
+    });
 };
 
 

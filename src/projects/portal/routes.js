@@ -23,6 +23,7 @@ import chronicleScreen from 'screens/Chronicle/route';
 import settingsScreen from 'screens/Settings/route';
 import alersEditorScreen from 'screens/AlertsEditor/route';
 import notFoundScreen from 'screens/NotFound/route';
+import usersManagerScreen from 'screens/UsersManager/route';
 
 export default function createRoutes(store) {
   const { injectReducer } = getHooks(store);
@@ -60,6 +61,8 @@ export default function createRoutes(store) {
 
   const settingsRoute = settingsScreen(mainMenu.sunshine.settings);
 
+  const usersManagerRoute = usersManagerScreen(mainMenu.sunshine.users);
+
   const alertsEditorRoute = alersEditorScreen(mainMenu.sunshine.alerts);
 
   const loginRoute = loginScreen({
@@ -95,6 +98,7 @@ export default function createRoutes(store) {
     vehiclesEditorRoute,
     settingsRoute,
     notFoundRoute,
+    usersManagerRoute,
 // TODO: uncomment when releasing alerts system
 //    alertsEditorRoute,
   );

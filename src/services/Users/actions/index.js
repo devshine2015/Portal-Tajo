@@ -1,3 +1,15 @@
-export * as usersActions from './usersActions';
-export * as permissionsActions from './permissionsActions';
-export * as rolesActions from './rolesActions';
+import * as usrsActions from './usersActions';
+import * as prmsnsActions from './permissionsActions';
+import * as rlsActions from './rolesActions';
+
+export const usersActions = usrsActions;
+export const rolesActions = rlsActions;
+export const permissionsActions = prmsnsActions;
+
+export const fetchRolesAndPermissions = ({ authExtApi }) => dispatch => {
+  // if no access token for authorization extention
+  if (!authExtApi) return Promise.resolve();
+
+  return dispatch(prmsnsActions.fetchPermissions(authExtApi.access_token))
+    .then(() => dispatch(rlsActions.fetchRoles(authExtApi.access_token)));
+};

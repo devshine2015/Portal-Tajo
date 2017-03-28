@@ -146,6 +146,16 @@ const endpoints = {
     method: 'get',
     apiVersion: 1.1,
   },
+  getPermissions: {
+    url: 'auth0/permissions',
+    method: 'post',
+    apiVersion: 1.1,
+  },
+  getRoles: {
+    url: 'auth0/roles',
+    method: 'post',
+    apiVersion: 1.1,
+  },
 
   // events
   getEventsInTimeRange: (id, params) => ({
