@@ -8,7 +8,7 @@ import {
 const initialState = fromJS({
   sessionId: undefined,
   fleet: undefined,
-  role: 'uber',
+  role: undefined,
   settings: {
     dateFormat: undefined,
     lang: undefined,

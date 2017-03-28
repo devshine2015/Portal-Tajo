@@ -10,8 +10,10 @@ import {
 import UserItem from '../UserItem';
 import UserPermissionsList from '../UserPermissionsList';
 import AnimatedLogo from 'components/animated';
+import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
+import phrases, { phrasesShape } from './PropTypes';
 
 const renderAllPermissons = (allPermissions, onClick) => (userPermissions = [], userIndex) => {
   if (allPermissions === undefined || allPermissions.size === 0) {
@@ -56,6 +58,7 @@ class UsersList extends React.Component {
 
   state = {
     isFetching: false,
+    error: false,
   }
 
   componentWillMount() {
@@ -67,10 +70,16 @@ class UsersList extends React.Component {
   fetchUsers = () => {
     this.setState({
       isFetching: true,
+      error: false,
     }, () => {
       this.props.fetchUsers()
         .then(() => {
           this.setState({
+            isFetching: false,
+          });
+        }, err => {
+          this.setState({
+            error: `${this.props.translations.something_went_wrong}.`,
             isFetching: false,
           });
         });
@@ -85,6 +94,10 @@ class UsersList extends React.Component {
     const { users, allPermissions } = this.props;
 
     if (users.size === 0 && !this.state.isFetching) {
+      if (this.state.error) {
+        return <div className={styles.error}>{this.state.error}</div>;
+      }
+
       return null;
     }
 
@@ -108,6 +121,7 @@ UsersList.propTypes = {
   users: React.PropTypes.instanceOf(List).isRequired,
   allPermissions: React.PropTypes.instanceOf(List),
   assignPermission: React.PropTypes.func.isRequired,
+  translations: phrasesShape.isRequired,
 };
 
 UsersList.defaultProps = {
@@ -123,6 +137,7 @@ const mapDispatch = {
   assignPermission: usersActions.assignPermission,
 };
 
-const PureUsersList = pure(UsersList);
+const Translated = translate(phrases)(UsersList);
+const PureUsersList = pure(Translated);
 
 export default connect(mapState, mapDispatch)(PureUsersList);

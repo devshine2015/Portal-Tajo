@@ -18,6 +18,12 @@ const endpoints = {
     apiVersion: 1.1,
   },
 
+  // profile
+  getUserInfo: {
+    url: '/tokeninfo',
+    method: 'post',
+  },
+
   // locations
   getGFs: {
     url: 'location',
@@ -115,19 +121,19 @@ const endpoints = {
 
   // users
   getAllUsers: {
-    url: 'users',
+    url: '/api/v2/users',
     method: 'get',
   },
   updateUser: id => ({
-    url: `users/${id}`,
+    url: `/api/v2/users/${id}`,
     method: 'patch',
   }),
   createUser: {
-    url: 'users',
+    url: '/api/v2/users',
     method: 'post',
   },
   deleteUser: id => ({
-    url: `users/${id}`,
+    url: `/api/v2/users/${id}`,
     method: 'delete',
   }),
   // events

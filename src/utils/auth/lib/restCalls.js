@@ -1,4 +1,5 @@
-import { api } from 'utils/api';
+import { api, auth0Api } from 'utils/api';
+import endpoints from 'configs/endpoints';
 
 export const login = (payload, {
   url,
@@ -24,4 +25,11 @@ export const logout = ({
   };
 
   return api[method](url, options);
+};
+
+export const fetchProfile = idToken => {
+  const { url, method } = endpoints.getUserInfo;
+
+  return auth0Api[method](url, { id_token: idToken })
+    .then(res => res.json());
 };

@@ -45,6 +45,7 @@ class App extends React.Component {
 
     this.state = {
       initialLocation: context.router.location.pathname,
+      authenticationFinished: false,
     };
 
     checkSetMwa(context.router.location.pathname);
@@ -60,18 +61,23 @@ class App extends React.Component {
     window.removeEventListener('online', this.handleOnlineState);
   }
 
-  onLoginSuccess = (profile, idToken = undefined) => {
-    this.props.saveSession(profile)
-      .then(this.props.fetchFleet)
-      .then(this.props.fetchDevices);
-
-    if (isMwa && idToken) {
-      auth0Api.setAccessToken(idToken);
+  onLoginSuccess = (profile) => {
+    if (profile.id_token) {
+      checkSetMwa(true);
+      auth0Api.setAccessToken(profile.id_token);
     }
 
-    if (needRedirect(this.state.initialLocation)) {
-      this.context.router.replace(`${BASE_URL}/`);
-    }
+    this.setState({
+      authenticationFinished: true,
+    }, () => {
+      this.props.saveSession(profile)
+        .then(this.props.fetchFleet)
+        .then(this.props.fetchDevices);
+
+      if (needRedirect(this.state.initialLocation)) {
+        this.context.router.replace(`${BASE_URL}/`);
+      }
+    });
   }
 
   onLogoutSuccess = () => {
@@ -83,6 +89,7 @@ class App extends React.Component {
     // to support login flow
     this.setState({
       initialLocation: loginUrl,
+      authenticationFinished: false,
     }, () => {
       auth0Api.setAccessToken();
       this.context.router.replace(`${BASE_URL}${loginUrl}`);
@@ -98,7 +105,7 @@ class App extends React.Component {
 
     const screenProtected = screenIsProtected(this.props.routes);
 
-    if (screenProtected) {
+    if (this.state.authenticationFinished && screenProtected) {
       children = (
         <InnerPortal>
           {children}

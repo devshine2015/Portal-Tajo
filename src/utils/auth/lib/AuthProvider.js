@@ -5,24 +5,7 @@ import {
   saveSession,
 } from './authLocalStorage';
 import validateSession from './validateSession';
-import { takeProfile } from './tokenHelpers';
-import { login, logout } from './restCalls';
-
-const permissions = [
-  'view:dashboard',
-  'view:fleet',
-  'view:location',
-  'edit:location',
-  'delete:location',
-  'view:vehicle',
-  'edit:vehicle',
-  'add:user',
-  'edit:user',
-  'view:users_manager',
-];
-const roles = [
-  'Admin',
-];
+import { login, logout, fetchProfile } from './restCalls';
 
 class Auth {
   constructor() {
@@ -102,8 +85,8 @@ class AuthProvider extends React.Component {
   componentWillMount() {
     readSessionFromLocalStorage(this.props.storageKey)
       .then(validateSession)
-      .then(({ session, hasJWT }) => (
-        this.authenticate(session, hasJWT)
+      .then(({ session }) => (
+        this.authenticate(session)
       ), this.unauthenticate);
   }
 
@@ -112,6 +95,9 @@ class AuthProvider extends React.Component {
       authenticated: false,
     }, () => {
       cleanLocalStorage(this.props.storageKey);
+      this.auth.roles = [];
+      this.auth.permissions = [];
+      this.auth.isAuth0 = false;
 
       if (typeof this.props.onLogoutSuccess === 'function') {
         this.props.onLogoutSuccess();
@@ -119,35 +105,30 @@ class AuthProvider extends React.Component {
     });
   }
 
-  authenticate = (session, hasJWT, save = false) => {
+  authenticate = (profile, save = false) => {
     this.setState({
       authenticated: true,
     }, () => {
       // we don't need to save session for every case
       // e.g. when authenticated from localStorage
       if (save) {
-        saveSession(this.props.storageKey, session);
+        saveSession(this.props.storageKey, profile);
       }
 
-      if (hasJWT) {
+      if (profile.id_token !== undefined) {
         this.auth.isAuth0 = true;
-      }
 
-      this.auth.roles = roles;
-      this.auth.permissions = permissions;
-
-      if (typeof this.props.onLoginSuccess === 'function') {
-        let profile = takeProfile(session);
-
-        // don't enrich profile of non-auth0 users
-        if (hasJWT) {
-          profile = Object.assign({}, profile, {
-            roles,
-            permissions,
-          });
+        if (profile.roles !== undefined) {
+          this.auth.roles = profile.roles;
         }
 
-        this.props.onLoginSuccess(profile, session.id_token);
+        if (profile.permissions !== undefined) {
+          this.auth.permissions = profile.permissions;
+        }
+      }
+
+      if (typeof this.props.onLoginSuccess === 'function') {
+        this.props.onLoginSuccess(profile);
       }
     });
   }
@@ -157,11 +138,25 @@ class AuthProvider extends React.Component {
   login = (payload, options = {}) => (
     login(payload, options)
       .then(validateSession)
+      // session contain just id_token if authenticated with auth0
       .then(({ session, hasJWT }) => {
-        // true - session must been saved after login
-        this.authenticate(session, hasJWT, true);
+        if (hasJWT) {
+          // get additional user info with permissions and roles
+          return fetchProfile(session.id_token)
+            .then(profile => ({
+              profile: Object.assign({}, profile, session),
+            }));
+        }
 
-        return session;
+        return { profile: session };
+      })
+      // at this point we have enriched profile with data came from auth0,
+      // or regular session-id came from engine.
+      .then(({ profile }) => {
+        // true - session must been saved after login
+        this.authenticate(profile, true);
+
+        return profile;
       })
   )
 

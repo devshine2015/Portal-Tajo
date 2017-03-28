@@ -171,6 +171,7 @@ const phrases = {
     ['Failed to fetch']: 'Server is temporaly down. Please try again later',
     ['Not Found']: 'Resource is not found. Please contact with administrator',
     ['Unauthorized']: 'Username/password combination is wrong.',
+    something_went_wrong: 'Something went wrong',
     // -- end errors
 
     // login form
@@ -223,6 +224,10 @@ const phrases = {
     repeat_password: 'Repeat password',
     changing: 'changing',
     // --end users manager
+
+    // 404 page
+    not_found: 'not found',
+    // -- end 404 page
   },
 
   th: {
@@ -252,7 +257,7 @@ const phrases = {
     settings: 'ตั้งค่า',
     review: 'ภาพรวม',
     history: 'ประวัติ',
-    alerts_editor: 'alerts editor',
+    users: 'ผู้ใช้',
     // -- end main menu
 
     // dashboard screen
@@ -387,6 +392,7 @@ const phrases = {
     ['Failed to fetch']: 'เซิร์ฟเวอร์ขัดข้อง โปรดลองอีกครั้ง',
     ['Not Found']: 'ไม่พบข้อมูล โปรดติดต่อผู้ดูแลระบบ',
     ['Unauthorized']: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง',
+    something_went_wrong: 'เกิดข้อผิดพลาดบางอย่าง',
     // -- end errors
 
     // login form
@@ -414,6 +420,35 @@ const phrases = {
     lat: 'ละติจูด',
     lng: 'ลองติจูด',
     // -- end chronicle marker
+
+    // users manager
+    add_user: 'เพิ่มผู้ใช้',
+    choose_role: 'เลือกบทบาท',
+    email: 'อีเมล์',
+    add_new_user: 'เพิ่มผู้ใช้ใหม่',
+    update: 'อัพเดท',
+    create: 'เพิ่ม',
+    role: 'บทบาท',
+    close: 'ปิด',
+    details: 'รายละเอียด',
+    last_login: 'เข้าสู่ระบบครั้งล่าสุด',
+    never: 'ไม่เคย',
+    confirm_delete_str1: 'คุณกำลังลบผู้ใช้ออกจากระบบ',
+    confirm_delete_str2: 'กรุณายืนยัน',
+    confirm: 'ยืนยัน',
+    change_email: 'เปลี่ยนอีเมล์',
+    verified: 'ยืนยันแล้ว',
+    change_password: 'เปลี่ยนรหัสผ่าน',
+    new_email: 'อีเมล์ใหม่',
+    submit: 'ส่ง',
+    new_password: 'รหัสผ่านใหม่',
+    repeat_password: 'ใส่รหัสผ่านอีกครั้ง',
+    changing: 'กำลังเปลี่ยนแปลง',
+    // --end users manager
+
+    // 404 page
+    not_found: 'ไม่พบ',
+    // -- end 404 page
   },
 };
 
