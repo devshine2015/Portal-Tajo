@@ -98,7 +98,7 @@ function _postVehicleAlerConditions(vehicleId, alerts, dispatch) {
 
 
 // update once a minute or so
-const ALERTS_HISOTYR_FETCH_INTERVAL_MS = 1000 * 10;
+const ALERTS_HISOTYR_FETCH_INTERVAL_MS = 1000 * 60;
 let fetchProcId = null;
 
 function _startFetching(dispatch, getState) {
