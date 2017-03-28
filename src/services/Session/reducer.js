@@ -36,8 +36,8 @@ const initialState = fromJS({
    * use context of AuthProvider instead.
    *
    **/
-  roles: [],
-  permissions: [],
+  roles: undefined,
+  permissions: undefined,
 });
 
 function reducer(state = initialState, action) {
@@ -65,8 +65,14 @@ export const getSessionData = state =>
   state.get('session');
 export const getSessionToken = state =>
   state.getIn(['session', 'sessionId']);
-export const getUserRole = state =>
-  state.getIn(['session', 'role']);
+export const getUserRole = state => {
+  if (state.getIn(['session', 'roles']) !== undefined) {
+    return state.getIn(['session', 'roles', 0]);
+  }
+
+  return state.getIn(['session', 'role']);
+};
+
 export const getFleetName = state =>
   state.getIn(['session', 'fleet']);
 export const getUserSettings = state =>

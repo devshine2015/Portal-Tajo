@@ -69,13 +69,13 @@ class App extends React.Component {
       auth0Api.setIdToken(profile.id_token);
     }
 
+    this.props.saveSession(profile)
+      .then(this.props.fetchFleet)
+      .then(this.props.fetchDevices);
+
     this.setState({
       authenticationFinished: true,
     }, () => {
-      this.props.saveSession(profile)
-        .then(this.props.fetchFleet)
-        .then(this.props.fetchDevices);
-
       if (needRedirect(this.state.initialLocation)) {
         this.context.router.replace(`${BASE_URL}/`);
       }
