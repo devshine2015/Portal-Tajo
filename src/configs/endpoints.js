@@ -1,6 +1,10 @@
 import qs from 'query-string';
 
 const apis = {
+  auth0Api: {
+    name: 'auth0',
+    url: 'https://drvr.auth0.com',
+  },
   managmentAPI: {
     name: 'mgmtApi',
     url: 'https://drvr.auth0.com/api/v2',
@@ -31,7 +35,7 @@ const endpoints = {
 
   // profile
   getUserInfo: {
-    url: '/tokeninfo',
+    url: `${apis.auth0Api.url}/tokeninfo`,
     method: 'post',
   },
 
@@ -172,8 +176,13 @@ const endpoints = {
     apiVersion: 1.1,
   },
   assignRoleToUser: id => ({
-    url: `${apis.authorizationExtAPI.url}/api`,
+    url: `${apis.authorizationExtAPI.url}/users/${id}/roles`,
     method: 'patch',
+    extName: apis.authorizationExtAPI.name,
+  }),
+  unassignRoleToUser: id => ({
+    url: `${apis.authorizationExtAPI.url}/users/${id}/roles`,
+    method: 'delete',
     extName: apis.authorizationExtAPI.name,
   }),
 

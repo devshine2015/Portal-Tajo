@@ -1,5 +1,9 @@
 import { auth0Api } from 'utils/api';
 import endpoints from 'configs/endpoints';
+import {
+  assignRole,
+  unassignRole,
+} from './rolesActions';
 
 export const USERS_MANAGER_USERS_SET = 'portal/UsersManager/USERS_MANAGER_USERS_SET';
 export const USERS_MANAGER_USER_CREATED = 'portal/UsersManager/USERS_MANAGER_USER_CREATED';
@@ -17,28 +21,29 @@ export const fetchUsers = () => dispatch => {
 };
 
 export const createUser = payload => dispatch => {
-  const { url, method } = endpoints.createUser;
-
+  const { url, method, extName } = endpoints.createUser;
   const enrichedPayload = Object.assign({}, payload, {
     connection: 'Username-Password-Authentication',
   });
 
-  return auth0Api[method](url, enrichedPayload)
+  return auth0Api[method](url, { payload: enrichedPayload, extName })
     .then(toJson)
     .then(user => {
       dispatch(_userCreated(user));
+      dispatch(assignRole(user.user_id));
 
       return Promise.resolve();
     });
 };
 
 export const deleteUser = userId => dispatch => {
-  const { url, method } = endpoints.deleteUser(userId);
+  const { url, method, extName } = endpoints.deleteUser(userId);
 
-  return auth0Api[method](url)
+  return auth0Api[method](url, { extName })
     .then(res => {
       if (res.status === 204) {
         dispatch(_userDeleted(userId));
+        dispatch(unassignRole(userId));
       }
 
       return Promise.resolve();
@@ -58,9 +63,9 @@ export const assignPermission = (permissionId, userIndex, isAssigned) => {
 };
 
 function _updateUserCall(userId, payload) {
-  const { url, method } = endpoints.updateUser(userId);
+  const { url, method, extName } = endpoints.updateUser(userId);
 
-  return auth0Api[method](url, payload)
+  return auth0Api[method](url, { payload, extName })
     .then(toJson);
 }
 

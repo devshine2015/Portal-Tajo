@@ -22,7 +22,7 @@ export default function prepareRequest(method, url, headers, payload) {
   if (method === 'GET' || method === 'HEAD') {
     const string = qs.stringify(payload);
     query = string ? `?${string}` : '';
-  } else if (method === 'POST' || method === 'PUT' || method === 'PATCH') {
+  } else if (method === 'POST' || method === 'PUT' || method === 'PATCH' || method === 'DELETE') {
     body = JSON.stringify(payload);
   }
 

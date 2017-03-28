@@ -39,4 +39,5 @@ export const getRolesList = state =>
   fromRolesReducer.getRolesList(roles(state));
 export const getRoles = state =>
   fromRolesReducer.getRoles(roles(state));
-
+export const getRoleIdByUserId = (state, userId) =>
+  fromRolesReducer.getRoleIdByUserId(roles(state), userId);

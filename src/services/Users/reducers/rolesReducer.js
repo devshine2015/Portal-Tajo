@@ -3,6 +3,8 @@ import {
   ROLES_FETCH_SUCCESS,
   ROLE_CREATE,
   ROLE_DELETE,
+  ROLE_ASSIGN,
+  ROLE_UNASSIGN,
 } from '../actions/rolesActions';
 
 const initialState = fromJS({
@@ -33,6 +35,17 @@ function reducer(state = initialState, action) {
     case ROLE_DELETE:
       return state.update('list', list => list.remove(action.index));
 
+    case ROLE_ASSIGN:
+      return state.updateIn(['map', action.roleId, 'users'], users => (
+        users.push(action.userId)
+      ));
+    
+    case ROLE_UNASSIGN: {
+      const userIdIndex = state.getIn(['map', action.roleId, 'users']).indexOf(action.userId);
+
+      return state.deleteIn(['map', action.roleId, 'users', userIdIndex]);
+    }
+
     default:
       return state;
   }
@@ -44,3 +57,20 @@ export const getRoles = state =>
   state.get('map');
 export const getRolesList = state =>
   state.get('list');
+export const getRoleIdByUserId = (state, userId) => {
+  const roles = state.get('map').toArray();
+  const entries = roles.filter(role => {
+    const users = role.get('users');
+    if (users !== undefined) {
+      return users.indexOf(userId) !== -1;
+    } else {
+      return false;
+    }
+  });
+
+  if (entries.length !== 0) {
+    return entries[0].get('_id');
+  } else {
+    return null;
+  }
+};
