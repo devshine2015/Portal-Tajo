@@ -122,8 +122,8 @@ export function cleanExactIndexies(key, indexesToRemove = []) {
   });
 }
 
-export function updateSettingsBySessionId({
-  key, sessionId, newValue,
+export function updatePropBySessionId({
+  key, sessionId, newValue, field,
 } = {}) {
   return read(key).then((savedData = []) => {
     const { value, index } = _getValueById(sessionId, savedData.values);
@@ -132,12 +132,12 @@ export function updateSettingsBySessionId({
       return Promise.resolve(false);
     }
 
-    const oldSettings = value.hasOwnProperty('settings') ? value.settings : {};
-    const newSettings = Object.assign({}, oldSettings, {
+    const oldFieldVal = value.hasOwnProperty(field) ? value[field] : {};
+    const newFieldVal = Object.assign({}, oldFieldVal, {
       ...newValue,
     });
 
-    savedData.values[index].settings = newSettings;
+    savedData.values[index][field] = newFieldVal;
 
     window.localStorage.setItem(key, JSON.stringify(savedData));
 
@@ -145,8 +145,8 @@ export function updateSettingsBySessionId({
   });
 }
 
-function removeSettingsPropsBySessionId({
-  key, sessionId, props = [],
+function removePropsBySessionId({
+  key, sessionId, props = [], field,
 } = {}) {
   return read(key).then((savedData = []) => {
     const { value, index } = _getValueById(sessionId, savedData.values);
@@ -155,13 +155,13 @@ function removeSettingsPropsBySessionId({
       return Promise.resolve(false);
     }
 
-    const settings = value.hasOwnProperty('settings') ? value.settings : {};
+    const fieldValue = value.hasOwnProperty(field) ? value[field] : {};
 
     props.forEach(p => {
-      delete settings[p];
+      delete fieldValue[p];
     });
 
-    savedData.values[index].settings = settings;
+    savedData.values[index][field] = fieldValue;
 
     window.localStorage.setItem(key, JSON.stringify(savedData));
 
@@ -175,6 +175,6 @@ export default {
   clean,
   cleanExactIndexies,
   cleanExactValues,
-  updateSettingsBySessionId,
-  removeSettingsPropsBySessionId,
+  updatePropBySessionId,
+  removePropsBySessionId,
 };

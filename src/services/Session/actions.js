@@ -37,17 +37,19 @@ export const updateUserSettings = (saveToStorage = true, settings) => (dispatch,
   if (!saveToStorage) {
     dispatch(_userSettingsUpdate(settings));
 
-    return storage.removeSettingsPropsBySessionId({
+    return storage.removePropsBySessionId({
       key: LOCAL_STORAGE_SESSION_KEY,
       sessionId,
       props: Object.keys(settings),
+      field: 'settings',
     });
   }
 
-  return storage.updateSettingsBySessionId({
+  return storage.updatePropBySessionId({
     key: LOCAL_STORAGE_SESSION_KEY,
     sessionId,
     newValue: settings,
+    field: 'settings',
   })
   .then(result => {
     if (result) {
