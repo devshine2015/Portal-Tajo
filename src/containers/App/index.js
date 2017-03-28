@@ -7,6 +7,7 @@ import { onlineActions } from 'services/Global/actions';
 import {
   setSession,
   cleanSession,
+  fetchAccessTokens,
 } from 'services/Session/actions';
 import { getLocale } from 'services/Session/reducer';
 import { commonFleetActions } from 'services/FleetModel/actions';
@@ -64,7 +65,7 @@ class App extends React.Component {
   onLoginSuccess = (profile) => {
     if (profile.id_token) {
       checkSetMwa(true);
-      auth0Api.setAccessToken(profile.id_token);
+      auth0Api.setIdToken(profile.id_token);
     }
 
     this.setState({
@@ -76,6 +77,10 @@ class App extends React.Component {
 
       if (needRedirect(this.state.initialLocation)) {
         this.context.router.replace(`${BASE_URL}/`);
+      }
+
+      if (isMwa) {
+        this.props.fetchAccessTokens();
       }
     });
   }
@@ -91,7 +96,7 @@ class App extends React.Component {
       initialLocation: loginUrl,
       authenticationFinished: false,
     }, () => {
-      auth0Api.setAccessToken();
+      auth0Api.setIdToken();
       this.context.router.replace(`${BASE_URL}${loginUrl}`);
     });
   }
@@ -150,6 +155,7 @@ App.propTypes = {
       protected: React.PropTypes.bool,
     })
   ).isRequired,
+  fetchAccessTokens: React.PropTypes.func.isRequired,
 };
 
 const mapState = state => ({
@@ -160,6 +166,7 @@ const mapDispatch = {
   saveSession: setSession,
   cleanSession,
   fetchDevices,
+  fetchAccessTokens,
   fetchFleet: commonFleetActions.fetchFleet,
 };
 

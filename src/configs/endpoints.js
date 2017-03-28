@@ -119,7 +119,7 @@ const endpoints = {
     apiVersion: 1,
   },
 
-  // users
+  // users managment
   getAllUsers: {
     url: '/api/v2/users',
     method: 'get',
@@ -136,6 +136,17 @@ const endpoints = {
     url: `/api/v2/users/${id}`,
     method: 'delete',
   }),
+  getAuthExtentionAccessToken: {
+    url: 'auth0/token/auth',
+    method: 'get',
+    apiVersion: 1.1,
+  },
+  getMgmtExtentionAccessToken: {
+    url: 'auth0/token/mgmt',
+    method: 'get',
+    apiVersion: 1.1,
+  },
+
   // events
   getEventsInTimeRange: (id, params) => ({
     url: `vehicles/${id}/events?${qs.stringify(params)}`,
