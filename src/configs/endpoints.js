@@ -1,5 +1,10 @@
 import qs from 'query-string';
 
+const apis = {
+  managmentAPI: 'mgmtApi',
+  authorizationExtAPI: 'authExtApi',
+};
+
 const endpoints = {
   // authentication
   login: {
@@ -123,18 +128,22 @@ const endpoints = {
   getAllUsers: {
     url: '/api/v2/users',
     method: 'get',
+    extName: apis.managmentAPI,
   },
   updateUser: id => ({
     url: `/api/v2/users/${id}`,
     method: 'patch',
+    extName: apis.managmentAPI,
   }),
   createUser: {
     url: '/api/v2/users',
     method: 'post',
+    extName: apis.managmentAPI,
   },
   deleteUser: id => ({
     url: `/api/v2/users/${id}`,
     method: 'delete',
+    extName: apis.managmentAPI,
   }),
   getAuthExtentionAccessToken: {
     url: 'auth0/token/auth',

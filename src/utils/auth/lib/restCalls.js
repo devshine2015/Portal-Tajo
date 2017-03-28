@@ -29,7 +29,10 @@ export const logout = ({
 
 export const fetchProfile = idToken => {
   const { url, method } = endpoints.getUserInfo;
+  const options = {
+    payload: { id_token: idToken },
+  };
 
-  return auth0Api[method](url, { id_token: idToken })
+  return auth0Api[method](url, options)
     .then(res => res.json());
 };

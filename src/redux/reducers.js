@@ -47,7 +47,7 @@ export default function createReducer(asyncReducers) {
     snackbar: snackbarReducer,
     fleet: fleetReducer,
     chronicle: chronicleReducer,
-    users: usersReducer,
+    usersManager: usersReducer,
     gfEditor: gfEditorReducer,
     mapView: mapViewReducer,
     devices: devicesReducer,

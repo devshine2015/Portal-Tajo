@@ -100,7 +100,7 @@ class App extends React.Component {
       initialLocation: loginUrl,
       authenticationFinished: false,
     }, () => {
-      auth0Api.setIdToken();
+      auth0Api.clean();
       this.context.router.replace(`${BASE_URL}${loginUrl}`);
     });
   }

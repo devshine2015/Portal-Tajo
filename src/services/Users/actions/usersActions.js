@@ -9,9 +9,9 @@ export const USERS_MANAGER_PERMISSION_UNASSIGN = 'portal/UsersManager/USERS_MANA
 export const USERS_MANAGER_USER_UPDATED = 'portal/UsersManager/USERS_MANAGER_USER_UPDATED';
 
 export const fetchUsers = () => dispatch => {
-  const { url, method } = endpoints.getAllUsers;
+  const { url, method, extName } = endpoints.getAllUsers;
 
-  return auth0Api[method](url)
+  return auth0Api[method](url, { extName })
     .then(toJson)
     .then(users => dispatch(_usersSet(users)));
 };

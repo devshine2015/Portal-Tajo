@@ -4,7 +4,7 @@ import {
   checkSetMaritime,
 } from 'configs';
 import endpoints from 'configs/endpoints';
-import { api } from 'utils/api';
+import { api, auth0Api } from 'utils/api';
 import storage from 'utils/localStorage';
 import { getSessionToken } from './reducer';
 
@@ -68,18 +68,28 @@ const _fetchAuthExtentionAccessToken = () => {
   const { url, method, apiVersion } = endpoints.getAuthExtentionAccessToken;
 
   return api[method](url, { apiVersion })
-    .then(res => res.json());
+    .then(res => res.json())
+    .then(res => {
+      auth0Api.setAuthExtAccessToken(res);
+
+      return Promise.resolve(res);
+    });
 };
 
 const _fetchMgmtExtentionAccessToken = () => {
   const { url, method, apiVersion } = endpoints.getMgmtExtentionAccessToken;
 
   return api[method](url, { apiVersion })
-    .then(res => res.json());
+    .then(res => res.json())
+    .then(res => {
+      auth0Api.setMgmtAccessToken(res);
+
+      return Promise.resolve(res);
+    });
 };
 
 export const fetchAccessTokens = () => dispatch => {
-  const tokens = {};
+  const tokens ={};
   const cacheToken = (token, name) => {
     if (token.access_token) {
       tokens[name] = token;

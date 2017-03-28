@@ -5,7 +5,7 @@ import pure from 'recompose/pure';
 import { usersActions } from 'services/Users/actions';
 import {
   getUsers,
-  getPermissions,
+  getPermissionsList,
 } from 'services/Users/reducer';
 import UserItem from '../UserItem';
 import UserPermissionsList from '../UserPermissionsList';
@@ -130,7 +130,7 @@ UsersList.defaultProps = {
 
 const mapState = state => ({
   users: getUsers(state),
-  allPermissions: getPermissions(state),
+  allPermissions: getPermissionsList(state),
 });
 const mapDispatch = {
   fetchUsers: usersActions.fetchUsers,
