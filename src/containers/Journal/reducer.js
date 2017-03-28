@@ -18,9 +18,11 @@ function journalReducer(state = initialState, action) {
       //   .set('newEntriesCount', 0);
       return state.set('isOpened', action.doOpen);
     case jrnActions.JR_ADD_ENTRIES: {
-      const newList = state.get('entries').push(...action.newEntriesList);
-      return state.set('entries', newList)
-        .set('newEntriesCount', state.get('newEntriesCount') + action.newEntriesList.length);
+      return state.set('entries', action.newEntriesList);
+
+      // const newList = state.get('entries').push(...action.newEntriesList);
+      // return state.set('entries', newList)
+      //   .set('newEntriesCount', state.get('newEntriesCount') + action.newEntriesList.length);
     }
     default:
       return state;
@@ -38,5 +40,5 @@ export const jrnNewCount = state =>
   _journalReducer(state).get('newEntriesCount');
 export const jrnGetEntries = (state) => {
   const theList = _journalReducer(state).get('entries');
-  return theList.toJS();
+  return theList;// .toJS();
 };

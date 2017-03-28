@@ -10,8 +10,6 @@ import ToOpenIcon from 'material-ui/svg-icons/navigation/expand-more';
 import ToCloseIcon from 'material-ui/svg-icons/navigation/expand-less';
 import styles from './styles.css';
 
-import { createJournalEntry,
-  createJournalEntryTxt } from 'containers/Journal/entryHelpers';
 import * as EntryTypes from 'containers/Journal/entryTypes';
 
 let _dbgFakeCount = 0;
@@ -32,7 +30,7 @@ let _dbgFakeTypes = [
 class JournalToggle extends React.Component {
   _devTestJournalEntry() {
     const eventTypeIdx = Math.floor(Math.random() * (_dbgFakeTypes.length));
-    this.props.addEntries([createJournalEntry(
+    this.props.addEntries([(
       _dbgFakeTypes[eventTypeIdx],
       { name: _dbgFakeNames[_dbgFakeCount % _dbgFakeNames.length] }),
     ]);
@@ -41,14 +39,7 @@ class JournalToggle extends React.Component {
 
   toggleJournal() {
     this.props.openJournal(!this.props.isOpened);
-    this._devTestJournalEntry();
-    // this.props.addEntries([createJournalEntry(this.props.isOpened ?
-    //   // 'Refrigirated Truck (#RT1)        +3\xB0C' : 'Late Night #2       Main Warehouse'),
-    //   'Refrigirated Truck (#RT1)' : 'Late Night #2'),
-    // ]);
-    // this.props.addEntries([createJournalEntry('toggling the journal '
-    //   + (this.props.isOpened ? '+++>>>' : '<<<---')),
-    // ]);
+    // this._devTestJournalEntry();
   }
   generateBadgeContent() {
     return this.props.newCount < 9 ? this.props.newCount : '!';

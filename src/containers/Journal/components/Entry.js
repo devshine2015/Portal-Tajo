@@ -20,15 +20,19 @@ class Entry extends React.Component {
           {this.props.entryObj.localTime}
         </span>
         <span className={styles.journalEntrySpanName}>
-          {this.props.entryObj.owner.name}
+          {this.props.entryObj.ownerName}
         </span>
         <span className={styles.journalEntrySpan}>
-          {textForEventType(this.props.entryObj.eventType)}
+          {this.props.entryObj.eventName}
         </span>
       </div>
     );
   }
 }
+
+        /*<span className={styles.journalEntrySpan}>
+          {textForEventType(this.props.entryObj.eventName)}
+        </span>*/
 
 Entry.propTypes = {
   // Main data to display

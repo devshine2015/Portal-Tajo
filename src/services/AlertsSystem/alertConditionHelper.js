@@ -1,6 +1,7 @@
 
 import moment from 'moment';
 import { getAlertByKind } from './alertKinds';
+import * as alertKinds from 'services/AlertsSystem/alertKinds';
 
 export const _NEW_LOCAL_ALERT_ID_ = 'newAlert';
 
@@ -30,8 +31,9 @@ export const makeLocalAlertCondition = (originObject) => (
 
 export const makeNewAlertConditionTemplate = () => (
     { id: _NEW_LOCAL_ALERT_ID_,
-        name: 'new Alert',
-        kind: 'none',
+        kind: alertKinds._ALERT_KIND_SPEEDING,
+        name: 'Speed over 45 kmh Alert',
+        maxSpeed: 45,
     }
 );
 

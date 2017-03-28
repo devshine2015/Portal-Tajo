@@ -163,6 +163,11 @@ const endpoints = {
     method: 'get',
     apiVersion: 1.120,
   }),
+  getAlertsInTimeRange: params => ({
+    url: `alerts?${qs.stringify(params)}`,
+    method: 'get',
+    apiVersion: 1.120,
+  }),
   postVehicleAlertConditions: (id) => ({
     url: `vehicles/${id}/alert-conditions`,
     method: 'post',

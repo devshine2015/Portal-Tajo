@@ -12,7 +12,6 @@ const Journal = ({
   isOpened,
   entries,
 }) => {
-  return null;
   // if (!isOpened) {
   //   // return (<JournalToggle />);
   //   return null;

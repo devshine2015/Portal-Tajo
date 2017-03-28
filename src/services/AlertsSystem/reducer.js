@@ -19,6 +19,8 @@ function alertsReducer(state = initialState, action) {
       return state.setIn(['conditions', action.alertObj.id], action.alertObj);
     case ALRT_VEHICLE_ADD:
       return state.setIn(['vehicleAlerts', action.vehicleId], action.alertsList);
+    case ALRT_EVENTS_ADD:
+      return state.set('events', new List(action.alertEvents));
     default:
       return state;
   }
