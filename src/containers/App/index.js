@@ -72,6 +72,10 @@ class App extends React.Component {
       auth0Api.setIdToken(profile.id_token);
     }
 
+    if (profile.accessTokens) {
+      auth0Api.setAccessTokens(profile.accessTokens);
+    }
+
     this._fetchData(profile);
 
     this.setState({
@@ -82,10 +86,16 @@ class App extends React.Component {
       }
 
       if (isMwa) {
-        this.props.fetchAccessTokens()
-          .then(tokens =>
-            this.props.fetchRolesAndPermissions(tokens)
-          );
+        if (!profile.accessTokens) {
+          this.props.fetchAccessTokens()
+            .then(tokens => {
+              auth0Api.setAccessTokens(tokens);
+
+              this.props.fetchRolesAndPermissions(tokens);
+            });
+        } else {
+          this.props.fetchRolesAndPermissions(profile.accessTokens);
+        }
       }
     });
   }

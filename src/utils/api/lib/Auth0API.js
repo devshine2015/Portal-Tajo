@@ -10,11 +10,11 @@ function _attachAuthorizationHeader(_this, extName) {
 
   switch (extName) {
     case 'mgmtApi': {
-      token += _this.mgmtAccessToken.access_token;
+      token += _this.mgmtAccessToken;
       break;
     }
     case 'authExtApi': {
-      token += _this.authExtAccessToken.access_token;
+      token += _this.authExtAccessToken;
       break;
     }
     default: token += _this.idToken;
@@ -42,20 +42,9 @@ class Auth0API extends BaseAPIClass {
     }
   }
 
-  setMgmtAccessToken = (accessToken = undefined) => {
-    if (accessToken) {
-      this.mgmtAccessToken = accessToken;
-    } else {
-      this.mgmtAccessToken = undefined;
-    }
-  }
-
-  setAuthExtAccessToken = (accessToken = undefined) => {
-    if (accessToken) {
-      this.authExtAccessToken = accessToken;
-    } else {
-      this.authExtAccessToken = undefined;
-    }
+  setAccessTokens = (tokens = {}) => {
+    this.mgmtAccessToken = tokens.mgmtApi || undefined;
+    this.authExtAccessToken = tokens.authExtApi || undefined;
   }
 
   _invoke = (method, url, {

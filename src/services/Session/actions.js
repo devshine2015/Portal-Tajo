@@ -4,7 +4,7 @@ import {
   checkSetMaritime,
 } from 'configs';
 import endpoints from 'configs/endpoints';
-import { api, auth0Api } from 'utils/api';
+import { api } from 'utils/api';
 import storage from 'utils/localStorage';
 import { getSessionToken } from './reducer';
 
@@ -60,6 +60,18 @@ export const updateUserSettings = (saveToStorage = true, settings) => (dispatch,
   });
 };
 
+// saveToStorage - clean settings from local storage if FALSE
+const updateUserAccessTokens = tokens => (dispatch, getState) => {
+  const sessionId = getSessionToken(getState());
+
+  return storage.updatePropBySessionId({
+    key: LOCAL_STORAGE_SESSION_KEY,
+    sessionId,
+    newValue: tokens,
+    field: 'accessTokens',
+  });
+};
+
 export const updateLanguage = nextLang => dispatch => {
   dispatch(updateUserSettings(true, {
     lang: nextLang,
@@ -70,31 +82,21 @@ const _fetchAuthExtentionAccessToken = () => {
   const { url, method, apiVersion } = endpoints.getAuthExtentionAccessToken;
 
   return api[method](url, { apiVersion })
-    .then(res => res.json())
-    .then(res => {
-      auth0Api.setAuthExtAccessToken(res);
-
-      return Promise.resolve(res);
-    });
+    .then(res => res.json());
 };
 
 const _fetchMgmtExtentionAccessToken = () => {
   const { url, method, apiVersion } = endpoints.getMgmtExtentionAccessToken;
 
   return api[method](url, { apiVersion })
-    .then(res => res.json())
-    .then(res => {
-      auth0Api.setMgmtAccessToken(res);
-
-      return Promise.resolve(res);
-    });
+    .then(res => res.json());
 };
 
 export const fetchAccessTokens = () => dispatch => {
-  const tokens ={};
+  const tokens = {};
   const cacheToken = (token, name) => {
     if (token.access_token) {
-      tokens[name] = token;
+      tokens[name] = token.access_token;
     }
   };
 
@@ -109,6 +111,7 @@ export const fetchAccessTokens = () => dispatch => {
     })
     .then(() => {
       dispatch(_accessTokensSet(tokens));
+      dispatch(updateUserAccessTokens(tokens));
 
       return Promise.resolve(tokens);
     });

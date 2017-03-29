@@ -10,6 +10,6 @@ export const fetchRolesAndPermissions = ({ authExtApi }) => dispatch => {
   // if no access token for authorization extention
   if (!authExtApi) return Promise.resolve();
 
-  return dispatch(prmsnsActions.fetchPermissions(authExtApi.access_token))
-    .then(() => dispatch(rlsActions.fetchRoles(authExtApi.access_token)));
+  return dispatch(prmsnsActions.fetchPermissions(authExtApi))
+    .then(() => dispatch(rlsActions.fetchRoles(authExtApi)));
 };
