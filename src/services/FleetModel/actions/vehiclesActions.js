@@ -5,6 +5,7 @@ import {
   makeLocalVehicle,
   sortVehicles,
 } from '../utils/vehicleHelpers';
+import { fetchAlertsHistory } from 'services/AlertsSystem/actions';
 import { filterProcessedListByName } from '../utils/filtering';
 import { getProcessedVehicles } from '../reducer';
 import { mwaFetchJobs } from 'services/MWA/actions';
@@ -32,7 +33,7 @@ export const setSelectedVehicleId = (id) => ({
   id,
 });
 
-export const fetchVehicles = () => dispatch => {
+export const fetchVehicles = () => (dispatch, getState) => {
   const urls = [{
     ...endpoints.getVehicles,
   }, {
@@ -51,6 +52,7 @@ export const fetchVehicles = () => dispatch => {
     if (isMwa) {
       dispatch(mwaFetchJobs());
     }
+    dispatch(fetchAlertsHistory(getState));
   })
   .catch(e => {
     console.error(e);
