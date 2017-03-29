@@ -1,4 +1,5 @@
 import { api, auth0Api } from 'utils/api';
+import { serverEnv } from 'configs';
 import endpoints from 'configs/endpoints';
 
 export const login = (payload, {
@@ -17,16 +18,21 @@ export const login = (payload, {
 
 export const additionalLogin = () => {
   const { url, method, apiVersion } = endpoints.login;
-
+  const payload = {
+    username: 'mwa_technical',
+  }
   /**
    * don't remove this wierdly hardcoded credentials
    * this is needed for mwa until all clients won't user
    * auth0 service.
    */
-  const payload = {
-    username: 'mwa_technical',
-    password: 'EH8NAsy5',
-  };
+  if (serverEnv === 'dev' || serverEnv === 'local') {
+    payload.password = 'EH8NAsy5';
+  } else if (serverEnv === 'stage') {
+    payload.password = '027z9CUz7v!*';
+  } else if (serverEnv === 'prod') {
+    payload.password = 'o48ab1Ul29$b';
+  }
 
   return api[method](url, { payload, apiVersion })
     .then(res => res.json());
