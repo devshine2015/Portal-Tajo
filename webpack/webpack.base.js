@@ -105,8 +105,10 @@ module.exports = (options) => ({
       'main',
     ],
   },
-  devtool: options.devtool,
+
+  // Emit a source map for easier debugging
+  devtool: options.devtool || 'source-map',
+
   target: 'web', // Make web variables accessible to webpack, e.g. window
-  stats: true, // Don't show stats in the console
-  // progress: true,
+  stats: true, // show stats in the console
 });

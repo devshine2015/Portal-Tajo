@@ -20,9 +20,6 @@ module.exports = require('./webpack.base')({
   // where compile locally
   outputFolder: path.resolve(process.cwd(), `builds/dev/${PROJECT}`),
 
-  // Emit a source map for easier debugging
-  devtool: 'source-map',
-
   plugins: [
 
     new HtmlWebpackPlugin({
