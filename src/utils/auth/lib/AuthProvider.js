@@ -1,5 +1,6 @@
 import React from 'react';
 import R from 'ramda';
+import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
 import {
   readSessionFromLocalStorage,
   cleanLocalStorage,
@@ -20,6 +21,32 @@ class Auth {
 
     // flag, indicating if authorization is needed
     this.isAuth0 = false;
+
+    this.initialAuthenticationComplete = false;
+
+    // read session data from local storage asap
+    // this.init();
+
+    this.onInitSuccessSubs = [];
+    this.onInitFailSubs = [];
+  }
+
+  init() {
+    readSessionFromLocalStorage(LOCAL_STORAGE_SESSION_KEY)
+      .then(validateSession)
+      .then(this._initSuccess, this._initFail);
+  }
+
+  _initSuccess = ({ session }) => {
+    this.initialAuthenticationComplete = true;
+    this.takeProfileAuthData(session);
+    this.onInitSuccessSubs.forEach(cb => cb(session));
+  }
+
+  _initFail = error => {
+    console.error(error);
+    this.cleanAuthData();
+    this.onInitFailSubs.forEach(cb => cb());
   }
 
   getRoles() {
@@ -65,6 +92,30 @@ class Auth {
 
     return isAuthorized();
   }
+
+  takeProfileAuthData = profile => {
+    if (profile.id_token !== undefined) {
+      this.isAuth0 = true;
+
+      if (profile.roles !== undefined) {
+        this.roles = profile.roles;
+      }
+
+      if (profile.permissions !== undefined) {
+        this.permissions = profile.permissions;
+      }
+    }
+  }
+
+  cleanAuthData() {
+    this.roles = [];
+    this.permissions = [];
+    this.isAuth0 = false;
+    this.initialAuthenticationComplete = false;
+  }
+
+  onInitSuccess = cb => this.onInitSuccessSubs.push(cb);
+  onInitFail = cb => this.onInitFailSubs.push(cb);
 }
 
 /**
@@ -80,10 +131,10 @@ class AuthProvider extends React.Component {
     super(props, context);
 
     this.auth = auth;
+    this.auth.onInitSuccess(this.authenticate);
+    this.auth.onInitFail(this.unauthenticate);
 
-    this.state = {
-      authenticated: false,
-    };
+    auth.init();
   }
 
   getChildContext() {
@@ -98,58 +149,27 @@ class AuthProvider extends React.Component {
     };
   }
 
-  componentWillMount() {
-    readSessionFromLocalStorage(this.props.storageKey)
-      .then(validateSession)
-      .then(({ session }) => (
-        this.authenticate(session)
-      ), this.unauthenticate);
-  }
-
   unauthenticate = () => {
-    this.setState({
-      authenticated: false,
-    }, () => {
-      cleanLocalStorage(this.props.storageKey);
-      this.auth.roles = [];
-      this.auth.permissions = [];
-      this.auth.isAuth0 = false;
+    cleanLocalStorage(LOCAL_STORAGE_SESSION_KEY);
 
-      if (typeof this.props.onLogoutSuccess === 'function') {
-        this.props.onLogoutSuccess();
-      }
-    });
+    if (typeof this.props.onLogoutSuccess === 'function') {
+      this.props.onLogoutSuccess();
+    }
   }
 
   authenticate = (profile, save = false) => {
-    this.setState({
-      authenticated: true,
-    }, () => {
-      // we don't need to save session for every case
-      // e.g. when authenticated from localStorage
-      if (save) {
-        saveSession(this.props.storageKey, profile);
-      }
+    // we don't need to save session for every case
+    // e.g. when authenticated from localStorage
+    if (save) {
+      saveSession(LOCAL_STORAGE_SESSION_KEY, profile);
+    }
 
-      if (profile.id_token !== undefined) {
-        this.auth.isAuth0 = true;
-
-        if (profile.roles !== undefined) {
-          this.auth.roles = profile.roles;
-        }
-
-        if (profile.permissions !== undefined) {
-          this.auth.permissions = profile.permissions;
-        }
-      }
-
-      if (typeof this.props.onLoginSuccess === 'function') {
-        this.props.onLoginSuccess(profile);
-      }
-    });
+    if (typeof this.props.onLoginSuccess === 'function') {
+      this.props.onLoginSuccess(profile);
+    }
   }
 
-  isAuthenticated = () => this.state.authenticated
+  isAuthenticated = () => this.auth.initialAuthenticationComplete
 
   login = (payload, options = {}) => (
     login(payload, options)
@@ -196,7 +216,6 @@ class AuthProvider extends React.Component {
 
 AuthProvider.propTypes = {
   children: React.PropTypes.any.isRequired,
-  storageKey: React.PropTypes.string.isRequired,
   onLoginSuccess: React.PropTypes.func,
   onLogoutSuccess: React.PropTypes.func,
 };

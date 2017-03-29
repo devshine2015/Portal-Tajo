@@ -11,7 +11,7 @@ function validateSession(session) {
     const tokenExpired = isTokenExpired(session.id_token);
 
     if (tokenExpired) {
-      return Promise.reject();
+      return Promise.reject('id_token expired');
     }
   }
 

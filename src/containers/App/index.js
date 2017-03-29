@@ -14,14 +14,13 @@ import { getLocale } from 'services/Session/reducer';
 import { commonFleetActions } from 'services/FleetModel/actions';
 import { fetchDevices } from 'services/Devices/actions';
 import {
-  LOCAL_STORAGE_SESSION_KEY,
   BASE_URL,
   checkSetMwa,
   isMwa,
 } from 'configs';
 import drvrDevTheme from 'configs/theme';
 import { TranslationProvider } from 'utils/i18n';
-import { AuthProvider } from 'utils/auth';
+import { AuthProvider, auth } from 'utils/auth';
 import { auth0Api } from 'utils/api';
 import phrases, { locales } from 'configs/phrases';
 
@@ -51,6 +50,8 @@ class App extends React.Component {
     };
 
     checkSetMwa(context.router.location.pathname);
+
+    auth.onInitSuccess(this.onLoginSuccess);
   }
 
   componentDidMount() {
@@ -64,14 +65,14 @@ class App extends React.Component {
   }
 
   onLoginSuccess = (profile) => {
+    if (this.state.authenticationFinished) return;
+
     if (profile.id_token) {
       checkSetMwa(true);
       auth0Api.setIdToken(profile.id_token);
     }
 
-    this.props.saveSession(profile)
-      .then(this.props.fetchFleet)
-      .then(this.props.fetchDevices);
+    this._fetchData(profile);
 
     this.setState({
       authenticationFinished: true,
@@ -105,6 +106,12 @@ class App extends React.Component {
     });
   }
 
+  _fetchData(profile) {
+    this.props.saveSession(profile)
+      .then(this.props.fetchFleet)
+      .then(this.props.fetchDevices);
+  }
+
   handleOnlineState = (e) => {
     this.props.changeOnlineState(e.type === 'online');
   }
@@ -120,11 +127,12 @@ class App extends React.Component {
           {children}
         </InnerPortal>
       );
+    } else if (!this.state.authenticationFinished && screenIsProtected) {
+      children = null;
     }
 
     return (
       <AuthProvider
-        storageKey={LOCAL_STORAGE_SESSION_KEY}
         onLoginSuccess={this.onLoginSuccess}
         onLogoutSuccess={this.onLogoutSuccess}
       >

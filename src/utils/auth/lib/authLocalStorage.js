@@ -33,7 +33,7 @@ export const readSessionFromLocalStorage = localStorageKey =>
         }
       }
 
-      return Promise.reject();
+      return Promise.reject('"readSessionFromLocalStorage" sais - nothing to read.');
     });
 
 export const saveSession = (localStorageKey, session) =>
