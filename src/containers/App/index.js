@@ -127,7 +127,7 @@ class App extends React.Component {
           {children}
         </InnerPortal>
       );
-    } else if (!this.state.authenticationFinished && screenIsProtected) {
+    } else if (!this.state.authenticationFinished && screenProtected) {
       children = null;
     }
 

@@ -38,13 +38,12 @@ class Auth {
   }
 
   _initSuccess = ({ session }) => {
-    this.initialAuthenticationComplete = true;
     this.takeProfileAuthData(session);
     this.onInitSuccessSubs.forEach(cb => cb(session));
   }
 
   _initFail = error => {
-    console.error(error);
+    console.warn(error);
     this.cleanAuthData();
     this.onInitFailSubs.forEach(cb => cb());
   }
@@ -94,6 +93,8 @@ class Auth {
   }
 
   takeProfileAuthData = profile => {
+    this.initialAuthenticationComplete = true;
+
     if (profile.id_token !== undefined) {
       this.isAuth0 = true;
 
@@ -197,6 +198,11 @@ class AuthProvider extends React.Component {
       // at this point we have enriched profile with data came from auth0,
       // or regular session-id came from engine.
       .then(({ profile }) => {
+        this.auth.takeProfileAuthData(profile);
+
+        return Promise.resolve(profile);
+      })
+      .then(profile => {
         // true - session must been saved after login
         this.authenticate(profile, true);
 
