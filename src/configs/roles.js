@@ -104,5 +104,5 @@ const rolesAbilities = {
 };
 
 export function checkRolePermissions(role, permission) {
-  return rolesAbilities[portal][role][permission];
+  return rolesAbilities[portal][role.toLowerCase()][permission];
 }
