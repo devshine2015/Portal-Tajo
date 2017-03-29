@@ -14,6 +14,7 @@ export const USERS_MANAGER_USER_DELETED = 'portal/UsersManager/USERS_MANAGER_USE
 export const USERS_MANAGER_PERMISSION_ASSIGN = 'portal/UsersManager/USERS_MANAGER_PERMISSION_ASSIGN';
 export const USERS_MANAGER_PERMISSION_UNASSIGN = 'portal/UsersManager/USERS_MANAGER_PERMISSION_UNASSIGN';
 export const USERS_MANAGER_USER_UPDATED = 'portal/UsersManager/USERS_MANAGER_USER_UPDATED';
+export const USERS_MANAGER_ROLES_SET = 'portal/UsersManager/USERS_MANAGER_ROLES_SET';
 
 const filterUsers = currentFleet => users => {
   const allowedToSeeAllUsers = auth.authorizeWithRole('uber');
@@ -140,4 +141,9 @@ const _userUpdated = (user, id) => ({
   type: USERS_MANAGER_USER_UPDATED,
   user,
   id,
+});
+
+export const userToRolesSet = userToRolesMap => ({
+  type: USERS_MANAGER_ROLES_SET,
+  map: userToRolesMap,
 });

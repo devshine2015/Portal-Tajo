@@ -6,11 +6,13 @@ import {
   USERS_MANAGER_PERMISSION_ASSIGN,
   USERS_MANAGER_PERMISSION_UNASSIGN,
   USERS_MANAGER_USER_UPDATED,
+  USERS_MANAGER_ROLES_SET,
 } from '../actions/usersActions';
 import { SESSION_CLEAN } from 'services/Session/actions';
 
 const initialState = fromJS({
-  usersList: new List(),
+  usersList: [],
+  usersToRoles: {},
   isLoading: false,
 });
 
@@ -44,6 +46,9 @@ function reducer(state = initialState, action) {
       return state.mergeIn(['usersList', index], fromJS(action.user));
     }
 
+    case USERS_MANAGER_ROLES_SET:
+      return state.set('usersToRoles', fromJS(action.map));
+
     case USERS_MANAGER_PERMISSION_ASSIGN: {
       const nextState = state.updateIn(['usersList', action.index], user => {
         let nextUser = user;
@@ -71,6 +76,9 @@ export default reducer;
 
 export const getUsers = state =>
   state.get('usersList');
+export const getUsersToRolesMap = state =>
+  state.get('usersToRoles');
+
 export const getGroupBy = state =>
   state.get('groupBy');
 export const getGrouping = state =>

@@ -1,7 +1,8 @@
-// import uuid from 'node-uuid';
+import R from 'ramda';
 import { api, auth0Api } from 'utils/api';
 import endpoints from 'configs/endpoints';
 import { getRoleIdByUserId } from '../reducer';
+import { userToRolesSet } from './usersActions';
 
 export const ROLES_FETCH_SUCCESS = 'services/usersManager/ROLES_FETCH_SUCCESS';
 export const ROLE_CREATE = 'services/UsersManager/ROLE_CREATE';
@@ -19,13 +20,27 @@ export const fetchRoles = accessToken => dispatch => {
     .then(res => {
       const rolesMap = {};
       const rolesList = [];
+      const usersToRolesMap = {};
 
       res.roles.forEach(role => {
         rolesMap[role._id] = role;
         rolesList.push(role._id);
+
+        if (role.users) {
+          role.users.forEach(user => {
+            usersToRolesMap[user] = {
+              _id: role._id,
+              name: role.name,
+            };
+          });
+        }
       });
 
       dispatch(_rolesFetchSuccess(rolesMap, rolesList));
+
+      if (!R.isNil(usersToRolesMap)) {
+        dispatch(userToRolesSet(usersToRolesMap));
+      }
     });
 };
 

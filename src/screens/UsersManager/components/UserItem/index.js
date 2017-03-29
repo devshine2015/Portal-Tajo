@@ -200,13 +200,10 @@ class UserItem extends React.Component {
   renderSubtitle() {
     return (
       <dl>
-        {/* <dt className={css(classes.title)}>Fleet:&nbsp;</dt>
-        <dd className={css(classes.detail)}>{fleet}</dd>
-        <br /> */}
         <dt className={css(classes.title)}>
-          {`${this.props.translations.role}:`}
+          {`${this.props.translations.role}:`}&nbsp;
         </dt>
-        <dd className={css(classes.detail)}>{this.props.profile.role}</dd>
+        <dd className={css(classes.detail)}>{this.props.role}</dd>
       </dl>
     );
   }
@@ -278,12 +275,14 @@ UserItem.propTypes = {
   renderPermissions: React.PropTypes.func.isRequired,
   index: React.PropTypes.number.isRequired,
   deleteUser: React.PropTypes.func.isRequired,
+  role: React.PropTypes.string,
 
   translations: phrasesShape.isRequired,
 };
 
 UserItem.defaultProps = {
   permissions: [],
+  role: '',
 };
 
 const mapState = null;

@@ -23,6 +23,8 @@ function roles(state) {
 
 export const getUsers = state =>
   fromUsersReducer.getUsers(users(state));
+export const getUsersToRolesMap = state =>
+  fromUsersReducer.getUsersToRolesMap(users(state));
 export const getGroupBy = state =>
   fromUsersReducer.getGroupBy(users(state));
 export const getGrouping = state =>

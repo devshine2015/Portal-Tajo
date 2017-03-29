@@ -57,13 +57,10 @@ function reducer(state = initialState, action) {
 
 export default reducer;
 
-export const getRoles = state =>
-  state.get('map');
-export const getRolesList = state =>
-  state.get('list');
-export const getRoleIdByUserId = (state, userId) => {
+function findEntries(state, userId) {
   const roles = state.get('map').toArray();
-  const entries = roles.filter(role => {
+
+  return roles.filter(role => {
     const users = role.get('users');
     if (users !== undefined) {
       return users.indexOf(userId) !== -1;
@@ -71,10 +68,18 @@ export const getRoleIdByUserId = (state, userId) => {
       return false;
     }
   });
+}
+
+export const getRoles = state =>
+  state.get('map');
+export const getRolesList = state =>
+  state.get('list');
+export const getRoleIdByUserId = (state, userId) => {
+  const entries = findEntries(state, userId);
 
   if (entries.length !== 0) {
     return entries[0].get('_id');
-  } else {
-    return null;
   }
+
+  return null;
 };

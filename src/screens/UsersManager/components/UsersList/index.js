@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
 import pure from 'recompose/pure';
 import { usersActions } from 'services/Users/actions';
 import {
   getUsers,
   getPermissionsList,
+  getUsersToRolesMap,
 } from 'services/Users/reducer';
 import UserItem from '../UserItem';
 import UserPermissionsList from '../UserPermissionsList';
@@ -30,7 +31,7 @@ const renderAllPermissons = (allPermissions, onClick) => (userPermissions = [], 
   );
 };
 
-function renderUsers({ users, permissionsRenderer }) {
+function renderUsers({ users, usersToRolesMap, permissionsRenderer }) {
   return users.toArray().map((u, index) => {
     const user = u.toJS();
 
@@ -43,6 +44,7 @@ function renderUsers({ users, permissionsRenderer }) {
           profile={user}
           index={index}
           renderPermissions={permissionsRenderer}
+          role={usersToRolesMap.getIn([user.user_id, 'name'])}
         />
       </li>
     );
@@ -52,6 +54,7 @@ function renderUsers({ users, permissionsRenderer }) {
 renderUsers.propTypes = {
   users: React.PropTypes.instanceOf(List).isRequired,
   permissionsRenderer: React.PropTypes.func.isRequired,
+  usersToRolesMap: React.PropTypes.instanceOf(Map).isRequired,
 };
 
 class UsersList extends React.Component {
@@ -91,7 +94,7 @@ class UsersList extends React.Component {
   }
 
   render() {
-    const { users, allPermissions } = this.props;
+    const { users, allPermissions, usersToRolesMap } = this.props;
 
     if (users.size === 0 && !this.state.isFetching) {
       if (this.state.error) {
@@ -106,7 +109,7 @@ class UsersList extends React.Component {
     }
 
     const permissionsRenderer = renderAllPermissons(allPermissions, this.assignPermission);
-    const usersList = renderUsers({ users, permissionsRenderer });
+    const usersList = renderUsers({ users, usersToRolesMap, permissionsRenderer });
 
     return (
       <ul className={styles.list}>
@@ -122,6 +125,7 @@ UsersList.propTypes = {
   allPermissions: React.PropTypes.instanceOf(List),
   assignPermission: React.PropTypes.func.isRequired,
   translations: phrasesShape.isRequired,
+  usersToRolesMap: React.PropTypes.instanceOf(Map).isRequired,
 };
 
 UsersList.defaultProps = {
@@ -130,6 +134,7 @@ UsersList.defaultProps = {
 
 const mapState = state => ({
   users: getUsers(state),
+  usersToRolesMap: getUsersToRolesMap(state),
   allPermissions: getPermissionsList(state),
 });
 const mapDispatch = {
