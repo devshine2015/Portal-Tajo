@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 HOST='ddsdev@ddsdev.cloudapp.net'
-PUBLIC='~/driver-server/static-root/public'
+PUBLIC='~/engine/static-root/public'
 EXTRA_FOLDER=$1
 
 parent_path=$( cd "$(dirname "${BASH_SOURCE}")" ; pwd -P )
