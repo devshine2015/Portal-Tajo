@@ -80,7 +80,7 @@ class UsersList extends React.Component {
           this.setState({
             isFetching: false,
           });
-        }, err => {
+        }, () => {
           this.setState({
             error: `${this.props.translations.something_went_wrong}.`,
             isFetching: false,

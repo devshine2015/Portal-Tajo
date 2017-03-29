@@ -1,4 +1,3 @@
-import R from 'ramda';
 import { auth0Api } from 'utils/api';
 import { auth } from 'utils/auth';
 import endpoints from 'configs/endpoints';

@@ -43,7 +43,7 @@ function reducer(state = initialState, action) {
       return state.updateIn(['map', action.roleId, 'users'], users => (
         users.push(action.userId)
       ));
-    
+
     case ROLE_UNASSIGN: {
       const userIdIndex = state.getIn(['map', action.roleId, 'users']).indexOf(action.userId);
 
@@ -64,9 +64,9 @@ function findEntries(state, userId) {
     const users = role.get('users');
     if (users !== undefined) {
       return users.indexOf(userId) !== -1;
-    } else {
-      return false;
     }
+
+    return false;
   });
 }
 
