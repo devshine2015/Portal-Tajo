@@ -7,6 +7,7 @@ import {
   USERS_MANAGER_PERMISSION_UNASSIGN,
   USERS_MANAGER_USER_UPDATED,
 } from '../actions/usersActions';
+import { SESSION_CLEAN } from 'services/Session/actions';
 
 const initialState = fromJS({
   usersList: new List(),
@@ -21,6 +22,9 @@ function findUserIndex(state, userId) {
 
 function reducer(state = initialState, action) {
   switch (action.type) {
+    case SESSION_CLEAN:
+      return initialState;
+
     case USERS_MANAGER_USERS_SET:
       return state.set('usersList', fromJS(action.users));
 

@@ -4,6 +4,7 @@ import {
   PERMISSION_CREATE,
   PERMISSION_DELETE,
 } from '../actions/permissionsActions';
+import { SESSION_CLEAN } from 'services/Session/actions';
 
 const initialState = fromJS({
   list: undefined,
@@ -13,6 +14,9 @@ const initialState = fromJS({
 
 function permissionsReducer(state = initialState, action) {
   switch (action.type) {
+    case SESSION_CLEAN:
+      return initialState;
+
     case PERMISSIONS_FETCH_SUCCESS:
       return state.withMutations(s => {
         s.set('list', fromJS(action.permsList))

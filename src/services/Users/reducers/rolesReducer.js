@@ -6,6 +6,7 @@ import {
   ROLE_ASSIGN,
   ROLE_UNASSIGN,
 } from '../actions/rolesActions';
+import { SESSION_CLEAN } from 'services/Session/actions';
 
 const initialState = fromJS({
   list: undefined,
@@ -15,6 +16,9 @@ const initialState = fromJS({
 
 function reducer(state = initialState, action) {
   switch (action.type) {
+    case SESSION_CLEAN:
+      return initialState;
+
     case ROLES_FETCH_SUCCESS:
       return state.withMutations(s => {
         s.set('list', fromJS(action.rolesList))
