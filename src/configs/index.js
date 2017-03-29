@@ -47,6 +47,10 @@ export const BASE_URL = ROOT_ROUTE === '/' ? '' : ROOT_ROUTE;
 // onLocal true only on localhost
 export const ENGINE_BASE = onLocal ? DEV_ENGINE_BASE : REMOTE_HOST_BASE;
 
+// TODO: this is to toggle alerts while in development
+// remove this when Alerts System done/released
+export let isAlerts = true;
+
 // TODO: this is runtime, defined after login; should be in some other place
 // TODO: now for dev/test hardcoded value
 // TODO: probably this should be undef initially - handle it properly?
@@ -62,16 +66,13 @@ export const checkSetMwa = (itIsMwa = undefined) => {
     } else if (typeof itIsMwa === 'boolean') {
       isMwa = itIsMwa;
     }
+    isAlerts = isMwa;
   }
 };
 
 export function checkSetMaritime(fleetName) {
   isMaritime = fleetName.indexOf('maritime') !== -1;
 }
-
-// TODO: this is to toggle alerts while in development
-// remove this when Alerts System done/released
-export const isAlerts = true;
 
 // TODO: quick fix - just doubled prev limit - need some proven number
 // TODO: currently using same for hisotry (24hvr) and reports (arbitrary time range)

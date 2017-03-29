@@ -4,6 +4,7 @@ import { rolesEnum } from 'configs/roles';
 import MenuItem from './components/ManuItem';
 import pageShape from 'containers/InnerPortal/PropTypes';
 import { translate } from 'utils/i18n';
+import { isAlerts } from 'configs';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './PropTypes';
@@ -26,6 +27,7 @@ const MainMenu = ({
     if (includes.length && includes.indexOf(lowercasedRole) === -1) return null;
     if (excludes.length && excludes.indexOf(lowercasedRole) !== -1) return null;
     if (page.name === 'users' && permissions.indexOf('view:users_manager') === -1) return null;
+    if (page.name === 'alerts_editor' && !isAlerts) return null;
 
     return (
       <MenuItem
