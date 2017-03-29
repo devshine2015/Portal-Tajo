@@ -1,9 +1,12 @@
+import R from 'ramda';
 import { auth0Api } from 'utils/api';
+import { auth } from 'utils/auth';
 import endpoints from 'configs/endpoints';
 import {
   assignRole,
   unassignRole,
 } from './rolesActions';
+import { getFleetName } from 'services/Session/reducer';
 
 export const USERS_MANAGER_USERS_SET = 'portal/UsersManager/USERS_MANAGER_USERS_SET';
 export const USERS_MANAGER_USER_CREATED = 'portal/UsersManager/USERS_MANAGER_USER_CREATED';
@@ -12,11 +15,23 @@ export const USERS_MANAGER_PERMISSION_ASSIGN = 'portal/UsersManager/USERS_MANAGE
 export const USERS_MANAGER_PERMISSION_UNASSIGN = 'portal/UsersManager/USERS_MANAGER_PERMISSION_UNASSIGN';
 export const USERS_MANAGER_USER_UPDATED = 'portal/UsersManager/USERS_MANAGER_USER_UPDATED';
 
-export const fetchUsers = () => dispatch => {
+const filterUsers = currentFleet => users => {
+  const allowedToSeeAllUsers = auth.authorizeWithRole('uber');
+
+  if (allowedToSeeAllUsers) return users;
+
+  return users.filter(user => (
+    user.user_metadata && (user.user_metadata.fleet === currentFleet)
+  ));
+};
+
+export const fetchUsers = () => (dispatch, getState) => {
   const { url, method, extName } = endpoints.getAllUsers;
+  const currentFleet = getFleetName(getState());
 
   return auth0Api[method](url, { extName })
     .then(toJson)
+    .then(filterUsers(currentFleet))
     .then(users => dispatch(_usersSet(users)));
 };
 
