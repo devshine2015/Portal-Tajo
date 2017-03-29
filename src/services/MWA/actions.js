@@ -42,10 +42,6 @@ const makeMWADate = inDate =>
   `${inDate.getFullYear()}${padZero(inDate.getMonth() + 1)}${padZero(inDate.getDate())}`;
 
 function _fetchJobs(dispatch, getState) {
-// return;
-  // const mwaData = JSON.parse(staticData);
-  // _addJobs(dispatch, getState, mwaData.RESULTS);
-  // return;
   const dateFrom = moment().subtract(1, 'days').toDate();
   const dateTo = moment().toDate();
 
@@ -219,37 +215,29 @@ function _addJobs(dispatch, getState, mwaJobs) {
   const carsJobs = {};
   const processedList = getProcessedVehicles(getState());
 
-  // const __dev__id = 'a04ea779-71f4-45df-b226-14a845a26084';
-
   mwaJobs.forEach(aJob => {
     if (!invalidJob(aJob)) {
       let ownerCarId = mapJobToCar(aJob.TEAM_ID);
       if (ownerCarId !== null) {
-        // ownerCarId = __dev__id;
-        // const imLocalVehicle = processedList.get(ownerCarId);
-        aJob.id = aJob.WLMA_JOB_CODE;
-        aJob.carName = aJob.WLMA_JOB_CODE;
-        aJob.vehicleId = ownerCarId;
-        jobs[aJob.WLMA_JOB_CODE] = aJob;
-        if (!(ownerCarId in carsJobs)) {
-          carsJobs[ownerCarId] = [aJob.id];
-        } else {
-          carsJobs[ownerCarId].push(aJob.id);
+        const imLocalVehicle = processedList.get(ownerCarId);
+        if (imLocalVehicle !== undefined) {
+          aJob.id = aJob.WLMA_JOB_CODE;
+          aJob.carName = aJob.WLMA_JOB_CODE;
+          aJob.vehicleId = ownerCarId;
+          jobs[aJob.WLMA_JOB_CODE] = aJob;
+          if (!(ownerCarId in carsJobs)) {
+            carsJobs[ownerCarId] = [aJob.id];
+          } else {
+            carsJobs[ownerCarId].push(aJob.id);
+          }
         }
       }
     }
   }
   );
   dispatch(_mwaJobs(jobs));
-  // dispatch(vehiclesActions._vehicleUpdate({
-  //   mwa: {
-  //     jobs: carsJobs[__dev__id],
-  //   },
-  // },
-  //   __dev__id));
-  // ------------------------------------------
   for (var property in carsJobs) {
-      if (carsJobs.hasOwnProperty(property)) {
+    if (carsJobs.hasOwnProperty(property)) {
         const vehId = property;
         dispatch(vehiclesActions._vehicleUpdate({
           mwa: {
