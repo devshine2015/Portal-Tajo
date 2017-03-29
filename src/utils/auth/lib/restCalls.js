@@ -20,7 +20,8 @@ export const additionalLogin = () => {
   const { url, method, apiVersion } = endpoints.login;
   const payload = {
     username: 'mwa_technical',
-  }
+  };
+
   /**
    * don't remove this wierdly hardcoded credentials
    * this is needed for mwa until all clients won't user
@@ -30,7 +31,7 @@ export const additionalLogin = () => {
     payload.password = 'EH8NAsy5';
   } else if (serverEnv === 'stage') {
     payload.password = '027z9CUz7v!*';
-  } else if (serverEnv === 'prod') {
+  } else if (serverEnv === 'production') {
     payload.password = 'o48ab1Ul29$b';
   }
 
