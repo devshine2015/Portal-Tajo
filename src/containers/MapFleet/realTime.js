@@ -6,9 +6,13 @@ import pure from 'recompose/pure';
 import MapVehicle from './components/MapVehicle';
 import { mapGFMarkerMaker } from './components/MapGF';
 import EditGF from './components/EditGF';
+import { mapMWAJobMarkerMaker } from './components/MWAJobMarker';
 import CustomControls from './components/CustomControls';
 
 import * as fromFleetReducer from 'services/FleetModel/reducer';
+
+import { isMwa } from 'configs';
+import { getMWAJobs } from 'services/MWA/reducer';
 
 import { createMapboxMap, hideLayer } from 'utils/mapBoxMap';
 import { contextMenuAddGFItems } from 'containers/GFEditor/utils';
@@ -120,6 +124,8 @@ class MapFleet extends React.Component {
         />
       );
 
+  makeMWAMarker = (v) => (mapMWAJobMarkerMaker(v, this.gfMarkersLayer, this.state.selectedVehicleId === v.vehicleId));
+
   render() {
     if (this.theMap === null) {
       return (<div className = {styles.mapContainer}>
@@ -148,6 +154,7 @@ class MapFleet extends React.Component {
         {this.props.gfs.map(this.makeGFMarker)}
         {this.props.vehicles.map(this.makeVehicleMarker)}
         {editGF}
+        {isMwa ? this.props.mwaJobs.map(this.makeMWAMarker) : null}
 
       </div>
     );
@@ -170,6 +177,7 @@ MapFleet.propTypes = {
   isHideGF: React.PropTypes.bool.isRequired,
   isHideVehicles: React.PropTypes.bool.isRequired,
   activeListType: React.PropTypes.string,
+  mwaJobs: React.PropTypes.array.isRequired,
 };
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesEx(state),
@@ -182,6 +190,7 @@ const mapState = (state) => ({
   isHideGF: ctxGetHideGF(state),
   isHideVehicles: ctxGetHideVehicles(state),
   activeListType: ctxGetPowListTabType(state),
+  mwaJobs: getMWAJobs(state),
 });
 const mapDispatch = {
   gfEditUpdate,

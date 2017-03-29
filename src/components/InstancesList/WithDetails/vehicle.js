@@ -6,12 +6,14 @@ import Divider from 'material-ui/Divider';
 import ItemProperty from '../DetailItemProperty';
 import Warn from './Warn';
 
-import { isEscape } from 'configs';
+import { isEscape, isMwa } from 'configs';
 import { vehicleShape } from 'services/FleetModel/PropTypes';
 
 import stylesBase from '../styles.css';
 import styles from './styles.css';
 import { vehicleDetailsShape } from '../PropTypes';
+import MwaIdicator from './mwaVehicleDetails';
+
 
 class ListItemVehicle extends React.Component {
 
@@ -108,7 +110,7 @@ class ListItemVehicle extends React.Component {
         </h1>
 
         { this.inActivityIndicator() }
-
+        {isMwa ? <MwaIdicator vehicle={vehicle} /> : null}
         <VelocityTransitionGroup
           enter={{ animation: 'slideDown', duration: 500 }}
           leave={{ animation: 'slideUp', duration: 350 }}

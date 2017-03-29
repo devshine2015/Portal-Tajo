@@ -17,6 +17,7 @@ import globalReducer from 'services/Global/reducer';
 import usersReducer from 'services/Users/reducer';
 import devicesReducer from 'services/Devices/reducer';
 import alertsSystemReducer from 'services/AlertsSystem/reducer';
+import mwaReducer from 'services/MWA/reducer';
 
 import { LOCATION_CHANGE } from 'react-router-redux';
 
@@ -52,6 +53,7 @@ export default function createReducer(asyncReducers) {
     mapView: mapViewReducer,
     devices: devicesReducer,
     alerts: alertsSystemReducer,
+    mwa: mwaReducer,
     ...asyncReducers,
   });
 }

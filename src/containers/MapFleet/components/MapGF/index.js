@@ -143,8 +143,6 @@ const PureMapGF = pure(MapGF);
 export const mapGFMarkerMaker = (v, gfLayer, onClick = () => {}, isSelected = false, isDetailView = false) => (
       <PureMapGF
         key={v.id}
-        isSelected={false}
-        isDetailViewActivated={false}
         theLayer={gfLayer}
         theGF={v}
         onClick={onClick}

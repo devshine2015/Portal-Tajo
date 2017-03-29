@@ -229,6 +229,12 @@ const endpoints = {
     method: 'post',
     apiVersion: 1.120,
   }),
+  // MWA
+  getMWAJobs: (params) => ({
+    url: `mwa/jobs/01?${qs.stringify(params)}`,
+    method: 'get',
+    apiVersion: 1.1,
+  }),
 };
 
 export default {

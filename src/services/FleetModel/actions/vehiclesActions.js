@@ -7,6 +7,8 @@ import {
 } from '../utils/vehicleHelpers';
 import { filterProcessedListByName } from '../utils/filtering';
 import { getProcessedVehicles } from '../reducer';
+import { mwaFetchJobs } from 'services/MWA/actions';
+import { isMwa } from 'configs';
 
 export const FLEET_MODEL_VEHICLES_SET = 'portal/services/FLEET_MODEL_VEHICLES_SET';
 export const FLEET_MODEL_VEHICLES_FILTER = 'portal/services/FLEET_MODEL_VEHICLES_FILTER';
@@ -45,6 +47,10 @@ export const fetchVehicles = () => dispatch => {
     const localObjects = makeLocalVehicles(vehicles, status);
 
     dispatch(_vehiclesSet(localObjects));
+  }).then(() => {
+    if (isMwa) {
+      dispatch(mwaFetchJobs());
+    }
   })
   .catch(e => {
     console.error(e);
@@ -146,7 +152,7 @@ const _vehiclesSet = ({
   orderedVehicles,
 });
 
-const _vehicleUpdate = (details, id) => ({
+export const _vehicleUpdate = (details, id) => ({
   type: FLEET_MODEL_VEHICLE_UPDATE,
   details,
   id,
