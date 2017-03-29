@@ -47,7 +47,7 @@ if [ ! -z $EXTRA_FOLDER ] ; then
 
 else
 
-  if [ $SERVER_ENV = "dev" ] ; then
+  if [ $SERVER_ENV = "prod" ] ; then
     echo "Creating backup copy of current runnnig version..."
     
     # 0. cd to public folder
