@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import JournalToggle from './JournalToggle';
 import Entry from './Entry';
 import * as journalState from 'containers/Journal/reducer';
+import { isAlerts } from 'configs';
 
 import styles from './styles.css';
 
@@ -12,10 +13,9 @@ const Journal = ({
   isOpened,
   entries,
 }) => {
-  // if (!isOpened) {
-  //   // return (<JournalToggle />);
-  //   return null;
-  // }
+  if (!isAlerts) {
+    return null;
+  }
   const entriesE = entries.map((entry, idx) => (
         <Entry entryObj={entry} key={idx} />
       ));
