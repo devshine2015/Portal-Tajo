@@ -4,10 +4,15 @@
     height: 100%;
     background-color: #898c89;
     display: flex;
- }
+  }
 
- .fixedContent {
-  padding: 0;
-  flex-direction: row;
- }
+  .fixedContent {
+    padding: 0;
+  }
+
+  .row {
+    flex-direction: row;
+    display: flex;
+    flex: 1;
+  }
 }

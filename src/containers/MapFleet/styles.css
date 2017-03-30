@@ -1,7 +1,5 @@
 @media screen and (min-width: 100px) {
   .mapContainer {
-    height: 100%;
-    width: 100%;
     flex-grow: 1;
   }
 
