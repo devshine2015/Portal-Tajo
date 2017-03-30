@@ -31,27 +31,6 @@ const Journal = ({
   );
 };
 
-// class Journal extends React.Component {
-//
-//   render() {
-//     if (!this.props.isOpened) {
-//       return null;
-//     }
-//     let idx = 0;
-//     const entries = this.props.entries.map(entry => (
-//           <Entry entryObj={entry} key={++idx} />
-//         ));
-//
-//     return (
-//       <div className={styles.journalContainer}>
-//       <ul >
-//         {entries}
-//       </ul>
-//       </div>
-//     );
-//   }
-// }
-
 Journal.propTypes = {
   isOpened: React.PropTypes.bool.isRequired,
   newCount: React.PropTypes.number.isRequired,
