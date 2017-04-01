@@ -25,6 +25,12 @@ export function msToDurtationLable(duration) {
   return `${makeStaticLableSVG(imageTimelapse)}<span style="float:right">${msToTimeIntervalString(duration)}</span>`;
 }
 
+export function metersToDistanceLable(meters) {
+  // Math.round((meters/1000) * 10) / 10
+  // Math.round((meters/100) ) / 10
+  // meters to km, rounding to 1 dec point
+  return `${makeStaticLableSVG(notificationTimeToLeave)}<span style="float:right">${Math.round(meters / 100) / 10}km</span>`;
+}
 
 export function speedToChronicleLable(speed) {
   return `${makeStaticLableSVG(notificationTimeToLeave)}<span style="float:right">${speed.toFixed(1)} km/h</span>`;
