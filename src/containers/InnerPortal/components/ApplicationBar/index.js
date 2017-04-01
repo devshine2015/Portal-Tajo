@@ -9,6 +9,8 @@ import endpoints from 'configs/endpoints';
 import CodebaseVersion from 'components/CodebaseVersion';
 import { changeMainSidebarState } from 'containers/InnerPortal/actions';
 import FleetSummary from 'containers/FleetSummary';
+// import JournalToggle from 'containers/Journal/components/JournalToggle';
+import JournalIndicatorBtn from 'containers/Journal/components/JournalIndicatorBtn';
 import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
@@ -35,7 +37,8 @@ function renderSummary(location) {
 
   return (
     <div className={styles.centerContainer}>
-      <FleetSummary simple />
+      {/*<FleetSummary simple />*/}
+      <JournalIndicatorBtn />
     </div>
   );
 }

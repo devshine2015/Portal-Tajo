@@ -23,7 +23,7 @@ import endpoints from 'configs/endpoints';
 import { api } from 'utils/api';
 import { makeLocalAlertCondition } from './alertConditionHelper';
 import { jrnAddEntries } from 'containers/Journal/actions';
-import { createJournalEntry } from 'containers/Journal/entryHelpers';
+import { createJournalEntry, createJournalEntryDbg } from 'containers/Journal/entryHelpers';
 import { getVehiclesExSorted } from 'services/FleetModel/reducer';
 
 import moment from 'moment';
@@ -101,7 +101,17 @@ function _postVehicleAlerConditions(vehicleId, alerts, dispatch) {
 const ALERTS_HISOTYR_FETCH_INTERVAL_MS = 1000 * 60;
 let fetchProcId = null;
 
+function _devGenerateDummyAlertsHistory(dispatch) {
+  const journalEntries = [];
+  for (let i = 0; i < 32; ++i) {
+    journalEntries.push(createJournalEntryDbg());
+  }
+  jrnAddEntries(journalEntries)(dispatch);
+}
+
 function _startFetching(dispatch, getState) {
+  _devGenerateDummyAlertsHistory(dispatch);
+  return;
   if (fetchProcId !== null) {
     return;
   }
