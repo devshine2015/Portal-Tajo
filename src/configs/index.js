@@ -66,6 +66,8 @@ export const checkSetMwa = (itIsMwa = undefined) => {
     } else if (typeof itIsMwa === 'boolean') {
       isMwa = itIsMwa;
     }
+
+    isMwa = true;
     isAlerts = isMwa;
   }
 };

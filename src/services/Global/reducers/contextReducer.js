@@ -25,6 +25,9 @@ const initialState = fromJS({
 
   // keep search value for vehicle across all screens
   vehicleFilterString: '',
+
+// TODO: this is quick hack for testing only - REMOVE
+  menuPageIdx: 1,
 });
 
 function contextReducer(state = initialState, action) {
@@ -43,6 +46,8 @@ function contextReducer(state = initialState, action) {
       return state.set('vehicleFilterString', action.searchString);
     case contextActions.CTX_ROUTE:
       return state.setIn(['route', 'toLatLng'], action.toLatLng);
+    case contextActions.CTX_MENU_PG_IDX:
+      return state.set('menuPageIdx', action.pageIdx);
     default:
       return state;
   }
@@ -67,6 +72,11 @@ export const ctxGetPowListTabType = state =>
   _ctxReducer(state).get('activeListType');
 export const ctxGetRouteToLatLng = state =>
   _ctxReducer(state).getIn(['route', 'toLatLng']);
+
+// TODO: this is quick hack for testing only
+export const ctxPageIdx = state =>
+  _ctxReducer(state).get('menuPageIdx');
+
 
 export const getVehicleFilterString = state =>
   state.get('vehicleFilterString');

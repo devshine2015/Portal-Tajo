@@ -10,6 +10,7 @@ import CodebaseVersion from 'components/CodebaseVersion';
 import { changeMainSidebarState } from 'containers/InnerPortal/actions';
 import FleetSummary from 'containers/FleetSummary';
 import { translate } from 'utils/i18n';
+import { ctxPageIdx } from 'services/Global/reducers/contextReducer';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './PropTypes';
@@ -49,6 +50,21 @@ function renderTitle(title) {
   );
 }
 
+function getColor(idx) {
+  const colors = [
+    '#3F51B5',
+    '#1976D2',
+    '#009688',
+    '#2E7D32',
+    '#FFA000',
+    '#FF5722',
+    '#795548',
+    '#795548',
+    '#607D8B',
+  ];
+  return colors[idx % colors.length];
+}
+
 const _onLogoutClick = cb => () => cb(endpoints.logout);
 
 const ApplicationBar = ({
@@ -56,6 +72,7 @@ const ApplicationBar = ({
   toggleSidebar,
   location,
   translations,
+  pageIdx,
 }, {
   logout,
 }) => (
@@ -73,6 +90,7 @@ const ApplicationBar = ({
       zDepth={0}
       onLeftIconButtonTouchTap={toggleSidebar}
       children={ renderSummary(location) }
+      style={{ backgroundColor: getColor(pageIdx), transition: 'all 1s' }}
     />
   </div>
 );
@@ -87,12 +105,15 @@ ApplicationBar.propTypes = {
   location: React.PropTypes.shape(locationShape).isRequired,
 
   translations: phrasesShape.isRequired,
+  pageIdx: React.PropTypes.func.isRequired,
 };
 ApplicationBar.defaultProps = {
   translations: phrases,
 };
 
-const mapState = null;
+const mapState = (state) => ({
+  pageIdx: ctxPageIdx(state),
+});
 const mapDispatch = {
   toggleSidebar: changeMainSidebarState,
 };

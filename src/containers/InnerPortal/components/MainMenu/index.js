@@ -20,7 +20,7 @@ const MainMenu = ({
   permissions,
 }) => {
   const lowercasedRole = role.toLowerCase();
-  const menuItems = pages.map(page => {
+  const menuItems = pages.map((page, idx) => {
     const includes = page.includeRoles || EMPTY_ARRAY;
     const excludes = page.excludeRoles || EMPTY_ARRAY;
 
@@ -35,6 +35,7 @@ const MainMenu = ({
         page={page}
         niceName={ translations[page.name] }
         closeSidebar={closeSidebar}
+        idx={idx}
       />
     );
   });
