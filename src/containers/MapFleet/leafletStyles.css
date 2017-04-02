@@ -78,4 +78,9 @@
       height: 65px;
       transform: none;*/
     }
+
+  :global(div.drvr-leaflet-div-icon) {
+      background-color: none;
+      border: none;
+    } 
 }

@@ -1,13 +1,15 @@
+//
+// TODO: animated marker in/out (groe with bounce?)
+//
 import React from 'react';
 import pure from 'recompose/pure';
 import { getVehicleByValue } from 'services/FleetModel/utils/vehiclesMap';
 import { hideLayer, latLngMoveTo } from 'utils/mapBoxMap';
-import styles from './../styles.css';
 import { createPointerLine, showPointerLine } from './../../utils/pointerLineHelpers';
 import { isMaritime } from 'configs';
-// const iconPin = require('assets/images/v_icons_combi/pin.png');
-const iconPin = require('assets/images/v_icons_combi/pointer.png');
-// const iconPin = require('assets/images/v_icons_combi/pointerRightTilt.png');
+// const shadow = require('assets/images/v_icons_combi/shadow.png');
+
+require('containers/MapFleet/leafletStyles.css');
 
 class MapVehicle extends React.Component {
   constructor(props) {
@@ -19,6 +21,10 @@ class MapVehicle extends React.Component {
     this.popUp = null;
     this.pointerLine = null;
     this.theDirectionLine = null;
+    this.iconElement = null;
+    this.iconHeadContainerElement = null;
+    this.iconHeadFrameElement = null;
+    this.iconPointerElement = null;
   }
 
   componentDidMount() {
@@ -27,6 +33,8 @@ class MapVehicle extends React.Component {
     this.setPosition(this.props.theVehicle.pos);
     this.toggle(!this.props.theVehicle.filteredOut);
     this.expand(this.props.isSelected);
+
+    // hideLayer(this.theLayer, window.L.marker(this.props.theVehicle.pos), false);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -46,41 +54,57 @@ class MapVehicle extends React.Component {
     }
   }
   createMarker() {
-    // const iconH = 240 / 2;
-    // const iconW = 80 / 2;
-    // const iconSz = 32;
-
     const iScale = 0.25;
     const headSz = 152 * iScale;
-    const pinW = 56 * iScale;
-    const pinH = 119 * iScale;
-    const pinAnchorW = pinW / 2;
-    const pinAnchorH = 95 * iScale;
-    const headAnchorW = headSz / 2;
-    const headAnchorH = headSz + pinAnchorH * 0.75;
-    // const pinW = 112 * iScale;
-    // const pinH = 119 * iScale;
-    // const pinAnchorW = 38 * iScale;
-    // const pinAnchorH = 95 * iScale;
-    // const headAnchorW = pinW - headSz * 0.75;
-    // const headAnchorH = headSz + pinAnchorH * 0.65;
+
+    this.pointerIdleSzH = 7;
+    this.pointerActiveSzH = 30;
+    const pointerSzW = 14;
 
     const iconImg = getVehicleByValue(this.props.theVehicle.original.kind).pic;
 
-    this.markerIcon = window.L.icon({
-      iconUrl: iconImg,
-      iconSize: [headSz, headSz],
-      iconAnchor: [headSz / 2, headSz / 2],
+    const anim = 'all .5s';// cubic-bezier(0.470, -0.310, 0.000, 1.000)';
+    const headContainerStyle = `width: ${headSz}px; 
+      height: ${headSz}px; 
+      position: relative;
+      bottom: 20px;
+      transition: ${anim};`;
+    const headFrameStyle = `width: ${headSz}px; 
+      height: ${headSz}px; 
+      border-radius: 50%; 
+      border: 3px solid orange;
+      position: absolute;
+      bottom: 0px;
+      transition: ${anim};`;
+    const pointerContainer = `width:${pointerSzW}px;
+      height:${this.pointerActiveSzH}px;
+      position: absolute;
+      left: ${headSz / 2 - pointerSzW / 2}px; 
+      pointer-events: none;`;
+    const pointerPointer = `border-left: ${pointerSzW / 2}px solid transparent;
+      border-right: ${pointerSzW / 2}px solid transparent;
+      border-top: ${this.pointerIdleSzH}px solid orange;
+      position: relative;
+      bottom: 0px;
+      transform: none;
+      background: none;
+      pointer-events: none;
+      transition: ${anim};`;
+
+    this.markerIcon = window.L.divIcon({
+      className: 'drvr-leaflet-div-icon',
+      iconAnchor: [headSz / 2, headSz + this.pointerIdleSzH],
+      html: `<div>
+          <div style="${headContainerStyle}">
+            <img src="${iconImg}" height="${headSz}" width="${headSz}">
+            <div style="${headFrameStyle}"></div>
+          </div> 
+          <div style="${pointerContainer}">
+            <div style="${pointerPointer}"></div>
+          </div>
+        </div>`,
     });
-    this.markerIconSelected = window.L.icon({
-      iconUrl: iconImg,
-      iconSize: [headSz, headSz],
-      iconAnchor: [headAnchorW, headAnchorH],
-      shadowUrl: iconPin,
-      shadowSize: [pinW, pinH],
-      shadowAnchor: [pinAnchorW, pinAnchorH],
-      className: styles.animatedS,
-    });
+
     this.theMarker = window.L.marker(this.props.theVehicle.pos,
       { title: this.props.theVehicle.original.name,
         icon: this.markerIcon,
@@ -105,11 +129,17 @@ class MapVehicle extends React.Component {
         })
         : null;
 
-    const clickHandle = ((inThis) => (e) => {
-      inThis.props.onClick(inThis.props.theVehicle.id);
-//      console.log('MARKER clicked ' + inThis.props.theVehicle.id);
-    })(this);
-    this.theMarker.on('click', clickHandle);
+    this.theMarker.on('click', () => {
+      this.props.onClick(this.props.theVehicle.id);
+    });
+
+    this.theMarker.on('add', (e) => {
+      this.iconElement = e.target._icon;
+      this.iconHeadContainerElement = this.iconElement.children[0].children[0];
+      this.iconHeadFrameElement = this.iconElement.children[0].children[0].children[1];
+      this.iconPointerElement = this.iconElement.children[0].children[1].children[0];
+    });
+
     this.popUp = window.L.popup({
 //        offset: [0, -this.iconSize*1.85],
 //          className: 'ddsMapPopUp',
@@ -121,24 +151,35 @@ class MapVehicle extends React.Component {
       zoomAnimation: true,
     }).setContent(this.props.theVehicle.original.name);
 
-    // this.theMarker.bindPopup(this.popUp);
-    // const hoverHandle = ((inThis) => (e) => {
-    //   inThis.theMarker.openPopup();
-    // })(this);
-    // this.theMarker.on('mouseover', hoverHandle);
-    // // this.theMarker.on('mouseout', (e) => {
-    // // });
     this.pointerLine = createPointerLine(this.props.theVehicle.pos,
-      [headAnchorW, headAnchorH - headSz / 2]);
+      [headSz / 2, this.pointerActiveSzH + headSz / 2]);
     this.theLayer.addLayer(this.pointerLine);
     showPointerLine(this.pointerLine, false);
   }
+
   toggle(doShow) {
     hideLayer(this.theLayer, this.theMarker, !doShow);
   }
+
   expand(doExpand) {
+    const tipOffset = 2;
+// #2969c3 -
+// #3388ff - light blue
+    const color = doExpand ? '#e64a19' : '#2969c3';
+
+    this.iconHeadContainerElement.style.bottom = doExpand ? '20px' : '0px';
+    this.iconHeadFrameElement.style.borderColor = color;
+
+    this.iconPointerElement.style.borderTopWidth = doExpand ?
+          `${this.pointerActiveSzH - tipOffset}px` : `${this.pointerIdleSzH}px`;
+    this.iconPointerElement.style.borderTopColor = color;
+    this.iconPointerElement.style.bottom = doExpand ?
+          `${this.pointerActiveSzH - this.pointerIdleSzH}px`
+          : `${tipOffset}px`;
+
+    this.theMarker.setZIndexOffset(doExpand ? 2000 : 0);
+
     if (doExpand) {
-      this.theMarker.setIcon(this.markerIconSelected).setZIndexOffset(20000);
       if (this.theMoveCircle !== null) {
         const radius = this.props.theVehicle.estimatedTravelKm * 1000;
         // no display estimated move circle if distance is too small
@@ -154,7 +195,6 @@ class MapVehicle extends React.Component {
             this.props.theVehicle.estimatedTravelKm)]);
       }
     } else {
-      this.theMarker.setIcon(this.markerIcon).setZIndexOffset(0);
       hideLayer(this.theLayer, this.theMoveCircle, true);
       hideLayer(this.theLayer, this.theDirectionLine, true);
     }
@@ -180,6 +220,5 @@ MapVehicle.propTypes = {
   isSelected: React.PropTypes.bool.isRequired,
   isDetailViewActivated: React.PropTypes.bool.isRequired,
 };
-const PureMapVehicle = pure(MapVehicle);
 
-export default PureMapVehicle;
+export default pure(MapVehicle);
