@@ -6,6 +6,7 @@ import { hideLayer } from 'utils/mapBoxMap';
 import directions from 'utils/mapServices/google/directions';
 import { metersToDistanceLable, msToDurtationLable } from 'containers/Chronicle/utils/strings';
 import { showSnackbar } from 'containers/Snackbar/actions';
+import { AntPath } from 'leaflet-ant-path';
 
 require('containers/MapFleet/leafletStyles.css');
 // import styles from './../styles.css';
@@ -21,8 +22,6 @@ class MapRoute extends React.Component {
       fromLatLng: [],
       toLatLng: [],
     };
-
-    // this.createPath();
   }
   componentDidMount() {
   }
@@ -37,7 +36,7 @@ class MapRoute extends React.Component {
     this.updateToMarker();
 
     if (this.thePath === null) {
-      this.thePath = window.L.polyline(latLngArray);
+      this.createPath(latLngArray);
     } else {
       this.thePath.setLatLngs(latLngArray);
     }
@@ -49,11 +48,7 @@ class MapRoute extends React.Component {
     const popUpSpot = this.props.getRouteToLatLng;
 
     this.thePath.bindPopup(`${msToDurtationLable(durationMS)}<br>${metersToDistanceLable(distnaceM)}`,
-      // '<i class="muidocs-icon-action-home" style="font-size:32px">access_time</i>',
-    // dateToChronicleString(this.props.chronicleEvent.date),
       {
-        // offset: [25, -20],
-//              className: 'ddsMapHistorySecondaryPopup',
         closeButton: false,
         closeOnClick: false,
         autoPan: false,
@@ -63,10 +58,27 @@ class MapRoute extends React.Component {
       .openPopup(popUpSpot);
   }
 
+  createPath = (latLngArray) => {
+//      #3388ff
+    this.thePath = new AntPath(latLngArray, {
+        // color: '#2969c3',
+        // color: '#3388ff',
+      color: '',
+      weight: 5,
+      dashArray: '1,11',
+        // paused: true,
+        // pulseColor: '#3388ff',
+      pulseColor: '#2969c3',
+        // pulseOpacity: 0.5,
+      opacity: 1,
+    });
+    // this.thePath = window.L.polyline(latLngArray);
+  }
+
   updateToMarker = () => {
     if (this.toSpotMarker === null) {
-      const toMarkerColor = '#3388ff';
-      const markerR = 2;
+      const toMarkerColor = '#2969c3'; // '#3388ff';
+      const markerR = 4;
       this.toSpotMarker = window.L.circleMarker(this.props.getRouteToLatLng,
         { opacity: 1,
           fillOpacity: 1,
@@ -97,32 +109,8 @@ class MapRoute extends React.Component {
     directions(this.props.refVehicle.pos, this.props.getRouteToLatLng, this.setPath, this.noHaveRoute);
   }
 
-  highlight(doHighlight) {
-    if (this.thePath === null) {
-      return;
-    }
-// TODO: colors from theme
-    if (doHighlight) {
-      this.thePath.setStyle({
-        color: '#e64a19',
-        weight: 3,
-        opacity: 0.85,
-      });
-      this.thePath.bringToFront();
-// zoom the map to the PATH
-//      this.containerLayer.fitBounds(this.thePath.getBounds());
-    } else {
-      this.thePath.setStyle({
-        color: '#0A5',
-        weight: 2,
-        opacity: 0.75,
-      });
-//    this.thePath.bringToBack();
-    }
-  }
   render() {
     this.directionsDo();
-    // this.highlight(this.props.isSelected);
     return false;
   }
 }
