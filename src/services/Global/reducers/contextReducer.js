@@ -12,6 +12,10 @@ const initialState = fromJS({
     center: ZERO_LOCATION,
     zoom: ZERO_ZOOM,
   },
+  route: {
+    fromLatLng: [],
+    toLatLng: [],
+  },
   selectedVehicleId: '',
   selectedGFId: '',
   hideGF: false,
@@ -37,7 +41,8 @@ function contextReducer(state = initialState, action) {
 
     case vehiclesActions.FLEET_MODEL_VEHICLES_FILTER:
       return state.set('vehicleFilterString', action.searchString);
-
+    case contextActions.CTX_ROUTE:
+      return state.setIn(['route', 'toLatLng'], action.toLatLng);
     default:
       return state;
   }
@@ -60,6 +65,8 @@ export const ctxGetHideVehicles = state =>
   _ctxReducer(state).get('hideVehicles');
 export const ctxGetPowListTabType = state =>
   _ctxReducer(state).get('activeListType');
+export const ctxGetRouteToLatLng = state =>
+  _ctxReducer(state).getIn(['route', 'toLatLng']);
 
 export const getVehicleFilterString = state =>
   state.get('vehicleFilterString');

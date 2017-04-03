@@ -6,7 +6,7 @@ import { generateInnerHTMLForHistoryMoment } from 'containers/Chronicle/utils/st
 import { getNormalized100T } from 'containers/Chronicle/reducer';
 // import { translate } from 'utils/i18n';
 
-require('./styles.css');
+require('containers/MapFleet/leafletStyles.css');
 // import phrases, { phrasesShape } from './PropTypes';
 
 
@@ -29,6 +29,7 @@ class ChronicleMarker extends React.Component {
   }
 
   createMarkers() {
+    const vehicleMArkerColor = '#3388ff'; //'#2c3e50'
     const markerR = 5;
     const startPos = window.L.latLng(0, 0);
     this.theMarkerSecondary = window.L.circleMarker(startPos,
@@ -41,8 +42,8 @@ class ChronicleMarker extends React.Component {
     this.theMarker = window.L.circleMarker(startPos,
       { opacity: 1,
         fillOpacity: 1,
-        color: '#2c3e50',
-        fillColor: '#2c3e50',
+        color: vehicleMArkerColor,
+        fillColor: vehicleMArkerColor,
         // color: '#e64a19',
         // fillColor: '#e64a19',
        })

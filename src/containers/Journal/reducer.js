@@ -40,5 +40,8 @@ export const jrnNewCount = state =>
   _journalReducer(state).get('newEntriesCount');
 export const jrnGetEntries = (state) => {
   const theList = _journalReducer(state).get('entries');
-  return theList;// .toJS();
+  if (theList.constructor === Array) {
+    return theList;
+  }
+  return [];
 };

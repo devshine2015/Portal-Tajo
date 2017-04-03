@@ -8,8 +8,10 @@ import { mapGFMarkerMaker } from './components/MapGF';
 import EditGF from './components/EditGF';
 import { mapMWAJobMarkerMaker } from './components/MWAJobMarker';
 import CustomControls from './components/CustomControls';
+import MapRoute from './components/MapRoute';
 
 import * as fromFleetReducer from 'services/FleetModel/reducer';
+import { getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
 
 import { isMwa } from 'configs';
 import { getMWAJobs } from 'services/MWA/reducer';
@@ -23,6 +25,8 @@ import { mapStoreSetView, mapStoreGetView } from './reducerAction';
 import { ctxGetHideGF,
         ctxGetHideVehicles,
         ctxGetPowListTabType } from 'services/Global/reducers/contextReducer';
+import { mapRoute } from 'services/Global/actions/contextActions';
+
 
 import { gfEditUpdate } from 'containers/GFEditor/actions';
 import { gfEditIsEditing } from 'containers/GFEditor/reducer';
@@ -82,7 +86,7 @@ class MapFleet extends React.Component {
     }
     this.theMap = createMapboxMap(ReactDOM.findDOMNode(this),
       this.props.mapStoreGetView,
-      contextMenuAddGFItems(this.props.gfEditUpdate)
+      contextMenuAddGFItems(this.props.gfEditUpdate, this.props.mapRoute)
     );
   }
 
@@ -145,6 +149,10 @@ class MapFleet extends React.Component {
        key="gfEditHelper"
        theMap={this.theMap}
      />);
+// ROUTING dev test helpers
+    const v = getVehicleById(this.state.selectedVehicleId, this.props.vehicles);
+    const selectedVehicle = v !== undefined ? v.vehicle : null;
+// ROUTING dev helpers
 
     return (
       <div className={styles.mapContainer}>
@@ -155,7 +163,7 @@ class MapFleet extends React.Component {
         {this.props.vehicles.map(this.makeVehicleMarker)}
         {editGF}
         {isMwa ? this.props.mwaJobs.map(this.makeMWAMarker) : null}
-
+        <MapRoute refVehicle={selectedVehicle} isSelected theLayer={this.vehicleMarkersLayer} />
       </div>
     );
   }
@@ -178,6 +186,7 @@ MapFleet.propTypes = {
   isHideVehicles: React.PropTypes.bool.isRequired,
   activeListType: React.PropTypes.string,
   mwaJobs: React.PropTypes.array.isRequired,
+  mapRoute: React.PropTypes.func.isRequired,
 };
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesEx(state),
@@ -195,5 +204,6 @@ const mapState = (state) => ({
 const mapDispatch = {
   gfEditUpdate,
   mapStoreSetView,
+  mapRoute,
 };
 export default connect(mapState, mapDispatch)(PureMapFleet);

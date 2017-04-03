@@ -1,8 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
-import { getVehicleByValue } from 'services/FleetModel/utils/vehiclesMap';
 import { hideLayer } from 'utils/mapBoxMap';
-import styles from './../styles.css';
+require('containers/MapFleet/leafletStyles.css');
 
 class MWAJobMarker extends React.Component {
   constructor(props) {
@@ -20,21 +19,6 @@ class MWAJobMarker extends React.Component {
 
   setPosition() {
     this.theMarker.setLatLng(this.latLngFromJob());
-  }
-  createMarker() {
-    if (this.theMarker === null) {
-      this.theMarker = window.L.marker(this.latLngFromJob(),
-        {
-            //   title: this.props.theMWAJob.WLMA_JOB_CODE,
-          title: this.props.theMWAJob.carName,
-          riseOnHover: true,
-        });
-      this.theMarker.setZIndexOffset(2000);
-      this.setSelected(false);
-    } else {
-      this.setPosition();
-    }
-    hideLayer(this.props.theLayer, this.theMarker, false);
   }
   toggle(doShow) {
     hideLayer(this.theLayer, this.theMarker, !doShow);
@@ -55,13 +39,13 @@ class MWAJobMarker extends React.Component {
   transform: rotate(45deg);
   border: 1px solid #FFFFFF`;
 
-const icon = window.L.divIcon({
-  // className,
-  iconAnchor: [0, 24],
-  labelAnchor: [-6, 0],
-  popupAnchor: [0, -36],
-  html: `<span style="${markerHtmlStyles}" />`
-})
+    const icon = window.L.divIcon({
+      className: 'drvr-leaflet-div-icon',
+      iconAnchor: [0, 24],
+      labelAnchor: [-6, 0],
+      popupAnchor: [0, -36],
+      html: `<span style="${markerHtmlStyles}" />`
+    });
     this.theMarker.setIcon(
       icon,
         // // window.L.Icon.Default()
@@ -69,13 +53,29 @@ const icon = window.L.divIcon({
         //   'marker-color': isSelected ? 'red' : 'green',
         // })
     );
-    if(isSelected)
+    if (isSelected) {
       this.theMarker.setZIndexOffset(2000);
-      // this.theMarker.bringToFront();
-    else
+    } else {
       this.theMarker.setZIndexOffset(1000);
-            // this.theMarker.bringToBack();
+    }
   }
+
+  createMarker() {
+    if (this.theMarker === null) {
+      this.theMarker = window.L.marker(this.latLngFromJob(),
+        {
+            //   title: this.props.theMWAJob.WLMA_JOB_CODE,
+          title: this.props.theMWAJob.carName,
+          riseOnHover: true,
+        });
+      this.theMarker.setZIndexOffset(2000);
+      this.setSelected(false);
+    } else {
+      this.setPosition();
+    }
+    hideLayer(this.props.theLayer, this.theMarker, false);
+  }
+
   latLngFromJob = () => (
       window.L.latLng(parseFloat(this.props.theMWAJob.X), parseFloat(this.props.theMWAJob.Y))
   );

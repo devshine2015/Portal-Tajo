@@ -160,7 +160,8 @@ function _fetchJobsNotWorking(dispatch, getState) {
 const invalidJob = (aJob) => (
   aJob.X === null
   || aJob.Y === null
-  || (aJob.JOB_STATUS_CODE !== 'J02'
+  || (aJob.JOB_STATUS_CODE !== 'J01'
+    && aJob.JOB_STATUS_CODE !== 'J02'
     && aJob.JOB_STATUS_CODE !== 'J03')
   );
 
