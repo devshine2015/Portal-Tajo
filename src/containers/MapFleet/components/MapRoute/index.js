@@ -1,7 +1,6 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import { ctxGetRouteToLatLng } from 'services/Global/reducers/contextReducer';
 import { hideLayer } from 'utils/mapBoxMap';
 import directions from 'utils/mapServices/google/directions';
 import { metersToDistanceLable, msToDurtationLable } from 'containers/Chronicle/utils/strings';
@@ -9,8 +8,6 @@ import { showSnackbar } from 'containers/Snackbar/actions';
 import { AntPath } from 'leaflet-ant-path';
 
 require('containers/MapFleet/leafletStyles.css');
-// import styles from './../styles.css';
-
 
 class MapRoute extends React.Component {
   constructor(props) {
@@ -18,21 +15,17 @@ class MapRoute extends React.Component {
     this.containerLayer = this.props.theLayer;
     this.thePath = null;
     this.toSpotMarker = null;
-    this.state = {
-      fromLatLng: [],
-      toLatLng: [],
-    };
   }
   componentDidMount() {
   }
   shouldComponentUpdate(nextProps) {
-    return this.props.getRouteToLatLng[0] !== nextProps.getRouteToLatLng[0];
+    return this.props.routeToLatLng[0] !== nextProps.routeToLatLng[0];
   }
   componentWillUnmount() {
     hideLayer(this.containerLayer, this.thePath, true);
   }
 
-  setPath = (latLngArray, durationMS, distnaceM) => {
+  setPath = (latLngArray, durationMS, distanceM) => {
     this.updateToMarker();
 
     if (this.thePath === null) {
@@ -45,9 +38,9 @@ class MapRoute extends React.Component {
     // find the top point to set popup to
     // let popUpSpot = latLngArray[0];
     // latLngArray.forEach(latLng => {if (latLng.lat > popUpSpot.lat) popUpSpot = latLng;});
-    const popUpSpot = this.props.getRouteToLatLng;
+    const popUpSpot = this.props.routeToLatLng;
 
-    this.thePath.bindPopup(`${msToDurtationLable(durationMS)}<br>${metersToDistanceLable(distnaceM)}`,
+    this.thePath.bindPopup(`${msToDurtationLable(durationMS)}<br>${metersToDistanceLable(distanceM)}`,
       {
         closeButton: false,
         closeOnClick: false,
@@ -79,7 +72,7 @@ class MapRoute extends React.Component {
     if (this.toSpotMarker === null) {
       const toMarkerColor = '#2969c3'; // '#3388ff';
       const markerR = 4;
-      this.toSpotMarker = window.L.circleMarker(this.props.getRouteToLatLng,
+      this.toSpotMarker = window.L.circleMarker(this.props.routeToLatLng,
         { opacity: 1,
           fillOpacity: 1,
           color: toMarkerColor,
@@ -88,7 +81,7 @@ class MapRoute extends React.Component {
         .setRadius(markerR);
       hideLayer(this.containerLayer, this.toSpotMarker, false);
     } else {
-      this.toSpotMarker.setLatLng(this.props.getRouteToLatLng);
+      this.toSpotMarker.setLatLng(this.props.routeToLatLng);
     }
   }
 
@@ -99,14 +92,14 @@ class MapRoute extends React.Component {
   }
 
   directionsDo = () => {
-    if (this.props.getRouteToLatLng.length !== 2) {
+    if (this.props.routeToLatLng.length !== 2) {
       return;
     }
-    if (this.props.refVehicle === undefined) {
+    if (this.props.routeFromLatLng.length !== 2) {
       this.props.showSnackbar('Select vehicle first', 5000);
       return;
     }
-    directions(this.props.refVehicle.pos, this.props.getRouteToLatLng, this.setPath, this.noHaveRoute);
+    directions(this.props.routeFromLatLng, this.props.routeToLatLng, this.setPath, this.noHaveRoute);
   }
 
   render() {
@@ -117,13 +110,11 @@ class MapRoute extends React.Component {
 
 MapRoute.propTypes = {
   theLayer: React.PropTypes.object.isRequired,
-  isSelected: React.PropTypes.bool.isRequired,
-  getRouteToLatLng: React.PropTypes.array.isRequired,
-  refVehicle: React.PropTypes.obj,
+  routeToLatLng: React.PropTypes.array.isRequired,
+  routeFromLatLng: React.PropTypes.array.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,
 };
-const mapState = (state) => ({
-  getRouteToLatLng: ctxGetRouteToLatLng(state),
+const mapState = () => ({
 });
 const mapDispatch = {
   showSnackbar,

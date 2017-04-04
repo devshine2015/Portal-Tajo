@@ -1,9 +1,7 @@
-import React from 'react';
-
 const googleMapsAPI = require('google-maps-api')('AIzaSyA-97-nJq7i1hy46cjHJSeOwkKgBdv08aI',
       ['directions']);
 
-const directions = (from, to, havePathCallBack, noHavePathCallBack) => {
+const directions = (from, to, havePathCallback, noHavePathCallback) => {
   googleMapsAPI().then(maps => {
     const directionsService = new maps.DirectionsService();
     directionsService.route(
@@ -21,14 +19,15 @@ const directions = (from, to, havePathCallBack, noHavePathCallBack) => {
       },
         (dirResult, dirStatus) => {
           if (dirStatus !== 'OK') {
-            noHavePathCallBack();
+            noHavePathCallback();
             return;
           }
           // convert google points to mapbox (is it needed?)
-          const latLngArray = [];
-          dirResult.routes[0].overview_path.forEach(aPoint => {latLngArray.push({ lat: aPoint.lat(), lng: aPoint.lng() });});
+          const latLngArray = dirResult.routes[0].overview_path.map(
+              aPoint => ({ lat: aPoint.lat(), lng: aPoint.lng() })
+          );
 
-          havePathCallBack(latLngArray,
+          havePathCallback(latLngArray,
             dirResult.routes[0].legs[0].duration.value * 1000,  // this is seconds, we need MS
             dirResult.routes[0].legs[0].distance.value);
         }

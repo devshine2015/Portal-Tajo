@@ -12,10 +12,6 @@ const initialState = fromJS({
     center: ZERO_LOCATION,
     zoom: ZERO_ZOOM,
   },
-  route: {
-    fromLatLng: [],
-    toLatLng: [],
-  },
   selectedVehicleId: '',
   selectedGFId: '',
   hideGF: false,
@@ -25,6 +21,12 @@ const initialState = fromJS({
 
   // keep search value for vehicle across all screens
   vehicleFilterString: '',
+
+   route: {
+    fromLatLng: [],
+    toLatLng: [],
+  },
+  nearestRefLatLng: [],
 });
 
 function contextReducer(state = initialState, action) {
@@ -43,6 +45,8 @@ function contextReducer(state = initialState, action) {
       return state.set('vehicleFilterString', action.searchString);
     case contextActions.CTX_ROUTE:
       return state.setIn(['route', 'toLatLng'], action.toLatLng);
+    case contextActions.CTX_NEAREST:
+      return state.set('nearestRefLatLng', action.refLatLng);
     default:
       return state;
   }
@@ -67,6 +71,8 @@ export const ctxGetPowListTabType = state =>
   _ctxReducer(state).get('activeListType');
 export const ctxGetRouteToLatLng = state =>
   _ctxReducer(state).getIn(['route', 'toLatLng']);
+export const ctxGetNearestRefLatLng = state =>
+  _ctxReducer(state).get('nearestRefLatLng');
 
 export const getVehicleFilterString = state =>
   state.get('vehicleFilterString');

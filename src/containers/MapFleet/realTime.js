@@ -9,6 +9,7 @@ import EditGF from './components/EditGF';
 import { mapMWAJobMarkerMaker } from './components/MWAJobMarker';
 import CustomControls from './components/CustomControls';
 import MapRoute from './components/MapRoute';
+import MapNearest from './components/MapNearest';
 
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
@@ -16,16 +17,18 @@ import { getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
 import { isMwa } from 'configs';
 import { getMWAJobs } from 'services/MWA/reducer';
 
-import { createMapboxMap, hideLayer } from 'utils/mapBoxMap';
 import { contextMenuAddGFItems } from 'containers/GFEditor/utils';
+import { createMapboxMap, hideLayer } from 'utils/mapBoxMap';
+import directions from 'utils/mapServices/google/directions';
 
 // TODO: remove; this must be in the global/contextReducer
 import { mapStoreSetView, mapStoreGetView } from './reducerAction';
 // TODO: remove over
 import { ctxGetHideGF,
         ctxGetHideVehicles,
+        ctxGetRouteToLatLng,
         ctxGetPowListTabType } from 'services/Global/reducers/contextReducer';
-import { mapRoute } from 'services/Global/actions/contextActions';
+import { mapRoute, nearestRef } from 'services/Global/actions/contextActions';
 
 
 import { gfEditUpdate } from 'containers/GFEditor/actions';
@@ -86,8 +89,16 @@ class MapFleet extends React.Component {
     }
     this.theMap = createMapboxMap(ReactDOM.findDOMNode(this),
       this.props.mapStoreGetView,
-      contextMenuAddGFItems(this.props.gfEditUpdate, this.props.mapRoute)
+      contextMenuAddGFItems(this.props.gfEditUpdate, this.props.mapRoute, this.props.nearestRef)
     );
+  }
+
+  routeToPoint = (toLatLng) => {
+// ROUTING dev test helpers
+    const v = getVehicleById(this.state.selectedVehicleId, this.props.vehicles);
+    const selectedVehicle = (v !== undefined && v.vehicle !== undefined) ? v.vehicle : null;
+// ROUTING dev helpers
+    directions(selectedVehicle.pos, toLatLng, this.setPath, this.noHaveRoute);
   }
 
 // when selected from the list
@@ -151,7 +162,7 @@ class MapFleet extends React.Component {
      />);
 // ROUTING dev test helpers
     const v = getVehicleById(this.state.selectedVehicleId, this.props.vehicles);
-    const selectedVehicle = v !== undefined ? v.vehicle : null;
+    const selectedVehicle = (v !== undefined && v.vehicle !== undefined) ? v.vehicle : { pos: [] };
 // ROUTING dev helpers
 
     return (
@@ -163,7 +174,12 @@ class MapFleet extends React.Component {
         {this.props.vehicles.map(this.makeVehicleMarker)}
         {editGF}
         {isMwa ? this.props.mwaJobs.map(this.makeMWAMarker) : null}
-        <MapRoute refVehicle={selectedVehicle} isSelected theLayer={this.vehicleMarkersLayer} />
+        <MapRoute
+          theLayer={this.vehicleMarkersLayer}
+          routeFromLatLng={selectedVehicle.pos}
+          routeToLatLng={this.props.getRouteToLatLng}
+    />
+        <MapNearest isSelected theLayer={this.vehicleMarkersLayer} selectVehicle={selectForMe(this, mapEvents.MAP_VEHICLE_SELECTED)} />
       </div>
     );
   }
@@ -187,6 +203,8 @@ MapFleet.propTypes = {
   activeListType: React.PropTypes.string,
   mwaJobs: React.PropTypes.array.isRequired,
   mapRoute: React.PropTypes.func.isRequired,
+  nearestRef: React.PropTypes.func.isRequired,
+  getRouteToLatLng: React.PropTypes.array.isRequired,
 };
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesEx(state),
@@ -200,10 +218,12 @@ const mapState = (state) => ({
   isHideVehicles: ctxGetHideVehicles(state),
   activeListType: ctxGetPowListTabType(state),
   mwaJobs: getMWAJobs(state),
+  getRouteToLatLng: ctxGetRouteToLatLng(state),
 });
 const mapDispatch = {
   gfEditUpdate,
   mapStoreSetView,
   mapRoute,
+  nearestRef,
 };
 export default connect(mapState, mapDispatch)(PureMapFleet);
