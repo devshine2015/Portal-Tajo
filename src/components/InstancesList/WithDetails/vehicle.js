@@ -39,7 +39,15 @@ class ListItemVehicle extends React.Component {
     if (!this.props.isExpanded) return null;
 
     const speed = `${this.props.vehicle.speed.toFixed(1)} ${this.props.translations.speed_km_h}`;
+    const jobsCount = this.props.vehicle.mwa === undefined ? 0 :
+        (this.props.vehicle.mwa.jobs === undefined ? 0 :
+            this.props.vehicle.mwa.jobs.length);  
+    const n_a = 'N/A';
 
+    const license = this.props.vehicle.original !== undefined 
+        && this.props.vehicle.original.licensePlate !== undefined ?
+          this.props.vehicle.original.licensePlate
+          : n_a;
     return (
       <div>
         <Divider />
@@ -47,6 +55,42 @@ class ListItemVehicle extends React.Component {
           title={ this.props.translations.speed }
           value={ speed }
         />
+        { isMwa &&
+          <ItemProperty
+            title={ 'Vehicle Group' }
+            value={ '01' }
+          />
+        }
+        { isMwa &&
+          <ItemProperty
+            title={ 'License Plate' }
+            value={ license }
+          />
+        }
+        { isMwa &&
+          <ItemProperty
+            title={ 'No. of Jobs' }
+            value={ jobsCount }
+          />
+        }
+        { isMwa &&
+          <ItemProperty
+            title={ 'Door Open/Close' }
+            value={ n_a }
+          />
+        }
+        { isMwa &&
+          <ItemProperty
+            title={ 'Engine Status' }
+            value={ n_a }
+          />
+        }
+        { isMwa &&
+          <ItemProperty
+            title={ 'Fuel Level' }
+            value={ n_a }
+          />
+        }
         {this.props.vehicle.temp &&
           <ItemProperty
             title={ this.props.translations.temperature }
@@ -110,7 +154,9 @@ class ListItemVehicle extends React.Component {
         </h1>
 
         { this.inActivityIndicator() }
-        {isMwa ? <MwaIdicator vehicle={vehicle} /> : null}
+        { isMwa && !this.props.isExpanded
+          && <MwaIdicator vehicle={vehicle} />
+        }
         <VelocityTransitionGroup
           enter={{ animation: 'slideDown', duration: 500 }}
           leave={{ animation: 'slideUp', duration: 350 }}
