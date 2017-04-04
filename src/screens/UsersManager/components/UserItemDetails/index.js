@@ -3,8 +3,8 @@ import { css } from 'aphrodite/no-important';
 import { VelocityComponent } from 'velocity-react';
 import Overlay from 'components/User/Overlay';
 import Details from 'components/User/Details';
+import PasswordForm from 'containers/User/PasswordFormConnected';
 import EmailForm from '../EmailForm';
-import PasswordForm from '../PasswordForm';
 
 import classes from './classes';
 

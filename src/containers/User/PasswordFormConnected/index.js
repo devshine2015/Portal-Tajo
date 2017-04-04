@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PasswordForm from 'components/User/PasswordForm';
+import PasswordForm from './PasswordForm';
 import { usersActions } from 'services/Users/actions';
 
 class PasswordFormConnected extends React.Component {

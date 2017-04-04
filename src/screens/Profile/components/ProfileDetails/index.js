@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { css } from 'aphrodite/no-important';
 import { VelocityComponent } from 'velocity-react';
 import {
@@ -8,10 +9,11 @@ import {
 } from 'material-ui';
 import Userpic from 'components/Userpic';
 import Widget from 'components/Widget';
-import PasswordForm from 'components/User/PasswordForm';
+import PasswordForm from 'containers/User/PasswordFormConnected';
 import Overlay from 'components/User/Overlay';
 import Details from 'components/User/Details';
 import { translate } from 'utils/i18n';
+import { getProfileData } from 'services/Session/reducer';
 
 import classes from './classes';
 import phrases, { phrasesShape } from './PropTypes';
@@ -44,7 +46,6 @@ class ProfileDetails extends React.PureComponent {
   renderForm() {
     return (
       <PasswordForm
-        onSubmit={this.closeForm}
         closeForm={this.closeForm}
         userId={this.props.profile.user_id}
       />
@@ -102,16 +103,12 @@ ProfileDetails.propTypes = {
   translations: phrasesShape.isRequired,
 };
 
-ProfileDetails.defaultProps = {
-  profile: {
-    user_id: 'auth0|58d4d321bcce2e507193b3bf',
-    name: 'max@drvr.co',
-    nickname: 'max',
-    email: 'max@drvr.co',
-    picture: 'https://s.gravatar.com/avatar/ffeb9e60bf54d2089655636ae2b5cf3f?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fma.png',
-  },
-};
-
 ProfileDetails.displayName = 'ProfileDetails';
 
-export default translate(phrases)(ProfileDetails);
+const Translated = translate(phrases)(ProfileDetails);
+
+const mapState = state => ({
+  profile: getProfileData(state),
+});
+
+export default connect(mapState)(Translated);

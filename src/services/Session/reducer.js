@@ -61,6 +61,14 @@ function reducer(state = initialState, action) {
 
 export default reducer;
 
+export const getProfileData = state => ({
+  name: state.getIn(['session', 'name']),
+  email: state.getIn(['session', 'email']),
+  nickname: state.getIn(['session', 'nickname']),
+  picture: state.getIn(['session', 'picture']),
+  user_id: state.getIn(['session', 'user_id']),
+});
+
 export const getSessionData = state =>
   state.get('session');
 export const getSessionToken = state =>

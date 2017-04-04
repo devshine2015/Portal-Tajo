@@ -1,7 +1,7 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
-import FormComponents from '../FormComponents';
-import DetailPopupForm from '../DetailPopupForm';
+import FormComponents from 'components/User/FormComponents';
+import DetailPopupForm from 'components/User/DetailPopupForm';
 import { translate } from 'utils/i18n';
 
 import phrases, { phrasesShape } from './PropTypes';
@@ -14,7 +14,7 @@ class PasswordForm extends React.Component {
     isFetching: false,
   }
 
-  onPasswordChange = e => {
+  onPasswordChange = (e) => {
     const { value } = e.target;
 
     this.setState({
