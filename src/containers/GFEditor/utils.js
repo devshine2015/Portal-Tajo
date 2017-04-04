@@ -32,8 +32,8 @@ const routToPoint = routeFunc => e =>
 
 function openGMaps() {
   return (e) => {
-    // https://www.google.com/maps/@51.3317678,12.3902356,13.08z
-     window.open(`https://www.google.com/maps/@${e.latlng.lat},${e.latlng.lng},15z`);
+     window.open(`https://www.google.com/maps?q=${e.latlng.lat},${e.latlng.lng}`);
+    //  ,15z
    };
 }
 
