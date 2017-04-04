@@ -13,7 +13,11 @@ export function createJournalEntryDbg(eventType, owner) {
 
 export function createJournalEntry(backEndAlertEvent, vehicles) {
   // const date = moment(this.props.entryObj.ev.ts).format('DD-MM-YYYY');
-  const eventDate = new Date(backEndAlertEvent.ev.ts);
+  // TODO: use only ev.ts - once engine fixed - this should always come from engine
+  const eventDate = new Date(backEndAlertEvent.ev.ts !== undefined ?
+    backEndAlertEvent.ev.ts
+    : backEndAlertEvent.ev.crossTime !== undefined ?
+      backEndAlertEvent.ev.crossTime : 0);
   const theVehicle = vehicles.length === 0 ? null : getVehicleById(backEndAlertEvent.ev.vehicleId, vehicles);
   return {
     localTime: eventDate.toLocaleTimeString(),
