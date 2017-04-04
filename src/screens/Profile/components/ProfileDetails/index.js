@@ -1,9 +1,20 @@
 import React from 'react';
 import { css } from 'aphrodite/no-important';
+import { VelocityComponent } from 'velocity-react';
+import {
+  Card,
+  CardHeader,
+  CardText,
+} from 'material-ui';
 import Userpic from 'components/Userpic';
 import Widget from 'components/Widget';
+import PasswordForm from 'components/User/PasswordForm';
+import Overlay from 'components/User/Overlay';
+import Details from 'components/User/Details';
+import { translate } from 'utils/i18n';
 
 import classes from './classes';
+import phrases, { phrasesShape } from './PropTypes';
 
 const STYLES = {
   userpic: {
@@ -13,24 +24,66 @@ const STYLES = {
 };
 
 class ProfileDetails extends React.PureComponent {
+
+  state = {
+    isOverlayActive: false,
+  }
+
+  openPasswordForm = () => {
+    this.setState({
+      isOverlayActive: true,
+    });
+  }
+
+  closeForm = () => {
+    this.setState({
+      isOverlayActive: false,
+    });
+  }
+
+  renderForm() {
+    return (
+      <PasswordForm
+        onSubmit={this.closeForm}
+        closeForm={this.closeForm}
+        userId={this.props.profile.user_id}
+      />
+    );
+  }
+
   render() {
     const { profile } = this.props;
-    const name = profile.name ||profile.nickname || profile.email;
+    const name = profile.name || profile.nickname || profile.email;
+    const { isOverlayActive } = this.state;
+    const animation = `transition.bounce${(isOverlayActive ? 'In' : 'Out')}`;
 
     return (
       <Widget
-        title="My Profile"
-        // containerClass=
+        title={this.props.translations.profile}
+        containerClass={classes.widgetContainer}
       >
-        <div className="details">
-          <div className="details__userpic">
-            <Userpic src={profile.picture} style={STYLES.userpic} />
-          </div>
-          <div className="details__info">
-            <h4 className="details__name">
-              {name}
-            </h4>
-          </div>
+        <div className={css(classes.cardContainer)}>
+          <Card>
+            <CardHeader
+              avatar={<Userpic src={profile.picture} style={STYLES.userpic} />}
+              title={name}
+            />
+            <CardText>
+              <div className={css(classes.profileDetails)}>
+                <Details.PasswordDetails openPasswordForm={this.openPasswordForm} />
+              </div>
+            </CardText>
+          </Card>
+
+          <VelocityComponent
+            animation={animation}
+            key="overlay"
+            duration={500}
+          >
+            <Overlay>
+              { this.renderForm() }
+            </Overlay>
+          </VelocityComponent>
         </div>
       </Widget>
     );
@@ -39,15 +92,19 @@ class ProfileDetails extends React.PureComponent {
 
 ProfileDetails.propTypes = {
   profile: React.PropTypes.shape({
+    user_id: React.PropTypes.string.isRequired,
     name: React.PropTypes.string.isRequired,
     nickname: React.PropTypes.string.isRequired,
     email: React.PropTypes.string.isRequired,
     picture: React.PropTypes.string.isRequired,
   }).isRequired,
+
+  translations: phrasesShape.isRequired,
 };
 
 ProfileDetails.defaultProps = {
   profile: {
+    user_id: 'auth0|58d4d321bcce2e507193b3bf',
     name: 'max@drvr.co',
     nickname: 'max',
     email: 'max@drvr.co',
@@ -57,4 +114,4 @@ ProfileDetails.defaultProps = {
 
 ProfileDetails.displayName = 'ProfileDetails';
 
-export default ProfileDetails;
+export default translate(phrases)(ProfileDetails);

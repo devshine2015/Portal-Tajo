@@ -39,8 +39,6 @@ class PasswordForm extends React.Component {
       isFetching: true,
     }, () => {
       this.props.onSubmit(this.state.newPass);
-      // this.props.changePassword()
-      // .then(() => this.props.closeForm());
     });
   }
 

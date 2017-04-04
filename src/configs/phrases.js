@@ -258,6 +258,7 @@ const phrases = {
     review: 'ภาพรวม',
     history: 'ประวัติ',
     users: 'ผู้ใช้',
+    profile: 'โปรไฟล์',
     // -- end main menu
 
     // dashboard screen

@@ -15,6 +15,7 @@ const classes = StyleSheet.create({
     color: '#999',
     fontWeight: 200,
     marginBottom: 10,
+    textTransform: 'capitalize',
   },
   widget__inn: {
     display: 'flex',
