@@ -24,7 +24,7 @@ class MapRoute extends React.Component {
 
   setPath = () => {
     if (this.props.routeObj === null
-      || this.props.routeObj.path === undefined) {
+      || this.props.routeObj.pathLatLngs === undefined) {
       return;
     }
     this.updateToMarker();
@@ -32,7 +32,7 @@ class MapRoute extends React.Component {
     if (this.thePath === null) {
       this.createPath(this.props.routeObj.pathLatLngs);
     } else {
-      this.thePath.setLatLngs(this.props.routeObj.pathLatLngs));
+      this.thePath.setLatLngs(this.props.routeObj.pathLatLngs);
     }
     hideLayer(this.containerLayer, this.thePath, false);
 
