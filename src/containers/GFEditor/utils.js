@@ -15,18 +15,18 @@ export function contextMenuAddGFItems(subjUpdateFunc, routeFunc = null, nearFunc
       icon: iconPoly16,
       callback: initiateGfPolygonEditingCallback(subjUpdateFunc),
   }, '-'];
-  if (routeFunc !== null) {
-    menuItems.push({ text: 'Route',
-    icon: iconRoute16,
-    callback: routToPoint(routeFunc),
-    });
-  }
-  if (nearFunc !== null) {
-    menuItems.push({ text: 'Find Nearest',
-    icon: iconNearby16,
-    callback: routToPoint(nearFunc),
-    });
-  }
+  // if (routeFunc !== null) {
+  //   menuItems.push({ text: 'Route',
+  //   icon: iconRoute16,
+  //   callback: routToPoint(routeFunc),
+  //   });
+  // }
+  // if (nearFunc !== null) {
+  //   menuItems.push({ text: 'Find Nearest',
+  //   icon: iconNearby16,
+  //   callback: routToPoint(nearFunc),
+  //   });
+  // }
   menuItems.push({ text: 'Google Maps',
     icon: iconGMaps16,
     callback: openGMaps(),
