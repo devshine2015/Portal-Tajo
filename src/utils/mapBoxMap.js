@@ -33,7 +33,7 @@ export function createMapboxMap(domNode, view, contextmenuItems) {
       {
         format: 'image/png',
         transparent: true,
-        layers: '32,38,39,47,48',
+        layers: '32,38,39,44,47,48',
         zIndex: '500',
       }).setOpacity(0.5).addTo(theMap);
     layers = { MWA: overlayLayer };
