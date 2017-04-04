@@ -21,7 +21,7 @@ class Entry extends React.Component {
         <span className={styles.journalEntrySpanT}>
           {this.props.entryObj.localTime}
         </span>
-        <span className={styles.journalEntrySpan}>
+        <span className={styles.journalEntrySpanIcon}>
           {alertKindObj.icon}
         </span>
         <span className={styles.journalEntrySpanName}>

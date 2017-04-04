@@ -41,24 +41,31 @@
   background-color: rgb(222, 233, 236);
   width: 100%;
   display: flex;
+  font-size: 14px;
   /*border: 1px solid #fff;*/
 }
 .journalEntry:nth-child(odd) {
  background-color: #bed9e0;
 }
 .journalEntrySpanT {
-  padding-left: 7px;
-  padding-right: 7px;
+  min-width: 80px;
+  flex: 0;
+  text-align: center; 
+  padding: 4px 7px;
   /*border-left: 3px solid rgba(0, 0, 0, 0.18);*/
 }
+.journalEntrySpanIcon {
+  flex: 0;
+  padding: 4px 7px;
+  border-left: 3px solid rgba(0, 0, 0, 0.18);
+}
 .journalEntrySpanName {
-  width: 200px;
-  padding-left: 7px;
-  padding-right: 7px;
+  flex: 1;
+  padding: 4px 7px;
   border-left: 3px solid rgba(0, 0, 0, 0.18);
 }
 .journalEntrySpan {
-  padding-left: 7px;
-  padding-right: 7px;
+  flex: 1;
+  padding: 4px 7px;
   border-left: 3px solid rgba(0, 0, 0, 0.18);}
 }
