@@ -20,7 +20,7 @@ import usersManagerScreen from 'screens/UsersManager/route';
 import devicesManagerScreen from 'screens/DevicesManager/route';
 import loginScreen from 'screens/LoginScreen/route';
 import dashboardScreen from 'screens/DashboardScreen/route';
-import settingsScreen from 'screens/Settings/route';
+import profileScreen from 'screens/Settings/route';
 import alertsEditorScreen from 'screens/AlertsEditor/route';
 import notFoundScreen from 'screens/NotFound/route';
 
@@ -87,7 +87,7 @@ export default function createRoutes(store) {
     path: 'mwa',
   });
 
-  const settingsRoute = settingsScreen(mainMenu.escape.settings);
+  const profileRoute = profileScreen(mainMenu.common.profile);
 
   const dashboardRoute = dashboardScreen(mainMenu.escape.dashboard);
 
@@ -119,7 +119,7 @@ export default function createRoutes(store) {
     vehiclesEditorRoute,
     usersManagerRoute,
     devicesManagerRoute,
-    settingsRoute,
+    profileRoute,
     alertsEditorRoute,
     notFoundRoute,
   );
