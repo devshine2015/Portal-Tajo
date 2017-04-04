@@ -10,7 +10,6 @@ import classes from './classes';
 
 const googleMapsAPI = require('google-maps-api')('AIzaSyA-97-nJq7i1hy46cjHJSeOwkKgBdv08aI',
       ['places']);
-const iconPointer = require('assets/images/v_icons_combi/pointerArrow.png');
 
 const STYLES = {
   icon: {
@@ -101,15 +100,6 @@ class GooglePlacesSearch extends React.Component {
           //     className: css(classes.animatedS),
           //   });
           // this.searchPin.setRadius(12);
-          const iScale = 0.15;
-          const iW = 152 * iScale;
-          const iH = 253 * iScale;
-          this.selectedMarkerIcon = window.L.icon({
-            iconUrl: iconPointer,
-            iconSize: [iW, iH],
-            iconAnchor: [0, iH],
-            className: css(classes.animatedS),
-          });
           this.searchPin = window.L.marker(posOfInterest,
             {
               // title: this.props.theGF.name,

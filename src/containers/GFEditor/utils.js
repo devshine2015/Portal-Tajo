@@ -5,8 +5,9 @@ const iconCircle16 = require('assets/images/gf_add_icons/circle16.png');
 const iconPoly16 = require('assets/images/gf_add_icons/polygon16.png');
 const iconGMaps16 = require('assets/images/context_menu_icons/gmap16.png');
 const iconRoute16 = require('assets/images/context_menu_icons/rt01_16.png');
+const iconNearby16 = require('assets/images/context_menu_icons/nearby16.png');
 
-export function contextMenuAddGFItems(subjUpdateFunc, routeFunc = null) {
+export function contextMenuAddGFItems(subjUpdateFunc, routeFunc = null, nearFunc = null) {
   const menuItems = [{ text: 'Add Circular GF',
       icon: iconCircle16,
       callback: initiateGfCircleEditingCallback(subjUpdateFunc),
@@ -18,7 +19,13 @@ export function contextMenuAddGFItems(subjUpdateFunc, routeFunc = null) {
     menuItems.push({ text: 'Route',
     icon: iconRoute16,
     callback: routToPoint(routeFunc),
-  });
+    });
+  }
+  if (nearFunc !== null) {
+    menuItems.push({ text: 'Find Nearest',
+    icon: iconNearby16,
+    callback: routToPoint(nearFunc),
+    });
   }
   menuItems.push({ text: 'Google Maps',
     icon: iconGMaps16,
@@ -32,8 +39,8 @@ const routToPoint = routeFunc => e =>
 
 function openGMaps() {
   return (e) => {
-    // https://www.google.com/maps/@51.3317678,12.3902356,13.08z
-     window.open(`https://www.google.com/maps/@${e.latlng.lat},${e.latlng.lng},15z`);
+     window.open(`https://www.google.com/maps?q=${e.latlng.lat},${e.latlng.lng}`);
+    //  ,15z
    };
 }
 
