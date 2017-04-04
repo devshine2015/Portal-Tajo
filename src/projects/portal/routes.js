@@ -20,7 +20,7 @@ import vehiclesManagerScreen from 'screens/VehiclesManagerScreen/route';
 import loginScreen from 'screens/LoginScreen/route';
 import dashboardScreen from 'screens/DashboardScreen/route';
 import chronicleScreen from 'screens/Chronicle/route';
-import settingsScreen from 'screens/Settings/route';
+import profileScreen from 'screens/Profile/route';
 import alersEditorScreen from 'screens/AlertsEditor/route';
 import notFoundScreen from 'screens/NotFound/route';
 import usersManagerScreen from 'screens/UsersManager/route';
@@ -59,7 +59,7 @@ export default function createRoutes(store) {
     loadModule,
   });
 
-  const settingsRoute = settingsScreen(mainMenu.sunshine.settings);
+  const profileRoute = profileScreen(mainMenu.sunshine.profile);
 
   const usersManagerRoute = usersManagerScreen(mainMenu.sunshine.users);
 
@@ -96,7 +96,7 @@ export default function createRoutes(store) {
     reportsRoute,
     chronicleRoute,
     vehiclesEditorRoute,
-    settingsRoute,
+    profileRoute,
     notFoundRoute,
     usersManagerRoute,
 // TODO: uncomment when releasing alerts system

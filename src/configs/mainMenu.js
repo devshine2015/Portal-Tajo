@@ -20,10 +20,6 @@ const common = {
     name: 'operational',
     path: 'map',
   },
-  settings: {
-    name: 'settings',
-    path: 'settings',
-  },
   alerts: {
     name: 'alerts_editor',
     path: 'alerts',
@@ -58,9 +54,14 @@ const sunshinePortal = {
     name: 'history',
     path: 'history',
   },
+  profile: {
+    name: 'profile',
+    path: 'profile',
+  },
 };
 
 export default {
   escape: Object.assign({}, common, escapePortal),
   sunshine: Object.assign({}, common, sunshinePortal),
+  common,
 };
