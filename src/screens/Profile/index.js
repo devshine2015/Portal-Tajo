@@ -6,15 +6,23 @@ import LanguageWidget from './components/LanguageWidget';
 
 import classes from './classes';
 
-const ProfileScreen = () => (
+const userCanSeeProfile = context => context.authorizeWithPerms('view:profile');
+
+const ProfileScreen = (props, context) => (
   <Content>
-    <div className={css(classes.widget)}>
-      <ProfileDetails />
-    </div>
+    { userCanSeeProfile(context) && (
+      <div className={css(classes.widget)}>
+        <ProfileDetails />
+      </div>
+    )}
     <div className={css(classes.widget)}>
       <LanguageWidget />
     </div>
   </Content>
 );
+
+ProfileScreen.contextTypes = {
+  authorizeWithPerms: React.PropTypes.func.isRequired,
+};
 
 export default ProfileScreen;
