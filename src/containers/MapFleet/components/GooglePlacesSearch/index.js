@@ -8,7 +8,8 @@ import { hideLayer } from 'utils/mapBoxMap';
 
 import classes from './classes';
 
-const googleMapsAPI = require('google-maps-api')('AIzaSyA-97-nJq7i1hy46cjHJSeOwkKgBdv08aI',
+const googleMapsAPI = require('google-maps-api')('AIzaSyBFr7EuGfq5CownOn7p2-fUlzn-iJDBAAU',
+  // 'AIzaSyA-97-nJq7i1hy46cjHJSeOwkKgBdv08aI',
       ['places']);
 
 const STYLES = {
