@@ -4,26 +4,26 @@
   "env": {
     "browser": true,
     "node": true,
-    "mocha": true,
+    "mocha": true
   },
-  rules: {
+  "rules": {
     "react/prefer-es6-class": 1,
     "no-use-before-define": 0,
     "no-confusing-arrow": 0,
     "strict": 0, // controls location of Use Strict Directives. 0: required by `babel-eslint`
     "max-len": [1, 100, 2, {
-      'ignoreUrls': true,
-      'ignoreComments': false,
-      'tabWidth': 2,
+      "ignoreUrls": true,
+      "ignoreComments": false,
+      "tabWidth": 2
     }],
     "no-param-reassign": 1,
     "object-shorthand": 1,
     "mocha/no-mocha-arrows": 2,
-    "mocha/handle-done-callback": 2,
+    "mocha/handle-done-callback": 2
   },
   "plugins": [
     "react",
-    "mocha",
+    "mocha"
   ],
   "ecmaFeatures": {
     "jsx": true,

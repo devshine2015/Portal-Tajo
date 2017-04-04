@@ -1,9 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
-import FormComponents from '../FormComponents';
-import DetailPopupForm from '../DetailPopupForm';
-import { usersActions } from 'services/Users/actions';
+import FormComponents from 'components/User/FormComponents';
+import DetailPopupForm from 'components/User/DetailPopupForm';
 import { translate } from 'utils/i18n';
 
 import phrases, { phrasesShape } from './PropTypes';
@@ -16,7 +14,7 @@ class PasswordForm extends React.Component {
     isFetching: false,
   }
 
-  onPasswordChange = e => {
+  onPasswordChange = (e) => {
     const { value } = e.target;
 
     this.setState({
@@ -25,7 +23,7 @@ class PasswordForm extends React.Component {
     });
   }
 
-  onRepeatType = e => {
+  onRepeatType = (e) => {
     const { value } = e.target;
 
     this.setState({
@@ -34,20 +32,17 @@ class PasswordForm extends React.Component {
     });
   }
 
-  onSubmit = e => {
+  onSubmit = (e) => {
     e.preventDefault();
 
     this.setState({
       isFetching: true,
     }, () => {
-      this.props.changePassword(this.props.userId, {
-        password: this.state.newPass,
-      })
-      .then(() => this.props.closeForm());
+      this.props.onSubmit(this.state.newPass);
     });
   }
 
-  focus = ref => {
+  focus = (ref) => {
     if (!ref) return;
 
     ref.focus();
@@ -86,17 +81,9 @@ class PasswordForm extends React.Component {
 
 PasswordForm.propTypes = {
   closeForm: React.PropTypes.func.isRequired,
-  userId: React.PropTypes.string.isRequired,
-  changePassword: React.PropTypes.func.isRequired,
+  onSubmit: React.PropTypes.func.isRequired,
 
   translations: phrasesShape.isRequired,
 };
 
-const mapState = null;
-const mapDispatch = {
-  changePassword: usersActions.changePassword,
-};
-
-const Translated = translate(phrases)(PasswordForm);
-
-export default connect(mapState, mapDispatch)(Translated);
+export default translate(phrases)(PasswordForm);

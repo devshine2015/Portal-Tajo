@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
-import FormComponents from '../FormComponents';
+import FormComponents from 'components/User/FormComponents';
 import { rolesActions } from 'services/Users/actions';
 
 const initialState = {

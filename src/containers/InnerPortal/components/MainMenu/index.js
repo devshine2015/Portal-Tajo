@@ -33,7 +33,7 @@ const MainMenu = ({
       <MenuItem
         key={page.path}
         page={page}
-        niceName={ translations[page.name] }
+        niceName={translations[page.name]}
         closeSidebar={closeSidebar}
         idx={idx}
       />

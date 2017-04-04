@@ -5,14 +5,14 @@ import pure from 'recompose/pure';
 import {
   TextField,
 } from 'material-ui';
+import FormComponents from 'components/User/FormComponents';
+import RolesSelector from '../RolesSelector';
+import FleetSelector from '../FleetSelector';
 import { usersActions } from 'services/Users/actions';
 import {
   getIsLoading,
   getRoles,
 } from 'services/Users/reducer';
-import FormComponents from '../FormComponents';
-import RolesSelector from '../RolesSelector';
-import FleetSelector from '../FleetSelector';
 import { translate } from 'utils/i18n';
 
 import phrases, { phrasesShape } from './PropTypes';

@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
-import DetailPopupForm from '../DetailPopupForm';
-import FormComponents from '../FormComponents';
+import DetailPopupForm from 'components/User/DetailPopupForm';
+import FormComponents from 'components/User/FormComponents';
 import { usersActions } from 'services/Users/actions';
 import { translate } from 'utils/i18n';
 

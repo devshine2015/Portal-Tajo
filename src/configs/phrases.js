@@ -24,7 +24,7 @@ const phrases = {
     vehicles_editor: 'vehicles editor',
     users: 'users',
     operational: 'operational',
-    settings: 'settings',
+    profile: 'profile',
     dashboard: 'dashboard',
     installer: 'installer',
     promos: 'promos',
@@ -168,9 +168,9 @@ const phrases = {
     // -- end GFEditor
 
     // errors
-    ['Failed to fetch']: 'Server is temporaly down. Please try again later',
-    ['Not Found']: 'Resource is not found. Please contact with administrator',
-    ['Unauthorized']: 'Username/password combination is wrong.',
+    'Failed to fetch': 'Server is temporaly down. Please try again later',
+    'Not Found': 'Resource is not found. Please contact with administrator',
+    Unauthorized: 'Username/password combination is wrong.',
     something_went_wrong: 'Something went wrong',
     // -- end errors
 
@@ -255,10 +255,10 @@ const phrases = {
     reports: 'รายงาน',
     vehicles_editor: 'จัดการยานพาหนะ',
     operational: 'ปฏิบัติการ',
-    settings: 'ตั้งค่า',
     review: 'ภาพรวม',
     history: 'ประวัติ',
     users: 'ผู้ใช้',
+    profile: 'โปรไฟล์',
     // -- end main menu
 
     // dashboard screen
@@ -390,9 +390,9 @@ const phrases = {
     // -- end GFEditor
 
     // errors
-    ['Failed to fetch']: 'เซิร์ฟเวอร์ขัดข้อง โปรดลองอีกครั้ง',
-    ['Not Found']: 'ไม่พบข้อมูล โปรดติดต่อผู้ดูแลระบบ',
-    ['Unauthorized']: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง',
+    'Failed to fetch': 'เซิร์ฟเวอร์ขัดข้อง โปรดลองอีกครั้ง',
+    'Not Found': 'ไม่พบข้อมูล โปรดติดต่อผู้ดูแลระบบ',
+    Unauthorized: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง',
     something_went_wrong: 'เกิดข้อผิดพลาดบางอย่าง',
     // -- end errors
 
