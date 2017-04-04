@@ -22,7 +22,7 @@ const Journal = ({
    
   // TODO: need to properly sort entries - for now just inversing (newest come latest)
   // !!!!!
-  entriesE.revese();
+  entriesE.reverse();
 
   return (
     <div className={styles.journalContainer}>
