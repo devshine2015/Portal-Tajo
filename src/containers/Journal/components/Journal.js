@@ -19,6 +19,11 @@ const Journal = ({
   const entriesE = entries.map((entry, idx) => (
         <Entry entryObj={entry} key={idx} />
       ));
+   
+  // TODO: need to properly sort entries - for now just inversing (newest come latest)
+  // !!!!!
+  entriesE.revese();
+
   return (
     <div className={styles.journalContainer}>
       <JournalToggle />

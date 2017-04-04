@@ -4,9 +4,9 @@ const shape = PropTypes.shape;
 const string = PropTypes.string;
 
 const phrases = {
-  speed: 'speed',
+  speed: 'Speed',
   speed_km_h: 'km/h',
-  temperature: 'temperature',
+  temperature: 'Temperature',
   device_never_reported: 'never reported - check device',
   remove_success: 'Succesfully removed',
   remove_fail: 'Remove failed',

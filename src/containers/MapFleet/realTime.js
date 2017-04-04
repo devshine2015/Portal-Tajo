@@ -9,7 +9,6 @@ import EditGF from './components/EditGF';
 import { mapMWAJobMarkerMaker } from './components/MWAJobMarker';
 import CustomControls from './components/CustomControls';
 import MapRoute from './components/MapRoute';
-import MapNearest from './components/MapNearest';
 
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
@@ -20,6 +19,9 @@ import { getMWAJobs } from 'services/MWA/reducer';
 import { contextMenuAddGFItems } from 'containers/GFEditor/utils';
 import { createMapboxMap, hideLayer } from 'utils/mapBoxMap';
 import directions from 'utils/mapServices/google/directions';
+import distanceMatrix from 'utils/mapServices/google/distanceMatrix';
+
+import { showSnackbar } from 'containers/Snackbar/actions';
 
 // TODO: remove; this must be in the global/contextReducer
 import { mapStoreSetView, mapStoreGetView } from './reducerAction';
@@ -28,8 +30,6 @@ import { ctxGetHideGF,
         ctxGetHideVehicles,
         ctxGetRouteToLatLng,
         ctxGetPowListTabType } from 'services/Global/reducers/contextReducer';
-import { mapRoute, nearestRef } from 'services/Global/actions/contextActions';
-
 
 import { gfEditUpdate } from 'containers/GFEditor/actions';
 import { gfEditIsEditing } from 'containers/GFEditor/reducer';
@@ -53,6 +53,7 @@ class MapFleet extends React.Component {
       detailedList: listTypes.withVehicleDetails,
       selectedVehicleId: undefined,
       selectedLocationId: undefined,
+      routeObj: null,
     };
 
     this.props.eventDispatcher.registerHandler(listEvents.OPS_LIST_ITEM_SELECTED,
@@ -89,18 +90,59 @@ class MapFleet extends React.Component {
     }
     this.theMap = createMapboxMap(ReactDOM.findDOMNode(this),
       this.props.mapStoreGetView,
-      contextMenuAddGFItems(this.props.gfEditUpdate, this.props.mapRoute, this.props.nearestRef)
+      contextMenuAddGFItems(this.props.gfEditUpdate,
+        this.routeSelectedVechicleToLatLng, 
+        // this.nearestVechicleToLatLng)
+        (isMwa ? this.nearestVechicleToLatLng : null))
     );
   }
 
-  routeToPoint = (toLatLng) => {
-// ROUTING dev test helpers
-    const v = getVehicleById(this.state.selectedVehicleId, this.props.vehicles);
-    const selectedVehicle = (v !== undefined && v.vehicle !== undefined) ? v.vehicle : null;
-// ROUTING dev helpers
-    directions(selectedVehicle.pos, toLatLng, this.setPath, this.noHaveRoute);
+  haveRoute = (latLngArray, durationMS, distanceM) => {
+    this.setState({ routeObj: {
+      pathLatLngs: latLngArray,
+      durationMS,
+      distanceM,
+      destination: latLngArray[latLngArray.length - 1],
+    } });
   }
 
+  routeSelectedVechicleToLatLng = (toLatLng) => {
+    const v = getVehicleById(this.state.selectedVehicleId, this.props.vehicles);
+    const selectedVehicle = (v !== undefined && v.vehicle !== undefined) ? v.vehicle : null;
+    if (selectedVehicle===null){
+      this.props.showSnackbar('Select a vehicle first', 3000);
+      return;
+    }
+    this.routeFromToPos(selectedVehicle.pos, [toLatLng.lat, toLatLng.lng]);
+  }
+
+  routeFromToPos = (fromPos, toPos) => {
+    directions(fromPos, toPos, this.haveRoute, this.noHaveCallback);
+  }
+
+  haveDistMatrix = (resultsArray) => {
+    let bestIdx = 0;
+    // find idx of the closes one
+    resultsArray.forEach((aRes, idx) => {if (resultsArray[bestIdx].distanceM > aRes.distanceM) bestIdx = idx; });
+
+// console.log(resultsArray);
+// console.log(`  >>>>  ${bestIdx}`);
+    this.selectMarker(mapEvents.MAP_VEHICLE_SELECTED, this.cachedVehicles[bestIdx].id);
+    this.routeFromToPos(this.cachedVehicles[bestIdx].pos, this.refPos);
+  }
+  nearestVechicleToLatLng = (toLatLng) => {
+    this.refPos = [toLatLng.lat, toLatLng.lng];
+    this.cachedVehicles = [];
+    const originsPos = this.props.vehicles
+        .filter(aVehicle => !aVehicle.filteredOut)
+        .map(aVehicle => {this.cachedVehicles.push(aVehicle); return aVehicle.pos;});
+
+    distanceMatrix(originsPos, [this.refPos], this.haveDistMatrix, this.noHaveCallback);
+  }
+
+  noHaveCallback = () => {
+    this.props.showSnackbar('Can not find routes :(', 3000);
+  }
 // when selected from the list
   highLightMarker(selectedId) {
     let theSelectedObj = this.props.vehicleById(selectedId);
@@ -176,10 +218,8 @@ class MapFleet extends React.Component {
         {isMwa ? this.props.mwaJobs.map(this.makeMWAMarker) : null}
         <MapRoute
           theLayer={this.vehicleMarkersLayer}
-          routeFromLatLng={selectedVehicle.pos}
-          routeToLatLng={this.props.getRouteToLatLng}
-    />
-        <MapNearest isSelected theLayer={this.vehicleMarkersLayer} selectVehicle={selectForMe(this, mapEvents.MAP_VEHICLE_SELECTED)} />
+          routeObj={this.state.routeObj}
+        />
       </div>
     );
   }
@@ -202,9 +242,8 @@ MapFleet.propTypes = {
   isHideVehicles: React.PropTypes.bool.isRequired,
   activeListType: React.PropTypes.string,
   mwaJobs: React.PropTypes.array.isRequired,
-  mapRoute: React.PropTypes.func.isRequired,
-  nearestRef: React.PropTypes.func.isRequired,
   getRouteToLatLng: React.PropTypes.array.isRequired,
+  showSnackbar: React.PropTypes.func.isRequired,
 };
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesEx(state),
@@ -223,7 +262,6 @@ const mapState = (state) => ({
 const mapDispatch = {
   gfEditUpdate,
   mapStoreSetView,
-  mapRoute,
-  nearestRef,
+  showSnackbar,
 };
 export default connect(mapState, mapDispatch)(PureMapFleet);

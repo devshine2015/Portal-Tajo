@@ -1,10 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
-import { connect } from 'react-redux';
 import { hideLayer } from 'utils/mapBoxMap';
-import directions from 'utils/mapServices/google/directions';
 import { metersToDistanceLable, msToDurtationLable } from 'containers/Chronicle/utils/strings';
-import { showSnackbar } from 'containers/Snackbar/actions';
 import { AntPath } from 'leaflet-ant-path';
 
 require('containers/MapFleet/leafletStyles.css');
@@ -18,29 +15,34 @@ class MapRoute extends React.Component {
   }
   componentDidMount() {
   }
-  shouldComponentUpdate(nextProps) {
-    return this.props.routeToLatLng[0] !== nextProps.routeToLatLng[0];
-  }
+  // shouldComponentUpdate(nextProps) {
+  //   return this.props.routeToLatLng[0] !== nextProps.routeToLatLng[0];
+  // }
   componentWillUnmount() {
     hideLayer(this.containerLayer, this.thePath, true);
   }
 
-  setPath = (latLngArray, durationMS, distanceM) => {
+  setPath = () => {
+    if (this.props.routeObj === null
+      || this.props.routeObj.pathLatLngs === undefined) {
+      return;
+    }
     this.updateToMarker();
 
     if (this.thePath === null) {
-      this.createPath(latLngArray);
+      this.createPath(this.props.routeObj.pathLatLngs);
     } else {
-      this.thePath.setLatLngs(latLngArray);
+      this.thePath.setLatLngs(this.props.routeObj.pathLatLngs);
     }
     hideLayer(this.containerLayer, this.thePath, false);
 
     // find the top point to set popup to
     // let popUpSpot = latLngArray[0];
     // latLngArray.forEach(latLng => {if (latLng.lat > popUpSpot.lat) popUpSpot = latLng;});
-    const popUpSpot = this.props.routeToLatLng;
+    const popUpSpot = this.props.routeObj.destination;
 
-    this.thePath.bindPopup(`${msToDurtationLable(durationMS)}<br>${metersToDistanceLable(distanceM)}`,
+    this.thePath.bindPopup(`${msToDurtationLable(this.props.routeObj.durationMS)}
+        <br>${metersToDistanceLable(this.props.routeObj.distanceM)}`,
       {
         closeButton: false,
         closeOnClick: false,
@@ -72,7 +74,7 @@ class MapRoute extends React.Component {
     if (this.toSpotMarker === null) {
       const toMarkerColor = '#2969c3'; // '#3388ff';
       const markerR = 4;
-      this.toSpotMarker = window.L.circleMarker(this.props.routeToLatLng,
+      this.toSpotMarker = window.L.circleMarker(this.props.routeObj.destination,
         { opacity: 1,
           fillOpacity: 1,
           color: toMarkerColor,
@@ -81,45 +83,21 @@ class MapRoute extends React.Component {
         .setRadius(markerR);
       hideLayer(this.containerLayer, this.toSpotMarker, false);
     } else {
-      this.toSpotMarker.setLatLng(this.props.routeToLatLng);
+      this.toSpotMarker.setLatLng(this.props.routeObj.destination);
     }
-  }
-
-  noHaveRoute = () => {
-    // `${this.props.translations.remove_fail} ✘`
-    this.props.showSnackbar('Route not found :(', 5000);
-    console.log(' route not found ');
-  }
-
-  directionsDo = () => {
-    if (this.props.routeToLatLng.length !== 2) {
-      return;
-    }
-    if (this.props.routeFromLatLng.length !== 2) {
-      this.props.showSnackbar('Select vehicle first', 5000);
-      return;
-    }
-    directions(this.props.routeFromLatLng, this.props.routeToLatLng, this.setPath, this.noHaveRoute);
   }
 
   render() {
-    this.directionsDo();
+    this.setPath();
     return false;
   }
 }
 
 MapRoute.propTypes = {
   theLayer: React.PropTypes.object.isRequired,
-  routeToLatLng: React.PropTypes.array.isRequired,
-  routeFromLatLng: React.PropTypes.array.isRequired,
-  showSnackbar: React.PropTypes.func.isRequired,
+  routeObj: React.PropTypes.object.isRequired,
 };
-const mapState = () => ({
-});
-const mapDispatch = {
-  showSnackbar,
-};
-const PureMapRoute = pure(MapRoute);
-export default connect(mapState, mapDispatch)(PureMapRoute);
+
+export default pure(MapRoute);
 
 // export default PureChroniclePath;
