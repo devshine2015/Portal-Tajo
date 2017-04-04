@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { css } from 'aphrodite/no-important';
 import TextField from 'material-ui/TextField';
-import FormComponents from '../FormComponents';
+import FormComponents from 'components/User/FormComponents';
 import { permissionsActions } from 'services/Users/actions';
 
 import classes from './classes';

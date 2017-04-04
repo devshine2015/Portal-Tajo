@@ -1,10 +1,12 @@
 import React from 'react';
 import Content from 'components/Content';
-import LanguageWidget from './components/LanguageWidget';
+import ProfileDetails from './components/ProfileDetails';
+import SettingsSection from './components/SettingsSection';
 
 const ProfileScreen = () => (
   <Content>
-    <LanguageWidget />
+    <ProfileDetails />
+    <SettingsSection />
   </Content>
 );
 
