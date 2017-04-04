@@ -28,7 +28,6 @@ import { mapStoreSetView, mapStoreGetView } from './reducerAction';
 // TODO: remove over
 import { ctxGetHideGF,
         ctxGetHideVehicles,
-        ctxGetRouteToLatLng,
         ctxGetPowListTabType } from 'services/Global/reducers/contextReducer';
 
 import { gfEditUpdate } from 'containers/GFEditor/actions';
@@ -91,7 +90,7 @@ class MapFleet extends React.Component {
     this.theMap = createMapboxMap(ReactDOM.findDOMNode(this),
       this.props.mapStoreGetView,
       contextMenuAddGFItems(this.props.gfEditUpdate,
-        this.routeSelectedVechicleToLatLng, 
+        this.routeSelectedVechicleToLatLng,
         // this.nearestVechicleToLatLng)
         (isMwa ? this.nearestVechicleToLatLng : null))
     );
@@ -242,7 +241,6 @@ MapFleet.propTypes = {
   isHideVehicles: React.PropTypes.bool.isRequired,
   activeListType: React.PropTypes.string,
   mwaJobs: React.PropTypes.array.isRequired,
-  getRouteToLatLng: React.PropTypes.array.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,
 };
 const mapState = (state) => ({
@@ -257,7 +255,6 @@ const mapState = (state) => ({
   isHideVehicles: ctxGetHideVehicles(state),
   activeListType: ctxGetPowListTabType(state),
   mwaJobs: getMWAJobs(state),
-  getRouteToLatLng: ctxGetRouteToLatLng(state),
 });
 const mapDispatch = {
   gfEditUpdate,
