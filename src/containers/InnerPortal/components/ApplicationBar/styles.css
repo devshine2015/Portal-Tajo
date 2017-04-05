@@ -16,6 +16,12 @@
     transform: translateX(-50%);
     display: inline-flex;
   }
+  .rightContainer {
+    position: absolute;
+    right: 120px;
+    margin-top: 10px;
+    /*display: inline-flex;*/
+  }
 
   .title {
     display: flex;

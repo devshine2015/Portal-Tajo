@@ -3,6 +3,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import * as journalState from 'containers/Journal/reducer';
 import { jrnOpen, jrnAddEntries } from 'containers/Journal/actions';
+import { Toggle } from 'material-ui';
 
 import IconButton from 'material-ui/IconButton';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
@@ -12,11 +13,16 @@ import styles from './styles.css';
 const JournalBar = ({
   openJournal,
 }) => {
+   const tglStyle =  {
+    marginBottom: 16,
+  };
   return (
     <div className={styles.journalControlBar}>
+      <Toggle
+        label="New"
+        style={tglStyle}
+      />
       <IconButton
-        tooltip="Close alerts journal"
-        tooltipPosition="bottom-left"
         onClick={() => {openJournal(false);}}
         style={{ float: 'right' }}
       >

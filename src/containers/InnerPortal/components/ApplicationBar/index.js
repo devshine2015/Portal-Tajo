@@ -36,7 +36,7 @@ function renderSummary(location) {
   }
 
   return (
-    <div className={styles.centerContainer}>
+    <div className={styles.rightContainer}>
       {/*<FleetSummary simple />*/}
       <JournalIndicatorBtn />
     </div>

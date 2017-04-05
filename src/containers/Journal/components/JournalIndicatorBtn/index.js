@@ -2,6 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
+import { FlatButton, IconButton } from 'material-ui';
 import { jrnOpen, jrnAddEntries } from 'containers/Journal/actions';
 import * as journalState from 'containers/Journal/reducer';
 import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
@@ -25,9 +26,12 @@ class JournalBtn extends React.Component {
   }
   render() {
     const alertIcon = (<AlertIcon color={theme.palette.accent2Color} />);
+    const btnStyle = { border: 'solid 1px rgba(255, 255, 255, 0.3)', borderRadius: '50%',
+        width: '48px', height: '48px', minWidth: '48px', overflow: 'visible' };
     return (
-      <button type="button"
+      <FlatButton type="button"
         className={styles.amount}
+        style={btnStyle}
         onClick={() => {this.toggleJournal();}}
       >
       {/*<HistoryIcon color={theme.palette.accent2Color} />*/}
@@ -38,8 +42,23 @@ class JournalBtn extends React.Component {
             className: styles.amount__svg,
           }) }
         </div>
-      </button>
+      </FlatButton>
     );
+    /*return (
+      <button type="button"
+        className={styles.amount}
+        onClick={() => {this.toggleJournal();}}
+      >
+      <HistoryIcon color={theme.palette.accent2Color} />
+        { this.props.newCount }
+        <div className={styles.amount__icon}>
+          { React.cloneElement(alertIcon, {
+            style: STYLES.icon,
+            className: styles.amount__svg,
+          }) }
+        </div>
+      </button>
+    );*/
   }
 }
 
