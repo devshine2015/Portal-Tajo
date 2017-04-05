@@ -96,6 +96,9 @@ class MapFleet extends React.Component {
     );
   }
 
+//
+// ---------------- routing/distance related callbacks ------------------------------------------------
+// TODO: move it to separate place?
   haveRoute = (latLngArray, durationMS, distanceM) => {
     this.setState({ routeObj: {
       pathLatLngs: latLngArray,
@@ -142,6 +145,10 @@ class MapFleet extends React.Component {
   noHaveCallback = () => {
     this.props.showSnackbar('Can not find routes :(', 3000);
   }
+//
+// ---------------- routing/distance related callbacks OVER ------------------------------------------------
+//
+
 // when selected from the list
   highLightMarker(selectedId) {
     let theSelectedObj = this.props.vehicleById(selectedId);
