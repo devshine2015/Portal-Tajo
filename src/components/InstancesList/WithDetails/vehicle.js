@@ -38,16 +38,17 @@ class ListItemVehicle extends React.Component {
   renderDetails() {
     if (!this.props.isExpanded) return null;
 
+    const N_A = 'N/A';
     const speed = `${this.props.vehicle.speed.toFixed(1)} ${this.props.translations.speed_km_h}`;
+    const fuel = `${this.props.vehicle.fuelNormalized ? this.props.vehicle.fuelNormalized : N_A}`;
     const jobsCount = this.props.vehicle.mwa === undefined ? 0 :
         (this.props.vehicle.mwa.jobs === undefined ? 0 :
             this.props.vehicle.mwa.jobs.length);  
-    const n_a = 'N/A';
 
-    const license = this.props.vehicle.original !== undefined 
+    const license = this.props.vehicle.original !== undefined
         && this.props.vehicle.original.licensePlate !== undefined ?
           this.props.vehicle.original.licensePlate
-          : n_a;
+          : N_A;
     return (
       <div>
         <Divider />
@@ -76,19 +77,19 @@ class ListItemVehicle extends React.Component {
         { isMwa &&
           <ItemProperty
             title={ 'Door Open/Close' }
-            value={ n_a }
+            value={ N_A }
           />
         }
         { isMwa &&
           <ItemProperty
             title={ 'Engine Status' }
-            value={ n_a }
+            value={ N_A }
           />
         }
         { isMwa &&
           <ItemProperty
             title={ 'Fuel Level' }
-            value={ n_a }
+            value={ fuel }
           />
         }
         {this.props.vehicle.temp &&
