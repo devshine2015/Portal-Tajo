@@ -221,7 +221,7 @@ class MapFleet extends React.Component {
         {this.props.gfs.map(this.makeGFMarker)}
         {this.props.vehicles.map(this.makeVehicleMarker)}
         {editGF}
-        {isMwa ? this.props.mwaJobs.map(this.makeMWAMarker) : null}
+        {isMwa && this.props.mwaJobs.map(this.makeMWAMarker)}
         <MapRoute
           theLayer={this.vehicleMarkersLayer}
           routeObj={this.state.routeObj}
