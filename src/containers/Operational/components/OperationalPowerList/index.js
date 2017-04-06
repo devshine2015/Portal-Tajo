@@ -22,6 +22,12 @@ import { isMaritime } from 'configs';
 import styles from './styles.css';
 import phrases, { phrasesShape } from './PropTypes';
 
+import VehicleIcon from 'material-ui/svg-icons/maps/local-shipping';
+import LocationIcon from 'material-ui/svg-icons/social/location-city';
+
+const iconColor = '#FFFFFF';
+const iconHoverColor = '#FFEEAA';
+
 class OperationalPowerList extends React.Component {
 
   constructor(props) {
@@ -115,7 +121,7 @@ class OperationalPowerList extends React.Component {
           value={this.state.selectedTab}
         >
           <Tab
-            label={isMaritime ? translations.vessels : translations.vehicles}
+            icon={<VehicleIcon  color={iconColor} hoverColor={iconHoverColor} />} 
             value={listTypes.withVehicleDetails}
           >
             <Filter
@@ -133,7 +139,7 @@ class OperationalPowerList extends React.Component {
             </Scrollable>
           </Tab>
           <Tab
-            label={ translations.locations }
+            icon={<LocationIcon  color={iconColor} hoverColor={iconHoverColor} />} 
             value={listTypes.withGFDetails}
           >
             <Filter filterFunc={this.props.filterGFsFunc} />
