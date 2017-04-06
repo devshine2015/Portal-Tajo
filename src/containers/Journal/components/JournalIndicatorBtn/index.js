@@ -18,6 +18,9 @@ const STYLES = {
     verticalAlign: 'middle',
   },
 };
+const alertIcon = (<AlertIcon color={theme.palette.accent2Color} />);
+const btnStyle = { border: 'solid 1px rgba(255, 255, 255, 0.3)', borderRadius: '50%',
+    width: '48px', height: '48px', minWidth: '48px', overflow: 'visible', color: 'white' };
 
 class JournalBtn extends React.Component {
   toggleJournal() {
@@ -25,40 +28,24 @@ class JournalBtn extends React.Component {
   // this._devTestJournalEntry();
   }
   render() {
-    const alertIcon = (<AlertIcon color={theme.palette.accent2Color} />);
-    const btnStyle = { border: 'solid 1px rgba(255, 255, 255, 0.3)', borderRadius: '50%',
-        width: '48px', height: '48px', minWidth: '48px', overflow: 'visible' };
+    const hasNew = this.props.newCount > 0;
     return (
       <FlatButton type="button"
         className={styles.amount}
         style={btnStyle}
         onClick={() => {this.toggleJournal();}}
       >
-      {/*<HistoryIcon color={theme.palette.accent2Color} />*/}
-        { this.props.newCount }
-        <div className={styles.amount__icon}>
-          { React.cloneElement(alertIcon, {
-            style: STYLES.icon,
-            className: styles.amount__svg,
-          }) }
-        </div>
+        { hasNew ? this.props.newCount : <HistoryIcon color={'white'} /> }
+        { hasNew && 
+          <div className={styles.amount__icon}>
+            { React.cloneElement(alertIcon, {
+              style: STYLES.icon,
+              className: styles.amount__svg,
+            }) }
+          </div>
+        }
       </FlatButton>
     );
-    /*return (
-      <button type="button"
-        className={styles.amount}
-        onClick={() => {this.toggleJournal();}}
-      >
-      <HistoryIcon color={theme.palette.accent2Color} />
-        { this.props.newCount }
-        <div className={styles.amount__icon}>
-          { React.cloneElement(alertIcon, {
-            style: STYLES.icon,
-            className: styles.amount__svg,
-          }) }
-        </div>
-      </button>
-    );*/
   }
 }
 

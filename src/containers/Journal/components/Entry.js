@@ -16,10 +16,12 @@ class Entry extends React.Component {
 
   render() {
     const alertKindObj = alertKinds.getAlertByKind(this.props.entryObj.eventKind);
+    const eventTime = (new Date(this.props.entryObj.eventTS)).toLocaleTimeString();
+
     return (
       <div className={styles.journalEntry}>
         <span className={styles.journalEntrySpanT}>
-          {this.props.entryObj.localTime}
+          {eventTime}
         </span>
         <span className={styles.journalEntrySpanIcon}>
           {alertKindObj.icon}
@@ -35,13 +37,10 @@ class Entry extends React.Component {
   }
 }
 
-        /*<span className={styles.journalEntrySpan}>
-          {textForEventType(this.props.entryObj.eventName)}
-        </span>*/
-
 Entry.propTypes = {
   // Main data to display
   entryObj: React.PropTypes.object.isRequired,
+  isNew: React.PropTypes.object.isRequired,
 };
 
 export default pure(Entry);

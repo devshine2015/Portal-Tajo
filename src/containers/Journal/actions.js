@@ -1,12 +1,15 @@
 import endpoints from 'configs/endpoints';
 import { api } from 'utils/api';
-import { createJournalEntry, createJournalEntryDbg } from 'containers/Journal/entryHelpers';
+import { createJournalEntry, createJournalEntryDbg } from './entryHelpers';
 import { getVehiclesExSorted } from 'services/FleetModel/reducer';
+import { jrnGetLatestRecievedTS, jrnIsWating } from './reducer';
+import storage from 'utils/localStorage';
 
 import moment from 'moment';
 
 export const JR_OPEN = 'jrn/open';
 export const JR_ADD_ENTRIES = 'jrn/add';
+export const JR_SET_WAITING = 'jrn/wait';
 
 export const fetchAlertsHistory = (getState) => (dispatch) => _startFetching(dispatch, getState);
 // export const startAlertsPulling = () => (dispatch) =>
@@ -18,10 +21,11 @@ export const jrnOpen = (doOpen) => (dispatch) =>
     doOpen,
   });
 
-export const jrnAddEntries = (newEntriesList) => (dispatch) =>
+export const jrnAddEntries = (newEntriesList, latestRecievedTS) => (dispatch) =>
   dispatch({
     type: JR_ADD_ENTRIES,
     newEntriesList,
+    latestRecievedTS,
   });
 
 // update once a minute or so
@@ -43,43 +47,48 @@ function _startFetching(dispatch, getState) {
     return;
   }
   // do the first tick right away - so we are actual
-  _fetchFunk(dispatch, getState)();
-  fetchProcId = window.setInterval(_fetchFunk(dispatch, getState), ALERTS_HISOTYR_FETCH_INTERVAL_MS);
+  _fetchFunc(dispatch, getState)();
+  fetchProcId = window.setInterval(_fetchFunc(dispatch, getState), ALERTS_HISOTYR_FETCH_INTERVAL_MS);
 }
 
-const _fetchFunk = (dispatch, getState) => () => {
-  _fetchAlertsHistory(dispatch, getState);
-};
+const _fetchFunc = (dispatch, getState) => () => _fetchAlertsHistory(dispatch, getState);
 
 function _fetchAlertsHistory(dispatch, getState) {
-  const dateFrom = moment().subtract(2, 'days').toDate();
+  if (jrnIsWating(getState())) {
+    return;
+  }
+  dispatch({
+    type: JR_SET_WAITING,
+  });
+  // const dateFrom = moment().subtract(10, 'days').toDate();
+
+   storage.  latestRecievedTS
+
+  const dateFrom = new Date(jrnGetLatestRecievedTS(getState()));
+  // const dateFrom = new Date(0);
   const dateTo = moment().toDate();
+  const nextLatestMS = dateTo.getTime();
   let fromString = dateFrom.toISOString();
-  fromString = fromString.slice(0, -1) + '+0000';
+  fromString = `${fromString.slice(0, -1)}+0000`;
   let toString = dateTo.toISOString();
-  toString = toString.slice(0, -1) + '+0000';
+  toString = `${toString.slice(0, -1)}+0000`;
 
   const { url, method } = endpoints.getAlertsInTimeRange({
     from: fromString,
     to: toString,
   });
 
-  return api[method](url)
-    .then(toJson)
+  api[method](url)
+    .then(response => response.json())
     .then(alertEvents => {
       const vehicles = getVehiclesExSorted(getState());
-      const journalEntries = [];
-      alertEvents.forEach((alertEntry) => {
-        journalEntries.push(createJournalEntry(alertEntry, vehicles));
-      });
-      jrnAddEntries(journalEntries)(dispatch);
+      const journalEntries = alertEvents.map((alertEntry) =>
+        createJournalEntry(alertEntry, vehicles)
+      );
+      jrnAddEntries(journalEntries, nextLatestMS)(dispatch);
       // dispatch(_alertEventsAdd(alertEvents));
     })
     .catch(e => {
       console.error(e);
     });
-}
-
-function toJson(response) {
-  return response.json();
 }

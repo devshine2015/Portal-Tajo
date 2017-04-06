@@ -22,8 +22,9 @@ export function createJournalEntry(backEndAlertEvent, vehicles) {
       backEndAlertEvent.ev.crossTime : 0);
   const theVehicle = vehicles.length === 0 ? null : getVehicleById(backEndAlertEvent.ev.vehicleId, vehicles);
   return {
-    localTime: eventDate.toLocaleTimeString(),
-    localDate: eventDate.toLocaleDateString(),
+    eventTS: eventDate.getTime(),
+    // localTime: eventDate.toLocaleTimeString(),
+    // localDate: eventDate.toLocaleDateString(),
     eventKind: backEndAlertEvent.ev.conditionKind,
     eventName: backEndAlertEvent.ev.meta.name,
     ownerName: theVehicle === null ? 'loading cars..' : theVehicle.vehicle.original.name,

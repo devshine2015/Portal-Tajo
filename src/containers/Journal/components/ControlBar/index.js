@@ -10,18 +10,46 @@ import CloseIcon from 'material-ui/svg-icons/navigation/close';
 
 import styles from './styles.css';
 
+const tglStyle = {
+  root: {
+    marginLeft: '12px',
+  },
+  thumbOff: {
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    borderRadius: '10%',
+    transform: 'rotate(0deg)',
+  },
+  trackOff: {
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+  },
+  thumbSwitched: {
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    borderRadius: '10%',
+    transform: 'rotate(135deg)',
+  },
+  trackSwitched: {
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+  },
+};
+
 const JournalBar = ({
   openJournal,
+  toggleAll,
 }) => {
-   const tglStyle =  {
-    marginBottom: 16,
-  };
   return (
     <div className={styles.journalControlBar}>
-      <Toggle
-        label="New"
-        style={tglStyle}
-      />
+      <div className={styles.controlsWrapper}> 
+        <Toggle
+          label="Show All"
+          labelPosition={'right'}
+          style={tglStyle.root}
+          thumbStyle={tglStyle.thumbOff}
+          trackStyle={tglStyle.trackOff}
+          thumbSwitchedStyle={tglStyle.thumbSwitched}
+          trackSwitchedStyle={tglStyle.trackSwitched}
+          onToggle={(e, tgl) => toggleAll(tgl)}
+        />
+      </div>
       <IconButton
         onClick={() => {openJournal(false);}}
         style={{ float: 'right' }}
@@ -35,6 +63,7 @@ const JournalBar = ({
 
 JournalBar.propTypes = {
   openJournal: React.PropTypes.func.isRequired,
+  toggleAll: React.PropTypes.func.isRequired,
   // isOpened: React.PropTypes.bool.isRequired,
   // newCount: React.PropTypes.number.isRequired,
   // entries: React.PropTypes.array.isRequired,
