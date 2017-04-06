@@ -14,6 +14,9 @@ const tglStyle = {
   root: {
     marginLeft: '12px',
   },
+  lbl: {
+    color: 'white',
+  },
   thumbOff: {
     backgroundColor: 'rgba(255, 255, 255, 0.6)',
     borderRadius: '10%',
@@ -38,11 +41,12 @@ const JournalBar = ({
 }) => {
   return (
     <div className={styles.journalControlBar}>
-      <div className={styles.controlsWrapper}> 
+      <div className={styles.controlsWrapper}>
         <Toggle
           label="Show All"
           labelPosition={'right'}
           style={tglStyle.root}
+          labelStyle={tglStyle.lbl}
           thumbStyle={tglStyle.thumbOff}
           trackStyle={tglStyle.trackOff}
           thumbSwitchedStyle={tglStyle.thumbSwitched}
