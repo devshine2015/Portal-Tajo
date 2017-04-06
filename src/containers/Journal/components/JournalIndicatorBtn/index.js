@@ -6,7 +6,9 @@ import { FlatButton, IconButton } from 'material-ui';
 import { jrnOpen, jrnAddEntries } from 'containers/Journal/actions';
 import * as journalState from 'containers/Journal/reducer';
 import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
-import HistoryIcon from 'material-ui/svg-icons/action/history';
+// import HistoryIcon from 'material-ui/svg-icons/action/history';
+// import HistoryIcon from 'material-ui/svg-icons/action/alarm';
+import HistoryIcon from 'material-ui/svg-icons/action/view-list';
 import theme from 'configs/theme';
 
 import styles from './styles.css';
