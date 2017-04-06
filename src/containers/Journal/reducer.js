@@ -67,7 +67,8 @@ export const jrnIsWating = state =>
   _journalReducer(state).get('isWaiting');
 
 export const jrnNewCount = state =>
-  _journalReducer(state).get('newEntriesCount');
+  Math.min(_journalReducer(state).get('newEntriesCount'), _LOCAL_JOURNAL_SIZE_LIMIT_);
+  // _journalReducer(state).get('newEntriesCount');
   // jrnGetEntries(state).length;
 
 export const jrnGetEntries = (state) => {
