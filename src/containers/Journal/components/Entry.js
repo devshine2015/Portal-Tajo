@@ -40,7 +40,7 @@ class Entry extends React.Component {
 Entry.propTypes = {
   // Main data to display
   entryObj: React.PropTypes.object.isRequired,
-  isNew: React.PropTypes.object.isRequired,
+  // isNew: React.PropTypes.object.isRequired,
 };
 
 export default pure(Entry);
