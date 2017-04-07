@@ -1,7 +1,21 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import { connect } from 'react-redux';
 import { hideLayer } from 'utils/mapBoxMap';
+import { mwaSelectJob } from 'services/MWA/actions';
+
 require('containers/MapFleet/leafletStyles.css');
+
+const markerHtmlStylesCore = `
+  width: 2rem;
+  height: 2rem;
+  display: block;
+  left: -1rem;
+  top: -1rem;
+  position: relative;
+  border-radius: 2rem 2rem 0;
+  transform: rotate(45deg);
+  border: 1px solid #FFFFFF;`;
 
 class MWAJobMarker extends React.Component {
   constructor(props) {
@@ -20,40 +34,22 @@ class MWAJobMarker extends React.Component {
   setPosition() {
     this.theMarker.setLatLng(this.latLngFromJob());
   }
-  toggle(doShow) {
-    hideLayer(this.theLayer, this.theMarker, !doShow);
-  }
-  setSelected(isSelected) {
-    if (this.theMarker === null) {
-      return;
-    }
-    const markerHtmlStyles = `
-  background-color: ${isSelected ? '#e64a19' : '#82b999'};
-  width: 2rem;
-  height: 2rem;
-  display: block;
-  left: -1rem;
-  top: -1rem;
-  position: relative;
-  border-radius: 2rem 2rem 0;
-  transform: rotate(45deg);
-  border: 1px solid #FFFFFF`;
 
+  setSelected(isSelected, isMyVehicleSelected) {
+    const nowColor = isSelected ? '#e64a19' :
+      (isMyVehicleSelected ? '#2969c3' : '#adafae');
+    const markerHtmlStyles = markerHtmlStylesCore.concat(`background-color: ${nowColor}`);
     const icon = window.L.divIcon({
       className: 'drvr-leaflet-div-icon',
       iconAnchor: [0, 24],
       labelAnchor: [-6, 0],
       popupAnchor: [0, -36],
-      html: `<span style="${markerHtmlStyles}" />`
+      html: `<span style="${markerHtmlStyles}" />`,
     });
     this.theMarker.setIcon(
       icon,
-        // // window.L.Icon.Default()
-        // window.L.mapbox.marker.icon({
-        //   'marker-color': isSelected ? 'red' : 'green',
-        // })
     );
-    if (isSelected) {
+    if (isSelected || isMyVehicleSelected) {
       this.theMarker.setZIndexOffset(2000);
     } else {
       this.theMarker.setZIndexOffset(1000);
@@ -62,14 +58,19 @@ class MWAJobMarker extends React.Component {
 
   createMarker() {
     if (this.theMarker === null) {
+      const clickHandle = () => {
+        this.props.mwaSelectJob(this.props.theMWAJob.id);
+      };
       this.theMarker = window.L.marker(this.latLngFromJob(),
         {
             //   title: this.props.theMWAJob.WLMA_JOB_CODE,
-          title: this.props.theMWAJob.carName,
+          title: this.props.theMWAJob.name,
           riseOnHover: true,
         });
-      this.theMarker.setZIndexOffset(2000);
-      this.setSelected(false);
+
+      this.theMarker.setZIndexOffset(2000)
+        .on('click', clickHandle);
+      this.setSelected(false, false);
     } else {
       this.setPosition();
     }
@@ -81,7 +82,10 @@ class MWAJobMarker extends React.Component {
   );
 
   render() {
-    this.setSelected(this.props.isSelected);
+    if (this.theMarker !== null) {
+      this.setSelected(this.props.isSelected, this.props.isMyVehicleSelected);
+      hideLayer(this.props.theLayer, this.theMarker, this.props.theMWAJob.filteredOut);
+    }
     return false;
   }
 }
@@ -90,16 +94,23 @@ MWAJobMarker.propTypes = {
   theLayer: React.PropTypes.object,
   theMWAJob: React.PropTypes.object,
   isSelected: React.PropTypes.bool.isRequired,
+  isMyVehicleSelected: React.PropTypes.bool.isRequired,
+  mwaSelectJob: React.PropTypes.array.isRequired,
 };
-const PureMWAJobMarker = pure(MWAJobMarker);
 
-// export default PureMWAJobMarker;
+const mapState = (state) => ({
+});
+const mapDispatch = {
+  mwaSelectJob,
+};
 
-export const mapMWAJobMarkerMaker = (mwaJob, gfLayer, isSelected) => (
-      <PureMWAJobMarker
-        key={mwaJob.id}
-        theLayer={gfLayer}
-        theMWAJob={mwaJob}
-        isSelected={isSelected}
-      />
-    );
+const PureMWAJobMarker = connect(mapState, mapDispatch)(pure(MWAJobMarker));
+
+export const mapMWAJobMarkerMaker = (mwaJob, gfLayer, isSelected, isMyVehicleSelected) =>
+(<PureMWAJobMarker
+  key={mwaJob.id}
+  theLayer={gfLayer}
+  theMWAJob={mwaJob}
+  isSelected={isSelected}
+  isMyVehicleSelected={isMyVehicleSelected}
+/>);

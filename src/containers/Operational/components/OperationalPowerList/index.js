@@ -17,13 +17,16 @@ import * as listEvents from './events';
 import * as mapEvents from 'containers/MapFleet/events';
 import GFEditor from 'containers/GFEditor';
 import { gfEditIsEditing } from 'containers/GFEditor/reducer';
-import { isMaritime } from 'configs';
+import { isMaritime, isMwa } from 'configs';
+import { getMWAJobs, getMWASelectedJobId } from 'services/MWA/reducer';
+import { mwaSelectJob, mwaFilterJobs } from 'services/MWA/actions';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './PropTypes';
 
 import VehicleIcon from 'material-ui/svg-icons/maps/local-shipping';
 import LocationIcon from 'material-ui/svg-icons/social/location-city';
+import PoiIcon from 'material-ui/svg-icons/maps/place';
 
 const iconColor = '#FFFFFF';
 const iconHoverColor = '#FFEEAA';
@@ -87,7 +90,8 @@ class OperationalPowerList extends React.Component {
 
   onTabChange = (value) => {
     if (value === listTypes.withVehicleDetails
-    || value === listTypes.withGFDetails) {
+    || value === listTypes.withGFDetails
+    || value === listTypes.mwaJob) {
       this.props.setListTypeFunc(value);
       this.props.eventDispatcher.fireEvent(listEvents.OPS_LIST_TAB_SWITCH, value, () => {
         this.setState({
@@ -113,7 +117,7 @@ class OperationalPowerList extends React.Component {
       <PowerList>
         <Tabs
           inkBarStyle={{
-            backgroundColor: 'rgba(255,255,255,0.5)',
+            backgroundColor: 'rgba(255,255,255,0.75)',
           }}
           className={styles.fullHeight}
           contentContainerClassName={styles.contentFullHeight}
@@ -121,7 +125,7 @@ class OperationalPowerList extends React.Component {
           value={this.state.selectedTab}
         >
           <Tab
-            icon={<VehicleIcon  color={iconColor} hoverColor={iconHoverColor} />} 
+            icon={<VehicleIcon color={iconColor} hoverColor={iconHoverColor} />}
             value={listTypes.withVehicleDetails}
           >
             <Filter
@@ -139,7 +143,7 @@ class OperationalPowerList extends React.Component {
             </Scrollable>
           </Tab>
           <Tab
-            icon={<LocationIcon  color={iconColor} hoverColor={iconHoverColor} />} 
+            icon={<LocationIcon color={iconColor} hoverColor={iconHoverColor} />}
             value={listTypes.withGFDetails}
           >
             <Filter filterFunc={this.props.filterGFsFunc} />
@@ -154,6 +158,28 @@ class OperationalPowerList extends React.Component {
               />
             </Scrollable>
           </Tab>
+          {isMwa &&
+            <Tab
+              icon={<PoiIcon color={iconColor} hoverColor={iconHoverColor} />}
+              value={listTypes.mwaJob}
+            >
+              <Filter filterFunc={this.props.mwaFilterJobs} />
+
+              <Scrollable>
+                <ItemsList
+                  scrollIntoView
+                  data={this.props.mwaJobs}
+                  currentExpandedItemId={this.props.getMWASelectedJobId}
+                  onItemClick={(mwaJobObj) => {
+                    this.props.mwaSelectJob(mwaJobObj.id);
+                    this.props.eventDispatcher.fireEvent(listEvents.OPS_LIST_ITEM_SELECTED, mwaJobObj.vehicleId);
+                    /*this.props.setSelectedVehicleId(mwaJobObj.vehicleId); */
+                  }}
+                  type={listTypes.mwaJob}
+                />
+              </Scrollable>
+            </Tab>
+          }
         </Tabs>
       </PowerList>
     );
@@ -171,8 +197,11 @@ OperationalPowerList.propTypes = {
   isEditGF: React.PropTypes.bool.isRequired,
   setListTypeFunc: React.PropTypes.func.isRequired,
   vehicleFilterString: React.PropTypes.string,
-
   translations: phrasesShape.isRequired,
+  mwaJobs: React.PropTypes.array.isRequired,
+  mwaSelectJob: React.PropTypes.array.isRequired,
+  getMWASelectedJobId: React.PropTypes.func.isRequired,
+  mwaFilterJobs: React.PropTypes.func.isRequired,
 };
 OperationalPowerList.defaultProps = {
   translations: phrases,
@@ -182,12 +211,16 @@ const mapState = (state) => ({
   getSelectedVehicleId: getSelectedVehicleId(state),
   isEditGF: gfEditIsEditing(state),
   vehicleFilterString: getVehicleFilterString(state),
+  mwaJobs: getMWAJobs(state),
+  getMWASelectedJobId: getMWASelectedJobId(state),
 });
 const mapDispatch = {
   filterVehiclesFunc: vehiclesActions.filterVehicles,
   setSelectedVehicleId: vehiclesActions.setSelectedVehicleId,
   filterGFsFunc: gfActions.filterGFs,
   setListTypeFunc: contextActions.ctxPowListTabType,
+  mwaSelectJob,
+  mwaFilterJobs,
 };
 
 const PureOperationalPowerList = pure(OperationalPowerList);

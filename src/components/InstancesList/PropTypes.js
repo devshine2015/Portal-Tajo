@@ -14,6 +14,7 @@ const phrases = {
   address: 'Address',
   delete: 'Delete',
   no_history_data: 'no data...',
+   mwa_job_carname: '',
 };
 
 const _warnings = {

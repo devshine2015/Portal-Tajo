@@ -5,4 +5,5 @@ export default {
   vehicleChronicle: 'VEHICLE_CHRONICLE',
   maritime: 'MARITIME_ITM',
   simple: 'SIMPLE',
+  mwaJob: 'MWA_JOB',
 };

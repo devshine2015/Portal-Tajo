@@ -8,6 +8,7 @@ import DetailedGFItem from '../WithDetails/gf';
 import DetailedVehicleItem from '../WithDetails/vehicle';
 import VehicleChronicleItem from '../WithDetails/vehicleChronicle';
 import MaritimeItem from '../WithDetails/maritime';
+import MWAJobWithDetails from '../WithDetails/MWA';
 import StatusIcon from './StatusIcon';
 import types from '../types';
 
@@ -80,6 +81,16 @@ function chooseItem(type, {
           isExpanded={isExpanded}
           translations={translations}
           vehicle={item}
+        />
+      );
+    }
+    case types.mwaJob: {
+      return (
+        <MWAJobWithDetails
+          onClick={onItemClick}
+          isExpanded={isExpanded}
+          translations={translations}
+          mwaJobObject={item}
         />
       );
     }

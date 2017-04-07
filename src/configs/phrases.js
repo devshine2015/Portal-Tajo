@@ -229,6 +229,8 @@ const phrases = {
     // 404 page
     not_found: 'not found',
     // -- end 404 page
+
+    mwa_job_carname: 'car name',
   },
 
   th: {

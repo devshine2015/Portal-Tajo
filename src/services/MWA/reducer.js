@@ -3,13 +3,18 @@ import * as mwaActions from './actions';
 
 const mwaInitialState = fromJS({
   jobs: {},
+  selectedId: 0,
 });
 
 function mwaReducer(state = mwaInitialState, action) {
   switch (action.type) {
     case mwaActions.MWA_ADD_JOBS:
-      return state.withMutations(s => {
-        s.set('jobs', new Map(action.jobs));});
+      return state.set('jobs', fromJS(action.jobs));
+      // return state.set('jobs', new Map(action.jobs));
+      // return state.withMutations(s => {
+      //   s.set('jobs', new Map(action.jobs));});
+    case mwaActions.MWA_SELECT_JOB:
+      return state.set('selectedId', action.id);
     default:
       return state;
   }
@@ -18,7 +23,7 @@ function mwaReducer(state = mwaInitialState, action) {
 export default mwaReducer;
 
 export const getMWAJobs = (state) => {
-  const theObj = state.getIn(['mwa','jobs']);
+  const theObj = getMWAJobsAsIM(state);
 
   if (theObj.size === 0) {
     return [];
@@ -29,3 +34,7 @@ export const getMWAJobs = (state) => {
 
   return aList;
 };
+
+export const getMWAJobsAsIM = (state) => state.getIn(['mwa', 'jobs']);
+
+export const getMWASelectedJobId = state => state.getIn(['mwa', 'selectedId']);

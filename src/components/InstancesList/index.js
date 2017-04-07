@@ -83,6 +83,7 @@ InstancesList.propTypes = {
     types.vehicleChronicle,
     types.maritime,
     types.simple,
+    types.mwaJob,
   ]),
 
   // Pass to CheckboxItem
