@@ -19,7 +19,7 @@ class MWAJobWithDetails extends React.Component {
   renderDetails() {
     // if (this.props.isExpanded) {
       return (<div>
-        <Divider key="line01" />
+        <Divider key="line01" style={{ margin: '-1px 30px 10px 0px' }} />
         <ItemProperty
           key="carName"
           title={ this.props.translations.mwa_job_carname }

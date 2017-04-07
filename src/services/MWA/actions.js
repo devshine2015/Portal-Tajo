@@ -167,6 +167,17 @@ function _fetchJobsNotWorking(dispatch, getState) {
     });
 }
 
+const ensureHasLocations = (aJob) => {
+  if (aJob.X === null
+  || aJob.Y === null) {
+    // aJob.X = 13.7030484;
+    // aJob.Y = 100.5924076;
+    aJob.X = 13.807258;
+    aJob.Y = 100.407345;
+    aJob.activityStatus = 'dead';
+  }
+};
+
 const invalidJob = (aJob) => (
   aJob.X === null
   || aJob.Y === null
@@ -227,6 +238,7 @@ function _addJobs(dispatch, getState, mwaJobs) {
   const processedList = getProcessedVehicles(getState());
 
   mwaJobs.forEach(aJob => {
+    ensureHasLocations(aJob);
     if (!invalidJob(aJob)) {
       let ownerCarId = mapJobToCar(aJob.TEAM_ID);
       if (ownerCarId !== null) {
@@ -253,10 +265,10 @@ function _addJobs(dispatch, getState, mwaJobs) {
     if (carsJobs.hasOwnProperty(property)) {
       const vehId = property;
       dispatch(vehiclesActions._vehicleUpdate({
-          mwa: {
+        mwa: {
             jobs: carsJobs[vehId],
           },
-        },
+      },
           vehId));
     }
   }
