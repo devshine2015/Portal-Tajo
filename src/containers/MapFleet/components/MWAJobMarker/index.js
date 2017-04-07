@@ -59,7 +59,7 @@ class MWAJobMarker extends React.Component {
   createMarker() {
     if (this.theMarker === null) {
       const clickHandle = () => {
-        this.props.mwaSelectJob(this.props.theMWAJob.id);
+        // this.props.mwaSelectJob(this.props.theMWAJob.id);
       };
       this.theMarker = window.L.marker(this.latLngFromJob(),
         {
