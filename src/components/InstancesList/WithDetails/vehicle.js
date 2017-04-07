@@ -49,6 +49,11 @@ class ListItemVehicle extends React.Component {
         && this.props.vehicle.original.licensePlate !== undefined ?
           this.props.vehicle.original.licensePlate
           : N_A;
+    const driverName = this.props.vehicle.original !== undefined
+        && this.props.vehicle.original.meta !== undefined
+        && this.props.vehicle.original.meta.driverName !== undefined ?
+          this.props.vehicle.original.meta.driverName
+          : N_A;
     return (
       <div>
         <Divider />
@@ -66,6 +71,12 @@ class ListItemVehicle extends React.Component {
           <ItemProperty
             title={ 'License Plate' }
             value={ license }
+          />
+        }
+        { isMwa &&
+          <ItemProperty
+            title={ 'Driver Name' }
+            value={ driverName }
           />
         }
         { isMwa &&
