@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import locationShape from 'react-router/lib/PropTypes';
 import { connect } from 'react-redux';
 import { AppBar, FlatButton } from 'material-ui';
-import { BASE_URL, isEscape } from 'configs';
+import { BASE_URL, isEscape, isMwa } from 'configs';
 import endpoints from 'configs/endpoints';
 import CodebaseVersion from 'components/CodebaseVersion';
 import { changeMainSidebarState } from 'containers/InnerPortal/actions';
@@ -12,6 +12,8 @@ import FleetSummary from 'containers/FleetSummary';
 // import JournalToggle from 'containers/Journal/components/JournalToggle';
 import JournalIndicatorBtn from 'containers/Journal/components/JournalIndicatorBtn';
 import { translate } from 'utils/i18n';
+
+import mwaLogo from 'assets/images/logos/mwa/mwa.png';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './PropTypes';
@@ -44,6 +46,13 @@ function renderSummary(location) {
 }
 
 function renderTitle(title) {
+  if (isMwa) {
+    return (
+      <div className={styles.title}>
+        <img src={mwaLogo} alt="mwa logo" height="50" width="167" />
+      </div>
+    );
+  }
   return (
     <div className={styles.title}>
       { title }
