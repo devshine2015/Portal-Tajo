@@ -8,6 +8,14 @@ import { NEW_GF_RADIUS, NEW_GF_REQUIRED_ZOOM_LEVEL } from 'utils/constants';
 import { gfEditGetSubject } from 'containers/GFEditor/reducer';
 import { gfEditClose, gfEditUpdate } from 'containers/GFEditor/actions';
 
+function handleMultiPolyline(latLngs) {
+  // its a multi-polyLine, use the first ring
+  if (latLngs[0].lat === undefined) {
+    return latLngs[0];
+  }
+  // its just a polyline
+  return latLngs;
+}
 
 class EditGF extends React.Component {
   constructor(props) {
@@ -89,8 +97,7 @@ class EditGF extends React.Component {
     // (polyline, marker, polygon, rectangle, circle)
     // const type = e.layerType;
     const polygon = e.layer;
-    this.props.subjectGF.latLngs = polygon.getLatLngs();
-//    if()
+    this.props.subjectGF.latLngs = handleMultiPolyline(polygon.getLatLngs());
     // this can be called two times for the sale poly (dblClick?)
     // so, make sure we have only one editable polygon
     if (this.thePolygon === null) {
@@ -100,7 +107,7 @@ class EditGF extends React.Component {
     this.theLayer.addLayer(this.thePolygon);
     this.thePolygon.editing.enable();
     this.thePolygon.on('edit', () => {
-      this.props.subjectGF.latLngs = this.thePolygon.getLatLngs();
+      this.props.subjectGF.latLngs = handleMultiPolyline(polygon.getLatLngs());
       this.props.gfEditUpdate(this.props.subjectGF);
     });
   }
