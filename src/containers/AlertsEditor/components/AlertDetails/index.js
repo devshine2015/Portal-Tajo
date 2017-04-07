@@ -33,6 +33,7 @@ function setAlertState(props) {
     maxSpeed: 45,
     odoValue: 10000,
     gfId: props.gfs.length > 0 ? props.gfs[0].id : '',
+    driveTimeHvr: 2.5,
     ...props.details,
   };
 }
@@ -153,6 +154,14 @@ class AlertDetails extends React.Component {
           onChange={this.onChange}
           floatingLabelText={ "odometr value" }
           value={this.state.odoValue}
+          type="number"
+        />);
+      case alertKinds._ALERT_KIND_DRIVE_TIME:
+        return (<TextField
+          name="driveTimeHvr"
+          onChange={this.onChange}
+          floatingLabelText={ "drive time, hvrs" }
+          value={this.state.driveTimeHvr}
           type="number"
         />);
       case alertKinds._ALERT_KIND_GF: {

@@ -7,12 +7,17 @@ import IconSnow from 'material-ui/svg-icons/places/ac-unit';
 import IconLocation from 'material-ui/svg-icons/maps/pin-drop';
 import IconOverSpeed from 'material-ui/svg-icons/maps/directions-run';
 import IconOdo from 'material-ui/svg-icons/notification/network-check';
+import IconIdle from 'material-ui/svg-icons/av/snooze';
+import IconTime from 'material-ui/svg-icons/action/watch-later';
 
 export const _ALERT_KIND_UNDEFINED = 'undefined-alert';
 export const _ALERT_KIND_TEMPERATURE = 'temperature-alert';
 export const _ALERT_KIND_GF = 'geofence-alert';
 export const _ALERT_KIND_SPEEDING = 'speeding-alert';
 export const _ALERT_KIND_ODO = 'odometer-alert';
+export const _ALERT_KIND_IDLE = 'idling-alert';
+export const _ALERT_KIND_DRIVE_TIME = 'drive-time-alert';
+
 
 const undefinedType = {
   value: _ALERT_KIND_UNDEFINED,
@@ -60,6 +65,24 @@ export const ALERT_KINDS = [
     makeBEObject: (inState) => (
       {
         odoValue: Math.round(inState.odoValue),
+      }
+    ),
+  }, {
+    value: _ALERT_KIND_IDLE,
+    niceName: 'Idling',
+    icon: <IconIdle />,
+    makeBEObject: (inState) => (
+      {
+        odoValue: Math.round(inState.odoValue),
+      }
+    ),
+  }, {
+    value: _ALERT_KIND_DRIVE_TIME,
+    niceName: 'Drive Time',
+    icon: <IconTime />,
+    makeBEObject: (inState) => (
+      {
+        driveTimeSec: inState.driveTimeHvr * 60 * 60,
       }
     ),
   },
