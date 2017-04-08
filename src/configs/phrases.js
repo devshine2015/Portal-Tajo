@@ -460,6 +460,16 @@ const phrases = {
     // 404 page
     not_found: 'ไม่พบ',
     // -- end 404 page
+
+    mwa_job_carname: 'ทีม',
+    mwa_vehicle_group: 'กลุ่ม',
+    mwa_n_jobs: 'จำนวนงาน',
+    license_plate: 'ทะเบียน',
+    driver_name: 'ชื่อคนขับ',
+    door_open_close: 'สถานะประตู',
+    engine_status: 'สถานะเครื่องยนต์',
+    fuel_level: 'ระดับน้ำมัน',
+
   },
 };
 
