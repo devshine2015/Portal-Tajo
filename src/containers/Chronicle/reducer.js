@@ -5,11 +5,12 @@ import { CHRONICLE_SET_T, CHRONICLE_SET_TIMEFRAME,
         CHRONICLE_ITEM_SET_STATE,
         CHRONICLE_VALIDATE_TIMEFRAME, } from './actions';
 import createHistoryFrame from './utils/chronicleVehicleFrame';
+import moment from 'moment';
 
 const chronicleInitialState = fromJS({
   normalized100T: 0,
-  dateFrom: new Date(),
-  dateTo: new Date(),
+  dateFrom: moment().subtract(1, 'days').toDate(),
+  dateTo: moment().toDate(),
   localFrames: new Map(),
   validFramesCount: 0,
   durtyFlag: 0,

@@ -1,9 +1,11 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import DatePicker from 'material-ui/DatePicker';
 import ArrowIcon from 'material-ui/svg-icons/navigation/arrow-back';
 import { setChronicleTimeFrame } from './../../actions';
+import { getChronicleTimeFrame } from './../../reducer';
 import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
@@ -11,35 +13,20 @@ import phrases, { phrasesShape } from './PropTypes';
 
 class TimeFrame extends React.Component {
 
-  constructor(props) {
-    super(props);
-
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    this.state = {
-      fromDate: yesterday,
-    };
-
-//    this.onChange = this.onChange.bind(this);
-  }
-
   fromDateChange = (event, date) => {
-    this.setState({
-      fromDate: date,
-    });
-    const toDate = new Date(date);
-    toDate.setDate(toDate.getDate() + 1);
+    const toDate = moment(date).add(1, 'days').toDate();
     this.props.setChronicleTimeFrame(date, toDate);
   };
 
   render() {
+    const fromDate = this.props.chronicleTimeFrame.fromDate;
     return (
       <div className={styles.timeFrameBox}>
         <div className={styles.picker}>
           <DatePicker
             autoOk
             hintText="Controlled Date Input"
-            value={this.state.fromDate}
+            value={fromDate}
             onChange={this.fromDateChange}
             maxDate={new Date()}
           />
@@ -61,11 +48,15 @@ class TimeFrame extends React.Component {
 
 TimeFrame.propTypes = {
   setChronicleTimeFrame: React.PropTypes.func.isRequired,
+  chronicleTimeFrame: React.PropTypes.object.isRequired,
 
   translations: phrasesShape.isRequired,
 };
 
-const mapState = null;
+const mapState = state => ({
+  chronicleTimeFrame: getChronicleTimeFrame(state),
+});
+
 const mapDispatch = {
   setChronicleTimeFrame,
 };
