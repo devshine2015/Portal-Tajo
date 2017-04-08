@@ -52,7 +52,7 @@ const makeMWADate = inDate =>
   `${inDate.getFullYear()}${padZero(inDate.getMonth() + 1)}${padZero(inDate.getDate())}`;
 
 function _fetchJobs(dispatch, getState) {
-  const dateFrom = moment().subtract(5, 'days').toDate();
+  const dateFrom = moment().subtract(1, 'days').toDate();
   const dateTo = moment().toDate();
 
   // dates like this '20170325',
