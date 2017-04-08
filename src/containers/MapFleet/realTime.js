@@ -19,7 +19,7 @@ import { getMWAJobs, getMWASelectedJobId } from 'services/MWA/reducer';
 import { contextMenuAddGFItems } from 'containers/GFEditor/utils';
 import { createMapboxMap, hideLayer } from 'utils/mapBoxMap';
 import directions from 'utils/mapServices/google/directions';
-import distanceMatrix from 'utils/mapServices/google/distanceMatrix';
+import distanceMatrixToSingleDst from 'utils/mapServices/google/distanceMatrix';
 
 import { showSnackbar } from 'containers/Snackbar/actions';
 
@@ -126,6 +126,8 @@ class MapFleet extends React.Component {
     let bestIdx = 0;
     // find idx of the closes one
     resultsArray.forEach((aRes, idx) => {if (resultsArray[bestIdx].distanceM > aRes.distanceM) bestIdx = idx; });
+    // find idx of the closes one in TIME
+    // resultsArray.forEach((aRes, idx) => {if (resultsArray[bestIdx].durationMS > aRes.durationMS) bestIdx = idx; });
 
 // console.log(resultsArray);
 // console.log(`  >>>>  ${bestIdx}`);
@@ -145,7 +147,7 @@ class MapFleet extends React.Component {
         .slice(0, 20)
         .map(aVehicle => {this.cachedVehicles.push(aVehicle); return aVehicle.pos;});
 
-    distanceMatrix(originsPos, [this.refPos], this.haveDistMatrix, this.noHaveCallback);
+    distanceMatrixToSingleDst(originsPos, this.refPos, this.haveDistMatrix, this.noHaveCallback);
   }
 
   noHaveCallback = () => {
@@ -238,8 +240,6 @@ class MapFleet extends React.Component {
   }
 }
 
-const PureMapFleet = pure(MapFleet);
-
 MapFleet.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
   gfs: React.PropTypes.array.isRequired,
@@ -277,4 +277,4 @@ const mapDispatch = {
   mapStoreSetView,
   showSnackbar,
 };
-export default connect(mapState, mapDispatch)(PureMapFleet);
+export default connect(mapState, mapDispatch)(pure(MapFleet));

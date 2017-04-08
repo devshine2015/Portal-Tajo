@@ -142,7 +142,6 @@ class MapChronicle extends React.Component {
 MapChronicle.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
   gfs: React.PropTypes.array.isRequired,
-  vehicleById: React.PropTypes.func.isRequired,
   gfById: React.PropTypes.func.isRequired,
   gfEditMode: React.PropTypes.bool.isRequired,
   selectedVehicle: React.PropTypes.object,
@@ -155,7 +154,6 @@ MapChronicle.propTypes = {
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesEx(state),
   gfs: fromFleetReducer.getGFsExSorted(state),
-  vehicleById: fromFleetReducer.getVehicleByIdFunc(state),
   gfById: fromFleetReducer.getGFByIdFunc(state),
   gfEditMode: gfEditIsEditing(state),
   mapStoreGetView: mapStoreGetView(state),
@@ -166,5 +164,4 @@ const mapDispatch = {
   gfEditUpdate,
   mapStoreSetView,
 };
-const PureMapChronicle = pure(MapChronicle);
-export default connect(mapState, mapDispatch)(PureMapChronicle);
+export default connect(mapState, mapDispatch)(pure(MapChronicle));
