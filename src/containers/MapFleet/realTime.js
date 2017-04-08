@@ -64,9 +64,9 @@ class MapFleet extends React.Component {
   componentDidMount() {
     this.createMapboxMap();
     this.vehicleMarkersLayer = window.L.layerGroup();
-    this.theMap.addLayer(this.vehicleMarkersLayer);
     this.gfMarkersLayer = window.L.layerGroup();
-    this.theMap.addLayer(this.gfMarkersLayer);
+    hideLayer(this.theMap, this.vehicleMarkersLayer, false);
+    hideLayer(this.theMap, this.gfMarkersLayer, false);
 
 // providing continuous UX - same vehicle selected when switching from other screens
 // TODO: NOT GOOD - relies on Mounting order, expects powerList to be already up

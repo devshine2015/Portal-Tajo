@@ -134,10 +134,14 @@ class MapVehicle extends React.Component {
     });
 
     this.theMarker.on('add', (e) => {
+      // this is called when created AMD
+      // every time container layer is toggled in
       this.iconElement = e.target._icon;
       this.iconHeadContainerElement = this.iconElement.children[0].children[0];
       this.iconHeadFrameElement = this.iconElement.children[0].children[0].children[1];
       this.iconPointerElement = this.iconElement.children[0].children[1].children[0];
+      this.toggle(!this.props.theVehicle.filteredOut);
+      this.expand(this.props.isSelected);
     });
 
     this.popUp = window.L.popup({
