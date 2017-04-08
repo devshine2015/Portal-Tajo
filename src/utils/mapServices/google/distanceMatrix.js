@@ -27,17 +27,17 @@ const distanceMatrix = (fromArrayPos, toArrayPos, haveDistCallback, noHaveDistCa
             noHaveDistCallback();
             return;
           }
-
-          const resultRows = [];
-          distResult.rows.forEach(aRow => {
-            resultRows.push.apply(resultRows,
-                aRow.elements.filter(aElmnt => aElmnt.status === 'OK')
-                .map(aElmnt => ({
-                  distanceM: aElmnt.distance.value,
-                  durationMS: aElmnt.duration.value * 1000,
-                })));
-          });
-
+          const resultRows = distResult.rows.map(aElmnt => (
+              aElmnt.status === 'OK' ?
+              {
+                distanceM: aElmnt.distance.value,
+                durationMS: aElmnt.duration.value * 1000,
+              } :
+              {
+                distanceM: Number.MAX_VALUE,
+                durationMS: Number.MAX_VALUE,
+              }
+          ));
           haveDistCallback(resultRows);
         }
       );

@@ -91,8 +91,8 @@ class MapFleet extends React.Component {
       this.props.mapStoreGetView,
       contextMenuAddGFItems(this.props.gfEditUpdate,
         this.routeSelectedVechicleToLatLng,
-        // this.nearestVechicleToLatLng)
-        (isMwa ? this.nearestVechicleToLatLng : null))
+        this.nearestVechicleToLatLng)
+        // (isMwa ? this.nearestVechicleToLatLng : null))
     );
   }
 
@@ -137,6 +137,12 @@ class MapFleet extends React.Component {
     this.cachedVehicles = [];
     const originsPos = this.props.vehicles
         .filter(aVehicle => !aVehicle.filteredOut)
+        .map(aVehicle => {
+          aVehicle.toRefPointDst = window.L.latLng(aVehicle.pos).distanceTo(toLatLng);
+          return aVehicle;
+        })
+        .sort((a, b) => a.toRefPointDst - b.toRefPointDst)
+        .slice(0, 20)
         .map(aVehicle => {this.cachedVehicles.push(aVehicle); return aVehicle.pos;});
 
     distanceMatrix(originsPos, [this.refPos], this.haveDistMatrix, this.noHaveCallback);
