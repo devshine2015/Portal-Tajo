@@ -3,7 +3,7 @@ import * as mwaActions from './actions';
 
 const mwaInitialState = fromJS({
   jobs: {},
-  selectedId: 0,
+  selectedId: '',
 });
 
 function mwaReducer(state = mwaInitialState, action) {

@@ -48,7 +48,7 @@ Journal.propTypes = {
   isOpened: React.PropTypes.bool.isRequired,
   newCount: React.PropTypes.number.isRequired,
   entries: React.PropTypes.array.isRequired,
-  lastOpenedTS: React.PropTypes.array.isRequired,
+  lastOpenedTS: React.PropTypes.number.isRequired,
 };
 
 const mapState = (state) => ({

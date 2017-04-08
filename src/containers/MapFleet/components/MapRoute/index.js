@@ -95,7 +95,7 @@ class MapRoute extends React.Component {
 
 MapRoute.propTypes = {
   theLayer: React.PropTypes.object.isRequired,
-  routeObj: React.PropTypes.object.isRequired,
+  routeObj: React.PropTypes.object,
 };
 
 export default pure(MapRoute);

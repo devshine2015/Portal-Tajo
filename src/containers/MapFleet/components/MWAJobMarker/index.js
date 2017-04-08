@@ -95,7 +95,7 @@ MWAJobMarker.propTypes = {
   theMWAJob: React.PropTypes.object,
   isSelected: React.PropTypes.bool.isRequired,
   isMyVehicleSelected: React.PropTypes.bool.isRequired,
-  mwaSelectJob: React.PropTypes.array.isRequired,
+  mwaSelectJob: React.PropTypes.func.isRequired,
 };
 
 const mapState = (state) => ({

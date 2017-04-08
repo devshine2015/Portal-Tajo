@@ -199,8 +199,8 @@ OperationalPowerList.propTypes = {
   vehicleFilterString: React.PropTypes.string,
   translations: phrasesShape.isRequired,
   mwaJobs: React.PropTypes.array.isRequired,
-  mwaSelectJob: React.PropTypes.array.isRequired,
-  getMWASelectedJobId: React.PropTypes.func.isRequired,
+  mwaSelectJob: React.PropTypes.func.isRequired,
+  getMWASelectedJobId: React.PropTypes.string.isRequired,
   mwaFilterJobs: React.PropTypes.func.isRequired,
 };
 OperationalPowerList.defaultProps = {
