@@ -231,6 +231,14 @@ const phrases = {
     // -- end 404 page
 
     mwa_job_carname: 'Team',
+    mwa_vehicle_group: 'Vehicle Group',
+    mwa_n_jobs: 'No. of Jobs',
+    license_plate: 'License Plate',
+    driver_name: 'Driver Name',
+    door_open_close: 'Door Open/Close',
+    engine_status: 'Engine Status',
+    fuel_level: 'Fuel Level',
+
   },
 
   th: {

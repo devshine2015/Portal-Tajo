@@ -63,43 +63,43 @@ class ListItemVehicle extends React.Component {
         />
         { isMwa &&
           <ItemProperty
-            title={ 'Vehicle Group' }
+            title={ this.props.translations.mwa_vehicle_group }
             value={ '01' }
           />
         }
         { isMwa &&
           <ItemProperty
-            title={ 'License Plate' }
+            title={ this.props.translations.license_plate }
             value={ license }
           />
         }
         { isMwa &&
           <ItemProperty
-            title={ 'Driver Name' }
+            title={ this.props.translations.driver_name }
             value={ driverName }
           />
         }
         { isMwa &&
           <ItemProperty
-            title={ 'No. of Jobs' }
+            title={ this.props.translations.mwa_n_jobs }
             value={ jobsCount }
           />
         }
         { isMwa &&
           <ItemProperty
-            title={ 'Door Open/Close' }
+            title={ this.props.translations.door_open_close }
             value={ N_A }
           />
         }
         { isMwa &&
           <ItemProperty
-            title={ 'Engine Status' }
+            title={ this.props.translations.engine_status }
             value={ N_A }
           />
         }
         { isMwa &&
           <ItemProperty
-            title={ 'Fuel Level' }
+            title={ this.props.translations.fuel_level }
             value={ fuel }
           />
         }

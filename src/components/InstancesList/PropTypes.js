@@ -14,8 +14,16 @@ const phrases = {
   address: 'Address',
   delete: 'Delete',
   no_history_data: 'no data...',
-   mwa_job_carname: '',
+  mwa_job_carname: '',
+  mwa_vehicle_group: '',
+  mwa_n_jobs: '',
+  license_plate: '',
+  driver_name: '',
+  door_open_close: '',
+  engine_status: '',
+  fuel_level: '',
 };
+
 
 const _warnings = {
   device_never_reported: string.isRequired,
