@@ -98,7 +98,7 @@ MWAJobMarker.propTypes = {
   mwaSelectJob: React.PropTypes.func.isRequired,
 };
 
-const mapState = (state) => ({
+const mapState = () => ({
 });
 const mapDispatch = {
   mwaSelectJob,

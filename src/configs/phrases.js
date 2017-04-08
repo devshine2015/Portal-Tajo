@@ -230,7 +230,7 @@ const phrases = {
     not_found: 'not found',
     // -- end 404 page
 
-    mwa_job_carname: 'car name',
+    mwa_job_carname: 'Team',
   },
 
   th: {

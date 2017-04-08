@@ -61,8 +61,7 @@ function _fetchAlertsHistory(dispatch, getState) {
     type: JR_SET_WAITING,
   });
   // const dateFrom = moment().subtract(10, 'days').toDate();
-
-   storage.  latestRecievedTS
+  //  storage.  latestRecievedTS
 
   const backTimeLimit = moment().subtract(1, 'days').toDate().getTime();
   const fromTicks = Math.max(backTimeLimit, jrnGetLatestRecievedTS(getState()));

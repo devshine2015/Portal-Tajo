@@ -176,6 +176,7 @@ const ensureHasLocations = (aJob) => {
     aJob.Y = 100.407345;
     aJob.activityStatus = 'dead';
   }
+  aJob.isDelayedWithIgnitionOff = false;
 };
 
 const invalidJob = (aJob) => (
