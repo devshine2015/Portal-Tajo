@@ -8,6 +8,7 @@ import {
   FlatButton,
   DropDownMenu,
   Checkbox,
+  TimePicker,
 } from 'material-ui';
 import Form from 'components/Form';
 import ButtonWithProgress from 'components/ButtonWithProgress';
@@ -33,7 +34,7 @@ function setAlertState(props) {
     maxSpeed: 45,
     odoValue: 10000,
     gfId: props.gfs.length > 0 ? props.gfs[0].id : '',
-    driveTimeHvr: 2.5,
+    driveTimeSec: 2.5,
     ...props.details,
   };
 }
@@ -80,6 +81,13 @@ class AlertDetails extends React.Component {
     });
   }
   onChangeGF = (event, index, gfId) => this.setState({ gfId });
+
+  onChangeTime = (event, inDate) => {
+    console.log(inDate);
+    this.setState({
+      driveTimeSec: (inDate.getHours() * 60 + inDate.getMinutes()) * 60,
+    });
+  }
 
   onKindChange = (e, key, value) => {
     this.setState({
@@ -156,14 +164,19 @@ class AlertDetails extends React.Component {
           value={this.state.odoValue}
           type="number"
         />);
-      case alertKinds._ALERT_KIND_DRIVE_TIME:
-        return (<TextField
-          name="driveTimeHvr"
-          onChange={this.onChange}
-          floatingLabelText={ "drive time, hvrs" }
-          value={this.state.driveTimeHvr}
-          type="number"
+      case alertKinds._ALERT_KIND_DRIVE_TIME:{
+        const refDate = new Date();
+        const hvrs = Math.floor(this.state.driveTimeSec / 60 / 60);
+        refDate.setHours(hvrs);
+        refDate.setMinutes((this.state.driveTimeSec / 60 - hvrs * 60));
+        refDate.setSeconds(0);
+        return (<TimePicker
+          format="24hr"
+          hintText="Drive Time"
+          defaultTime={refDate}
+          onChange={this.onChangeTime}
         />);
+      }
       case alertKinds._ALERT_KIND_GF: {
         const gfsArray = this.props.gfs;
         // const gfs = gfsArray.map((aGF) => (<MenuItem primaryText={aGF.name} />));

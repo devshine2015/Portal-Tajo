@@ -82,7 +82,7 @@ export const ALERT_KINDS = [
     icon: <IconTime />,
     makeBEObject: (inState) => (
       {
-        driveTimeSec: inState.driveTimeHvr * 60 * 60,
+        driveTimeSec: inState.driveTimeSec,
       }
     ),
   },
