@@ -13,6 +13,7 @@ import {
 } from '../utils/prepareReport';
 import getPeriods from '../utils/periods';
 import getVehiclesForReport from '../utils/reportVehicles';
+import { makeMWADate } from 'services/MWA/actions';
 
 export const REPORT_DATA_SAVE = 'portal/Report/REPORT_DATA_SAVE';
 export const REPORT_DATA_REMOVE = 'portal/Report/REPORT_DATA_REMOVE';
@@ -58,10 +59,12 @@ function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getSta
 
   return Promise.all(
     Object.values(fieldsToCall)
-      .map(({ domain, query = {}, endpoint = '' }) => (
+      .map(({ domain, query = {}, endpoint = '', customReportKind = null }) => (
         _reportRequest(vehicles, {
           domain,
           endpoint,
+          customReportKind,
+          timePeriod,
           queryString: `${qs.stringify(periodParams)}&${qs.stringify(query)}`,
         })
       ))
@@ -87,6 +90,10 @@ function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getSta
         reports.forEach(r => {
           if (r.domain === domain) {
             result[domain] = r.report;
+            if (r.customReportKind !== null) {
+              result[domain].customReportKind = r.customReportKind;
+              result[domain].vehicles = vehicles;
+            }
           }
         });
       });
@@ -130,17 +137,30 @@ const _generatingFail = errorMessage => ({
 
 function _reportRequest(vehicles = [], {
   endpoint,
+  // custom query needs peroidParam
+  customReportKind,
+  timePeriod,
   domain,
   queryString,
 } = {}) {
-  return Promise.all(
-    vehicles.map(v => {
+  let requestsToResolve = [];
+  if (customReportKind === 'mwa') {
+    const { url, method, apiVersion } = endpoints.getMWAJobs({
+      from: makeMWADate(timePeriod.start),
+      to: makeMWADate(timePeriod.end),
+    });
+    requestsToResolve = [api[method](url, { apiVersion }).then(toJson)];
+  } else {
+    requestsToResolve = vehicles.map(v => {
       const url = `${endpoints.getVehicle(v.id).url}/${endpoint}?${queryString}`;
-
       return api.get(url).then(toJson);
-    }),
+    });
+  }
+  return Promise.all(
+    requestsToResolve,
   ).then(res => ({
     domain,
+    customReportKind,
     report: res,
   }));
 }

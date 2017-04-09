@@ -18,6 +18,7 @@ const phrases = {
   ignition: 'Ignition On/Off',
   'vehicle-1wire-temperature': 'Temperature',
   geofences: 'Geofence crossing (coming soon)',
+  mwaJobs: 'Nr of jobs',
 };
 
 export const phrasesShape = shape({

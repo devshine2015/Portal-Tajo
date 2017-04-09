@@ -1,7 +1,8 @@
 import moment from 'moment';
+import { mwaCountJobsForVehicle } from 'services/MWA/actions';
 
 export const prepareDataForReport = (
-  selectedReports = {}, periods = [], frequency, dateFormat,
+  selectedReports = {}, periods = [], frequency, dateFormat
 ) =>
   (reports = {}) => {
     const result = [];
@@ -37,39 +38,80 @@ export const prepareDataForReport = (
         period.end = momentDate;
       }
 
-      Object.entries(reports).forEach(([domain, recordsForAllVehicles]) => {
-        if (recordsForAllVehicles.length === 0) return;
+      Object.entries(reports).forEach(([domain, domainData]) => {
+        if (domainData.customReportKind === undefined) {
+          const recordsForAllVehicles = domainData;
+          if (recordsForAllVehicles.length === 0) return;
 
-        rowNumber = totalRowsCount;
+          rowNumber = totalRowsCount;
 
-        let filteredTypesToCalc = selectedTypes;
+          let filteredTypesToCalc = selectedTypes;
 
-        if (typeof filteredTypesByDomain[domain].filterSimilar === 'function') {
-          filteredTypesToCalc = filteredTypesByDomain[domain].filterSimilar(selectedTypes);
-        }
-
-        for (let i = 0; i < recordsForAllVehicles.length; i++, rowNumber++) {
-          if (!result[rowNumber]) {
-            result[rowNumber] = [];
+          if (typeof filteredTypesByDomain[domain].filterSimilar === 'function') {
+            filteredTypesToCalc = filteredTypesByDomain[domain].filterSimilar(selectedTypes);
           }
-          const column = _calculateColumn({
-            filteredTypesToCalc,
-            frequency,
-            period,
-            dateFormat,
-            calculate: filteredTypesByDomain[domain].calc,
-            record: recordsForAllVehicles[i],
+
+          for (let i = 0; i < recordsForAllVehicles.length; i++, rowNumber++) {
+            if (!result[rowNumber]) {
+              result[rowNumber] = [];
+            }
+            const column = _calculateColumn({
+              filteredTypesToCalc,
+              frequency,
+              period,
+              dateFormat,
+              calculate: filteredTypesByDomain[domain].calc,
+              record: recordsForAllVehicles[i],
+            });
+
+            result[rowNumber] = result[rowNumber].concat(column);
+          }
+
+          maxRowsCount = recordsForAllVehicles.length;
+        } else if (domainData.customReportKind === 'mwa') {
+          // MWA case ---------
+          rowNumber = totalRowsCount;
+
+          domainData.vehicles.forEach(aVeh => {
+            if (!result[rowNumber]) {
+              result[rowNumber] = [];
+            }
+            const column = {
+              order: 2,
+              value: mwaCountJobsForVehicle(aVeh.id, domainData[0].RESULTS),
+            };
+
+            result[rowNumber] = result[rowNumber].concat(column);
+            ++rowNumber;
           });
-
-          result[rowNumber] = result[rowNumber].concat(column);
         }
-
-        maxRowsCount = recordsForAllVehicles.length;
       });
+
+      // second pass - here we add multiLine per vehicle - depending on jobs count
+      // Object.entries(reports).forEach(([domain, domainData]) => {
+      //   if (domainData.customReportKind === 'mwaTime') {
+      //       // MWA case ---------
+      //     rowNumber = totalRowsCount;
+
+      //     domainData.vehicles.forEach(aVeh => {
+      //       if (!result[rowNumber]) {
+      //         result[rowNumber] = [];
+      //       }
+      //       const column = {
+      //         order: 2,
+      //         value: 'DUBL',
+      //       };
+
+      //       result[rowNumber] = result[rowNumber].concat(column);
+      //       result.splice(rowNumber, 0, result[rowNumber]);
+      //       ++rowNumber;
+      //       ++rowNumber;
+      //     });
+      //   }
+      // });
 
       totalRowsCount += maxRowsCount;
     });
-
     // sort columns in rows
     // accordingly to order property
     for (let k = 0; k < result.length; k++) {

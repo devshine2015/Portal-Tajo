@@ -238,6 +238,7 @@ const phrases = {
     door_open_close: 'Door Open/Close',
     engine_status: 'Engine Status',
     fuel_level: 'Fuel Level',
+    mwaJobs: 'No. of Jobs',
 
   },
 
