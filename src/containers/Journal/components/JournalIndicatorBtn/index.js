@@ -10,6 +10,7 @@ import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
 // import HistoryIcon from 'material-ui/svg-icons/action/alarm';
 import HistoryIcon from 'material-ui/svg-icons/action/view-list';
 import theme from 'configs/theme';
+import { isAlerts } from 'configs';
 
 import styles from './styles.css';
 
@@ -30,6 +31,7 @@ class JournalBtn extends React.Component {
   // this._devTestJournalEntry();
   }
   render() {
+    if (!isAlerts) return false;
     const hasNew = this.props.newCount > 0;
     return (
       <FlatButton type="button"
