@@ -23,6 +23,7 @@ import { TranslationProvider } from 'utils/i18n';
 import { AuthProvider, auth } from 'utils/auth';
 import { auth0Api } from 'utils/api';
 import phrases, { locales } from 'configs/phrases';
+import { setReportsMWA } from 'containers/Report/actions/reportActions';
 
 // need this for global styling
 require('./styles.css');
@@ -86,6 +87,7 @@ class App extends React.Component {
       }
 
       if (isMwa) {
+        this.props.setReportsMWA();
         if (!profile.accessTokens) {
           this.props.fetchAccessTokens()
             .then(tokens => {
@@ -179,6 +181,7 @@ App.propTypes = {
   ).isRequired,
   fetchAccessTokens: React.PropTypes.func.isRequired,
   fetchRolesAndPermissions: React.PropTypes.func.isRequired,
+  setReportsMWA: React.PropTypes.func.isRequired,
 };
 
 const mapState = state => ({
@@ -192,6 +195,7 @@ const mapDispatch = {
   fetchAccessTokens,
   fetchRolesAndPermissions,
   fetchFleet: commonFleetActions.fetchFleet,
+  setReportsMWA,
 };
 
 const PureApp = pure(App);

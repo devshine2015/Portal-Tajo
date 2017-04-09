@@ -233,8 +233,8 @@ const mapJobToCar = (aJobKey) => {
   return teamMap[aJobKey];
 };
 
-export function mwaCountJobsForVehicle(vehicleId, mwaArray) {
-  return mwaArray.filter(aJob => (mapJobToCar(aJob.TEAM_ID) === vehicleId)).length;
+export function mwaGetJobsForVehicle(vehicleId, mwaArray) {
+  return mwaArray.filter(aJob => (mapJobToCar(aJob.TEAM_ID) === vehicleId));
 }
 
 function _addJobs(dispatch, getState, mwaJobs) {

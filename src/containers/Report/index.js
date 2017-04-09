@@ -23,9 +23,19 @@ const ReportsScreen = ({
   vehiclesClassName,
   contentClassName,
 }) => {
-  const headers = selectedFields.map(index => (
-    availableReports[index].label
-  ));
+  // const headers = selectedFields.map(index => (
+  //   availableReports[index].label
+  // ));
+  const headers = [];
+  selectedFields.forEach(index => {
+    if (availableReports[index].multiLabel !== undefined) {
+      headers.push(...(availableReports[index].multiLabel));
+    } else {
+      headers.push(availableReports[index].label);
+    }
+    // headers.push(availableReports[index].multiLabel !== undefined ?
+    //       ...(availableReports[index].multiLabel) : availableReports[index].label);
+  });
 
   const className = cs('configurator', contentClassName);
 

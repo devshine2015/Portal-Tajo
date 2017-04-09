@@ -1,12 +1,13 @@
 const fields = [{
-  endpoint: 'mwa',
+  endpoint: 'mwaT',
   customReportKind: 'mwaTime',
   domain: 'JobsTime',
   checkedByDefault: false,
-  label: 'Nr of jobs',
+  label: 'Jobs Time',
+  multiLabel: ['Job Name', 'From', 'To', 'Duration'],
   name: 'mwaJobsT',
   reportType: 'mwaJobsT',
-  order: 4,
+  order: 9,
 }];
 
 export default fields;
