@@ -239,6 +239,8 @@ const phrases = {
     engine_status: 'Engine Status',
     fuel_level: 'Fuel Level',
 
+    mwaJobsN: 'No. of Jobs',
+    mwaJobsT: 'Jobs Time',
   },
 
   th: {
@@ -469,6 +471,8 @@ const phrases = {
     door_open_close: 'สถานะประตู',
     engine_status: 'สถานะเครื่องยนต์',
     fuel_level: 'ระดับน้ำมัน',
+
+    mwaJobsN: 'จำนวนงาน',
 
   },
 };

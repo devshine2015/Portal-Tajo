@@ -48,7 +48,7 @@ const _fetchFunk = (dispatch, getState) => () => {
 
 
 const padZero = inNumber => inNumber < 10 ? `0${inNumber}` : inNumber;
-const makeMWADate = inDate =>
+export const makeMWADate = inDate =>
   `${inDate.getFullYear()}${padZero(inDate.getMonth() + 1)}${padZero(inDate.getDate())}`;
 
 function _fetchJobs(dispatch, getState) {
@@ -232,6 +232,10 @@ const mapJobToCar = (aJobKey) => {
   }
   return teamMap[aJobKey];
 };
+
+export function mwaGetJobsForVehicle(vehicleId, mwaArray) {
+  return mwaArray.filter(aJob => (mapJobToCar(aJob.TEAM_ID) === vehicleId));
+}
 
 function _addJobs(dispatch, getState, mwaJobs) {
   const jobs = {};

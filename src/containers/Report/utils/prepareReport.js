@@ -1,10 +1,11 @@
 import moment from 'moment';
+import { mwaGetJobsForVehicle } from 'services/MWA/actions';
 
 export const prepareDataForReport = (
-  selectedReports = {}, periods = [], frequency, dateFormat,
+  selectedReports = {}, periods = [], frequency, dateFormat
 ) =>
   (reports = {}) => {
-    const result = [];
+    let result = [];
     const selectedTypes = Object.keys(selectedReports);
     const filteredTypesByDomain = {};
 
@@ -37,39 +38,107 @@ export const prepareDataForReport = (
         period.end = momentDate;
       }
 
-      Object.entries(reports).forEach(([domain, recordsForAllVehicles]) => {
-        if (recordsForAllVehicles.length === 0) return;
+      Object.entries(reports).forEach(([domain, domainData]) => {
+        if (domainData.customReportKind === undefined) {
+          const recordsForAllVehicles = domainData;
+          if (recordsForAllVehicles.length === 0) return;
 
-        rowNumber = totalRowsCount;
+          rowNumber = totalRowsCount;
 
-        let filteredTypesToCalc = selectedTypes;
+          let filteredTypesToCalc = selectedTypes;
 
-        if (typeof filteredTypesByDomain[domain].filterSimilar === 'function') {
-          filteredTypesToCalc = filteredTypesByDomain[domain].filterSimilar(selectedTypes);
-        }
-
-        for (let i = 0; i < recordsForAllVehicles.length; i++, rowNumber++) {
-          if (!result[rowNumber]) {
-            result[rowNumber] = [];
+          if (typeof filteredTypesByDomain[domain].filterSimilar === 'function') {
+            filteredTypesToCalc = filteredTypesByDomain[domain].filterSimilar(selectedTypes);
           }
-          const column = _calculateColumn({
-            filteredTypesToCalc,
-            frequency,
-            period,
-            dateFormat,
-            calculate: filteredTypesByDomain[domain].calc,
-            record: recordsForAllVehicles[i],
+
+          for (let i = 0; i < recordsForAllVehicles.length; i++, rowNumber++) {
+            if (!result[rowNumber]) {
+              result[rowNumber] = [];
+            }
+            const column = _calculateColumn({
+              filteredTypesToCalc,
+              frequency,
+              period,
+              dateFormat,
+              calculate: filteredTypesByDomain[domain].calc,
+              record: recordsForAllVehicles[i],
+            });
+
+            result[rowNumber] = result[rowNumber].concat(column);
+          }
+
+          maxRowsCount = recordsForAllVehicles.length;
+        } else if (domainData.customReportKind === 'mwa') {
+          // MWA case ---------
+          rowNumber = totalRowsCount;
+
+          domainData.vehicles.forEach(aVeh => {
+            if (!result[rowNumber]) {
+              result[rowNumber] = [];
+            }
+            const order = Math.max(0, selectedTypes.indexOf(filteredTypesByDomain[domain].name));
+            const column = {
+              order,
+              value: mwaGetJobsForVehicle(aVeh.id, domainData[0].RESULTS).length,
+            };
+            result[rowNumber] = result[rowNumber].concat(column);
+            rowNumber++;
           });
-
-          result[rowNumber] = result[rowNumber].concat(column);
         }
-
-        maxRowsCount = recordsForAllVehicles.length;
       });
+      const secondPassResult = [];
+      // second pass - here we add multiLine per vehicle - depending on jobs count
+      Object.entries(reports).forEach(([domain, domainData]) => {
+        if (domainData.customReportKind === 'mwaTime') {
+            // MWA case ---------
+          rowNumber = totalRowsCount;
 
+          domainData.vehicles.forEach(aVeh => {
+            const order = Math.max(0, selectedTypes.indexOf(filteredTypesByDomain[domain].name));
+            let jobs = mwaGetJobsForVehicle(aVeh.id, domainData[0].RESULTS);
+            jobs = jobs.filter(aJob => aJob.DT_FIELD_END !== null && aJob.DT_JOB_OPEN !== null);
+            if (jobs.length === 0) {
+            const column = {
+              order,
+              value: 'N/A',
+            };
+              secondPassResult.push(result[rowNumber].concat(column).concat(column).concat(column).concat(column));
+              // result[rowNumber] = result[rowNumber].concat(column).concat(column).concat(column).concat(column);
+              // ++rowNumber;
+            } else {
+            jobs.forEach(aJob => {
+              const startD = moment(aJob.DT_JOB_OPEN);
+              const endD = moment(aJob.DT_FIELD_END);
+              const columnN = {
+                order,
+                value: aJob.WLMA_JOB_CODE,
+              };
+              const columnT0 = {
+                order,
+                value: startD.toDate().toLocaleString(),
+              };
+              const columnT1 = {
+                order,
+                value: endD.toDate().toLocaleString(),
+              };
+              const deltaMs = endD.diff(startD);
+              // const deltaMin = Math.floor(deltaMs / 1000 / 60);
+              const deltaHvr = Math.floor(deltaMs / 1000 / 60 / 60);
+              const columnD = {
+                order,
+                value: `${deltaHvr}${moment.utc(deltaMs).format(':mm')}`,
+              };
+                secondPassResult.push(result[rowNumber].concat(columnN).concat(columnT0).concat(columnT1).concat(columnD));
+              });
+            }
+            ++rowNumber;
+          });
+        }
+      });
+      if (secondPassResult.length > result.length)
+        result = secondPassResult;
       totalRowsCount += maxRowsCount;
     });
-
     // sort columns in rows
     // accordingly to order property
     for (let k = 0; k < result.length; k++) {

@@ -232,6 +232,7 @@ const endpoints = {
   // MWA
   getMWAJobs: (params) => ({
     url: `mwa/jobs/01?${qs.stringify(params)}`,
+    urlStatic: 'mwa/jobs/01?',
     method: 'get',
     apiVersion: 1.1,
   }),
