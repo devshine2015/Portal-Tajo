@@ -49,7 +49,7 @@ function _makeImmutableVehicle({
   const hasPosition = vehicleStats.hasOwnProperty('pos');
   const hasDist = vehicleStats.hasOwnProperty('dist');
   const hasTemp = vehicleStats.hasOwnProperty('temp');
-  const hasFuel = vehicleStats.hasOwnProperty('fuel');
+  const hasFuel = vehicleStats.hasOwnProperty('fuel') && vehicleStats.fuel.hasOwnProperty('fuelLevelPerc');
 
   const isDead = _checkIsDead(hasPosition);
   const ignitionOn = checkIgnition(vehicleStats.ignOn);
@@ -71,7 +71,7 @@ function _makeImmutableVehicle({
     if (hasFuel) {
       // range 0-12000, inversed
       // make it [0-1]
-      s.set('fuelNormalized', 1 - Math.min(Math.max(vehicleStats.fuel.value, 0), 12000) / 12000);
+      s.set('fuelNormalized', Math.min(Math.max(vehicleStats.fuel.fuelLevelPerc, 0), 100));
     } else {
       s.set('fuelNormalized', undefined);
     }
