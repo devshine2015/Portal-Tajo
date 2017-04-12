@@ -7,7 +7,7 @@ import ChroniclePath from './components/ChroniclePath';
 import ChronicleMarker from './components/ChronicleMarker';
 import ChronicleEventMarker from './components/ChronicleEventMarker';
 // import MapGF from './components/MapGF';
-import { mapGFMarkerMaker } from './components/MapGF';
+// import { mapGFMarkerMaker } from './components/MapGF';
 import EditGF from './components/EditGF';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
@@ -95,7 +95,7 @@ class MapChronicle extends React.Component {
               chronicleEvent={v}
             />
           );
-  makeGFMarker = (v) => (mapGFMarkerMaker(v, this.gfMarkersLayer));
+  makeGFMarker = (v) => ({});
 
   render() {
     if (this.theMap === null) {

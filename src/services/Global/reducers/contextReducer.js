@@ -7,6 +7,9 @@ import { fromJS } from 'immutable';
 import { contextActions } from '../actions';
 import { vehiclesActions } from 'services/FleetModel/actions';
 
+import listTypes from 'components/InstancesList/types';
+
+
 const initialState = fromJS({
   map: {
     center: ZERO_LOCATION,
@@ -16,8 +19,9 @@ const initialState = fromJS({
   selectedGFId: '',
   hideGF: false,
   hideVehicles: false,
+
   // what we have currently in PowerList Tabs
-  activeListType: '',
+  activeListType: listTypes.withVehicleDetails,
 
   // keep search value for vehicle across all screens
   vehicleFilterString: '',
@@ -34,7 +38,12 @@ function contextReducer(state = initialState, action) {
       return state.set('hideVehicles', action.doHide);
     case contextActions.CTX_PL_TAB:
       return state.set('activeListType', action.tabType);
-
+    case contextActions.CTX_SELECT_VEH:
+      if (!action.setTab) return state.set('selectedVehicleId', action.vehicleId);
+      return state.set('selectedVehicleId', action.vehicleId).set('activeListType', listTypes.withVehicleDetails);
+    case contextActions.CTX_SELECT_GF:
+      if (!action.setTab) return state.set('selectedGFId', action.gfId);
+      return state.set('selectedGFId', action.gfId).set('activeListType', listTypes.withGFDetails);
     case vehiclesActions.FLEET_MODEL_VEHICLES_FILTER:
       return state.set('vehicleFilterString', action.searchString);
     default:

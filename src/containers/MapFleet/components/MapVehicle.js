@@ -3,10 +3,15 @@
 //
 import React from 'react';
 import pure from 'recompose/pure';
+import { connect } from 'react-redux';
 import { getVehicleByValue } from 'services/FleetModel/utils/vehiclesMap';
 import { hideLayer, latLngMoveTo } from 'utils/mapBoxMap';
-import { createPointerLine, showPointerLine } from './../../utils/pointerLineHelpers';
+import { createPointerLine, showPointerLine } from './../utils/pointerLineHelpers';
 import { isMaritime } from 'configs';
+
+import { contextActions } from 'services/Global/actions';
+import { ctxGetSelectedVehicleId, ctxGetHideVehicles } from 'services/Global/reducers/contextReducer';
+
 // const shadow = require('assets/images/v_icons_combi/shadow.png');
 
 require('containers/MapFleet/leafletStyles.css');
@@ -28,23 +33,23 @@ class MapVehicle extends React.Component {
   }
 
   componentDidMount() {
-    this.theLayer = this.props.theLayer;
+    this.theLayer = this.props.theMap;
     this.createMarker();
     this.setPosition(this.props.theVehicle.pos);
     this.toggle(!this.props.theVehicle.filteredOut);
-    this.expand(this.props.isSelected);
+    // this.expand(this.props.isSelected);
 
     // hideLayer(this.theLayer, window.L.marker(this.props.theVehicle.pos), false);
   }
 
-  shouldComponentUpdate(nextProps) {
-    return this.props.theVehicle.pos !== nextProps.theVehicle.pos
-      || this.props.theVehicle.estimatedTravelKm !== nextProps.theVehicle.estimatedTravelKm
-      || this.props.theVehicle.filteredOut !== nextProps.theVehicle.filteredOut
-      || this.props.isSelected !== nextProps.isSelected
-      || (this.props.isSelected
-          && this.props.isDetailViewActivated !== nextProps.isDetailViewActivated);
-  }
+  // shouldComponentUpdate(nextProps) {
+  //   return this.props.theVehicle.pos !== nextProps.theVehicle.pos
+  //     || this.props.theVehicle.estimatedTravelKm !== nextProps.theVehicle.estimatedTravelKm
+  //     || this.props.theVehicle.filteredOut !== nextProps.theVehicle.filteredOut
+  //     || this.props.isSelected !== nextProps.isSelected
+  //     || (this.props.isSelected
+  //         && this.props.isDetailViewActivated !== nextProps.isDetailViewActivated);
+  // }
 
   setPosition(latLng) {
     this.theMarker.setLatLng(latLng);
@@ -53,6 +58,12 @@ class MapVehicle extends React.Component {
       this.theMoveCircle.setLatLng(latLng);
     }
   }
+
+  clickHandle = () => {
+    this.props.selectVehicle(this.props.theVehicle.id, true);
+    // this.props.mapStoreSetPan([this.props.theVehicle.pos]);
+  }
+
   createMarker() {
     const iScale = 0.25;
     const headSz = 152 * iScale;
@@ -130,7 +141,7 @@ class MapVehicle extends React.Component {
         : null;
 
     this.theMarker.on('click', () => {
-      this.props.onClick(this.props.theVehicle.id);
+      this.clickHandle(this.props.theVehicle.id);
     });
 
     this.theMarker.on('add', (e) => {
@@ -207,22 +218,38 @@ class MapVehicle extends React.Component {
   render() {
     if (this.theMarker !== null) {
       this.setPosition(this.props.theVehicle.pos);
-      this.toggle(!this.props.theVehicle.filteredOut);
-      this.expand(this.props.isSelected);
-      showPointerLine(this.pointerLine, !this.props.theVehicle.filteredOut
-                                        && this.props.isSelected
-                                        && this.props.isDetailViewActivated);
+      this.toggle(!this.props.theVehicle.filteredOut && !this.props.hideMe);
+      this.expand(this.props.theVehicle.id === this.props.selectedVehicleId);
+      // showPointerLine(this.pointerLine, !this.props.theVehicle.filteredOut
+      //                                   && this.props.isSelected
+      //                                   && this.props.isDetailViewActivated);
     }
     return false;
   }
 }
 
 MapVehicle.propTypes = {
-  theLayer: React.PropTypes.object,
+  theMap: React.PropTypes.object,
   theVehicle: React.PropTypes.object,
-  onClick: React.PropTypes.func.isRequired,
-  isSelected: React.PropTypes.bool.isRequired,
-  isDetailViewActivated: React.PropTypes.bool.isRequired,
+  selectedVehicleId: React.PropTypes.string.isRequired,
+  selectVehicle: React.PropTypes.func.isRequired,
+  hideMe: React.PropTypes.bool.isRequired,
 };
 
-export default pure(MapVehicle);
+const mapState = (state) => ({
+  selectedVehicleId: ctxGetSelectedVehicleId(state),
+  hideMe: ctxGetHideVehicles(state),
+});
+const mapDispatch = {
+  selectVehicle: contextActions.ctxSelectVehicle,
+};
+
+const CompleteVehicle = connect(mapState, mapDispatch)(pure(MapVehicle));
+
+export const mapVehicleMarkerMaker = (v) => (
+      <CompleteVehicle
+        key={v.id}
+        theMap={null}
+        theVehicle={v}
+      />
+    );

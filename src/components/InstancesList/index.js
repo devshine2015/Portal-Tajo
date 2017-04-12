@@ -75,7 +75,7 @@ InstancesList.defaultProps = {
 InstancesList.propTypes = {
   // Main data to display
   data: React.PropTypes.array.isRequired,
-  onItemClick: React.PropTypes.func.isRequired,
+  onItemClick: React.PropTypes.func,
   type: React.PropTypes.oneOf([
     types.withCheckboxes,
     types.withVehicleDetails,

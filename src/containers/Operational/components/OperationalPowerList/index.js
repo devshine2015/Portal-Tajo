@@ -8,13 +8,12 @@ import ItemsList from 'components/InstancesList';
 import Scrollable from 'components/Scrollable';
 import listTypes from 'components/InstancesList/types';
 import { vehiclesActions, gfActions } from 'services/FleetModel/actions';
-import { getSelectedVehicleId } from 'services/FleetModel/reducer';
 import { contextActions } from 'services/Global/actions';
+import { ctxGetPowListTabType, ctxGetSelectedVehicleId,
+      ctxGetSelectedGFId } from 'services/Global/reducers/contextReducer';
 import { getVehicleFilterString } from 'services/Global/reducer';
 import { translate } from 'utils/i18n';
 
-import * as listEvents from './events';
-import * as mapEvents from 'containers/MapFleet/events';
 import GFEditor from 'containers/GFEditor';
 import { gfEditIsEditing } from 'containers/GFEditor/reducer';
 import { isMaritime, isMwa } from 'configs';
@@ -28,77 +27,21 @@ import VehicleIcon from 'material-ui/svg-icons/maps/local-shipping';
 import LocationIcon from 'material-ui/svg-icons/social/location-city';
 import PoiIcon from 'material-ui/svg-icons/maps/place';
 
+
+// TODO ---- CLEAN this up
+import * as listEvents from './events';
+import * as mapEvents from 'containers/MapFleet/events';
+
+
+
+
 const iconColor = '#FFFFFF';
 const iconHoverColor = '#FFEEAA';
 
 class OperationalPowerList extends React.Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      currentExpandedVehicleId: undefined,
-      currentExpandedGFId: undefined,
-      selectedTab: listTypes.withVehicleDetails,
-    };
-
-    props.eventDispatcher.registerHandler(mapEvents.MAP_VEHICLE_SELECTED, this.onVehicleClick);
-    props.eventDispatcher.registerHandler(mapEvents.MAP_GF_SELECTED, this.onGFClick);
-  }
-
-  componentDidMount() {
-    this.props.setListTypeFunc(this.state.selectedTab);
-  }
-  onGFClick = (itemId, isExpanded = true) => {
-    this.onItemClick(itemId, isExpanded, 'location');
-  }
-
-  onVehicleClick = (itemId, isExpanded = true) => {
-    this.onItemClick(itemId, isExpanded, 'vehicle');
-    this.props.setSelectedVehicleId(itemId);
-  }
-
-  onItemClick = (itemId, isExpanded, type) => {
-    this.props.eventDispatcher.fireEvent(listEvents.OPS_LIST_ITEM_SELECTED, itemId);
-    const value = isExpanded ? itemId : undefined;
-    let selectedTab;
-
-    switch (type) {
-      case 'vehicle': {
-        selectedTab = listTypes.withVehicleDetails;
-
-        this.setState({
-          selectedTab,
-          currentExpandedVehicleId: value,
-        });
-        break;
-      }
-      case 'location': {
-        selectedTab = listTypes.withGFDetails;
-
-        this.setState({
-          selectedTab,
-          currentExpandedGFId: value,
-        });
-        break;
-      }
-      default: break;
-    }
-
-    this.onTabChange(selectedTab);
-  }
-
   onTabChange = (value) => {
-    if (value === listTypes.withVehicleDetails
-    || value === listTypes.withGFDetails
-    || value === listTypes.mwaJob) {
-      this.props.setListTypeFunc(value);
-      this.props.eventDispatcher.fireEvent(listEvents.OPS_LIST_TAB_SWITCH, value, () => {
-        this.setState({
-          selectedTab: value,
-        });
-      });
-    }
+    this.props.setListTypeFunc(value);
   }
 
   render() {
@@ -122,7 +65,7 @@ class OperationalPowerList extends React.Component {
           className={styles.fullHeight}
           contentContainerClassName={styles.contentFullHeight}
           onChange={this.onTabChange}
-          value={this.state.selectedTab}
+          value={this.props.selectedTab || listTypes.withVehicleDetails}
         >
           <Tab
             icon={<VehicleIcon color={iconColor} hoverColor={iconHoverColor} />}
@@ -135,8 +78,7 @@ class OperationalPowerList extends React.Component {
             <Scrollable>
               <ItemsList
                 scrollIntoView
-                currentExpandedItemId={this.state.currentExpandedVehicleId}
-                onItemClick={this.onVehicleClick}
+                currentExpandedItemId={this.props.selectedVehicleId}
                 data={this.props.vehicles}
                 type={vehType}
               />
@@ -151,8 +93,7 @@ class OperationalPowerList extends React.Component {
             <Scrollable>
               <ItemsList
                 scrollIntoView
-                currentExpandedItemId={this.state.currentExpandedGFId}
-                onItemClick={this.onGFClick}
+                currentExpandedItemId={this.props.selectedGfId}
                 data={this.props.gfs}
                 type={listTypes.withGFDetails}
               />
@@ -172,7 +113,6 @@ class OperationalPowerList extends React.Component {
                   currentExpandedItemId={this.props.getMWASelectedJobId}
                   onItemClick={(mwaJobObj) => {
                     this.props.mwaSelectJob(mwaJobObj.id);
-                    this.props.eventDispatcher.fireEvent(listEvents.OPS_LIST_ITEM_SELECTED, mwaJobObj.vehicleId);
                     /*this.props.setSelectedVehicleId(mwaJobObj.vehicleId); */
                   }}
                   type={listTypes.mwaJob}
@@ -187,13 +127,16 @@ class OperationalPowerList extends React.Component {
 }
 
 OperationalPowerList.propTypes = {
+  selectedTab: React.PropTypes.string,
   vehicles: React.PropTypes.array.isRequired,
   gfs: React.PropTypes.array.isRequired,
-  eventDispatcher: React.PropTypes.object.isRequired,
+
+  selectedGfId: React.PropTypes.string.isRequired,
+  selectedVehicleId: React.PropTypes.string.isRequired,
+
   filterVehiclesFunc: React.PropTypes.func.isRequired,
   filterGFsFunc: React.PropTypes.func.isRequired,
-  setSelectedVehicleId: React.PropTypes.func.isRequired,
-  getSelectedVehicleId: React.PropTypes.string.isRequired,
+
   isEditGF: React.PropTypes.bool.isRequired,
   setListTypeFunc: React.PropTypes.func.isRequired,
   vehicleFilterString: React.PropTypes.string,
@@ -208,15 +151,18 @@ OperationalPowerList.defaultProps = {
 };
 
 const mapState = (state) => ({
-  getSelectedVehicleId: getSelectedVehicleId(state),
+  selectedTab: ctxGetPowListTabType(state),
+  selectedGfId: ctxGetSelectedGFId(state),
+  selectedVehicleId: ctxGetSelectedVehicleId(state),
+
   isEditGF: gfEditIsEditing(state),
   vehicleFilterString: getVehicleFilterString(state),
   mwaJobs: getMWAJobs(state),
   getMWASelectedJobId: getMWASelectedJobId(state),
 });
 const mapDispatch = {
+
   filterVehiclesFunc: vehiclesActions.filterVehicles,
-  setSelectedVehicleId: vehiclesActions.setSelectedVehicleId,
   filterGFsFunc: gfActions.filterGFs,
   setListTypeFunc: contextActions.ctxPowListTabType,
   mwaSelectJob,

@@ -1,6 +1,10 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import { connect } from 'react-redux';
 import cs from 'classnames';
+import { contextActions } from 'services/Global/actions';
+import { mapStoreSetPan } from 'containers/MapFleet/reducerAction';
+
 import { VelocityTransitionGroup } from 'velocity-react';
 import Divider from 'material-ui/Divider';
 import ItemProperty from '../DetailItemProperty';
@@ -18,7 +22,8 @@ import MwaIdicator from './mwaVehicleDetails';
 class ListItemVehicle extends React.Component {
 
   onClick = () => {
-    this.props.onClick(this.props.vehicle.id);
+    this.props.selectVehicle(this.props.vehicle.id);
+    this.props.mapStoreSetPan([this.props.vehicle.pos]);
   }
 
   inActivityIndicator() {
@@ -113,43 +118,6 @@ class ListItemVehicle extends React.Component {
     );
   }
 
-  // renderMoreDetails() {
-  //   if (!this.props.isExpanded) return null;
-
-  //   const { vehicle } = this.props;
-
-  //   return (
-  //     <div>
-  //       <Divider />
-  //       <ItemProperty
-  //         title="License Plate"
-  //         value={vehicle.original.licensePlate}
-  //       />
-  //       <ItemProperty
-  //         title="Make"
-  //         value={vehicle.original.make}
-  //       />
-  //       <ItemProperty
-  //         title="Model"
-  //         value={vehicle.original.model}
-  //       />
-  //       <ItemProperty
-  //         title="Year"
-  //         value={vehicle.original.year}
-  //       />
-  //       <Divider />
-  //       <ItemProperty
-  //         title="lat"
-  //         value={vehicle.pos[0].toFixed(6)}
-  //       />
-  //       <ItemProperty
-  //         title="lon"
-  //         value={vehicle.pos[1].toFixed(6)}
-  //       />
-  //     </div>
-  //   );
-  // }
-
   render() {
     const className = cs(stylesBase.listItemInn, {
       [styles.listItemInn_expanded]: this.props.isExpanded,
@@ -182,11 +150,19 @@ class ListItemVehicle extends React.Component {
 }
 
 ListItemVehicle.propTypes = {
-  onClick: React.PropTypes.func.isRequired,
+  selectVehicle: React.PropTypes.func.isRequired,
   isExpanded: React.PropTypes.bool,
   vehicle: vehicleShape.isRequired,
+  mapStoreSetPan: React.PropTypes.func.isRequired,
 
   translations: vehicleDetailsShape.isRequired,
 };
 
-export default pure(ListItemVehicle);
+const mapState = (state) => ({
+});
+const mapDispatch = {
+  selectVehicle: contextActions.ctxSelectVehicle,
+  mapStoreSetPan,
+};
+
+export default connect(mapState, mapDispatch)(pure(ListItemVehicle));

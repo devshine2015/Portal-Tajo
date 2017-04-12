@@ -56,10 +56,9 @@ function chooseItem(type, {
     case types.withGFDetails: {
       return (
         <DetailedGFItem
-          onClick={onItemClick}
           isExpanded={isExpanded}
           translations={translations}
-          {...item}
+          gf={item}
         />
       );
     }
@@ -67,7 +66,6 @@ function chooseItem(type, {
       return (
         <VehicleChronicleItem
           id={item.id}
-          onClick={onItemClick}
           isExpanded={isExpanded}
           translations={translations}
           name={item.original.name}
@@ -159,7 +157,7 @@ class GenericListItem extends React.Component {
 GenericListItem.propTypes = {
   item: React.PropTypes.object.isRequired,
   isExpanded: React.PropTypes.bool.isRequired,
-  onItemClick: React.PropTypes.func.isRequired,
+  onItemClick: React.PropTypes.func,
   dateFormat: React.PropTypes.string.isRequired,
   selectedItems: React.PropTypes.array,
   scrollIntoView: React.PropTypes.bool,

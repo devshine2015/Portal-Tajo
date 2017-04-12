@@ -8,6 +8,9 @@ import ItemProperty from '../DetailItemProperty';
 import { getGFByIdFunc } from 'services/FleetModel/reducer';
 import { deleteGF } from 'services/FleetModel/actions/gfActions';
 import { gfEditUpdate } from 'containers/GFEditor/actions';
+import { contextActions } from 'services/Global/actions';
+import { mapStoreSetPan } from 'containers/MapFleet/reducerAction';
+
 import { showSnackbar } from 'containers/Snackbar/actions';
 import DeletIcon from 'material-ui/svg-icons/action/delete-forever';
 // import EditIcon from 'material-ui/svg-icons/maps/edit-location';
@@ -35,11 +38,12 @@ const stylesCheck = {
 class LocationWithDetails extends React.Component {
 
   onClick = () => {
-    this.props.onClick(this.props.id);
+    this.props.selectGF(this.props.gf.id);
+    this.props.mapStoreSetPan([this.props.gf.pos]);
   }
   onDelete = () => {
 //    e.preventDefault();
-    this.props.deleteGF(this.props.id, 1)
+    this.props.deleteGF(this.props.gf.id, 1)
       .then(() => {
         this.props.showSnackbar(`${this.props.translations.remove_success} ✓`, 3000);
       }, () => {
@@ -47,7 +51,7 @@ class LocationWithDetails extends React.Component {
       });
   }
   onEdit = () => {
-    this.props.gfEditUpdate(this.props.gfById(this.props.id));
+    this.props.gfEditUpdate(this.props.gfById(this.props.gf.id));
   }
   renderDetails() {
     // TODO: no API for GF editing yet - remove the btn
@@ -65,13 +69,13 @@ class LocationWithDetails extends React.Component {
         <ItemProperty
           key="address"
           title={ this.props.translations.address }
-          value={this.props.address}
+          value={this.props.gf.address}
         />
-        {this.props.isPolygon ? null :
+        {this.props.gf.isPolygon ? null :
           <ItemProperty
             key="radius"
             title={ this.props.translations.radius }
-            value={this.props.radius.toFixed(0)}
+            value={this.props.gf.radius.toFixed(0)}
           />
         }
         <Divider key="line02" />
@@ -115,7 +119,7 @@ class LocationWithDetails extends React.Component {
         onClick={this.onClick}
       >
         <h1 key="name">
-          {this.props.name}
+          {this.props.gf.name}
         </h1>
         <VelocityTransitionGroup
           enter={{ animation: 'slideDown', duration: 500 }}
@@ -129,17 +133,15 @@ class LocationWithDetails extends React.Component {
 }
 
 LocationWithDetails.propTypes = {
-  id: React.PropTypes.string.isRequired,
+  selectGF: React.PropTypes.func.isRequired,
   isExpanded: React.PropTypes.bool,
-  isPolygon: React.PropTypes.bool.isRequired,
-  name: React.PropTypes.string.isRequired,
-  onClick: React.PropTypes.func.isRequired,
-  radius: React.PropTypes.number,
-  address: React.PropTypes.string.isRequired,
+  gf: React.PropTypes.object.isRequired,
+
   deleteGF: React.PropTypes.func.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,
   gfEditUpdate: React.PropTypes.func.isRequired,
   gfById: React.PropTypes.func.isRequired,
+  mapStoreSetPan: React.PropTypes.func.isRequired,
 
   translations: gfDetailsShape.isRequired,
 };
@@ -148,9 +150,12 @@ const mapState = (state) => ({
   gfById: getGFByIdFunc(state),
 });
 const mapDispatch = {
+  selectGF: contextActions.ctxSelectGF,
+
   deleteGF,
   showSnackbar,
   gfEditUpdate,
+  mapStoreSetPan,
 };
-const PureListItemGF = pure(LocationWithDetails);
-export default connect(mapState, mapDispatch)(PureListItemGF);
+
+export default connect(mapState, mapDispatch)(pure(LocationWithDetails));

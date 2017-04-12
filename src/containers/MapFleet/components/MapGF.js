@@ -1,8 +1,12 @@
 import React from 'react';
 import pure from 'recompose/pure';
-import { createPointerLine, showPointerLine } from './../../utils/pointerLineHelpers';
+import { connect } from 'react-redux';
+import { createPointerLine, showPointerLine } from './../utils/pointerLineHelpers';
 import { hideLayer } from 'utils/mapBoxMap';
-import styles from './../styles.css';
+import { contextActions } from 'services/Global/actions';
+import { ctxGetSelectedGFId, ctxGetHideGF } from 'services/Global/reducers/contextReducer';
+
+import styles from './styles.css';
 
 const iconSelected = require('assets/images/v_icons_combi/sqr@3x.png');
 
@@ -18,7 +22,7 @@ class MapGF extends React.Component {
     this.pointerLine = null;
   }
   componentDidMount() {
-    this.containerLayer = this.props.theLayer;
+    this.containerLayer = this.props.theMap;
     this.createMarker();
   }
   componentWillUnmount() {
@@ -35,14 +39,14 @@ class MapGF extends React.Component {
       this.theCircle.setLatLng(latLng);
     }
   }
+  clickHandle = () => {
+    this.props.selectGF(this.props.theGF.id, true);
+  }
   createShapePoly() {
     this.thePolygon = window.L.polygon(this.props.theGF.latLngs)
       .setStyle({ weight: 1 });
     this.containerLayer.addLayer(this.thePolygon);
-    const clickHandle = ((inThis) => () => {
-      inThis.props.onClick(inThis.props.theGF.id);
-    })(this);
-    this.thePolygon.on('click', clickHandle);
+    this.thePolygon.on('click', this.clickHandle);
     this.pointerLine = createPointerLine(this.props.theGF.pos, [0, 0]);
   }
   createShapeCircle() {
@@ -50,10 +54,7 @@ class MapGF extends React.Component {
     this.theMarker = window.L.circleMarker(this.props.theGF.pos,
       { title: this.props.theGF.name, weight: 1 })
       .setRadius(markerR);
-    const clickHandle = ((inThis) => () => {
-      inThis.props.onClick(inThis.props.theGF.id);
-    })(this);
-    this.theMarker.on('click', clickHandle).addTo(this.containerLayer);
+    this.theMarker.on('click', this.clickHandle).addTo(this.containerLayer);
     this.theCircle = window.L.circle(this.props.theGF.pos, this.props.theGF.radius)
       .setStyle({ color: this.context.muiTheme.palette.PLItemBackgroundColorExpanded,
           weight: 1, opacity: 1 });
@@ -107,6 +108,9 @@ class MapGF extends React.Component {
   }
   toggle(doShow) {
     hideLayer(this.containerLayer, this.theMarker, !doShow);
+    hideLayer(this.containerLayer, this.theCircle, !doShow);
+    hideLayer(this.containerLayer, this.thePolygon, !doShow);
+
     if (!doShow) {
       this.expand(false);
     }
@@ -114,39 +118,44 @@ class MapGF extends React.Component {
 
   render() {
     if (this.theCircle !== null || this.thePolygon !== null) {
-      this.toggle(!this.props.theGF.filteredOut);
+      this.toggle(!this.props.theGF.filteredOut && !this.props.hideMe);
       this.setPosition(this.props.theGF.pos);
-      this.expand(this.props.isSelected);
-      showPointerLine(this.pointerLine, !this.props.theGF.filteredOut
-                                        && this.props.isSelected
-                                        && this.props.isDetailViewActivated);
+      this.expand(this.props.theGF.id === this.props.selectedGfId);
+      // showPointerLine(this.pointerLine, !this.props.theGF.filteredOut
+      //                                   && this.props.isSelected
+      //                                   && this.props.isDetailViewActivated);
     }
     return false;
   }
 }
 
-
 MapGF.contextTypes = {
   muiTheme: React.PropTypes.object.isRequired,
 };
 MapGF.propTypes = {
-  theLayer: React.PropTypes.object,
+  theMap: React.PropTypes.object,
   theGF: React.PropTypes.object,
-  onClick: React.PropTypes.func.isRequired,
-  isSelected: React.PropTypes.bool.isRequired,
-  isDetailViewActivated: React.PropTypes.bool.isRequired,
+  selectGF: React.PropTypes.func.isRequired,
+  selectedGfId: React.PropTypes.string.isRequired,
+  hideMe: React.PropTypes.bool.isRequired,
 };
-const PureMapGF = pure(MapGF);
+
+const mapState = (state) => ({
+  selectedGfId: ctxGetSelectedGFId(state),
+  hideMe: ctxGetHideGF(state),
+});
+const mapDispatch = {
+  selectGF: contextActions.ctxSelectGF,
+};
+
+const CompleteMapGF = connect(mapState, mapDispatch)(pure(MapGF));
 
 // export default PureMapGF;
 
-export const mapGFMarkerMaker = (v, gfLayer, onClick = () => {}, isSelected = false, isDetailView = false) => (
-      <PureMapGF
+export const mapGFMarkerMaker = (v) => (
+      <CompleteMapGF
         key={v.id}
-        theLayer={gfLayer}
+        theMap={null}
         theGF={v}
-        onClick={onClick}
-        isSelected={isSelected}
-        isDetailViewActivated={isDetailView}
       />
     );

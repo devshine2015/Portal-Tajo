@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 
 import MapVehicle from './components/MapVehicle';
-import { mapGFMarkerMaker } from './components/MapGF';
+// import { mapGFMarkerMaker } from './components/MapGF';
 import EditGF from './components/EditGF';
 import { mapMWAJobMarkerMaker } from './components/MWAJobMarker';
 import CustomControls from './components/CustomControls';
@@ -181,8 +181,7 @@ class MapFleet extends React.Component {
       cb();
     });
   }
-  makeGFMarker = (v) => (mapGFMarkerMaker(v, this.gfMarkersLayer, selectForMe(this, mapEvents.MAP_GF_SELECTED),
-    this.state.selectedLocationId === v.id, this.state.detailedList === listTypes.withGFDetails));
+  makeGFMarker = (v) => ({});
 
   makeVehicleMarker = (v) => (
         <MapVehicle
@@ -217,10 +216,6 @@ class MapFleet extends React.Component {
        key="gfEditHelper"
        theMap={this.theMap}
      />);
-// ROUTING dev test helpers
-    const v = getVehicleById(this.state.selectedVehicleId, this.props.vehicles);
-    const selectedVehicle = (v !== undefined && v.vehicle !== undefined) ? v.vehicle : { pos: [] };
-// ROUTING dev helpers
 
     return (
       <div className={styles.mapContainer}>
