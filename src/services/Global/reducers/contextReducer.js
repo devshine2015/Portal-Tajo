@@ -51,10 +51,10 @@ function contextReducer(state = initialState, action) {
   }
 }
 
+export default contextReducer;
+
 const _ctxReducer = state =>
   state.getIn(['global', 'context']);
-
-export default contextReducer;
 
 export const ctxGetMap = state =>
   _ctxReducer(state).get('map');
@@ -62,10 +62,15 @@ export const ctxGetSelectedVehicleId = state =>
   _ctxReducer(state).get('selectedVehicleId');
 export const ctxGetSelectedGFId = state =>
   _ctxReducer(state).get('selectedGFId');
+
 export const ctxGetHideGF = state =>
-  _ctxReducer(state).get('hideGF');
+  _ctxReducer(state).get('hideGF')
+  && ctxGetPowListTabType(state) !== listTypes.withGFDetails;
+
 export const ctxGetHideVehicles = state =>
-  _ctxReducer(state).get('hideVehicles');
+  _ctxReducer(state).get('hideVehicles')
+  && ctxGetPowListTabType(state) !== listTypes.withVehicleDetails;
+
 export const ctxGetPowListTabType = state =>
   _ctxReducer(state).get('activeListType');
 
