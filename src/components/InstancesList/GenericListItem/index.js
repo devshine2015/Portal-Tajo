@@ -85,7 +85,6 @@ function chooseItem(type, {
     case types.mwaJob: {
       return (
         <MWAJobWithDetails
-          onClick={onItemClick}
           isExpanded={isExpanded}
           translations={translations}
           mwaJobObject={item}

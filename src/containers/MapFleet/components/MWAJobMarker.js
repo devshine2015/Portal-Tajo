@@ -3,6 +3,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { hideLayer } from 'utils/mapBoxMap';
 import { mwaSelectJob } from 'services/MWA/actions';
+import { getMWASelectedJobId } from 'services/MWA/reducer';
 
 require('containers/MapFleet/leafletStyles.css');
 
@@ -26,7 +27,7 @@ class MWAJobMarker extends React.Component {
   }
 
   componentDidMount() {
-    this.theLayer = this.props.theLayer;
+    this.theLayer = this.props.theMap;
     this.createMarker();
     this.setPosition();
   }
@@ -74,7 +75,7 @@ class MWAJobMarker extends React.Component {
     } else {
       this.setPosition();
     }
-    hideLayer(this.props.theLayer, this.theMarker, false);
+    hideLayer(this.theLayer, this.theMarker, false);
   }
 
   latLngFromJob = () => (
@@ -83,22 +84,22 @@ class MWAJobMarker extends React.Component {
 
   render() {
     if (this.theMarker !== null) {
-      this.setSelected(this.props.isSelected, this.props.isMyVehicleSelected);
-      hideLayer(this.props.theLayer, this.theMarker, this.props.theMWAJob.filteredOut);
+      this.setSelected(this.props.selectedId === this.props.theMWAJob.id, false); //this.props.isMyVehicleSelected);
+      hideLayer(this.theLayer, this.theMarker, this.props.theMWAJob.filteredOut);
     }
     return false;
   }
 }
 
 MWAJobMarker.propTypes = {
-  theLayer: React.PropTypes.object,
+  theMap: React.PropTypes.object,
   theMWAJob: React.PropTypes.object,
-  isSelected: React.PropTypes.bool.isRequired,
-  isMyVehicleSelected: React.PropTypes.bool.isRequired,
   mwaSelectJob: React.PropTypes.func.isRequired,
+  selectedId: React.PropTypes.string.isRequired,
 };
 
-const mapState = () => ({
+const mapState = (state) => ({
+  selectedId: getMWASelectedJobId(state),
 });
 const mapDispatch = {
   mwaSelectJob,
@@ -106,11 +107,9 @@ const mapDispatch = {
 
 const PureMWAJobMarker = connect(mapState, mapDispatch)(pure(MWAJobMarker));
 
-export const mapMWAJobMarkerMaker = (mwaJob, gfLayer, isSelected, isMyVehicleSelected) =>
+export const mapMWAJobMarkerMaker = (mwaJob) =>
 (<PureMWAJobMarker
   key={mwaJob.id}
-  theLayer={gfLayer}
+  theMap={null}
   theMWAJob={mwaJob}
-  isSelected={isSelected}
-  isMyVehicleSelected={isMyVehicleSelected}
 />);

@@ -9,7 +9,6 @@ require('containers/MapFleet/leafletStyles.css');
 class MapRoute extends React.Component {
   constructor(props) {
     super(props);
-    this.containerLayer = this.props.theLayer;
     this.thePath = null;
     this.toSpotMarker = null;
   }
@@ -19,7 +18,7 @@ class MapRoute extends React.Component {
   //   return this.props.routeToLatLng[0] !== nextProps.routeToLatLng[0];
   // }
   componentWillUnmount() {
-    hideLayer(this.containerLayer, this.thePath, true);
+    hideLayer(this.props.theMap, this.thePath, true);
   }
 
   setPath = () => {
@@ -34,7 +33,7 @@ class MapRoute extends React.Component {
     } else {
       this.thePath.setLatLngs(this.props.routeObj.pathLatLngs);
     }
-    hideLayer(this.containerLayer, this.thePath, false);
+    hideLayer(this.props.theMap, this.thePath, false);
 
     // find the top point to set popup to
     // let popUpSpot = latLngArray[0];
@@ -81,7 +80,7 @@ class MapRoute extends React.Component {
           fillColor: toMarkerColor,
         })
         .setRadius(markerR);
-      hideLayer(this.containerLayer, this.toSpotMarker, false);
+      hideLayer(this.props.theMap, this.toSpotMarker, false);
     } else {
       this.toSpotMarker.setLatLng(this.props.routeObj.destination);
     }
@@ -94,7 +93,7 @@ class MapRoute extends React.Component {
 }
 
 MapRoute.propTypes = {
-  theLayer: React.PropTypes.object.isRequired,
+  theMap: React.PropTypes.object.isRequired,
   routeObj: React.PropTypes.object,
 };
 

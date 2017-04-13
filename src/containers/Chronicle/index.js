@@ -13,7 +13,7 @@ import ChronicleMap from 'containers/MapFleet/chronicle';
 import { requestHistory } from 'containers/Chronicle/actions';
 import { getChronicleTimeFrame,
   getInstanceChronicleFrameById, hasChroniclePlayableFrames } from './reducer';
-import GFEditor from 'containers/GFEditor';
+import GFEditor from 'containers/GFEditor/GFEditor';
 import createEventDispatcher from 'utils/eventDispatcher';
 
 import { gfEditIsEditing } from 'containers/GFEditor/reducer';

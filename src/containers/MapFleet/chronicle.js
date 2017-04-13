@@ -8,7 +8,7 @@ import ChronicleMarker from './components/ChronicleMarker';
 import ChronicleEventMarker from './components/ChronicleEventMarker';
 // import MapGF from './components/MapGF';
 // import { mapGFMarkerMaker } from './components/MapGF';
-import EditGF from './components/EditGF';
+import EditGF from 'containers/GFEditor/MapComponenet';
 import { connect } from 'react-redux';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { getInstanceChronicleFrameById } from 'containers/Chronicle/reducer';

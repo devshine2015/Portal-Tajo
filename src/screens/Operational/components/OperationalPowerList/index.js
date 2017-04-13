@@ -14,11 +14,11 @@ import { ctxGetPowListTabType, ctxGetSelectedVehicleId,
 import { getVehicleFilterString } from 'services/Global/reducer';
 import { translate } from 'utils/i18n';
 
-import GFEditor from 'containers/GFEditor';
+import GFEditor from 'containers/GFEditor/GFEditor';
 import { gfEditIsEditing } from 'containers/GFEditor/reducer';
 import { isMaritime, isMwa } from 'configs';
 import { getMWAJobs, getMWASelectedJobId } from 'services/MWA/reducer';
-import { mwaSelectJob, mwaFilterJobs } from 'services/MWA/actions';
+import { mwaFilterJobs } from 'services/MWA/actions';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './PropTypes';
@@ -57,7 +57,6 @@ class OperationalPowerList extends React.Component {
     const { translations } = this.props;
 
     return (
-      <PowerList>
         <Tabs
           inkBarStyle={{
             backgroundColor: 'rgba(255,255,255,0.75)',
@@ -111,17 +110,12 @@ class OperationalPowerList extends React.Component {
                   scrollIntoView
                   data={this.props.mwaJobs}
                   currentExpandedItemId={this.props.getMWASelectedJobId}
-                  onItemClick={(mwaJobObj) => {
-                    this.props.mwaSelectJob(mwaJobObj.id);
-                    /*this.props.setSelectedVehicleId(mwaJobObj.vehicleId); */
-                  }}
                   type={listTypes.mwaJob}
                 />
               </Scrollable>
             </Tab>
           }
         </Tabs>
-      </PowerList>
     );
   }
 }
@@ -143,7 +137,7 @@ OperationalPowerList.propTypes = {
   translations: phrasesShape.isRequired,
   mwaJobs: React.PropTypes.array.isRequired,
   mwaSelectJob: React.PropTypes.func.isRequired,
-  getMWASelectedJobId: React.PropTypes.string.isRequired,
+  getMWASelectedJobId: React.PropTypes.string,
   mwaFilterJobs: React.PropTypes.func.isRequired,
 };
 OperationalPowerList.defaultProps = {
@@ -165,7 +159,6 @@ const mapDispatch = {
   filterVehiclesFunc: vehiclesActions.filterVehicles,
   filterGFsFunc: gfActions.filterGFs,
   setListTypeFunc: contextActions.ctxPowListTabType,
-  mwaSelectJob,
   mwaFilterJobs,
 };
 

@@ -14,11 +14,10 @@ export function createMapboxMap(domNode, view, contextmenuItems) {
   window.L.mapbox.accessToken = MAPBOX_KEY;
   theMap = window.L.mapbox.map(domNode,
     null,  // some mestiriouse argument...
-    contextmenuItems !== null ? {
+    {
       contextmenu: true,
       contextmenuWidth: 140,
-      contextmenuItems,
-    } : {}
+    }
   );
   theMap.setView(view.center, view.zoom);
 

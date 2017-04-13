@@ -12,6 +12,16 @@ import { mapStoreSetView, mapStoreGetView, mapStoreGetPan } from './reducerActio
 
 import styles from './styles.css';
 
+export const MapOptions = {
+  gMapsLink: 1,
+  editGF: 1 << 1,
+};
+
+// import { gfEditUpdate } from 'containers/GFEditor/actions';
+// import { gfEditIsEditing } from 'containers/GFEditor/reducer';
+// import { contextMenuAddGFItems } from 'containers/GFEditor/utils';
+
+
 class MapContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -40,7 +50,8 @@ class MapContainer extends React.Component {
     }
     this.theMap = createMapboxMap(ReactDOM.findDOMNode(this),
       this.props.mapStoredView,
-      null
+      // contextMenuAddGFItems(this.props.gfEditUpdate),
+         null
       // contextMenuAddGFItems(this.props.gfEditUpdate,
       //   this.routeSelectedVechicleToLatLng,
       //   this.nearestVechicleToLatLng)

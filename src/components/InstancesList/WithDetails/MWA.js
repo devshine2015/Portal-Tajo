@@ -6,6 +6,12 @@ import { VelocityTransitionGroup } from 'velocity-react';
 import ItemProperty from '../DetailItemProperty';
 import Divider from 'material-ui/Divider';
 
+import { mwaSelectJob } from 'services/MWA/actions';
+import { contextActions } from 'services/Global/actions';
+import { mapStoreSetPan } from 'containers/MapFleet/reducerAction';
+import { getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
+import * as fromFleetReducer from 'services/FleetModel/reducer';
+
 import stylesBase from '../styles.css';
 import styles from './styles.css';
 import { gfDetailsShape } from '../PropTypes';
@@ -13,12 +19,19 @@ import { gfDetailsShape } from '../PropTypes';
 
 class MWAJobWithDetails extends React.Component {
 
+  latLngFromJob = () => (
+      window.L.latLng(parseFloat(this.props.mwaJobObject.X), parseFloat(this.props.mwaJobObject.Y))
+  );
   onClick = () => {
-    this.props.onClick(this.props.mwaJobObject);
+    this.props.mwaSelectJob(this.props.mwaJobObject.id);
+    this.props.selectVehicle(this.props.mwaJobObject.vehicleId);
+    const veh = getVehicleById(this.props.mwaJobObject.vehicleId, this.props.vehicles).vehicle;
+    this.props.mapStoreSetPan([veh.pos, this.latLngFromJob()]);
+
   }
   renderDetails() {
     // if (this.props.isExpanded) {
-      return (<div>
+    return (<div>
         <Divider key="line01" style={{ margin: '-1px 30px 10px 0px' }} />
         <ItemProperty
           key="carName"
@@ -57,18 +70,22 @@ class MWAJobWithDetails extends React.Component {
 MWAJobWithDetails.propTypes = {
   mwaJobObject: React.PropTypes.object.isRequired,
   isExpanded: React.PropTypes.bool,
+  mwaSelectJob: React.PropTypes.func.isRequired,
+  selectVehicle: React.PropTypes.func.isRequired,
+  mapStoreSetPan: React.PropTypes.func.isRequired,
+  vehicles: React.PropTypes.array.isRequired,
 
-  onClick: React.PropTypes.func.isRequired,
   translations: gfDetailsShape.isRequired,
 };
 
 const mapState = (state) => ({
+  vehicles: fromFleetReducer.getVehiclesExSorted(state),
   // gfById: getGFByIdFunc(state),
 });
 const mapDispatch = {
-  // deleteGF,
-  // showSnackbar,
-  // gfEditUpdate,
+  mwaSelectJob,
+  selectVehicle: contextActions.ctxSelectVehicle,
+  mapStoreSetPan,
 };
 const PureListMWAJob = pure(MWAJobWithDetails);
 export default connect(mapState, mapDispatch)(PureListMWAJob);

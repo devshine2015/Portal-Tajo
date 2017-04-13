@@ -5,7 +5,7 @@ import pure from 'recompose/pure';
 
 import MapVehicle from './components/MapVehicle';
 // import { mapGFMarkerMaker } from './components/MapGF';
-import EditGF from './components/EditGF';
+import EditGF from 'containers/GFEditor/MapComponenet';
 import { mapMWAJobMarkerMaker } from './components/MWAJobMarker';
 import CustomControls from './components/CustomControls';
 import MapRoute from './components/MapRoute';
