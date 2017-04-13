@@ -45,14 +45,6 @@ class OperationalPowerList extends React.Component {
   }
 
   render() {
-    if (this.props.isEditGF) {
-      return (
-        <PowerList>
-          <GFEditor />
-        </PowerList>
-      );
-    }
-
     const vehType = isMaritime ? listTypes.maritime : listTypes.withVehicleDetails;
     const { translations } = this.props;
 

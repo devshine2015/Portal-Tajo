@@ -2,6 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { setChronicleNormalizedT } from 'containers/Chronicle/actions';
+import { hideLayer } from 'utils/mapBoxMap';
 
 
 // import styles from './../styles.css';
@@ -10,11 +11,12 @@ import { setChronicleNormalizedT } from 'containers/Chronicle/actions';
 class ChroniclePath extends React.Component {
   constructor(props) {
     super(props);
-    this.containerLayer = this.props.theLayer;
-    this.createPath();
+    this.thePath = null;
   }
 
   componentDidMount() {
+    this.createPath();
+    this.highlight(this.props.isSelected);
   }
   componentWillUnmount() {
 // TODO: need to delete MapBox markers?
@@ -34,21 +36,17 @@ class ChroniclePath extends React.Component {
       that.props.setChronicleNormalizedT(clickT100);
     });
 
-    if (!this.containerLayer.hasLayer(this.thePath)) {
-      this.containerLayer.addLayer(this.thePath);
-    }
+    hideLayer(this.props.theMap, this.thePath, false);
     this.thePath.bringToBack();
-    this.containerLayer.invalidateSize();
+    this.props.theMap.invalidateSize();
 // zoom the map to the PATH
-    this.containerLayer.fitBounds(this.thePath.getBounds());
+    this.props.theMap.fitBounds(this.thePath.getBounds());
   }
   removePath() {
     if (this.thePath === null) {
       return;
     }
-    if (this.containerLayer.hasLayer(this.thePath)) {
-      this.containerLayer.removeLayer(this.thePath);
-    }
+    hideLayer(this.props.theMap, this.thePath, true);
     this.thePath = null;
   }
   highlight(doHighlight) {
@@ -64,7 +62,7 @@ class ChroniclePath extends React.Component {
       });
       this.thePath.bringToFront();
 // zoom the map to the PATH
-//      this.containerLayer.fitBounds(this.thePath.getBounds());
+//      this.props.theMap.fitBounds(this.thePath.getBounds());
     } else {
       this.thePath.setStyle({
         color: '#0A5',
@@ -81,7 +79,7 @@ class ChroniclePath extends React.Component {
 }
 
 ChroniclePath.propTypes = {
-  theLayer: React.PropTypes.object.isRequired,
+  theMap: React.PropTypes.object,
   chronicleFrame: React.PropTypes.object.isRequired,
   isSelected: React.PropTypes.bool.isRequired,
   setChronicleNormalizedT: React.PropTypes.func.isRequired,
@@ -94,4 +92,17 @@ const mapDispatch = {
 const PureChroniclePath = pure(ChroniclePath);
 export default connect(mapState, mapDispatch)(PureChroniclePath);
 
-// export default PureChroniclePath;
+/*const makeChronoPath = (vehicle, vehCronicleFrame) => {
+  if (!vehCronicleFrame.isValid() || !vehCronicleFrame.hasPositions()) {
+    return false;
+  }
+  return (
+        <ChroniclePath
+          key={`${v.id}CrP`}
+          theLayer={this.theMap}
+          chronicleFrame={vehCronicleFrame}
+          isSelected={this.props.selectedVehicle !== null
+            && this.props.selectedVehicle.id === v.id}
+        />
+      );
+};*/

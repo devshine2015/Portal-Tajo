@@ -67,8 +67,8 @@ function chooseItem(type, {
         <VehicleChronicleItem
           id={item.id}
           isExpanded={isExpanded}
+          vehicle={item}
           translations={translations}
-          name={item.original.name}
         />
       );
     }

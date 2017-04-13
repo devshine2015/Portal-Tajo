@@ -10,6 +10,8 @@ import { showSnackbar } from 'containers/Snackbar/actions';
 import directions from 'utils/mapServices/google/directions';
 import distanceMatrixToSingleDst from 'utils/mapServices/google/distanceMatrix';
 
+import { addMapMenuItem } from 'utils/mapContextMenu';
+
 class NearestFinder extends React.Component {
   constructor(props) {
     super(props);
@@ -17,14 +19,7 @@ class NearestFinder extends React.Component {
   }
 
   componentDidMount() {
-    const contextMenu = this.props.theMap.contextmenu;
-    const routToPoint = routeFunc => e =>
-  routeFunc(e.latlng);
-    contextMenu.addItem({
-      text: 'nearest',
-      callback: routToPoint(this.nearestVechicleToLatLng),
-    }
-	);
+    addMapMenuItem(this.props.theMap, 'mItmNearest', (e) => this.nearestVechicleToLatLng(e.latlng));
   }
   // shouldComponentUpdate(nextProps) {
   //   return this.props.routeToLatLng[0] !== nextProps.routeToLatLng[0];

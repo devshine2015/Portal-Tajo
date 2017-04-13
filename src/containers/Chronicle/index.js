@@ -9,12 +9,17 @@ import FixedContent from 'components/FixedContent';
 import TimeFrameController from './components/TimeFrameSelector';
 import ChartTimeBox from './components/ChartTimeBox';
 import PlaybackController from './components/PlaybackController';
-import ChronicleMap from 'containers/MapFleet/chronicle';
+
+import TheMap from 'containers/MapFleet/MapContainer';
+import ChroniclePath from 'containers/MapFleet/components/ChroniclePath';
+
 import { requestHistory } from 'containers/Chronicle/actions';
 import { getChronicleTimeFrame,
   getInstanceChronicleFrameById, hasChroniclePlayableFrames } from './reducer';
+import { ctxGetSelectedVehicleId } from 'services/Global/reducers/contextReducer';
+
 import GFEditor from 'containers/GFEditor/GFEditor';
-import createEventDispatcher from 'utils/eventDispatcher';
+import GFEditorMapComponent from 'containers/GFEditor/MapComponenet';
 
 import { gfEditIsEditing } from 'containers/GFEditor/reducer';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
@@ -27,49 +32,26 @@ import styles from './styles.css';
 
 class Chronicle extends React.Component {
 
-  constructor(props) {
-    super(props);
-
-    this.eventDispatcher = createEventDispatcher();
-
-    this.state = {
-      selectedVehicleId: undefined,
-      selectedVehicle: null,
-    };
-
-    this.onItemClick = this.onItemClick.bind(this);
-  }
-
-  componentDidMount() {
-// providing continuous UX - same vehicle selected when switching from other screens
-    const globalSelectedVehicleId = this.props.globalSelectedVehicleId;
-    if (globalSelectedVehicleId !== '') {
-      this.onItemClick(globalSelectedVehicleId);
+  // make all the on-map markers - helpers for render
+  makeChronoPath = (v) => {
+    const vehCronicleFrame = this.props.getInstanceChronicleFrameById(v.id);
+    if (!vehCronicleFrame.isValid() || !vehCronicleFrame.hasPositions()) {
+      return false;
     }
-  }
-  /**
-   * Choose vehicle by id
-   **/
-  onItemClick = (id) => {
-    const v = getVehicleById(id, this.props.vehicles);
-    if (v !== undefined) {
-      this.setState({
-        selectedVehicleId: id,
-        selectedVehicle: v.vehicle,
-      });
-      this.props.setSelectedVehicleId(id);
-      if (!this.props.getInstanceChronicleFrameById(id).isValid()) {
-        const currentTimeFrame = this.props.chronicleTimeFrame;
-        this.props.requestHistory(id, currentTimeFrame.fromDate, currentTimeFrame.toDate);
-      }
-    }
-  }
+    return (
+          <ChroniclePath
+            key={`${v.id}CrP`}
+            chronicleFrame={vehCronicleFrame}
+            isSelected={this.props.selectedVehicleId === v.id}
+          />
+        );
+  };
 
   render() {
     if (this.props.vehicles.length === 0) {
       return null;
     }
-    const chronicleFrame = this.props.getInstanceChronicleFrameById(this.state.selectedVehicleId);
+    const chronicleFrame = this.props.getInstanceChronicleFrameById(this.props.selectedVehicleId);
 
     return (
       <div className={styles.topContainer}>
@@ -86,16 +68,15 @@ class Chronicle extends React.Component {
             }
             content={
               <VehiclesList
-                onItemClick={this.onItemClick}
                 data={this.props.vehicles}
-                currentExpandedItemId={this.state.selectedVehicleId}
+                currentExpandedItemId={this.props.selectedVehicleId}
                 type={listTypes.vehicleChronicle}
               />
             }
           />)}
         <FixedContent containerClassName={styles.fixedContent}>
           <div className={styles.allTheChronicleControllerscontainer}>
-            <TimeFrameController selectedVehicleId={this.state.selectedVehicleId} />
+            <TimeFrameController selectedVehicleId={this.props.selectedVehicleId} />
             <ChartTimeBox chronicleFrame={chronicleFrame} />
             <VelocityTransitionGroup enter={{ animation: 'slideDown' }}
               leave={{ animation: 'slideUp' }}
@@ -106,9 +87,13 @@ class Chronicle extends React.Component {
               }
             </VelocityTransitionGroup>
           </div>
-          <ChronicleMap
+          <TheMap>
+            {this.props.vehicles.map(this.makeChronoPath)}
+            <GFEditorMapComponent />
+        </TheMap>
+          {/*<ChronicleMap
             selectedVehicle={this.state.selectedVehicle}
-          />
+          />*/}
         </FixedContent>
       </div>
     );
@@ -117,7 +102,10 @@ class Chronicle extends React.Component {
 
 Chronicle.propTypes = {
   showSnackbar: React.PropTypes.func.isRequired,
+
   vehicles: React.PropTypes.array.isRequired,
+  selectedVehicleId: React.PropTypes.string.isRequired,
+
   filterFunc: React.PropTypes.func.isRequired,
   requestHistory: React.PropTypes.func.isRequired,
   chronicleTimeFrame: React.PropTypes.object.isRequired,
@@ -135,6 +123,7 @@ const mapState = (state) => ({
   hasChroniclePlayableFrames: hasChroniclePlayableFrames(state),
   globalSelectedVehicleId: fromFleetReducer.getSelectedVehicleId(state),
   isEditGF: gfEditIsEditing(state),
+  selectedVehicleId: ctxGetSelectedVehicleId(state),
 });
 const mapDispatch = {
   filterFunc: vehiclesActions.filterVehicles,

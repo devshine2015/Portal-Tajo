@@ -130,7 +130,7 @@ class MapChronicle extends React.Component {
 
       <CustomControls theMap={this.theMap} overrideListType={listTypes.withVehicleDetails} />
       {this.props.gfs.map(this.makeGFMarker)}
-      {this.props.vehicles.map(this.makeChronoPath)}
+      {/*{this.props.vehicles.map(this.makeChronoPath)}*/}
       {this.props.vehicles.map(this.makeChronoMarker)}
       {editGF}
       {stopEvents}

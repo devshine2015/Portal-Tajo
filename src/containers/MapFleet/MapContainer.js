@@ -69,9 +69,14 @@ class MapContainer extends React.Component {
   }
 
   mapifyChildren() {
-    return React.Children.map(this.props.children, child => React.cloneElement(child, {
-      theMap: this.theMap,
-    }));
+    return React.Children.map(this.props.children, child => {
+      if (child !== null) {
+        return React.cloneElement(child, {
+          theMap: this.theMap, });
+      } else {
+        return null;
+      }
+    });
     // {
     //   if (child.type === MapGF)
     //     return React.cloneElement(child, {

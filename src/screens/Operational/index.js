@@ -9,10 +9,12 @@ import OperationalList from './components/OperationalPowerList';
 import FixedContent from 'components/FixedContent';
 import RouteFinder from 'containers/MapFleet/components/MapRoute/RouteFinder';
 import NearestFinder from 'containers/MapFleet/components/MapRoute/NearestFinder';
-import EditGFMapComponent from 'containers/GFEditor/MapComponenet';
+import GFEditor from 'containers/GFEditor/GFEditor';
+import GFEditorMapComponent from 'containers/GFEditor/MapComponenet';
 
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { socketActions, localTickActions } from 'services/FleetModel/actions';
+import { gfEditIsEditing } from 'containers/GFEditor/reducer';
 
 import { mapVehicleMarkerMaker } from 'containers/MapFleet/components/MapVehicle';
 import { mapGFMarkerMaker } from 'containers/MapFleet/components/MapGF';
@@ -53,10 +55,13 @@ class Operational extends React.Component {
     return (
       <div className={styles.mapAndListContainer}>
         <PowerList>
-          <OperationalList
-            gfs={this.props.gfs}
-            vehicles={this.props.vehicles}
-          />
+          {this.props.isEditGF ?
+            <GFEditor /> :
+            <OperationalList
+              gfs={this.props.gfs}
+              vehicles={this.props.vehicles}
+            />
+          }
         </PowerList>
         <FixedContent containerClassName={styles.fixedContent}>
           <div className={styles.row}>
@@ -66,6 +71,7 @@ class Operational extends React.Component {
               {mwaJobs}
               <RouteFinder />
               <NearestFinder />
+              <GFEditorMapComponent />
             </TheMap>
             <Journal />
           </div>
@@ -79,6 +85,7 @@ Operational.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
   gfs: React.PropTypes.array.isRequired,
   mwaJobs: React.PropTypes.array.isRequired,
+  isEditGF: React.PropTypes.bool.isRequired,
 
   openFleetSocket: React.PropTypes.func.isRequired,
   startLocalTick: React.PropTypes.func.isRequired,
@@ -88,6 +95,7 @@ const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
   gfs: fromFleetReducer.getGFsExSorted(state),
   mwaJobs: getMWAJobs(state),
+  isEditGF: gfEditIsEditing(state),
 });
 const mapDispatch = {
   openFleetSocket: socketActions.openFleetSocket,

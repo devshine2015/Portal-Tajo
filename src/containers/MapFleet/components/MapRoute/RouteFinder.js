@@ -10,6 +10,7 @@ import { getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
 import { showSnackbar } from 'containers/Snackbar/actions';
 
 import directions from 'utils/mapServices/google/directions';
+import { addMapMenuItem } from 'utils/mapContextMenu';
 
 class RouteFinder extends React.Component {
   constructor(props) {
@@ -18,15 +19,9 @@ class RouteFinder extends React.Component {
   }
 
   componentDidMount() {
-    const contextMenu = this.props.theMap.contextmenu;
-    const routToPoint = routeFunc => e =>
-  routeFunc(e.latlng);
-    contextMenu.addItem({
-      text: 'route',
-      callback: routToPoint(this.routeSelectedVechicleToLatLng),
-    }
-	);
+    addMapMenuItem(this.props.theMap, 'mItmRouteTo', (e) => this.routeSelectedVechicleToLatLng(e.latlng));
   }
+
   // shouldComponentUpdate(nextProps) {
   //   return this.props.routeToLatLng[0] !== nextProps.routeToLatLng[0];
   // }
