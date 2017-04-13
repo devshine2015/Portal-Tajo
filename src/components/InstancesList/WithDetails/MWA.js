@@ -8,7 +8,7 @@ import Divider from 'material-ui/Divider';
 
 import { mwaSelectJob } from 'services/MWA/actions';
 import { contextActions } from 'services/Global/actions';
-import { mapStoreSetPan } from 'containers/MapFleet/reducerAction';
+import { mapStoreSetPan } from 'containers/Map/reducerAction';
 import { getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 // import { connect } from 'react-redux';
 import { hideLayer } from 'utils/mapBoxMap';
-import { dateToChronicleLable, msToDurtationLable } from 'containers/Chronicle/utils/strings';
+import { dateToChronicleLable, msToDurtationLable } from 'screens/Chronicle/utils/strings';
 
 import TimeIcon from 'material-ui/svg-icons/device/access-time';
 import FontIcon from 'material-ui/FontIcon';
@@ -10,8 +10,11 @@ import FontIcon from 'material-ui/FontIcon';
 class ChronicleMarker extends React.Component {
   constructor(props) {
     super(props);
-    this.containerLayer = props.theLayer;
     this.theMarker = null;
+  }
+
+  componentWillMount() {
+    this.setUp();
   }
 
   componentWillUnmount() {
@@ -31,8 +34,6 @@ class ChronicleMarker extends React.Component {
     .bindPopup(dateToChronicleLable(this.props.chronicleEvent.date)
     + '<br>'
     + msToDurtationLable(this.props.chronicleEvent.period),
-      // '<i class="muidocs-icon-action-home" style="font-size:32px">access_time</i>',
-    // dateToChronicleString(this.props.chronicleEvent.date),
       {
         offset: [0, 0],
 //              className: 'ddsMapHistorySecondaryPopup',
@@ -42,27 +43,25 @@ class ChronicleMarker extends React.Component {
         keepInView: false,
         zoomAnimation: true,
       });
-    hideLayer(this.containerLayer, this.theMarker, false);
+    hideLayer(this.props.theMap, this.theMarker, false);
   }
 
   removeMarker() {
-    if (this.containerLayer === null) {
+    if (this.props.theMap === null) {
       return;
     }
-    hideLayer(this.containerLayer, this.theMarker, true);
+    hideLayer(this.props.theMap, this.theMarker, true);
   }
 
   render() {
-    this.setUp();
+    // this.setUp();
     return false;
   }
 }
 
 ChronicleMarker.propTypes = {
-  theLayer: React.PropTypes.object.isRequired,
+  theMap: React.PropTypes.object.isRequired,
   chronicleEvent: React.PropTypes.object.isRequired,
 };
 
-const PureChronicleMarker = pure(ChronicleMarker);
-export default PureChronicleMarker;
-// export default connect(mapState)(PureChronicleMarker);
+export default pure(ChronicleMarker);

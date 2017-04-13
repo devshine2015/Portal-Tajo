@@ -151,7 +151,7 @@ class EditGF extends React.Component {
 EditGF.propTypes = {
   theMap: React.PropTypes.object.isRequired,
   gfEditMode: React.PropTypes.bool.isRequired,
-  subjectGF: React.PropTypes.object.isRequired,
+  subjectGF: React.PropTypes.object,
   gfEditUpdate: React.PropTypes.func.isRequired,
   gfEditClose: React.PropTypes.func.isRequired,
 };

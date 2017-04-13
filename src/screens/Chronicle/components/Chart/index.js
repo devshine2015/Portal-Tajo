@@ -15,6 +15,10 @@ class ChartBox extends React.Component {
     this.tempChartPathD = '';
   }
 
+  componentDidMount() {
+    this.generateCharts();
+  }
+
   shouldComponentUpdate(nextProps) {
     return nextProps.chronicleFrame.ownerId !== this.props.chronicleFrame.ownerId
     || !this.props.chronicleFrame.isValid();
@@ -27,6 +31,9 @@ class ChartBox extends React.Component {
       return;
     }
     const mySvgElement = this.refs.chart;
+    if (mySvgElement === undefined) {
+      return;
+    }
     const myWidht = mySvgElement.clientWidth;
     const myHeight = mySvgElement.clientHeight;
     const srcFrame = this.props.chronicleFrame;

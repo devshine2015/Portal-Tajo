@@ -2,19 +2,17 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { hideLayer } from 'utils/mapBoxMap';
-import { generateInnerHTMLForHistoryMoment } from 'containers/Chronicle/utils/strings';
-import { getNormalized100T } from 'containers/Chronicle/reducer';
-// import { translate } from 'utils/i18n';
+import { generateInnerHTMLForHistoryMoment } from 'screens/Chronicle/utils/strings';
+import { getNormalized100T } from 'screens/Chronicle/reducer';
 
-require('containers/MapFleet/leafletStyles.css');
-// import phrases, { phrasesShape } from './PropTypes';
+require('containers/Map/leafletStyles.css');
 
 
 class ChronicleMarker extends React.Component {
-  constructor(props) {
-    super(props);
-    this.containerLayer = props.theLayer;
+
+  componentWillMount() {
     this.createMarkers();
+    this.highLight(this.props.isSelected);
   }
 
   componentWillUnmount() {
@@ -69,43 +67,40 @@ class ChronicleMarker extends React.Component {
   }
 
   removeMarker() {
-    if (this.containerLayer === null) {
+    if (this.props.theMap === null) {
       return;
     }
-    hideLayer(this.containerLayer, this.popUp, true);
-    if (this.containerLayer.hasLayer(this.theMarker)) {
-      this.containerLayer.removeLayer(this.theMarker);
+    hideLayer(this.props.theMap, this.popUp, true);
+    if (this.props.theMap.hasLayer(this.theMarker)) {
+      this.props.theMap.removeLayer(this.theMarker);
     }
-    if (this.containerLayer.hasLayer(this.theMarkerSecondary)) {
-      this.containerLayer.removeLayer(this.theMarkerSecondary);
+    if (this.props.theMap.hasLayer(this.theMarkerSecondary)) {
+      this.props.theMap.removeLayer(this.theMarkerSecondary);
     }
   }
 
   highLight(doHighlight) {
-    if (this.containerLayer === null) {
-      return;
-    }
     if (doHighlight) {
-      hideLayer(this.containerLayer, this.theMarker, false);
-      hideLayer(this.containerLayer, this.theMarkerSecondary, true);
-      if (!this.containerLayer.hasLayer(this.popUp)) {
-        this.containerLayer.addLayer(this.popUp);
+      hideLayer(this.props.theMap, this.theMarker, false);
+      hideLayer(this.props.theMap, this.theMarkerSecondary, true);
+      if (!this.props.theMap.hasLayer(this.popUp)) {
+        this.props.theMap.addLayer(this.popUp);
         //
         // pan to me when selected
-        const bounds = this.containerLayer.getBounds();
+        const bounds = this.props.theMap.getBounds();
         if (!bounds.contains(this.popUp.getLatLng())) {
-          this.containerLayer.panTo(this.popUp.getLatLng());
+          this.props.theMap.panTo(this.popUp.getLatLng());
         }
       }
     } else {
-      if (this.containerLayer.hasLayer(this.theMarker)) {
-        this.containerLayer.removeLayer(this.theMarker);
+      if (this.props.theMap.hasLayer(this.theMarker)) {
+        this.props.theMap.removeLayer(this.theMarker);
       }
-      if (this.containerLayer.hasLayer(this.popUp)) {
-        this.containerLayer.removeLayer(this.popUp);
+      if (this.props.theMap.hasLayer(this.popUp)) {
+        this.props.theMap.removeLayer(this.popUp);
       }
-      if (!this.containerLayer.hasLayer(this.theMarkerSecondary)) {
-        this.containerLayer.addLayer(this.theMarkerSecondary);
+      if (!this.props.theMap.hasLayer(this.theMarkerSecondary)) {
+        this.props.theMap.addLayer(this.theMarkerSecondary);
       }
     }
   }
@@ -119,7 +114,7 @@ class ChronicleMarker extends React.Component {
 }
 
 ChronicleMarker.propTypes = {
-  theLayer: React.PropTypes.object.isRequired,
+  theMap: React.PropTypes.object.isRequired,
   chronicleFrame: React.PropTypes.object.isRequired,
   isSelected: React.PropTypes.bool.isRequired,
   normalized100T: React.PropTypes.number.isRequired,

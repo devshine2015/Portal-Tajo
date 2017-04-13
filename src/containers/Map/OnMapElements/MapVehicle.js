@@ -14,7 +14,7 @@ import { ctxGetSelectedVehicleId, ctxGetHideVehicles } from 'services/Global/red
 
 // const shadow = require('assets/images/v_icons_combi/shadow.png');
 
-require('containers/MapFleet/leafletStyles.css');
+require('containers/Map/leafletStyles.css');
 
 class MapVehicle extends React.Component {
   constructor(props) {

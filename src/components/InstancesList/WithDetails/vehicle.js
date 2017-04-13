@@ -3,7 +3,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import cs from 'classnames';
 import { contextActions } from 'services/Global/actions';
-import { mapStoreSetPan } from 'containers/MapFleet/reducerAction';
+import { mapStoreSetPan } from 'containers/Map/reducerAction';
 
 import { VelocityTransitionGroup } from 'velocity-react';
 import Divider from 'material-ui/Divider';

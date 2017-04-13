@@ -7,9 +7,9 @@ import { vehicleShape } from 'services/FleetModel/PropTypes';
 import LinearProgress from 'material-ui/LinearProgress';
 
 import { contextActions } from 'services/Global/actions';
-import { requestHistory } from 'containers/Chronicle/actions';
+import { requestHistory } from 'screens/Chronicle/actions';
 import { getChronicleTimeFrame,
-      getInstanceChronicleFrameById, hasChroniclePlayableFrames } from 'containers/Chronicle/reducer';
+      getInstanceChronicleFrameById, hasChroniclePlayableFrames } from 'screens/Chronicle/reducer';
 
 import stylesTop from '../styles.css';
 import styles from './styles.css';

@@ -5,7 +5,7 @@ import { hideLayer } from 'utils/mapBoxMap';
 import { mwaSelectJob } from 'services/MWA/actions';
 import { getMWASelectedJobId } from 'services/MWA/reducer';
 
-require('containers/MapFleet/leafletStyles.css');
+require('containers/Map/leafletStyles.css');
 
 const markerHtmlStylesCore = `
   width: 2rem;

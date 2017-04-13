@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 
-import CustomControls from './components/CustomControls';
+import CustomControls from './OnMapElements/CustomControls';
 
 import { createMapboxMap } from 'utils/mapBoxMap';
 import { ifArraysEqual } from 'utils/arrays';
@@ -25,9 +25,11 @@ export const MapOptions = {
 class MapContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.theMap = null;
     this.mappp = null;
     this.latestPan = [];
+    this.state = {
+      theMap: null,
+    };
   }
 
   componentDidMount() {
@@ -40,30 +42,25 @@ class MapContainer extends React.Component {
 
   componentWillUnmount() {
     // TODO: need to shutdown the mapbox object?
-    this.props.mapStoreSetView(this.theMap.getCenter(), this.theMap.getZoom());
+    this.props.mapStoreSetView(this.state.theMap.getCenter(), this.state.theMap.getZoom());
   }
 
   createMapboxMap() {
     // if already existing
-    if (this.theMap !== null) {
+    if (this.state.theMap !== null) {
       return;
     }
-    this.theMap = createMapboxMap(ReactDOM.findDOMNode(this),
-      this.props.mapStoredView,
-      // contextMenuAddGFItems(this.props.gfEditUpdate),
-         null
-      // contextMenuAddGFItems(this.props.gfEditUpdate,
-      //   this.routeSelectedVechicleToLatLng,
-      //   this.nearestVechicleToLatLng)
-        // (isMwa ? this.nearestVechicleToLatLng : null))
-    );
+    this.setState({
+      theMap: createMapboxMap(ReactDOM.findDOMNode(this),
+                        this.props.mapStoredView),
+    });
   }
 
   applyPan() {
     if (this.props.mapStoredPan !== null
         && (this.latestPan === null
             || !ifArraysEqual(this.props.mapStoredPan, this.latestPan))) {
-      this.theMap.panInsideBounds(window.L.latLngBounds(this.props.mapStoredPan));
+      this.state.theMap.panInsideBounds(window.L.latLngBounds(this.props.mapStoredPan));
     }
     this.latestPan = this.props.mapStoredPan;
   }
@@ -71,11 +68,10 @@ class MapContainer extends React.Component {
   mapifyChildren() {
     return React.Children.map(this.props.children, child => {
       if (child !== null) {
-        return React.cloneElement(child, {
-          theMap: this.theMap, });
-      } else {
-        return null;
+        return React.cloneElement(child,
+            { theMap: this.state.theMap });
       }
+      return null;
     });
     // {
     //   if (child.type === MapGF)
@@ -87,9 +83,9 @@ class MapContainer extends React.Component {
   }
 
   render() {
-    if (this.theMap === null) {
+    if (this.state.theMap === null) {
       return (<div className = {styles.mapContainer}>
-              <CustomControls theMap={this.theMap} />
+              <CustomControls />
               </div>);
     }
 
@@ -98,7 +94,7 @@ class MapContainer extends React.Component {
     // const mappp = this.mapifyChildren();
     return (
       <div className={styles.mapContainer}>
-        <CustomControls theMap={this.theMap} />
+        <CustomControls theMap={this.state.theMap} />
         {this.mappp}
       </div>
     );

@@ -117,7 +117,7 @@ GFEditor.propTypes = {
   gfEditClose: React.PropTypes.func.isRequired,
   gfEditUpdate: React.PropTypes.func.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,
-  subjectGF: React.PropTypes.object.isRequired,
+  subjectGF: React.PropTypes.object,
 
   translations: phrasesShape.isRequired,
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import styles from './styles.css';
-import { generateInnerHTMLForHistoryMoment } from 'containers/Chronicle/utils/strings';
+import { generateInnerHTMLForHistoryMoment } from 'screens/Chronicle/utils/strings';
 
 class MomentIndicator extends React.Component {
 

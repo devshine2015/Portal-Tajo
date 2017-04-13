@@ -9,7 +9,7 @@ import { getGFByIdFunc } from 'services/FleetModel/reducer';
 import { deleteGF } from 'services/FleetModel/actions/gfActions';
 import { gfEditUpdate } from 'containers/GFEditor/actions';
 import { contextActions } from 'services/Global/actions';
-import { mapStoreSetPan } from 'containers/MapFleet/reducerAction';
+import { mapStoreSetPan } from 'containers/Map/reducerAction';
 
 import { showSnackbar } from 'containers/Snackbar/actions';
 import DeletIcon from 'material-ui/svg-icons/action/delete-forever';

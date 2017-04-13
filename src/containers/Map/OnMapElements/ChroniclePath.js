@@ -1,7 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import { setChronicleNormalizedT } from 'containers/Chronicle/actions';
+import { setChronicleNormalizedT } from 'screens/Chronicle/actions';
 import { hideLayer } from 'utils/mapBoxMap';
 
 

@@ -9,7 +9,7 @@ require('leaflet-contextmenu/dist/leaflet.contextmenu.css');
 import { isMwa } from 'configs';
 import { MAPBOX_KEY } from 'utils/constants';
 
-export function createMapboxMap(domNode, view, contextmenuItems) {
+export function createMapboxMap(domNode, view) {
   let theMap = null;
   window.L.mapbox.accessToken = MAPBOX_KEY;
   theMap = window.L.mapbox.map(domNode,

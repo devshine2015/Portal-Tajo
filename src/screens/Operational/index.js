@@ -3,12 +3,12 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
 import PowerList from 'components/PowerList';
-import TheMap from 'containers/MapFleet/MapContainer';
+import TheMap from 'containers/Map/MapContainer';
 import Journal from 'containers/Journal/components/Journal';
 import OperationalList from './components/OperationalPowerList';
 import FixedContent from 'components/FixedContent';
-import RouteFinder from 'containers/MapFleet/components/MapRoute/RouteFinder';
-import NearestFinder from 'containers/MapFleet/components/MapRoute/NearestFinder';
+import RouteFinder from 'containers/Map/OnMapElements/MapRoute/RouteFinder';
+import NearestFinder from 'containers/Map/OnMapElements/MapRoute/NearestFinder';
 import GFEditor from 'containers/GFEditor/GFEditor';
 import GFEditorMapComponent from 'containers/GFEditor/MapComponenet';
 
@@ -16,9 +16,9 @@ import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { socketActions, localTickActions } from 'services/FleetModel/actions';
 import { gfEditIsEditing } from 'containers/GFEditor/reducer';
 
-import { mapVehicleMarkerMaker } from 'containers/MapFleet/components/MapVehicle';
-import { mapGFMarkerMaker } from 'containers/MapFleet/components/MapGF';
-import { mapMWAJobMarkerMaker } from 'containers/MapFleet/components/MWAJobMarker';
+import { mapVehicleMarkerMaker } from 'containers/Map/OnMapElements/MapVehicle';
+import { mapGFMarkerMaker } from 'containers/Map/OnMapElements/MapGF';
+import { mapMWAJobMarkerMaker } from 'containers/Map/OnMapElements/MWAJobMarker';
 
 import { getMWAJobs } from 'services/MWA/reducer';
 

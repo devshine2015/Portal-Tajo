@@ -28,11 +28,6 @@ import LocationIcon from 'material-ui/svg-icons/social/location-city';
 import PoiIcon from 'material-ui/svg-icons/maps/place';
 
 
-// TODO ---- CLEAN this up
-import * as listEvents from './events';
-import * as mapEvents from 'containers/MapFleet/events';
-
-
 
 
 const iconColor = '#FFFFFF';
@@ -128,7 +123,7 @@ OperationalPowerList.propTypes = {
   vehicleFilterString: React.PropTypes.string,
   translations: phrasesShape.isRequired,
   mwaJobs: React.PropTypes.array.isRequired,
-  mwaSelectJob: React.PropTypes.func.isRequired,
+  mwaSelectJob: React.PropTypes.func,
   getMWASelectedJobId: React.PropTypes.string,
   mwaFilterJobs: React.PropTypes.func.isRequired,
 };

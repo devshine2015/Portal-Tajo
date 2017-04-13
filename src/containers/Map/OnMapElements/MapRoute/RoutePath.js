@@ -1,10 +1,10 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { hideLayer } from 'utils/mapBoxMap';
-import { metersToDistanceLable, msToDurtationLable } from 'containers/Chronicle/utils/strings';
+import { metersToDistanceLable, msToDurtationLable } from 'screens/Chronicle/utils/strings';
 import { AntPath } from 'leaflet-ant-path';
 
-require('containers/MapFleet/leafletStyles.css');
+require('containers/Map/leafletStyles.css');
 
 class MapRoute extends React.Component {
   constructor(props) {
