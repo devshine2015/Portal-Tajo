@@ -37,9 +37,7 @@ class MapVehicle extends React.Component {
     this.createMarker();
     this.setPosition(this.props.theVehicle.pos);
     this.toggle(!this.props.theVehicle.filteredOut);
-    // this.expand(this.props.isSelected);
-
-    // hideLayer(this.theLayer, window.L.marker(this.props.theVehicle.pos), false);
+    this.expand(this.props.theVehicle.id === this.props.selectedVehicleId);
   }
 
   // shouldComponentUpdate(nextProps) {

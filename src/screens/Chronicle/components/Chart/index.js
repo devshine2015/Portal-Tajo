@@ -11,32 +11,40 @@ import { line } from 'd3-shape';
 class ChartBox extends React.Component {
   constructor(props) {
     super(props);
-    this.speedChartPathD = '';
-    this.tempChartPathD = '';
+    this.state = {
+      speedChartPathD: '',
+      tempChartPathD: '',
+    };
   }
 
   componentDidMount() {
-    this.generateCharts();
+    this.generateCharts(this.props.chronicleFrame);
   }
 
-  shouldComponentUpdate(nextProps) {
-    return nextProps.chronicleFrame.ownerId !== this.props.chronicleFrame.ownerId
-    || !this.props.chronicleFrame.isValid();
+  componentWillReceiveProps(nextProps) {
+    this.generateCharts(nextProps.chronicleFrame);
   }
 
-  generateCharts() {
-    if (!this.props.chronicleFrame.isValid() || this.props.chronicleFrame.isEmpty()) {
-      this.speedChartPathD = '';
-      this.tempChartPathD = '';
+  // shouldComponentUpdate(nextProps) {
+  //   return nextProps.chronicleFrame.ownerId !== this.props.chronicleFrame.ownerId
+  //   || !this.props.chronicleFrame.isValid();
+  // }
+
+  generateCharts(chronicleFrame) {
+    if (!chronicleFrame.isValid() || chronicleFrame.isEmpty()) {
+      this.setState({
+        speedChartPathD: '',
+        tempChartPathD: '',
+      });
       return;
     }
     const mySvgElement = this.refs.chart;
-    if (mySvgElement === undefined) {
-      return;
-    }
+    // if (mySvgElement === undefined) {
+    //   return;
+    // }
     const myWidht = mySvgElement.clientWidth;
     const myHeight = mySvgElement.clientHeight;
-    const srcFrame = this.props.chronicleFrame;
+    const srcFrame = chronicleFrame;
     const tempRangePadding = 3;
     const paddings = {
       top: 10,
@@ -57,19 +65,20 @@ class ChartBox extends React.Component {
       .x((d) => (xScale(d.timeMs)))
       .y((d) => (yScaleTemp(d.t)));
 
-    this.speedChartPathD = lineGenSpeed(srcFrame.speedData);
-    this.tempChartPathD = srcFrame.hasTemperature() ? lineGenTemp(srcFrame.temperatureData) : '';
+    this.setState({
+      speedChartPathD: lineGenSpeed(srcFrame.speedData),
+      tempChartPathD: srcFrame.hasTemperature() ? lineGenTemp(srcFrame.temperatureData) : '',
+    });
   }
 
   // componentWillUnmount() {
   // }
   render() {
-    this.generateCharts();
     return (
       <svg ref={'chart'} className={styles.chartBox}>
-        <path d={this.speedChartPathD} className={styles.speedChart}>
+        <path d={this.state.speedChartPathD} className={styles.speedChart}>
         </path>
-        <path d={this.tempChartPathD} className={styles.tempChart}>
+        <path d={this.state.tempChartPathD} className={styles.tempChart}>
         </path>
       </svg>
     );
@@ -87,5 +96,4 @@ const mapState = (state) => ({
 const mapDispatch = {
   setChronicleNormalizedT,
 };
-const PureChartBox = pure(ChartBox);
-export default connect(mapState, mapDispatch)(PureChartBox);
+export default connect(mapState, mapDispatch)(pure(ChartBox));
