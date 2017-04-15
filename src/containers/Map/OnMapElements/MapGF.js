@@ -14,7 +14,6 @@ const iconSelected = require('assets/images/v_icons_combi/sqr@3x.png');
 class MapGF extends React.Component {
   constructor(props) {
     super(props);
-    this.containerLayer = null;
     this.theMarker = null;
     this.selectedMarker = null;
     this.theCircle = null;
@@ -22,13 +21,14 @@ class MapGF extends React.Component {
     this.pointerLine = null;
   }
   componentDidMount() {
-    this.containerLayer = this.props.theMap;
     this.createMarker();
+    this.toggle(!this.props.theGF.filteredOut && !this.props.hideMe);
+    this.expand(this.props.theGF.id === this.props.selectedGfId);    
   }
   componentWillUnmount() {
 // TODO: need to delete MapBox markers?
     this.toggle(false);
-    hideLayer(this.containerLayer, this.thePolygon, true);
+    hideLayer(this.props.theMap, this.thePolygon, true);
     showPointerLine(this.pointerLine, false);
   }
   setPosition(latLng) {
@@ -45,7 +45,7 @@ class MapGF extends React.Component {
   createShapePoly() {
     this.thePolygon = window.L.polygon(this.props.theGF.latLngs)
       .setStyle({ weight: 1 });
-    this.containerLayer.addLayer(this.thePolygon);
+    this.props.theMap.addLayer(this.thePolygon);
     this.thePolygon.on('click', this.clickHandle);
     this.pointerLine = createPointerLine(this.props.theGF.pos, [0, 0]);
   }
@@ -54,7 +54,7 @@ class MapGF extends React.Component {
     this.theMarker = window.L.circleMarker(this.props.theGF.pos,
       { title: this.props.theGF.name, weight: 1 })
       .setRadius(markerR);
-    this.theMarker.on('click', this.clickHandle).addTo(this.containerLayer);
+    this.theMarker.on('click', this.clickHandle).addTo(this.props.theMap);
     this.theCircle = window.L.circle(this.props.theGF.pos, this.props.theGF.radius)
       .setStyle({ color: this.context.muiTheme.palette.PLItemBackgroundColorExpanded,
           weight: 1, opacity: 1 });
@@ -81,12 +81,12 @@ class MapGF extends React.Component {
       this.createShapeCircle();
     }
 
-    this.containerLayer.addLayer(this.pointerLine);
+    this.props.theMap.addLayer(this.pointerLine);
     showPointerLine(this.pointerLine, false);
   }
   expand(doExpand) {
-    hideLayer(this.containerLayer, this.theCircle, !doExpand);
-    hideLayer(this.containerLayer, this.selectedMarker, !doExpand);
+    hideLayer(this.props.theMap, this.theCircle, !doExpand);
+    hideLayer(this.props.theMap, this.selectedMarker, !doExpand);
 
     if (doExpand) {
       if (this.theMarker !== null) {
@@ -107,9 +107,9 @@ class MapGF extends React.Component {
     }
   }
   toggle(doShow) {
-    hideLayer(this.containerLayer, this.theMarker, !doShow);
-    hideLayer(this.containerLayer, this.theCircle, !doShow);
-    hideLayer(this.containerLayer, this.thePolygon, !doShow);
+    hideLayer(this.props.theMap, this.theMarker, !doShow);
+    hideLayer(this.props.theMap, this.theCircle, !doShow);
+    hideLayer(this.props.theMap, this.thePolygon, !doShow);
 
     if (!doShow) {
       this.expand(false);

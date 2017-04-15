@@ -12,12 +12,9 @@ class ChroniclePath extends React.Component {
   constructor(props) {
     super(props);
     this.thePath = null;
+    this.createPath();
   }
 
-  componentDidMount() {
-    this.createPath();
-    this.highlight(this.props.isSelected);
-  }
   componentWillUnmount() {
 // TODO: need to delete MapBox markers?
     this.removePath();

@@ -10,9 +10,9 @@ require('containers/Map/leafletStyles.css');
 
 class ChronicleMarker extends React.Component {
 
-  componentWillMount() {
+  constructor(props) {
+    super(props);
     this.createMarkers();
-    this.highLight(this.props.isSelected);
   }
 
   componentWillUnmount() {
