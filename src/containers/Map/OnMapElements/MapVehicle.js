@@ -40,14 +40,12 @@ class MapVehicle extends React.Component {
     this.expand(this.props.theVehicle.id === this.props.selectedVehicleId);
   }
 
-  // shouldComponentUpdate(nextProps) {
-  //   return this.props.theVehicle.pos !== nextProps.theVehicle.pos
-  //     || this.props.theVehicle.estimatedTravelKm !== nextProps.theVehicle.estimatedTravelKm
-  //     || this.props.theVehicle.filteredOut !== nextProps.theVehicle.filteredOut
-  //     || this.props.isSelected !== nextProps.isSelected
-  //     || (this.props.isSelected
-  //         && this.props.isDetailViewActivated !== nextProps.isDetailViewActivated);
-  // }
+  shouldComponentUpdate(nextProps) {
+    return this.props.theVehicle.pos !== nextProps.theVehicle.pos
+      || this.props.theVehicle.filteredOut !== nextProps.theVehicle.filteredOut
+      || ((this.props.theVehicle.id === this.props.selectedVehicleId)
+        ^ (nextProps.theVehicle.id === nextProps.selectedVehicleId));
+  }
 
   setPosition(latLng) {
     this.theMarker.setLatLng(latLng);
