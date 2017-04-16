@@ -26,6 +26,7 @@ class MapContainer extends React.Component {
   constructor(props) {
     super(props);
     this.mappp = null;
+    this.mappedMap = {};
     this.latestPan = [];
     this.state = {
       theMap: null,
@@ -37,7 +38,8 @@ class MapContainer extends React.Component {
   }
 
   // shouldComponentUpdate(nextProps) {
-  //   return this.mappp === null;
+  //   // return this.props.children !== nextProps.children;
+  //   return this.props.children.lenght !== nextProps.children.lenght;
   // }
 
   componentWillUnmount() {
@@ -81,6 +83,22 @@ class MapContainer extends React.Component {
     //   else return child;
     // })
   }
+  mapifyKeepChildren() {
+    return React.Children.map(this.props.children, child => {
+      if (child !== null) {
+        if (this.mappedMap.hasOwnProperty(child.key)) {
+          return this.mappedMap[child.key];
+        }
+        const mapifyedChild = React.cloneElement(child,
+          { theMap: this.state.theMap });
+        this.mappedMap[child.key] = mapifyedChild;
+        return mapifyedChild;
+        // return React.cloneElement(child,
+        //     { theMap: this.state.theMap });
+      }
+      return null;
+    });
+  }
 
   render() {
     if (this.state.theMap === null) {
@@ -89,13 +107,16 @@ class MapContainer extends React.Component {
               </div>);
     }
 
+    const t0 = performance.now();
     this.applyPan();
-    this.mappp = this.mapifyChildren();
-    // const mappp = this.mapifyChildren();
+    // this.mappp = this.mapifyChildren();
+    const mappp = this.mapifyChildren();
+    const t1 = performance.now();
+    console.log("MAPPIFY took " + (t1 - t0) + " milliseconds.");
     return (
       <div className={styles.mapContainer}>
         <CustomControls theMap={this.state.theMap} />
-        {this.mappp}
+        {mappp}
       </div>
     );
   }
@@ -105,7 +126,7 @@ MapContainer.propTypes = {
   mapStoreSetView: React.PropTypes.func.isRequired,
   mapStoredView: React.PropTypes.object.isRequired,
   mapStoredPan: React.PropTypes.array,
-  children: React.PropTypes.any.isRequired,
+  children: React.PropTypes.array.isRequired,
 };
 const mapState = (state) => ({
   mapStoredView: mapStoreGetView(state),
