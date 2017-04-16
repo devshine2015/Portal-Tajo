@@ -20,17 +20,26 @@ class MapGF extends React.Component {
     this.thePolygon = null;
     this.pointerLine = null;
   }
+
   componentDidMount() {
     this.createMarker();
     this.toggle(!this.props.theGF.filteredOut && !this.props.hideMe);
-    this.expand(this.props.theGF.id === this.props.selectedGfId);    
+    this.expand(this.props.theGF.id === this.props.selectedGfId);
   }
+
+  shouldComponentUpdate(nextProps) {
+    return this.props.theGF.filteredOut !== nextProps.theGF.filteredOut
+      || ((this.props.theGF.id === this.props.selectedGfId)
+        ^ (nextProps.theGF.id === nextProps.selectedGfId));
+  }
+
   componentWillUnmount() {
 // TODO: need to delete MapBox markers?
     this.toggle(false);
     hideLayer(this.props.theMap, this.thePolygon, true);
     showPointerLine(this.pointerLine, false);
   }
+
   setPosition(latLng) {
     if (this.theMarker !== null) {
       this.theMarker.setLatLng(latLng);
@@ -148,7 +157,7 @@ const mapDispatch = {
   selectGF: contextActions.ctxSelectGF,
 };
 
-const CompleteMapGF = connect(mapState, mapDispatch)(pure(MapGF));
+const CompleteMapGF = connect(mapState, mapDispatch)(MapGF);
 
 // export default PureMapGF;
 

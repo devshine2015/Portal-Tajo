@@ -140,7 +140,7 @@ class MapVehicle extends React.Component {
       this.iconHeadFrameElement = this.iconElement.children[0].children[0].children[1];
       this.iconPointerElement = this.iconElement.children[0].children[1].children[0];
       this.toggle(!this.props.theVehicle.filteredOut);
-      this.expand(this.props.isSelected);
+      this.expand(this.props.theVehicle.id === this.props.selectedVehicleId);
     });
 
     this.popUp = window.L.popup({
@@ -232,7 +232,7 @@ const mapDispatch = {
   selectVehicle: contextActions.ctxSelectVehicle,
 };
 
-const CompleteVehicle = connect(mapState, mapDispatch)(pure(MapVehicle));
+const CompleteVehicle = connect(mapState, mapDispatch)(MapVehicle);
 
 export const mapVehicleMarkerMaker = (v) => (
       <CompleteVehicle
