@@ -37,6 +37,11 @@ const stylesCheck = {
 
 class LocationWithDetails extends React.Component {
 
+  shouldComponentUpdate(nextProps) {
+    return this.props.gf.filteredOut !== nextProps.gf.filteredOut
+      || (this.props.isExpanded !== nextProps.isExpanded);
+  }
+
   onClick = () => {
     this.props.selectGF(this.props.gf.id);
     this.props.mapStoreSetPan([this.props.gf.pos]);
@@ -158,4 +163,4 @@ const mapDispatch = {
   mapStoreSetPan,
 };
 
-export default connect(mapState, mapDispatch)(pure(LocationWithDetails));
+export default connect(mapState, mapDispatch)(LocationWithDetails);
