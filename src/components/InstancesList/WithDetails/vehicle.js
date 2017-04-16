@@ -23,7 +23,9 @@ class ListItemVehicle extends React.Component {
 
   shouldComponentUpdate(nextProps) {
     return this.props.isExpanded !== nextProps.isExpanded
-      || this.props.vehicle.filteredOut !== nextProps.vehicle.filteredOut;
+      || this.props.vehicle.filteredOut !== nextProps.vehicle.filteredOut
+      // always update the expanded vehicle - to show all the stats
+      || nextProps.isExpanded;
   }
 
   onClick = () => {
