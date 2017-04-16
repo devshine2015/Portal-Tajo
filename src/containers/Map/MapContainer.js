@@ -107,12 +107,12 @@ class MapContainer extends React.Component {
               </div>);
     }
 
-    const t0 = performance.now();
+    // const t0 = performance.now();
     this.applyPan();
     // this.mappp = this.mapifyChildren();
     const mappp = this.mapifyChildren();
-    const t1 = performance.now();
-    console.log("MAPPIFY took " + (t1 - t0) + " milliseconds.");
+    // const t1 = performance.now();
+    // console.log("MAPPIFY took " + (t1 - t0) + " milliseconds.");
     return (
       <div className={styles.mapContainer}>
         <CustomControls theMap={this.state.theMap} />
