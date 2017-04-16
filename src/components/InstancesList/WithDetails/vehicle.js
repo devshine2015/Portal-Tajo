@@ -21,6 +21,11 @@ import MwaIdicator from './mwaVehicleDetails';
 
 class ListItemVehicle extends React.Component {
 
+  shouldComponentUpdate(nextProps) {
+    return this.props.isExpanded !== nextProps.isExpanded
+      || this.props.vehicle.filteredOut !== nextProps.vehicle.filteredOut;
+  }
+
   onClick = () => {
     this.props.selectVehicle(this.props.vehicle.id);
     this.props.mapStoreSetPan([this.props.vehicle.pos]);
@@ -165,4 +170,4 @@ const mapDispatch = {
   mapStoreSetPan,
 };
 
-export default connect(mapState, mapDispatch)(pure(ListItemVehicle));
+export default connect(mapState, mapDispatch)(ListItemVehicle);

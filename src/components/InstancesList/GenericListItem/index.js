@@ -105,11 +105,21 @@ function chooseItem(type, {
 
 class GenericListItem extends React.Component {
 
+  constructor(props) {
+    super(props);
+    const { isExpanded, ...rest } = this.props;
+    this.element = chooseItem(this.props.type, { ...rest, isExpanded });
+  }
+
   componentWillReceiveProps(nextProps) {
     if (!this.props.isExpanded && nextProps.isExpanded) {
       this.scrollIntoView();
     }
   }
+
+  // shouldComponentUpdate(nextProps) {
+  //   return this.props.isExpanded !== nextProps.isExpanded;
+  // }
 
   scrollIntoView() {
     if (!this.props.scrollIntoView) return;
@@ -135,19 +145,15 @@ class GenericListItem extends React.Component {
       ['listItemDynamicExpanded']: isExpanded,
       [styles.list__item_expanded]: isExpanded,
     });
-
-
     return (
       <li className={className}>
-
         { _needIndicator(rest.item) && (
           <StatusIcon
             activityStatus={rest.item.activityStatus}
             isDelayedWithIgnitionOff={rest.item.isDelayedWithIgnitionOff}
           />
         )}
-
-        {chooseItem(this.props.type, { ...rest, isExpanded })}
+        {this.element}
       </li>
     );
   }
