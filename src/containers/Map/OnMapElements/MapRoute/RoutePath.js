@@ -1,8 +1,11 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import { connect } from 'react-redux';
+
 import { hideLayer } from 'utils/mapBoxMap';
 import { metersToDistanceLable, msToDurtationLable } from 'screens/Chronicle/utils/strings';
 import { AntPath } from 'leaflet-ant-path';
+import { mapStoreGetRoute } from 'containers/Map/reducerAction';
 
 require('containers/Map/leafletStyles.css');
 
@@ -12,11 +15,7 @@ class MapRoute extends React.Component {
     this.thePath = null;
     this.toSpotMarker = null;
   }
-  componentDidMount() {
-  }
-  // shouldComponentUpdate(nextProps) {
-  //   return this.props.routeToLatLng[0] !== nextProps.routeToLatLng[0];
-  // }
+
   componentWillUnmount() {
     hideLayer(this.props.theMap, this.thePath, true);
   }
@@ -39,17 +38,37 @@ class MapRoute extends React.Component {
     // let popUpSpot = latLngArray[0];
     // latLngArray.forEach(latLng => {if (latLng.lat > popUpSpot.lat) popUpSpot = latLng;});
     const popUpSpot = this.props.routeObj.destination;
-
-    this.thePath.bindPopup(`${msToDurtationLable(this.props.routeObj.durationMS)}
-        <br>${metersToDistanceLable(this.props.routeObj.distanceM)}`,
-      {
-        closeButton: false,
-        closeOnClick: false,
-        autoPan: false,
-        keepInView: false,
-        zoomAnimation: true,
-      })
+    const content = window.L.DomUtil.create('div', `${msToDurtationLable(this.props.routeObj.durationMS)}
+        <br>${metersToDistanceLable(this.props.routeObj.distanceM)}`);
+    window.L.DomEvent.addListener(content, 'click', () => {console.log('me ===>>> clicked ');});
+    const popUp = window.L.popup({
+      closeButton: false,
+      closeOnClick: true,
+      autoPan: false,
+      keepInView: false,
+      zoomAnimation: true,
+    })
+      // .setContent(`${msToDurtationLable(this.props.routeObj.durationMS)}
+      //   <br>${metersToDistanceLable(this.props.routeObj.distanceM)}`);
+      .setContent(content);
+      // .setContent(`<div>${msToDurtationLable(this.props.routeObj.durationMS)}
+      //   <br>${metersToDistanceLable(this.props.routeObj.distanceM)}</div>`);
+//    popUp.on('click', () => {console.log('me ===>>> clicked ');});
+    // popUp._contentNode.on('click', () => {console.log('me ===>>> clicked ');});
+    // window.L.DomEvent.on(popUp._contentNode, 'click', () => {console.log('me ===>>> clicked ');});
+    this.thePath.bindPopup(popUp)
       .openPopup(popUpSpot);
+
+    // this.thePath.bindPopup(`${msToDurtationLable(this.props.routeObj.durationMS)}
+    //     <br>${metersToDistanceLable(this.props.routeObj.distanceM)}`,
+    //   {
+    //     closeButton: true,
+    //     closeOnClick: false,
+    //     autoPan: false,
+    //     keepInView: false,
+    //     zoomAnimation: true,
+    //   })
+    //   .openPopup(popUpSpot);
   }
 
   createPath = (latLngArray) => {
@@ -97,6 +116,8 @@ MapRoute.propTypes = {
   routeObj: React.PropTypes.object,
 };
 
-export default pure(MapRoute);
+const mapState = (state) => ({
+  routeObj: mapStoreGetRoute(state),
+});
 
-// export default PureChroniclePath;
+export default connect(mapState)(pure(MapRoute));

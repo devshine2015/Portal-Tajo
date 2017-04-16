@@ -7,11 +7,14 @@ import { isMwa } from 'configs';
 
 const MAP_STOREVIEW = 'map/storeView';
 const MAP_PAN_TO = 'map/panTo';
+const MAP_ROUTE_OBJ = 'map/routeObj';
+
 const mapInitialState = fromJS({
-  panLatLngs: null,
   // center: isMwa ? ZERO_LOCATION_MWA : ZERO_LOCATION,
   // zoom: ZERO_ZOOM,
   mapView: {},
+  panLatLngs: null,
+  routeObj: {},
 });
 
 export default function mapReducer(state = mapInitialState, action) {
@@ -23,6 +26,8 @@ export default function mapReducer(state = mapInitialState, action) {
       });
     case MAP_PAN_TO:
       return state.set('panLatLngs', action.panLatLngs);
+    case MAP_ROUTE_OBJ:
+      return state.set('routeObj', action.routeObj);
     default:
       return state;
   }
@@ -42,9 +47,8 @@ export const mapStoreGetView = (state) => {
   // return mapView;
 };
 
-// TODO: implement proper fleet-based default locations mechanism
 export const mapStoreGetPan = (state) => (_mapStateReducer(state).get('panLatLngs'));
-
+export const mapStoreGetRoute = (state) => (_mapStateReducer(state).get('routeObj'));
 
 export const mapStoreSetView = (center, zoom) => (dispatch) =>
   dispatch({
@@ -57,4 +61,10 @@ export const mapStoreSetPan = (panLatLngs) => (dispatch) =>
   dispatch({
     type: MAP_PAN_TO,
     panLatLngs,
+  });
+
+export const mapStoreRouteObj = (routeObj) => (dispatch) =>
+  dispatch({
+    type: MAP_ROUTE_OBJ,
+    routeObj,
   });

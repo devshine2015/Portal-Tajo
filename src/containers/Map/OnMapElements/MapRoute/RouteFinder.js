@@ -2,21 +2,16 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
-import RoutePath from './RoutePath';
-
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { ctxGetSelectedVehicleId } from 'services/Global/reducers/contextReducer';
 import { getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
 import { showSnackbar } from 'containers/Snackbar/actions';
+import { mapStoreRouteObj } from 'containers/Map/reducerAction';
 
 import directions from 'utils/mapServices/google/directions';
 import { addMapMenuItem } from 'utils/mapContextMenu';
 
 class RouteFinder extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { routeObj: {} };
-  }
 
   componentDidMount() {
     addMapMenuItem(this.props.theMap, 'mItmRouteTo', (e) => this.routeSelectedVechicleToLatLng(e.latlng));
@@ -29,12 +24,12 @@ class RouteFinder extends React.Component {
   }
 
   haveRoute = (latLngArray, durationMS, distanceM) => {
-    this.setState({ routeObj: {
+    this.props.mapStoreRouteObj({
       pathLatLngs: latLngArray,
       durationMS,
       distanceM,
       destination: latLngArray[latLngArray.length - 1],
-    } });
+    });
   }
 
   routeSelectedVechicleToLatLng = (toLatLng) => {
@@ -51,12 +46,8 @@ class RouteFinder extends React.Component {
     directions(fromPos, toPos, this.haveRoute, this.noHaveCallback);
   }
 
-
   render() {
-//    this.setPath();
-    return (
-      <RoutePath theMap={this.props.theMap} routeObj={this.state.routeObj} />
-    );
+    return false;
   }
 }
 
@@ -64,6 +55,7 @@ RouteFinder.propTypes = {
   theMap: React.PropTypes.object,
   vehicles: React.PropTypes.array.isRequired,
   selectedVehicleId: React.PropTypes.string.isRequired,
+  mapStoreRouteObj: React.PropTypes.func.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,
 };
 
@@ -72,6 +64,7 @@ const mapState = (state) => ({
   selectedVehicleId: ctxGetSelectedVehicleId(state),
 });
 const mapDispatch = {
+  mapStoreRouteObj,
   showSnackbar,
 };
 
