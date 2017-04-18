@@ -1,5 +1,4 @@
 import React from 'react';
-import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
 import * as fromFleetReducer from 'services/FleetModel/reducer';
@@ -9,16 +8,23 @@ import { mapStoreRouteObj } from 'containers/Map/reducerAction';
 import directions from 'utils/mapServices/google/directions';
 import distanceMatrixToSingleDst from 'utils/mapServices/google/distanceMatrix';
 
-import { addMapMenuItem } from 'utils/mapContextMenu';
+import { addMapMenuItemEx } from 'utils/mapContextMenu';
+const iconNearby16 = require('assets/images/context_menu_icons/nearby16.png');
 
 class NearestFinder extends React.Component {
 
   componentDidMount() {
-    addMapMenuItem(this.props.theMap, 'mItmNearest', (e) => this.nearestVechicleToLatLng(e.latlng));
+    addMapMenuItemEx(this.props.theMap,
+      { text: 'Find Nearest',
+        icon: iconNearby16,
+        callback: (e) => this.nearestVechicleToLatLng(e.latlng),
+      });
   }
-  // shouldComponentUpdate(nextProps) {
-  //   return this.props.routeToLatLng[0] !== nextProps.routeToLatLng[0];
-  // }
+
+  shouldComponentUpdate() {
+    return false;
+  }
+
   componentWillUnmount() {
   }
 
@@ -84,4 +90,4 @@ const mapDispatch = {
   showSnackbar,
 };
 
-export default connect(mapState, mapDispatch)(pure(NearestFinder));
+export default connect(mapState, mapDispatch)(NearestFinder);

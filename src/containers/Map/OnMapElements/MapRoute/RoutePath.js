@@ -38,9 +38,9 @@ class MapRoute extends React.Component {
     // let popUpSpot = latLngArray[0];
     // latLngArray.forEach(latLng => {if (latLng.lat > popUpSpot.lat) popUpSpot = latLng;});
     const popUpSpot = this.props.routeObj.destination;
-    const content = window.L.DomUtil.create('div', `${msToDurtationLable(this.props.routeObj.durationMS)}
-        <br>${metersToDistanceLable(this.props.routeObj.distanceM)}`);
-    window.L.DomEvent.addListener(content, 'click', () => {console.log('me ===>>> clicked ');});
+    // const content = window.L.DomUtil.create('div', `${msToDurtationLable(this.props.routeObj.durationMS)}
+    //     <br>${metersToDistanceLable(this.props.routeObj.distanceM)}`);
+    // window.L.DomEvent.addListener(content, 'click', () => {console.log('me ===>>> clicked ');});
     const popUp = window.L.popup({
       closeButton: false,
       closeOnClick: true,
@@ -50,9 +50,9 @@ class MapRoute extends React.Component {
     })
       // .setContent(`${msToDurtationLable(this.props.routeObj.durationMS)}
       //   <br>${metersToDistanceLable(this.props.routeObj.distanceM)}`);
-      .setContent(content);
-      // .setContent(`<div>${msToDurtationLable(this.props.routeObj.durationMS)}
-      //   <br>${metersToDistanceLable(this.props.routeObj.distanceM)}</div>`);
+      // .setContent(content);
+      .setContent(`<div>${msToDurtationLable(this.props.routeObj.durationMS)}
+        <br>${metersToDistanceLable(this.props.routeObj.distanceM)}</div>`);
 //    popUp.on('click', () => {console.log('me ===>>> clicked ');});
     // popUp._contentNode.on('click', () => {console.log('me ===>>> clicked ');});
     // window.L.DomEvent.on(popUp._contentNode, 'click', () => {console.log('me ===>>> clicked ');});

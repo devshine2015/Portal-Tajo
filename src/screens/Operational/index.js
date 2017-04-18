@@ -10,6 +10,7 @@ import FixedContent from 'components/FixedContent';
 import RouteFinder from 'containers/Map/OnMapElements/MapRoute/RouteFinder';
 import NearestFinder from 'containers/Map/OnMapElements/MapRoute/NearestFinder';
 import RoutePath from 'containers/Map/OnMapElements/MapRoute/RoutePath';
+import CtxtOpenGoogleMap from 'containers/Map/OnMapElements/CtxtMenuOpenGMap';
 
 import GFEditor from 'containers/GFEditor/GFEditor';
 import GFEditorMapComponent from 'containers/GFEditor/MapComponenet';
@@ -71,10 +72,11 @@ class Operational extends React.Component {
               {mapVehicles}
               {mapGFs}
               {mwaJobs}
-              <RouteFinder key="route" />
-              <NearestFinder key="nearest" />
-              <RoutePath key="mapPath" />
-              <GFEditorMapComponent key="mapEdit" />
+              <RouteFinder />
+              <NearestFinder />
+              <RoutePath />
+              <GFEditorMapComponent />
+              <CtxtOpenGoogleMap />
             </TheMap>
             <Journal />
           </div>

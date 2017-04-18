@@ -14,6 +14,7 @@ import TheMap from 'containers/Map/MapContainer';
 import ChroniclePath from 'containers/Map/OnMapElements/ChroniclePath';
 import ChronicleMarker from 'containers/Map/OnMapElements/ChronicleMarker';
 import ChronicleEventMarker from 'containers/Map/OnMapElements/ChronicleEventMarker';
+import CtxtOpenGoogleMap from 'containers/Map/OnMapElements/CtxtMenuOpenGMap';
 
 import { getChronicleTimeFrame,
   getInstanceChronicleFrameById, hasChroniclePlayableFrames } from './reducer';
@@ -119,6 +120,7 @@ class Chronicle extends React.Component {
             {this.props.vehicles.map(this.makeChronoMarker)}
             {stopEvents}
             <GFEditorMapComponent />
+            <CtxtOpenGoogleMap />
         </TheMap>
         </FixedContent>
       </div>

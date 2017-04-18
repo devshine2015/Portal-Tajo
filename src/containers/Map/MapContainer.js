@@ -12,10 +12,10 @@ import { mapStoreSetView, mapStoreGetView, mapStoreGetPan } from './reducerActio
 
 import styles from './styles.css';
 
-export const MapOptions = {
-  gMapsLink: 1,
-  editGF: 1 << 1,
-};
+// export const MapOptions = {
+//   gMapsLink: 1,
+//   editGF: 1 << 1,
+// };
 
 // import { gfEditUpdate } from 'containers/GFEditor/actions';
 // import { gfEditIsEditing } from 'containers/GFEditor/reducer';
@@ -131,7 +131,6 @@ MapContainer.propTypes = {
 const mapState = (state) => ({
   mapStoredView: mapStoreGetView(state),
   mapStoredPan: mapStoreGetPan(state),
-
 });
 const mapDispatch = {
   mapStoreSetView,

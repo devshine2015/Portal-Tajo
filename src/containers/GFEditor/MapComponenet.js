@@ -9,8 +9,11 @@ import { gfEditGetSubject, gfEditIsEditing } from 'containers/GFEditor/reducer';
 import { gfEditClose, gfEditUpdate } from 'containers/GFEditor/actions';
 
 import { hideLayer } from 'utils/mapBoxMap';
-import { addMapMenuItem } from 'utils/mapContextMenu';
+import { addMapMenuItemEx } from 'utils/mapContextMenu';
 import { makeLocalGF } from 'services/FleetModel/utils/gfHelpers';
+
+const iconCircle16 = require('assets/images/gf_add_icons/circle16.png');
+const iconPoly16 = require('assets/images/gf_add_icons/polygon16.png');
 
 function handleMultiPolyline(latLngs) {
   // its a multi-polyLine, use the first ring
@@ -31,8 +34,16 @@ class EditGF extends React.Component {
   }
 
   componentDidMount() {
-    addMapMenuItem(this.props.theMap, 'mItmGFCircle', (e) => this.startCircular(e.latlng));
-    addMapMenuItem(this.props.theMap, 'mItmGFPoly', (e) => this.startPolygon(e.latlng));
+    addMapMenuItemEx(this.props.theMap,
+      { text: 'Circualr GF',
+        icon: iconCircle16,
+        callback: (e) => this.startCircular(e.latlng),
+      });
+    addMapMenuItemEx(this.props.theMap,
+      { text: 'Poly GF',
+        icon: iconPoly16,
+        callback: (e) => this.startPolygon(e.latlng),
+      });
   }
 
   // componentWillUnmount() {

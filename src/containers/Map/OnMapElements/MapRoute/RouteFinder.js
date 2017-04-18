@@ -1,5 +1,4 @@
 import React from 'react';
-import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
 import * as fromFleetReducer from 'services/FleetModel/reducer';
@@ -9,17 +8,23 @@ import { showSnackbar } from 'containers/Snackbar/actions';
 import { mapStoreRouteObj } from 'containers/Map/reducerAction';
 
 import directions from 'utils/mapServices/google/directions';
-import { addMapMenuItem } from 'utils/mapContextMenu';
+import { addMapMenuItemEx } from 'utils/mapContextMenu';
+const iconRoute16 = require('assets/images/context_menu_icons/rt01_16.png');
 
 class RouteFinder extends React.Component {
 
   componentDidMount() {
-    addMapMenuItem(this.props.theMap, 'mItmRouteTo', (e) => this.routeSelectedVechicleToLatLng(e.latlng));
+    addMapMenuItemEx(this.props.theMap,
+      { text: 'Route',
+        icon: iconRoute16,
+        callback: (e) => this.routeSelectedVechicleToLatLng(e.latlng),
+      });
   }
 
-  // shouldComponentUpdate(nextProps) {
-  //   return this.props.routeToLatLng[0] !== nextProps.routeToLatLng[0];
-  // }
+  shouldComponentUpdate() {
+    return false;
+  }
+
   componentWillUnmount() {
   }
 
@@ -68,4 +73,4 @@ const mapDispatch = {
   showSnackbar,
 };
 
-export default connect(mapState, mapDispatch)(pure(RouteFinder));
+export default connect(mapState, mapDispatch)(RouteFinder);
