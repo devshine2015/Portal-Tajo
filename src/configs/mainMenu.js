@@ -24,6 +24,10 @@ const common = {
     name: 'alerts_editor',
     path: 'alerts',
   },
+  profile: {
+    name: 'profile',
+    path: 'profile',
+  },
 };
 
 const escapePortal = {
@@ -53,10 +57,6 @@ const sunshinePortal = {
   history: {
     name: 'history',
     path: 'history',
-  },
-  profile: {
-    name: 'profile',
-    path: 'profile',
   },
 };
 

@@ -20,7 +20,7 @@ import usersManagerScreen from 'screens/UsersManager/route';
 import devicesManagerScreen from 'screens/DevicesManager/route';
 import loginScreen from 'screens/LoginScreen/route';
 import dashboardScreen from 'screens/DashboardScreen/route';
-import profileScreen from 'screens/Settings/route';
+import profileScreen from 'screens/Profile/route';
 import alertsEditorScreen from 'screens/AlertsEditor/route';
 import notFoundScreen from 'screens/NotFound/route';
 
