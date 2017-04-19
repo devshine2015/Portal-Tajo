@@ -35,12 +35,12 @@ class EditGF extends React.Component {
 
   componentDidMount() {
     addMapMenuItemEx(this.props.theMap,
-      { text: 'Circualr GF',
+      { text: this.context.translator.getTranslation('ctx_add_circular'),
         icon: iconCircle16,
         callback: (e) => this.startCircular(e.latlng),
       });
     addMapMenuItemEx(this.props.theMap,
-      { text: 'Poly GF',
+      { text: this.context.translator.getTranslation('ctx_add_poly'),
         icon: iconPoly16,
         callback: (e) => this.startPolygon(e.latlng),
       });
@@ -166,6 +166,9 @@ EditGF.propTypes = {
   gfEditUpdate: React.PropTypes.func.isRequired,
   gfEditClose: React.PropTypes.func.isRequired,
 };
+EditGF.contextTypes = {
+  translator: React.PropTypes.object.isRequired,
+};
 const mapState = (state) => ({
   subjectGF: gfEditGetSubject(state),
   gfEditMode: gfEditIsEditing(state),
@@ -175,6 +178,4 @@ const mapDispatch = {
   gfEditClose,
 };
 
-const PureEditGF = pure(EditGF);
-
-export default connect(mapState, mapDispatch)(PureEditGF);
+export default connect(mapState, mapDispatch)(pure(EditGF));

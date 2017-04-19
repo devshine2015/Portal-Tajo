@@ -239,6 +239,15 @@ const phrases = {
     engine_status: 'Engine Status',
     fuel_level: 'Fuel Level',
 
+    // --map context menu
+    ctx_add_circular: 'Circualr GF',
+    ctx_add_poly: 'Poly GF',
+    ctx_route: 'Route To',
+    ctx_nearest: 'Find Nearest',
+    ctx_gmap: 'Google Maps',
+
+    // --end map context menu
+
     mwaJobsN: 'No. of Jobs',
     mwaJobsT: 'Jobs Time',
   },
@@ -471,6 +480,14 @@ const phrases = {
     door_open_close: 'สถานะประตู',
     engine_status: 'สถานะเครื่องยนต์',
     fuel_level: 'ระดับน้ำมัน',
+
+    // --map context menu
+    ctx_add_circular: 'สร้างสถานที่แบบวงกลม',
+    ctx_add_poly: 'สร้างสถานที่แบบหลายเหลี่ยม',
+    ctx_route: 'เส้นทาง',
+    ctx_nearest: 'ใกล้ที่สุด',
+    ctx_gmap: 'Google Maps',
+    // --end map context menu
 
     mwaJobsN: 'จำนวนงาน',
 

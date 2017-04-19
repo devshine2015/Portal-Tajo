@@ -15,7 +15,7 @@ class NearestFinder extends React.Component {
 
   componentDidMount() {
     addMapMenuItemEx(this.props.theMap,
-      { text: 'Find Nearest',
+      { text: this.context.translator.getTranslation('ctx_nearest'),
         icon: iconNearby16,
         callback: (e) => this.nearestVechicleToLatLng(e.latlng),
       });
@@ -80,6 +80,9 @@ NearestFinder.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
   mapStoreRouteObj: React.PropTypes.func.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,
+};
+NearestFinder.contextTypes = {
+  translator: React.PropTypes.object.isRequired,
 };
 
 const mapState = (state) => ({

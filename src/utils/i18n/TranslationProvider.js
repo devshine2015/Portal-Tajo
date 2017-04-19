@@ -43,6 +43,8 @@ class Translator {
     this.subscribtions = {};
   }
 
+  getTranslation = (stringKey) => this.p.t(`${this.getLocale()}.${stringKey}`)
+
   getLocale = () => this.p.locale()
 
   setLocale = nextLocale => {

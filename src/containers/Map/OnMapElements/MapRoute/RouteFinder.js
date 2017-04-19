@@ -12,10 +12,9 @@ import { addMapMenuItemEx } from 'utils/mapContextMenu';
 const iconRoute16 = require('assets/images/context_menu_icons/rt01_16.png');
 
 class RouteFinder extends React.Component {
-
   componentDidMount() {
     addMapMenuItemEx(this.props.theMap,
-      { text: 'Route',
+      { text: this.context.translator.getTranslation('ctx_route'),
         icon: iconRoute16,
         callback: (e) => this.routeSelectedVechicleToLatLng(e.latlng),
       });
@@ -62,6 +61,9 @@ RouteFinder.propTypes = {
   selectedVehicleId: React.PropTypes.string.isRequired,
   mapStoreRouteObj: React.PropTypes.func.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,
+};
+RouteFinder.contextTypes = {
+  translator: React.PropTypes.object.isRequired,
 };
 
 const mapState = (state) => ({

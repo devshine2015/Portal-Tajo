@@ -11,7 +11,7 @@ class OpenGMap extends React.Component {
   componentDidMount() {
     // addMapMenuItem(this.props.theMap, 'mItmRouteTo', (e) => this.openGMaps(e.latlng));
     addMapMenuItemEx(this.props.theMap,
-      { text: 'Google Maps',
+      { text: this.context.translator.getTranslation('ctx_gmap'),
         icon: iconGMaps16,
         callback: (e) => this.openGMaps(e.latlng),
       });
@@ -33,5 +33,7 @@ class OpenGMap extends React.Component {
 OpenGMap.propTypes = {
   theMap: React.PropTypes.object,
 };
-
+OpenGMap.contextTypes = {
+  translator: React.PropTypes.object.isRequired,
+};
 export default OpenGMap;
