@@ -105,11 +105,11 @@ function chooseItem(type, {
 
 class GenericListItem extends React.Component {
 
-  constructor(props) {
-    super(props);
-    const { isExpanded, ...rest } = this.props;
-    this.element = chooseItem(this.props.type, { ...rest, isExpanded });
-  }
+  // constructor(props) {
+  //   super(props);
+  //   const { isExpanded, ...rest } = this.props;
+  //   this.element = chooseItem(this.props.type, { ...rest, isExpanded });
+  // }
 
   componentWillReceiveProps(nextProps) {
     if (!this.props.isExpanded && nextProps.isExpanded) {
@@ -145,6 +145,7 @@ class GenericListItem extends React.Component {
       ['listItemDynamicExpanded']: isExpanded,
       [styles.list__item_expanded]: isExpanded,
     });
+    const element = chooseItem(this.props.type, { ...rest, isExpanded });
     return (
       <li className={className}>
         { _needIndicator(rest.item) && (
@@ -153,7 +154,7 @@ class GenericListItem extends React.Component {
             isDelayedWithIgnitionOff={rest.item.isDelayedWithIgnitionOff}
           />
         )}
-        {this.element}
+        {element}
       </li>
     );
   }
