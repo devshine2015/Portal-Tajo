@@ -495,8 +495,14 @@ const phrases = {
     ctx_gmap: 'Google Maps',
     // --end map context menu
 
-    mwa_jobs_nbr: 'จำนวนงาน',
-
+    // -- mwa reports
+    mwa_jobs_nbr: 'ปริมาณงาน',
+    mwa_jobs_t: 'เวลาปฏิบัติงาน',
+    job_name: 'รหัสงาน',
+    job_from: 'เวลาเปิดงาน',
+    job_to: 'เวลาสิ้นสุดงานภาคสนาม',
+    job_duration: 'ระยะเวลาปฏิบัติงาน',
+    // -- end mwa reports
   },
 };
 
