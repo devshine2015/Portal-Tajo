@@ -3,10 +3,9 @@ const fields = [{
   customReportKind: 'mwaTime',
   domain: 'JobsTime',
   checkedByDefault: false,
-  label: 'Jobs Time',
-  multiLabel: ['Job Name', 'From', 'To', 'Duration'],
-  name: 'mwaJobsT',
-  reportType: 'mwaJobsT',
+  multiLabel: ['job_name', 'job_from', 'job_to', 'job_duration'],
+  name: 'mwa_jobs_t',
+  reportType: 'mwaJobsTime',
   order: 9,
 }];
 

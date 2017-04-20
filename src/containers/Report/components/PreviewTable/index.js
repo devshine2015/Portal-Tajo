@@ -54,7 +54,7 @@ const PreviewTable = ({
 };
 
 PreviewTable.propTypes = {
-  headers: React.PropTypes.object.isRequired,
+  headers: React.PropTypes.array.isRequired,
   data: React.PropTypes.object.isRequired,
 };
 

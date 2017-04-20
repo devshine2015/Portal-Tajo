@@ -239,17 +239,23 @@ const phrases = {
     engine_status: 'Engine Status',
     fuel_level: 'Fuel Level',
 
-    // --map context menu
+    // -- map context menu
     ctx_add_circular: 'Circualr GF',
     ctx_add_poly: 'Poly GF',
     ctx_route: 'Route To',
     ctx_nearest: 'Find Nearest',
     ctx_gmap: 'Google Maps',
+    // -- end map context menu
 
-    // --end map context menu
+    // -- mwa reports
+    mwa_jobs_nbr: 'No. of Jobs',
+    mwa_jobs_t: 'Jobs Time',
+    job_name: 'Job Name',
+    job_from: 'From',
+    job_to: 'To',
+    job_duration: 'Duration',
+    // -- end mwa reports
 
-    mwaJobsN: 'No. of Jobs',
-    mwaJobsT: 'Jobs Time',
   },
 
   th: {
@@ -489,7 +495,7 @@ const phrases = {
     ctx_gmap: 'Google Maps',
     // --end map context menu
 
-    mwaJobsN: 'จำนวนงาน',
+    mwa_jobs_nbr: 'จำนวนงาน',
 
   },
 };

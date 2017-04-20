@@ -3,9 +3,8 @@ const fields = [{
   customReportKind: 'mwa',
   domain: 'Jobs',
   checkedByDefault: false,
-  label: 'Nr of jobs',
-  name: 'mwaJobsN',
-  reportType: 'mwaJobsN',
+  name: 'mwa_jobs_nbr',
+  reportType: 'mwaJobs',
   order: 8,
 }];
 

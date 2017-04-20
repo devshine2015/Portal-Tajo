@@ -70,7 +70,6 @@ class Field extends React.Component {
 Field.propTypes = {
   index: React.PropTypes.number.isRequired,
   isChecked: React.PropTypes.bool.isRequired,
-  label: React.PropTypes.string.isRequired,
   name: React.PropTypes.string.isRequired,
   disabled: React.PropTypes.bool,
   onCheck: React.PropTypes.func.isRequired,
