@@ -28,7 +28,6 @@ const commonFields = {
 const fields = [{
   ...commonFields,
   reportType: 'odometer',
-  label: 'ODO',
   name: 'odometer',
   order: 7,
 }];

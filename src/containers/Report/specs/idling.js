@@ -52,34 +52,29 @@ const commonFields = {
 const fields = [{
   ...commonFields,
   reportType: 'idlingTime',
-  label: 'Total Idling Time',
   name: 'idlingTime',
   help: 'Ignition On While Stopped + Ignition Off While Stopped',
   order: 7,
 }, {
   ...commonFields,
   reportType: 'ignOnWhileStopped',
-  label: 'Ignition On While Stopped',
   name: 'ignOnWhileStopped',
   help: 'Ignition On and speed = 0',
   order: 8,
 }, {
   ...commonFields,
   reportType: 'ignOffWhileStopped',
-  label: 'Ignition Off While Stopped',
   name: 'ignOffWhileStopped',
   help: 'Ignition Off and speed = 0',
   order: 9,
 }, {
   ...commonFields,
   reportType: 'drivingTime',
-  label: 'Driving Time',
   name: 'drivingTime',
   order: 10,
 }, {
   ...commonFields,
   reportType: 'ignOn',
-  label: 'Ignition On Time',
   name: 'ignOn',
   order: 11,
 }];
