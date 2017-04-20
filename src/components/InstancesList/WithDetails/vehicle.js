@@ -25,9 +25,10 @@ class ListItemVehicle extends React.Component {
     return this.props.isExpanded !== nextProps.isExpanded
       || this.props.vehicle.filteredOut !== nextProps.vehicle.filteredOut
       // always update the expanded vehicle - to show all the stats
-      || nextProps.isExpanded;
+      || nextProps.isExpanded
+      // TODO: no MWA checks here
+      || this.props.vehicle !== undefined && nextProps.vehicle !== undefined && this.props.vehicle.mwa !== nextProps.vehicle.mwa;
   }
-
   onClick = () => {
     this.props.selectVehicle(this.props.vehicle.id);
     this.props.mapStoreSetPan([this.props.vehicle.pos]);
