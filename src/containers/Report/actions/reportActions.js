@@ -28,7 +28,7 @@ export const setReportsMWA = () => dispatch => dispatch({ type: REPORT_SET_MWA }
 
 export const generateReport = params => (dispatch, getState) =>
   _generateReport(params, dispatch, getState);
-export const saveGenerated = () => _saveGenerated;
+export const saveGenerated = translator => (dispatch, getState) => _saveGenerated(translator, dispatch, getState);
 export const removeReportData = () => ({
   type: REPORT_DATA_REMOVE,
 });
@@ -116,9 +116,9 @@ function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getSta
     });
 }
 
-function _saveGenerated(dispatch, getState) {
+function _saveGenerated(translator, dispatch, getState) {
   const reportData = getSavedReportData(getState()).toArray();
-  const headers = _getHeaders(getState());
+  const headers = _getHeaders(translator, getState());
 
   return reporter(reportData, headers);
 }
@@ -185,13 +185,19 @@ function getSelectedReportsTypes(state) {
   return result;
 }
 
-function _getHeaders(state) {
+function _getHeaders(translator, state) {
   const selectedReports = getSelectedReports(state).toArray();
   const availableFields = getAvailableReports(state).toArray();
   const result = [];
 
   selectedReports.forEach((index) => {
-    result.push(availableFields[index].label);
+//    result.push(availableFields[index].label);
+    if (availableFields[index].multiLabel !== undefined) {
+      result.push(...(availableFields[index].multiLabel.map(
+          lbl => translator.getTranslation(lbl))));
+    } else {
+      result.push(translator.getTranslation(availableFields[index].name));
+    }
   });
 
   return result;

@@ -49,7 +49,7 @@ const ReportsScreen = ({
       <FixedContent>
         <ReportConfigurator
           hasReport={hasReport}
-          saveReport={saveGenerated}
+          saveReport={() => saveGenerated(context.translator)}
         />
 
         <PreviewTable
