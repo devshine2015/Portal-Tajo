@@ -43,7 +43,7 @@ class MapRoute extends React.Component {
     // window.L.DomEvent.addListener(content, 'click', () => {console.log('me ===>>> clicked ');});
     const popUp = window.L.popup({
       closeButton: false,
-      closeOnClick: true,
+      closeOnClick: false,
       autoPan: false,
       keepInView: false,
       zoomAnimation: true,
