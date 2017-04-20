@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { hideLayer } from 'utils/mapBoxMap';
 import { mwaSelectJob } from 'services/MWA/actions';
 import { getMWASelectedJobId } from 'services/MWA/reducer';
+import { ctxGetSelectedVehicleId } from 'services/Global/reducers/contextReducer';
 
 require('containers/Map/leafletStyles.css');
 
@@ -37,7 +38,7 @@ class MWAJobMarker extends React.Component {
   }
 
   setSelected(isSelected, isMyVehicleSelected) {
-    const nowColor = isSelected ? '#e64a19' :
+    const nowColor = isSelected && isMyVehicleSelected ? '#e64a19' :
       (isMyVehicleSelected ? '#2969c3' : '#adafae');
     const markerHtmlStyles = markerHtmlStylesCore.concat(`background-color: ${nowColor}`);
     const icon = window.L.divIcon({
@@ -84,7 +85,8 @@ class MWAJobMarker extends React.Component {
 
   render() {
     if (this.theMarker !== null) {
-      this.setSelected(this.props.selectedId === this.props.theMWAJob.id, false); //this.props.isMyVehicleSelected);
+      this.setSelected(this.props.selectedJobId === this.props.theMWAJob.id,
+          this.props.theMWAJob.vehicleId === this.props.selectedVehicleId );
       hideLayer(this.theLayer, this.theMarker, this.props.theMWAJob.filteredOut);
     }
     return false;
@@ -95,11 +97,13 @@ MWAJobMarker.propTypes = {
   theMap: React.PropTypes.object,
   theMWAJob: React.PropTypes.object,
   mwaSelectJob: React.PropTypes.func.isRequired,
-  selectedId: React.PropTypes.string.isRequired,
+  selectedJobId: React.PropTypes.string.isRequired,
+  selectedVehicleId: React.PropTypes.string.isRequired,
 };
 
 const mapState = (state) => ({
-  selectedId: getMWASelectedJobId(state),
+  selectedJobId: getMWASelectedJobId(state),
+  selectedVehicleId: ctxGetSelectedVehicleId(state),
 });
 const mapDispatch = {
   mwaSelectJob,
