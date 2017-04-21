@@ -40,9 +40,9 @@ class NearestFinder extends React.Component {
   haveDistMatrix = (resultsArray) => {
     let bestIdx = 0;
     // find idx of the closes one
-    resultsArray.forEach((aRes, idx) => {if (resultsArray[bestIdx].distanceM > aRes.distanceM) bestIdx = idx; });
+    // resultsArray.forEach((aRes, idx) => {if (resultsArray[bestIdx].distanceM > aRes.distanceM) bestIdx = idx; });
     // find idx of the closes one in TIME
-    // resultsArray.forEach((aRes, idx) => {if (resultsArray[bestIdx].durationMS > aRes.durationMS) bestIdx = idx; });
+    resultsArray.forEach((aRes, idx) => {if (resultsArray[bestIdx].durationMS > aRes.durationMS) bestIdx = idx; });
 
 // console.log(resultsArray);
 // console.log(`  >>>>  ${bestIdx}`);
