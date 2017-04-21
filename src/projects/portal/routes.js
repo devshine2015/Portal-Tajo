@@ -93,20 +93,21 @@ export default function createRoutes(store) {
     mwaLoginRoute,
     reviewScreen,
     operationalRoute,
-    reportsRoute,
     chronicleRoute,
+    reportsRoute,
     vehiclesEditorRoute,
-    profileRoute,
     notFoundRoute,
     usersManagerRoute,
 // TODO: uncomment when releasing alerts system
 //    alertsEditorRoute,
+//    profileRoute
   );
 
 // TODO: uncomment alertsEditorRoute above when removing isAlert dev flag
   if (isAlerts) {
     rootRoute.childRoutes.push(alertsEditorRoute);
   }
+  rootRoute.childRoutes.push(profileRoute);
 
   return (
     <Router
