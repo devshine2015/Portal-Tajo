@@ -286,6 +286,7 @@ const phrases = {
     history: 'ประวัติ',
     users: 'ผู้ใช้',
     profile: 'โปรไฟล์',
+    alerts_editor: 'จัดการการเตือน',
     // -- end main menu
 
     // dashboard screen
