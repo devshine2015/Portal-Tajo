@@ -76,7 +76,7 @@ export const prepareDataForReport = (
             if (!result[rowNumber]) {
               result[rowNumber] = [];
             }
-            const order = Math.max(0, selectedTypes.indexOf(filteredTypesByDomain[domain].name));
+            const order = Math.max(0, selectedTypes.indexOf(filteredTypesByDomain[domain].reportType));
             const column = {
               order,
               value: mwaGetJobsForVehicle(aVeh.id, domainData[0].RESULTS).length,
@@ -94,7 +94,7 @@ export const prepareDataForReport = (
           rowNumber = totalRowsCount;
 
           domainData.vehicles.forEach(aVeh => {
-            const order = Math.max(0, selectedTypes.indexOf(filteredTypesByDomain[domain].name));
+            const order = Math.max(0, selectedTypes.indexOf(filteredTypesByDomain[domain].reportType));
             let jobs = mwaGetJobsForVehicle(aVeh.id, domainData[0].RESULTS);
             jobs = jobs.filter(aJob => aJob.DT_FIELD_END !== null && aJob.DT_JOB_OPEN !== null);
             if (jobs.length === 0) {
