@@ -8,6 +8,10 @@ general:
       - master
       - verified_candidate
 
+dependencies:
+  pre:
+    - npm install -g npm@4.3.0
+
 deployment:
   development:
     branch: dev
