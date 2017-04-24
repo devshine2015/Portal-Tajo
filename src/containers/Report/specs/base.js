@@ -37,19 +37,16 @@ const commonProps = {
 
 const fields = [{
   ...commonProps,
-  label: 'Date',
   name: 'date',
   reportType: 'date',
   order: 0,
 }, {
   ...commonProps,
-  label: 'Vehicle Name',
   name: 'name',
   reportType: 'name',
   order: 1,
 }, {
   ...commonProps,
-  label: 'License Plate',
   name: 'license',
   reportType: 'license',
   checkedByDefault: false,

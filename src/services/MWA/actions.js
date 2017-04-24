@@ -9,12 +9,22 @@ import { getProcessedVehicles } from 'services/FleetModel/reducer';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import moment from 'moment';
 import { onStage, onDev, onLocal } from 'configs';
+import { getMWAJobsAsIM } from './reducer';
+import { filterProcessedListByName } from '../FleetModel/utils/filtering';
 
 
 // import staticData from './staticData';
 
 export const MWA_ADD_JOBS = 'mwa/add';
+export const MWA_SELECT_JOB = 'mwa/slct';
 
+export const mwaFilterJobs = (searchString) => (dispatch, getState) =>
+  _filterMWA({ searchString }, dispatch, getState);
+
+export const mwaSelectJob = (id) => (dispatch) => dispatch({
+  type: MWA_SELECT_JOB,
+  id,
+});
 
 // export const mwaFetchJobs = () => _fetchJobs;
 export const mwaFetchJobs = () => _startFetching;
@@ -38,7 +48,7 @@ const _fetchFunk = (dispatch, getState) => () => {
 
 
 const padZero = inNumber => inNumber < 10 ? `0${inNumber}` : inNumber;
-const makeMWADate = inDate =>
+export const makeMWADate = inDate =>
   `${inDate.getFullYear()}${padZero(inDate.getMonth() + 1)}${padZero(inDate.getDate())}`;
 
 function _fetchJobs(dispatch, getState) {
@@ -157,6 +167,18 @@ function _fetchJobsNotWorking(dispatch, getState) {
     });
 }
 
+const ensureHasLocations = (aJob) => {
+  if (aJob.X === null
+  || aJob.Y === null) {
+    // aJob.X = 13.7030484;
+    // aJob.Y = 100.5924076;
+    aJob.X = 13.807258;
+    aJob.Y = 100.407345;
+    aJob.activityStatus = 'dead';
+  }
+  aJob.isDelayedWithIgnitionOff = false;
+};
+
 const invalidJob = (aJob) => (
   aJob.X === null
   || aJob.Y === null
@@ -211,20 +233,27 @@ const mapJobToCar = (aJobKey) => {
   return teamMap[aJobKey];
 };
 
+export function mwaGetJobsForVehicle(vehicleId, mwaArray) {
+  return mwaArray.filter(aJob => (mapJobToCar(aJob.TEAM_ID) === vehicleId));
+}
+
 function _addJobs(dispatch, getState, mwaJobs) {
   const jobs = {};
   const carsJobs = {};
   const processedList = getProcessedVehicles(getState());
 
   mwaJobs.forEach(aJob => {
+    ensureHasLocations(aJob);
     if (!invalidJob(aJob)) {
       let ownerCarId = mapJobToCar(aJob.TEAM_ID);
       if (ownerCarId !== null) {
         const imLocalVehicle = processedList.get(ownerCarId);
         if (imLocalVehicle !== undefined) {
           aJob.id = aJob.WLMA_JOB_CODE;
-          aJob.carName = aJob.WLMA_JOB_CODE;
+          aJob.name = aJob.WLMA_JOB_CODE;
           aJob.vehicleId = ownerCarId;
+          aJob.vehicleName = imLocalVehicle.getIn(['original', 'name']);
+          aJob.filteredOut = false;
           jobs[aJob.WLMA_JOB_CODE] = aJob;
           if (!(ownerCarId in carsJobs)) {
             carsJobs[ownerCarId] = [aJob.id];
@@ -234,20 +263,31 @@ function _addJobs(dispatch, getState, mwaJobs) {
         }
       }
     }
-  }
-  );
+  });
+
   dispatch(_mwaJobs(jobs));
   for (var property in carsJobs) {
     if (carsJobs.hasOwnProperty(property)) {
-        const vehId = property;
-        dispatch(vehiclesActions._vehicleUpdate({
-          mwa: {
+      const vehId = property;
+      dispatch(vehiclesActions._vehicleUpdate({
+        mwa: {
             jobs: carsJobs[vehId],
           },
-        },
+      },
           vehId));
-      }
+    }
   }
+}
+
+function _filterMWA({ searchString }, dispatch, getState) {
+  const originJobs = getMWAJobsAsIM(getState());
+  const options = {
+    objectsList: originJobs,
+    searchString,
+    path: 'name',
+  };
+  const filteredJobs = filterProcessedListByName(options);
+  dispatch(_mwaJobs(filteredJobs));
 }
 
 const _mwaJobs = (jobs) => ({

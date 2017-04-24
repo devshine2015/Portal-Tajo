@@ -7,6 +7,9 @@ import { fromJS } from 'immutable';
 import { contextActions } from '../actions';
 import { vehiclesActions } from 'services/FleetModel/actions';
 
+import listTypes from 'components/InstancesList/types';
+
+
 const initialState = fromJS({
   map: {
     center: ZERO_LOCATION,
@@ -16,17 +19,12 @@ const initialState = fromJS({
   selectedGFId: '',
   hideGF: false,
   hideVehicles: false,
+
   // what we have currently in PowerList Tabs
-  activeListType: '',
+  activeListType: listTypes.withVehicleDetails,
 
   // keep search value for vehicle across all screens
   vehicleFilterString: '',
-
-   route: {
-    fromLatLng: [],
-    toLatLng: [],
-  },
-  nearestRefLatLng: [],
 });
 
 function contextReducer(state = initialState, action) {
@@ -40,22 +38,23 @@ function contextReducer(state = initialState, action) {
       return state.set('hideVehicles', action.doHide);
     case contextActions.CTX_PL_TAB:
       return state.set('activeListType', action.tabType);
-
+    case contextActions.CTX_SELECT_VEH:
+      if (!action.setTab) return state.set('selectedVehicleId', action.vehicleId);
+      return state.set('selectedVehicleId', action.vehicleId).set('activeListType', listTypes.withVehicleDetails);
+    case contextActions.CTX_SELECT_GF:
+      if (!action.setTab) return state.set('selectedGFId', action.gfId);
+      return state.set('selectedGFId', action.gfId).set('activeListType', listTypes.withGFDetails);
     case vehiclesActions.FLEET_MODEL_VEHICLES_FILTER:
       return state.set('vehicleFilterString', action.searchString);
-    case contextActions.CTX_ROUTE:
-      return state.setIn(['route', 'toLatLng'], action.toLatLng);
-    case contextActions.CTX_NEAREST:
-      return state.set('nearestRefLatLng', action.refLatLng);
     default:
       return state;
   }
 }
 
+export default contextReducer;
+
 const _ctxReducer = state =>
   state.getIn(['global', 'context']);
-
-export default contextReducer;
 
 export const ctxGetMap = state =>
   _ctxReducer(state).get('map');
@@ -63,16 +62,17 @@ export const ctxGetSelectedVehicleId = state =>
   _ctxReducer(state).get('selectedVehicleId');
 export const ctxGetSelectedGFId = state =>
   _ctxReducer(state).get('selectedGFId');
+
 export const ctxGetHideGF = state =>
-  _ctxReducer(state).get('hideGF');
+  _ctxReducer(state).get('hideGF')
+  && ctxGetPowListTabType(state) !== listTypes.withGFDetails;
+
 export const ctxGetHideVehicles = state =>
-  _ctxReducer(state).get('hideVehicles');
+  _ctxReducer(state).get('hideVehicles')
+  && ctxGetPowListTabType(state) !== listTypes.withVehicleDetails;
+
 export const ctxGetPowListTabType = state =>
   _ctxReducer(state).get('activeListType');
-export const ctxGetRouteToLatLng = state =>
-  _ctxReducer(state).getIn(['route', 'toLatLng']);
-export const ctxGetNearestRefLatLng = state =>
-  _ctxReducer(state).get('nearestRefLatLng');
 
 // TODO: this is quick hack for testing only
 export const ctxPageIdx = state =>

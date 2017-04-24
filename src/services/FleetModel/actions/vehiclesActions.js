@@ -5,7 +5,7 @@ import {
   makeLocalVehicle,
   sortVehicles,
 } from '../utils/vehicleHelpers';
-import { fetchAlertsHistory } from 'services/AlertsSystem/actions';
+import { fetchAlertsHistory } from 'containers/Journal/actions';
 import { filterProcessedListByName } from '../utils/filtering';
 import { getProcessedVehicles } from '../reducer';
 import { mwaFetchJobs } from 'services/MWA/actions';

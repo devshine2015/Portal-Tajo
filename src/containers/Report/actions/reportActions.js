@@ -13,6 +13,7 @@ import {
 } from '../utils/prepareReport';
 import getPeriods from '../utils/periods';
 import getVehiclesForReport from '../utils/reportVehicles';
+import { makeMWADate } from 'services/MWA/actions';
 
 export const REPORT_DATA_SAVE = 'portal/Report/REPORT_DATA_SAVE';
 export const REPORT_DATA_REMOVE = 'portal/Report/REPORT_DATA_REMOVE';
@@ -21,10 +22,13 @@ export const REPORT_GENERATING_SUCCESS = 'portal/Report/REPORT_GENERATING_SUCCES
 export const REPORT_GENERATING_FAILURE = 'portal/Report/REPORT_GENERATING_FAILURE';
 export const REPORT_SELECTED_ADD = 'portal/Report/REPORT_SELECTED_ADD';
 export const REPORT_SELECTED_REMOVE = 'portal/Report/REPORT_SELECTED_REMOVE';
+export const REPORT_SET_MWA = 'portal/Report/SET_MWA';
+
+export const setReportsMWA = () => dispatch => dispatch({ type: REPORT_SET_MWA });
 
 export const generateReport = params => (dispatch, getState) =>
   _generateReport(params, dispatch, getState);
-export const saveGenerated = () => _saveGenerated;
+export const saveGenerated = translator => (dispatch, getState) => _saveGenerated(translator, dispatch, getState);
 export const removeReportData = () => ({
   type: REPORT_DATA_REMOVE,
 });
@@ -58,10 +62,12 @@ function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getSta
 
   return Promise.all(
     Object.values(fieldsToCall)
-      .map(({ domain, query = {}, endpoint = '' }) => (
+      .map(({ domain, query = {}, endpoint = '', customReportKind = null }) => (
         _reportRequest(vehicles, {
           domain,
           endpoint,
+          customReportKind,
+          timePeriod,
           queryString: `${qs.stringify(periodParams)}&${qs.stringify(query)}`,
         })
       ))
@@ -87,6 +93,10 @@ function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getSta
         reports.forEach(r => {
           if (r.domain === domain) {
             result[domain] = r.report;
+            if (r.customReportKind !== null) {
+              result[domain].customReportKind = r.customReportKind;
+              result[domain].vehicles = vehicles;
+            }
           }
         });
       });
@@ -106,9 +116,9 @@ function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getSta
     });
 }
 
-function _saveGenerated(dispatch, getState) {
+function _saveGenerated(translator, dispatch, getState) {
   const reportData = getSavedReportData(getState()).toArray();
-  const headers = _getHeaders(getState());
+  const headers = _getHeaders(translator, getState());
 
   return reporter(reportData, headers);
 }
@@ -130,17 +140,31 @@ const _generatingFail = errorMessage => ({
 
 function _reportRequest(vehicles = [], {
   endpoint,
+  // custom query needs peroidParam
+  customReportKind,
+  timePeriod,
   domain,
   queryString,
 } = {}) {
-  return Promise.all(
-    vehicles.map(v => {
+  let requestsToResolve = [];
+  if (customReportKind === 'mwa'
+  || customReportKind === 'mwaTime') {
+    const { url, method, apiVersion } = endpoints.getMWAJobs({
+      from: makeMWADate(timePeriod.start),
+      to: makeMWADate(timePeriod.end),
+    });
+    requestsToResolve = [api[method](url, { apiVersion }).then(toJson)];
+  } else {
+    requestsToResolve = vehicles.map(v => {
       const url = `${endpoints.getVehicle(v.id).url}/${endpoint}?${queryString}`;
-
       return api.get(url).then(toJson);
-    }),
+    });
+  }
+  return Promise.all(
+    requestsToResolve,
   ).then(res => ({
     domain,
+    customReportKind,
     report: res,
   }));
 }
@@ -161,13 +185,19 @@ function getSelectedReportsTypes(state) {
   return result;
 }
 
-function _getHeaders(state) {
+function _getHeaders(translator, state) {
   const selectedReports = getSelectedReports(state).toArray();
   const availableFields = getAvailableReports(state).toArray();
   const result = [];
 
   selectedReports.forEach((index) => {
-    result.push(availableFields[index].label);
+//    result.push(availableFields[index].label);
+    if (availableFields[index].multiLabel !== undefined) {
+      result.push(...(availableFields[index].multiLabel.map(
+          lbl => translator.getTranslation(lbl))));
+    } else {
+      result.push(translator.getTranslation(availableFields[index].name));
+    }
   });
 
   return result;

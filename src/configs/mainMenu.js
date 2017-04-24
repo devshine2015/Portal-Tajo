@@ -24,9 +24,9 @@ const common = {
     name: 'alerts_editor',
     path: 'alerts',
   },
-  history: {
-    name: 'history',
-    path: 'history',
+  profile: {
+    name: 'profile',
+    path: 'profile',
   },
 };
 
@@ -57,10 +57,6 @@ const sunshinePortal = {
   history: {
     name: 'history',
     path: 'history',
-  },
-  profile: {
-    name: 'profile',
-    path: 'profile',
   },
 };
 

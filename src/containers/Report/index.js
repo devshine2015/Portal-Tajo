@@ -22,10 +22,21 @@ const ReportsScreen = ({
   selectedFields,
   vehiclesClassName,
   contentClassName,
-}) => {
-  const headers = selectedFields.map(index => (
-    availableReports[index].label
-  ));
+}, context) => {
+  // const headers = selectedFields.map(index => (
+  //   availableReports[index].label
+  // ));
+  const headers = [];
+  selectedFields.forEach(index => {
+    if (availableReports[index].multiLabel !== undefined) {
+      headers.push(...(availableReports[index].multiLabel.map(
+          lbl => context.translator.getTranslation(lbl))));
+    } else {
+      headers.push(context.translator.getTranslation(availableReports[index].name));
+    }
+    // headers.push(availableReports[index].multiLabel !== undefined ?
+    //       ...(availableReports[index].multiLabel) : availableReports[index].label);
+  });
 
   const className = cs('configurator', contentClassName);
 
@@ -38,7 +49,7 @@ const ReportsScreen = ({
       <FixedContent>
         <ReportConfigurator
           hasReport={hasReport}
-          saveReport={saveGenerated}
+          saveReport={() => saveGenerated(context.translator)}
         />
 
         <PreviewTable
@@ -58,6 +69,9 @@ ReportsScreen.propTypes = {
   hasReport: React.PropTypes.bool.isRequired,
   saveGenerated: React.PropTypes.func.isRequired,
   selectedFields: React.PropTypes.object.isRequired,
+};
+ReportsScreen.contextTypes = {
+  translator: React.PropTypes.object.isRequired,
 };
 
 const PureReportsScreen = pure(ReportsScreen);

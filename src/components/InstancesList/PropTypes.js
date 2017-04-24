@@ -4,9 +4,9 @@ const shape = PropTypes.shape;
 const string = PropTypes.string;
 
 const phrases = {
-  speed: 'speed',
+  speed: 'Speed',
   speed_km_h: 'km/h',
-  temperature: 'temperature',
+  temperature: 'Temperature',
   device_never_reported: 'never reported - check device',
   remove_success: 'Succesfully removed',
   remove_fail: 'Remove failed',
@@ -14,7 +14,16 @@ const phrases = {
   address: 'Address',
   delete: 'Delete',
   no_history_data: 'no data...',
+  mwa_job_carname: '',
+  mwa_vehicle_group: '',
+  mwa_n_jobs: '',
+  license_plate: '',
+  driver_name: '',
+  door_open_close: '',
+  engine_status: '',
+  fuel_level: '',
 };
+
 
 const _warnings = {
   device_never_reported: string.isRequired,

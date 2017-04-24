@@ -9,9 +9,9 @@ import snackbarReducer from 'containers/Snackbar/reducer';
 import innerPortalReducer from 'containers/InnerPortal/reducer';
 import fleetReducer from 'services/FleetModel/reducer';
 import reportReducer from 'containers/Report/reducer';
-import chronicleReducer from 'containers/Chronicle/reducer';
+import chronicleReducer from 'screens/Chronicle/reducer';
 import gfEditorReducer from 'containers/GFEditor/reducer';
-import mapViewReducer from 'containers/MapFleet/reducerAction';
+import mapStateReducer from 'containers/Map/reducerAction';
 import sessionReducer from 'services/Session/reducer';
 import globalReducer from 'services/Global/reducer';
 import usersReducer from 'services/Users/reducer';
@@ -50,7 +50,7 @@ export default function createReducer(asyncReducers) {
     chronicle: chronicleReducer,
     usersManager: usersReducer,
     gfEditor: gfEditorReducer,
-    mapView: mapViewReducer,
+    mapState: mapStateReducer,
     devices: devicesReducer,
     alerts: alertsSystemReducer,
     mwa: mwaReducer,

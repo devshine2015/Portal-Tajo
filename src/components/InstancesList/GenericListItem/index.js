@@ -8,6 +8,7 @@ import DetailedGFItem from '../WithDetails/gf';
 import DetailedVehicleItem from '../WithDetails/vehicle';
 import VehicleChronicleItem from '../WithDetails/vehicleChronicle';
 import MaritimeItem from '../WithDetails/maritime';
+import MWAJobWithDetails from '../WithDetails/MWA';
 import StatusIcon from './StatusIcon';
 import types from '../types';
 
@@ -55,10 +56,9 @@ function chooseItem(type, {
     case types.withGFDetails: {
       return (
         <DetailedGFItem
-          onClick={onItemClick}
           isExpanded={isExpanded}
           translations={translations}
-          {...item}
+          gf={item}
         />
       );
     }
@@ -66,10 +66,9 @@ function chooseItem(type, {
       return (
         <VehicleChronicleItem
           id={item.id}
-          onClick={onItemClick}
           isExpanded={isExpanded}
+          vehicle={item}
           translations={translations}
-          name={item.original.name}
         />
       );
     }
@@ -80,6 +79,15 @@ function chooseItem(type, {
           isExpanded={isExpanded}
           translations={translations}
           vehicle={item}
+        />
+      );
+    }
+    case types.mwaJob: {
+      return (
+        <MWAJobWithDetails
+          isExpanded={isExpanded}
+          translations={translations}
+          mwaJobObject={item}
         />
       );
     }
@@ -97,11 +105,21 @@ function chooseItem(type, {
 
 class GenericListItem extends React.Component {
 
+  // constructor(props) {
+  //   super(props);
+  //   const { isExpanded, ...rest } = this.props;
+  //   this.element = chooseItem(this.props.type, { ...rest, isExpanded });
+  // }
+
   componentWillReceiveProps(nextProps) {
     if (!this.props.isExpanded && nextProps.isExpanded) {
       this.scrollIntoView();
     }
   }
+
+  // shouldComponentUpdate(nextProps) {
+  //   return this.props.isExpanded !== nextProps.isExpanded;
+  // }
 
   scrollIntoView() {
     if (!this.props.scrollIntoView) return;
@@ -127,19 +145,16 @@ class GenericListItem extends React.Component {
       ['listItemDynamicExpanded']: isExpanded,
       [styles.list__item_expanded]: isExpanded,
     });
-
-
+    const element = chooseItem(this.props.type, { ...rest, isExpanded });
     return (
       <li className={className}>
-
         { _needIndicator(rest.item) && (
           <StatusIcon
             activityStatus={rest.item.activityStatus}
             isDelayedWithIgnitionOff={rest.item.isDelayedWithIgnitionOff}
           />
         )}
-
-        {chooseItem(this.props.type, { ...rest, isExpanded })}
+        {element}
       </li>
     );
   }
@@ -148,7 +163,7 @@ class GenericListItem extends React.Component {
 GenericListItem.propTypes = {
   item: React.PropTypes.object.isRequired,
   isExpanded: React.PropTypes.bool.isRequired,
-  onItemClick: React.PropTypes.func.isRequired,
+  onItemClick: React.PropTypes.func,
   dateFormat: React.PropTypes.string.isRequired,
   selectedItems: React.PropTypes.array,
   scrollIntoView: React.PropTypes.bool,

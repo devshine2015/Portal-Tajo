@@ -19,6 +19,18 @@ const Amount = ({
   amount = 0,
   icon,
 }) => (
+  <button type="button" className={styles.amount}>
+    { amount }
+    <div className={styles.amount__icon}>
+      { React.cloneElement(icon, {
+        style: STYLES.icon,
+        className: styles.amount__svg,
+      }) }
+    </div>
+  </button>
+);
+/*
+ (
   <div className={styles.amount}>
     { amount }
     <div className={styles.amount__icon}>
@@ -28,7 +40,8 @@ const Amount = ({
       }) }
     </div>
   </div>
-);
+);*/
+
 
 Amount.propTypes = {
   amount: React.PropTypes.number,

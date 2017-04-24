@@ -82,19 +82,16 @@ const commonProps = {
 
 const fields = [{
   ...commonProps,
-  label: 'Min. Temperature',
   name: 'minTemp',
   reportType: 'minTemp',
   order: 4,
 }, {
   ...commonProps,
-  label: 'Max. Temperature',
   name: 'maxTemp',
   reportType: 'maxTemp',
   order: 5,
 }, {
   ...commonProps,
-  label: 'Average Temperature',
   name: 'avgTemp',
   reportType: 'avgTemp',
   order: 6,

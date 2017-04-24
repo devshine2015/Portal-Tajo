@@ -2,45 +2,60 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
-import JournalToggle from './JournalToggle';
+import ControlBar from './ControlBar';
 import Entry from './Entry';
 import * as journalState from 'containers/Journal/reducer';
 import { isAlerts } from 'configs';
 
 import styles from './styles.css';
 
-const Journal = ({
-  isOpened,
-  entries,
-}) => {
-  if (!isAlerts) {
-    return null;
+class Journal extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showNewEventsOnly: true,
+    };
   }
-  const entriesE = entries.map((entry, idx) => (
-        <Entry entryObj={entry} key={idx} />
-      ));
-  return (
-    <div className={styles.journalContainer}>
-      <JournalToggle />
-      {!isOpened ? null :
-        (<ul className={styles.journalList}>
-          {entriesE}
-        </ul>)
-      }
-    </div>
-  );
-};
+
+  toggleShowAll = (tgl) => {
+    this.setState({ showNewEventsOnly: !tgl });
+  };
+
+  render() {
+    if (!isAlerts) {
+      return null;
+    }
+
+    const showFromTS = this.state.showNewEventsOnly ? this.props.lastOpenedTS : 0;
+    const entriesE = this.props.entries.filter(entry => entry.eventTS > showFromTS).map((entry, idx) => (
+          <Entry entryObj={entry} key={idx} />
+        ));
+
+    return (
+      <div className={styles.journalContainer} style={ { width: this.props.isOpened ? '400px' : '0px' }}>
+        <ControlBar toggleAll={this.toggleShowAll} />
+        <ul className={styles.journalList}>
+            {entriesE}
+        </ul>
+      </div>
+    );
+  }
+}
 
 Journal.propTypes = {
   isOpened: React.PropTypes.bool.isRequired,
   newCount: React.PropTypes.number.isRequired,
   entries: React.PropTypes.array.isRequired,
+  lastOpenedTS: React.PropTypes.number.isRequired,
 };
 
 const mapState = (state) => ({
   isOpened: journalState.jrnIsOpened(state),
   newCount: journalState.jrnNewCount(state),
   entries: journalState.jrnGetEntries(state),
+  lastOpenedTS: journalState.jrnGetLastOpenedTS(state),
 });
 const mapDispatch = {
   // openFleetSocket: socketActions.openFleetSocket,

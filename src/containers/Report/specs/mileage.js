@@ -17,7 +17,6 @@ function _filterSimilar(allSelectedReportTypes) {
 }
 
 const fields = [{
-  label: 'Driving Distance (km.)',
   name: 'mileage',
   reportType: 'mileage',
   endpoint: endpoints.mileageReport.url,

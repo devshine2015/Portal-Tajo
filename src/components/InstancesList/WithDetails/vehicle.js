@@ -1,6 +1,10 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import { connect } from 'react-redux';
 import cs from 'classnames';
+import { contextActions } from 'services/Global/actions';
+import { mapStoreSetPan } from 'containers/Map/reducerAction';
+
 import { VelocityTransitionGroup } from 'velocity-react';
 import Divider from 'material-ui/Divider';
 import ItemProperty from '../DetailItemProperty';
@@ -17,8 +21,17 @@ import MwaIdicator from './mwaVehicleDetails';
 
 class ListItemVehicle extends React.Component {
 
+  shouldComponentUpdate(nextProps) {
+    return this.props.isExpanded !== nextProps.isExpanded
+      || this.props.vehicle.filteredOut !== nextProps.vehicle.filteredOut
+      // always update the expanded vehicle - to show all the stats
+      || nextProps.isExpanded
+      // TODO: no MWA checks here
+      || this.props.vehicle !== undefined && nextProps.vehicle !== undefined && this.props.vehicle.mwa !== nextProps.vehicle.mwa;
+  }
   onClick = () => {
-    this.props.onClick(this.props.vehicle.id);
+    this.props.selectVehicle(this.props.vehicle.id);
+    this.props.mapStoreSetPan([this.props.vehicle.pos]);
   }
 
   inActivityIndicator() {
@@ -38,8 +51,22 @@ class ListItemVehicle extends React.Component {
   renderDetails() {
     if (!this.props.isExpanded) return null;
 
+    const N_A = 'N/A';
     const speed = `${this.props.vehicle.speed.toFixed(1)} ${this.props.translations.speed_km_h}`;
+    const fuel = `${this.props.vehicle.fuelNormalized ? (this.props.vehicle.fuelNormalized * 100).toFixed(0) + '%' : N_A}`;
+    const jobsCount = this.props.vehicle.mwa === undefined ? 0 :
+        (this.props.vehicle.mwa.jobs === undefined ? 0 :
+            this.props.vehicle.mwa.jobs.length);  
 
+    const license = this.props.vehicle.original !== undefined
+        && this.props.vehicle.original.licensePlate !== undefined ?
+          this.props.vehicle.original.licensePlate
+          : N_A;
+    const driverName = this.props.vehicle.original !== undefined
+        && this.props.vehicle.original.meta !== undefined
+        && this.props.vehicle.original.meta.driverName !== undefined ?
+          this.props.vehicle.original.meta.driverName
+          : N_A;
     return (
       <div>
         <Divider />
@@ -47,6 +74,48 @@ class ListItemVehicle extends React.Component {
           title={ this.props.translations.speed }
           value={ speed }
         />
+        { isMwa &&
+          <ItemProperty
+            title={ this.props.translations.mwa_vehicle_group }
+            value={ '01' }
+          />
+        }
+        { isMwa &&
+          <ItemProperty
+            title={ this.props.translations.license_plate }
+            value={ license }
+          />
+        }
+        { isMwa &&
+          <ItemProperty
+            title={ this.props.translations.driver_name }
+            value={ driverName }
+          />
+        }
+        { isMwa &&
+          <ItemProperty
+            title={ this.props.translations.mwa_n_jobs }
+            value={ jobsCount }
+          />
+        }
+        { isMwa &&
+          <ItemProperty
+            title={ this.props.translations.door_open_close }
+            value={ N_A }
+          />
+        }
+        { isMwa &&
+          <ItemProperty
+            title={ this.props.translations.engine_status }
+            value={ N_A }
+          />
+        }
+        { isMwa &&
+          <ItemProperty
+            title={ this.props.translations.fuel_level }
+            value={ fuel }
+          />
+        }
         {this.props.vehicle.temp &&
           <ItemProperty
             title={ this.props.translations.temperature }
@@ -56,43 +125,6 @@ class ListItemVehicle extends React.Component {
       </div>
     );
   }
-
-  // renderMoreDetails() {
-  //   if (!this.props.isExpanded) return null;
-
-  //   const { vehicle } = this.props;
-
-  //   return (
-  //     <div>
-  //       <Divider />
-  //       <ItemProperty
-  //         title="License Plate"
-  //         value={vehicle.original.licensePlate}
-  //       />
-  //       <ItemProperty
-  //         title="Make"
-  //         value={vehicle.original.make}
-  //       />
-  //       <ItemProperty
-  //         title="Model"
-  //         value={vehicle.original.model}
-  //       />
-  //       <ItemProperty
-  //         title="Year"
-  //         value={vehicle.original.year}
-  //       />
-  //       <Divider />
-  //       <ItemProperty
-  //         title="lat"
-  //         value={vehicle.pos[0].toFixed(6)}
-  //       />
-  //       <ItemProperty
-  //         title="lon"
-  //         value={vehicle.pos[1].toFixed(6)}
-  //       />
-  //     </div>
-  //   );
-  // }
 
   render() {
     const className = cs(stylesBase.listItemInn, {
@@ -110,7 +142,9 @@ class ListItemVehicle extends React.Component {
         </h1>
 
         { this.inActivityIndicator() }
-        {isMwa ? <MwaIdicator vehicle={vehicle} /> : null}
+        { isMwa && !this.props.isExpanded
+          && <MwaIdicator vehicle={vehicle} />
+        }
         <VelocityTransitionGroup
           enter={{ animation: 'slideDown', duration: 500 }}
           leave={{ animation: 'slideUp', duration: 350 }}
@@ -124,11 +158,19 @@ class ListItemVehicle extends React.Component {
 }
 
 ListItemVehicle.propTypes = {
-  onClick: React.PropTypes.func.isRequired,
+  selectVehicle: React.PropTypes.func.isRequired,
   isExpanded: React.PropTypes.bool,
   vehicle: vehicleShape.isRequired,
+  mapStoreSetPan: React.PropTypes.func.isRequired,
 
   translations: vehicleDetailsShape.isRequired,
 };
 
-export default pure(ListItemVehicle);
+const mapState = (state) => ({
+});
+const mapDispatch = {
+  selectVehicle: contextActions.ctxSelectVehicle,
+  mapStoreSetPan,
+};
+
+export default connect(mapState, mapDispatch)(ListItemVehicle);

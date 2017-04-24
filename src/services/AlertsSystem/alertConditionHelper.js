@@ -27,6 +27,7 @@ export const makeLocalAlertCondition = (originObject) => (
         gfId: originObject.gfId || '',
         onEnter: safeGetFromMeta(originObject, 'onEnter', false) === 'true',
         onExit: safeGetFromMeta(originObject, 'onExit', false) === 'true',
+        driveTimeSec: originObject.driveTimeSec !== undefined ? originObject.driveTimeSec : 0,
     }
 );
 

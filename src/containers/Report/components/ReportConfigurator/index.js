@@ -27,6 +27,7 @@ import {
   getLoadingState,
   getAvailableReports,
   getAvailableEvents,
+  getSelectedReports,
 } from 'containers/Report/reducer';
 
 import styles from './styles.css';
@@ -68,6 +69,13 @@ function getDefaultCheckedReportTypes(fields) {
   return result;
 }
 
+function getStoredCheckedReportTypes(availableReports, selectedFields) {
+  const result = {};
+  const availableArray = availableReports.toArray();
+  selectedFields.forEach(index => {result[availableArray[index].name] = true;});
+  return result;
+}
+
 class Report extends React.Component {
 
   constructor(props) {
@@ -99,6 +107,8 @@ class Report extends React.Component {
 
     this.state = {
       ...getDefaultCheckedReportTypes(props.availableReports),
+      // TODO: this does not handle unselected default types
+      ...getStoredCheckedReportTypes(props.availableReports, props.selectedFields),
       [this.periodFields.start.name]: this.periodFields.start.default,
       [this.periodFields.end.name]: this.periodFields.end.default,
       [this.periodFields.startTime.name]: this.periodFields.startTime.default,
@@ -282,7 +292,7 @@ Report.propTypes = {
   userDateFormat: React.PropTypes.oneOf([
     'yyyy-mm-dd', 'dd-mm-yyyy',
   ]),
-
+  selectedFields: React.PropTypes.object.isRequired,
   translations: phrasesShape.isRequired,
 };
 
@@ -292,6 +302,7 @@ const mapState = (state) => ({
   isLoading: getLoadingState(state),
   errorType: getErrorType(state),
   userDateFormat: getDateFormat(state),
+  selectedFields: getSelectedReports(state),
 });
 const mapDispatch = {
   generateReport: reportActions.generateReport,

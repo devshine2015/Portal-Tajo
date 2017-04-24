@@ -150,9 +150,9 @@ const phrases = {
     // --end mapMarkerToggle
 
     // instancesList
-    speed: 'speed',
+    speed: 'Speed',
     speed_km_h: 'km/h',
-    temperature: 'temperature',
+    temperature: 'Temperature',
     device_never_reported: 'never reported - check device',
     remove_success: 'Succesfully removed',
     remove_fail: 'Remove failed',
@@ -229,6 +229,33 @@ const phrases = {
     // 404 page
     not_found: 'not found',
     // -- end 404 page
+
+    mwa_job_carname: 'Team',
+    mwa_vehicle_group: 'Vehicle Group',
+    mwa_n_jobs: 'No. of Jobs',
+    license_plate: 'License Plate',
+    driver_name: 'Driver Name',
+    door_open_close: 'Door Open/Close',
+    engine_status: 'Engine Status',
+    fuel_level: 'Fuel Level',
+
+    // -- map context menu
+    ctx_add_circular: 'Circualr GF',
+    ctx_add_poly: 'Poly GF',
+    ctx_route: 'Route To',
+    ctx_nearest: 'Find Nearest',
+    ctx_gmap: 'Google Maps',
+    // -- end map context menu
+
+    // -- mwa reports
+    mwa_jobs_nbr: 'No. of Jobs',
+    mwa_jobs_t: 'Jobs Time',
+    job_name: 'Job Name',
+    job_from: 'From',
+    job_to: 'To',
+    job_duration: 'Duration',
+    // -- end mwa reports
+
   },
 
   th: {
@@ -259,6 +286,7 @@ const phrases = {
     history: 'ประวัติ',
     users: 'ผู้ใช้',
     profile: 'โปรไฟล์',
+    alerts_editor: 'จัดการการเตือน',
     // -- end main menu
 
     // dashboard screen
@@ -450,6 +478,32 @@ const phrases = {
     // 404 page
     not_found: 'ไม่พบ',
     // -- end 404 page
+
+    mwa_job_carname: 'ทีม',
+    mwa_vehicle_group: 'กลุ่ม',
+    mwa_n_jobs: 'จำนวนงาน',
+    license_plate: 'ทะเบียน',
+    driver_name: 'ชื่อคนขับ',
+    door_open_close: 'สถานะประตู',
+    engine_status: 'สถานะเครื่องยนต์',
+    fuel_level: 'ระดับน้ำมัน',
+
+    // --map context menu
+    ctx_add_circular: 'สร้างสถานที่แบบวงกลม',
+    ctx_add_poly: 'สร้างสถานที่แบบหลายเหลี่ยม',
+    ctx_route: 'เส้นทาง',
+    ctx_nearest: 'ใกล้ที่สุด',
+    ctx_gmap: 'Google Maps',
+    // --end map context menu
+
+    // -- mwa reports
+    mwa_jobs_nbr: 'ปริมาณงาน',
+    mwa_jobs_t: 'เวลาปฏิบัติงาน',
+    job_name: 'รหัสงาน',
+    job_from: 'เวลาเปิดงาน',
+    job_to: 'เวลาสิ้นสุดงานภาคสนาม',
+    job_duration: 'ระยะเวลาปฏิบัติงาน',
+    // -- end mwa reports
   },
 };
 
