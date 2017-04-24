@@ -17,7 +17,7 @@ function renderForm(options) {
 class AlertsSpeed extends React.Component {
   render() {
     const alertsList = this.props.alerts.filter(alrt => alrt.kind === alertKinds._ALERT_KIND_SPEEDING)
-          .map(alrt => <SpeedAlert key={alrt.id} alert={alrt} />);
+          .map(alrt => <SpeedAlert key={alrt.id} alert={alrt} renderForm={renderForm} />);
     return (
       <AlertsSection
         renderForm={renderForm}

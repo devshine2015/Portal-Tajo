@@ -46,7 +46,7 @@ class Section extends React.Component {
     };
 
     return (
-      <div>
+      <div className={css(classes.sectionContainer)}>
         <SectionHeader
           label={this.props.headerLabel}
           action={!this.state.showForm && (

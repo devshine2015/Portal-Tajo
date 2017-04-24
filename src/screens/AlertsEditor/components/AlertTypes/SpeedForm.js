@@ -1,6 +1,10 @@
 import React from 'react';
 import pure from 'recompose/pure';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
+
+import { makeAlertConditionBackEndObject } from 'services/AlertsSystem/alertConditionHelper';
+import { createAlertConditions, updateAlertCondition } from 'services/AlertsSystem/actions';
+import { showSnackbar } from 'containers/Snackbar/actions';
 
 import { TextField } from 'material-ui';
 
@@ -27,6 +31,7 @@ class SpeedForm extends React.Component {
   constructor(props) {
     super(props);
 
+    this.newAlert = this.props.alert === undefined;
     /**
      * Initial values for controlled inputs
      **/
@@ -43,7 +48,11 @@ class SpeedForm extends React.Component {
 
   onSubmit = e => {
     e.preventDefault();
-
+    if (this.newAlert) {
+      this.postNew(makeAlertConditionBackEndObject(this.state));
+    } else {
+      this.putExisting(makeAlertConditionBackEndObject(this.state));
+    }
     // this.props.createUser(this.state)
     //   .then(() => this.props.closeForm());
     this.props.closeForm();
@@ -53,12 +62,30 @@ class SpeedForm extends React.Component {
     this.props.closeForm();
   }
 
+  postNew = (newAlert) => {
+    this.props.createAlertConditions([newAlert])
+    .then(() => {
+      this.props.showSnackbar('New Alert created successfuly', 3000);
+    }, () => {
+      this.props.showSnackbar('Failed to create new ALERT', 5000);
+    });
+  }
+
+  putExisting = (newAlert) => {
+    this.props.updateAlertCondition(newAlert)
+    .then(() => {
+      this.props.showSnackbar('Alert updated successfuly', 3000);
+    }, () => {
+      this.props.showSnackbar('Failed to change alert ALERT', 5000);
+    });
+  }
   render() {
     return (
       <div>
-        <FormComponents.Header>
+        {this.newAlert && <FormComponents.Header>
           New Speed Alert Condition
-        </FormComponents.Header>      
+        </FormComponents.Header>
+        }
         <TextField
           fullWidth
           name="name"
@@ -76,7 +103,8 @@ class SpeedForm extends React.Component {
         <FormComponents.Buttons
           onSubmit={this.onSubmit}
           onCancel={this.onCancel}
-          mainLabel={"Create"}
+          mainLabel={"Save"}
+          disabled={true}
         />
       </div>
     );
@@ -88,15 +116,23 @@ SpeedForm.propTypes = {
   closeForm: React.PropTypes.func.isRequired,
   // isLoading: React.PropTypes.bool.isRequired,
   isOpened: React.PropTypes.bool.isRequired,
-  // translations: phrasesShape.isRequired,
-  // roles: React.PropTypes.instanceOf(Map).isRequired,
+
+  createAlertConditions: React.PropTypes.func.isRequired,
+  updateAlertCondition: React.PropTypes.func.isRequired,  
+  showSnackbar: React.PropTypes.func.isRequired,
 };
 
-// const mapState = (state) => ({
-//   // alerts: getAlertConditions(state),
-//   // alertById: getAlertConditionByIdFunc(state),
-// });
+const mapState = (state) => ({
+  // alerts: getAlertConditions(state),
+  // alertById: getAlertConditionByIdFunc(state),
+});
 
-// export default connect(mapState, mapDispatch)(pure(SpeedForm));
+const mapDispatch = {
+  createAlertConditions,
+  updateAlertCondition,
+  showSnackbar,
+};
 
-export default pure(SpeedForm);
+export default connect(mapState, mapDispatch)(pure(SpeedForm));
+
+// export default pure(SpeedForm);

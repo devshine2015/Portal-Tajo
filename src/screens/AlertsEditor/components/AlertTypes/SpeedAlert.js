@@ -4,25 +4,66 @@ import pure from 'recompose/pure';
 
 import { css } from 'aphrodite/no-important';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import DeletIcon from 'material-ui/svg-icons/action/delete-forever';
+// import EditIcon from 'material-ui/svg-icons/maps/edit-location';
+import EditIcon from 'material-ui/svg-icons/image/edit';
+import IconButton from 'material-ui/IconButton';
 
 import classes from './classes';
 
 class SpeedAlert extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showForm: false,
+      formMode: 'create',
+    };
+  }
+
+  onEdit = () => {
+    this.showForm();
+  }
+
+  showForm = () => {
+    this.setState({
+      showForm: true,
+    });
+  }
+
+  closeForm = () => {
+    this.setState({
+      showForm: false,
+    });
+  }
+
   render() {
     return (
       <Card className={css(classes.alertItem)}>
         <CardHeader
           title={this.props.alert.name}
-          subtitle="speed < 50 kmh"
-          actAsExpander={true}
-          showExpandableButton={true}
+          actAsExpander
+          showExpandableButton
         />
-        <CardText expandable={true}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-          Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-          Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-        </CardText>
+          <CardText expandable>
+          { this.state.showForm ?
+            (this.props.renderForm({
+              isOpened: this.state.showForm,
+              closeForm: this.closeForm,
+              alert: this.props.alert,
+            })
+          ) : (
+            <IconButton
+              tooltip={ "edit" }
+              onClick={this.onEdit}
+              key="delBtn"
+            >
+              <EditIcon />
+            </IconButton>
+          )}
+          </CardText>
+         }
       </Card>
     );
   }
@@ -30,6 +71,7 @@ class SpeedAlert extends React.Component {
 
 SpeedAlert.propTypes = {
   alert: React.PropTypes.object.isRequired,
+  renderForm: React.PropTypes.func.isRequired,
 };
 
 // const mapState = (state) => ({
