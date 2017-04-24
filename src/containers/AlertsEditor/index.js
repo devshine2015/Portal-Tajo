@@ -52,9 +52,9 @@ class AlertsEditor extends React.Component {
         />
       </FixedContent>
     );
-  }
+}
 
-  render() {
+render() {
     return (
       <div className={styles.editor}>
         <PowerList
