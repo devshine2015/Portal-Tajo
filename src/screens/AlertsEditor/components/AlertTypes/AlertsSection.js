@@ -78,6 +78,7 @@ class Section extends React.Component {
                 { this.props.renderForm({
                   isOpened: this.state.showForm,
                   closeForm: this.closeForm,
+                  alert: { kind: this.props.myAlertKind },
                 })}
               </div>
             </div>

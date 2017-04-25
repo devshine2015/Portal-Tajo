@@ -31,7 +31,8 @@ class SpeedForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.newAlert = this.props.alert === undefined;
+    this.newAlert = this.props.alert === undefined
+      || this.props.alert.id === undefined;
     /**
      * Initial values for controlled inputs
      **/

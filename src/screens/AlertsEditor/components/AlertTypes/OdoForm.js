@@ -3,25 +3,25 @@ import pure from 'recompose/pure';
 
 import AlertForm from './AlertForm';
 
-const SpeedForm = ({
+const OdoForm = ({
   alert,
   closeForm,
   isOpened,
 }) => (
     <AlertForm alert={alert}
-      headerTitle={"New Speed Limit Alert Condition"}
+      headerTitle={"New Distance Alert Condition"}
       closeForm={closeForm}
       isOpened={isOpened}
-      controlledFields={[{ fieldName: 'maxSpeed',
-          label: 'Speed Limit' }]}
+      controlledFields={[{ fieldName: 'odoValue',
+          label: 'Distance Limit'  }]}
     />
 );
 
-SpeedForm.propTypes = {
+OdoForm.propTypes = {
   alert: React.PropTypes.object,
   closeForm: React.PropTypes.func.isRequired,
   // isLoading: React.PropTypes.bool.isRequired,
   isOpened: React.PropTypes.bool.isRequired,
 };
 
-export default pure(SpeedForm);
+export default pure(OdoForm);

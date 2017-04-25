@@ -4,6 +4,7 @@ import Content from 'components/Content';
 import Layout from 'components/Layout';
 import SpeedSection from './components/AlertTypes/SpeedSection';
 import TempSection from './components/AlertTypes/TempSection';
+import OdoSection from './components/AlertTypes/OdoSection';
 
 import classes from './classes';
 
@@ -16,6 +17,7 @@ class AlertsEditor extends React.Component {
           <div className={css(classes.content)}>
             <SpeedSection />
             <TempSection />
+            <OdoSection />
           </div>
         </Layout.Row>
       </Content>
