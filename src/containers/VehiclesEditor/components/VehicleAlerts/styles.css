@@ -31,4 +31,8 @@
     display: flex;
     flex-wrap: wrap;
   }
+  .kindOfSelector {
+    display: flex;
+    justify-content: space-between;
+  }
 }

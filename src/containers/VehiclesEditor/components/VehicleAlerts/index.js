@@ -1,8 +1,8 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import Paper from 'material-ui/Paper';
 import Avatar from 'material-ui/Avatar';
+import { Paper, SelectField, MenuItem } from 'material-ui';
 import Chip from 'material-ui/Chip';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -18,23 +18,72 @@ import IconProblem from 'material-ui/svg-icons/action/report-problem';
 import IconLocation from 'material-ui/svg-icons/maps/pin-drop';
 import IconLocationOff from 'material-ui/svg-icons/maps/place';
 import AlertsList from './alertsList';
-import { getVehicleAlertConditions, getAlertConditionByIdFunc } from 'services/AlertsSystem/reducer';
+import { getVehicleAlertConditions,
+    getAlertConditionByIdFunc, getAlertConditions } from 'services/AlertsSystem/reducer';
+
 import { fetchVehicleAlertConditions, postVehicleAlertConditions } from 'services/AlertsSystem/actions';
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import { isAlerts } from 'configs';
 
 import styles from './styles.css';
 
-const stylesChip = {
-  margin: 4,
-};
-const stylesAddBtn = {
-  float: 'right',
+// const stylesChip = {
+//   margin: 4,
+// };
+
+const AlertOfKindSelectorFn = ({
+  myKind,
+  alertConditions,
+  onOfKindChange,
+  vehicleAlerts,
+  alertById,
+}) => {
+  const myAlertOfKind = vehicleAlerts.map(alertId => (alertById(alertId))).find(alrt => alrt.kind === myKind);
+  const theKindData = alertKinds.getAlertByKind(myKind);
+  // const Icon = () => React.cloneElement(theKindData.icon, {
+  //       className: styles.vehicleIcon,
+  //     });
+  const itemsList = [(<MenuItem value={"NONE"} primaryText={"No Alert"} />)]
+    .concat(alertConditions.filter(alrt => alrt.kind === myKind)
+      .map(alrt => <MenuItem value={alrt.id} primaryText={alrt.name} />));
+  // const itemsList = alertConditions.filter(alrt => alrt.kind === myKind)
+  //   .map(alrt => <MenuItem value={alrt.id} primaryText={alrt.name} />);
+  return (
+    <div className={styles.kindOfSelector}>
+      <div>{theKindData.niceName}</div>
+        <SelectField
+          autoWidth
+          hintText={ "SPEED" }
+          name="kind"
+          value={myAlertOfKind !== undefined ? myAlertOfKind.id : 'NONE'}
+          onChange={(e, key, value) => {onOfKindChange(value, myKind);}}
+        >
+          {itemsList}
+        </SelectField>
+      </div>);
 };
 
-function handleTouchTap() {
-//  alert('You clicked the Chip.');
-}
+AlertOfKindSelectorFn.propTypes = {
+  myKind: React.PropTypes.string.isRequired,
+  onOfKindChange: React.PropTypes.func.isRequired,
+
+  alertConditions: React.PropTypes.array.isRequired,
+  vehicleAlerts: React.PropTypes.array.isRequired,
+  alertById: React.PropTypes.func.isRequired,
+};
+
+const mapStateA = (state) => ({
+  getVehicleAlerts: getVehicleAlertConditions(state),
+  alertById: getAlertConditionByIdFunc(state),
+  alertConditions: getAlertConditions(state),
+});
+const mapDispatchA = {
+  fetchVehicleAlertConditions,
+  postVehicleAlertConditions,
+};
+
+const AlertOfKindSelector = connect(mapStateA, mapDispatchA)(pure(AlertOfKindSelectorFn));
+
 
 class VehicleAlerts extends React.Component {
   constructor(props) {
@@ -61,6 +110,15 @@ class VehicleAlerts extends React.Component {
       }
     }
   }
+  onOfKindChange = (value, theKind) => {
+    const idx = this.state.alerts.map(alertId =>
+        (this.props.alertById(alertId))).findIndex(alrt => alrt.kind === theKind);
+    const nextAlerts = this.state.alerts;
+    if (idx >= 0) {
+      nextAlerts.splice(idx, 1);
+    }
+    this.setState({ alerts: nextAlerts.concat(this.props.alertById(value).id) });
+  }  
   onRemoveClick = alertId => {
     this.setState({ alerts: this.state.alerts.filter((el) => (el !== alertId)) });
   }
@@ -81,11 +139,12 @@ class VehicleAlerts extends React.Component {
         isLoading: false });
       });
   }
+
 // Temp -15&#8451;..-8&#8451;
   render() {
     if (!isAlerts) return null;
 
-    const vehAlerts = this.state.alerts.map(alertId => {
+    /*const vehAlerts = this.state.alerts.map(alertId => {
       const alertObj = this.props.alertById(alertId);
       const alertKindData = alertKinds.getAlertByKind(alertObj.kind);
       return (<Chip
@@ -96,24 +155,30 @@ class VehicleAlerts extends React.Component {
           <Avatar color="#156671" icon={alertKindData.icon} />
             {alertObj.name}
           </Chip>);
-    });
+    });*/
 
     return (
       <Paper zDepth={2} className={styles.wrapper}>
       <span >ALERTS</span>
-      <FloatingActionButton style={stylesAddBtn} onClick={this.onAddClick}>
-        {this.state.isAdding ? <ContentAddClose /> : <ContentAdd />}
-      </FloatingActionButton>
-      {!this.state.isAdding ? null :
-          <AlertsList vehicleId={this.props.vehicleId}
-            vehicleAlerts={this.state.alerts}
-            doAddAlert={this.doAddAlert}
-          />}
       {!this.state.isLoading ? null :
         <span> loading... </span>}
-      <div className={styles.chipsWrapper}>
+
+      <AlertOfKindSelector myKind={alertKinds._ALERT_KIND_SPEEDING}
+        onOfKindChange={this.onOfKindChange}
+        vehicleAlerts={this.state.alerts}
+      />
+      <AlertOfKindSelector myKind={alertKinds._ALERT_KIND_TEMPERATURE}
+        onOfKindChange={this.onOfKindChange}
+        vehicleAlerts={this.state.alerts}
+      />
+      <AlertOfKindSelector myKind={alertKinds._ALERT_KIND_ODO}
+        onOfKindChange={this.onOfKindChange}
+        vehicleAlerts={this.state.alerts}
+      />
+      {/*put all th GF alerts with chips here?*/}
+      {/*<div className={styles.chipsWrapper}>
         {vehAlerts}
-        </div>
+        </div>*/}
       </Paper>
     );
   }
@@ -125,12 +190,15 @@ VehicleAlerts.propTypes = {
   fetchVehicleAlertConditions: React.PropTypes.func.isRequired,
   postVehicleAlertConditions: React.PropTypes.func.isRequired,
   alertById: React.PropTypes.func.isRequired,
+  alertConditions: React.PropTypes.array.isRequired,
+
   saveHook: React.PropTypes.func.isRequired,
 };
 
 const mapState = (state) => ({
   getVehicleAlerts: getVehicleAlertConditions(state),
   alertById: getAlertConditionByIdFunc(state),
+  alertConditions: getAlertConditions(state),
 });
 const mapDispatch = {
   fetchVehicleAlertConditions,
