@@ -3,15 +3,22 @@ import pure from 'recompose/pure';
 
 import AlertForm from './AlertForm';
 
+import { TextField } from 'material-ui';
+
+// import { css } from 'aphrodite/no-important';
+// import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+
+// import classes from './classes';
+
 class SpeedForm extends React.Component {
+
   render() {
-    const speedField = { fieldName: 'maxSpeed',
-          label: 'Speed Limit' };
+    const speedField = [{ fieldName: 'maxSpeed',
+          label: 'Speed Limit' }];
     return (<AlertForm alert={this.props.alert}
-      headerTitle={"New Speed Limit Alert Condition"}
       closeForm={this.props.closeForm}
       isOpened={this.props.isOpened}
-      controlledFields={[speedField]}
+      controlledFields={speedField}
     />
     );
   }

@@ -11,7 +11,7 @@ import IconButton from 'material-ui/IconButton';
 
 import classes from './classes';
 
-class SpeedAlert extends React.Component {
+class AlertCard extends React.Component {
 
   constructor(props) {
     super(props);
@@ -69,7 +69,7 @@ class SpeedAlert extends React.Component {
   }
 }
 
-SpeedAlert.propTypes = {
+AlertCard.propTypes = {
   alert: React.PropTypes.object.isRequired,
   renderForm: React.PropTypes.func.isRequired,
 };
@@ -81,4 +81,4 @@ SpeedAlert.propTypes = {
 
 // export default connect(mapState, mapDispatch)(pure(SpeedAlert));
 
-export default pure(SpeedAlert);
+export default pure(AlertCard);

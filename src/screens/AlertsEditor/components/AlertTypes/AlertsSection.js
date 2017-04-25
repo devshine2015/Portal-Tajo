@@ -1,8 +1,15 @@
 import React from 'react';
+import pure from 'recompose/pure';
+import { connect } from 'react-redux';
+
 import { css } from 'aphrodite/no-important';
 import { VelocityTransitionGroup } from 'velocity-react';
 import SectionHeader from '../SectionHeader';
 import MainActionButton from '../MainActionButton';
+import AlertCard from './AlertCard';
+
+import { getAlertConditions } from 'services/AlertsSystem/reducer';
+// import * as alertKinds from 'services/AlertsSystem/alertKinds';
 
 import classes from './classes';
 
@@ -45,6 +52,9 @@ class Section extends React.Component {
       duration: 400,
     };
 
+    const alertsList = this.props.alerts.filter(alrt => alrt.kind === this.props.myAlertKind)
+          .map(alrt => <AlertCard key={alrt.id} alert={alrt} renderForm={this.props.renderForm} />);
+
     return (
       <div className={css(classes.sectionContainer)}>
         <SectionHeader
@@ -73,7 +83,7 @@ class Section extends React.Component {
             </div>
           )}
         </VelocityTransitionGroup>
-        {this.props.children}
+        {alertsList}
       </div>
     );
   }
@@ -81,9 +91,17 @@ class Section extends React.Component {
 
 Section.propTypes = {
   renderForm: React.PropTypes.func.isRequired,
-  children: React.PropTypes.any.isRequired,
+  myAlertKind: React.PropTypes.string.isRequired,
+  alerts: React.PropTypes.array.isRequired,
   headerLabel: React.PropTypes.string.isRequired,
   actionButtonLabel: React.PropTypes.string.isRequired,
 };
 
-export default Section;
+const mapState = (state) => ({
+  alerts: getAlertConditions(state),
+});
+const mapDispatch = {
+  // showSnackbar,
+};
+
+export default connect(mapState, mapDispatch)(pure(Section));
