@@ -16,6 +16,8 @@ const classes = StyleSheet.create({
   },
 
   sectionBtnsWrapper: {
+    display: 'flex',
+    justifyContent: 'flex-end',
   },
 
   formWrapper: {

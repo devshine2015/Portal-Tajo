@@ -78,7 +78,8 @@ class AlertCard extends React.Component {
                   leave={{ animation: 'slideUp', duration: 300 }}
                 >
                   { !this.state.showForm &&
-                    (<div className={css(classes.sectionBtnsWrapper)}>
+                    (<div>
+                      <div className={css(classes.sectionBtnsWrapper)}>
                       <IconButton
                         tooltip={ "edit" }
                         onClick={this.onEdit}
@@ -97,6 +98,7 @@ class AlertCard extends React.Component {
                           hoverColor={this.context.muiTheme.palette.primary3Color}
                         />
                       </IconButton>
+                    </div>
                     </div>
                 )}
               </VelocityTransitionGroup>
