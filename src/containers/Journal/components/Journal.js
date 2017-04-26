@@ -34,7 +34,9 @@ class Journal extends React.Component {
         ));
 
     return (
-      <div className={styles.journalContainer} style={ { width: this.props.isOpened ? '400px' : '0px' }}>
+      <div className={styles.journalContainer} style={ { width: this.props.isOpened ? '400px' : '0px', 
+        position: this.props.isPositioned === true ? '' : 'fixed' }}
+      >
         <ControlBar toggleAll={this.toggleShowAll} />
         <ul className={styles.journalList}>
             {entriesE}
@@ -49,6 +51,7 @@ Journal.propTypes = {
   newCount: React.PropTypes.number.isRequired,
   entries: React.PropTypes.array.isRequired,
   lastOpenedTS: React.PropTypes.number.isRequired,
+  isPositioned: React.PropTypes.bool,
 };
 
 const mapState = (state) => ({
@@ -62,5 +65,4 @@ const mapDispatch = {
   // startLocalTick: localTickActions.startLocalTick,
 };
 
-const PureJournal = pure(Journal);
-export default connect(mapState, mapDispatch)(PureJournal);
+export default connect(mapState, mapDispatch)(pure(Journal));

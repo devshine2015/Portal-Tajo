@@ -1,7 +1,5 @@
 import React from 'react';
 import { css } from 'aphrodite/no-important';
-import Content from 'components/Content';
-import Layout from 'components/Layout';
 import SpeedSection from './components/AlertTypes/SpeedSection';
 import TempSection from './components/AlertTypes/TempSection';
 import OdoSection from './components/AlertTypes/OdoSection';

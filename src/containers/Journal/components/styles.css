@@ -3,6 +3,9 @@
   background-color: rgb(124, 143, 156);
   height: 100%;
   width: 0px;
+  top: 64px;
+  right: 0;
+  z-index: 1010;
   /*max-height: 200px;*/
   overflow-y: scroll;;
   overflow-x: hide;
@@ -22,6 +25,7 @@
   font-size: 14px;
   /*border: 1px solid #fff;*/
 }
+
 .journalEntry:nth-child(odd) {
  background-color: #bed9e0;
 }

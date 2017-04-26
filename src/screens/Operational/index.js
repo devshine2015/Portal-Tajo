@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import PowerList from 'components/PowerList';
 import TheMap from 'containers/Map/MapContainer';
-import Journal from 'containers/Journal/components/Journal';
+// import Journal from 'containers/Journal/components/Journal';
 import OperationalList from './components/OperationalPowerList';
 import FixedContent from 'components/FixedContent';
 import RouteFinder from 'containers/Map/OnMapElements/MapRoute/RouteFinder';
@@ -78,7 +78,7 @@ class Operational extends React.Component {
               <GFEditorMapComponent />
               <CtxtOpenGoogleMap />
             </TheMap>
-            <Journal />
+            {/*<Journal isPositioned />*/}
           </div>
         </FixedContent>
       </div>

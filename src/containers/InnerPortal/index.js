@@ -5,6 +5,7 @@ import SnackbarNotification from 'containers/Snackbar';
 import ApplicationBar from './components/ApplicationBar';
 import MainSidebar from './components/MainSidebar';
 import { getFleetName } from 'services/Session/reducer';
+import Journal from 'containers/Journal/components/Journal';
 
 import styles from './styles.css';
 
@@ -17,7 +18,7 @@ class InnerPortal extends React.Component {
         <div className={styles.innerPortal}>
 
           <ApplicationBar title={this.props.fleet} />
-
+          <Journal />
           <MainSidebar />
 
           <div className={styles.content}>
