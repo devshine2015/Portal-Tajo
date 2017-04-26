@@ -28,9 +28,9 @@ const AlertOfKindSelectorFn = ({
   // const Icon = () => React.cloneElement(theKindData.icon, {
   //       className: styles.vehicleIcon,
   //     });
-  const itemsList = [(<MenuItem  key={"NONE"} value={"NONE"} primaryText={"No Alert"} />)]
+  const itemsList = [(<MenuItem key={"NONE"} value={"NONE"} primaryText={"No Alert"} />)]
     .concat(alertConditions.filter(alrt => alrt.kind === myKind)
-      .map(alrt => <MenuItem  key={alrt.id} value={alrt.id} primaryText={alrt.name} />));
+      .map(alrt => <MenuItem key={alrt.id} value={alrt.id} primaryText={alrt.name} />));
   // const itemsList = alertConditions.filter(alrt => alrt.kind === myKind)
   //   .map(alrt => <MenuItem value={alrt.id} primaryText={alrt.name} />);
   return (
@@ -113,8 +113,13 @@ class VehicleAlerts extends React.Component {
     if (idx >= 0) {
       nextAlerts.splice(idx, 1);
     }
-    this.setState({ alerts: nextAlerts.concat(this.props.alertById(value).id) });
-  }  
+    const anotherAlert = this.props.alertById(value);
+    if (anotherAlert !== null) {
+      this.setState({ alerts: nextAlerts.concat(anotherAlert.id) });
+    } else {
+      this.setState({ alerts: nextAlerts.slice(0) });
+    }
+  }
   onRemoveClick = alertId => {
     this.setState({ alerts: this.state.alerts.filter((el) => (el !== alertId)) });
   }
@@ -140,7 +145,7 @@ class VehicleAlerts extends React.Component {
   render() {
     if (!isAlerts) return null;
 
-    /*const vehAlerts = this.state.alerts.map(alertId => {
+    /* const vehAlerts = this.state.alerts.map(alertId => {
       const alertObj = this.props.alertById(alertId);
       const alertKindData = alertKinds.getAlertByKind(alertObj.kind);
       return (<Chip
@@ -170,8 +175,8 @@ class VehicleAlerts extends React.Component {
         onOfKindChange={this.onOfKindChange}
         vehicleAlerts={this.state.alerts}
       />
-      {/*put all th GF alerts with chips here?*/}
-      {/*<div className={styles.chipsWrapper}>
+      {/* put all th GF alerts with chips here?*/}
+      {/* <div className={styles.chipsWrapper}>
         {vehAlerts}
         </div>*/}
       </Paper>
