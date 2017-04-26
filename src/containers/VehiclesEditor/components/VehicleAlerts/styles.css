@@ -27,8 +27,27 @@
     padding: 12px;
     position: relative;
   }
+  .wrapperHeader {
+    /* padding: 12px 12px 36px 12px; */
+    margin-bottom: 12px;
+    /* background-color: darkorange; */
+    font-size: 32px;
+    /* line-height: 24px; */
+    color: #009688;    
+  }
+
   .chipsWrapper {
     display: flex;
     flex-wrap: wrap;
+  }
+  .kindOfSelector {
+    display: flex;
+    /*justify-content: space-between;*/
+  }
+  .kindOfLabel {
+    width: 200px;
+  }
+  .kindOfName {
+    padding-left: 7px;
   }
 }
