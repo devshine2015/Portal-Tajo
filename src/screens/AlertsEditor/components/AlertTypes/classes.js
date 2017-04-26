@@ -5,13 +5,15 @@ const classes = StyleSheet.create({
   alertItem: {
     marginBottom: '15px',
   },
-  
-  sectionContainer: {
-    marginTop: 30,
-    paddingBottom: 75,
-    borderBottom: '1px solid #ccc',
-  },
 
+  sectionContainer: {
+    padding: '40px 60px 80px 60px',
+    borderBottom: '1px solid rgba(0, 0, 0, 0.2);',
+    backgroundColor: '#ddd',
+    ':nth-child(odd)': {
+      backgroundColor: '#f4f4f4',
+    },
+  },
   formWrapper: {
     marginBottom: 30,
     paddingBottom: 20,

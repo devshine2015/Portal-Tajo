@@ -12,15 +12,15 @@ import classes from './classes';
 class AlertsEditor extends React.Component {
   render() {
     return (
-      <Content>
-        <Layout.Row>
+      /*<Content>
+        <Layout.Row>*/
           <div className={css(classes.content)}>
             <SpeedSection />
             <TempSection />
             <OdoSection />
           </div>
-        </Layout.Row>
-      </Content>
+      //   </Layout.Row>
+      // </Content>
     );
   }
 }

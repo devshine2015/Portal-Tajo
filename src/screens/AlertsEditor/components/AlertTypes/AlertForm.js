@@ -7,11 +7,12 @@ import { createAlertConditions, updateAlertCondition } from 'services/AlertsSyst
 import { showSnackbar } from 'containers/Snackbar/actions';
 
 import { TextField } from 'material-ui';
+import { VelocityTransitionGroup } from 'velocity-react';
 
-// import { css } from 'aphrodite/no-important';
+import { css } from 'aphrodite/no-important';
 // import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 
-// import classes from './classes';
+import classes from './classes';
 
 import FormComponents from 'components/User/FormComponents';
 
@@ -90,8 +91,18 @@ class SpeedForm extends React.Component {
         floatingLabelText={fld.label}
         value={this.state[fld.fieldName]}
       />));
+    const enterAnimation = {
+      animation: 'slideDown',
+      duration: 400,
+      style: { height: '' },
+    };
+    const leaveAnimation = {
+      animation: 'slideUp',
+      duration: 400,
+    };
+
     return (
-      <div>
+      <div className={css(classes.formWrapper__inn)}>
         {this.newAlert && <FormComponents.Header>
           {this.props.headerTitle}
         </FormComponents.Header>
