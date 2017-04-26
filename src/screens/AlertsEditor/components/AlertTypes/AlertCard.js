@@ -65,14 +65,20 @@ class AlertCard extends React.Component {
                   enter={{ animation: 'slideDown', duration: 300 }}
                   leave={{ animation: 'slideUp', duration: 300 }}
                 >
-                  { this.state.showForm ?
+                  { this.state.showForm &&
                     (this.props.renderForm({
                       isOpened: this.state.showForm,
                       closeForm: this.closeForm,
                       alert: this.props.alert,
                     })
-                  ) : (
-                    <div>
+                  ) }
+                </VelocityTransitionGroup>
+                <VelocityTransitionGroup
+                  enter={{ animation: 'slideDown', duration: 300 }}
+                  leave={{ animation: 'slideUp', duration: 300 }}
+                >
+                  { !this.state.showForm &&
+                    (<div className={css(classes.sectionBtnsWrapper)}>
                       <IconButton
                         tooltip={ "edit" }
                         onClick={this.onEdit}

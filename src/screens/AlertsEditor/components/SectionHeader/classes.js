@@ -6,11 +6,15 @@ const classes = StyleSheet.create({
     marginBottom: 20,
   },
 
-  header__text: {
-    fontWeight: 400,
-    fontSize: 26,
+  header__content: {
     flexGrow: 1,
+  },
+  header__text: {
+    fontWeight: 'bolder',
+    fontSize: 32,
     textTransform: 'capitalize',
+    marginLeft: 12,
+    color: 'rgba(0, 150, 136, 0.6)',
   },
 
   actionWrapper: {},

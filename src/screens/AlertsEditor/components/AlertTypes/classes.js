@@ -14,14 +14,18 @@ const classes = StyleSheet.create({
       backgroundColor: '#f4f4f4',
     },
   },
+
+  sectionBtnsWrapper: {
+  },
+
   formWrapper: {
     marginBottom: 30,
     paddingBottom: 20,
     borderBottom: '1px solid #ccc',
   },
-
   formWrapper__inn: {
     margin: '0 auto',
+    paddingBottom: 12,
     width: 400,
   },
 });

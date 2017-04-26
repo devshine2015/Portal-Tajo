@@ -7,7 +7,9 @@ import { VelocityTransitionGroup } from 'velocity-react';
 import SectionHeader from '../SectionHeader';
 import MainActionButton from '../MainActionButton';
 import AlertCard from './AlertCard';
+import Content from 'components/Content';
 
+import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import { getAlertConditions } from 'services/AlertsSystem/reducer';
 // import * as alertKinds from 'services/AlertsSystem/alertKinds';
 
@@ -21,6 +23,8 @@ class Section extends React.Component {
       showForm: false,
       formMode: 'create',
     };
+   this.kindData = alertKinds.getAlertByKind(this.props.myAlertKind);
+
     // // this.FormComponent = () => React.cloneElement(props.formComponent, {
     // //   closeForm: this.closeForm,
     // // });
@@ -57,34 +61,37 @@ class Section extends React.Component {
 
     return (
       <div className={css(classes.sectionContainer)}>
-        <SectionHeader
-          label={this.props.headerLabel}
-          action={!this.state.showForm && (
-            <MainActionButton
-              label={this.props.actionButtonLabel}
-              onClick={this.showForm}
-            />
-          )}
-        />
+        <Content maxWidth={700}>
+          <SectionHeader
+            icon={this.kindData.icon}
+            label={this.props.headerLabel}
+            action={!this.state.showForm && (
+              <MainActionButton
+                label={this.props.actionButtonLabel}
+                onClick={this.showForm}
+              />
+            )}
+          />
 
-        <VelocityTransitionGroup
-          component="div"
-          enter={enterAnimation}
-          leave={leaveAnimation}
-        >
-          { this.state.showForm && (
-            <div className={css(classes.formWrapper)}>
-              <div className={css(classes.formWrapper__inn)}>
-                { this.props.renderForm({
-                  isOpened: this.state.showForm,
-                  closeForm: this.closeForm,
-                  alert: { kind: this.props.myAlertKind },
-                })}
+          <VelocityTransitionGroup
+            component="div"
+            enter={enterAnimation}
+            leave={leaveAnimation}
+          >
+            { this.state.showForm && (
+              <div className={css(classes.formWrapper)}>
+                <div className={css(classes.formWrapper__inn)}>
+                  { this.props.renderForm({
+                    isOpened: this.state.showForm,
+                    closeForm: this.closeForm,
+                    alert: { kind: this.props.myAlertKind },
+                  })}
+                </div>
               </div>
-            </div>
-          )}
-        </VelocityTransitionGroup>
-        {alertsList}
+            )}
+          </VelocityTransitionGroup>
+          {alertsList}
+      </Content>
       </div>
     );
   }

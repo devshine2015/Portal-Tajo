@@ -82,25 +82,16 @@ class SpeedForm extends React.Component {
     });
   }
   render() {
-    const fields = this.props.controlledFields.map(fld => (
-      <TextField
-        fullWidth
-        key={fld.fieldName}
-        name={fld.fieldName}
-        onChange={this.onChange}
-        floatingLabelText={fld.label}
-        value={this.state[fld.fieldName]}
-      />));
-    const enterAnimation = {
-      animation: 'slideDown',
-      duration: 400,
-      style: { height: '' },
-    };
-    const leaveAnimation = {
-      animation: 'slideUp',
-      duration: 400,
-    };
-
+    const fields = this.props.controlledFields === undefined ? [] :
+      this.props.controlledFields.map(fld => (
+        <TextField
+          fullWidth
+          key={fld.fieldName}
+          name={fld.fieldName}
+          onChange={this.onChange}
+          floatingLabelText={fld.label}
+          value={this.state[fld.fieldName]}
+        />));
     return (
       <div className={css(classes.formWrapper__inn)}>
         {this.newAlert && <FormComponents.Header>
