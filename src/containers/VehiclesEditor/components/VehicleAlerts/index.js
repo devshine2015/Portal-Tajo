@@ -3,21 +3,6 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import Avatar from 'material-ui/Avatar';
 import { Paper, SelectField, MenuItem } from 'material-ui';
-import Chip from 'material-ui/Chip';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import ContentAddClose from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
-import LinearProgress from 'material-ui/LinearProgress';
-import Divider from 'material-ui/Divider';
-import SvgIconFace from 'material-ui/svg-icons/action/face';
-import IconSnow from 'material-ui/svg-icons/places/ac-unit';
-import IconEnter from 'material-ui/svg-icons/action/exit-to-app';
-import IconTrLight from 'material-ui/svg-icons/maps/traffic';
-import IconRun from 'material-ui/svg-icons/maps/directions-run';
-import IconProblem from 'material-ui/svg-icons/action/report-problem';
-import IconLocation from 'material-ui/svg-icons/maps/pin-drop';
-import IconLocationOff from 'material-ui/svg-icons/maps/place';
-import AlertsList from './alertsList';
 import { getVehicleAlertConditions,
     getAlertConditionByIdFunc, getAlertConditions } from 'services/AlertsSystem/reducer';
 
@@ -37,26 +22,34 @@ const AlertOfKindSelectorFn = ({
   onOfKindChange,
   vehicleAlerts,
   alertById,
-}) => {
+}, context) => {
   const myAlertOfKind = vehicleAlerts.map(alertId => (alertById(alertId))).find(alrt => alrt.kind === myKind);
   const theKindData = alertKinds.getAlertByKind(myKind);
   // const Icon = () => React.cloneElement(theKindData.icon, {
   //       className: styles.vehicleIcon,
   //     });
-  const itemsList = [(<MenuItem value={"NONE"} primaryText={"No Alert"} />)]
+  const itemsList = [(<MenuItem  key={"NONE"} value={"NONE"} primaryText={"No Alert"} />)]
     .concat(alertConditions.filter(alrt => alrt.kind === myKind)
-      .map(alrt => <MenuItem value={alrt.id} primaryText={alrt.name} />));
+      .map(alrt => <MenuItem  key={alrt.id} value={alrt.id} primaryText={alrt.name} />));
   // const itemsList = alertConditions.filter(alrt => alrt.kind === myKind)
   //   .map(alrt => <MenuItem value={alrt.id} primaryText={alrt.name} />);
   return (
-    <div className={styles.kindOfSelector}>
-      <div>{theKindData.niceName}</div>
+    <div className={styles.kindOfSelector} key={myKind} >
+      <div className={styles.kindOfLabel}>
+        <Avatar backgroundColor={context.muiTheme.palette.primary1Color}
+          color="#fff"
+          icon={theKindData.icon}
+          style={{ position: 'relative', top: '6px' }}
+        />
+        <span className={styles.kindOfName}> {theKindData.niceName} </span>
+      </div>
         <SelectField
           autoWidth
           hintText={ "SPEED" }
           name="kind"
           value={myAlertOfKind !== undefined ? myAlertOfKind.id : 'NONE'}
           onChange={(e, key, value) => {onOfKindChange(value, myKind);}}
+          style={{ top: '3px' }}
         >
           {itemsList}
         </SelectField>
@@ -70,6 +63,9 @@ AlertOfKindSelectorFn.propTypes = {
   alertConditions: React.PropTypes.array.isRequired,
   vehicleAlerts: React.PropTypes.array.isRequired,
   alertById: React.PropTypes.func.isRequired,
+};
+AlertOfKindSelectorFn.contextTypes = {
+  muiTheme: React.PropTypes.object.isRequired,
 };
 
 const mapStateA = (state) => ({
@@ -159,10 +155,9 @@ class VehicleAlerts extends React.Component {
 
     return (
       <Paper zDepth={2} className={styles.wrapper}>
-      <span >ALERTS</span>
-      {!this.state.isLoading ? null :
-        <span> loading... </span>}
-
+      <div className={styles.wrapperHeader}>
+        {`ALERTS${this.state.isLoading ? ' loading...' : ''}`}
+      </div>
       <AlertOfKindSelector myKind={alertKinds._ALERT_KIND_SPEEDING}
         onOfKindChange={this.onOfKindChange}
         vehicleAlerts={this.state.alerts}
