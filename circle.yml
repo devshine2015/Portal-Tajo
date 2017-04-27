@@ -1,6 +1,8 @@
 machine:
   node:
     version: 6.10.0
+  environment:
+    PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
 
 general:
   branches:
@@ -11,6 +13,14 @@ general:
 dependencies:
   pre:
     - npm install -g npm@4.3.0
+  override:
+    - yarn
+  cache_directories:
+    - ~/.cache/yarn
+
+test:
+  override:
+    - yarn test
 
 deployment:
   development:
