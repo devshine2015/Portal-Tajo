@@ -42,11 +42,9 @@ module.exports = require('./webpack.base')({
 
     // Minify and optimize the JavaScript
     new webpack.optimize.UglifyJsPlugin({
-      // sourceMap: false,
       compress: {
-        warnings: true,
+        warnings: false, // hide uglifier errors in the terminal
       },
-      // mangle: false,
     }),
 
     // Minify and optimize the index.html
