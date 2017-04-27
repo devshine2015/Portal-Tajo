@@ -23,7 +23,7 @@ else
   # skip making autocommit and tagging
   npm --no-git-tag-version version $VERSION
 
-  git add npm-shrinkwrap.json package.json
+  git add package.json
 fi
 
 exit 0
