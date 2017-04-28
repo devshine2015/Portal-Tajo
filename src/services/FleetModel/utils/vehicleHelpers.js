@@ -11,6 +11,7 @@ import {
   removeMe_OverrideMaritimeDemoVessel,
 } from './maritimeDemoData';
 import { vehicleClientUpdate } from './localTickHelpers';
+import markerTypes from 'services/FleetModel/utils/markerTypes';
 
 const isTest = process.env.NODE_ENV === 'test';
 
@@ -214,11 +215,13 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
     // eslint-disable-next-line no-param-reassign
     backEndObject.kind = 'UNDEFINED';
   }
-
+  const marker = backEndObject.hasOwnProperty('meta') && backEndObject.meta.hasOwnProperty('marker') ? 
+        backEndObject.meta.marker : markerTypes.Icon;
   return initilalValues.withMutations(s => {
     s.merge(_makeImmutableVehicle({ vehicleStats }))
      .set('original', fromJS(backEndObject))
-     .set('id', backEndObject.id);
+     .set('id', backEndObject.id)
+     .set('marker', marker);
   });
 }
 
@@ -320,7 +323,7 @@ export function cleanVehicle(vehicle) {
   const requiredBackEndProps = [
     'id', 'name', 'licensePlate', 'make', 'model', 'kind',
     'odometer', 'year', 'created', 'updated', 'deviceId',
-    'status',
+    'status', 'meta',
   ];
 
   const result = {};

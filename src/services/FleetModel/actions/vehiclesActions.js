@@ -101,6 +101,8 @@ export function makeUpdateVehicleRequest(details, dispatch) {
   }).then(() => {
     dispatch(_vehicleUpdate({
       original: details,
+      //
+      marker: details.meta.marker,
       dist: {
         total: details.odometer.value * 1000,
       },

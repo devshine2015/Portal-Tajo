@@ -15,11 +15,13 @@ import CtxtOpenGoogleMap from 'containers/Map/OnMapElements/CtxtMenuOpenGMap';
 import GFEditor from 'containers/GFEditor/GFEditor';
 import GFEditorMapComponent from 'containers/GFEditor/MapComponenet';
 
+import markerTypes from 'services/FleetModel/utils/markerTypes';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { socketActions, localTickActions } from 'services/FleetModel/actions';
 import { gfEditIsEditing } from 'containers/GFEditor/reducer';
 
 import { mapVehicleMarkerMaker } from 'containers/Map/OnMapElements/MapVehicle';
+import { mapVehicleNameMaker } from 'containers/Map/OnMapElements/VehicleNameMarker';
 import { mapGFMarkerMaker } from 'containers/Map/OnMapElements/MapGF';
 import { mapMWAJobMarkerMaker } from 'containers/Map/OnMapElements/MWAJobMarker';
 
@@ -53,7 +55,8 @@ class Operational extends React.Component {
 
   render() {
     const mapGFs = this.props.gfs.map(mapGFMarkerMaker);
-    const mapVehicles = this.props.vehicles.map(mapVehicleMarkerMaker);
+    const mapVehiclesIcons = this.props.vehicles.filter(v => v.marker === markerTypes.Icon).map(mapVehicleMarkerMaker);
+    const mapVehicles = this.props.vehicles.filter(v => v.marker === markerTypes.NameLabel).map(mapVehicleNameMaker);
     const mwaJobs = this.props.mwaJobs.map(mapMWAJobMarkerMaker);
     return (
       <div className={styles.mapAndListContainer}>
@@ -70,6 +73,7 @@ class Operational extends React.Component {
           <div className={styles.row}>
             <TheMap >
               {mapVehicles}
+              {mapVehiclesIcons}
               {mapGFs}
               {mwaJobs}
               <RouteFinder />

@@ -11,6 +11,7 @@ import ButtonWithProgress from 'components/ButtonWithProgress';
 import DeviceEditor from '../DeviceEditor';
 import VehicleAlerts from '../VehicleAlerts';
 import VehicleKindSelector from '../VehicleKindSelector';
+import MarkerSelector from '../MarkerSelector/MarkerSelector';
 import VehicleDisabler from '../VehicleDisabler';
 import { translate } from 'utils/i18n';
 import permitted from 'utils/permissionsRequired';
@@ -38,6 +39,7 @@ function setVehicleState(props) {
   return Object.assign({}, props.details, {
     deviceId: props.details.deviceId || '',
     isMiles: false,
+    marker: props.details.marker,
   });
 }
 
@@ -82,6 +84,9 @@ class VehicleDetails extends React.Component {
       odometer: {
         value: getOdo(this.state),
       },
+      meta: {
+        marker: this.state.marker
+      },
     });
 
     this.props.onSave(toSave, nameChanged, device);
@@ -111,6 +116,12 @@ class VehicleDetails extends React.Component {
   onKindChange = (e, key, value) => {
     this.setState({
       kind: value,
+    });
+  }
+
+  onMarkerChange = (e, key, value) => {
+    this.setState({
+      marker: value,
     });
   }
 
@@ -204,6 +215,7 @@ class VehicleDetails extends React.Component {
             checked={this.state.isMiles}
             onCheck={this.onIsMilesChange}
           />
+          <MarkerSelector kind={this.state.marker} onChange={this.onMarkerChange} />
           <VehicleAlerts
             vehicleId={this.props.details.id}
             saveHook={this.registerAlertsSave}

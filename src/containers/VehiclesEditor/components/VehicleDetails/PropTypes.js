@@ -48,6 +48,7 @@ export const detailsShape = shape({
     string,
     number,
   ]).isRequired,
+  marker: string.isRequired,
 });
 
 export default phrases;

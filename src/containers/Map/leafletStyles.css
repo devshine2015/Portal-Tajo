@@ -82,5 +82,14 @@
   :global(div.drvr-leaflet-div-icon) {
       background-color: none;
       border: none;
+      outline: none;
+    } 
+
+  :global(div.drvr-leaflet-div-lable-icon) {
+      background-color: none;
+      border: none;
+      outline: none;
+      width: initial !important;
+      white-space: nowrap;
     } 
 }

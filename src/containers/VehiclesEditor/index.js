@@ -132,6 +132,7 @@ class VehiclesEditor extends React.Component {
     const vehicle = this.props.vehicles[selectedVehicleOriginalIndex];
     const data = {
       ...vehicle.original,
+      marker: vehicle.marker,
       odometer: (vehicle.dist.total / 1000).toFixed(0),
     };
 
