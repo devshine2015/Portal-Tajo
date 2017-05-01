@@ -133,6 +133,9 @@ class VehiclesEditor extends React.Component {
     const data = {
       ...vehicle.original,
       marker: vehicle.marker,
+      // dist.total units is meter.
+      // Here we convert it back to kilometers just for UI.
+      // Ie. users don't need high precision here.'
       odometer: (vehicle.dist.total / 1000).toFixed(0),
     };
 
