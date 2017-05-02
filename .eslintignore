@@ -1,0 +1,4 @@
+# ignore specific files
+src/*.ico
+src/*.html
+src/manifest.json
