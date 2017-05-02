@@ -18,7 +18,7 @@ const classes = StyleSheet.create({
   },
   kindOfSelector: {
     display: 'flex',
-    margin: '24px 0 24px 0',
+    margin: '32px 0 32px 0',
     /*justify-content: space-between;*/
   },
   kindOfLabel: {
