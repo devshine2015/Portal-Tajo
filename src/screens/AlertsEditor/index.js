@@ -17,7 +17,7 @@ class AlertsEditor extends React.Component {
             <SpeedSection />
             <TempSection />
             <OdoSection />
-            <DriveTimeSection />
+            {/*<DriveTimeSection />*/}
           </div>
       //   </Layout.Row>
       // </Content>
