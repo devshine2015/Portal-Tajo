@@ -9,7 +9,7 @@ const AlertsSpeed = () => (
       <AlertsSection
         renderForm={(options) => (<SpeedForm {...options} />)}
         myAlertKind={alertKinds._ALERT_KIND_SPEEDING}
-        actionButtonLabel={"ADD SPEED ALERT CONDITION"}
+        actionButtonLabel={"ADD ALERT"}
         headerLabel={"SPEED ALERTS"}
       />
 );
