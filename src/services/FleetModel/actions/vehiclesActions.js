@@ -104,7 +104,7 @@ export function makeUpdateVehicleRequest(details, dispatch) {
       //
       marker: details.meta.marker,
       dist: {
-        total: details.odometer.value * 1000,
+        total: details.odometer.value,
       },
     }, details.id));
     return Promise.resolve();

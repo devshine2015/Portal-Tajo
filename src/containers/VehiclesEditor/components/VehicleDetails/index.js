@@ -1,5 +1,6 @@
 import React from 'react';
 import pure from 'recompose/pure';
+import R from 'ramda';
 import {
   TextField,
   FlatButton,
@@ -28,13 +29,6 @@ const PERMISSIONS = [
   permissions.VEHICLE_DISABLE,
 ];
 
-function getOdo({ odometer, isMiles }) {
-  // convert miles to kilometres
-  const odo = isMiles ? odometer * 1.60934 : odometer;
-
-  return parseInt(odo, 10);
-}
-
 function setVehicleState(props) {
   return Object.assign({}, props.details, {
     deviceId: props.details.deviceId || '',
@@ -46,6 +40,13 @@ function setVehicleState(props) {
 function checkIfDeviceChanged(state, props) {
   return state.deviceId !== props.details.deviceId;
 }
+
+const toMiles = (needConvertToMiles) => (kms) => {
+  const odo = needConvertToMiles ? kms * 1.60934 : kms;
+
+  return parseInt(odo, 10);
+};
+const toMeters = val => val * 1000;
 
 class VehicleDetails extends React.Component {
   constructor(props) {
@@ -80,12 +81,15 @@ class VehicleDetails extends React.Component {
       needAttach: !!this.state.deviceId && deviceChanged,
     };
 
+    // backend expecting to receive meters
+    const nextOdo = R.compose(toMiles(this.state.isMiles), toMeters)(this.state.odometer);
+
     const toSave = Object.assign({}, this.state, {
       odometer: {
-        value: getOdo(this.state),
+        value: nextOdo,
       },
       meta: {
-        marker: this.state.marker
+        marker: this.state.marker,
       },
     });
 
