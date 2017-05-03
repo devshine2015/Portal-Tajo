@@ -1,6 +1,6 @@
 {
   "name": "drvr.co",
-  "version": "1.3.60",
+  "version": "1.3.62",
   "description": "common code base for DRVR portals",
   "repository": {
     "type": "git",
@@ -23,8 +23,9 @@
     "sunshine": "npm run start:tunnel:sunshine",
     "start:tunnel:escape": "cross-env DRVR_PROJECT=tajo node server -d",
     "start:tunnel:sunshine": "cross-env DRVR_PROJECT=portal node server -d",
-    "pretest": "npm run lint",
-    "lint": "eslint src/** --quiet",
+    "pretest": "npm run lint -- --cache",
+    "lintFix": "npm run lint -- --fix",
+    "lint": "eslint src/** -c eslintPreCommitConfig.json --quiet",
     "test": "NODE_PATH=src NODE_ENV=test mocha"
   },
   "author": "Maksim Orlov, Kirill Bulatsev",
@@ -113,7 +114,6 @@
     "file-loader": "0.8.5",
     "html-loader": "0.4.3",
     "html-webpack-plugin": "2.17.0",
-    "husky": "0.13.3",
     "imports-loader": "0.6.5",
     "jsdom": "9.10.0",
     "mocha": "^3.2.0",
