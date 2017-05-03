@@ -31,8 +31,13 @@ class OpenGMap extends React.Component {
 }
 
 OpenGMap.propTypes = {
-  theMap: React.PropTypes.object.isRequired,
+  theMap: React.PropTypes.object,
 };
+
+OpenGMap.defaultProps = {
+  theMap: undefined,
+};
+
 OpenGMap.contextTypes = {
   translator: React.PropTypes.object.isRequired,
 };

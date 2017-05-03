@@ -106,16 +106,21 @@ class MapContainer extends React.Component {
   }
 
   render() {
-    if (this.state.theMap === null) {
-      return (<div className={styles.mapContainer}>
-        <CustomControls />
-      </div>);
+    const { theMap } = this.state;
+    let mappp = null;
+
+    if (theMap !== null) {
+      this.applyPan();
+      mappp = this.mapifyChildren();
+      // return (
+      //   <div className={styles.mapContainer}>
+      //     <CustomControls />
+      //   </div>
+      // );
     }
 
     // const t0 = performance.now();
-    this.applyPan();
     // this.mappp = this.mapifyChildren();
-    const mappp = this.mapifyChildren();
     // const t1 = performance.now();
     // console.log("MAPPIFY took " + (t1 - t0) + " milliseconds.");
     return (
@@ -123,8 +128,8 @@ class MapContainer extends React.Component {
         className={styles.mapContainer}
         ref={this.saveRef}
       >
-        <CustomControls theMap={this.state.theMap} />
-        {mappp}
+        { theMap && <CustomControls theMap={this.state.theMap} /> }
+        { theMap && mappp }
       </div>
     );
   }

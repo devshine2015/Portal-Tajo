@@ -1,6 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import classnames from 'classnames';
+import dateFormats from 'configs/dateFormats';
 import SimpleItem from '../Simple';
 import CheckboxItem from '../WithCheckboxes';
 import DetailedGFItem from '../WithDetails/gf';
@@ -170,7 +171,7 @@ GenericListItem.propTypes = {
   item: React.PropTypes.object.isRequired,
   isExpanded: React.PropTypes.bool.isRequired,
   onItemClick: React.PropTypes.func,
-  dateFormat: React.PropTypes.string.isRequired,
+  dateFormat: React.PropTypes.string,
   selectedItems: React.PropTypes.array,
   scrollIntoView: React.PropTypes.bool,
   uncheckOnUnmount: React.PropTypes.bool,
@@ -183,6 +184,10 @@ GenericListItem.propTypes = {
     types.maritime,
     types.simple,
   ]),
+};
+
+GenericListItem.defaultProps = {
+  dateFormat: dateFormats.default.value,
 };
 
 export default pure(GenericListItem);

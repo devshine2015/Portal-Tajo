@@ -67,15 +67,10 @@ InstancesList.contextTypes = {
   muiTheme: React.PropTypes.object.isRequired,
 };
 
-InstancesList.defaultProps = {
-  dateFormat: dateFormats.default.value,
-  translations: phrases,
-};
-
 InstancesList.propTypes = {
   // Main data to display
   data: React.PropTypes.array.isRequired,
-  onItemClick: React.PropTypes.func.isRequired,
+  onItemClick: React.PropTypes.func,
   type: React.PropTypes.oneOf([
     types.withCheckboxes,
     types.withVehicleDetails,
@@ -87,7 +82,7 @@ InstancesList.propTypes = {
   ]),
 
   // Pass to CheckboxItem
-  uncheckOnUnmount: React.PropTypes.bool.isRequired,
+  uncheckOnUnmount: React.PropTypes.bool,
   selectedItems: React.PropTypes.array,
 
   // For DetailedItem
@@ -97,7 +92,7 @@ InstancesList.propTypes = {
   // somwhere else
   scrollIntoView: React.PropTypes.bool,
 
-  dateFormat: React.PropTypes.string.isRequired,
+  dateFormat: React.PropTypes.string,
 
   // translations for all types of lists
   translations: phrasesShape.isRequired,
@@ -108,6 +103,10 @@ InstancesList.defaultProps = {
   selectedItems: [],
   currentExpandedItemId: undefined,
   scrollIntoView: true,
+  dateFormat: dateFormats.default.value,
+  translations: phrases,
+  onItemClick: undefined,
+  uncheckOnUnmount: true,
 };
 
 const Pure = pure(InstancesList);
