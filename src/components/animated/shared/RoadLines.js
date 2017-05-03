@@ -111,7 +111,7 @@ class RoadLines extends React.Component {
   render() {
     const lines = this.generateRoadLines();
     const baseStyle = {
-      left: `${this.props.leftRightSway || 0}%`,
+      left: `${this.props.leftRightSway}%`,
       transform: this.props.is3D ? 'rotateX(45deg)' : '',
     };
     return (
@@ -126,8 +126,12 @@ class RoadLines extends React.Component {
 RoadLines.propTypes = {
   color: React.PropTypes.string.isRequired,
   leftRightSway: React.PropTypes.number,
-  driveSpeed: React.PropTypes.number,
   is3D: React.PropTypes.bool,
+};
+
+RoadLines.defaultProps = {
+  leftRightSway: 0,
+  is3D: false,
 };
 
 export default pure(RoadLines);

@@ -6,7 +6,7 @@ import * as d3 from 'd3';
 // check for reference:
 // https://github.com/react-d3-library/react-d3-library
 const node = document.createElement('div');
-const svg = d3.select(node).append('svg');
+d3.select(node).append('svg');
 
 
 // keep this default export

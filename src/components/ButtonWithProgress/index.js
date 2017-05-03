@@ -12,7 +12,7 @@ const STYLES = {
 };
 
 const DefProgress = ({ iconClassName }) => {
-  const className = cs(iconClassName || defIconName, styles.icon);
+  const className = cs(iconClassName, styles.icon);
 
   return <i className={className} />;
 };
@@ -21,11 +21,15 @@ DefProgress.propTypes = {
   iconClassName: React.PropTypes.string,
 };
 
+DefProgress.defaultProps = {
+  iconClassName: defIconName,
+};
+
 const ButtonWithProgress = ({
   isLoading,
   iconClassName,
   customIcon,
-  overlayStyle = {},
+  overlayStyle,
   ...rest,
 }) => {
   const btnOverlayStyle = isLoading ?
@@ -54,6 +58,12 @@ ButtonWithProgress.propTypes = {
 
   // override className of default icon
   iconClassName: React.PropTypes.string,
+};
+
+ButtonWithProgress.defaultProps = {
+  iconClassName: '',
+  customIcon: null,
+  overlayStyle: {},
 };
 
 export default ButtonWithProgress;

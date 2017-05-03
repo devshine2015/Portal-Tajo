@@ -135,6 +135,10 @@ LoginForm.propTypes = {
   translations: phrasesShape.isRequired,
 };
 
+LoginForm.defaultProps = {
+  errorType: undefined,
+};
+
 const PureLoginForm = pure(LoginForm);
 
 const mapState = (state) => ({

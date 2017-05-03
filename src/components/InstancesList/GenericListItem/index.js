@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import pure from 'recompose/pure';
 import classnames from 'classnames';
 import SimpleItem from '../Simple';
@@ -117,6 +116,8 @@ class GenericListItem extends React.Component {
     }
   }
 
+  node = null;
+
   // shouldComponentUpdate(nextProps) {
   //   return this.props.isExpanded !== nextProps.isExpanded;
   // }
@@ -124,19 +125,21 @@ class GenericListItem extends React.Component {
   scrollIntoView() {
     if (!this.props.scrollIntoView) return;
 
-    const node = ReactDOM.findDOMNode(this);
-
-    if (node.scrollIntoViewIfNeeded) {
+    if (this.node.scrollIntoViewIfNeeded) {
       // Works for chrome.
       // true - the element will be aligned so it is centered within
       // the visible area of the scrollable ancestor.
-      node.scrollIntoViewIfNeeded(true);
+      this.node.scrollIntoViewIfNeeded(true);
     } else {
       // behaviour works in ff
-      node.scrollIntoView({
+      this.node.scrollIntoView({
         behaviour: 'smooth',
       });
     }
+  }
+
+  saveNode = (node) => {
+    this.node = node;
   }
 
   render() {
@@ -147,7 +150,10 @@ class GenericListItem extends React.Component {
     });
     const element = chooseItem(this.props.type, { ...rest, isExpanded });
     return (
-      <li className={className}>
+      <li
+        className={className}
+        ref={this.saveNode}
+      >
         { _needIndicator(rest.item) && (
           <StatusIcon
             activityStatus={rest.item.activityStatus}

@@ -64,6 +64,5 @@ export const createSelfServiceReducer = (asyncReducers) =>
     global: globalReducer,
     fleet: fleetReducer,
     reports: reportReducer,
-    user: userReducer,
     ...asyncReducers,
   });

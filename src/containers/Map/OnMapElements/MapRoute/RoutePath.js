@@ -116,6 +116,10 @@ MapRoute.propTypes = {
   routeObj: React.PropTypes.object,
 };
 
+MapRoute.defaultProps = {
+  routeObj: null,
+};
+
 const mapState = (state) => ({
   routeObj: mapStoreGetRoute(state),
 });

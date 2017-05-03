@@ -122,6 +122,10 @@ GFEditor.propTypes = {
   translations: phrasesShape.isRequired,
 };
 
+GFEditor.defaultProps = {
+  subjectGF: {},
+};
+
 const mapState = (state) => ({
   subjectGF: gfEditGetSubject(state),
 });

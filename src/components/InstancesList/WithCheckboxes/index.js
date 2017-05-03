@@ -53,4 +53,8 @@ ListItemWithCheckbox.propTypes = {
   uncheckOnUnmount: React.PropTypes.bool,
 };
 
+ListItemWithCheckbox.defaultProps = {
+  uncheckOnUnmount: true,
+};
+
 export default pure(ListItemWithCheckbox);

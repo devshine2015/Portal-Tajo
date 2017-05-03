@@ -58,7 +58,6 @@ class OldPortalAppBar extends React.Component {
 
 OldPortalAppBar.propTypes = {
   logout: React.PropTypes.func.isRequired,
-  fleet: React.PropTypes.string.isRequired,
   goHome: React.PropTypes.func.isRequired,
 };
 

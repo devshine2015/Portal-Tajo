@@ -22,4 +22,8 @@ FixedContent.propTypes = {
   containerClassName: React.PropTypes.string,
 };
 
+FixedContent.defaultProps = {
+  containerClassName: '',
+};
+
 export default pure(FixedContent);

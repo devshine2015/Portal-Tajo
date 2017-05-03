@@ -4,7 +4,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { ifArraysEqual } from 'utils/arrays';
-import { mapStoreGetPan } from './reducerAction';
+import { mapStoreGetPan } from '../reducerAction';
 
 class MapPanController extends React.Component {
 
@@ -21,7 +21,7 @@ class MapPanController extends React.Component {
     if (this.props.mapStoredPan !== null
         && (this.latestPan === null
             || !ifArraysEqual(this.props.mapStoredPan, this.latestPan))) {
-      this.state.theMap.panInsideBounds(window.L.latLngBounds(this.props.mapStoredPan));
+      this.props.theMap.panInsideBounds(window.L.latLngBounds(this.props.mapStoredPan));
     }
     this.latestPan = this.props.mapStoredPan;
   }
@@ -33,8 +33,12 @@ class MapPanController extends React.Component {
 }
 
 MapPanController.propTypes = {
-  theMap: React.PropTypes.object,
+  theMap: React.PropTypes.object.isRequired,
   mapStoredPan: React.PropTypes.array,
+};
+
+MapPanController.defaultProps = {
+  mapStoredPan: null,
 };
 
 const mapState = (state) => ({

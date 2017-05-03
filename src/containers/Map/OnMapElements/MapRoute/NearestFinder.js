@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import * as fromFleetReducer from 'services/FleetModel/reducer';
-import { showSnackbar } from 'containers/Snackbar/actions';
 import { mapStoreRouteObj } from 'containers/Map/reducerAction';
 
 import directions from 'utils/mapServices/google/directions';
@@ -76,10 +75,9 @@ class NearestFinder extends React.Component {
 }
 
 NearestFinder.propTypes = {
-  theMap: React.PropTypes.object,
+  theMap: React.PropTypes.object.isRequired,
   vehicles: React.PropTypes.array.isRequired,
   mapStoreRouteObj: React.PropTypes.func.isRequired,
-  showSnackbar: React.PropTypes.func.isRequired,
 };
 NearestFinder.contextTypes = {
   translator: React.PropTypes.object.isRequired,
@@ -90,7 +88,6 @@ const mapState = (state) => ({
 });
 const mapDispatch = {
   mapStoreRouteObj,
-  showSnackbar,
 };
 
 export default connect(mapState, mapDispatch)(NearestFinder);

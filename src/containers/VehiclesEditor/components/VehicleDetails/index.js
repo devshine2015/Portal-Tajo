@@ -264,6 +264,7 @@ class VehicleDetails extends React.Component {
 }
 
 VehicleDetails.propTypes = {
+  id: React.PropTypes.string.isRequired,
   disabled: React.PropTypes.bool.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
   details: detailsShape.isRequired,

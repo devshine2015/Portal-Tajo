@@ -2,7 +2,6 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import ItemsList from 'components/InstancesList';
 import Scrollable from 'components/Scrollable';
@@ -14,21 +13,16 @@ import { ctxGetPowListTabType, ctxGetSelectedVehicleId,
 import { getVehicleFilterString } from 'services/Global/reducer';
 import { translate } from 'utils/i18n';
 
-import GFEditor from 'containers/GFEditor/GFEditor';
-import { gfEditIsEditing } from 'containers/GFEditor/reducer';
 import { isMaritime, isMwa } from 'configs';
 import { getMWAJobs, getMWASelectedJobId } from 'services/MWA/reducer';
 import { mwaFilterJobs } from 'services/MWA/actions';
 
 import styles from './styles.css';
-import phrases, { phrasesShape } from './PropTypes';
+import phrases from './PropTypes';
 
 import VehicleIcon from 'material-ui/svg-icons/maps/local-shipping';
 import LocationIcon from 'material-ui/svg-icons/social/location-city';
 import PoiIcon from 'material-ui/svg-icons/maps/place';
-
-
-
 
 const iconColor = '#FFFFFF';
 const iconHoverColor = '#FFEEAA';
@@ -41,7 +35,6 @@ class OperationalPowerList extends React.Component {
 
   render() {
     const vehType = isMaritime ? listTypes.maritime : listTypes.withVehicleDetails;
-    const { translations } = this.props;
 
     return (
       <Tabs
@@ -118,25 +111,19 @@ OperationalPowerList.propTypes = {
   filterVehiclesFunc: React.PropTypes.func.isRequired,
   filterGFsFunc: React.PropTypes.func.isRequired,
 
-  isEditGF: React.PropTypes.bool.isRequired,
   setListTypeFunc: React.PropTypes.func.isRequired,
   vehicleFilterString: React.PropTypes.string,
-  translations: phrasesShape.isRequired,
   mwaJobs: React.PropTypes.array.isRequired,
-  mwaSelectJob: React.PropTypes.func,
   getMWASelectedJobId: React.PropTypes.string,
   mwaFilterJobs: React.PropTypes.func.isRequired,
 };
-OperationalPowerList.defaultProps = {
-  translations: phrases,
-};
+OperationalPowerList.defaultProps = {};
 
 const mapState = (state) => ({
   selectedTab: ctxGetPowListTabType(state),
   selectedGfId: ctxGetSelectedGFId(state),
   selectedVehicleId: ctxGetSelectedVehicleId(state),
 
-  isEditGF: gfEditIsEditing(state),
   vehicleFilterString: getVehicleFilterString(state),
   mwaJobs: getMWAJobs(state),
   getMWASelectedJobId: getMWASelectedJobId(state),

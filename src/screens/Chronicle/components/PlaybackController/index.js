@@ -155,9 +155,8 @@ class PlaybackCtr extends React.Component {
 }
 
 PlaybackCtr.propTypes = {
-  selectedVehicleId: React.PropTypes.string,
-  setChronicleNormalizedT: React.PropTypes.func.isRequired,
-  normalized100T: React.PropTypes.number.isRequired,
+  setChronicleNormalizedT: React.PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
+  normalized100T: React.PropTypes.number.isRequired, // eslint-disable-line react/no-unused-prop-types
 
   translations: phrasesShape.isRequired,
 };

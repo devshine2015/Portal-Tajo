@@ -44,6 +44,10 @@ MainSidebar.propTypes = {
   role: React.PropTypes.oneOf(rolesEnum).isRequired,
 };
 
+MainSidebar.defaultProps = {
+  pages: [],
+};
+
 const mapState = (state) => ({
   pages: getDashboardPages(state).toArray(),
   open: getSidebarState(state),

@@ -1,9 +1,11 @@
 // import { combineReducers } from 'redux-immutable';
 import { fromJS } from 'immutable';
-import { CHRONICLE_SET_T, CHRONICLE_SET_TIMEFRAME,
-        CHRONICLE_ITEM_NEW_FRAME,
-        CHRONICLE_ITEM_SET_STATE,
-        CHRONICLE_VALIDATE_TIMEFRAME, } from './actions';
+import {
+  CHRONICLE_SET_T,
+  CHRONICLE_SET_TIMEFRAME,
+  CHRONICLE_ITEM_NEW_FRAME,
+  CHRONICLE_VALIDATE_TIMEFRAME,
+} from './actions';
 import createHistoryFrame from './utils/chronicleVehicleFrame';
 import moment from 'moment';
 

@@ -194,7 +194,6 @@ VehicleAlerts.propTypes = {
   fetchVehicleAlertConditions: React.PropTypes.func.isRequired,
   postVehicleAlertConditions: React.PropTypes.func.isRequired,
   alertById: React.PropTypes.func.isRequired,
-  alertConditions: React.PropTypes.array.isRequired,
 
   saveHook: React.PropTypes.func.isRequired,
 };

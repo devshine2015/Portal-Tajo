@@ -21,6 +21,7 @@ const Content = ({
 
 Content.defaultProps = {
   center: false,
+  maxWidth: undefined,
 };
 
 Content.propTypes = {

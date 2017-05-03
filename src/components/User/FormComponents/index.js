@@ -58,7 +58,11 @@ Buttons.propTypes = {
   mainLabel: React.PropTypes.string.isRequired,
   rootStyles: React.PropTypes.object,
 
-  translations: phrasesShape,
+  translations: phrasesShape.isRequired,
+};
+
+Buttons.defaultProps = {
+  rootStyles: {},
 };
 
 const FormComponents = {

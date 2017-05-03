@@ -1,9 +1,8 @@
 import endpoints from 'configs/endpoints';
 import { api } from 'utils/api';
-import { createJournalEntry, createJournalEntryDbg } from './entryHelpers';
+import { createJournalEntry } from './entryHelpers';
 import { getVehiclesExSorted } from 'services/FleetModel/reducer';
 import { jrnGetLatestRecievedTS, jrnIsWating } from './reducer';
-import storage from 'utils/localStorage';
 
 import moment from 'moment';
 
@@ -32,13 +31,13 @@ export const jrnAddEntries = (newEntriesList, latestRecievedTS) => (dispatch) =>
 const ALERTS_HISOTYR_FETCH_INTERVAL_MS = 1000 * 60;
 let fetchProcId = null;
 
-function _devGenerateDummyAlertsHistory(dispatch) {
-  const journalEntries = [];
-  for (let i = 0; i < 32; ++i) {
-    journalEntries.push(createJournalEntryDbg());
-  }
-  jrnAddEntries(journalEntries)(dispatch);
-}
+// function _devGenerateDummyAlertsHistory(dispatch) {
+//   const journalEntries = [];
+//   for (let i = 0; i < 32; ++i) {
+//     journalEntries.push(createJournalEntryDbg());
+//   }
+//   jrnAddEntries(journalEntries)(dispatch);
+// }
 
 function _startFetching(dispatch, getState) {
   // _devGenerateDummyAlertsHistory(dispatch);

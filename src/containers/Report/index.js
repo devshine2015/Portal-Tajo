@@ -61,6 +61,10 @@ const ReportsScreen = ({
   );
 };
 
+ReportsScreen.contextTypes = {
+  translator: React.PropTypes.object.isRequired,
+};
+
 ReportsScreen.propTypes = {
   availableReports: React.PropTypes.array.isRequired,
   vehiclesClassName: React.PropTypes.string,
@@ -70,8 +74,10 @@ ReportsScreen.propTypes = {
   saveGenerated: React.PropTypes.func.isRequired,
   selectedFields: React.PropTypes.object.isRequired,
 };
-ReportsScreen.contextTypes = {
-  translator: React.PropTypes.object.isRequired,
+
+ReportsScreen.defaultProps = {
+  vehiclesClassName: '',
+  contentClassName: '',
 };
 
 const PureReportsScreen = pure(ReportsScreen);

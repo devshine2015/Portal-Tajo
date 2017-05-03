@@ -49,15 +49,17 @@ class Journal extends React.Component {
 
 Journal.propTypes = {
   isOpened: React.PropTypes.bool.isRequired,
-  newCount: React.PropTypes.number.isRequired,
   entries: React.PropTypes.array.isRequired,
   lastOpenedTS: React.PropTypes.number.isRequired,
   isPositioned: React.PropTypes.bool,
 };
 
+Journal.defaultProps = {
+  isPositioned: false,
+};
+
 const mapState = (state) => ({
   isOpened: journalState.jrnIsOpened(state),
-  newCount: journalState.jrnNewCount(state),
   entries: journalState.jrnGetEntries(state),
   lastOpenedTS: journalState.jrnGetLastOpenedTS(state),
 });

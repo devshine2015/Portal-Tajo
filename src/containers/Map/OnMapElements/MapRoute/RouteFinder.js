@@ -56,7 +56,7 @@ class RouteFinder extends React.Component {
 }
 
 RouteFinder.propTypes = {
-  theMap: React.PropTypes.object,
+  theMap: React.PropTypes.object.isRequired,
   vehicles: React.PropTypes.array.isRequired,
   selectedVehicleId: React.PropTypes.string.isRequired,
   mapStoreRouteObj: React.PropTypes.func.isRequired,

@@ -1,6 +1,5 @@
 import React from 'react';
 import pure from 'recompose/pure';
-import { textForEventType } from 'containers/Journal/entryTypes';
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
 
 import styles from './styles.css';

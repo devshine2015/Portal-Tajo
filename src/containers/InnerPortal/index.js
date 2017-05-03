@@ -42,7 +42,10 @@ InnerPortal.contextTypes = {
 InnerPortal.propTypes = {
   children: React.PropTypes.node.isRequired,
   fleet: React.PropTypes.string,
-  showPortalsList: React.PropTypes.bool,
+};
+
+InnerPortal.defaultProps = {
+  fleet: '',
 };
 
 const PureInnerPortal = pure(InnerPortal);

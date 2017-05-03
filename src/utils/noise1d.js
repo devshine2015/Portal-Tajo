@@ -68,11 +68,11 @@ const simpleNoise1D = () => {
     * @param t The value between the two
     * @returns {number}
     */
-  const cosineInterpolate = (a, b, t) => {
-    const ft = t * Math.PI;
-    const f = (1 - Math.cos(ft)) * 0.5;
-    return a * (1 - f) + b * f;
-  };
+  // const cosineInterpolate = (a, b, t) => {
+  //   const ft = t * Math.PI;
+  //   const f = (1 - Math.cos(ft)) * 0.5;
+  //   return a * (1 - f) + b * f;
+  // };
 
     // return the API
   return {

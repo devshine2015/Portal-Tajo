@@ -4,9 +4,6 @@ import pure from 'recompose/pure';
 import { hideLayer } from 'utils/mapBoxMap';
 import { dateToChronicleLable, msToDurtationLable } from 'screens/Chronicle/utils/strings';
 
-import TimeIcon from 'material-ui/svg-icons/device/access-time';
-import FontIcon from 'material-ui/FontIcon';
-
 class ChronicleMarker extends React.Component {
   constructor(props) {
     super(props);
@@ -22,10 +19,6 @@ class ChronicleMarker extends React.Component {
     this.removeMarker();
   }
 
-  // <FontIcon
-  //   className="muidocs-icon-action-home"
-  //   style={iconStyles}
-  // />
   setUp() {
     if (this.theMarker !== null) {
       return;

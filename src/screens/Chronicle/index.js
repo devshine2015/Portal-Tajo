@@ -16,8 +16,10 @@ import ChronicleMarker from 'containers/Map/OnMapElements/ChronicleMarker';
 import ChronicleEventMarker from 'containers/Map/OnMapElements/ChronicleEventMarker';
 import CtxtOpenGoogleMap from 'containers/Map/OnMapElements/CtxtMenuOpenGMap';
 
-import { getChronicleTimeFrame,
-  getInstanceChronicleFrameById, hasChroniclePlayableFrames } from './reducer';
+import {
+  getInstanceChronicleFrameById,
+  hasChroniclePlayableFrames,
+} from './reducer';
 import { ctxGetSelectedVehicleId } from 'services/Global/reducers/contextReducer';
 
 import GFEditor from 'containers/GFEditor/GFEditor';
@@ -26,7 +28,6 @@ import GFEditorMapComponent from 'containers/GFEditor/MapComponenet';
 import { gfEditIsEditing } from 'containers/GFEditor/reducer';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { vehiclesActions } from 'services/FleetModel/actions';
-import { showSnackbar } from 'containers/Snackbar/actions';
 import listTypes from 'components/InstancesList/types';
 
 import styles from './styles.css';
@@ -130,33 +131,24 @@ class Chronicle extends React.Component {
 }
 
 Chronicle.propTypes = {
-  showSnackbar: React.PropTypes.func.isRequired,
-
   vehicles: React.PropTypes.array.isRequired,
   selectedVehicleId: React.PropTypes.string.isRequired,
 
   filterFunc: React.PropTypes.func.isRequired,
-  chronicleTimeFrame: React.PropTypes.object.isRequired,
   getInstanceChronicleFrameById: React.PropTypes.func.isRequired,
   hasChroniclePlayableFrames: React.PropTypes.bool.isRequired,
-  setSelectedVehicleId: React.PropTypes.func.isRequired,
-  globalSelectedVehicleId: React.PropTypes.string.isRequired,
   isEditGF: React.PropTypes.bool.isRequired,
 };
 
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
-  chronicleTimeFrame: getChronicleTimeFrame(state),
   getInstanceChronicleFrameById: getInstanceChronicleFrameById(state),
   hasChroniclePlayableFrames: hasChroniclePlayableFrames(state),
-  globalSelectedVehicleId: fromFleetReducer.getSelectedVehicleId(state),
   isEditGF: gfEditIsEditing(state),
   selectedVehicleId: ctxGetSelectedVehicleId(state),
 });
 const mapDispatch = {
   filterFunc: vehiclesActions.filterVehicles,
-  setSelectedVehicleId: vehiclesActions.setSelectedVehicleId,
-  showSnackbar,
 };
 
 const PureChronicle = pure(Chronicle);

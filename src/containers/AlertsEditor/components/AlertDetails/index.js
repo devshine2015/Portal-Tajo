@@ -6,7 +6,6 @@ import {
   SelectField,
   MenuItem,
   FlatButton,
-  DropDownMenu,
   Checkbox,
   TimePicker,
 } from 'material-ui';

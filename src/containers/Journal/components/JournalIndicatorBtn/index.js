@@ -2,8 +2,8 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
-import { FlatButton, IconButton } from 'material-ui';
-import { jrnOpen, jrnAddEntries } from 'containers/Journal/actions';
+import { FlatButton } from 'material-ui';
+import { jrnOpen } from 'containers/Journal/actions';
 import * as journalState from 'containers/Journal/reducer';
 import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
 // import HistoryIcon from 'material-ui/svg-icons/action/history';
@@ -60,7 +60,6 @@ class JournalBtn extends React.Component {
 }
 
 JournalBtn.propTypes = {
-  amount: React.PropTypes.number,
   openJournal: React.PropTypes.func.isRequired,
   // addEntries: React.PropTypes.func.isRequired,
   isOpened: React.PropTypes.bool.isRequired,
@@ -73,7 +72,6 @@ const mapState = (state) => ({
 });
 const mapDispatch = {
   openJournal: jrnOpen,
-  // addEntries: jrnAddEntries,
 };
 
 const PureJournalBtn = pure(JournalBtn);

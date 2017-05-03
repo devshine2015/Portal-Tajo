@@ -296,6 +296,11 @@ Report.propTypes = {
   translations: phrasesShape.isRequired,
 };
 
+Report.defaultProps = {
+  errorType: undefined,
+  userDateFormat: 'dd-mm-yyyy',
+};
+
 const mapState = (state) => ({
   availableReports: getAvailableReports(state),
   availableEvents: getAvailableEvents(state),

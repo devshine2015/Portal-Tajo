@@ -29,6 +29,7 @@ Control.propTypes = {
 };
 
 Control.defaultProps = {
+  overrideListType: undefined,
   sizes: {},
 };
 
@@ -52,8 +53,12 @@ const CustomControls = ({
 );
 
 CustomControls.propTypes = {
-  theMap: React.PropTypes.object,
+  theMap: React.PropTypes.object.isRequired,
   overrideListType: React.PropTypes.string,
+};
+
+CustomControls.defaultProps = {
+  overrideListType: undefined,
 };
 
 // CustomControls.Control = Control;

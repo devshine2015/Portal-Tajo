@@ -39,4 +39,9 @@ FixedColumn.propTypes = {
   style: React.PropTypes.object,
 };
 
+FixedColumn.defaultProps = {
+  containerClassName: '',
+  style: {},
+};
+
 export default pure(FixedColumn);

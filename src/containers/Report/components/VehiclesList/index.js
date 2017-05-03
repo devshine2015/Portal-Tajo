@@ -62,6 +62,12 @@ ReportsVehiclesList.propTypes = {
   vehicleFilterString: React.PropTypes.string,
 };
 
+ReportsVehiclesList.defaultProps = {
+  className: '',
+  fixed: true,
+  vehicleFilterString: '',
+};
+
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
   selectedVehicles: getSelectedVehicles(state).toArray(),

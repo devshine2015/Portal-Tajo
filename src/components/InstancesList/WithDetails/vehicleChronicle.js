@@ -8,8 +8,10 @@ import LinearProgress from 'material-ui/LinearProgress';
 
 import { contextActions } from 'services/Global/actions';
 import { requestHistory } from 'screens/Chronicle/actions';
-import { getChronicleTimeFrame,
-      getInstanceChronicleFrameById, hasChroniclePlayableFrames } from 'screens/Chronicle/reducer';
+import {
+  getChronicleTimeFrame,
+  getInstanceChronicleFrameById,
+} from 'screens/Chronicle/reducer';
 
 import stylesTop from '../styles.css';
 import styles from './styles.css';
@@ -62,6 +64,10 @@ ChronicleListItem.propTypes = {
   requestHistory: React.PropTypes.func.isRequired,
 
   translations: historyDetailsShape.isRequired,
+};
+
+ChronicleListItem.defaultProps = {
+  isExpanded: false,
 };
 
 const mapState = (state) => ({

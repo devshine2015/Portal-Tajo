@@ -60,7 +60,7 @@ class Field extends React.Component {
         labelStyle={STYLES.label}
         name={this.props.name}
         onCheck={this.injectProps}
-        disabled={this.props.disabled || false}
+        disabled={this.props.disabled}
         style={STYLES.fieldRoot}
       />
     );
@@ -82,6 +82,7 @@ Field.propTypes = {
 
 Field.defaultProps = {
   translations: phrases,
+  disabled: false,
 };
 
 const PureField = pure(translate(phrases)(Field));
@@ -127,6 +128,10 @@ AvailableTypes.propTypes = {
     'events', 'reports',
   ]).isRequired,
   title: React.PropTypes.string,
+};
+
+AvailableTypes.defaultProps = {
+  title: undefined,
 };
 
 export default pure(AvailableTypes);

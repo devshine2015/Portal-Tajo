@@ -24,4 +24,9 @@ InputFieldWrapper.propTypes = {
   style: React.PropTypes.object,
 };
 
+InputFieldWrapper.defaultProps = {
+  inlineClass: '',
+  style: {},
+};
+
 export default pure(InputFieldWrapper);

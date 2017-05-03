@@ -56,10 +56,11 @@ Filter.propTypes = {
 
   defaultValue: React.PropTypes.string,
 
-  // TODO -- think about presets
-  presets: React.PropTypes.shape({}),
-
   translations: phrasesShape.isRequired,
+};
+
+Filter.defaultProps = {
+  defaultValue: '',
 };
 
 const Pure = pure(Filter);

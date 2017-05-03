@@ -17,6 +17,10 @@ GroupTitle.propTypes = {
   title: titlePropType,
 };
 
+GroupTitle.defaultProps = {
+  title: undefined,
+};
+
 const Widget = ({
   children,
   containerClass,
@@ -38,6 +42,11 @@ Widget.propTypes = {
   children: React.PropTypes.any.isRequired,
   containerClass: React.PropTypes.object,
   title: titlePropType,
+};
+
+Widget.defaultProps = {
+  containerClass: '',
+  title: undefined,
 };
 
 export default Widget;

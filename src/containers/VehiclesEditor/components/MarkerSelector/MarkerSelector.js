@@ -7,7 +7,7 @@ import {
 } from 'material-ui';
 import classes from './classes';
 
-let SelectedKindIcon = () => null;
+// let SelectedKindIcon = () => null;
 const STYLES = {
   menuItem: {
     paddingTop: 5,

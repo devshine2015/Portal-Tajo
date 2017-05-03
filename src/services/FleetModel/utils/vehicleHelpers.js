@@ -7,8 +7,8 @@ import {
   getDelayedList,
 } from '../reducer';
 import {
-  removeMe_OverrideMaritimeDemoData,
-  removeMe_OverrideMaritimeDemoVessel,
+  removeMe_OverrideMaritimeDemoData, // eslint-disable-line camelcase
+  removeMe_OverrideMaritimeDemoVessel, // eslint-disable-line camelcase
 } from './maritimeDemoData';
 import { vehicleClientUpdate } from './localTickHelpers';
 import markerTypes from 'services/FleetModel/utils/markerTypes';

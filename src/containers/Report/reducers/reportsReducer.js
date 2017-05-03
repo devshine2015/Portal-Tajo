@@ -7,7 +7,6 @@ import mwaJobs from '../specs/mwaJobs';
 import mwaJobsTime from '../specs/mwaJobsTime';
 // import idlingSpecs from '../specs/idling';
 import statsSpecs from '../specs/stats';
-import { isMwa } from 'configs';
 
 // join arrays and filter for available ones
 const specs = baseSpecs

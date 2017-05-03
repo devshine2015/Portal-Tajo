@@ -1,5 +1,4 @@
 import React from 'react';
-import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import cs from 'classnames';
 import { contextActions } from 'services/Global/actions';
@@ -166,8 +165,11 @@ ListItemVehicle.propTypes = {
   translations: vehicleDetailsShape.isRequired,
 };
 
-const mapState = (state) => ({
-});
+ListItemVehicle.defaultProps = {
+  isExpanded: false,
+};
+
+const mapState = null;
 const mapDispatch = {
   selectVehicle: contextActions.ctxSelectVehicle,
   mapStoreSetPan,

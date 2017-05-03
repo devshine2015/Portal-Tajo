@@ -169,6 +169,11 @@ EditGF.propTypes = {
 EditGF.contextTypes = {
   translator: React.PropTypes.object.isRequired,
 };
+
+EditGF.defaultProps = {
+  subjectGF: {},
+};
+
 const mapState = (state) => ({
   subjectGF: gfEditGetSubject(state),
   gfEditMode: gfEditIsEditing(state),

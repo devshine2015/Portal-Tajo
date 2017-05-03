@@ -107,6 +107,10 @@ MapMarkerToggle.propTypes = {
   translations: phrasesShape.isRequired,
 };
 
+MapMarkerToggle.defaultProps = {
+  overrideListType: undefined,
+};
+
 const mapState = (state) => ({
   listType: ctxGetPowListTabType(state),
   isHideGF: ctxGetHideGF(state),

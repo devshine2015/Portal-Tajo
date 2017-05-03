@@ -151,7 +151,7 @@ class App extends React.Component {
         <TranslationProvider
           phrases={phrases}
           locales={locales}
-          locale={this.props.locale || 'en'}
+          locale={this.props.locale}
         >
           <MuiThemeProvider muiTheme={drvrDevTheme}>
             {children}
@@ -173,7 +173,7 @@ App.propTypes = {
   cleanSession: React.PropTypes.func.isRequired,
   fetchDevices: React.PropTypes.func.isRequired,
   fetchFleet: React.PropTypes.func.isRequired,
-  children: React.PropTypes.node,
+  children: React.PropTypes.node.isRequired,
   routes: React.PropTypes.arrayOf(
     React.PropTypes.shape({
       protected: React.PropTypes.bool,
@@ -182,6 +182,10 @@ App.propTypes = {
   fetchAccessTokens: React.PropTypes.func.isRequired,
   fetchRolesAndPermissions: React.PropTypes.func.isRequired,
   setReportsMWA: React.PropTypes.func.isRequired,
+};
+
+App.defaultProps = {
+  locale: 'en',
 };
 
 const mapState = state => ({

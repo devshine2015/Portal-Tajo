@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 
@@ -25,9 +24,12 @@ import styles from './styles.css';
 class MapContainer extends React.Component {
   constructor(props) {
     super(props);
+
     this.mappp = null;
     this.mappedMap = {};
     this.latestPan = [];
+    this.node = null;
+
     this.state = {
       theMap: null,
     };
@@ -53,8 +55,7 @@ class MapContainer extends React.Component {
       return;
     }
     this.setState({
-      theMap: createMapboxMap(ReactDOM.findDOMNode(this),
-                        this.props.mapStoredView),
+      theMap: createMapboxMap(this.node, this.props.mapStoredView),
     });
   }
 
@@ -100,6 +101,10 @@ class MapContainer extends React.Component {
     });
   }
 
+  saveRef = (node) => {
+    this.node = node;
+  }
+
   render() {
     if (this.state.theMap === null) {
       return (<div className={styles.mapContainer}>
@@ -114,7 +119,10 @@ class MapContainer extends React.Component {
     // const t1 = performance.now();
     // console.log("MAPPIFY took " + (t1 - t0) + " milliseconds.");
     return (
-      <div className={styles.mapContainer}>
+      <div
+        className={styles.mapContainer}
+        ref={this.saveRef}
+      >
         <CustomControls theMap={this.state.theMap} />
         {mappp}
       </div>
@@ -128,6 +136,11 @@ MapContainer.propTypes = {
   mapStoredPan: React.PropTypes.array,
   children: React.PropTypes.array.isRequired,
 };
+
+MapContainer.defaultProps = {
+  mapStoredPan: null,
+};
+
 const mapState = (state) => ({
   mapStoredView: mapStoreGetView(state),
   mapStoredPan: mapStoreGetPan(state),

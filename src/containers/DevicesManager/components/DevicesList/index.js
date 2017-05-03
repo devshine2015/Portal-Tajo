@@ -111,14 +111,9 @@ DevicesList.propTypes = {
   devices: React.PropTypes.instanceOf(Map).isRequired,
   // notAttached: React.PropTypes.instanceOf(List).isRequired,
   // faultVehicles: React.PropTypes.instanceOf(List).isRequired,
-
-  searchString: React.PropTypes.string,
-
-  // choose source to display by currentFilter
-  currentFilter: React.PropTypes.oneOf([
-    'all', 'not-attached', 'fault-vehicle',
-  ]).isRequired,
 };
+
+DevicesList.defaultProps = {};
 
 const mapState = state => ({
   devices: getDevices(state),

@@ -40,4 +40,8 @@ DevicesSelector.propTypes = {
   errorText: React.PropTypes.string,
 };
 
+DevicesSelector.defaultProps = {
+  errorText: null,
+};
+
 export default DevicesSelector;

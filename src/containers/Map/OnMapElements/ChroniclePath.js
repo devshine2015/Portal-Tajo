@@ -76,13 +76,12 @@ class ChroniclePath extends React.Component {
 }
 
 ChroniclePath.propTypes = {
-  theMap: React.PropTypes.object,
+  theMap: React.PropTypes.object.isRequired,
   chronicleFrame: React.PropTypes.object.isRequired,
   isSelected: React.PropTypes.bool.isRequired,
-  setChronicleNormalizedT: React.PropTypes.func.isRequired,
+  setChronicleNormalizedT: React.PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
 };
-const mapState = () => ({
-});
+const mapState = null;
 const mapDispatch = {
   setChronicleNormalizedT,
 };

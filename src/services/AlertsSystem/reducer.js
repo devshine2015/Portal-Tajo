@@ -1,6 +1,5 @@
 import { List, Map, fromJS } from 'immutable';
 import {
-  ALRT_TYPES_SET,
   ALRT_CONDITON_ADD,
   ALRT_EVENTS_ADD,
   ALRT_VEHICLE_ADD,

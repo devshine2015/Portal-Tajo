@@ -78,6 +78,10 @@ MWAJobWithDetails.propTypes = {
   translations: gfDetailsShape.isRequired,
 };
 
+MWAJobWithDetails.defaultProps = {
+  isExpanded: false,
+};
+
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
   // gfById: getGFByIdFunc(state),

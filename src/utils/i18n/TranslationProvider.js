@@ -97,9 +97,9 @@ class TranslationProvider extends React.Component {
 }
 
 TranslationProvider.propTypes = {
-  phrases: React.PropTypes.object.isRequired,
-  locales: React.PropTypes.arrayOf(
-    React.PropTypes.string
+  phrases: React.PropTypes.object.isRequired, // eslint-disable-line react/no-unused-prop-types
+  locales: React.PropTypes.arrayOf( // eslint-disable-line react/no-unused-prop-types
+    React.PropTypes.string,
   ).isRequired,
   children: React.PropTypes.any.isRequired,
 };

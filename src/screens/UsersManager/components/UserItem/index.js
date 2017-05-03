@@ -15,18 +15,12 @@ import {
 } from 'material-ui';
 import Userpic from 'components/Userpic';
 import UserItemDetails from '../UserItemDetails';
-import { permissions as globalPermissions } from 'configs/roles';
 import { usersActions } from 'services/Users/actions';
 import { translate } from 'utils/i18n';
 // import permitted from 'utils/permissionsRequired';
 
 import phrases, { phrasesShape } from './PropTypes';
 import classes from './classes';
-
-// const PERMISSIONS = [
-//   globalPermissions.USERS_EDIT_ANY,
-//   globalPermissions.USERS_DELETE_ANY,
-// ];
 
 const DeleteUserDialog = ({
   handleClose,
@@ -66,8 +60,8 @@ DeleteUserDialog.propTypes = {
   translations: phrasesShape.isRequired,
 };
 
-function userCan(permission, userPermittedTo) {
-  return true; //userPermittedTo[permission];
+function userCan() {
+  return true;
 }
 
 function makeLastActiveString(lastActive, translations) {
@@ -81,15 +75,14 @@ function makeLastActiveString(lastActive, translations) {
 }
 
 function Actions({
-  userPermittedTo,
   lastActive,
   expandToggle,
   isExpanded,
   deleteUser,
   translations,
 }) {
-  const canEdit = userCan(globalPermissions.USERS_EDIT_ANY, userPermittedTo);
-  const canDelete = userCan(globalPermissions.USERS_DELETE_ANY, userPermittedTo);
+  const canEdit = userCan();
+  const canDelete = userCan();
   const canDoNothing = !canDelete && !canEdit;
   const toggleButtonLabel = isExpanded ?
     translations.close : translations.details;
@@ -124,7 +117,6 @@ function Actions({
 }
 
 Actions.propTypes = {
-  userPermittedTo: React.PropTypes.object,
   expandToggle: React.PropTypes.func.isRequired,
   deleteUser: React.PropTypes.func.isRequired,
   lastActive: React.PropTypes.string,
@@ -247,7 +239,6 @@ class UserItem extends React.Component {
               )}
             </VelocityTransitionGroup>
             <Actions
-              userPermittedTo={this.props.userPermittedTo}
               lastActive={profile.last_login}
               expandToggle={this.handleExpandToggle}
               isExpanded={!!this.state.expanded}
@@ -270,10 +261,8 @@ class UserItem extends React.Component {
 
 UserItem.propTypes = {
   profile: React.PropTypes.object.isRequired,
-  permissions: React.PropTypes.array,
-  userPermittedTo: React.PropTypes.object,
-  renderPermissions: React.PropTypes.func.isRequired,
-  index: React.PropTypes.number.isRequired,
+  // renderPermissions: React.PropTypes.func.isRequired,
+  // index: React.PropTypes.number.isRequired,
   deleteUser: React.PropTypes.func.isRequired,
   role: React.PropTypes.string,
 
@@ -281,7 +270,6 @@ UserItem.propTypes = {
 };
 
 UserItem.defaultProps = {
-  permissions: [],
   role: '',
 };
 

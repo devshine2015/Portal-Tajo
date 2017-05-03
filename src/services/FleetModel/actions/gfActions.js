@@ -12,8 +12,7 @@ export const filterGFs = (searchString) => (dispatch, getState) =>
   _filterGf({ searchString }, dispatch, getState);
 export const createGF = (newGF, idx) => (dispatch, getState) =>
   _createGFRequest(newGF, idx, dispatch, getState);
-export const updateGF = (theGF, id, idx) => (dispatch, getState) =>
-  _editGFRequest(theGF, id, idx, dispatch, getState);
+export const updateGF = () => ({});
 export const deleteGF = (id) => (dispatch, getState) =>
   _deleteGFRequest(id, dispatch, getState);
 
@@ -47,11 +46,7 @@ function _createGFRequest(gfObject, index, dispatch, getState) {
     return Promise.resolve();
   }, error => Promise.reject(error));
 }
-/**
- * POST - new GF details to the server
- **/
-function _editGFRequest(gfObject, id, index, dispatch, getState) {
-}
+
 /**
  * DELETE - new GF details to the server
  **/

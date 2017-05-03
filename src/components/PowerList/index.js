@@ -31,12 +31,12 @@ function renderChildrens(scrollable, filter, content) {
 }
 
 const PowerList = ({
-  children = null,
+  children,
   className,
-  content = null,
-  filter = null,
-  fixed = true,
-  scrollable = true,
+  content,
+  filter,
+  fixed,
+  scrollable,
 }) => {
   const columnClassName = classnames(styles.columnContainer, className, {
     [styles.likeStatic]: !fixed,
@@ -60,6 +60,15 @@ PowerList.propTypes = {
   filter: React.PropTypes.element,
   fixed: React.PropTypes.bool,
   scrollable: React.PropTypes.bool,
+};
+
+PowerList.defaultProps = {
+  children: null,
+  className: '',
+  content: null,
+  filter: null,
+  fixed: true,
+  scrollable: true,
 };
 
 export default pure(PowerList);

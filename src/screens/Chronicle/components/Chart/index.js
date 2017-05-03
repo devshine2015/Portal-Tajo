@@ -1,9 +1,6 @@
 import React from 'react';
 import pure from 'recompose/pure';
-import { connect } from 'react-redux';
 import styles from './styles.css';
-import { setChronicleNormalizedT } from './../../actions';
-import { getNormalized100T } from './../../reducer';
 // d3 -----
 import { scaleLinear } from 'd3-scale';
 import { line } from 'd3-shape';
@@ -11,6 +8,9 @@ import { line } from 'd3-shape';
 class ChartBox extends React.Component {
   constructor(props) {
     super(props);
+
+    this.chartRef = null;
+
     this.state = {
       speedChartPathD: '',
       tempChartPathD: '',
@@ -38,7 +38,7 @@ class ChartBox extends React.Component {
       });
       return;
     }
-    const mySvgElement = this.refs.chart;
+    const mySvgElement = this.chartRef;
     // if (mySvgElement === undefined) {
     //   return;
     // }
@@ -71,11 +71,16 @@ class ChartBox extends React.Component {
     });
   }
 
-  // componentWillUnmount() {
-  // }
+  saveNode = (node) => {
+    this.chartRef = node;
+  }
+
   render() {
     return (
-      <svg ref={'chart'} className={styles.chartBox}>
+      <svg
+        ref={this.saveNode}
+        className={styles.chartBox}
+      >
         <path d={this.state.speedChartPathD} className={styles.speedChart} />
         <path d={this.state.tempChartPathD} className={styles.tempChart} />
       </svg>
@@ -85,13 +90,6 @@ class ChartBox extends React.Component {
 
 ChartBox.propTypes = {
   chronicleFrame: React.PropTypes.object.isRequired,
-  setChronicleNormalizedT: React.PropTypes.func.isRequired,
-  normalized100T: React.PropTypes.number.isRequired,
 };
-const mapState = (state) => ({
-  normalized100T: getNormalized100T(state),
-});
-const mapDispatch = {
-  setChronicleNormalizedT,
-};
-export default connect(mapState, mapDispatch)(pure(ChartBox));
+
+export default pure(ChartBox);

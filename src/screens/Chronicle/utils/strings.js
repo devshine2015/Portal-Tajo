@@ -1,9 +1,9 @@
-import { makeStaticLableSVG, deviceAccessTime, imageTimer,
+import {makeStaticLableSVG, deviceAccessTime,
   notificationTimeToLeave, imageTimelapse, placesAcUnit } from './staticIcons';
 
 //
 // need this for setting content of mapBox popUp
-export function generateInnerHTMLForHistoryMoment(momentData, phrases = {}) {
+export function generateInnerHTMLForHistoryMoment(momentData/* , phrases = {}*/) {
   let content = `${dateToChronicleLable(momentData.date)}<br>
                  ${speedToChronicleLable(momentData.speed)}`;
 

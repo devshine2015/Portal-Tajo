@@ -80,7 +80,7 @@ class DeviceSelector extends React.Component {
     super(props);
 
     this.state = {
-      searchText: props.forcedValue || '',
+      searchText: props.forcedValue,
       isRefreshing: false,
     };
   }
@@ -188,7 +188,7 @@ class DeviceSelector extends React.Component {
           underlineDisabledStyle={STYLES.disabled}
         />
         <div className={styles.actions}>
-          { this.props.actions || null }
+          { this.props.actions }
 
           { canRefresh && (
             <RefreshButton
@@ -203,7 +203,7 @@ class DeviceSelector extends React.Component {
 }
 
 DeviceSelector.propTypes = {
-  // component may take new 
+  // component may take new
   fetchDevices: React.PropTypes.func.isRequired,
 
   // value to set by force from parent component
@@ -221,7 +221,7 @@ DeviceSelector.propTypes = {
 
   // additional actions for DeviceSelector
   actions: React.PropTypes.arrayOf(
-    React.PropTypes.node
+    React.PropTypes.node,
   ),
 
   // Callback function that is fired when a list item is selected,
@@ -230,7 +230,7 @@ DeviceSelector.propTypes = {
 
   // Callback function that is fired when
   // the user updates the TextField.
-  onChange: React.PropTypes.func,
+  onChange: React.PropTypes.func.isRequired,
 
   // list of all devices
   devices: React.PropTypes.instanceOf(Map).isRequired,
@@ -238,7 +238,7 @@ DeviceSelector.propTypes = {
   // list of devices ids not
   // attached to any vehicle
   vacantDevices: React.PropTypes.arrayOf(
-    React.PropTypes.string
+    React.PropTypes.string,
   ).isRequired,
 };
 
@@ -246,6 +246,8 @@ DeviceSelector.defaultProps = {
   disabled: false,
   canRefresh: true,
   hasError: false,
+  forcedValue: '',
+  actions: null,
 };
 
 const mapState = state => ({

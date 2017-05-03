@@ -1,8 +1,11 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import * as journalState from 'containers/Journal/reducer';
-import { jrnOpen, jrnAddEntries } from 'containers/Journal/actions';
+// import * as journalState from 'containers/Journal/reducer';
+import {
+  jrnOpen,
+  // jrnAddEntries,
+} from 'containers/Journal/actions';
 import { Toggle } from 'material-ui';
 
 import IconButton from 'material-ui/IconButton';
@@ -71,7 +74,7 @@ JournalBar.propTypes = {
   // entries: React.PropTypes.array.isRequired,
 };
 
-const mapState = (state) => ({
+const mapState = () => ({
   // isOpened: journalState.jrnIsOpened(state),
   // newCount: journalState.jrnNewCount(state),
   // entries: journalState.jrnGetEntries(state),

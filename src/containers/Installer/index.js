@@ -267,7 +267,7 @@ Installer.propTypes = {
   cleanOfflineData: React.PropTypes.func.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
   isOnline: React.PropTypes.bool.isRequired,
-  hasOfflineData: React.PropTypes.bool.isRequired,
+  hasOfflineData: React.PropTypes.bool.isRequired, // eslint-disable-line
   saveLocally: React.PropTypes.func.isRequired,
   sendFromStorage: React.PropTypes.func.isRequired,
   showSnackbar: React.PropTypes.func.isRequired,

@@ -122,4 +122,9 @@ Period.propTypes = {
   withTime: React.PropTypes.bool,
 };
 
+Period.defaultProps = {
+  dateFormat: 'dd-mm-yyyy',
+  withTime: false,
+};
+
 export default pure(Period);

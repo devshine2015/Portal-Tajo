@@ -43,6 +43,10 @@ Warn.propTypes = {
 };
 
 Warn.defaultProps = {
+  isExpanded: false,
+};
+
+Warn.defaultProps = {
   translations: phrases,
 };
 

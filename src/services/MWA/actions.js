@@ -74,16 +74,16 @@ function _fetchJobs(dispatch, getState) {
 }
 
 
-function asdf(data) {
-  console.log('then --- ');
-  const text = data.text();
-  console.log('then --- ', text);
-  return data.json();
-}
+// function asdf(data) {
+//   console.log('then --- ');
+//   const text = data.text();
+//   console.log('then --- ', text);
+//   return data.json();
+// }
 
-function _fetchJobsNotWorking(dispatch, getState) {
+// function _fetchJobsNotWorking(dispatch, getState) {
   // const theUrl = 'http://115.31.184.236:2557/WLMA-SERVICE-GATEWAY/WlmaRepairJobServlet?USER=00100193&PASSWORD=81dc9bdb52d04dc20036dbd8313ed055&BRANCH_CODE=01&DATE_BEGIN=20170325';
-  const theUrl = 'http://115.31.184.236:2557/WLMA-SERVICE-GATEWAY/WlmaRepairJobServlet?USER=00100193&PASSWORD=81dc9bdb52d04dc20036dbd8313ed055&BRANCH_CODE=01&DATE_BEGIN=20170328';
+  // const theUrl = 'http://115.31.184.236:2557/WLMA-SERVICE-GATEWAY/WlmaRepairJobServlet?USER=00100193&PASSWORD=81dc9bdb52d04dc20036dbd8313ed055&BRANCH_CODE=01&DATE_BEGIN=20170328';
 
   // let xhr = new XMLHttpRequest();
   // xhr.open('GET', theUrl, true);
@@ -128,44 +128,44 @@ function _fetchJobsNotWorking(dispatch, getState) {
   //   const jsn = data.json();
   // });
 
-  return fetch(theUrl, {
-    mode: 'no-cors',
-    headers: {
+  // return fetch(theUrl, {
+  //   mode: 'no-cors',
+  //   headers: {
       //  mode: 'no-cors',
-      'content-type': 'application/json',
+      // 'content-type': 'application/json',
       //  accept: 'application/json',
       //  Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-      Accept: 'application/json;charset=UTF-8',
-      'Accept-Encoding': 'gzip, deflate, sdch',
+      // Accept: 'application/json;charset=UTF-8',
+      // 'Accept-Encoding': 'gzip, deflate, sdch',
       // method: method || null,
       // body: data || null,
-    }
-  })
+  //   }
+  // })
     // .then(() => 'asdf')
     // .then(resp => resp.json())
-    .then(resp => {
-      console.log(resp);
+    // .then(resp => {
+    //   console.log(resp);
       // debugger
       // console.log(resp.headers.get('Content-Type'))
       // console.log(resp.headers.get('Date'))
       // console.log(resp.response)
       // console.log(resp.statusText)
       // const txt = resp.text();
-      const jsn = resp.json();
+      // const jsn = resp.json();
       //  const bdy = resp.body;
-      return jsn;
-    })
-    .then(aData => {
-      console.log(aData);
-    })
+      // return jsn;
+    // })
+    // .then(aData => {
+    //   console.log(aData);
+    // })
     // .then(handleResponse)
     // .then(jobs => {
     //   _addJobs(dispatch, alerts);
     // })
-    .catch(e => {
-      console.error(e);
-    });
-}
+//     .catch(e => {
+//       console.error(e);
+//     });
+// }
 
 const ensureHasLocations = (aJob) => {
   if (aJob.X === null

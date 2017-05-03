@@ -16,7 +16,7 @@ const STYLES = {
 };
 
 const Amount = ({
-  amount = 0,
+  amount,
   icon,
 }) => (
   <button type="button" className={styles.amount}>
@@ -46,6 +46,10 @@ const Amount = ({
 Amount.propTypes = {
   amount: React.PropTypes.number,
   icon: React.PropTypes.node.isRequired,
+};
+
+Amount.defaultProps = {
+  amount: 0,
 };
 
 const SimpleSummary = ({

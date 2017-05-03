@@ -41,13 +41,10 @@ WarningDialog.propTypes = {
   onCancel: React.PropTypes.func.isRequired,
 
   // fired by clicking on OK button
-  onOk: React.PropTypes.func.isRequired,
+  onOk: React.PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
 
   // Controls whether the Dialog is opened or not.
   open: React.PropTypes.bool.isRequired,
-
-  // amount of selected vehicles
-  vehiclesAmount: React.PropTypes.number.isRequired,
 
   translations: phrasesShape.isRequired,
 };

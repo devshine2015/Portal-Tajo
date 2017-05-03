@@ -1,16 +1,6 @@
-
-import moment from 'moment';
-import { getAlertByKind } from './alertKinds';
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
 
 export const _NEW_LOCAL_ALERT_ID_ = 'newAlert';
-
-export const _dev_makeLocalAlertCondition = (id, name, kind) => (
-  { id,
-    name,
-    kind,
-  }
-);
 
 const safeGetFromMeta = (originObject, propName, defValue) => (
     originObject.meta === undefined || originObject.meta[propName] === undefined ?
@@ -43,7 +33,7 @@ export const makeNewAlertConditionTemplate = () => (
 export const makeAlertConditionBackEndObject = (inState) => (
    Object.assign({},
     makeGenericAlrt(inState),
-    getAlertByKind(inState.kind).makeBEObject(inState))
+    alertKinds.getAlertByKind(inState.kind).makeBEObject(inState))
 );
 
 const makeGenericAlrt = (inState) => (

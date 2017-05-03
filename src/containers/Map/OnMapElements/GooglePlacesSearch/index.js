@@ -185,8 +185,9 @@ class GooglePlacesSearch extends React.Component {
 GooglePlacesSearch.contextTypes = {
   muiTheme: React.PropTypes.object.isRequired,
 };
+
 GooglePlacesSearch.propTypes = {
-  ownerMapObj: React.PropTypes.object,
+  ownerMapObj: React.PropTypes.object.isRequired,
 };
 
 export default pure(GooglePlacesSearch);

@@ -8,7 +8,7 @@ import { getAmounts } from 'services/FleetModel/reducer';
 import { amountsShape } from './PropTypes';
 
 const FleetSummary = ({
-  simple = false,
+  simple,
   amounts,
 }) => (
   simple ?
@@ -23,6 +23,10 @@ FleetSummary.propTypes = {
 
   // all of the numbers needed by childrens
   amounts: amountsShape.isRequired,
+};
+
+FleetSummary.defaultProps = {
+  simple: false,
 };
 
 const mapState = state => ({

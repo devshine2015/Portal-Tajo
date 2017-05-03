@@ -2,7 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { hideLayer } from 'utils/mapBoxMap';
-import { mwaSelectJob } from 'services/MWA/actions';
+// import { mwaSelectJob } from 'services/MWA/actions';
 import { getMWASelectedJobId } from 'services/MWA/reducer';
 import { ctxGetSelectedVehicleId, ctxGetPowListTabType } from 'services/Global/reducers/contextReducer';
 import listTypes from 'components/InstancesList/types';
@@ -99,11 +99,15 @@ class MWAJobMarker extends React.Component {
 
 MWAJobMarker.propTypes = {
   theMap: React.PropTypes.object,
-  theMWAJob: React.PropTypes.object,
-  mwaSelectJob: React.PropTypes.func.isRequired,
+  theMWAJob: React.PropTypes.object.isRequired,
+  // mwaSelectJob: React.PropTypes.func.isRequired,
   selectedJobId: React.PropTypes.string.isRequired,
   selectedVehicleId: React.PropTypes.string.isRequired,
   selectedTab: React.PropTypes.string.isRequired, 
+};
+
+MWAJobMarker.defaultProps = {
+  theMap: null,
 };
 
 const mapState = (state) => ({
@@ -112,7 +116,7 @@ const mapState = (state) => ({
   selectedTab: ctxGetPowListTabType(state),
 });
 const mapDispatch = {
-  mwaSelectJob,
+  // mwaSelectJob,
 };
 
 const PureMWAJobMarker = connect(mapState, mapDispatch)(pure(MWAJobMarker));

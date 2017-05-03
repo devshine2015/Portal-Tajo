@@ -5,6 +5,7 @@
 import { isMaritime } from 'configs';
 const isMaritimeDemoData = true;
 
+// eslint-disable-next-line camelcase
 export function removeMe_OverrideMaritimeDemoData(status) {
   if (!isMaritime || !isMaritimeDemoData) {
     return;
@@ -29,6 +30,7 @@ export function removeMe_OverrideMaritimeDemoData(status) {
 }
 
 // demo helper to set all the proto maritime-specific props to vessel obj
+// eslint-disable-next-line camelcase
 export function removeMe_OverrideMaritimeDemoVessel(imVessel) {
   if (!isMaritime || !isMaritimeDemoData) {
     return imVessel;

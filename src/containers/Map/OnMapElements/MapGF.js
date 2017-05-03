@@ -1,5 +1,4 @@
 import React from 'react';
-import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { createPointerLine, showPointerLine } from './../utils/pointerLineHelpers';
 import { hideLayer } from 'utils/mapBoxMap';
@@ -144,10 +143,14 @@ MapGF.contextTypes = {
 };
 MapGF.propTypes = {
   theMap: React.PropTypes.object,
-  theGF: React.PropTypes.object,
+  theGF: React.PropTypes.object.isRequired,
   selectGF: React.PropTypes.func.isRequired,
   selectedGfId: React.PropTypes.string.isRequired,
   hideMe: React.PropTypes.bool.isRequired,
+};
+
+MapGF.defaultProps = {
+  theMap: null,
 };
 
 const mapState = (state) => ({
@@ -168,4 +171,4 @@ export const mapGFMarkerMaker = (v) => (
     theMap={null}
     theGF={v}
   />
-    );
+);

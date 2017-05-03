@@ -116,6 +116,10 @@ ListItemMaritime.propTypes = {
   vehicle: maritimeShape.isRequired,
 };
 
+ListItemMaritime.defaultProps = {
+  isExpanded: false,
+};
+
 const PureListItemMaritime = pure(ListItemMaritime);
 
 export default PureListItemMaritime;

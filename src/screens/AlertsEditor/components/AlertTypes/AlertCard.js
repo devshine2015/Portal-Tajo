@@ -6,7 +6,7 @@ import tinycolor from 'tinycolor2';
 import { VelocityTransitionGroup } from 'velocity-react';
 import { css } from 'aphrodite/no-important';
 import { Card, CardHeader, CardText } from 'material-ui/Card';
-import DeletIcon from 'material-ui/svg-icons/action/delete-forever';
+// import DeletIcon from 'material-ui/svg-icons/action/delete-forever';
 // import EditIcon from 'material-ui/svg-icons/maps/edit-location';
 import EditIcon from 'material-ui/svg-icons/image/edit';
 import IconButton from 'material-ui/IconButton';

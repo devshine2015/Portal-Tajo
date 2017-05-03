@@ -255,16 +255,6 @@ const phrases = {
     job_to: 'To',
     job_duration: 'Duration',
     // -- end alerts conditions
-
-    // -- mwa reports
-    mwa_jobs_nbr: 'No. of Jobs',
-    mwa_jobs_t: 'Jobs Time',
-    job_name: 'Job Name',
-    job_from: 'From',
-    job_to: 'To',
-    job_duration: 'Duration',
-    // -- end mwa reports
-
   },
 
   th: {

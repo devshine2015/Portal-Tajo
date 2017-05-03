@@ -108,6 +108,7 @@ DateFormatSelectorWithMemory.propTypes = {
 
 DateFormatSelectorWithMemory.defaultProps = {
   translations: phrases,
+  userDateFormat: 'dd-mm-yyyy',
 };
 
 const mapState = null;

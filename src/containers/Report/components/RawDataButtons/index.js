@@ -150,6 +150,8 @@ RawDataButtons.propTypes = {
 
 RawDataButtons.defaultProps = {
   translations: phrases,
+  containerClassName: '',
+  buttonClassName: '',
 };
 
 const mapState = state => ({

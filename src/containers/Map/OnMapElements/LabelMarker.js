@@ -1,5 +1,3 @@
-//
-//
 import React from 'react';
 import pure from 'recompose/pure';
 import { hideLayer } from 'utils/mapBoxMap';
@@ -145,7 +143,7 @@ class LabelMarker extends React.Component {
 }
 
 LabelMarker.propTypes = {
-  theMap: React.PropTypes.object,
+  theMap: React.PropTypes.object.isRequired,
   label: React.PropTypes.string.isRequired,
   latLng: React.PropTypes.array.isRequired,
   isSelected: React.PropTypes.bool.isRequired,

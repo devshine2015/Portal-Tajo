@@ -1,4 +1,4 @@
-import { List, Map, fromJS } from 'immutable';
+import { fromJS } from 'immutable';
 import * as mwaActions from './actions';
 
 const mwaInitialState = fromJS({

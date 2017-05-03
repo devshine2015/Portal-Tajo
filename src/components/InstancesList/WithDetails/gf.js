@@ -1,9 +1,7 @@
 import React from 'react';
-import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { VelocityTransitionGroup } from 'velocity-react';
-import Checkbox from 'material-ui/Checkbox';
 import ItemProperty from '../DetailItemProperty';
 import { getGFByIdFunc } from 'services/FleetModel/reducer';
 import { deleteGF } from 'services/FleetModel/actions/gfActions';
@@ -26,14 +24,14 @@ import stylesBase from '../styles.css';
 import styles from './styles.css';
 import { gfDetailsShape } from '../PropTypes';
 
-const stylesCheck = {
-  labelStyle: {
-    color: 'white',
-  },
-  iconStyle: {
-    fill: 'white',
-  },
-};
+// const stylesCheck = {
+//   labelStyle: {
+//     color: 'white',
+//   },
+//   iconStyle: {
+//     fill: 'white',
+//   },
+// };
 
 class LocationWithDetails extends React.Component {
 
@@ -149,6 +147,10 @@ LocationWithDetails.propTypes = {
   mapStoreSetPan: React.PropTypes.func.isRequired,
 
   translations: gfDetailsShape.isRequired,
+};
+
+LocationWithDetails.defaultProps = {
+  isExpanded: false,
 };
 
 const mapState = (state) => ({

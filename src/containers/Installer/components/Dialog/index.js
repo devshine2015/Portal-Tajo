@@ -28,7 +28,7 @@ const InstallerDialog = ({
       open={open}
       onRequestClose={handleClose}
     >
-      You have saved data on your device and now you're online, so you can try to send it!
+      You have saved data on your device and now you are online, so you can try to send it!
     </Dialog>
   );
 };

@@ -29,4 +29,8 @@ DetailItemProperty.propTypes = {
   ]).isRequired,
 };
 
+DetailItemProperty.defaultProps = {
+  icon: null,
+};
+
 export default pure(DetailItemProperty);

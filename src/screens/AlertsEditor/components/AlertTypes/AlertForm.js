@@ -7,7 +7,6 @@ import { createAlertConditions, updateAlertCondition } from 'services/AlertsSyst
 import { showSnackbar } from 'containers/Snackbar/actions';
 
 import { TextField } from 'material-ui';
-import { VelocityTransitionGroup } from 'velocity-react';
 
 import { css } from 'aphrodite/no-important';
 // import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
@@ -123,8 +122,6 @@ SpeedForm.propTypes = {
   headerTitle: React.PropTypes.string.isRequired,
   alert: React.PropTypes.object,
   closeForm: React.PropTypes.func.isRequired,
-  // isLoading: React.PropTypes.bool.isRequired,
-  isOpened: React.PropTypes.bool.isRequired,
   controlledFields: React.PropTypes.arrayOf(
     React.PropTypes.shape({
       fieldName: React.PropTypes.string.isRequired,
@@ -138,10 +135,7 @@ SpeedForm.propTypes = {
   showSnackbar: React.PropTypes.func.isRequired,
 };
 
-const mapState = (state) => ({
-  // alerts: getAlertConditions(state),
-  // alertById: getAlertConditionByIdFunc(state),
-});
+const mapState = null;
 
 const mapDispatch = {
   createAlertConditions,

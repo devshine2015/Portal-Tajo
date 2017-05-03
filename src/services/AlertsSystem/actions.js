@@ -134,8 +134,3 @@ const _vehicleAlerts = (vehicleId, alertsList) => ({
   vehicleId,
   alertsList,
 });
-
-const _alertEventsAdd = (alertEvents) => ({
-  type: ALRT_EVENTS_ADD,
-  alertEvents,
-});

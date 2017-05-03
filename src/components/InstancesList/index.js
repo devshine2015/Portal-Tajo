@@ -75,7 +75,7 @@ InstancesList.defaultProps = {
 InstancesList.propTypes = {
   // Main data to display
   data: React.PropTypes.array.isRequired,
-  onItemClick: React.PropTypes.func,
+  onItemClick: React.PropTypes.func.isRequired,
   type: React.PropTypes.oneOf([
     types.withCheckboxes,
     types.withVehicleDetails,
@@ -87,7 +87,7 @@ InstancesList.propTypes = {
   ]),
 
   // Pass to CheckboxItem
-  uncheckOnUnmount: React.PropTypes.bool,
+  uncheckOnUnmount: React.PropTypes.bool.isRequired,
   selectedItems: React.PropTypes.array,
 
   // For DetailedItem
@@ -101,6 +101,13 @@ InstancesList.propTypes = {
 
   // translations for all types of lists
   translations: phrasesShape.isRequired,
+};
+
+InstancesList.defaultProps = {
+  type: 'simple',
+  selectedItems: [],
+  currentExpandedItemId: undefined,
+  scrollIntoView: true,
 };
 
 const Pure = pure(InstancesList);

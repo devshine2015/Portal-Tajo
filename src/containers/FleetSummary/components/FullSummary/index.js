@@ -35,7 +35,7 @@ const Amount = ({
   amount,
   helpText,
   icon,
-  fullwidth = false,
+  fullwidth,
 }) => {
   const paperClassName = css(
     classes.amount,
@@ -70,6 +70,10 @@ Amount.propTypes = {
 
   // will took full width of the parent if true
   fullwidth: React.PropTypes.bool,
+};
+
+Amount.defaultProps = {
+  fullwidth: false,
 };
 
 const FullSummary = ({

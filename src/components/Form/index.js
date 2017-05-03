@@ -32,4 +32,8 @@ Form.propTypes = {
   onSubmit: React.PropTypes.func.isRequired,
 };
 
+Form.defaultProps = {
+  className: '',
+};
+
 export default pure(Form);

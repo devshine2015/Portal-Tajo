@@ -14,6 +14,7 @@
     "react/no-children-prop": 0,
     "react/no-array-index-key": 0,
     "react/jsx-boolean-value": 0,
+    "react/require-default-props": 0,
     "import/newline-after-import": 0,
     "import/no-extraneous-dependencies": 0,
     "import/first": 0,
@@ -56,6 +57,8 @@
     "default-case": 0,
     "no-multiple-empty-lines": 0,
     "no-extra-boolean-cast": 0,
-    "no-extra-semi": 0
+    "no-extra-semi": 0,
+    "arrow-body-style": 0,
+    "no-restricted-syntax": 0
   }
 }
