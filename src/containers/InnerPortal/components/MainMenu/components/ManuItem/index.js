@@ -10,7 +10,7 @@ const MenuItem = (props) =>
     to={props.page.path}
     onClick={props.closeSidebar}
   >
-   { props.niceName }
+    { props.niceName }
   </Link>;
 
 MenuItem.propTypes = {

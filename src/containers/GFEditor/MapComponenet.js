@@ -116,7 +116,7 @@ class EditGF extends React.Component {
   }
 
   startPolygon(latLng) {
-    this.props.gfEditUpdate(makeLocalGF({ points: [latLng], kind: 'poly' }))
+    this.props.gfEditUpdate(makeLocalGF({ points: [latLng], kind: 'poly' }));
     const polygonOptions = {
       // showArea: false,
       allowIntersection: false,

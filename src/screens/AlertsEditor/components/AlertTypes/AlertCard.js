@@ -82,7 +82,7 @@ class AlertCard extends React.Component {
                     (<div>
                       <div className={css(classes.sectionBtnsWrapper)}>
                         <IconButton
-                          tooltip={'edit'}
+                          tooltip={ "edit" }
                           onClick={this.onEdit}
                           key="editBtn"
                         >

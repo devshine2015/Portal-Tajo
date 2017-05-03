@@ -102,9 +102,9 @@ class MapContainer extends React.Component {
 
   render() {
     if (this.state.theMap === null) {
-      return (<div className = {styles.mapContainer}>
-              <CustomControls />
-              </div>);
+      return (<div className={styles.mapContainer}>
+        <CustomControls />
+      </div>);
     }
 
     // const t0 = performance.now();

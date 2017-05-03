@@ -117,15 +117,15 @@ class MapVehicle extends React.Component {
         fillColor: '#1f757d',
         dashArray: '5, 5',
         weight: 1,
-       })
+      })
        : null;
     this.theDirectionLine = isMaritime ? window.L.polyline([this.props.theVehicle.pos,
-          this.props.theVehicle.pos],
-       { opacity: 1,
-         color: '#1f757d',
-         dashArray: '5, 5',
-         weight: 1,
-        })
+      this.props.theVehicle.pos],
+      { opacity: 1,
+        color: '#1f757d',
+        dashArray: '5, 5',
+        weight: 1,
+      })
         : null;
 
     this.theMarker.on('click', () => {
@@ -235,9 +235,9 @@ const mapDispatch = {
 const CompleteVehicle = connect(mapState, mapDispatch)(MapVehicle);
 
 export const mapVehicleMarkerMaker = (v) => (
-      <CompleteVehicle
-        key={v.id}
-        theMap={null}
-        theVehicle={v}
-      />
+  <CompleteVehicle
+    key={v.id}
+    theMap={null}
+    theVehicle={v}
+  />
     );

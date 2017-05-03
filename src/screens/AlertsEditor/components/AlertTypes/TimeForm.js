@@ -40,17 +40,18 @@ class SpeedForm extends React.Component {
     refDate.setHours(hvrs);
     refDate.setMinutes((this.state.driveTimeSec / 60 - hvrs * 60));
     refDate.setSeconds(0);
-    return (<AlertForm alert={this.props.alert}
+    return (<AlertForm
+      alert={this.props.alert}
       closeForm={this.props.closeForm}
       isOpened={this.props.isOpened}
     >
-        <TimePicker
-          format="24hr"
-          hintText="Drive Time"
-          defaultTime={refDate}
-          onChange={this.onChangeTime}
-        />
-      </AlertForm>
+      <TimePicker
+        format="24hr"
+        hintText="Drive Time"
+        defaultTime={refDate}
+        onChange={this.onChangeTime}
+      />
+    </AlertForm>
     );
   }
 }

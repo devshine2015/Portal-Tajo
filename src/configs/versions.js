@@ -1,6 +1,6 @@
 export default {
   authentication: {
-    verify: function (savedData) {
+    verify(savedData) {
       if (savedData === null) {
         return true;
       }

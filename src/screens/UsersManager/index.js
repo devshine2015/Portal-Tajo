@@ -43,7 +43,7 @@ class UsersManager extends React.Component {
       <Content>
         <Layout.Row>
 
-        { SHOW_SUBMENU && (
+          { SHOW_SUBMENU && (
           <div className={css(classes.sidebar)}>
             <Submenu
               subsections={SUBSECTIONS}

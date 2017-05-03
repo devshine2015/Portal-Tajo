@@ -182,7 +182,8 @@ class AlertDetails extends React.Component {
         // const gfs = gfsArray.map((aGF) => (<MenuItem primaryText={aGF.name} />));
         const gfs = gfsArray.map((aGF) => (<MenuItem value={aGF.id} key={aGF.id} primaryText={aGF.name} />));
         return (<div>
-          <SelectField maxHeight={300} value={this.state.gfId} onChange={this.onChangeGF}
+          <SelectField
+            maxHeight={300} value={this.state.gfId} onChange={this.onChangeGF}
             autoWidth hintText="select GeoFence" name="GeoFence"
           >
             {gfs}
@@ -199,8 +200,8 @@ class AlertDetails extends React.Component {
             checked={this.state.onExit}
             onCheck={this.onChange}
           />
-          </div>
-          );
+        </div>
+        );
       }
       default:
         return null;

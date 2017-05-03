@@ -22,8 +22,13 @@ const STYLES = {
   },
 };
 const alertIcon = (<AlertIcon color={theme.palette.accent2Color} />);
-const btnStyle = { border: 'solid 1px rgba(255, 255, 255, 0.3)', borderRadius: '50%',
-    width: '48px', height: '48px', minWidth: '48px', overflow: 'visible', color: 'white' };
+const btnStyle = { border: 'solid 1px rgba(255, 255, 255, 0.3)',
+  borderRadius: '50%',
+  width: '48px',
+  height: '48px',
+  minWidth: '48px',
+  overflow: 'visible',
+  color: 'white' };
 
 class JournalBtn extends React.Component {
   toggleJournal() {
@@ -34,7 +39,8 @@ class JournalBtn extends React.Component {
     if (!isAlerts) return false;
     const hasNew = this.props.newCount > 0;
     return (
-      <FlatButton type="button"
+      <FlatButton
+        type="button"
         className={styles.amount}
         style={btnStyle}
         onClick={() => {this.toggleJournal();}}

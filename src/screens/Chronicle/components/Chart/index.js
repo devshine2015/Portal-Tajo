@@ -76,10 +76,8 @@ class ChartBox extends React.Component {
   render() {
     return (
       <svg ref={'chart'} className={styles.chartBox}>
-        <path d={this.state.speedChartPathD} className={styles.speedChart}>
-        </path>
-        <path d={this.state.tempChartPathD} className={styles.tempChart}>
-        </path>
+        <path d={this.state.speedChartPathD} className={styles.speedChart} />
+        <path d={this.state.tempChartPathD} className={styles.tempChart} />
       </svg>
     );
   }

@@ -94,16 +94,16 @@ class ChartTimeBox extends React.Component {
             <span>{this.props.chronicleFrame.maxSpeed.toFixed(1)} km/h</span>
           </div>
           { !this.props.chronicleFrame.hasTemperature() ? false :
-            <div>
-              <div className={styles.infoPropContainer}>
-                <span>{ `${this.props.translations.max_temp}:` }</span>
-                <span>{this.props.chronicleFrame.maxTemp.toFixed(1)} &deg;C</span>
-              </div>
-              <div className={styles.infoPropContainer}>
-                <span>{ `${this.props.translations.min_temp}:` }</span>
-                <span>{this.props.chronicleFrame.minTemp.toFixed(1)} &deg;C</span>
-              </div>
+          <div>
+            <div className={styles.infoPropContainer}>
+              <span>{ `${this.props.translations.max_temp}:` }</span>
+              <span>{this.props.chronicleFrame.maxTemp.toFixed(1)} &deg;C</span>
             </div>
+            <div className={styles.infoPropContainer}>
+              <span>{ `${this.props.translations.min_temp}:` }</span>
+              <span>{this.props.chronicleFrame.minTemp.toFixed(1)} &deg;C</span>
+            </div>
+          </div>
           }
         </div>
       );
@@ -116,7 +116,8 @@ class ChartTimeBox extends React.Component {
           && !this.props.chronicleFrame.isEmpty();
     const stl = { left: `${this.props.normalized100T.toFixed(3)}%` };
     return (
-      <div className={styles.containerBox}
+      <div
+        className={styles.containerBox}
         onMouseMove={this.mouseMove}
         onMouseOut={this.mouseOut}
         onMouseOver={this.mouseOver}
@@ -126,8 +127,7 @@ class ChartTimeBox extends React.Component {
       >
         <Chart chronicleFrame={this.props.chronicleFrame} />
         { isDisplayTimeHears ?
-          <div className={styles.timeMarkerLine} style={stl}>
-          </div>
+          <div className={styles.timeMarkerLine} style={stl} />
           : false
         }
         { isDisplayTimeHears && this.state.isMouseOver ?

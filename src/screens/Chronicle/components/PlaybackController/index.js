@@ -119,36 +119,36 @@ class PlaybackCtr extends React.Component {
           onClick={() => (this.playSpeed(0))}
           key="pauseBtn"
         >
-           <PauseIcon color={this.getBtnColor(0)} hoverColor={this.getBtnHoverColor(0)} />
-         </IconButton>
-       <IconButton
-         tooltip={ translations.play }
-         onClick={() => (this.playSpeed(1))}
-         key="playBtn"
-       >
+          <PauseIcon color={this.getBtnColor(0)} hoverColor={this.getBtnHoverColor(0)} />
+        </IconButton>
+        <IconButton
+          tooltip={ translations.play }
+          onClick={() => (this.playSpeed(1))}
+          key="playBtn"
+        >
           <PlayIcon1 color={this.getBtnColor(1)} hoverColor={this.getBtnHoverColor(1)} />
-      </IconButton>
+        </IconButton>
         <IconButton
           tooltip={ `${translations.play} 2` }
           onClick={() => (this.playSpeed(2))}
           key="playBtn2"
         >
-           <PlayIcon2 color={this.getBtnColor(2)} hoverColor={this.getBtnHoverColor(2)} />
-         </IconButton>
-       <IconButton
-         tooltip={ `${translations.play} 3` }
-         onClick={() => (this.playSpeed(3))}
-         key="playBtn3"
-       >
+          <PlayIcon2 color={this.getBtnColor(2)} hoverColor={this.getBtnHoverColor(2)} />
+        </IconButton>
+        <IconButton
+          tooltip={ `${translations.play} 3` }
+          onClick={() => (this.playSpeed(3))}
+          key="playBtn3"
+        >
           <PlayIcon3 color={this.getBtnColor(3)} hoverColor={this.getBtnHoverColor(3)} />
         </IconButton>
-      <IconButton
-        tooltip={ `${translations.play} 4` }
-        onClick={() => (this.playSpeed(4))}
-        key="playBtn4"
-      >
-         <PlayIcon4 color={this.getBtnColor(4)} hoverColor={this.getBtnHoverColor(4)} />
-       </IconButton>
+        <IconButton
+          tooltip={ `${translations.play} 4` }
+          onClick={() => (this.playSpeed(4))}
+          key="playBtn4"
+        >
+          <PlayIcon4 color={this.getBtnColor(4)} hoverColor={this.getBtnHoverColor(4)} />
+        </IconButton>
       </div>
     );
   }

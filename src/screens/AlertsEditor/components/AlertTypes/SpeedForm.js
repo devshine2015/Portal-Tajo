@@ -8,13 +8,14 @@ const SpeedForm = ({
   closeForm,
   isOpened,
 }) => (
-    <AlertForm alert={alert}
-      headerTitle={"New Speed Limit Alert Condition"}
-      closeForm={closeForm}
-      isOpened={isOpened}
-      controlledFields={[{ fieldName: 'maxSpeed',
-          label: 'Speed Limit' }]}
-    />
+  <AlertForm
+    alert={alert}
+    headerTitle={"New Speed Limit Alert Condition"}
+    closeForm={closeForm}
+    isOpened={isOpened}
+    controlledFields={[{ fieldName: 'maxSpeed',
+      label: 'Speed Limit' }]}
+  />
 );
 
 SpeedForm.propTypes = {

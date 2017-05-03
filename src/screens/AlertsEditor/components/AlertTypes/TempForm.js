@@ -8,13 +8,14 @@ const TempForm = ({
   closeForm,
   isOpened,
 }) => (
-    <AlertForm alert={alert}
-      headerTitle={"New Temperature Alert Condition"}
-      closeForm={closeForm}
-      isOpened={isOpened}
-      controlledFields={[{ fieldName: 'maxTemp',
-          label: 'Maximum temperature' }]}
-    />
+  <AlertForm
+    alert={alert}
+    headerTitle={"New Temperature Alert Condition"}
+    closeForm={closeForm}
+    isOpened={isOpened}
+    controlledFields={[{ fieldName: 'maxTemp',
+      label: 'Maximum temperature' }]}
+  />
 );
 
 TempForm.propTypes = {

@@ -42,7 +42,7 @@ class VehicleNameMarker extends React.Component {
         onClick={this.clickHandle}
         hideMe={this.props.theVehicle.filteredOut || this.props.hideMe}
       />
-      );
+    );
   }
 }
 
@@ -65,9 +65,9 @@ const mapDispatch = {
 const CompleteVehicle = connect(mapState, mapDispatch)(VehicleNameMarker);
 
 export const mapVehicleNameMaker = (v) => (
-      <CompleteVehicle
-        key={v.id}
-        theMap={null}
-        theVehicle={v}
-      />
+  <CompleteVehicle
+    key={v.id}
+    theMap={null}
+    theVehicle={v}
+  />
     );

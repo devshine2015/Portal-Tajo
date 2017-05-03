@@ -77,11 +77,11 @@ class LocationWithDetails extends React.Component {
           value={this.props.gf.address}
         />
         {this.props.gf.isPolygon ? null :
-          <ItemProperty
-            key="radius"
-            title={ this.props.translations.radius }
-            value={this.props.gf.radius.toFixed(0)}
-          />
+        <ItemProperty
+          key="radius"
+          title={ this.props.translations.radius }
+          value={this.props.gf.radius.toFixed(0)}
+        />
         }
         <Divider key="line02" />
         <IconButton
@@ -90,8 +90,8 @@ class LocationWithDetails extends React.Component {
           className={styles.iconDelBtn}
           key="delBtn"
         >
-           <DeletIcon color={yellow700} hoverColor={yellow500} />
-         </IconButton>
+          <DeletIcon color={yellow700} hoverColor={yellow500} />
+        </IconButton>
       </div>);
     }
     return false;

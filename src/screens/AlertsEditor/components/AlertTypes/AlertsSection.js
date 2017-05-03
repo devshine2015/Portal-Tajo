@@ -23,7 +23,7 @@ class Section extends React.Component {
       showForm: false,
       formMode: 'create',
     };
-   this.kindData = alertKinds.getAlertByKind(this.props.myAlertKind);
+    this.kindData = alertKinds.getAlertByKind(this.props.myAlertKind);
 
     // // this.FormComponent = () => React.cloneElement(props.formComponent, {
     // //   closeForm: this.closeForm,
@@ -91,7 +91,7 @@ class Section extends React.Component {
             )}
           </VelocityTransitionGroup>
           {alertsList}
-      </Content>
+        </Content>
       </div>
     );
   }

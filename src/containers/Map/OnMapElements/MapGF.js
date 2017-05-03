@@ -66,7 +66,8 @@ class MapGF extends React.Component {
     this.theMarker.on('click', this.clickHandle).addTo(this.props.theMap);
     this.theCircle = window.L.circle(this.props.theGF.pos, this.props.theGF.radius)
       .setStyle({ color: this.context.muiTheme.palette.PLItemBackgroundColorExpanded,
-          weight: 1, opacity: 1 });
+        weight: 1,
+        opacity: 1 });
     const iScale = 0.25;
     const headSz = 152 * iScale;
     this.selectedMarkerIcon = window.L.icon({
@@ -162,9 +163,9 @@ const CompleteMapGF = connect(mapState, mapDispatch)(MapGF);
 // export default PureMapGF;
 
 export const mapGFMarkerMaker = (v) => (
-      <CompleteMapGF
-        key={v.id}
-        theMap={null}
-        theGF={v}
-      />
+  <CompleteMapGF
+    key={v.id}
+    theMap={null}
+    theGF={v}
+  />
     );

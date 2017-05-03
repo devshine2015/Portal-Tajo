@@ -117,10 +117,10 @@ ChronicleVehicleFrame.prototype.parceData = function (events) {
           continue;
         }
         this.stopEvents.push({ timeMs: eventTimeMs,
-            date: new Date(eventMomentTS),
-            pos: window.L.latLng(theEvent.ev.pos.latlon.lat, theEvent.ev.pos.latlon.lng),
-            period: theEvent.ev.stopPeriod,
-            dateStr: theEvent.ev.pos.posTime });
+          date: new Date(eventMomentTS),
+          pos: window.L.latLng(theEvent.ev.pos.latlon.lat, theEvent.ev.pos.latlon.lng),
+          period: theEvent.ev.stopPeriod,
+          dateStr: theEvent.ev.pos.posTime });
         break;
       }
     }
@@ -129,7 +129,7 @@ ChronicleVehicleFrame.prototype.parceData = function (events) {
   if (this.posData.length > 0) {
     const firstSample = this.posData[0];
     this.posData.splice(0, 0, { timeMs: 0,
-                                pos: firstSample.pos });
+      pos: firstSample.pos });
     this.speedData.splice(0, 0, { timeMs: 0, v: 0 });
 
     const lastSample = this.posData[this.posData.length - 1];
@@ -158,7 +158,7 @@ ChronicleVehicleFrame.prototype.kill = function () {
 //
 //-----------------------------------------------------------------------
 ChronicleVehicleFrame.prototype.getDateAtMs = function (timeMs) {
-  var aDate = new Date(timeMs + this.dateFrom00.getTime());
+  let aDate = new Date(timeMs + this.dateFrom00.getTime());
   return aDate;
 };
 
@@ -205,7 +205,7 @@ ChronicleVehicleFrame.prototype.getPosAtMs = function (timeMs) {
   const xx2 = this.posData[this.lastFoundIdxT.idx + 1].pos.lat;
   const yy2 = this.posData[this.lastFoundIdxT.idx + 1].pos.lng;
   return { lat: xx1 + (xx2 - xx1) * this.lastFoundIdxT.t,
-            lng: yy1 + (yy2 - yy1) * this.lastFoundIdxT.t };
+    lng: yy1 + (yy2 - yy1) * this.lastFoundIdxT.t };
 };
 //
 //
@@ -255,7 +255,7 @@ ChronicleVehicleFrame.prototype.findSampleIdxWithT = function (requestMs, data) 
 
   if (requestMs <= 0) {
     return { idx: 0,
-            t: 0 };
+      t: 0 };
   }
   const dataSz = data.length;
   let dataIdx = this.lastFoundIdx; // Math.min(dataSz - 1, Math.floor(dataSz * requestMs / this.timeRangeMs));
@@ -268,11 +268,11 @@ ChronicleVehicleFrame.prototype.findSampleIdxWithT = function (requestMs, data) 
       const normalizedT = (requestMs - data[dataIdx].timeMs)
           / (data[dataIdx + 1].timeMs - data[dataIdx].timeMs);
       return { idx: dataIdx,
-              t: normalizedT };
+        t: normalizedT };
     }
   }
   return { idx: (dataIdx < 0) ? 0 : dataSz - 1,
-          t: 0 };
+    t: 0 };
 };
 
 

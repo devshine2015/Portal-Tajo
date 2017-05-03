@@ -24,7 +24,7 @@ class MarkerSelector extends React.PureComponent {
   }
   renderMarkerMenuItems() {
     return Object.keys(markerTypes).map(key => {
-                        const kind = markerTypes[key];
+      const kind = markerTypes[key];
       // const Icon = () => React.cloneElement(kind.icon, {
       //   className: css(classes.vehicleIcon),
       // });
@@ -46,17 +46,17 @@ class MarkerSelector extends React.PureComponent {
     // }
 
     return (
-    <div className={css(classes.kindOfSelector)} key='marker' >
-      <div className={css(classes.kindOfLabel)}>
-        <span className={css(classes.kindOfName)}> Map Marker</span>
-      </div>
+      <div className={css(classes.kindOfSelector)} key="marker" >
+        <div className={css(classes.kindOfLabel)}>
+          <span className={css(classes.kindOfName)}> Map Marker</span>
+        </div>
         <SelectField
           autoWidth
           hintText={'marker kind'}
           name="markerKind"
           value={this.props.kind}
           onChange={this.props.onChange}
-          style={{ top: -12,  width: 100, }}
+          style={{ top: -12, width: 100, }}
         >
           {this.renderMarkerMenuItems()}
         </SelectField>

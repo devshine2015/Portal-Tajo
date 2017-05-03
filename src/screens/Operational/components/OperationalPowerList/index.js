@@ -44,65 +44,65 @@ class OperationalPowerList extends React.Component {
     const { translations } = this.props;
 
     return (
-        <Tabs
-          inkBarStyle={{
-            backgroundColor: 'rgba(255,255,255,0.75)',
-          }}
-          className={styles.fullHeight}
-          contentContainerClassName={styles.contentFullHeight}
-          onChange={this.onTabChange}
-          value={this.props.selectedTab || listTypes.withVehicleDetails}
+      <Tabs
+        inkBarStyle={{
+          backgroundColor: 'rgba(255,255,255,0.75)',
+        }}
+        className={styles.fullHeight}
+        contentContainerClassName={styles.contentFullHeight}
+        onChange={this.onTabChange}
+        value={this.props.selectedTab || listTypes.withVehicleDetails}
+      >
+        <Tab
+          icon={<VehicleIcon color={iconColor} hoverColor={iconHoverColor} />}
+          value={listTypes.withVehicleDetails}
         >
-          <Tab
-            icon={<VehicleIcon color={iconColor} hoverColor={iconHoverColor} />}
-            value={listTypes.withVehicleDetails}
-          >
-            <Filter
-              filterFunc={this.props.filterVehiclesFunc}
-              defaultValue={this.props.vehicleFilterString}
+          <Filter
+            filterFunc={this.props.filterVehiclesFunc}
+            defaultValue={this.props.vehicleFilterString}
+          />
+          <Scrollable>
+            <ItemsList
+              scrollIntoView
+              currentExpandedItemId={this.props.selectedVehicleId}
+              data={this.props.vehicles}
+              type={vehType}
             />
-            <Scrollable>
-              <ItemsList
-                scrollIntoView
-                currentExpandedItemId={this.props.selectedVehicleId}
-                data={this.props.vehicles}
-                type={vehType}
-              />
-            </Scrollable>
-          </Tab>
-          <Tab
-            icon={<LocationIcon color={iconColor} hoverColor={iconHoverColor} />}
-            value={listTypes.withGFDetails}
-          >
-            <Filter filterFunc={this.props.filterGFsFunc} />
+          </Scrollable>
+        </Tab>
+        <Tab
+          icon={<LocationIcon color={iconColor} hoverColor={iconHoverColor} />}
+          value={listTypes.withGFDetails}
+        >
+          <Filter filterFunc={this.props.filterGFsFunc} />
 
-            <Scrollable>
-              <ItemsList
-                scrollIntoView
-                currentExpandedItemId={this.props.selectedGfId}
-                data={this.props.gfs}
-                type={listTypes.withGFDetails}
-              />
-            </Scrollable>
-          </Tab>
-          {isMwa &&
-            <Tab
-              icon={<PoiIcon color={iconColor} hoverColor={iconHoverColor} />}
-              value={listTypes.mwaJob}
-            >
-              <Filter filterFunc={this.props.mwaFilterJobs} />
+          <Scrollable>
+            <ItemsList
+              scrollIntoView
+              currentExpandedItemId={this.props.selectedGfId}
+              data={this.props.gfs}
+              type={listTypes.withGFDetails}
+            />
+          </Scrollable>
+        </Tab>
+        {isMwa &&
+        <Tab
+          icon={<PoiIcon color={iconColor} hoverColor={iconHoverColor} />}
+          value={listTypes.mwaJob}
+        >
+          <Filter filterFunc={this.props.mwaFilterJobs} />
 
-              <Scrollable>
-                <ItemsList
-                  scrollIntoView
-                  data={this.props.mwaJobs}
-                  currentExpandedItemId={this.props.getMWASelectedJobId}
-                  type={listTypes.mwaJob}
-                />
-              </Scrollable>
-            </Tab>
+          <Scrollable>
+            <ItemsList
+              scrollIntoView
+              data={this.props.mwaJobs}
+              currentExpandedItemId={this.props.getMWASelectedJobId}
+              type={listTypes.mwaJob}
+            />
+          </Scrollable>
+        </Tab>
           }
-        </Tabs>
+      </Tabs>
     );
   }
 }

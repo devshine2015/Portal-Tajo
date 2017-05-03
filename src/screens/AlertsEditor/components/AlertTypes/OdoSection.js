@@ -7,10 +7,10 @@ import * as alertKinds from 'services/AlertsSystem/alertKinds';
 
 const AlertsOdo = () => (
   <AlertsSection
-    renderForm={options => (<OdoForm {...options} />)}
+    renderForm={(options) => (<OdoForm {...options} />)}
     myAlertKind={alertKinds._ALERT_KIND_ODO}
-    actionButtonLabel={'ADD ALERT'}
-    headerLabel={'ODOMETER ALERTS'}
+    actionButtonLabel={"ADD ALERT"}
+    headerLabel={"DISTANCE ALERTS"}
   />
 );
 

@@ -13,12 +13,12 @@ class AlertsEditor extends React.Component {
     return (
       /*<Content>
         <Layout.Row>*/
-          <div className={css(classes.content)}>
-            <SpeedSection />
-            <TempSection />
-            <OdoSection />
-            {/*<DriveTimeSection />*/}
-          </div>
+      <div className={css(classes.content)}>
+        <SpeedSection />
+        <TempSection />
+        <OdoSection />
+        <DriveTimeSection />
+      </div>
       //   </Layout.Row>
       // </Content>
     );

@@ -36,24 +36,25 @@ const AlertOfKindSelectorFn = ({
   return (
     <div className={styles.kindOfSelector} key={myKind} >
       <div className={styles.kindOfLabel}>
-        <Avatar backgroundColor={context.muiTheme.palette.primary1Color}
+        <Avatar
+          backgroundColor={context.muiTheme.palette.primary1Color}
           color="#fff"
           icon={theKindData.icon}
           style={{ position: 'relative', top: '6px' }}
         />
         <span className={styles.kindOfName}> {theKindData.niceName} </span>
       </div>
-        <SelectField
-          autoWidth
-          hintText={ "SPEED" }
-          name="kind"
-          value={myAlertOfKind !== undefined ? myAlertOfKind.id : 'NONE'}
-          onChange={(e, key, value) => {onOfKindChange(value, myKind);}}
-          style={{ top: '3px' }}
-        >
-          {itemsList}
-        </SelectField>
-      </div>);
+      <SelectField
+        autoWidth
+        hintText={ "SPEED" }
+        name="kind"
+        value={myAlertOfKind !== undefined ? myAlertOfKind.id : 'NONE'}
+        onChange={(e, key, value) => {onOfKindChange(value, myKind);}}
+        style={{ top: '3px' }}
+      >
+        {itemsList}
+      </SelectField>
+    </div>);
 };
 
 AlertOfKindSelectorFn.propTypes = {
@@ -98,11 +99,11 @@ class VehicleAlerts extends React.Component {
       const vehAlertIds = this.props.getVehicleAlerts(nextProps.vehicleId);
       if (vehAlertIds === null) {
         this.setState({ alerts: [],
-            isLoading: true });
+          isLoading: true });
         this.fetchAlerts(nextProps.vehicleId);
       } else {
         this.setState({ alerts: vehAlertIds,
-            isLoading: false });
+          isLoading: false });
       }
     }
   }
@@ -137,7 +138,7 @@ class VehicleAlerts extends React.Component {
       .then(() => {
         // const vehAlertIds = this.props.getVehicleAlerts(nextProps.vehicleId);
         this.setState({ alerts: this.props.getVehicleAlerts(vehicleId),
-        isLoading: false });
+          isLoading: false });
       });
   }
 
@@ -160,23 +161,26 @@ class VehicleAlerts extends React.Component {
 
     return (
       <Paper zDepth={2} className={styles.wrapper}>
-      <div className={styles.wrapperHeader}>
-        {`ALERTS${this.state.isLoading ? ' loading...' : ''}`}
-      </div>
-      <AlertOfKindSelector myKind={alertKinds._ALERT_KIND_SPEEDING}
-        onOfKindChange={this.onOfKindChange}
-        vehicleAlerts={this.state.alerts}
-      />
-      <AlertOfKindSelector myKind={alertKinds._ALERT_KIND_TEMPERATURE}
-        onOfKindChange={this.onOfKindChange}
-        vehicleAlerts={this.state.alerts}
-      />
-      <AlertOfKindSelector myKind={alertKinds._ALERT_KIND_ODO}
-        onOfKindChange={this.onOfKindChange}
-        vehicleAlerts={this.state.alerts}
-      />
-      {/* put all th GF alerts with chips here?*/}
-      {/* <div className={styles.chipsWrapper}>
+        <div className={styles.wrapperHeader}>
+          {`ALERTS${this.state.isLoading ? ' loading...' : ''}`}
+        </div>
+        <AlertOfKindSelector
+          myKind={alertKinds._ALERT_KIND_SPEEDING}
+          onOfKindChange={this.onOfKindChange}
+          vehicleAlerts={this.state.alerts}
+        />
+        <AlertOfKindSelector
+          myKind={alertKinds._ALERT_KIND_TEMPERATURE}
+          onOfKindChange={this.onOfKindChange}
+          vehicleAlerts={this.state.alerts}
+        />
+        <AlertOfKindSelector
+          myKind={alertKinds._ALERT_KIND_ODO}
+          onOfKindChange={this.onOfKindChange}
+          vehicleAlerts={this.state.alerts}
+        />
+        {/* put all th GF alerts with chips here?*/}
+        {/* <div className={styles.chipsWrapper}>
         {vehAlerts}
         </div>*/}
       </Paper>

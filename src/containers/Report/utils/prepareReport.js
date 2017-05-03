@@ -98,36 +98,36 @@ export const prepareDataForReport = (
             let jobs = mwaGetJobsForVehicle(aVeh.id, domainData[0].RESULTS);
             jobs = jobs.filter(aJob => aJob.DT_FIELD_END !== null && aJob.DT_JOB_OPEN !== null);
             if (jobs.length === 0) {
-            const column = {
-              order,
-              value: 'N/A',
-            };
+              const column = {
+                order,
+                value: 'N/A',
+              };
               secondPassResult.push(result[rowNumber].concat(column).concat(column).concat(column).concat(column));
               // result[rowNumber] = result[rowNumber].concat(column).concat(column).concat(column).concat(column);
               // ++rowNumber;
             } else {
-            jobs.forEach(aJob => {
-              const startD = moment(aJob.DT_JOB_OPEN);
-              const endD = moment(aJob.DT_FIELD_END);
-              const columnN = {
-                order,
-                value: aJob.WLMA_JOB_CODE,
-              };
-              const columnT0 = {
-                order,
-                value: startD.toDate().toLocaleString(),
-              };
-              const columnT1 = {
-                order,
-                value: endD.toDate().toLocaleString(),
-              };
-              const deltaMs = endD.diff(startD);
+              jobs.forEach(aJob => {
+                const startD = moment(aJob.DT_JOB_OPEN);
+                const endD = moment(aJob.DT_FIELD_END);
+                const columnN = {
+                  order,
+                  value: aJob.WLMA_JOB_CODE,
+                };
+                const columnT0 = {
+                  order,
+                  value: startD.toDate().toLocaleString(),
+                };
+                const columnT1 = {
+                  order,
+                  value: endD.toDate().toLocaleString(),
+                };
+                const deltaMs = endD.diff(startD);
               // const deltaMin = Math.floor(deltaMs / 1000 / 60);
-              const deltaHvr = Math.floor(deltaMs / 1000 / 60 / 60);
-              const columnD = {
-                order,
-                value: `${deltaHvr}${moment.utc(deltaMs).format(':mm')}`,
-              };
+                const deltaHvr = Math.floor(deltaMs / 1000 / 60 / 60);
+                const columnD = {
+                  order,
+                  value: `${deltaHvr}${moment.utc(deltaMs).format(':mm')}`,
+                };
                 secondPassResult.push(result[rowNumber].concat(columnN).concat(columnT0).concat(columnT1).concat(columnD));
               });
             }

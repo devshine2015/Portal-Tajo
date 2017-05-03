@@ -17,8 +17,7 @@ class MomentIndicator extends React.Component {
     const boxOffset = { left: this.props.normalized100T < 70 ? '0' : '-100px' };
     return (
       <div className={styles.timeMarkerLineDrag} style={linePos}>
-        <div ref={'infoBox'} className={styles.infoBox} style={boxOffset}>
-        </div>
+        <div ref={'infoBox'} className={styles.infoBox} style={boxOffset} />
       </div>
     );
   }

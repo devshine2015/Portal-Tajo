@@ -35,7 +35,7 @@ class ChronicleMarker extends React.Component {
         fillOpacity: 1,
         color: '#0A5',
         fillColor: '#008241',
-       })
+      })
       .setRadius(markerR);
     this.theMarker = window.L.circleMarker(startPos,
       { opacity: 1,
@@ -44,7 +44,7 @@ class ChronicleMarker extends React.Component {
         fillColor: vehicleMArkerColor,
         // color: '#e64a19',
         // fillColor: '#e64a19',
-       })
+      })
       .setRadius(markerR);
     this.popUp = window.L.popup({
       offset: [0, markerR],

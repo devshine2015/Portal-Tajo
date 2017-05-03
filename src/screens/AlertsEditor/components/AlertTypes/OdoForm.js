@@ -8,13 +8,14 @@ const OdoForm = ({
   closeForm,
   isOpened,
 }) => (
-    <AlertForm alert={alert}
-      headerTitle={"New Distance Alert Condition"}
-      closeForm={closeForm}
-      isOpened={isOpened}
-      controlledFields={[{ fieldName: 'odoValue',
-          label: 'Distance Limit'  }]}
-    />
+  <AlertForm
+    alert={alert}
+    headerTitle={"New Distance Alert Condition"}
+    closeForm={closeForm}
+    isOpened={isOpened}
+    controlledFields={[{ fieldName: 'odoValue',
+      label: 'Distance Limit' }]}
+  />
 );
 
 OdoForm.propTypes = {

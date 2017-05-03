@@ -75,13 +75,13 @@ class GFEditor extends React.Component {
           />
 
           { this.props.subjectGF.isPolygon ? null :
-            <TextField
-              fullWidth
-              name="radius"
-              onChange={this.onChange}
-              floatingLabelText={ this.props.translations.radius }
-              value={this.props.subjectGF.radius}
-            />
+          <TextField
+            fullWidth
+            name="radius"
+            onChange={this.onChange}
+            floatingLabelText={ this.props.translations.radius }
+            value={this.props.subjectGF.radius}
+          />
           }
 
           { true ? null : (

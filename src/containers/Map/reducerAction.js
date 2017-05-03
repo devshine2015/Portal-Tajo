@@ -40,9 +40,9 @@ export const mapStoreGetView = (state) => {
   const mapView = _mapStateReducer(state).get('mapView');
   // if (mapView.center === undefined) {
   return {
-      center: isMwa ? ZERO_LOCATION_MWA : ZERO_LOCATION,
-      zoom: ZERO_ZOOM,
-    };
+    center: isMwa ? ZERO_LOCATION_MWA : ZERO_LOCATION,
+    zoom: ZERO_ZOOM,
+  };
   // }
   // return mapView;
 };

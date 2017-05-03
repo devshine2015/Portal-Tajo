@@ -40,12 +40,12 @@ class Chronicle extends React.Component {
       return false;
     }
     return (
-          <ChroniclePath
-            key={`${v.id}CrP`}
-            chronicleFrame={vehCronicleFrame}
-            isSelected={this.props.selectedVehicleId === v.id}
-          />
-        );
+      <ChroniclePath
+        key={`${v.id}CrP`}
+        chronicleFrame={vehCronicleFrame}
+        isSelected={this.props.selectedVehicleId === v.id}
+      />
+    );
   };
   makeChronoMarker = (v) => {
     const vehCronicleFrame = this.props.getInstanceChronicleFrameById(v.id);
@@ -53,19 +53,19 @@ class Chronicle extends React.Component {
       return false;
     }
     return (
-        <ChronicleMarker
-          key={`${v.id}CrM`}
-          chronicleFrame={vehCronicleFrame}
-          isSelected={this.props.selectedVehicleId === v.id}
-        />
-        );
+      <ChronicleMarker
+        key={`${v.id}CrM`}
+        chronicleFrame={vehCronicleFrame}
+        isSelected={this.props.selectedVehicleId === v.id}
+      />
+    );
   }
   makeChronoEventMarker = (v, idx) => (
-            <ChronicleEventMarker
-              key={`${this.props.selectedVehicleId + idx}CrSt`}
-              theLayer={this.theMap}
-              chronicleEvent={v}
-            />
+    <ChronicleEventMarker
+      key={`${this.props.selectedVehicleId + idx}CrSt`}
+      theLayer={this.theMap}
+      chronicleEvent={v}
+    />
           );
 
   render() {
@@ -89,24 +89,25 @@ class Chronicle extends React.Component {
             <GFEditor />
           </PowerList>
           ) : (
-          <PowerList
-            scrollable
-            filter={
-              <Filter filterFunc={this.props.filterFunc} />
+            <PowerList
+              scrollable
+              filter={
+                <Filter filterFunc={this.props.filterFunc} />
             }
-            content={
-              <VehiclesList
-                data={this.props.vehicles}
-                currentExpandedItemId={this.props.selectedVehicleId}
-                type={listTypes.vehicleChronicle}
-              />
+              content={
+                <VehiclesList
+                  data={this.props.vehicles}
+                  currentExpandedItemId={this.props.selectedVehicleId}
+                  type={listTypes.vehicleChronicle}
+                />
             }
-          />)}
+            />)}
         <FixedContent containerClassName={styles.fixedContent}>
           <div className={styles.allTheChronicleControllerscontainer}>
             <TimeFrameController selectedVehicleId={this.props.selectedVehicleId} />
             <ChartTimeBox chronicleFrame={chronicleFrame} />
-            <VelocityTransitionGroup enter={{ animation: 'slideDown' }}
+            <VelocityTransitionGroup
+              enter={{ animation: 'slideDown' }}
               leave={{ animation: 'slideUp' }}
             >
               { this.props.hasChroniclePlayableFrames ?
@@ -121,7 +122,7 @@ class Chronicle extends React.Component {
             {stopEvents}
             <GFEditorMapComponent />
             <CtxtOpenGoogleMap />
-        </TheMap>
+          </TheMap>
         </FixedContent>
       </div>
     );

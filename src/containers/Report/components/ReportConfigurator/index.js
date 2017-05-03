@@ -243,7 +243,7 @@ class Report extends React.Component {
             )}
           </div>
 
-          <div className={styles.separator}></div>
+          <div className={styles.separator} />
 
           <div className={styles.column}>
             <AvailableTypes

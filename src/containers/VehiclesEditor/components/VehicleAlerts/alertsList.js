@@ -52,13 +52,14 @@ class AlertsList extends React.Component {
 
   render() {
     const alertsToPick = this.props.alerts.map(item => (this.vehicleHasAlert(item.id) ? null :
-       (<Chip key={item.id}
+       (<Chip
+         key={item.id}
          onTouchTap={() => this.onItemClick(item.id)}
          style={stylesChip}
-      >
-           <Avatar color="#156671" icon={alertKinds.getAlertByKind(item.kind).icon} />
-            {item.name}
-          </Chip>)));
+       >
+         <Avatar color="#156671" icon={alertKinds.getAlertByKind(item.kind).icon} />
+         {item.name}
+       </Chip>)));
     return (
       <div className={styles.alertsList}>
         {alertsToPick}

@@ -38,31 +38,29 @@ const tglStyle = {
 const JournalBar = ({
   openJournal,
   toggleAll,
-}) => {
-  return (
-    <div className={styles.journalControlBar}>
-      <div className={styles.controlsWrapper}>
-        <Toggle
-          label="Show All"
-          labelPosition={'right'}
-          style={tglStyle.root}
-          labelStyle={tglStyle.lbl}
-          thumbStyle={tglStyle.thumbOff}
-          trackStyle={tglStyle.trackOff}
-          thumbSwitchedStyle={tglStyle.thumbSwitched}
-          trackSwitchedStyle={tglStyle.trackSwitched}
-          onToggle={(e, tgl) => toggleAll(tgl)}
-        />
-      </div>
-      <IconButton
-        onClick={() => {openJournal(false);}}
-        style={{ float: 'right' }}
-      >
-        <CloseIcon color={'white'} />
-      </IconButton>
+}) => (
+  <div className={styles.journalControlBar}>
+    <div className={styles.controlsWrapper}>
+      <Toggle
+        label="Show All"
+        labelPosition={'right'}
+        style={tglStyle.root}
+        labelStyle={tglStyle.lbl}
+        thumbStyle={tglStyle.thumbOff}
+        trackStyle={tglStyle.trackOff}
+        thumbSwitchedStyle={tglStyle.thumbSwitched}
+        trackSwitchedStyle={tglStyle.trackSwitched}
+        onToggle={(e, tgl) => toggleAll(tgl)}
+      />
     </div>
+    <IconButton
+      onClick={() => {openJournal(false);}}
+      style={{ float: 'right' }}
+    >
+      <CloseIcon color={'white'} />
+    </IconButton>
+  </div>
   );
-};
 
 
 JournalBar.propTypes = {

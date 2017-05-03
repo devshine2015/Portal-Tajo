@@ -30,16 +30,17 @@ class Journal extends React.Component {
 
     const showFromTS = this.state.showNewEventsOnly ? this.props.lastOpenedTS : 0;
     const entriesE = this.props.entries.filter(entry => entry.eventTS > showFromTS).map((entry, idx) => (
-          <Entry entryObj={entry} key={idx} />
+      <Entry entryObj={entry} key={idx} />
         ));
 
     return (
-      <div className={styles.journalContainer} style={ { width: this.props.isOpened ? '400px' : '0px', 
-        position: this.props.isPositioned === true ? '' : 'fixed' }}
+      <div
+        className={styles.journalContainer} style={ { width: this.props.isOpened ? '400px' : '0px', 
+          position: this.props.isPositioned === true ? '' : 'fixed' }}
       >
         <ControlBar toggleAll={this.toggleShowAll} />
         <ul className={styles.journalList}>
-            {entriesE}
+          {entriesE}
         </ul>
       </div>
     );

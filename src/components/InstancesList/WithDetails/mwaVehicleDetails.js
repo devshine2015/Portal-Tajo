@@ -23,8 +23,7 @@ class MWAVehicleDetails extends React.Component {
       float: 'right',
     };
     return (
-      <div style={mwaIdicator}>
-      </div>
+      <div style={mwaIdicator} />
     );
   }
 }

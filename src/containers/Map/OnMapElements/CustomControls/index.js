@@ -37,16 +37,17 @@ const CustomControls = ({
   overrideListType,
 }) => (
   <div className={css(classes.customControls)}>
-        <Control>
-          <MapMarkerToggle overrideListType={overrideListType} />
-        </Control>
-        <Control sizes={{
-          width: 'auto',
-          height: 'auto',
-        }}
-        >
-          <GooglePlacesSearch ownerMapObj={theMap} />
-        </Control>
+    <Control>
+      <MapMarkerToggle overrideListType={overrideListType} />
+    </Control>
+    <Control
+      sizes={{
+        width: 'auto',
+        height: 'auto',
+      }}
+    >
+      <GooglePlacesSearch ownerMapObj={theMap} />
+    </Control>
   </div>
 );
 

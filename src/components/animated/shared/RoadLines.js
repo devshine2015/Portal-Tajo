@@ -103,8 +103,7 @@ class RoadLines extends React.Component {
       };
     //   segStyle.bottom = segPos;
       segPos += this.segStep;
-      theLines.push((<div className={styles.roadLineSeg} style={segStyle} key={i}>
-         </div>));
+      theLines.push((<div className={styles.roadLineSeg} style={segStyle} key={i} />));
     }
     return theLines;
   }
