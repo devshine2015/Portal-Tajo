@@ -29,21 +29,25 @@ class AlertsList extends React.Component {
     this.props.doAddAlert(alertId);
   }
 
-  vehicleHasAlert = (alertId) => (
+  vehicleHasAlert = alertId => (
     this.props.vehicleAlerts
           .find(el => el === alertId) !== undefined
   )
 
   render() {
-    const alertsToPick = this.props.alerts.map(item => (this.vehicleHasAlert(item.id) ? null :
-       (<Chip
-         key={item.id}
-         onTouchTap={() => this.onItemClick(item.id)}
-         style={stylesChip}
-       >
-         <Avatar color="#156671" icon={alertKinds.getAlertByKind(item.kind).icon} />
-         {item.name}
-       </Chip>)));
+    const alertsToPick = this.props.alerts
+        .filter(item => !this.vehicleHasAlert(item.id)
+            && item.kind === alertKinds._ALERT_KIND_GF
+            && item.onEnter === this.props.onEnter)
+        .map(item => <Chip
+          key={item.id}
+          onTouchTap={() => this.onItemClick(item.id)}
+          style={stylesChip}
+        >
+          <Avatar color="#156671" icon={alertKinds.getAlertByKind(item.kind).icon} />
+          {item.name}
+        </Chip>);
+
     return (
       <div className={styles.alertsList}>
         {alertsToPick}
@@ -53,13 +57,14 @@ class AlertsList extends React.Component {
 }
 
 AlertsList.propTypes = {
+  onEnter: React.PropTypes.bool.isRequired,
   vehicleAlerts: React.PropTypes.array.isRequired,
   doAddAlert: React.PropTypes.func.isRequired,
   // getVehicleAlerts: React.PropTypes.func.isRequired,
   alerts: React.PropTypes.array.isRequired,
 };
 
-const mapState = (state) => ({
+const mapState = state => ({
   alerts: getAlertConditions(state),
 });
 const mapDispatch = null;

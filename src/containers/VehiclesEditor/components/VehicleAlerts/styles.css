@@ -39,6 +39,7 @@
   .chipsWrapper {
     display: flex;
     flex-wrap: wrap;
+    min-height: 64px;
   }
   .kindOfSelector {
     display: flex;

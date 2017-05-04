@@ -10,6 +10,8 @@ import { fetchVehicleAlertConditions, postVehicleAlertConditions } from 'service
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import { isAlerts } from 'configs';
 
+import GFAlerts from './GFAlerts';
+
 import styles from './styles.css';
 
 // const stylesChip = {
@@ -28,7 +30,7 @@ const AlertOfKindSelectorFn = ({
   // const Icon = () => React.cloneElement(theKindData.icon, {
   //       className: styles.vehicleIcon,
   //     });
-  const itemsList = [(<MenuItem key={"NONE"} value={"NONE"} primaryText={"No Alert"} />)]
+  const itemsList = [(<MenuItem key={'NONE'} value={'NONE'} primaryText={'No Alert'} />)]
     .concat(alertConditions.filter(alrt => alrt.kind === myKind)
       .map(alrt => <MenuItem key={alrt.id} value={alrt.id} primaryText={alrt.name} />));
   // const itemsList = alertConditions.filter(alrt => alrt.kind === myKind)
@@ -46,10 +48,10 @@ const AlertOfKindSelectorFn = ({
       </div>
       <SelectField
         autoWidth
-        hintText={ "SPEED" }
+        hintText={'SPEED'}
         name="kind"
         value={myAlertOfKind !== undefined ? myAlertOfKind.id : 'NONE'}
-        onChange={(e, key, value) => {onOfKindChange(value, myKind);}}
+        onChange={(e, key, value) => { onOfKindChange(value, myKind); }}
         style={{ top: '3px' }}
       >
         {itemsList}
@@ -69,7 +71,7 @@ AlertOfKindSelectorFn.contextTypes = {
   muiTheme: React.PropTypes.object.isRequired,
 };
 
-const mapStateA = (state) => ({
+const mapStateA = state => ({
   getVehicleAlerts: getVehicleAlertConditions(state),
   alertById: getAlertConditionByIdFunc(state),
   alertConditions: getAlertConditions(state),
@@ -121,19 +123,19 @@ class VehicleAlerts extends React.Component {
       this.setState({ alerts: nextAlerts.slice(0) });
     }
   }
-  onRemoveClick = alertId => {
-    this.setState({ alerts: this.state.alerts.filter((el) => (el !== alertId)) });
+  onRemoveClick = (alertId) => {
+    this.setState({ alerts: this.state.alerts.filter(el => (el !== alertId)) });
   }
   onAddClick = () => {
     this.setState({ isAdding: !this.state.isAdding });
   }
-  doAddAlert = alertId => {
+  doAddAlert = (alertId) => {
     this.setState({ alerts: this.state.alerts.concat([alertId]) });
   }
   saveAlerts = () => {
     this.props.postVehicleAlertConditions(this.props.vehicleId, this.state.alerts);
   }
-  fetchAlerts = vehicleId => {
+  fetchAlerts = (vehicleId) => {
     this.props.fetchVehicleAlertConditions(vehicleId)
       .then(() => {
         // const vehAlertIds = this.props.getVehicleAlerts(nextProps.vehicleId);
@@ -180,9 +182,20 @@ class VehicleAlerts extends React.Component {
           vehicleAlerts={this.state.alerts}
         />
         {/* put all th GF alerts with chips here?*/}
-        {/* <div className={styles.chipsWrapper}>
-        {vehAlerts}
-        </div>*/}
+        <GFAlerts
+          vehicleAlerts={this.state.alerts}
+          vehicleId={this.props.vehicleId}
+          doAddAlert={this.doAddAlert}
+          onRemoveClick={this.onRemoveClick}
+          onEnter
+        />
+        <GFAlerts
+          vehicleAlerts={this.state.alerts}
+          vehicleId={this.props.vehicleId}
+          doAddAlert={this.doAddAlert}
+          onRemoveClick={this.onRemoveClick}
+          onEnter={false}
+        />
       </Paper>
     );
   }
@@ -198,7 +211,7 @@ VehicleAlerts.propTypes = {
   saveHook: React.PropTypes.func.isRequired,
 };
 
-const mapState = (state) => ({
+const mapState = state => ({
   getVehicleAlerts: getVehicleAlertConditions(state),
   alertById: getAlertConditionByIdFunc(state),
   alertConditions: getAlertConditions(state),
