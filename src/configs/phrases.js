@@ -39,6 +39,7 @@ const phrases = {
     review: 'review',
     history: 'history',
     alerts_editor: 'alerts editor',
+    alerts_logs: 'alerts logs',
     // -- end main menu
 
     // dashboard screen

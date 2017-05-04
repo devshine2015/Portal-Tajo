@@ -22,6 +22,7 @@ import loginScreen from 'screens/LoginScreen/route';
 import dashboardScreen from 'screens/DashboardScreen/route';
 import profileScreen from 'screens/Profile/route';
 import alertsEditorScreen from 'screens/AlertsEditor/route';
+import alertLogsScreen from 'screens/AlertsLog/route';
 import notFoundScreen from 'screens/NotFound/route';
 
 export default function createRoutes(store) {
@@ -79,6 +80,8 @@ export default function createRoutes(store) {
     loadModule,
   });
 
+  const alertsLogsRoute = alertLogsScreen(mainMenu.escape.alertsLogs);
+
   const loginRoute = loginScreen({
     path: 'login',
   });
@@ -122,6 +125,7 @@ export default function createRoutes(store) {
     profileRoute,
     alertsEditorRoute,
     notFoundRoute,
+    alertsLogsRoute,
   );
 
   return (

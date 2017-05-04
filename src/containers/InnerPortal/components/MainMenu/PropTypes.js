@@ -16,6 +16,7 @@ const phrases = [
   'review',
   'history',
   'alerts_editor',
+  'alerts_logs',
 ];
 
 export const phrasesShape = shape({
@@ -31,6 +32,7 @@ export const phrasesShape = shape({
   review: string.isRequired,
   history: string.isRequired,
   alerts_editor: string.isRequired,
+  alerts_logs: string.isRequired,
 });
 
 export default phrases;

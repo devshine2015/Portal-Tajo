@@ -47,6 +47,10 @@ const escapePortal = {
     name: 'devices_manager',
     path: 'devices',
   },
+  alertsLogs: {
+    name: 'alerts_logs',
+    path: 'alertslogs',
+  },
 };
 
 const sunshinePortal = {
