@@ -10,7 +10,7 @@ const AlertsOdo = () => (
     renderForm={(options) => (<OdoForm {...options} />)}
     myAlertKind={alertKinds._ALERT_KIND_ODO}
     actionButtonLabel={"ADD ALERT"}
-    headerLabel={"DISTANCE ALERTS"}
+    headerLabel={"ODOMETR ALERTS"}
   />
 );
 
