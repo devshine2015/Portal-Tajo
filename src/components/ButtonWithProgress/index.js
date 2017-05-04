@@ -63,7 +63,7 @@ ButtonWithProgress.propTypes = {
 ButtonWithProgress.defaultProps = {
   iconClassName: '',
   customIcon: null,
-  overlayStyle: {},
+  overlayStyle: '',
 };
 
 export default ButtonWithProgress;

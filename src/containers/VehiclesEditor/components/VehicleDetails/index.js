@@ -63,7 +63,7 @@ class VehicleDetails extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.details.id !== nextProps.id) {
+    if (this.props.details.id !== nextProps.details.id) {
       this.setNewVehicleDetails(nextProps);
     }
   }
@@ -264,7 +264,6 @@ class VehicleDetails extends React.Component {
 }
 
 VehicleDetails.propTypes = {
-  id: React.PropTypes.string.isRequired,
   disabled: React.PropTypes.bool.isRequired,
   isLoading: React.PropTypes.bool.isRequired,
   details: detailsShape.isRequired,
