@@ -7,7 +7,7 @@ const safeGetFromMeta = (originObject, propName, defValue) => (
                 defValue : originObject.meta[propName]
 );
 
-export const makeLocalAlertCondition = (originObject) => (
+export const makeLocalAlertCondition = originObject => (
   { id: originObject.id,
     name: safeGetFromMeta(originObject, 'name', 'No Name'),
     kind: originObject.kind,
@@ -30,13 +30,31 @@ export const makeNewAlertConditionTemplate = () => (
   }
 );
 
-export const makeAlertConditionBackEndObject = (inState) => (
+export const makeAlertConditionBackEndObject = inState => (
    Object.assign({},
     makeGenericAlrt(inState),
     alertKinds.getAlertByKind(inState.kind).makeBEObject(inState))
 );
 
-const makeGenericAlrt = (inState) => (
+// TODO: temporary logic - GF alert conditions should be added
+// on BeckEnd automatically
+// remove this when implemented on BE side
+export const makeGFAlertConditionBackEndObject = (gfObj, onEnter) => (
+   Object.assign({},
+    makeGenericAlrt({
+      kind: alertKinds._ALERT_KIND_GF,
+      // name: `${gfObj.name} ${onEnter ? ' enter' : ' exit'}`,
+    }),
+    alertKinds.getAlertByKind(alertKinds._ALERT_KIND_GF).makeBEObject({
+      gfId: gfObj.id,
+      name: `${gfObj.name} ${onEnter ? 'enter' : 'exit'}`,
+      onEnter,
+      onExit: !onEnter,
+    }))
+);
+
+
+const makeGenericAlrt = inState => (
   {
     id: inState.id,
     kind: inState.kind,

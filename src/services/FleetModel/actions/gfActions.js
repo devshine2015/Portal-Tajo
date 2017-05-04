@@ -4,16 +4,19 @@ import { makeLocalGFs } from '../utils/gfHelpers';
 import { getProcessedGFs } from '../reducer';
 import { filterProcessedListByName } from '../utils/filtering';
 
+import { makeGFAlertConditionBackEndObject } from 'services/AlertsSystem/alertConditionHelper';
+import { createAlertConditions } from 'services/AlertsSystem/actions';
+
 export const FLEET_MODEL_GF_SET = 'portal/services/FLEET_MODEL_GF_SET';
 export const FLEET_MODEL_GF_FILTER = 'portal/services/FLEET_MODEL_GF_FILTER';
 
 export const fetchGFs = () => _fetchGFs;
-export const filterGFs = (searchString) => (dispatch, getState) =>
+export const filterGFs = searchString => (dispatch, getState) =>
   _filterGf({ searchString }, dispatch, getState);
 export const createGF = (newGF, idx) => (dispatch, getState) =>
   _createGFRequest(newGF, idx, dispatch, getState);
 export const updateGF = () => ({});
-export const deleteGF = (id) => (dispatch, getState) =>
+export const deleteGF = id => (dispatch, getState) =>
   _deleteGFRequest(id, dispatch, getState);
 
 /**
@@ -24,11 +27,11 @@ function _fetchGFs(dispatch) {
 
   return api[method](url)
     .then(toJson)
-    .then(gfs => {
+    .then((gfs) => {
       const { localGFs, sortedGFs } = makeLocalGFs(gfs);
       dispatch(_gfSet(gfs, localGFs, sortedGFs));
     })
-    .catch(e => {
+    .catch((e) => {
       console.error(e);
     });
 }
@@ -41,7 +44,22 @@ function _createGFRequest(gfObject, index, dispatch, getState) {
 
   return api[method](url, {
     payload: gfObject,
-  }).then(() => {
+  })
+// TODO: temporary logic - GF alert conditions should be added
+// on BeckEnd automatically
+// --->>> REMOVE THIS when implemented on BE side
+  .then(gf => gf.json())
+  .then((gfObj) => {
+    if (gfObj.kind === 'poly') {
+      createAlertConditions([
+        makeGFAlertConditionBackEndObject(gfObj, true),
+        makeGFAlertConditionBackEndObject(gfObj, false),
+      ])(dispatch);
+    }
+  })
+// ---<<< REMOVE THIS over
+  .then(() => {
+// TODO: no need to fetch all - just add the new one to the sore?
     _fetchGFs(dispatch, getState);
     return Promise.resolve();
   }, error => Promise.reject(error));
@@ -82,7 +100,7 @@ const _gfSet = (gfs, localGFs, sortedGFs) => ({
   sortedGFs,
 });
 
-const _gfsFilterUpdate = (gfs) => ({
+const _gfsFilterUpdate = gfs => ({
   type: FLEET_MODEL_GF_FILTER,
   gfs,
 });
