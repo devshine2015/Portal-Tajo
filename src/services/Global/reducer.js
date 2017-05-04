@@ -11,6 +11,10 @@ export default combineReducers({
   journal: journalReducer,
 });
 
+export function getPathToGlobalContext(state) {
+  return state.getIn(['global', 'context']);
+}
+
 export const getAppOnlineState = state =>
   fromOnlineReducer.getAppOnlineState(state.getIn(['global', 'online']));
 
@@ -21,4 +25,4 @@ export const getErrorType = state =>
   fromErrorsReducer.getErrorType(state.getIn(['global', 'errors']));
 
 export const getVehicleFilterString = state =>
-  fromContextReducer.getVehicleFilterString(state.getIn(['global', 'context']));
+  fromContextReducer.getVehicleFilterString(getPathToGlobalContext(state));

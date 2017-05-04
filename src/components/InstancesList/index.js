@@ -99,7 +99,7 @@ InstancesList.propTypes = {
 };
 
 InstancesList.defaultProps = {
-  type: 'SIMPLE',
+  type: types.simple,
   selectedItems: [],
   currentExpandedItemId: undefined,
   scrollIntoView: true,

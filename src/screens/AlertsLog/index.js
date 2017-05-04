@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
+import FixedContent from 'components/FixedContent';
+import VehiclesList from './components/VehiclesList/VehiclesList';
 
 class AlertLogs extends Component {
   render() {
     return (
       <div>
-        Alert logs screen
+        <VehiclesList />
+        <FixedContent>
+          Alert logs screen
+        </FixedContent>
       </div>
     );
   }

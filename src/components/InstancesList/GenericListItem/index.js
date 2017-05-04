@@ -188,6 +188,7 @@ GenericListItem.propTypes = {
 
 GenericListItem.defaultProps = {
   dateFormat: dateFormats.default.value,
+  type: types.simple,
 };
 
 export default pure(GenericListItem);

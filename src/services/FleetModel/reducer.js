@@ -19,7 +19,7 @@ const getByIdFunc = state => id => {
   return theObj.toJS();
 };
 
-function vehicles(s) {
+export function getPathToVehicles(s) {
   return s.getIn(['fleet', 'vehicles']);
 }
 
@@ -31,30 +31,32 @@ export const getFleetData = state =>
   state.get('fleet');
 
 export const getVehiclesAmount = state =>
-  fromVehiclesReducer.getVehiclesAmount(vehicles(state));
+  fromVehiclesReducer.getVehiclesAmount(getPathToVehicles(state));
 
 export const getVehiclesEx = state =>
-  fromVehiclesReducer.getVehiclesEx(vehicles(state));
+  fromVehiclesReducer.getVehiclesEx(getPathToVehicles(state));
 export const getVehiclesExSorted = state =>
-  fromVehiclesReducer.getVehiclesExSorted(vehicles(state));
+  fromVehiclesReducer.getVehiclesExSorted(getPathToVehicles(state));
+export const getVehiclesTest = state =>
+  fromVehiclesReducer.getVehiclesTest(getPathToVehicles(state));
 export const getVehicleByIdFunc = state =>
-  getByIdFunc(vehicles(state));
+  getByIdFunc(getPathToVehicles(state));
 export const getProcessedVehicles = state =>
-  fromVehiclesReducer.getProcessedVehicles(vehicles(state));
+  fromVehiclesReducer.getProcessedVehicles(getPathToVehicles(state));
 export const hasProcessedVehicles = state =>
-  fromVehiclesReducer.hasProcessedVehicles(vehicles(state));
+  fromVehiclesReducer.hasProcessedVehicles(getPathToVehicles(state));
 export const getSelectedVehicleId = state =>
-  fromVehiclesReducer.getSelectedVehicleId(vehicles(state));
+  fromVehiclesReducer.getSelectedVehicleId(getPathToVehicles(state));
 export const getDeadList = state =>
-  fromVehiclesReducer.getDeadList(vehicles(state));
+  fromVehiclesReducer.getDeadList(getPathToVehicles(state));
 export const getDelayedList = state =>
-  fromVehiclesReducer.getDelayedList(vehicles(state));
+  fromVehiclesReducer.getDelayedList(getPathToVehicles(state));
 export const getDeadAmount = state =>
-  fromVehiclesReducer.getDeadAmount(vehicles(state));
+  fromVehiclesReducer.getDeadAmount(getPathToVehicles(state));
 export const getDelayedAmount = state =>
-  fromVehiclesReducer.getDelayedAmount(vehicles(state));
+  fromVehiclesReducer.getDelayedAmount(getPathToVehicles(state));
 export const getAmounts = state =>
-  fromVehiclesReducer.getAmounts(vehicles(state));
+  fromVehiclesReducer.getAmounts(getPathToVehicles(state));
 
 export const getGFs = state =>
   fromgfReducer.getGFs(locations(state));
