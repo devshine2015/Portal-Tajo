@@ -6,14 +6,13 @@ import {
   RaisedButton,
   Divider,
 } from 'material-ui';
-import moment from 'moment';
 import dateFormats from 'configs/dateFormats';
 import Form from 'components/Form';
 import SimpleError from 'components/Error';
+import TimeRangeFilter from 'components/TimeRangeFilter/TimeRangeFilter';
 import { getDateFormat } from 'services/Session/reducer';
 import { translate } from 'utils/i18n';
 import DateFormatSelectorWithMemory from '../DateFormatSelectorWithMemory';
-import Period from '../Period';
 import AvailableTypes from '../AvailableTypes';
 import ProgressBar from '../ProgressBar';
 import RawDataButtons from '../RawDataButtons';
@@ -35,27 +34,6 @@ import phrases, { phrasesShape } from './PropTypes';
 
 const TOP_ROW_CLASS = cs(styles.row, styles.top);
 const FIELDS_ROW_CLASS = cs(styles.row, styles.form);
-
-function calcStartTime() {
-  const t = moment().set({
-    hour: 0,
-    minute: 0,
-    second: 0,
-    millisecond: 0,
-  });
-  return t.toDate();
-}
-
-function calcEndTime() {
-  const t = moment().set({
-    hour: 23,
-    minute: 59,
-    second: 59,
-    millisecond: 999,
-  });
-
-  return t.toDate();
-}
 
 function getDefaultCheckedReportTypes(fields) {
   const result = {};
@@ -82,45 +60,16 @@ class Report extends React.Component {
     super(props);
 
     this.FORM_NAME = 'configurator';
-    this.defaultStartTime = calcStartTime();
-    this.defaultEndTime = calcEndTime();
-    this.defaultStartDate = moment().subtract(1, 'days').toDate();
-    this.defaultEndDate = this.defaultStartDate;
-    this.periodFields = {
-      start: {
-        name: 'start',
-        default: this.defaultStartDate,
-      },
-      end: {
-        name: 'end',
-        default: this.defaultEndDate,
-      },
-      startTime: {
-        name: 'startTime',
-        default: this.defaultStartTime,
-      },
-      endTime: {
-        name: 'endTime',
-        default: this.defaultEndTime,
-      },
-    };
 
     this.state = {
       ...getDefaultCheckedReportTypes(props.availableReports),
       // TODO: this does not handle unselected default types
       ...getStoredCheckedReportTypes(props.availableReports, props.selectedFields),
-      [this.periodFields.start.name]: this.periodFields.start.default,
-      [this.periodFields.end.name]: this.periodFields.end.default,
-      [this.periodFields.startTime.name]: this.periodFields.startTime.default,
-      [this.periodFields.endTime.name]: this.periodFields.endTime.default,
-      tempDateFormat: props.userDateFormat || dateFormats.default.value,
+      tempDateFormat: props.userDateFormat,
     };
-
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onDateFormatChange = newFormat => {
+  onDateFormatChange = (newFormat) => {
     this.setState({
       tempDateFormat: newFormat,
     });
@@ -140,15 +89,27 @@ class Report extends React.Component {
     });
   }
 
-  onPeriodChange = (field, value) => {
-    this.props.swipeGeneratedData();
-    this.onChange(field, value);
+  onStartDateChange = (_, value) => {
+    this.onPeriodChange('startDate', value);
   }
 
-  onChange(field, value) {
-    // do nothing if field doesn't change
+  onEndDateChange = (_, value) => {
+    this.onPeriodChange('endDate', value);
+  }
+
+  onStartTimeChange = (_, value) => {
+    this.onPeriodChange('startTime', value);
+  }
+
+  onEndTimeChange = (_, value) => {
+    this.onPeriodChange('endTime', value);
+  }
+
+  onPeriodChange = (field, value) => {
+    // if value has not been changed
     if (this.state[field] === value) return;
 
+    this.props.swipeGeneratedData();
     this.setState({
       [field]: value,
     });
@@ -170,10 +131,10 @@ class Report extends React.Component {
 
   getParams() {
     const data = {
-      start: this.state[this.periodFields.start.name],
-      end: this.state[this.periodFields.end.name],
-      startTime: this.state[this.periodFields.startTime.name],
-      endTime: this.state[this.periodFields.endTime.name],
+      start: this.state.startDate,
+      end: this.state.endDate,
+      startTime: this.state.startTime,
+      endTime: this.state.endTime,
     };
 
     return {
@@ -197,9 +158,11 @@ class Report extends React.Component {
           </div>
 
           <div className={styles.column}>
-            <Period
-              handlePeriodChange={this.onPeriodChange}
-              fields={this.periodFields}
+            <TimeRangeFilter
+              onStartDateChange={this.onStartDateChange}
+              onStartTimeChange={this.onStartTimeChange}
+              onEndDateChange={this.onEndDateChange}
+              onEndTimeChange={this.onEndTimeChange}
               dateFormat={this.state.tempDateFormat}
               withTime
             />
@@ -298,7 +261,7 @@ Report.propTypes = {
 
 Report.defaultProps = {
   errorType: undefined,
-  userDateFormat: 'dd-mm-yyyy',
+  userDateFormat: dateFormats.default.value,
 };
 
 const mapState = (state) => ({
