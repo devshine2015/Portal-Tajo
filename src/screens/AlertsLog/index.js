@@ -1,18 +1,12 @@
-import React, { Component } from 'react';
-import FixedContent from 'components/FixedContent';
+import React from 'react';
+import Content from './components/Content/Content';
 import VehiclesList from './components/VehiclesList/VehiclesList';
 
-class AlertLogs extends Component {
-  render() {
-    return (
-      <div>
-        <VehiclesList />
-        <FixedContent>
-          Alert logs screen
-        </FixedContent>
-      </div>
-    );
-  }
-}
+const AlertLogs = () => (
+  <div>
+    <VehiclesList />
+    <Content />
+  </div>
+);
 
 export default AlertLogs;
