@@ -1,0 +1,163 @@
+[
+  {
+    "type": "vehicle-temperature-alert",
+    "ev": {
+      "ts": "2017-05-02T14:35:05.000+0000",
+      "vehicleId": "89058b4f-aecd-4f0b-97ea-36cec6dfc766",
+      "conditionKind": "temperature-alert",
+      "conditionId": "a5f4f295-97ab-41cc-8638-553abd705ac7",
+      "pos": {
+        "latlon": {
+          "lat": 16.810596466064453,
+          "lng": 96.17618560791016
+        },
+        "speed": 21,
+        "azimuth": 304,
+        "accuracy": 1,
+        "posTime": "2017-05-02T14:35:05.000+0000"
+      },
+      "meta": {
+        "name": "postman tempAlert 1"
+      },
+      "temp": 7.5
+    }
+  },
+  {
+    "type": "vehicle-temperature-alert",
+    "ev": {
+      "ts": "2017-05-02T15:35:47.000+0000",
+      "vehicleId": "89058b4f-aecd-4f0b-97ea-36cec6dfc766",
+      "conditionKind": "temperature-alert",
+      "conditionId": "a5f4f295-97ab-41cc-8638-553abd705ac7",
+      "pos": {
+        "latlon": {
+          "lat": 16.801664352416992,
+          "lng": 96.1373519897461
+        },
+        "speed": 0,
+        "azimuth": 250,
+        "accuracy": 1,
+        "posTime": "2017-05-02T15:35:24.000+0000"
+      },
+      "meta": {
+        "name": "postman tempAlert 1"
+      },
+      "temp": 21.25
+    }
+  },
+  {
+    "type": "vehicle-temperature-alert",
+    "ev": {
+      "ts": "2017-05-02T15:49:22.000+0000",
+      "vehicleId": "334269a9-5f91-4437-bfae-3750f9bf6110",
+      "conditionKind": "temperature-alert",
+      "conditionId": "8789c3e8-bc12-49a5-8e4c-a23e1a74f926",
+      "pos": {
+        "latlon": {
+          "lat": 16.8523006439209,
+          "lng": 96.2069320678711
+        },
+        "speed": 0,
+        "azimuth": 127,
+        "accuracy": 1,
+        "posTime": "2017-05-02T15:49:22.000+0000"
+      },
+      "meta": {
+        "name": "Below -10"
+      },
+      "temp": 0
+    }
+  },
+  {
+    "type": "vehicle-temperature-alert",
+    "ev": {
+      "ts": "2017-05-02T16:36:32.000+0000",
+      "vehicleId": "89058b4f-aecd-4f0b-97ea-36cec6dfc766",
+      "conditionKind": "temperature-alert",
+      "conditionId": "a5f4f295-97ab-41cc-8638-553abd705ac7",
+      "pos": {
+        "latlon": {
+          "lat": 16.80167579650879,
+          "lng": 96.13738250732422
+        },
+        "speed": 0,
+        "azimuth": 250,
+        "accuracy": 1,
+        "posTime": "2017-05-02T16:36:08.000+0000"
+      },
+      "meta": {
+        "name": "postman tempAlert 1"
+      },
+      "temp": 26.75
+    }
+  },
+  {
+    "type": "vehicle-temperature-alert",
+    "ev": {
+      "ts": "2017-05-02T18:15:14.000+0000",
+      "vehicleId": "89058b4f-aecd-4f0b-97ea-36cec6dfc766",
+      "conditionKind": "temperature-alert",
+      "conditionId": "a5f4f295-97ab-41cc-8638-553abd705ac7",
+      "pos": {
+        "latlon": {
+          "lat": 16.80167007446289,
+          "lng": 96.13726806640625
+        },
+        "speed": 0,
+        "azimuth": 281,
+        "accuracy": 1,
+        "posTime": "2017-05-02T18:15:13.000+0000"
+      },
+      "meta": {
+        "name": "postman tempAlert 1"
+      },
+      "temp": 29.25
+    }
+  },
+  {
+    "type": "vehicle-temperature-alert",
+    "ev": {
+      "ts": "2017-05-02T18:36:25.000+0000",
+      "vehicleId": "89058b4f-aecd-4f0b-97ea-36cec6dfc766",
+      "conditionKind": "temperature-alert",
+      "conditionId": "a5f4f295-97ab-41cc-8638-553abd705ac7",
+      "pos": {
+        "latlon": {
+          "lat": 16.810535430908203,
+          "lng": 96.1760482788086
+        },
+        "speed": 12.699999809265137,
+        "azimuth": 121,
+        "accuracy": 1,
+        "posTime": "2017-05-02T18:36:24.000+0000"
+      },
+      "meta": {
+        "name": "postman tempAlert 1"
+      },
+      "temp": 27.75
+    }
+  },
+  {
+    "type": "vehicle-temperature-alert",
+    "ev": {
+      "ts": "2017-05-02T23:11:18.000+0000",
+      "vehicleId": "89058b4f-aecd-4f0b-97ea-36cec6dfc766",
+      "conditionKind": "temperature-alert",
+      "conditionId": "a5f4f295-97ab-41cc-8638-553abd705ac7",
+      "pos": {
+        "latlon": {
+          "lat": 16.852693557739258,
+          "lng": 96.20665740966797
+        },
+        "speed": 0,
+        "azimuth": 29,
+        "accuracy": 1,
+        "posTime": "2017-05-02T23:11:17.000+0000"
+      },
+      "meta": {
+        "name": "postman tempAlert 1"
+      },
+      "temp": 28.25
+    }
+  }
+]

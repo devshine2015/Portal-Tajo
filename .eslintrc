@@ -25,6 +25,7 @@
     "no-param-reassign": 1,
     "object-shorthand": 1,
     "arrow-body-style": 1,
+    "no-underscore-dangle": 0,
     "mocha/no-mocha-arrows": 2,
     "mocha/handle-done-callback": 2
   },
