@@ -3,12 +3,15 @@ import ReactDOM from 'react-dom';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { VelocityTransitionGroup } from 'velocity-react';
-import { Paper, Chip, FloatingActionButton } from 'material-ui';
+import { Chip,
+  // FloatingActionButton, Paper,
+      Card, CardHeader, CardText } from 'material-ui';
+
 // import ContentAdd from 'material-ui/svg-icons/content/add';
 // import ContentAddClose from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 
 import MainActionButton from 'components/Controls/MainActionButton';
-import Layout from 'components/Layout';
+// import Layout from 'components/Layout';
 
 import AlertsList from './AlertsList';
 
@@ -23,20 +26,26 @@ const stylesChip = {
   margin: 4,
   height: 32,
 };
-const stylesAddBtn = {
-  float: 'right',
-};
+
+// const stylesAddBtn = {
+//   float: 'right',
+// };
 
 class GFAlerts extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isAdding: false,
+      expanded: false,
     };
   }
 
   onAddClick = () => {
     this.setState({ isAdding: !this.state.isAdding });
+  }
+
+  handleExpandChange = (expanded) => {
+    this.setState({ expanded });
   }
 
   closeList = () => {
@@ -56,29 +65,34 @@ class GFAlerts extends React.Component {
             {alrt.gfName}
           </Chip>));
     return (
-      <Paper zDepth={1} className={styles.wrapper} >
-        <Layout.Header
-          label={`${this.props.onEnter ? 'On Enter' : 'On Exit'} Location`}
-          style={{ padding: '0 4px',
-            backgroundColor: 'rgba(0, 0, 0, 0.1)',
-            border: 'solid 1px rgba(0, 0, 0, 0.15)',
-          }}
-          labelStyle={{ fontSize: 16,
-            color: 'rgba(0, 0, 0, 0.3)',         
-          }}
+      <Card
+        className={styles.wrapper}
+        expanded={this.state.expanded}
+        onExpandChange={this.handleExpandChange}
+      >
+        <CardHeader
+          title={`${this.props.onEnter ? 'On Enter' : 'On Exit'} Location:
+            ${myGFAlerts.length === 0 ? 'no' : myGFAlerts.length} alerts`}
+          actAsExpander
+          showExpandableButton
         />
-        <div
-          style={{ float: 'right', margin: 4 }}
-          ref={(componentInstance) => {
-            this.rootNode = ReactDOM.findDOMNode(componentInstance);
-          }}
+        <VelocityTransitionGroup
+          enter={{ animation: 'slideDown', duration: 200 }}
+          leave={{ animation: 'slideUp', duration: 200 }}
         >
-          <MainActionButton
-          label={'ADD'}
-          onClick={this.onAddClick}
-        />
-        </div>
-        {/* <FloatingActionButton
+          { this.state.expanded && (<CardText expandable style={{ padding: 0, minHeight: 40 }}>
+            <div
+              style={{ float: 'right', margin: 4 }}
+              ref={(componentInstance) => {
+                this.rootNode = ReactDOM.findDOMNode(componentInstance);
+              }}
+            >
+              <MainActionButton
+                label={'ADD'}
+                onClick={this.onAddClick}
+              />
+            </div>
+            {/* <FloatingActionButton
           style={stylesAddBtn}
           onClick={this.onAddClick}
           ref={(componentInstance) => {
@@ -87,27 +101,29 @@ class GFAlerts extends React.Component {
         >
           {this.state.isAdding ? <ContentAddClose /> : <ContentAdd />}
         </FloatingActionButton>*/}
-        <AlertsList
-          isOpen={this.state.isAdding}
-          handleRequestClose={this.closeList}
-          anchorEl={this.rootNode}
-          vehicleId={this.props.vehicleId}
-          vehicleAlerts={this.props.vehicleAlerts}
-          doAddAlert={this.props.doAddAlert}
-          onEnter={this.props.onEnter}
-        />
+            <AlertsList
+              isOpen={this.state.isAdding}
+              handleRequestClose={this.closeList}
+              anchorEl={this.rootNode}
+              vehicleId={this.props.vehicleId}
+              vehicleAlerts={this.props.vehicleAlerts}
+              doAddAlert={this.props.doAddAlert}
+              onEnter={this.props.onEnter}
+            />
 
-        <div className={styles.chipsWrapper}>
-          {/*<VelocityTransitionGroup
+            <div className={styles.chipsWrapper}>
+              {/* <VelocityTransitionGroup
             component="div"
             style={{ display: 'flex', flexWrap: 'wrap' }}
             enter={{ animation: 'slideDown', duration: 200 }}
             leave={{ animation: 'slideUp', duration: 200 }}
           >*/}
-            {myGFAlerts}
-          {/*</VelocityTransitionGroup>*/}
-        </div>
-      </Paper>
+              {myGFAlerts}
+              {/* </VelocityTransitionGroup>*/}
+            </div>
+          </CardText>)}
+        </VelocityTransitionGroup>
+      </Card>
     );
   }
 }

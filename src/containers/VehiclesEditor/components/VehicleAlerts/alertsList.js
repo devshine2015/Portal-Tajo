@@ -75,12 +75,16 @@ class AlertsList extends React.Component {
 AlertsList.propTypes = {
   isOpen: React.PropTypes.bool.isRequired,
   handleRequestClose: React.PropTypes.func.isRequired,
-  anchorEl: React.PropTypes.object.isRequired,
+  anchorEl: React.PropTypes.object,
   onEnter: React.PropTypes.bool.isRequired,
   vehicleAlerts: React.PropTypes.array.isRequired,
   doAddAlert: React.PropTypes.func.isRequired,
   // getVehicleAlerts: React.PropTypes.func.isRequired,
   alerts: React.PropTypes.array.isRequired,
+};
+
+AlertsList.defaultProps = {
+  anchorEl: null,
 };
 
 const mapState = state => ({
