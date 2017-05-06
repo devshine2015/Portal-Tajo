@@ -6,7 +6,6 @@ import {
   Checkbox,
 } from 'material-ui';
 import { permissions } from 'configs/roles';
-import Form from 'components/Form';
 import Layout from 'components/Layout';
 import FormButtons from 'components/Controls/FormButtons';
 
@@ -23,8 +22,6 @@ import phrases, {
   phrasesShape,
   detailsShape,
 } from './PropTypes';
-
-const FORM = 'editor';
 
 const PERMISSIONS = [
   permissions.VEHICLE_DISABLE,
@@ -146,9 +143,6 @@ class VehicleDetails extends React.Component {
 
     return (
       <div className={styles.details}>
-        <Form
-          name={FORM}
-        >
           <Layout.Section>
             <Layout.Header label={'PARAMETERS'} />
             <Layout.Content>
@@ -223,9 +217,9 @@ class VehicleDetails extends React.Component {
               />
             </Layout.Content>
           </Layout.Section>
-          <VehicleAlerts
-            vehicleId={this.props.details.id}
-          />
+        <VehicleAlerts
+          vehicleId={this.props.details.id}
+        />
           {/*<Layout.Section>
             <div className={styles.buttons}>
               <ButtonWithProgress
@@ -259,7 +253,6 @@ class VehicleDetails extends React.Component {
               )}
             </div>
           </Layout.Section>*/}
-        </Form>
       </div>
     );
   }
