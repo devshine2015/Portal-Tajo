@@ -1,6 +1,5 @@
 import React from 'react';
 import { css } from 'aphrodite/no-important';
-import Content from 'components/Content';
 import Layout from 'components/Layout';
 import Submenu from './components/Submenu';
 import UsersSection from './components/UsersSection';
@@ -40,7 +39,7 @@ class UsersManager extends React.Component {
     const activeSubsection = SUBSECTIONS[this.state.activeSectionIndex];
 
     return (
-      <Content>
+      <Layout.Content>
         <Layout.Row>
 
           { SHOW_SUBMENU && (
@@ -58,7 +57,7 @@ class UsersManager extends React.Component {
           </div>
 
         </Layout.Row>
-      </Content>
+      </Layout.Content>
     );
   }
 }

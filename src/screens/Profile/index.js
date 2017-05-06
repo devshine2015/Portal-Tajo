@@ -1,6 +1,6 @@
 import React from 'react';
 import { css } from 'aphrodite/no-important';
-import Content from 'components/Content';
+import Layout from 'components/Layout';
 import ProfileDetails from './components/ProfileDetails';
 import LanguageWidget from './components/LanguageWidget';
 
@@ -9,7 +9,7 @@ import classes from './classes';
 const userCanSeeProfile = context => context.authorizeWithPerms('view:profile');
 
 const ProfileScreen = (props, context) => (
-  <Content>
+  <Layout.Content>
     { userCanSeeProfile(context) && (
       <div className={css(classes.widget)}>
         <ProfileDetails />
@@ -18,7 +18,7 @@ const ProfileScreen = (props, context) => (
     <div className={css(classes.widget)}>
       <LanguageWidget />
     </div>
-  </Content>
+  </Layout.Content>
 );
 
 ProfileScreen.contextTypes = {

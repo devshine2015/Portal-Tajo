@@ -1,5 +1,5 @@
 import React from 'react';
-import Content from 'components/Content';
+import Layout from 'components/Layout';
 import Widget from 'components/Widget';
 import FleetSummary from 'containers/FleetSummary';
 import { onProduction, onStage } from 'configs';
@@ -30,7 +30,7 @@ function canShow(Component) {
 const logoContainerStyle = {flex: '1' };
 
 const DashboardScreen = ({ translations }) => (
-  <Content center>
+  <Layout.Content center>
     { canShow(RunningLogo) &&
       <div style={{ display: 'flex', flexDirection: 'row', margin: '60px 40px 20px 40px', width: '100%' }}>
         <div style={logoContainerStyle}>
@@ -65,7 +65,7 @@ const DashboardScreen = ({ translations }) => (
     )}
     { canShow(D3Sandbox) && <D3Sandbox /> }
 
-  </Content>
+  </Layout.Content>
 );
 
 DashboardScreen.propTypes = {

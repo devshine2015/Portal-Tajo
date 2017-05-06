@@ -6,7 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
-import Content from 'components/Content';
+import Layout from 'components/Layout';
 import Form from 'components/Form';
 import Dialog from './components/Dialog';
 import DeviceSelector from 'containers/DeviceSelector';
@@ -190,7 +190,7 @@ class Installer extends React.Component {
     }
 
     return (
-      <Content>
+      <Layout.Content>
         <div className={styles.installer}>
           <Form
             name="bounder"
@@ -257,7 +257,7 @@ class Installer extends React.Component {
             handleClose={this.closeDialog}
           />
         </div>
-      </Content>
+      </Layout.Content>
     );
   }
 }
