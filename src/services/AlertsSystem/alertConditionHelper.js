@@ -1,4 +1,5 @@
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
+import { getGFByIdFunc } from 'services/FleetModel/reducer';
 
 export const _NEW_LOCAL_ALERT_ID_ = 'newAlert';
 
@@ -7,20 +8,34 @@ const safeGetFromMeta = (originObject, propName, defValue) => (
                 defValue : originObject.meta[propName]
 );
 
-export const makeLocalAlertCondition = originObject => (
+const safeGetGFData = (originObject, getState) => {
+  if (originObject.gfId === undefined) {
+    return { gfId: '', gfName: '' };
+  }
+  const theGF = getGFByIdFunc(getState())(originObject.gfId);
+  if (theGF === null) {
+    return { gfId: originObject.gfId, gfName: '_DELETED_GF_' };
+  }
+  return { gfId: originObject.gfId, gfName: theGF.name };
+}
+
+export const makeLocalAlertCondition = (originObject, getState) => (
   { id: originObject.id,
     name: safeGetFromMeta(originObject, 'name', 'No Name'),
     kind: originObject.kind,
     maxTemp: originObject.aboveTemp || 0,
     maxSpeed: originObject.maxSpeed || 0,
     odoValue: originObject.odoValue || 0,
-    gfId: originObject.gfId || '',
+    // safely extracting those for GF alerts:
+    // gfId:
+    // gfName:
+    // ^-- probably should store ref to GF object instead?
+    ...safeGetGFData(originObject, getState),
     onEnter: safeGetFromMeta(originObject, 'onEnter', false) === 'true',
     onExit: safeGetFromMeta(originObject, 'onExit', false) === 'true',
     driveTimeSec: originObject.driveTimeSec !== undefined ? originObject.driveTimeSec : 0,
   }
 );
-
 
 export const makeNewAlertConditionTemplate = () => (
   { id: _NEW_LOCAL_ALERT_ID_,

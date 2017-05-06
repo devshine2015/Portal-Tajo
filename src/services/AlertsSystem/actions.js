@@ -42,21 +42,21 @@ export const fetchVehicleAlertConditions = (vehicleId) => (dispatch) =>
 export const postVehicleAlertConditions = (vehicleId, alerts) => (dispatch) =>
   _postVehicleAlerConditions(vehicleId, alerts, dispatch);
 
-function _fetchAlerts(dispatch) {
+function _fetchAlerts(dispatch, state) {
   const { url, method } = endpoints.getAlertConditions;
 
   return api[method](url)
     .then(toJson)
     .then(alerts => {
-      _addAlerts(dispatch, alerts);
+      _addAlerts(dispatch, state, alerts);
     })
     .catch(e => {
       console.error(e);
     });
 }
-function _addAlerts(dispatch, backEndAlerts) {
+function _addAlerts(dispatch, state, backEndAlerts) {
   backEndAlerts.forEach((aElement) => {
-    dispatch(_conditionAdd(makeLocalAlertCondition(aElement)));
+    dispatch(_conditionAdd(makeLocalAlertCondition(aElement, state)));
   }, this);
 }
 
