@@ -4,23 +4,17 @@ import SpeedSection from './components/AlertTypes/SpeedSection';
 import TempSection from './components/AlertTypes/TempSection';
 import OdoSection from './components/AlertTypes/OdoSection';
 import DriveTimeSection from './components/AlertTypes/DriveTimeSection';
-
-import classes from './classes';
-
+import Layout from 'components/Layout';
 
 class AlertsEditor extends React.Component {
   render() {
     return (
-      /*<Content>
-        <Layout.Row>*/
-      <div className={css(classes.content)}>
+      <Layout.Content noPadding maxWidth={'inherit'}>
         <SpeedSection />
         <TempSection />
         <OdoSection />
         <DriveTimeSection />
-      </div>
-      //   </Layout.Row>
-      // </Content>
+      </Layout.Content>
     );
   }
 }

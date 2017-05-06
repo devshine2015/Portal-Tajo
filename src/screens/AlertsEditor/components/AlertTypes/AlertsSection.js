@@ -4,10 +4,9 @@ import { connect } from 'react-redux';
 
 import { css } from 'aphrodite/no-important';
 import { VelocityTransitionGroup } from 'velocity-react';
-import SectionHeader from '../SectionHeader';
-import MainActionButton from '../MainActionButton';
+import MainActionButton from 'components/Controls/MainActionButton';
+import Layout from 'components/Layout';
 import AlertCard from './AlertCard';
-import Content from 'components/Content';
 
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import { getAlertConditions } from 'services/AlertsSystem/reducer';
@@ -15,7 +14,7 @@ import { getAlertConditions } from 'services/AlertsSystem/reducer';
 
 import classes from './classes';
 
-class Section extends React.Component {
+class AlertsSection extends React.Component {
   constructor(props) {
     super(props);
 
@@ -48,23 +47,24 @@ class Section extends React.Component {
   render() {
     const enterAnimation = {
       animation: 'slideDown',
-      duration: 400,
+      duration: 250,
       style: { height: '' },
     };
     const leaveAnimation = {
       animation: 'slideUp',
-      duration: 400,
+      duration: 250,
     };
 
     const alertsList = this.props.alerts.filter(alrt => alrt.kind === this.props.myAlertKind)
           .map(alrt => <AlertCard key={alrt.id} alert={alrt} renderForm={this.props.renderForm} />);
 
     return (
-      <div className={css(classes.sectionContainer)}>
-        <Content maxWidth={700}>
-          <SectionHeader
+      <Layout.Section>
+        <Layout.Content maxWidth={700}>
+          <Layout.Header
             icon={this.kindData.icon}
             label={this.props.headerLabel}
+            style={{ paddingLeft: 0 }}
             action={!this.state.showForm && (
               <MainActionButton
                 label={this.props.actionButtonLabel}
@@ -77,27 +77,26 @@ class Section extends React.Component {
             component="div"
             enter={enterAnimation}
             leave={leaveAnimation}
+            style={{ zIndex: 1000 }}
           >
             { this.state.showForm && (
               <div className={css(classes.formWrapper)}>
-                <div className={css(classes.formWrapper__inn)}>
                   { this.props.renderForm({
                     isOpened: this.state.showForm,
                     closeForm: this.closeForm,
                     alert: { kind: this.props.myAlertKind },
                   })}
-                </div>
               </div>
             )}
           </VelocityTransitionGroup>
           {alertsList}
-        </Content>
-      </div>
+        </Layout.Content>
+      </Layout.Section>
     );
   }
 }
 
-Section.propTypes = {
+AlertsSection.propTypes = {
   renderForm: React.PropTypes.func.isRequired,
   myAlertKind: React.PropTypes.string.isRequired,
   alerts: React.PropTypes.array.isRequired,
@@ -112,4 +111,4 @@ const mapDispatch = {
   // showSnackbar,
 };
 
-export default connect(mapState, mapDispatch)(pure(Section));
+export default connect(mapState, mapDispatch)(pure(AlertsSection));

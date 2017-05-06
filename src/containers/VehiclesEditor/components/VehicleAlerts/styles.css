@@ -23,8 +23,8 @@
     border-radius: 3px;
     border: solid 1px gray;
     margin-top: 12px;*/
-    margin: 15px;
-    padding: 12px;
+    margin: 15px 0;
+    /*padding: 12px;*/
     position: relative;
   }
   .wrapperHeader {
@@ -39,7 +39,7 @@
   .chipsWrapper {
     display: flex;
     flex-wrap: wrap;
-    min-height: 64px;
+    /*min-height: 64px;*/
   }
   .kindOfSelector {
     display: flex;

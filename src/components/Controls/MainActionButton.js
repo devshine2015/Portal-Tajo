@@ -1,9 +1,6 @@
 import React from 'react';
-import { css } from 'aphrodite/no-important';
 import RaisedButton from 'material-ui/RaisedButton';
 import ContentAddIcon from 'material-ui/svg-icons/content/add';
-
-import classes from './classes';
 
 const DEF_STYLES = {
   icon: {
@@ -11,6 +8,7 @@ const DEF_STYLES = {
     height: 17,
   },
 };
+    // ref={ref !== undefined ? (node) => ref(node) : undefined}
 
 const MainActionButton = ({
   onClick,
@@ -20,8 +18,8 @@ const MainActionButton = ({
   <RaisedButton
     onTouchTap={onClick}
     label={label}
-    className={css(classes.button)}
     icon={icon}
+    style={{ float: 'right' }}
     primary
   />
 );

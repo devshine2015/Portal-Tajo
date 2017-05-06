@@ -6,7 +6,7 @@ import { makeAlertConditionBackEndObject } from 'services/AlertsSystem/alertCond
 import { createAlertConditions, updateAlertCondition } from 'services/AlertsSystem/actions';
 import { showSnackbar } from 'containers/Snackbar/actions';
 
-import { TextField } from 'material-ui';
+import { TextField, Paper } from 'material-ui';
 
 import { css } from 'aphrodite/no-important';
 // import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
@@ -14,6 +14,8 @@ import { css } from 'aphrodite/no-important';
 import classes from './classes';
 
 import FormComponents from 'components/User/FormComponents';
+import FormButtons from 'components/Controls/FormButtons';
+import Layout from 'components/Layout';
 
 function setAlertState(props) {
   return {
@@ -92,10 +94,14 @@ class SpeedForm extends React.Component {
           value={this.state[fld.fieldName]}
         />));
     return (
-      <div className={css(classes.formWrapper__inn)}>
-        {this.newAlert && <FormComponents.Header>
-          {this.props.headerTitle}
-        </FormComponents.Header>
+      <Paper zDepth={5} className={css(classes.formWrapper__inn)} >
+        {this.newAlert && <Layout.Header
+          label={this.props.headerTitle}
+          style={{ padding: '0' }}
+          labelStyle={{ fontSize: 16,
+            color: 'rgba(0, 0, 0, 0.3)',
+          }}
+        />
         }
         <TextField
           fullWidth
@@ -107,13 +113,12 @@ class SpeedForm extends React.Component {
         />
         {fields}
         {this.props.children}
-        <FormComponents.Buttons
+        <FormButtons
           onSubmit={this.onSubmit}
           onCancel={this.onCancel}
-          mainLabel={"Save"}
-          disabled={true}
+          disabled={false}
         />
-      </div>
+      </Paper>
     );
   }
 }

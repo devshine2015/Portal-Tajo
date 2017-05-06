@@ -5,9 +5,12 @@ const classes = StyleSheet.create({
     maxWidth: 1000,
     width: '100%',
     margin: '0 auto',
-    padding: 20,
     display: 'flex',
     flexDirection: 'column',
+  },
+
+  padding: {
+    padding: 20,
   },
 
   content_center: {

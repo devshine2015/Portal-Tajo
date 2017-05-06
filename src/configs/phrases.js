@@ -5,6 +5,13 @@ const phrases = {
     language_settings_title: 'Language',
     // -- end language widget
 
+    // generic
+    ok: 'Ok',
+    save: 'Save',
+    cancel: 'Cancel',
+    reset: 'Reset',
+    // -- end generic
+
     // chronicle
     loading: 'LOADING...',
     please_wait: 'please wait',
@@ -102,8 +109,6 @@ const phrases = {
     // -- end report configurator
 
     // report warning dialog
-    ok: 'Ok',
-    cancel: 'Cancel',
     warn_title: 'Warning about time and traffic consuming',
     warn_text: `You chose many vehicles.\n
                 Generating and downloading events for
@@ -117,7 +122,6 @@ const phrases = {
     year: 'Year of Manufacture',
     odometer_value: 'Odometer (km.)',
     vehicle_kind_hint: 'Kind of the Vehicle',
-    save: 'Save',
     disable: 'disable',
     // -- end vehicle details
 
@@ -263,6 +267,12 @@ const phrases = {
     language_settings_title: 'ภาษา',
     // -- end language widget
 
+    // generic
+    ok: 'ตกลง',
+    cancel: 'ยกเลิก',
+    save: 'บันทึก',
+    // -- end generic
+
     // chronicle
     loading: 'กำลังโหลด...',
     please_wait: 'โปรดรอ',
@@ -355,8 +365,6 @@ const phrases = {
     // -- end report configurator
 
     // report warning dialog
-    ok: 'ตกลง',
-    cancel: 'ยกเลิก',
     warn_text: `เลือก ยานพาหนะ\n
                 รายงานจะใช้เวลาดำเนินการและดาวน์โหลดมากกว่าปกติ\n
                 ต้องการดำเนินการต่อหรือไม่?`,
@@ -368,7 +376,6 @@ const phrases = {
     year: 'ปีที่ผลิต',
     odometer_value: 'มาตรวัดระยะทาง (กิโลเมตร)',
     vehicle_kind_hint: 'ประเภทของยานพาหนะ',
-    save: 'บันทึก',
     // -- end vehicle details
 
     // vehicle kinds

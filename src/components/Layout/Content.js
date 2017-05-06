@@ -10,8 +10,8 @@ const Content = ({
   noPadding,
 }) => {
   const className = cs(css(classes.content), {
-    [css(classes.content_center)]: center,
-    [css(classes.padding)]: !noPadding,
+    [css(classes.content__center)]: center,
+    [css(classes.content__padding)]: !noPadding,
   });
 
   return (
@@ -30,7 +30,7 @@ Content.defaultProps = {
 Content.propTypes = {
   children: React.PropTypes.any.isRequired,
   center: React.PropTypes.bool,
-  maxWidth: React.PropTypes.number,
+  maxWidth: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
   noPadding: React.PropTypes.bool,
 };
 

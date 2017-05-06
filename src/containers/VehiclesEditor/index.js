@@ -5,6 +5,7 @@ import VehiclesList from 'components/InstancesList';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import FixedContent from 'components/FixedContent';
+import Content from 'components/Content';
 import { showSnackbar } from 'containers/Snackbar/actions';
 import { getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
 import { vehiclesActions } from 'services/FleetModel/actions';
@@ -57,14 +58,19 @@ class VehiclesEditor extends React.Component {
       device,
     })
     .then((newIndex = undefined) => {
-      this.setState({
-        selectedVehicleOriginalIndex: newIndex,
-      }, () => {
-        this.props.showSnackbar(this.props.translations.send_success, 3000);
-      });
+      this.props.showSnackbar(this.props.translations.send_success, 3000);
+      // this.setState({
+      //   selectedVehicleOriginalIndex: newIndex,
+      // }, () => {
+      //   this.props.showSnackbar(this.props.translations.send_success, 3000);
+      // });
     }, () => {
       this.props.showSnackbar(this.props.translations.send_fail, 5000);
     });
+  }
+
+  onDetailsCancel = () => {
+    // this.closeEditor();
   }
 
   onChooseVehicle = id => {
@@ -140,12 +146,12 @@ class VehiclesEditor extends React.Component {
     };
 
     return (
-      <FixedContent containerClassName={styles.detailsContainer}>
+      <FixedContent >
         <VehicleDetails
           isLoading={this.props.isLoading}
           details={data}
           onSave={this.onDetailsSave}
-          onCancel={this.closeEditor}
+          onCancel={this.onDetailsCancel}
           onDisable={this.onVehicleDisable}
           disabled={this.props.isLoading}
         />

@@ -1,10 +1,12 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import Avatar from 'material-ui/Avatar';
-import { Paper, SelectField, MenuItem } from 'material-ui';
+import { Avatar, SelectField, MenuItem } from 'material-ui';
 import { getVehicleAlertConditions,
     getAlertConditionByIdFunc, getAlertConditions } from 'services/AlertsSystem/reducer';
+
+import Layout from 'components/Layout';
+import FormButtons from 'components/Controls/FormButtons';
 
 import { fetchVehicleAlertConditions, postVehicleAlertConditions } from 'services/AlertsSystem/actions';
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
@@ -25,7 +27,9 @@ const AlertOfKindSelectorFn = ({
   vehicleAlerts,
   alertById,
 }, context) => {
-  const myAlertOfKind = vehicleAlerts.map(alertId => (alertById(alertId))).find(alrt => alrt.kind === myKind);
+  const myAlertOfKind = vehicleAlerts.map(alertId => (alertById(alertId)))
+    // check for null - the alert condition might be not loaded yet
+    .find(alrt => alrt !== null && alrt.kind === myKind);
   const theKindData = alertKinds.getAlertByKind(myKind);
   // const Icon = () => React.cloneElement(theKindData.icon, {
   //       className: styles.vehicleIcon,
@@ -92,7 +96,6 @@ class VehicleAlerts extends React.Component {
       isLoading: true,
       alerts: [],
     };
-    this.props.saveHook(this.saveAlerts);
     this.fetchAlerts(props.vehicleId);
   }
 
@@ -135,6 +138,11 @@ class VehicleAlerts extends React.Component {
   saveAlerts = () => {
     this.props.postVehicleAlertConditions(this.props.vehicleId, this.state.alerts);
   }
+  resetChange = () => {
+    this.setState({
+      alerts: this.props.getVehicleAlerts(this.props.vehicleId),
+    });
+  }
   fetchAlerts = (vehicleId) => {
     this.props.fetchVehicleAlertConditions(vehicleId)
       .then(() => {
@@ -147,56 +155,49 @@ class VehicleAlerts extends React.Component {
 // Temp -15&#8451;..-8&#8451;
   render() {
     if (!isAlerts) return null;
-
-    /* const vehAlerts = this.state.alerts.map(alertId => {
-      const alertObj = this.props.alertById(alertId);
-      const alertKindData = alertKinds.getAlertByKind(alertObj.kind);
-      return (<Chip
-        key={alertId}
-        onRequestDelete={ () => (this.onRemoveClick(alertId)) }
-        style={stylesChip}
-      >
-          <Avatar color="#156671" icon={alertKindData.icon} />
-            {alertObj.name}
-          </Chip>);
-    });*/
-
+    const haveAlertConditions = this.props.alertConditions.length > 0;
+    if (!haveAlertConditions) return null;
     return (
-      <Paper zDepth={2} className={styles.wrapper}>
-        <div className={styles.wrapperHeader}>
-          {`ALERTS${this.state.isLoading ? ' loading...' : ''}`}
-        </div>
-        <AlertOfKindSelector
-          myKind={alertKinds._ALERT_KIND_SPEEDING}
-          onOfKindChange={this.onOfKindChange}
-          vehicleAlerts={this.state.alerts}
-        />
-        <AlertOfKindSelector
-          myKind={alertKinds._ALERT_KIND_TEMPERATURE}
-          onOfKindChange={this.onOfKindChange}
-          vehicleAlerts={this.state.alerts}
-        />
-        <AlertOfKindSelector
-          myKind={alertKinds._ALERT_KIND_ODO}
-          onOfKindChange={this.onOfKindChange}
-          vehicleAlerts={this.state.alerts}
-        />
-        {/* put all th GF alerts with chips here?*/}
-        <GFAlerts
-          vehicleAlerts={this.state.alerts}
-          vehicleId={this.props.vehicleId}
-          doAddAlert={this.doAddAlert}
-          onRemoveClick={this.onRemoveClick}
-          onEnter
-        />
-        <GFAlerts
-          vehicleAlerts={this.state.alerts}
-          vehicleId={this.props.vehicleId}
-          doAddAlert={this.doAddAlert}
-          onRemoveClick={this.onRemoveClick}
-          onEnter={false}
-        />
-      </Paper>
+      <Layout.Section>
+        <Layout.Header label={`ALERTS${this.state.isLoading ? ' loading...' : ''}`} />
+        <Layout.Content>
+          <AlertOfKindSelector
+            myKind={alertKinds._ALERT_KIND_SPEEDING}
+            onOfKindChange={this.onOfKindChange}
+            vehicleAlerts={this.state.alerts}
+          />
+          <AlertOfKindSelector
+            myKind={alertKinds._ALERT_KIND_TEMPERATURE}
+            onOfKindChange={this.onOfKindChange}
+            vehicleAlerts={this.state.alerts}
+          />
+          <AlertOfKindSelector
+            myKind={alertKinds._ALERT_KIND_ODO}
+            onOfKindChange={this.onOfKindChange}
+            vehicleAlerts={this.state.alerts}
+          />
+          {/* put all the GF alerts with chips here?*/}
+          <GFAlerts
+            vehicleAlerts={this.state.alerts}
+            vehicleId={this.props.vehicleId}
+            doAddAlert={this.doAddAlert}
+            onRemoveClick={this.onRemoveClick}
+            onEnter
+          />
+          <GFAlerts
+            vehicleAlerts={this.state.alerts}
+            vehicleId={this.props.vehicleId}
+            doAddAlert={this.doAddAlert}
+            onRemoveClick={this.onRemoveClick}
+            onEnter={false}
+          />
+          <FormButtons
+            onSubmit={this.saveAlerts}
+            onCancel={this.resetChange}
+            cancelLabel={'reset'}
+          />
+        </Layout.Content>
+      </Layout.Section>
     );
   }
 }
@@ -207,8 +208,7 @@ VehicleAlerts.propTypes = {
   fetchVehicleAlertConditions: React.PropTypes.func.isRequired,
   postVehicleAlertConditions: React.PropTypes.func.isRequired,
   alertById: React.PropTypes.func.isRequired,
-
-  saveHook: React.PropTypes.func.isRequired,
+  alertConditions: React.PropTypes.array.isRequired,
 };
 
 const mapState = state => ({
