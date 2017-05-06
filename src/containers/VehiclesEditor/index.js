@@ -5,7 +5,6 @@ import VehiclesList from 'components/InstancesList';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import FixedContent from 'components/FixedContent';
-import Content from 'components/Content';
 import { showSnackbar } from 'containers/Snackbar/actions';
 import { getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
 import { vehiclesActions } from 'services/FleetModel/actions';
