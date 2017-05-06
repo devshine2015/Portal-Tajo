@@ -24,6 +24,7 @@ import { AuthProvider, auth } from 'utils/auth';
 import { auth0Api } from 'utils/api';
 import phrases, { locales } from 'configs/phrases';
 import { setReportsMWA } from 'containers/Report/actions/reportActions';
+import { fetchAlertConditions } from 'services/AlertsSystem/actions';
 
 // need this for global styling
 require('./styles.css');
@@ -121,6 +122,7 @@ class App extends React.Component {
   _fetchData(profile) {
     this.props.saveSession(profile)
       .then(this.props.fetchFleet)
+      .then(this.props.fetchAlertConditions)
       .then(this.props.fetchDevices);
   }
 
@@ -181,6 +183,7 @@ App.propTypes = {
   ).isRequired,
   fetchAccessTokens: React.PropTypes.func.isRequired,
   fetchRolesAndPermissions: React.PropTypes.func.isRequired,
+  fetchAlertConditions: React.PropTypes.func.isRequired,
   setReportsMWA: React.PropTypes.func.isRequired,
 };
 
@@ -199,6 +202,7 @@ const mapDispatch = {
   fetchAccessTokens,
   fetchRolesAndPermissions,
   fetchFleet: commonFleetActions.fetchFleet,
+  fetchAlertConditions,
   setReportsMWA,
 };
 
