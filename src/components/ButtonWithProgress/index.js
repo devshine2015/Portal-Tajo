@@ -51,7 +51,7 @@ ButtonWithProgress.propTypes = {
   isLoading: React.PropTypes.bool.isRequired,
 
   // additional className fro the button overlay element
-  overlayStyle: React.PropTypes.string,
+  overlayStyle: React.PropTypes.object,
 
   // render custom icon instead of default
   customIcon: React.PropTypes.element,
