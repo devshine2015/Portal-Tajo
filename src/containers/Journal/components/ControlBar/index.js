@@ -1,11 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-// import * as journalState from 'containers/Journal/reducer';
-import {
-  jrnOpen,
-  // jrnAddEntries,
-} from 'containers/Journal/actions';
+import { jrnOpen } from 'containers/Journal/actions';
 import { Toggle } from 'material-ui';
 
 import IconButton from 'material-ui/IconButton';
@@ -69,20 +65,11 @@ const JournalBar = ({
 JournalBar.propTypes = {
   openJournal: React.PropTypes.func.isRequired,
   toggleAll: React.PropTypes.func.isRequired,
-  // isOpened: React.PropTypes.bool.isRequired,
-  // newCount: React.PropTypes.number.isRequired,
-  // entries: React.PropTypes.array.isRequired,
 };
 
-const mapState = () => ({
-  // isOpened: journalState.jrnIsOpened(state),
-  // newCount: journalState.jrnNewCount(state),
-  // entries: journalState.jrnGetEntries(state),
-});
+const mapState = null;
 const mapDispatch = {
   openJournal: jrnOpen,
-  // openFleetSocket: socketActions.openFleetSocket,
-  // startLocalTick: localTickActions.startLocalTick,
 };
 
 const jp = pure(JournalBar);

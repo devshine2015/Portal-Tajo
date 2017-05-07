@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 
 import { FlatButton } from 'material-ui';
 import { jrnOpen } from 'containers/Journal/actions';
-import * as journalState from 'containers/Journal/reducer';
+import {
+  jrnIsOpened,
+  jrnNewCount,
+} from 'services/AlertsSystem/reducer';
 import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
 // import HistoryIcon from 'material-ui/svg-icons/action/history';
 // import HistoryIcon from 'material-ui/svg-icons/action/alarm';
@@ -61,14 +64,13 @@ class JournalBtn extends React.Component {
 
 JournalBtn.propTypes = {
   openJournal: React.PropTypes.func.isRequired,
-  // addEntries: React.PropTypes.func.isRequired,
   isOpened: React.PropTypes.bool.isRequired,
   newCount: React.PropTypes.number.isRequired,
 };
 
-const mapState = (state) => ({
-  isOpened: journalState.jrnIsOpened(state),
-  newCount: journalState.jrnNewCount(state),
+const mapState = state => ({
+  isOpened: jrnIsOpened(state),
+  newCount: jrnNewCount(state),
 });
 const mapDispatch = {
   openJournal: jrnOpen,

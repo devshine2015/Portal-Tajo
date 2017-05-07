@@ -1,10 +1,13 @@
+import moment from 'moment';
 import endpoints from 'configs/endpoints';
 import { api } from 'utils/api';
-import { createJournalEntry } from './entryHelpers';
 import { getVehiclesExSorted } from 'services/FleetModel/reducer';
-import { jrnGetLatestRecievedTS, jrnIsWating } from './reducer';
+import {
+  jrnGetLatestRecievedTS,
+  jrnIsWating,
+} from 'services/AlertsSystem/reducer';
+import { createJournalEntry } from './entryHelpers';
 
-import moment from 'moment';
 
 export const JR_OPEN = 'jrn/open';
 export const JR_ADD_ENTRIES = 'jrn/add';

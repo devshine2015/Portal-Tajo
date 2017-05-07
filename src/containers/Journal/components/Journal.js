@@ -1,12 +1,14 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-
+import {
+  jrnIsOpened,
+  jrnGetEntries,
+  jrnGetLastOpenedTS,
+} from 'services/AlertsSystem/reducer';
+import { isAlerts } from 'configs';
 import ControlBar from './ControlBar';
 import Entry from './Entry';
-import * as journalState from 'containers/Journal/reducer';
-import { isAlerts } from 'configs';
-
 import styles from './styles.css';
 
 class Journal extends React.Component {
@@ -49,7 +51,9 @@ class Journal extends React.Component {
 
 Journal.propTypes = {
   isOpened: React.PropTypes.bool.isRequired,
-  entries: React.PropTypes.array.isRequired,
+  entries: React.PropTypes.arrayOf(
+    React.PropTypes.object.isRequired,
+  ).isRequired,
   lastOpenedTS: React.PropTypes.number.isRequired,
   isPositioned: React.PropTypes.bool,
 };
@@ -59,13 +63,10 @@ Journal.defaultProps = {
 };
 
 const mapState = (state) => ({
-  isOpened: journalState.jrnIsOpened(state),
-  entries: journalState.jrnGetEntries(state),
-  lastOpenedTS: journalState.jrnGetLastOpenedTS(state),
+  isOpened: jrnIsOpened(state),
+  entries: jrnGetEntries(state),
+  lastOpenedTS: jrnGetLastOpenedTS(state),
 });
-const mapDispatch = {
-  // openFleetSocket: socketActions.openFleetSocket,
-  // startLocalTick: localTickActions.startLocalTick,
-};
+const mapDispatch = null;
 
 export default connect(mapState, mapDispatch)(pure(Journal));
