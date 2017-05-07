@@ -1,7 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import { Avatar, Chip, Popover } from 'material-ui';
+import { Chip, Popover } from 'material-ui';
 import { VelocityTransitionGroup } from 'velocity-react';
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import { getAlertConditions } from 'services/AlertsSystem/reducer';

@@ -17,7 +17,7 @@ const safeGetGFData = (originObject, getState) => {
     return { gfId: originObject.gfId, gfName: '_DELETED_GF_' };
   }
   return { gfId: originObject.gfId, gfName: theGF.name };
-}
+};
 
 export const makeLocalAlertCondition = (originObject, getState) => (
   { id: originObject.id,

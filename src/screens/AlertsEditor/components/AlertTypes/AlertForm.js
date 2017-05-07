@@ -13,7 +13,6 @@ import { css } from 'aphrodite/no-important';
 
 import classes from './classes';
 
-import FormComponents from 'components/User/FormComponents';
 import FormButtons from 'components/Controls/FormButtons';
 import Layout from 'components/Layout';
 

@@ -56,13 +56,7 @@ class VehiclesEditor extends React.Component {
       needResort,
       device,
     })
-    .then((newIndex = undefined) => {
-      this.props.showSnackbar(this.props.translations.send_success, 3000);
-      // this.setState({
-      //   selectedVehicleOriginalIndex: newIndex,
-      // }, () => {
-      //   this.props.showSnackbar(this.props.translations.send_success, 3000);
-      // });
+    .then(() => {
     }, () => {
       this.props.showSnackbar(this.props.translations.send_fail, 5000);
     });

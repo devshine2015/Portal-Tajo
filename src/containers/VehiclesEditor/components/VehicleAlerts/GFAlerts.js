@@ -1,22 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { VelocityTransitionGroup } from 'velocity-react';
-import { Chip,
-  // FloatingActionButton, Paper,
-      Card, CardHeader, CardText } from 'material-ui';
-
-// import ContentAdd from 'material-ui/svg-icons/content/add';
-// import ContentAddClose from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import { Chip, Card, CardHeader, CardText } from 'material-ui';
 
 import MainActionButton from 'components/Controls/MainActionButton';
 // import Layout from 'components/Layout';
 
 import AlertsList from './AlertsList';
 
-import { getAlertConditionByIdFunc,
-    getAlertConditions } from 'services/AlertsSystem/reducer';
+import { getAlertConditionByIdFunc } from 'services/AlertsSystem/reducer';
 
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
 
@@ -83,8 +76,8 @@ class GFAlerts extends React.Component {
           { this.state.expanded && (<CardText expandable style={{ padding: 0, minHeight: 40 }}>
             <div
               style={{ float: 'right', margin: 4 }}
-              ref={(componentInstance) => {
-                this.rootNode = ReactDOM.findDOMNode(componentInstance);
+              ref={(node) => {
+                this.rootNode = node;
               }}
             >
               <MainActionButton
@@ -92,15 +85,6 @@ class GFAlerts extends React.Component {
                 onClick={this.onAddClick}
               />
             </div>
-            {/* <FloatingActionButton
-          style={stylesAddBtn}
-          onClick={this.onAddClick}
-          ref={(componentInstance) => {
-            this.rootNode = ReactDOM.findDOMNode(componentInstance);
-          }}
-        >
-          {this.state.isAdding ? <ContentAddClose /> : <ContentAdd />}
-        </FloatingActionButton>*/}
             <AlertsList
               isOpen={this.state.isAdding}
               handleRequestClose={this.closeList}
@@ -133,7 +117,6 @@ GFAlerts.propTypes = {
   vehicleId: React.PropTypes.string.isRequired,
   vehicleAlerts: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
   alertById: React.PropTypes.func.isRequired,
-  alertConditions: React.PropTypes.array.isRequired,
 
   doAddAlert: React.PropTypes.func.isRequired,
   onRemoveClick: React.PropTypes.func.isRequired,
@@ -141,7 +124,6 @@ GFAlerts.propTypes = {
 
 const mapState = state => ({
   alertById: getAlertConditionByIdFunc(state),
-  alertConditions: getAlertConditions(state),
 });
 const mapDispatch = {
 };

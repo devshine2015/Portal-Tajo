@@ -13,7 +13,7 @@ import DeviceEditor from '../DeviceEditor';
 import VehicleAlerts from '../VehicleAlerts';
 import VehicleKindSelector from '../VehicleKindSelector';
 import MarkerSelector from '../MarkerSelector/MarkerSelector';
-import VehicleDisabler from '../VehicleDisabler';
+// import VehicleDisabler from '../VehicleDisabler';
 import { translate } from 'utils/i18n';
 import permitted from 'utils/permissionsRequired';
 
@@ -139,88 +139,88 @@ class VehicleDetails extends React.Component {
 
   render() {
     const { translations } = this.props;
-    const canDisable = this.props.userPermittedTo[permissions.VEHICLE_DISABLE];
+    // const canDisable = this.props.userPermittedTo[permissions.VEHICLE_DISABLE];
 
     return (
       <div className={styles.details}>
-          <Layout.Section>
-            <Layout.Header label={'PARAMETERS'} />
-            <Layout.Content>
-              <TextField
-                fullWidth
-                name="name"
-                onChange={this.onChange}
-                floatingLabelText={translations.vehicle_name}
-                value={this.state.name}
-              />
+        <Layout.Section>
+          <Layout.Header label={'PARAMETERS'} />
+          <Layout.Content>
+            <TextField
+              fullWidth
+              name="name"
+              onChange={this.onChange}
+              floatingLabelText={translations.vehicle_name}
+              value={this.state.name}
+            />
 
-              <VehicleKindSelector
-                kind={this.state.kind}
-                onChange={this.onKindChange}
-              />
+            <VehicleKindSelector
+              kind={this.state.kind}
+              onChange={this.onKindChange}
+            />
 
-              <TextField
-                fullWidth
-                name="licensePlate"
-                onChange={this.onChange}
-                floatingLabelText={translations.license}
-                value={this.state.licensePlate}
-              />
+            <TextField
+              fullWidth
+              name="licensePlate"
+              onChange={this.onChange}
+              floatingLabelText={translations.license}
+              value={this.state.licensePlate}
+            />
 
-              <DeviceEditor
+            <DeviceEditor
             // vehicleId={this.props.details.id}
-                deviceId={this.state.deviceId}
-                updateDeviceId={this.updateDeviceId}
-              />
+              deviceId={this.state.deviceId}
+              updateDeviceId={this.updateDeviceId}
+            />
 
-              <TextField
-                fullWidth
-                name="make"
-                onChange={this.onChange}
-                floatingLabelText={translations.manufacturer}
-                value={this.state.make}
-              />
-              <TextField
-                fullWidth
-                name="model"
-                onChange={this.onChange}
-                floatingLabelText={translations.model_name}
-                value={this.state.model}
-              />
-              <TextField
-                fullWidth
-                name="year"
-                onChange={this.onChange}
-                floatingLabelText={translations.year}
-                value={this.state.year}
-                type="number"
-              />
-              <TextField
-                fullWidth
-                name="odometer"
-                onChange={this.onChange}
-                floatingLabelText={translations.odometer_value}
-                value={this.state.odometer}
-                type="number"
-              />
-              <Checkbox
-                label={translations.odo_in_miles}
-                name="isMiles"
-                checked={this.state.isMiles}
-                onCheck={this.onIsMilesChange}
-              />
-              <MarkerSelector kind={this.state.marker} onChange={this.onMarkerChange} />
-              <FormButtons
-                onSubmit={this.onSubmit}
-                onCancel={this.resetChanges}
-                cancelLabel={'reset'}
-              />
-            </Layout.Content>
-          </Layout.Section>
+            <TextField
+              fullWidth
+              name="make"
+              onChange={this.onChange}
+              floatingLabelText={translations.manufacturer}
+              value={this.state.make}
+            />
+            <TextField
+              fullWidth
+              name="model"
+              onChange={this.onChange}
+              floatingLabelText={translations.model_name}
+              value={this.state.model}
+            />
+            <TextField
+              fullWidth
+              name="year"
+              onChange={this.onChange}
+              floatingLabelText={translations.year}
+              value={this.state.year}
+              type="number"
+            />
+            <TextField
+              fullWidth
+              name="odometer"
+              onChange={this.onChange}
+              floatingLabelText={translations.odometer_value}
+              value={this.state.odometer}
+              type="number"
+            />
+            <Checkbox
+              label={translations.odo_in_miles}
+              name="isMiles"
+              checked={this.state.isMiles}
+              onCheck={this.onIsMilesChange}
+            />
+            <MarkerSelector kind={this.state.marker} onChange={this.onMarkerChange} />
+            <FormButtons
+              onSubmit={this.onSubmit}
+              onCancel={this.resetChanges}
+              cancelLabel={'reset'}
+            />
+          </Layout.Content>
+        </Layout.Section>
         <VehicleAlerts
           vehicleId={this.props.details.id}
         />
-          {/*<Layout.Section>
+        {/* <Layout.Section>
             <div className={styles.buttons}>
               <ButtonWithProgress
                 className={styles.buttons__button}
@@ -259,18 +259,18 @@ class VehicleDetails extends React.Component {
 }
 
 VehicleDetails.propTypes = {
-  disabled: React.PropTypes.bool.isRequired,
-  isLoading: React.PropTypes.bool.isRequired,
+  // disabled: React.PropTypes.bool.isRequired,
+  // isLoading: React.PropTypes.bool.isRequired,
   details: detailsShape.isRequired,
   onSave: React.PropTypes.func.isRequired,
   onCancel: React.PropTypes.func.isRequired,
-  onDisable: React.PropTypes.func.isRequired,
+  // onDisable: React.PropTypes.func.isRequired,
 
   translations: phrasesShape.isRequired,
 
-  userPermittedTo: React.PropTypes.shape({
-    [permissions.VEHICLE_DISABLE]: React.PropTypes.bool.isRequired,
-  }),
+  // userPermittedTo: React.PropTypes.shape({
+  //   [permissions.VEHICLE_DISABLE]: React.PropTypes.bool.isRequired,
+  // }),
 };
 
 const Translated = translate(phrases)(VehicleDetails);

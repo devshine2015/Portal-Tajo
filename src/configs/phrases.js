@@ -62,7 +62,6 @@ const phrases = {
     save_locally: 'Save Locally',
     saved_locally: 'Saved locally ✓',
     cannot_save_locally: 'Cannot save to your device store',
-    reset: 'Reset',
     send_fail: 'Something went wrong. Try later',
     clean_success: 'Succesfully cleaned ✓',
     // -- end installer
@@ -271,6 +270,7 @@ const phrases = {
     ok: 'ตกลง',
     cancel: 'ยกเลิก',
     save: 'บันทึก',
+    reset: 'รีเซ็ต',
     // -- end generic
 
     // chronicle
@@ -318,7 +318,6 @@ const phrases = {
     save_locally: 'บันทึกบนหน่วยความจำ',
     saved_locally: 'บันทึกลงหน่วยความจำเครื่องแล้ว ✓',
     cannot_save_locally: 'ไม่สามารถบันทึกลงหน่วยความจำได้',
-    reset: 'รีเซ็ต',
     send_fail: 'เกิดข้อผิดพลาดบางอย่าง ลองอีกครั้ง',
     clean_success: 'ล้างสำเร็จ ✓',
     // -- end installer
