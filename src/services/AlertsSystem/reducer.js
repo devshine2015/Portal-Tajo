@@ -1,6 +1,7 @@
 import { List, Map, fromJS } from 'immutable';
 import {
   ALRT_CONDITON_ADD,
+  ALRT_CONDITON_DEL,
   ALRT_EVENTS_ADD,
   ALRT_VEHICLE_ADD,
 } from './actions';
@@ -16,6 +17,8 @@ function alertsReducer(state = initialState, action) {
   switch (action.type) {
     case ALRT_CONDITON_ADD:
       return state.setIn(['conditions', action.alertObj.id], action.alertObj);
+    case ALRT_CONDITON_DEL:
+      return state.deleteIn('conditions', action.alertId);
     case ALRT_VEHICLE_ADD:
       return state.setIn(['vehicleAlerts', action.vehicleId], action.alertsList);
     case ALRT_EVENTS_ADD:

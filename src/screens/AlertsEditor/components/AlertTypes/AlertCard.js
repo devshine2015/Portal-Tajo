@@ -1,6 +1,6 @@
 import React from 'react';
 import pure from 'recompose/pure';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 
 import tinycolor from 'tinycolor2';
 import { VelocityTransitionGroup } from 'velocity-react';
@@ -10,6 +10,8 @@ import { Card, CardHeader, CardText } from 'material-ui/Card';
 // import EditIcon from 'material-ui/svg-icons/maps/edit-location';
 import EditIcon from 'material-ui/svg-icons/image/edit';
 import IconButton from 'material-ui/IconButton';
+
+import { deleteAlertCondition } from 'services/AlertsSystem/actions';
 
 import classes from './classes';
 
@@ -29,8 +31,8 @@ class AlertCard extends React.Component {
     this.showForm();
   }
 
-  handleExpandChange = (expanded) => {
-    this.setState({ expanded });
+  onDelete = () => {
+    this.props.deleteAlertCondition(this.props.alert.id);
   }
 
   showForm = () => {
@@ -43,6 +45,10 @@ class AlertCard extends React.Component {
     this.setState({
       showForm: false,
     });
+  }
+
+  handleExpandChange = (expanded) => {
+    this.setState({ expanded });
   }
 
   render() {
@@ -82,7 +88,7 @@ class AlertCard extends React.Component {
                     (<div>
                       <div className={css(classes.sectionBtnsWrapper)}>
                         <IconButton
-                          tooltip={ "edit" }
+                          tooltip={'edit'}
                           onClick={this.onEdit}
                           key="editBtn"
                         >
@@ -91,15 +97,16 @@ class AlertCard extends React.Component {
                             hoverColor={tinycolor(this.context.muiTheme.palette.primary1Color).brighten()}
                           />
                         </IconButton>
-                        {/* <IconButton
-                        tooltip={ "delete" }
-                        onClick={this.onEdit}
-                        key="delBtn"
-                      >
-                        <DeletIcon color={this.context.muiTheme.palette.primary1Color}
-                          hoverColor={this.context.muiTheme.palette.primary3Color}
-                        />
-                      </IconButton>*/}
+                        {/*<IconButton
+                          tooltip={'delete'}
+                          onClick={this.onDelete}
+                          key="delBtn"
+                        >
+                          <DeletIcon
+                            color={this.context.muiTheme.palette.primary1Color}
+                            hoverColor={this.context.muiTheme.palette.primary3Color}
+                          />
+                        </IconButton>*/}
                       </div>
                     </div>
                 )}
@@ -115,15 +122,14 @@ class AlertCard extends React.Component {
 AlertCard.propTypes = {
   alert: React.PropTypes.object.isRequired,
   renderForm: React.PropTypes.func.isRequired,
+  deleteAlertCondition: React.PropTypes.func.isRequired,
 };
 AlertCard.contextTypes = {
   muiTheme: React.PropTypes.object.isRequired,
 };
-// const mapState = (state) => ({
-//   // alerts: getAlertConditions(state),
-//   // alertById: getAlertConditionByIdFunc(state),
-// });
+const mapState = () => ({});
+const mapDispatch = {
+  deleteAlertCondition,
+};
 
-// export default connect(mapState, mapDispatch)(pure(SpeedAlert));
-
-export default pure(AlertCard);
+export default connect(mapState, mapDispatch)(pure(AlertCard));

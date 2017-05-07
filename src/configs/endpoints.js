@@ -204,9 +204,14 @@ const endpoints = {
     method: 'post',
     apiVersion: 1.120,
   },
-  updateAlertConditions: (id) => ({
+  updateAlertConditions: id => ({
     url: `alert-conditions/${id}`,
     method: 'put',
+    apiVersion: 1.120,
+  }),
+  deleteAlertConditions: id => ({
+    url: `alert-conditions/${id}`,
+    method: 'delete',
     apiVersion: 1.120,
   }),
   getAlertConditions: {
@@ -214,7 +219,7 @@ const endpoints = {
     method: 'get',
     apiVersion: 1.120,
   },
-  getVehicleAlertConditions: (id) => ({
+  getVehicleAlertConditions: id => ({
     url: `vehicles/${id}/alert-conditions`,
     method: 'get',
     apiVersion: 1.120,
@@ -224,7 +229,7 @@ const endpoints = {
     method: 'get',
     apiVersion: 1.120,
   }),
-  postVehicleAlertConditions: (id) => ({
+  postVehicleAlertConditions: id => ({
     url: `vehicles/${id}/alert-conditions`,
     method: 'post',
     apiVersion: 1.120,
