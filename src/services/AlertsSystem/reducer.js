@@ -29,8 +29,8 @@ export const jrnGetLastOpenedTS = state =>
 export const jrnGetLatestRecievedTS = state =>
   R.compose(fromJournalReducer.jrnGetLatestRecievedTS, getJournalSlice)(state);
 
-export const jrnIsWating = state =>
-  R.compose(fromJournalReducer.jrnIsWating, getJournalSlice)(state);
+export const jrnIsWaiting = state =>
+  R.compose(fromJournalReducer.jrnIsWaiting, getJournalSlice)(state);
 
 export const jrnNewCount = state =>
   R.compose(fromJournalReducer.jrnNewCount, getJournalSlice)(state);

@@ -54,7 +54,7 @@ export const jrnGetLastOpenedTS = state =>
 export const jrnGetLatestRecievedTS = state =>
   state.get('lastRecievedTS');
 
-export const jrnIsWating = state =>
+export const jrnIsWaiting = state =>
   state.get('isWaiting');
 
 export const jrnNewCount = state =>

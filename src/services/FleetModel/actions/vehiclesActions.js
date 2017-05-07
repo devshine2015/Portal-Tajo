@@ -33,7 +33,7 @@ export const setSelectedVehicleId = (id) => ({
   id,
 });
 
-export const fetchVehicles = () => (dispatch, getState) => {
+export const fetchVehicles = () => (dispatch) => {
   const urls = [{
     ...endpoints.getVehicles,
   }, {
@@ -52,7 +52,7 @@ export const fetchVehicles = () => (dispatch, getState) => {
     if (isMwa) {
       dispatch(mwaFetchJobs());
     }
-    dispatch(journalActions.fetchAlertsHistory(getState));
+    dispatch(journalActions.fetchAlertsHistory());
   })
   .catch(e => {
     console.error(e);
