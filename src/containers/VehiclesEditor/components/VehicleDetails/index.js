@@ -272,13 +272,8 @@ class VehicleDetails extends React.Component {
 }
 
 VehicleDetails.propTypes = {
-<<<<<<< HEAD
   // disabled: React.PropTypes.bool.isRequired,
   // isLoading: React.PropTypes.bool.isRequired,
-=======
-  disabled: React.PropTypes.bool.isRequired,
-  isLoading: React.PropTypes.bool.isRequired,
->>>>>>> fix(VEhicleDetails): Use props.details.id, but not props.id
   details: detailsShape.isRequired,
   onSave: React.PropTypes.func.isRequired,
   onCancel: React.PropTypes.func.isRequired,

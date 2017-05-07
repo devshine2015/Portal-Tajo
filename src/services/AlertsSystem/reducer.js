@@ -1,28 +1,17 @@
-import { List, Map, fromJS } from 'immutable';
-import {
-  ALRT_CONDITON_ADD,
-  ALRT_CONDITON_DEL,
-  ALRT_EVENTS_ADD,
-  ALRT_VEHICLE_ADD,
-} from './actions';
+import { Map, fromJS } from 'immutable';
+import { conditionsActions } from './actions';
 
 const initialState = fromJS({
-  types: [],
   conditions: new Map(), // map by ids
-  events: [], // what happened, pulling this periodicaly from backEnd
-  vehicleAlerts: new Map(), // map - [alertIds] by VehIds
+  vehicleConditions: new Map(), // map - [alertIds] by VehIds
 });
 
 function alertsReducer(state = initialState, action) {
   switch (action.type) {
-    case ALRT_CONDITON_ADD:
-      return state.setIn(['conditions', action.alertObj.id], action.alertObj);
-    case ALRT_CONDITON_DEL:
-      return state.deleteIn(['conditions', action.alertId]);
-    case ALRT_VEHICLE_ADD:
-      return state.setIn(['vehicleAlerts', action.vehicleId], action.alertsList);
-    case ALRT_EVENTS_ADD:
-      return state.set('events', new List(action.alertEvents));
+    case conditionsActions.ALRT_CONDITON_SET:
+      return state.setIn(['conditions', action.condition.id], action.condition);
+    case conditionsActions.ALRT_VEHICLE_SET:
+      return state.setIn(['vehicleConditions', action.vehicleId], action.conditions);
     default:
       return state;
   }
@@ -36,7 +25,7 @@ const _alertsRx = state =>
 export const getAlertTypes = state =>
   _alertsRx(state).get('types').toJS();
 
-export const getAlertConditions = state => {
+export const getAlertConditions = (state) => {
   const imObj = _alertsRx(state).get('conditions');
   if (imObj.size === 0) {
     return [];
@@ -46,7 +35,7 @@ export const getAlertConditions = state => {
   return aList;
 };
 
-export const getAlertConditionByIdFunc = state => id => {
+export const getAlertConditionByIdFunc = state => (id) => {
   const imObj = _alertsRx(state).get('conditions');
   if (imObj.size === 0) {
     return null;
@@ -58,8 +47,8 @@ export const getAlertConditionByIdFunc = state => id => {
   return theObj;
 };
 
-export const getVehicleAlertConditions = state => vehicleId => {
-  const vehAlerts = _alertsRx(state).getIn(['vehicleAlerts', vehicleId]);
+export const getVehicleAlertConditions = state => (vehicleId) => {
+  const vehAlerts = _alertsRx(state).getIn(['vehicleConditions', vehicleId]);
   if (vehAlerts === undefined) {
     return null;
   }
