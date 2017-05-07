@@ -3,7 +3,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
 import { makeAlertConditionBackEndObject } from 'services/AlertsSystem/alertConditionHelper';
-import { createAlertConditions, updateAlertCondition } from 'services/AlertsSystem/actions';
+import { conditionsActions } from 'services/AlertsSystem/actions';
 import { showSnackbar } from 'containers/Snackbar/actions';
 
 import { TextField, Paper } from 'material-ui';
@@ -142,8 +142,8 @@ SpeedForm.propTypes = {
 const mapState = null;
 
 const mapDispatch = {
-  createAlertConditions,
-  updateAlertCondition,
+  createAlertConditions: conditionsActions.createAlertConditions,
+  updateAlertCondition: conditionsActions.updateAlertCondition,
   showSnackbar,
 };
 

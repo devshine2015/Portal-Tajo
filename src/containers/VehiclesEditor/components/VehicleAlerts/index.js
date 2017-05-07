@@ -5,10 +5,7 @@ import { Avatar, SelectField, MenuItem } from 'material-ui';
 import { getVehicleAlertConditions,
     getAlertConditionByIdFunc, getAlertConditions } from 'services/AlertsSystem/reducer';
 
-import Layout from 'components/Layout';
-import FormButtons from 'components/Controls/FormButtons';
-
-import { fetchVehicleAlertConditions, postVehicleAlertConditions } from 'services/AlertsSystem/actions';
+import { conditionsActions } from 'services/AlertsSystem/actions';
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import { isAlerts } from 'configs';
 import { ifArraysEqual } from 'utils/arrays';
@@ -80,12 +77,8 @@ const mapStateA = state => ({
   alertById: getAlertConditionByIdFunc(state),
   alertConditions: getAlertConditions(state),
 });
-const mapDispatchA = {
-  fetchVehicleAlertConditions,
-  postVehicleAlertConditions,
-};
 
-const AlertOfKindSelector = connect(mapStateA, mapDispatchA)(pure(AlertOfKindSelectorFn));
+const AlertOfKindSelector = connect(mapStateA)(pure(AlertOfKindSelectorFn));
 
 
 class VehicleAlerts extends React.Component {
@@ -220,8 +213,8 @@ const mapState = state => ({
   alertConditions: getAlertConditions(state),
 });
 const mapDispatch = {
-  fetchVehicleAlertConditions,
-  postVehicleAlertConditions,
+  fetchVehicleAlertConditions: conditionsActions.fetchVehicleAlertConditions,
+  postVehicleAlertConditions: conditionsActions.postVehicleAlertConditions,
 };
 
 const PureVehicleAlerts = pure(VehicleAlerts);

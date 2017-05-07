@@ -21,7 +21,7 @@
 
 import endpoints from 'configs/endpoints';
 import { api } from 'utils/api';
-import { makeLocalAlertCondition } from './alertConditionHelper';
+import { makeLocalAlertCondition } from '../alertConditionHelper';
 
 export const ALRT_TYPES_SET = 'alrt/typesSet';
 export const ALRT_CONDITON_ADD = 'alrt/conditionAdd';
