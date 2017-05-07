@@ -6,7 +6,7 @@ import tinycolor from 'tinycolor2';
 import { VelocityTransitionGroup } from 'velocity-react';
 import { css } from 'aphrodite/no-important';
 import { Card, CardHeader, CardText } from 'material-ui/Card';
-// import DeletIcon from 'material-ui/svg-icons/action/delete-forever';
+import DeletIcon from 'material-ui/svg-icons/action/delete-forever';
 // import EditIcon from 'material-ui/svg-icons/maps/edit-location';
 import EditIcon from 'material-ui/svg-icons/image/edit';
 import IconButton from 'material-ui/IconButton';
@@ -97,7 +97,7 @@ class AlertCard extends React.Component {
                             hoverColor={tinycolor(this.context.muiTheme.palette.primary1Color).brighten()}
                           />
                         </IconButton>
-                        {/*<IconButton
+                        <IconButton
                           tooltip={'delete'}
                           onClick={this.onDelete}
                           key="delBtn"
@@ -106,7 +106,7 @@ class AlertCard extends React.Component {
                             color={this.context.muiTheme.palette.primary1Color}
                             hoverColor={this.context.muiTheme.palette.primary3Color}
                           />
-                        </IconButton>*/}
+                        </IconButton>
                       </div>
                     </div>
                 )}
