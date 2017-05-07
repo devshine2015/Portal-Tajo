@@ -4,8 +4,6 @@ const shape = PropTypes.shape;
 const string = PropTypes.string;
 
 const phrases = {
-  save: 'Save',
-  cancel: 'Cancel',
   home_depot: 'Is home depot',
   location_name: 'Location Name',
   address: 'Address',
@@ -15,8 +13,6 @@ const phrases = {
 };
 
 export const phrasesShape = shape({
-  save: string.isRequired,
-  cancel: string.isRequired,
   home_depot: string.isRequired,
   location_name: string.isRequired,
   address: string.isRequired,

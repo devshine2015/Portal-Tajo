@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
 import Checkbox from 'material-ui/Checkbox';
-import Form from 'components/Form';
+import Layout from 'components/Layout';
+import FormButtons from 'components/Controls/FormButtons';
+
 import { makeBackendGF,
     toggleDepotForGF } from 'services/FleetModel/utils/gfHelpers';
 import { gfEditGetSubject } from './reducer';
@@ -14,10 +14,7 @@ import { createGF } from 'services/FleetModel/actions/gfActions';
 import { showSnackbar } from 'containers/Snackbar/actions';
 import { translate } from 'utils/i18n';
 
-import styles from './styles.css';
 import phrases, { phrasesShape } from './PropTypes';
-
-const FORM = 'editor';
 
 class GFEditor extends React.Component {
 
@@ -54,60 +51,42 @@ class GFEditor extends React.Component {
 
   render() {
     return (
-      <div className={styles.editor}>
-        <Form
-          name={FORM}
-          onSubmit={this.onSubmit}
-        >
-          <TextField
-            fullWidth
-            name="name"
-            onChange={this.onChange}
-            floatingLabelText={ this.props.translations.location_name }
-            value={this.props.subjectGF.name}
-          />
-          <TextField
-            fullWidth
-            name="address"
-            onChange={this.onChange}
-            floatingLabelText={ this.props.translations.address }
-            value={this.props.subjectGF.address}
-          />
+      <Layout.Content>
+        <TextField
+          fullWidth
+          name="name"
+          onChange={this.onChange}
+          floatingLabelText={this.props.translations.location_name}
+          value={this.props.subjectGF.name}
+        />
+        <TextField
+          fullWidth
+          name="address"
+          onChange={this.onChange}
+          floatingLabelText={this.props.translations.address}
+          value={this.props.subjectGF.address}
+        />
 
-          { this.props.subjectGF.isPolygon ? null :
-          <TextField
-            fullWidth
-            name="radius"
-            onChange={this.onChange}
-            floatingLabelText={ this.props.translations.radius }
-            value={this.props.subjectGF.radius}
-          />
+        { this.props.subjectGF.isPolygon ? null :
+        <TextField
+          fullWidth
+          name="radius"
+          onChange={this.onChange}
+          floatingLabelText={this.props.translations.radius}
+          value={this.props.subjectGF.radius}
+        />
           }
-
-          { true ? null : (
-            <Checkbox
-              label={ this.props.translations.home_depot }
-              onCheck={this.onCheckDepot}
-            />
+        { true ? null : (
+          <Checkbox
+            label={this.props.translations.home_depot}
+            onCheck={this.onCheckDepot}
+          />
           )}
-
-          <div className={styles.buttons}>
-            <FlatButton
-              className={styles.buttons__button}
-              onClick={this.onCancel}
-              label={ this.props.translations.cancel }
-            />
-            <RaisedButton
-              className={styles.buttons__button}
-              onClick={this.onSubmit}
-              label={ this.props.translations.save }
-              type="submit"
-              primary
-            />
-          </div>
-
-        </Form>
-      </div>
+        <FormButtons
+          onSubmit={this.onSubmit}
+          onCancel={this.onCancel}
+        />
+      </Layout.Content>
     );
   }
 }
@@ -126,7 +105,7 @@ GFEditor.defaultProps = {
   subjectGF: {},
 };
 
-const mapState = (state) => ({
+const mapState = state => ({
   subjectGF: gfEditGetSubject(state),
 });
 const mapDispatch = {
