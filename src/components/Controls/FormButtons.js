@@ -15,6 +15,7 @@ const FormButtons = ({
   submitLabel,
   cancelLabel,
   rootStyles,
+  isDisabled,
 }, context) => (
   <div
     className={css(classes.form_buttons)}
@@ -24,12 +25,13 @@ const FormButtons = ({
       label={context.translator.getTranslation(cancelLabel)}
       type="reset"
       onClick={onCancel}
+      disabled={isDisabled}
     />
     <RaisedButton
       onClick={onSubmit}
       label={context.translator.getTranslation(submitLabel)}
       type="submit"
-      disabled={submitDisabled}
+      disabled={submitDisabled || isDisabled}
       primary
     />
   </div>
@@ -45,6 +47,7 @@ FormButtons.propTypes = {
   submitLabel: React.PropTypes.string,
   cancelLabel: React.PropTypes.string,
   submitDisabled: React.PropTypes.bool,
+  isDisabled: React.PropTypes.bool,
   rootStyles: React.PropTypes.object,
 };
 
@@ -53,6 +56,7 @@ FormButtons.defaultProps = {
   submitLabel: 'save',
   cancelLabel: 'cancel',
   submitDisabled: false,
+  isDisabled: false,
 };
 
 export default FormButtons;

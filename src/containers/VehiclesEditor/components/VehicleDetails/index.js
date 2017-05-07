@@ -32,6 +32,7 @@ function setVehicleState(props) {
     deviceId: props.details.deviceId || '',
     isMiles: false,
     marker: props.details.marker,
+    isTouched: false,
   });
 }
 
@@ -88,11 +89,15 @@ class VehicleDetails extends React.Component {
     });
 
     this.props.onSave(toSave, nameChanged, device);
+    this.setState({
+      isTouched: false,
+    });
   }
 
   onIsMilesChange = (e, isCheked) => {
     this.setState({
       isMiles: isCheked,
+      isTouched: true,
     });
   }
 
@@ -104,18 +109,21 @@ class VehicleDetails extends React.Component {
 
     this.setState({
       [field]: value,
+      isTouched: true,
     });
   }
 
   onKindChange = (e, key, value) => {
     this.setState({
       kind: value,
+      isTouched: true,
     });
   }
 
   onMarkerChange = (e, key, value) => {
     this.setState({
       marker: value,
+      isTouched: true,
     });
   }
 
@@ -129,11 +137,15 @@ class VehicleDetails extends React.Component {
   resetChanges = () => {
     this.setState(setVehicleState(this.props));
     this.props.onCancel();
+    this.setState({
+      isTouched: false,
+    });
   }
 
   updateDeviceId = (deviceId) => {
     this.setState({
       deviceId,
+      isTouched: true,
     });
   }
 
@@ -214,6 +226,7 @@ class VehicleDetails extends React.Component {
               onSubmit={this.onSubmit}
               onCancel={this.resetChanges}
               cancelLabel={'reset'}
+              isDisabled={!this.state.isTouched}
             />
           </Layout.Content>
         </Layout.Section>

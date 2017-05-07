@@ -95,6 +95,7 @@ class VehicleAlerts extends React.Component {
       isAdding: false,
       isLoading: true,
       alerts: [],
+      isTouched: false,
     };
     this.fetchAlerts(props.vehicleId);
   }
@@ -121,19 +122,19 @@ class VehicleAlerts extends React.Component {
     }
     const anotherAlert = this.props.alertById(value);
     if (anotherAlert !== null) {
-      this.setState({ alerts: nextAlerts.concat(anotherAlert.id) });
+      this.setState({ alerts: nextAlerts.concat(anotherAlert.id), isTouched: true });
     } else {
-      this.setState({ alerts: nextAlerts.slice(0) });
+      this.setState({ alerts: nextAlerts.slice(0), isTouched: true });
     }
   }
   onRemoveClick = (alertId) => {
-    this.setState({ alerts: this.state.alerts.filter(el => (el !== alertId)) });
+    this.setState({ alerts: this.state.alerts.filter(el => (el !== alertId)), isTouched: true });
   }
   onAddClick = () => {
     this.setState({ isAdding: !this.state.isAdding });
   }
   doAddAlert = (alertId) => {
-    this.setState({ alerts: this.state.alerts.concat([alertId]) });
+    this.setState({ alerts: this.state.alerts.concat([alertId]), isTouched: true });
   }
   saveAlerts = () => {
     this.props.postVehicleAlertConditions(this.props.vehicleId, this.state.alerts);
@@ -141,6 +142,7 @@ class VehicleAlerts extends React.Component {
   resetChange = () => {
     this.setState({
       alerts: this.props.getVehicleAlerts(this.props.vehicleId),
+      isTouched: false,
     });
   }
   fetchAlerts = (vehicleId) => {
@@ -195,6 +197,7 @@ class VehicleAlerts extends React.Component {
             onSubmit={this.saveAlerts}
             onCancel={this.resetChange}
             cancelLabel={'reset'}
+            isDisabled={!this.state.isTouched}
           />
         </Layout.Content>
       </Layout.Section>
