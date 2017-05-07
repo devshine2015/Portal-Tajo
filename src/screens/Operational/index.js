@@ -49,7 +49,7 @@ class Operational extends React.Component {
 
   componentWillUnmount() {
     socketActions.closeFleetSocket();
-    // TODO: keep local tick alife all the time - actiual in any screen
+    // TODO: keep local tick alife all the time - actual in any screen
     localTickActions.stopLocalTick();
   }
 
@@ -72,17 +72,16 @@ class Operational extends React.Component {
         <FixedContent containerClassName={styles.fixedContent}>
           <div className={styles.row}>
             <TheMap >
+              {mwaJobs}
+              {mapGFs}
               {mapVehicles}
               {mapVehiclesIcons}
-              {mapGFs}
-              {mwaJobs}
               <RouteFinder />
               <NearestFinder />
               <RoutePath />
               <GFEditorMapComponent />
               <CtxtOpenGoogleMap />
             </TheMap>
-            {/*<Journal isPositioned />*/}
           </div>
         </FixedContent>
       </div>
@@ -100,7 +99,7 @@ Operational.propTypes = {
   startLocalTick: React.PropTypes.func.isRequired,
 };
 
-const mapState = (state) => ({
+const mapState = state => ({
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
   gfs: fromFleetReducer.getGFsExSorted(state),
   mwaJobs: getMWAJobs(state),
