@@ -1,57 +1,18 @@
-import { Map, fromJS } from 'immutable';
-import { conditionsActions } from './actions';
+import { combineReducers } from 'redux-immutable';
+import R from 'ramda';
+import conditionsReducer, * as fromConditionsReducer from './reducers/conditionsReducer';
 
-const initialState = fromJS({
-  conditions: new Map(), // map by ids
-  vehicleConditions: new Map(), // map - [alertIds] by VehIds
+export default combineReducers({
+  conditions: conditionsReducer,
 });
 
-function alertsReducer(state = initialState, action) {
-  switch (action.type) {
-    case conditionsActions.ALRT_CONDITON_SET:
-      return state.setIn(['conditions', action.condition.id], action.condition);
-    case conditionsActions.ALRT_VEHICLE_SET:
-      return state.setIn(['vehicleConditions', action.vehicleId], action.conditions);
-    default:
-      return state;
-  }
-}
+const getConditionsSlice = state => state.getIn(['alerts', 'conditions']);
 
-export default alertsReducer;
+export const getAlertConditions = state =>
+  R.compose(fromConditionsReducer.getAlertConditions, getConditionsSlice)(state);
 
-const _alertsRx = state =>
-  state.get('alerts');
+export const getAlertConditionByIdFunc = state =>
+  R.compose(fromConditionsReducer.getAlertConditionByIdFunc, getConditionsSlice)(state);
 
-export const getAlertTypes = state =>
-  _alertsRx(state).get('types').toJS();
-
-export const getAlertConditions = (state) => {
-  const imObj = _alertsRx(state).get('conditions');
-  if (imObj.size === 0) {
-    return [];
-  }
-  const jsObj = imObj.toJS();
-  const aList = Object.values(jsObj);
-  return aList;
-};
-
-export const getAlertConditionByIdFunc = state => (id) => {
-  const imObj = _alertsRx(state).get('conditions');
-  if (imObj.size === 0) {
-    return null;
-  }
-  const theObj = imObj.get(id);
-  if (theObj === undefined) {
-    return null;
-  }
-  return theObj;
-};
-
-export const getVehicleAlertConditions = state => (vehicleId) => {
-  const vehAlerts = _alertsRx(state).getIn(['vehicleConditions', vehicleId]);
-  if (vehAlerts === undefined) {
-    return null;
-  }
-  return vehAlerts;
-};
-
+export const getVehicleAlertConditions = state =>
+  R.compose(fromConditionsReducer.getVehicleAlertConditions, getConditionsSlice)(state);
