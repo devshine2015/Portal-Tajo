@@ -1,5 +1,5 @@
 import { fromJS } from 'immutable';
-import * as jrnActions from 'containers/Journal/actions';
+import { journalActions } from '../actions';
 
 const _LOCAL_JOURNAL_SIZE_LIMIT_ = 300;
 
@@ -14,16 +14,16 @@ const initialState = fromJS({
 
 function journalReducer(state = initialState, action) {
   switch (action.type) {
-    case jrnActions.JR_OPEN:
+    case journalActions.JR_OPEN:
       if (!action.doOpen) {
         return state.set('lastOpenedTS', Date.now())
             .set('newEntriesCount', 0)
             .set('isOpened', action.doOpen);
       }
       return state.set('isOpened', action.doOpen);
-    case jrnActions.JR_SET_WAITING:
+    case journalActions.JR_SET_WAITING:
       return state.set('isWaiting', true);
-    case jrnActions.JR_ADD_ENTRIES: {
+    case journalActions.JR_ADD_ENTRIES: {
       const newCount = action.newEntriesList.length;
       let nextState = state.set('lastRecievedTS', action.latestRecievedTS)
                       .set('isWaiting', false);

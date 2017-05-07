@@ -1,15 +1,15 @@
 import { api } from 'utils/api';
+import { isMwa } from 'configs';
 import endpoints from 'configs/endpoints';
+import { mwaFetchJobs } from 'services/MWA/actions';
+import { journalActions } from 'services/AlertsSystem/actions';
+import { filterProcessedListByName } from '../utils/filtering';
+import { getProcessedVehicles } from '../reducer';
 import {
   makeLocalVehicles,
   makeLocalVehicle,
   sortVehicles,
 } from '../utils/vehicleHelpers';
-import { fetchAlertsHistory } from 'containers/Journal/actions';
-import { filterProcessedListByName } from '../utils/filtering';
-import { getProcessedVehicles } from '../reducer';
-import { mwaFetchJobs } from 'services/MWA/actions';
-import { isMwa } from 'configs';
 
 export const FLEET_MODEL_VEHICLES_SET = 'portal/services/FLEET_MODEL_VEHICLES_SET';
 export const FLEET_MODEL_VEHICLES_FILTER = 'portal/services/FLEET_MODEL_VEHICLES_FILTER';
@@ -52,7 +52,7 @@ export const fetchVehicles = () => (dispatch, getState) => {
     if (isMwa) {
       dispatch(mwaFetchJobs());
     }
-    dispatch(fetchAlertsHistory(getState));
+    dispatch(journalActions.fetchAlertsHistory(getState));
   })
   .catch(e => {
     console.error(e);

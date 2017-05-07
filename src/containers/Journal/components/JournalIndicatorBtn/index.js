@@ -1,20 +1,16 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-
+import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
+import HistoryIcon from 'material-ui/svg-icons/action/view-list';
 import { FlatButton } from 'material-ui';
-import { jrnOpen } from 'containers/Journal/actions';
+import { journalActions } from 'services/AlertsSystem/actions';
 import {
   jrnIsOpened,
   jrnNewCount,
 } from 'services/AlertsSystem/reducer';
-import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
-// import HistoryIcon from 'material-ui/svg-icons/action/history';
-// import HistoryIcon from 'material-ui/svg-icons/action/alarm';
-import HistoryIcon from 'material-ui/svg-icons/action/view-list';
 import theme from 'configs/theme';
 import { isAlerts } from 'configs';
-
 import styles from './styles.css';
 
 const STYLES = {
@@ -73,7 +69,7 @@ const mapState = state => ({
   newCount: jrnNewCount(state),
 });
 const mapDispatch = {
-  openJournal: jrnOpen,
+  openJournal: journalActions.jrnOpen,
 };
 
 const PureJournalBtn = pure(JournalBtn);

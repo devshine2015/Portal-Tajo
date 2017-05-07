@@ -1,12 +1,10 @@
 import React from 'react';
 import pure from 'recompose/pure';
-import { connect } from 'react-redux';
-import { jrnOpen } from 'containers/Journal/actions';
 import { Toggle } from 'material-ui';
-
 import IconButton from 'material-ui/IconButton';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
-
+import { connect } from 'react-redux';
+import { journalActions } from 'services/AlertsSystem/actions';
 import styles from './styles.css';
 
 const tglStyle = {
@@ -69,7 +67,7 @@ JournalBar.propTypes = {
 
 const mapState = null;
 const mapDispatch = {
-  openJournal: jrnOpen,
+  openJournal: journalActions.jrnOpen,
 };
 
 const jp = pure(JournalBar);
