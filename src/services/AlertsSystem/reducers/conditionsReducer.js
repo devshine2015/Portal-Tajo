@@ -13,6 +13,8 @@ function alertsReducer(state = initialState, action) {
       return state.setIn(['conditions', action.condition.id], action.condition);
     case conditionsActions.ALRT_VEHICLE_SET:
       return state.setIn(['vehicleConditions', action.vehicleId], action.conditions);
+    case conditionsActions.ALRT_CONDITON_DEL:
+      return state.deleteIn(['conditions', action.alertId]);
     default:
       return state;
   }

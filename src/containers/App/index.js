@@ -24,7 +24,7 @@ import { AuthProvider, auth } from 'utils/auth';
 import { auth0Api } from 'utils/api';
 import phrases, { locales } from 'configs/phrases';
 import { setReportsMWA } from 'containers/Report/actions/reportActions';
-import { fetchAlertConditions } from 'services/AlertsSystem/actions';
+import { conditionsActions } from 'services/AlertsSystem/actions';
 
 // need this for global styling
 require('./styles.css');
@@ -202,7 +202,7 @@ const mapDispatch = {
   fetchAccessTokens,
   fetchRolesAndPermissions,
   fetchFleet: commonFleetActions.fetchFleet,
-  fetchAlertConditions,
+  fetchAlertConditions: conditionsActions.fetchAlertConditions,
   setReportsMWA,
 };
 

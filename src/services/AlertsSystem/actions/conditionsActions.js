@@ -25,6 +25,7 @@ import { makeLocalAlertCondition } from '../alertConditionHelper';
 
 export const ALRT_CONDITON_SET = 'alrt/conditionSet';
 export const ALRT_VEHICLE_SET = 'alrt/vehAlertConditionsSet';
+export const ALRT_CONDITON_DEL = 'alrt/conditionDel';
 
 export const createAlertConditions = (newAlerts) => (dispatch) =>
   _createAlertConditionRequest(newAlerts, dispatch);
@@ -120,6 +121,24 @@ function _updateAlertRequest(alertObject, dispatch) {
     return Promise.resolve();
   }, error => Promise.reject(error));
 }
+
+/**
+ * DELETE - remove existing Alert
+ **/
+function _deleteAlertRequest(alertId, dispatch) {
+  const { url, method } = endpoints.deleteAlertConditions(alertId);
+
+  return api[method](url, {
+  }).then(() => {
+    dispatch(_conditionDelete(alertId));
+    return Promise.resolve();
+  }, error => Promise.reject(error));
+}
+
+const _conditionDelete = alertId => ({
+  type: ALRT_CONDITON_DEL,
+  alertId,
+});
 
 const _conditionSet = condition => ({
   type: ALRT_CONDITON_SET,
