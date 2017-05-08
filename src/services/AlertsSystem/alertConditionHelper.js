@@ -8,18 +8,18 @@ const safeGetFromMeta = (originObject, propName, defValue) => (
                 defValue : originObject.meta[propName]
 );
 
-const safeGetGFData = (originObject, getState) => {
+const safeGetGFData = (originObject, state) => {
   if (originObject.gfId === undefined) {
     return { gfId: '', gfName: '' };
   }
-  const theGF = getGFByIdFunc(getState())(originObject.gfId);
+  const theGF = getGFByIdFunc(state)(originObject.gfId);
   if (theGF === null) {
     return { gfId: originObject.gfId, gfName: '_DELETED_GF_' };
   }
   return { gfId: originObject.gfId, gfName: theGF.name };
 };
 
-export const makeLocalAlertCondition = (originObject, getState) => (
+export const makeLocalAlertCondition = (originObject, state) => (
   { id: originObject.id,
     name: safeGetFromMeta(originObject, 'name', 'No Name'),
     kind: originObject.kind,
@@ -30,7 +30,7 @@ export const makeLocalAlertCondition = (originObject, getState) => (
     // gfId:
     // gfName:
     // ^-- probably should store ref to GF object instead?
-    ...safeGetGFData(originObject, getState),
+    ...safeGetGFData(originObject, state),
     onEnter: safeGetFromMeta(originObject, 'onEnter', false) === 'true',
     onExit: safeGetFromMeta(originObject, 'onExit', false) === 'true',
     driveTimeSec: originObject.driveTimeSec !== undefined ? originObject.driveTimeSec : 0,
