@@ -11,7 +11,7 @@ import { getPathToGlobalContext } from 'services/Global/reducer';
 import {
   makeGetVehicles,
   makeGetFilterString,
-} from './selectors';
+} from '../../selectors';
 
 class AlertsVehiclesList extends React.Component {
 
