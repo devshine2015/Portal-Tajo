@@ -49,7 +49,8 @@ function renderTitle(title) {
   if (isMwa) {
     return (
       <div className={styles.title}>
-        <img src={mwaLogo} alt="mwa logo" height="60" width="184" />
+        {/*<img src={mwaLogo} alt="mwa logo" height="60" width="184" />*/}
+        <img src={mwaLogo} alt="mwa logo" height="60" width="76" />
       </div>
     );
   }
