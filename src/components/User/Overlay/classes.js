@@ -8,6 +8,7 @@ const classes = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+    zIndex: 1,
   },
 
   overlay__inn: {
