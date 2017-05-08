@@ -57,7 +57,7 @@ class MWAJobMarker extends React.Component {
     } else if (isMyVehicleSelected) {
       this.theMarker.setZIndexOffset(2000);
     } else {
-      this.theMarker.setZIndexOffset(1000);
+      this.theMarker.setZIndexOffset(0);
     }
   }
 
