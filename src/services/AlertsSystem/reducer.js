@@ -9,7 +9,7 @@ export default combineReducers({
 });
 
 const getConditionsSlice = state => state.getIn(['alerts', 'conditions']);
-const getJournalSlice = state => state.getIn(['alerts', 'journal']);
+export const getJournalSlice = state => state.getIn(['alerts', 'journal']);
 
 export const getAlertConditions = state =>
   R.compose(fromConditionsReducer.getAlertConditions, getConditionsSlice)(state);

@@ -1,28 +1,27 @@
 import React from 'react';
-// import { getAlertByKind } from 'services/AlertsSystem/alertKinds';
 
 const TimelineEvent = ({
-  // ts,
-  vehicleId,
-  // conditionId,
-  // temp,
+  // eventTS,
+  ownerName,
+  eventKind,
+  eventName,
 }) => {
   return (
     <div className="wrapper">
-      { vehicleId }
+      { ownerName }
+      { eventKind }
+      { eventName }
     </div>
   );
 };
 
 TimelineEvent.propTypes = {
-  // ts: React.PropTypes.string.isRequired,
-  vehicleId: React.PropTypes.string.isRequired,
-  // conditionId: React.PropTypes.string.isRequired,
-  // temp: React.PropTypes.number,
+  eventTS: React.PropTypes.number.isRequired,
+  eventKind: React.PropTypes.string.isRequired,
+  eventName: React.PropTypes.string.isRequired,
+  ownerName: React.PropTypes.string.isRequired,
 };
 
-TimelineEvent.defaultProps = {
-  // temp: undefined,
-};
+TimelineEvent.defaultProps = {};
 
 export default TimelineEvent;
