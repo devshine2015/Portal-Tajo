@@ -20,6 +20,9 @@ export const getAlertConditionByIdFunc = state =>
 export const getVehicleAlertConditions = state =>
   R.compose(fromConditionsReducer.getVehicleAlertConditions, getConditionsSlice)(state);
 
+export const getAlertConditionById = (state, id) =>
+  fromConditionsReducer.getAlertConditionById(getConditionsSlice(state), id);
+
 export const jrnIsOpened = state =>
   R.compose(fromJournalReducer.jrnIsOpened, getJournalSlice)(state);
 

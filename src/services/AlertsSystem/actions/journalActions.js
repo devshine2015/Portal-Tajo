@@ -1,11 +1,11 @@
 import moment from 'moment';
 import { api } from 'utils/api';
 import endpoints from 'configs/endpoints';
-import { getVehiclesExSorted } from 'services/FleetModel/reducer';
-import { getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
+import { getVehicleById } from 'services/FleetModel/reducer';
 import {
   jrnGetLatestRecievedTS,
   jrnIsWaiting,
+  getAlertConditionById,
 } from '../reducer';
 
 export const JR_OPEN = 'jrn/open';
@@ -47,8 +47,9 @@ function _fetchAlertsHistory(dispatch, getState) {
     type: JR_SET_WAITING,
   });
 
+  const state = getState();
   const backTimeLimit = moment().subtract(1, 'days').toDate().getTime();
-  const fromTicks = Math.max(backTimeLimit, jrnGetLatestRecievedTS(getState()));
+  const fromTicks = Math.max(backTimeLimit, jrnGetLatestRecievedTS(state));
   const dateFrom = new Date(fromTicks);
   const dateTo = moment().toDate();
   const nextLatestMS = dateTo.getTime();
@@ -64,28 +65,26 @@ function _fetchAlertsHistory(dispatch, getState) {
 
   api[method](url)
     .then(response => response.json())
-    .then(alertEvents => {
-      const vehicles = getVehiclesExSorted(getState());
-      const journalEntries = alertEvents.map((alertEntry) =>
-        createJournalEntry(alertEntry, vehicles)
+    .then((alertEvents) => {
+      const journalEntries = alertEvents.map(alertEntry =>
+        createJournalEntry(alertEntry, state),
       );
       dispatch(jrnAddEntries(journalEntries, nextLatestMS));
-    })
-    .catch(e => {
+    }, (e) => {
       console.error(e);
     });
 }
 
-function createJournalEntry(backEndAlertEvent, vehicles) {
-  const crossTime = backEndAlertEvent.ev.crossTime !== undefined ? backEndAlertEvent.ev.crossTime : 0;
-  const eventDate = new Date(backEndAlertEvent.ev.ts !== undefined ? backEndAlertEvent.ev.ts : crossTime);
-  const theVehicle = vehicles.length === 0 ? null : getVehicleById(backEndAlertEvent.ev.vehicleId, vehicles);
+function createJournalEntry(alertEvent, state) {
+  const crossTime = alertEvent.ev.crossTime !== undefined ? alertEvent.ev.crossTime : 0;
+  const eventDate = new Date(alertEvent.ev.ts !== undefined ? alertEvent.ev.ts : crossTime);
+  const theVehicle = getVehicleById(state, alertEvent.ev.vehicleId);
+  const condition = getAlertConditionById(state, alertEvent.ev.conditionId);
 
   return {
     eventTS: eventDate.getTime(),
-    eventKind: backEndAlertEvent.ev.conditionKind,
-    eventName: backEndAlertEvent.ev.meta.name,
-    ownerName: theVehicle === null ? 'loading cars..' : theVehicle.vehicle.original.name,
-    name: backEndAlertEvent.ev.meta.name,
+    eventKind: alertEvent.ev.conditionKind,
+    eventName: condition.name,
+    ownerName: !theVehicle ? 'loading cars..' : theVehicle.getIn(['original', 'name']),
   };
 }

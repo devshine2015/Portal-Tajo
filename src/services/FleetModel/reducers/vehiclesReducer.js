@@ -139,5 +139,5 @@ export const getAmounts = state => ({
   vehiclesAmount: getVehiclesAmount(state),
 });
 
-export const getVehiclleById = (state, id) =>
+export const getVehicleById = (state, id) =>
   state.getIn(['processedList', id]);

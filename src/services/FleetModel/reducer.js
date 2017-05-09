@@ -57,8 +57,8 @@ export const getDelayedAmount = state =>
   fromVehiclesReducer.getDelayedAmount(getPathToVehicles(state));
 export const getAmounts = state =>
   fromVehiclesReducer.getAmounts(getPathToVehicles(state));
-export const getVehiclleById = (state, id) =>
-  fromVehiclesReducer.getVehiclleById(getPathToVehicles(state), id);
+export const getVehicleById = (state, id) =>
+  fromVehiclesReducer.getVehicleById(getPathToVehicles(state), id);
 
 export const getGFs = state =>
   fromgfReducer.getGFs(locations(state));

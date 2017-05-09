@@ -52,3 +52,5 @@ export const getVehicleAlertConditions = state => (vehicleId) => {
   return vehAlerts;
 };
 
+export const getAlertConditionById = (state, id) =>
+  state.getIn(['conditions', id]);
