@@ -1,8 +1,22 @@
 import React from 'react';
+import { css } from 'aphrodite/no-important';
 import { connect } from 'react-redux';
 import { getJournalSlice } from 'services/AlertsSystem/reducer';
 import makeGetAlertEntries from './selector';
 import TimelineEvent from './TimelineEvent';
+import classes from './AlertsTimeline.classes';
+
+
+const Header = () => {
+  return (
+    <div className={css(classes.header)}>
+      <h3 className={css(classes.header__main)}>Historical Timeline</h3>
+      <p className={css(classes.header__sub)}>
+        Showing events for last 24 hours.
+      </p>
+    </div>
+  );
+};
 
 class AlertsTimeline extends React.Component {
 
@@ -14,9 +28,9 @@ class AlertsTimeline extends React.Component {
 
   render() {
     return (
-      <div className="wrapper">
-        <h3 className="header">Historical Timeline</h3>
-        <div className="timeline-wrapper">
+      <div className={css(classes.wrapper)}>
+        <Header />
+        <div className={css(classes.listWrapper)}>
           { this.renderEvents() }
         </div>
       </div>
