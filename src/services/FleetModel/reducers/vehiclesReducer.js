@@ -138,3 +138,6 @@ export const getAmounts = state => ({
   delayedAmount: getDelayedAmount(state),
   vehiclesAmount: getVehiclesAmount(state),
 });
+
+export const getVehiclleById = (state, id) =>
+  state.getIn(['processedList', id]);

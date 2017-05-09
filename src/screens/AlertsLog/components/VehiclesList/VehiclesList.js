@@ -1,5 +1,4 @@
 import React from 'react';
-// import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
@@ -11,7 +10,7 @@ import { getPathToGlobalContext } from 'services/Global/reducer';
 import {
   makeGetVehicles,
   makeGetFilterString,
-} from '../../selectors';
+} from './selectors';
 
 class AlertsVehiclesList extends React.Component {
 
