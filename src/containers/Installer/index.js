@@ -215,7 +215,7 @@ class Installer extends React.Component {
               onChange={this.updateState}
               onSelect={this.onDeviceSelect}
               hasError={this.state.noDeviceSelectedError}
-              forcedValue={this.state.haveToReset ? '' : null}
+              reset={this.state.haveToReset}
             />
             <TextField
               fullWidth

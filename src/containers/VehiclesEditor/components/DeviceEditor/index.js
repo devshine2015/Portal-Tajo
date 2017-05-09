@@ -86,19 +86,12 @@ class DeviceEditor extends React.Component {
     const canAttach = this.props.userPermittedTo[permissions.DEVICES_ATTACH];
     const canDetach = this.props.userPermittedTo[permissions.DEVICES_DETACH];
 
-    let forcedValue = null;
-
-    if (this.state.haveToReset && !hasDevice) {
-      forcedValue = '';
-    } else if (hasDevice) {
-      forcedValue = this.props.deviceId;
-    }
-
     const inputField = (
       <DeviceSelector
         disabled={!canAttach}
         canRefresh={false}
-        forcedValue={forcedValue}
+        value={this.props.deviceId}
+        reset={this.state.haveToReset}
         onSelect={this.onNewDeviceSelect}
       />
     );

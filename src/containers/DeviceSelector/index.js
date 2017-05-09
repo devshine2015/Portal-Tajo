@@ -80,26 +80,24 @@ class DeviceSelector extends React.Component {
     super(props);
 
     this.state = {
-      searchText: props.forcedValue,
+      searchText: '',
       isRefreshing: false,
     };
   }
 
-  // componentWillMount() {
-  //   if (this.props.devices.size === 0) {
-  //     this.props.fetchDevices();
-  //   }
-  // }
-
   componentWillReceiveProps(nextProps) {
-    if (nextProps.forcedValue !== null) {
-      this.setState({
-        searchText: nextProps.forcedValue,
-      });
+    if (!this.props.reset && nextProps.reset) {
+      if (!nextProps.value) {
+        this.updateSearchText('');
+      }
+    }
+
+    if (this.props.value !== nextProps.value) {
+      this.updateSearchText(nextProps.value);
     }
   }
 
-  onUpdateInput = searchText => {
+  onUpdateInput = (searchText) => {
     this.updateSearchText(searchText, () => {
       if (this.props.onChange) {
         this.props.onChange('imei', searchText);
@@ -107,7 +105,7 @@ class DeviceSelector extends React.Component {
     });
   }
 
-  onDeviceSelect = value => {
+  onDeviceSelect = (value) => {
     this.updateSearchText(value.text, () => {
       if (this.props.onSelect) {
         this.props.onSelect(value.text);
@@ -118,10 +116,12 @@ class DeviceSelector extends React.Component {
   updateSearchText = (text, cb) => {
     this.setState({
       searchText: text,
-    }, cb);
+    }, () => {
+      if (cb && typeof cb === 'function') cb();
+    });
   }
 
-  focusOnError = ref => {
+  focusOnError = (ref) => {
     if (!this.props.hasError) return;
 
     ref.focus();
@@ -148,7 +148,7 @@ class DeviceSelector extends React.Component {
     const disabled = this.props.disabled || this.state.isRefreshing;
     const inputStyle = disabled ? STYLES.disabledInput : {};
 
-    const dataSource = this.props.vacantDevices.map(id => {
+    const dataSource = this.props.vacantDevices.map((id) => {
       const device = this.props.devices.get(id);
 
       return {
@@ -206,8 +206,8 @@ DeviceSelector.propTypes = {
   // component may take new
   fetchDevices: React.PropTypes.func.isRequired,
 
-  // value to set by force from parent component
-  forcedValue: React.PropTypes.string,
+  // sometimes we need to reset search value of component
+  reset: React.PropTypes.bool,
 
   // true if no device has been chosen
   hasError: React.PropTypes.bool,
@@ -230,10 +230,13 @@ DeviceSelector.propTypes = {
 
   // Callback function that is fired when
   // the user updates the TextField.
-  onChange: React.PropTypes.func.isRequired,
+  onChange: React.PropTypes.func,
 
   // list of all devices
   devices: React.PropTypes.instanceOf(Map).isRequired,
+
+  // set velue by other component
+  value: React.PropTypes.string,
 
   // list of devices ids not
   // attached to any vehicle
@@ -246,8 +249,10 @@ DeviceSelector.defaultProps = {
   disabled: false,
   canRefresh: true,
   hasError: false,
-  forcedValue: '',
+  reset: false,
   actions: null,
+  onChange: undefined,
+  value: undefined,
 };
 
 const mapState = state => ({
