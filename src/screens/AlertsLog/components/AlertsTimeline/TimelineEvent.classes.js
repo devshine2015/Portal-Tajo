@@ -2,6 +2,7 @@ import { StyleSheet } from 'aphrodite/no-important';
 
 const WRAPPER_PADDING = 15;
 const TOP_OFFSET = WRAPPER_PADDING + 11;
+export const EVENT_LINE_WIDTH = 20;
 
 const classes = StyleSheet.create({
   wrapper: {
@@ -19,7 +20,7 @@ const classes = StyleSheet.create({
     ':before': {
       content: "''",
       position: 'absolute',
-      width: 20,
+      width: EVENT_LINE_WIDTH,
       height: 2,
       backgroundColor: '#ddd',
       right: '100%',
