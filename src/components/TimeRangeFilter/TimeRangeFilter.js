@@ -1,15 +1,9 @@
 import React from 'react';
 import moment from 'moment';
-import DatePicker from 'material-ui/DatePicker';
-import TimePicker from 'material-ui/TimePicker';
+import { css } from 'aphrodite/no-important';
 import dateFormats from 'configs/dateFormats';
-import styles from './styles.css';
-
-const STYLES = {
-  picker: {
-    width: 150,
-  },
-};
+import SubPeriod from './SubPeriod';
+import classes from './classes';
 
 function calcStartTime() {
   const t = moment().set({
@@ -43,57 +37,31 @@ class TimeRangeFilter extends React.Component {
     return moment(date).format(this.props.dateFormat.toUpperCase());
   }
 
-  renderDate = () => (
-    <div className={styles['interval-col']}>
-      <DatePicker
-        textFieldStyle={STYLES.picker}
-        className={styles.picker}
-        formatDate={this.formatDate}
-        autoOk
-        hintText="Start date interval"
-        defaultDate={this.defaultStartDate}
-        onChange={this.props.onStartDateChange}
-      />
-      <DatePicker
-        textFieldStyle={STYLES.picker}
-        className={styles.picker}
-        formatDate={this.formatDate}
-        autoOk
-        hintText="End date interval"
-        defaultDate={this.defaultEndDate}
-        onChange={this.props.onEndDateChange}
-      />
-    </div>
-  )
-
-  renderTime = () => (
-    <div className={styles['interval-col']}>
-      <TimePicker
-        textFieldStyle={STYLES.picker}
-        className={styles.picker}
-        autoOk
-        defaultTime={this.defaultStartTime}
-        format="24hr"
-        hintText="Start time interval"
-        onChange={this.props.onStartTimeChange}
-      />
-      <TimePicker
-        textFieldStyle={STYLES.picker}
-        className={styles.picker}
-        autoOk
-        defaultTime={this.defaultEndTime}
-        format="24hr"
-        hintText="End time interval"
-        onChange={this.props.onEndTimeChange}
-      />
-    </div>
-  )
-
   render() {
+    const { withTime } = this.props;
+
     return (
-      <div className={styles.intervals}>
-        { this.renderDate() }
-        { this.props.withTime && this.renderTime() }
+      <div className={css(classes.intervals)}>
+        <SubPeriod
+          withTime={withTime}
+          dateHint="Start date"
+          timeHint="Start time"
+          formatDate={this.formatDate}
+          defaultDate={this.defaultStartDate}
+          defaultTime={this.defaultStartTime}
+          onDateChange={this.props.onStartDateChange}
+          onTimeChange={this.props.onStartTimeChange}
+        />
+        <SubPeriod
+          withTime={withTime}
+          dateHint="End date"
+          timeHint="End time"
+          formatDate={this.formatDate}
+          defaultDate={this.defaultEndDate}
+          defaultTime={this.defaultEndTime}
+          onDateChange={this.props.onEndDateChange}
+          onTimeChange={this.props.onEndTimeChange}
+        />
       </div>
     );
   }
@@ -112,7 +80,7 @@ TimeRangeFilter.propTypes = {
 
 TimeRangeFilter.defaultProps = {
   dateFormat: dateFormats.default.value,
-  withTime: false,
+  withTime: true,
   onStartTimeChange: undefined,
   onEndTimeChange: undefined,
 };
