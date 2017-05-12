@@ -9,7 +9,7 @@ import {
 import dateFormats from 'configs/dateFormats';
 import Form from 'components/Form';
 import SimpleError from 'components/Error';
-import TimeRangeFilter from 'components/TimeRangeFilter/TimeRangeFilter';
+import DateRange from 'components/DateRange/DateRange';
 import { getDateFormat } from 'services/Session/reducer';
 import { translate } from 'utils/i18n';
 import DateFormatSelectorWithMemory from '../DateFormatSelectorWithMemory';
@@ -158,7 +158,7 @@ class Report extends React.Component {
           </div>
 
           <div className={styles.column}>
-            <TimeRangeFilter
+            <DateRange
               onStartDateChange={this.onStartDateChange}
               onStartTimeChange={this.onStartTimeChange}
               onEndDateChange={this.onEndDateChange}

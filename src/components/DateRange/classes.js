@@ -16,8 +16,6 @@ const classes = StyleSheet.create({
     width: 150,
     marginBottom: 5,
   },
-
-  applyBtn: {},
 });
 
 export default classes;

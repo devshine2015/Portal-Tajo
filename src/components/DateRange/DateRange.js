@@ -1,16 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 import { css } from 'aphrodite/no-important';
-import FlatButton from 'material-ui/FlatButton';
 import dateFormats from 'configs/dateFormats';
 import SubPeriod from './SubPeriod';
 import classes from './classes';
-
-const STYLES = {
-  applyBtn: {
-    marginLeft: 10,
-  },
-};
 
 const Dilimiter = () => {
   return (
@@ -42,7 +35,7 @@ function calcEndTime() {
   return t.toDate();
 }
 
-class TimeRangeFilter extends React.Component {
+class DateRange extends React.Component {
 
   defaultStartTime = calcStartTime();
   defaultEndTime = calcEndTime();
@@ -54,6 +47,7 @@ class TimeRangeFilter extends React.Component {
   }
 
   render() {
+    // use same same param for both subPeriods
     const { withTime } = this.props;
 
     return (
@@ -79,17 +73,12 @@ class TimeRangeFilter extends React.Component {
           onDateChange={this.props.onEndDateChange}
           onTimeChange={this.props.onEndTimeChange}
         />
-        <FlatButton
-          primary
-          label="Apply"
-          style={STYLES.applyBtn}
-        />
       </div>
     );
   }
 }
 
-TimeRangeFilter.propTypes = {
+DateRange.propTypes = {
   dateFormat: React.PropTypes.oneOf([
     'yyyy-mm-dd', 'dd-mm-yyyy',
   ]),
@@ -100,11 +89,11 @@ TimeRangeFilter.propTypes = {
   withTime: React.PropTypes.bool,
 };
 
-TimeRangeFilter.defaultProps = {
+DateRange.defaultProps = {
   dateFormat: dateFormats.default.value,
   withTime: true,
   onStartTimeChange: undefined,
   onEndTimeChange: undefined,
 };
 
-export default TimeRangeFilter;
+export default DateRange;

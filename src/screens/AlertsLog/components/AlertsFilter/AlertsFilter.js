@@ -1,5 +1,12 @@
 import React from 'react';
-import TimeRangeFilter from 'components/TimeRangeFilter/TimeRangeFilter';
+import FlatButton from 'material-ui/FlatButton';
+import DateRange from 'components/DateRange/DateRange';
+
+const STYLES = {
+  applyBtn: {
+    marginLeft: 10,
+  },
+};
 
 class AlertsFilter extends React.Component {
 
@@ -30,12 +37,17 @@ class AlertsFilter extends React.Component {
   render() {
     return (
       <div>
-        <TimeRangeFilter
+        <DateRange
           onStartDateChange={this.onStartDateChange}
           onStartTimeChange={this.onStartTimeChange}
           onEndDateChange={this.onEndDateChange}
           onEndTimeChange={this.onEndTimeChange}
           withTime
+        />
+        <FlatButton
+          primary
+          label="Apply"
+          style={STYLES.applyBtn}
         />
       </div>
     );
