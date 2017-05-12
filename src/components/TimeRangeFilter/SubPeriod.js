@@ -1,8 +1,9 @@
 import React from 'react';
-// import { css } from 'aphrodite/no-important';
+import { css } from 'aphrodite/no-important';
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
-// import classes from './SubPeriod.classes';
+import DateIcon from 'material-ui/svg-icons/action/date-range';
+import classes from './SubPeriod.classes';
 
 function validateTimeProps(props, propName, componentName) { // eslint-disable-line consistent-return
   if (props.withTime && !props[propName]) {
@@ -11,6 +12,19 @@ function validateTimeProps(props, propName, componentName) { // eslint-disable-l
     );
   }
 }
+
+const STYLES = {
+  underline: {
+    borderBottom: 'none',
+  },
+  timeTextField: {
+    maxWidth: 55,
+  },
+  icon: {
+    width: 20,
+    height: 20,
+  },
+};
 
 const SubPeriod = ({
   formatDate,
@@ -21,32 +35,43 @@ const SubPeriod = ({
   withTime,
   defaultTime,
   onTimeChange,
+}, {
+  muiTheme,
 }) => {
   return (
-    <div>
+    <div className={css(classes.wrapper)}>
+      <DateIcon color={muiTheme.palette.primary1Color} style={STYLES.icon} />
       <DatePicker
         // textFieldStyle={STYLES.picker}
-        // className={css(classes.picker)}
+        className={css(classes.picker, classes.picker_big)}
         formatDate={formatDate}
         autoOk
+        fullWidth
         hintText={dateHint}
         defaultDate={defaultDate}
         onChange={onDateChange}
+        underlineStyle={STYLES.underline}
       />
 
       { withTime && (
         <TimePicker
-          // textFieldStyle={STYLES.picker}
-          // className={css(classes.picker)}
+          textFieldStyle={STYLES.timeTextField}
+          className={css(classes.picker)}
           autoOk
+          fullWidth
           defaultTime={defaultTime}
           format="24hr"
           hintText={timeHint}
           onChange={onTimeChange}
+          underlineStyle={STYLES.underline}
         />
       )}
     </div>
   );
+};
+
+SubPeriod.contextTypes = {
+  muiTheme: React.PropTypes.object.isRequired,
 };
 
 SubPeriod.propTypes = {

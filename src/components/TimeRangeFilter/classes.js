@@ -3,26 +3,21 @@ import { StyleSheet } from 'aphrodite/no-important';
 const classes = StyleSheet.create({
   intervals: {
     display: 'flex',
-    marginTop: 5,
+    alignItems: 'center',
   },
 
-  // interval: {
-  //   marginRight: 25,
-  //   maxWidth: 150,
-  // },
-
-  // interval:last-child {
-  //   marginRight: 0,
-  // },
+  dilimiter: {
+    fontSize: 14,
+    color: '#aaa',
+    margin: '0 10px',
+  },
 
   picker: {
     width: 150,
     marginBottom: 5,
   },
 
-  // picker: > div {
-  //   width: '100%',
-  // },
+  applyBtn: {},
 });
 
 export default classes;
