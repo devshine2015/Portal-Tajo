@@ -1,6 +1,8 @@
 import React from 'react';
+import { css } from 'aphrodite/no-important';
 import FlatButton from 'material-ui/FlatButton';
 import DateRange from 'components/DateRange/DateRange';
+import classes from './classes';
 
 const STYLES = {
   applyBtn: {
@@ -36,7 +38,7 @@ class AlertsFilter extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className={css(classes.filter)}>
         <DateRange
           onStartDateChange={this.onStartDateChange}
           onStartTimeChange={this.onStartTimeChange}
