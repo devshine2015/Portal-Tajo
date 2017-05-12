@@ -2,7 +2,6 @@ import { api } from 'utils/api';
 import { isMwa } from 'configs';
 import endpoints from 'configs/endpoints';
 import { mwaFetchJobs } from 'services/MWA/actions';
-import { journalActions } from 'services/AlertsSystem/actions';
 import { filterProcessedListByName } from '../utils/filtering';
 import { getProcessedVehicles } from '../reducer';
 import {
@@ -52,7 +51,6 @@ export const fetchVehicles = () => (dispatch) => {
     if (isMwa) {
       dispatch(mwaFetchJobs());
     }
-    dispatch(journalActions.fetchAlertsHistory());
   })
   .catch(e => {
     console.error(e);
