@@ -2,14 +2,32 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import SnackbarNotification from 'containers/Snackbar';
+import { getFleetName } from 'services/Session/reducer';
 import ApplicationBar from './components/ApplicationBar';
 import MainSidebar from './components/MainSidebar';
-import { getFleetName } from 'services/Session/reducer';
-import Journal from 'containers/Journal/components/Journal';
+import Journal from './components/Journal/Journal';
+// import Journal from 'containers/Journal/components/Journal';
 
 import styles from './styles.css';
 
 class InnerPortal extends React.Component {
+
+  state = {
+    isJournalOpen: false,
+    isSidebarOpen: false,
+  };
+
+  toggleJournalState = () => {
+    this.setState({
+      isJournalOpen: !this.state.isJournalOpen,
+    });
+  }
+
+  toggleSidebar = () => {
+    this.setState({
+      isSidebarOpen: !this.state.isSidebarOpen,
+    });
+  }
 
   render() {
     // hide InnerPortal from unauthenticated users
@@ -17,15 +35,23 @@ class InnerPortal extends React.Component {
       return (
         <div className={styles.innerPortal}>
 
-          <ApplicationBar title={this.props.fleet} />
-          <Journal />
-          <MainSidebar />
+          <ApplicationBar
+            title={this.props.fleet}
+            toggleJournal={this.toggleJournalState}
+            toggleSidebar={this.toggleSidebar}
+          />
+          <MainSidebar
+            isOpened={this.state.isSidebarOpen}
+            toggleSidebar={this.toggleSidebar}
+          />
 
           <div className={styles.content}>
             {this.props.children}
           </div>
 
+          {/* absolutely positioned stuff */}
           <SnackbarNotification />
+          { this.state.isJournalOpen && <Journal /> }
 
         </div>
       );
@@ -50,7 +76,7 @@ InnerPortal.defaultProps = {
 
 const PureInnerPortal = pure(InnerPortal);
 
-const mapState = (state) => ({
+const mapState = state => ({
   fleet: getFleetName(state),
 });
 const mapDispatch = null;

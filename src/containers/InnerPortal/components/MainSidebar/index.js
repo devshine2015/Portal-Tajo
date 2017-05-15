@@ -3,15 +3,14 @@ import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import Drawer from 'material-ui/Drawer';
 import { rolesEnum } from 'configs/roles';
-import MainMenu from '../MainMenu';
-import { getDashboardPages, getSidebarState } from 'containers/InnerPortal/reducer';
-import { changeMainSidebarState } from 'containers/InnerPortal/actions';
+import { getDashboardPages } from 'containers/InnerPortal/reducer';
 import { getUserRole } from 'services/Session/reducer';
+import MainMenu from '../MainMenu';
 
 import styles from './styles.css';
 
 const MainSidebar = ({
-  open,
+  isOpened,
   pages,
   role,
   toggleSidebar,
@@ -23,7 +22,7 @@ const MainSidebar = ({
   return (
     <Drawer
       docked={false}
-      open={open}
+      open={isOpened}
       containerClassName={styles.drawer}
       zDepth={1}
       onRequestChange={toggleSidebar}
@@ -38,7 +37,7 @@ const MainSidebar = ({
 };
 
 MainSidebar.propTypes = {
-  open: React.PropTypes.bool.isRequired,
+  isOpened: React.PropTypes.bool.isRequired,
   pages: React.PropTypes.array,
   toggleSidebar: React.PropTypes.func.isRequired,
   role: React.PropTypes.oneOf(rolesEnum).isRequired,
@@ -48,14 +47,11 @@ MainSidebar.defaultProps = {
   pages: [],
 };
 
-const mapState = (state) => ({
+const mapState = state => ({
   pages: getDashboardPages(state).toArray(),
-  open: getSidebarState(state),
   role: getUserRole(state),
 });
-const mapDispatch = {
-  toggleSidebar: changeMainSidebarState,
-};
+const mapDispatch = null;
 
 const PureMainSidebar = pure(MainSidebar);
 
