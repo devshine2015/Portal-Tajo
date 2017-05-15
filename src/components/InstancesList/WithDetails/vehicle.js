@@ -52,7 +52,8 @@ class ListItemVehicle extends React.Component {
 
     const N_A = 'N/A';
     const speed = `${this.props.vehicle.speed.toFixed(1)} ${this.props.translations.speed_km_h}`;
-    const fuel = `${this.props.vehicle.fuelNormalized ? `${(this.props.vehicle.fuelNormalized * 100).toFixed(0)  }%` : N_A}`;
+    const fuel = `${this.props.vehicle.fuelNormalized
+              ? `${(this.props.vehicle.fuelNormalized * 100).toFixed(0)}%` : N_A}`;
     const jobsCount = this.props.vehicle.mwa === undefined ? 0 :
         (this.props.vehicle.mwa.jobs === undefined ? 0 :
             this.props.vehicle.mwa.jobs.length);
