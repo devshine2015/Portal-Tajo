@@ -90,22 +90,22 @@ class Report extends React.Component {
   }
 
   onStartDateChange = (_, value) => {
-    this.onPeriodChange('startDate', value);
+    this.onChange('startDate', value);
   }
 
   onEndDateChange = (_, value) => {
-    this.onPeriodChange('endDate', value);
+    this.onChange('endDate', value);
   }
 
   onStartTimeChange = (_, value) => {
-    this.onPeriodChange('startTime', value);
+    this.onChange('startTime', value);
   }
 
   onEndTimeChange = (_, value) => {
-    this.onPeriodChange('endTime', value);
+    this.onChange('endTime', value);
   }
 
-  onPeriodChange = (field, value) => {
+  onChange = (field, value) => {
     // if value has not been changed
     if (this.state[field] === value) return;
 
@@ -263,6 +263,7 @@ Report.defaultProps = {
   errorType: undefined,
   userDateFormat: dateFormats.default.value,
 };
+
 
 const mapState = (state) => ({
   availableReports: getAvailableReports(state),
