@@ -52,10 +52,10 @@ class ListItemVehicle extends React.Component {
 
     const N_A = 'N/A';
     const speed = `${this.props.vehicle.speed.toFixed(1)} ${this.props.translations.speed_km_h}`;
-    const fuel = `${this.props.vehicle.fuelNormalized ? (this.props.vehicle.fuelNormalized * 100).toFixed(0) + '%' : N_A}`;
+    const fuel = `${this.props.vehicle.fuelNormalized ? `${(this.props.vehicle.fuelNormalized * 100).toFixed(0)  }%` : N_A}`;
     const jobsCount = this.props.vehicle.mwa === undefined ? 0 :
         (this.props.vehicle.mwa.jobs === undefined ? 0 :
-            this.props.vehicle.mwa.jobs.length);  
+            this.props.vehicle.mwa.jobs.length);
 
     const license = this.props.vehicle.original !== undefined
         && this.props.vehicle.original.licensePlate !== undefined ?
@@ -70,54 +70,52 @@ class ListItemVehicle extends React.Component {
       <div>
         <Divider />
         <ItemProperty
-          title={ this.props.translations.speed }
-          value={ speed }
+          title={this.props.translations.speed}
+          value={speed}
         />
         { isMwa &&
           <ItemProperty
-            title={ this.props.translations.mwa_vehicle_group }
-            value={ '01' }
+            title={this.props.translations.mwa_vehicle_group}
+            value={'01'}
           />
         }
         { isMwa &&
           <ItemProperty
-            title={ this.props.translations.license_plate }
-            value={ license }
+            title={this.props.translations.license_plate}
+            value={license}
           />
         }
         { isMwa &&
           <ItemProperty
-            title={ this.props.translations.driver_name }
-            value={ driverName }
+            title={this.props.translations.driver_name}
+            value={driverName}
           />
         }
         { isMwa &&
           <ItemProperty
-            title={ this.props.translations.mwa_n_jobs }
-            value={ jobsCount }
+            title={this.props.translations.mwa_n_jobs}
+            value={jobsCount}
           />
         }
         { isMwa &&
           <ItemProperty
-            title={ this.props.translations.door_open_close }
-            value={ N_A }
+            title={this.props.translations.door_open_close}
+            value={N_A}
           />
         }
         { isMwa &&
           <ItemProperty
-            title={ this.props.translations.engine_status }
-            value={ N_A }
+            title={this.props.translations.engine_status}
+            value={N_A}
           />
         }
-        { isMwa &&
-          <ItemProperty
-            title={ this.props.translations.fuel_level }
-            value={ fuel }
-          />
-        }
+        <ItemProperty
+          title={this.props.translations.fuel_level}
+          value={fuel}
+        />
         {this.props.vehicle.temp &&
           <ItemProperty
-            title={ this.props.translations.temperature }
+            title={this.props.translations.temperature}
             value={`${this.props.vehicle.temp.toFixed(1)} \xB0C`}
           />
         }

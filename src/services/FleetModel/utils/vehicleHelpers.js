@@ -50,7 +50,7 @@ function _makeImmutableVehicle({
   const hasPosition = vehicleStats.hasOwnProperty('pos');
   const hasDist = vehicleStats.hasOwnProperty('dist');
   const hasTemp = vehicleStats.hasOwnProperty('temp');
-  const hasFuel = vehicleStats.hasOwnProperty('fuel') && vehicleStats.fuel.hasOwnProperty('fuelLevelAbs');
+  const hasFuel = vehicleStats.hasOwnProperty('fuel');
 
   const isDead = _checkIsDead(hasPosition);
   const ignitionOn = checkIgnition(vehicleStats.ignOn);
@@ -63,16 +63,19 @@ function _makeImmutableVehicle({
     imVehicle, now, ignitionOn,
   });
 
-  const imNextVehicle = imVehicle.withMutations(s => {
+  const imNextVehicle = imVehicle.withMutations((s) => {
     s.set('activityStatus', activityStatus)
      .set('lastUpdateSinceEpoch', sinceEpoch)
      .set('ignitionOn', ignitionOn)
      .set('isDelayedWithIgnitionOff', localTimings.isDelayedWithIgnitionOff);
 
-    if (hasFuel) {
+    if (hasFuel && vehicleStats.fuel.hasOwnProperty('fuelLevelAbs')) {
       // range 0-12000, inversed
       // make it [0-1]
       s.set('fuelNormalized', Math.min(Math.max(12000 - vehicleStats.fuel.fuelLevelAbs, 0) / 12000, 1));
+    } else if (hasFuel && vehicleStats.fuel.hasOwnProperty('fuelLevelPerc')) {
+      // percentage, 0-100
+      s.set('fuelNormalized', vehicleStats.fuel.fuelLevelPerc / 100);
     } else {
       s.set('fuelNormalized', undefined);
     }
@@ -180,7 +183,7 @@ export function updateLocalVehicles(wsStatuses, getState) {
   const now = Date.now();
   let lists = {};
 
-  wsStatuses.forEach(newStatus => {
+  wsStatuses.forEach((newStatus) => {
     const localVehicle = processedList.get(newStatus.id);
     const {
       imNextVehicle,
@@ -215,9 +218,9 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
     // eslint-disable-next-line no-param-reassign
     backEndObject.kind = 'UNDEFINED';
   }
-  const marker = backEndObject.hasOwnProperty('meta') && backEndObject.meta.hasOwnProperty('marker') ? 
+  const marker = backEndObject.hasOwnProperty('meta') && backEndObject.meta.hasOwnProperty('marker') ?
         backEndObject.meta.marker : markerTypes.Icon;
-  return initilalValues.withMutations(s => {
+  return initilalValues.withMutations((s) => {
     s.merge(_makeImmutableVehicle({ vehicleStats }))
      .set('original', fromJS(backEndObject))
      .set('id', backEndObject.id)
@@ -288,7 +291,7 @@ export function sortVehicles(vehicles = []) {
 
       return sortByName(a, b);
     })
-    .map(obj => {
+    .map((obj) => {
       if (Map.isMap(obj)) {
         return obj.get('id');
       }
@@ -328,7 +331,7 @@ export function cleanVehicle(vehicle) {
 
   const result = {};
 
-  requiredBackEndProps.forEach(reqProp => {
+  requiredBackEndProps.forEach((reqProp) => {
     result[reqProp] = vehicle[reqProp];
   });
 
