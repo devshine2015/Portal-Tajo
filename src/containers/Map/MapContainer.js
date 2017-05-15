@@ -55,7 +55,7 @@ class MapContainer extends React.Component {
       return;
     }
     this.setState({
-      theMap: createMapboxMap(this.node, this.props.mapStoredView),
+      theMap: createMapboxMap(this.node, this.props.mapStoredView, this.props.noLayersControl),
     });
   }
 
@@ -128,7 +128,7 @@ class MapContainer extends React.Component {
         className={styles.mapContainer}
         ref={this.saveRef}
       >
-        { theMap && <CustomControls theMap={this.state.theMap} /> }
+        { theMap && !this.props.noCustomControls && <CustomControls theMap={this.state.theMap} /> }
         { theMap && mappp }
       </div>
     );
@@ -136,14 +136,19 @@ class MapContainer extends React.Component {
 }
 
 MapContainer.propTypes = {
+  noCustomControls: React.PropTypes.bool,
+  noLayersControl: React.PropTypes.bool,
   mapStoreSetView: React.PropTypes.func.isRequired,
   mapStoredView: React.PropTypes.object.isRequired,
   mapStoredPan: React.PropTypes.array,
-  children: React.PropTypes.array.isRequired,
+  children: React.PropTypes.array,
 };
 
 MapContainer.defaultProps = {
   mapStoredPan: null,
+  noCustomControls: false,
+  noLayersControl: false,
+  children: [],
 };
 
 const mapState = (state) => ({

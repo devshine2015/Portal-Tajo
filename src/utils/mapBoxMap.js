@@ -9,7 +9,7 @@ require('leaflet-contextmenu/dist/leaflet.contextmenu.css');
 import { isMwa } from 'configs';
 import { MAPBOX_KEY } from 'utils/constants';
 
-export function createMapboxMap(domNode, view) {
+export function createMapboxMap(domNode, view, noLayersControl) {
   let theMap = null;
   window.L.mapbox.accessToken = MAPBOX_KEY;
   theMap = window.L.mapbox.map(domNode,
@@ -17,7 +17,7 @@ export function createMapboxMap(domNode, view) {
     {
       contextmenu: true,
       contextmenuWidth: 140,
-    }
+    },
   );
   theMap.setView(view.center, view.zoom);
 
@@ -37,25 +37,28 @@ export function createMapboxMap(domNode, view) {
       }).setOpacity(0.5).addTo(theMap);
     layers = { MWA: overlayLayer };
   }
-  window.L.control.layers({
-    // StreetsDef: window.L.mapbox.tileLayer('mapbox.streets'),
-    Streets: tilesOSM.addTo(theMap),
-    Satelite: window.L.mapbox.tileLayer('mapbox.streets-satellite'),
-    // Emerald: window.L.mapbox.tileLayer('mapbox.emerald'),
-    // Run: window.L.mapbox.tileLayer('mapbox.run-bike-hike'),
-    // Light: window.L.mapbox.tileLayer('mapbox.light'),
-    // Dark: window.L.mapbox.tileLayer('mapbox.dark'),
-    // Wheat: window.L.mapbox.tileLayer('mapbox.wheatpaste'),
-    // Basic: window.L.mapbox.tileLayer('mapbox.streets-basic'),
-    Outdoors: window.L.mapbox.tileLayer('mapbox.outdoors'),
-    // Pencil: window.L.mapbox.tileLayer('mapbox.pencil'),
-  },
-  layers,
-  { position: 'topleft' }).addTo(theMap);
-
+  if (!noLayersControl) {
+    window.L.control.layers({
+      // StreetsDef: window.L.mapbox.tileLayer('mapbox.streets'),
+      Streets: tilesOSM.addTo(theMap),
+      Satelite: window.L.mapbox.tileLayer('mapbox.streets-satellite'),
+      // Emerald: window.L.mapbox.tileLayer('mapbox.emerald'),
+      // Run: window.L.mapbox.tileLayer('mapbox.run-bike-hike'),
+      // Light: window.L.mapbox.tileLayer('mapbox.light'),
+      // Dark: window.L.mapbox.tileLayer('mapbox.dark'),
+      // Wheat: window.L.mapbox.tileLayer('mapbox.wheatpaste'),
+      // Basic: window.L.mapbox.tileLayer('mapbox.streets-basic'),
+      Outdoors: window.L.mapbox.tileLayer('mapbox.outdoors'),
+      // Pencil: window.L.mapbox.tileLayer('mapbox.pencil'),
+    },
+    layers,
+    { position: 'topleft' }).addTo(theMap);
+  } else {
+    tilesOSM.addTo(theMap);
+  }
   // do this to resize map on div
   window.setTimeout(
-   (((map) => () => {
+   ((map => () => {
      map.invalidateSize(true);
    })(theMap)),
     500);
@@ -70,17 +73,15 @@ export function hideLayer(containerLayer, layer, doHide) {
     if (containerLayer.hasLayer(layer)) {
       containerLayer.removeLayer(layer);
     }
-  } else {
-    if (!containerLayer.hasLayer(layer)) {
-      containerLayer.addLayer(layer);
-    }
+  } else if (!containerLayer.hasLayer(layer)) {
+    containerLayer.addLayer(layer);
   }
 }
 
 //
 // http://stackoverflow.com/questions/2637023/how-to-calculate-the-latlng-of-a-point-a-certain-distance-away-from-another
-const _toRad = (nbr) => (nbr * Math.PI / 180);
-const _toDeg = (nbr) => (nbr * 180 / Math.PI);
+const _toRad = nbr => (nbr * Math.PI / 180);
+const _toDeg = nbr => (nbr * 180 / Math.PI);
 export function latLngMoveTo(startLatLng, _brng, _dist) {
   const dist = _dist / 6371;
   const brng = _toRad(_brng);

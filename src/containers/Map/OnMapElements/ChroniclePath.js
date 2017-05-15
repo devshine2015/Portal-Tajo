@@ -29,7 +29,7 @@ class ChroniclePath extends React.Component {
     this.thePath = window.L.polyline(latLngArray);
     this.thePath.on('click', (e) => {
       const clickT100 = that.props.chronicleFrame.player.findNormilized100TForPos(e.latlng);
-      console.log('click on '+clickT100.toFixed(1));
+      // console.log('click on ' + clickT100.toFixed(1));
       that.props.setChronicleNormalizedT(clickT100);
     });
 
