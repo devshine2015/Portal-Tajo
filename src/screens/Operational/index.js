@@ -2,6 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
+import Layout from 'components/Layout';
 import PowerList from 'components/PowerList';
 import TheMap from 'containers/Map/MapContainer';
 // import Journal from 'containers/Journal/components/Journal';
@@ -59,7 +60,7 @@ class Operational extends React.Component {
     const mapVehicles = this.props.vehicles.filter(v => v.marker === markerTypes.NameLabel).map(mapVehicleNameMaker);
     const mwaJobs = this.props.mwaJobs.map(mapMWAJobMarkerMaker);
     return (
-      <div className={styles.mapAndListContainer}>
+      <Layout.ScreenWithList>
         <PowerList>
           {this.props.isEditGF ?
             <GFEditor /> :
@@ -84,7 +85,7 @@ class Operational extends React.Component {
             </TheMap>
           </div>
         </FixedContent>
-      </div>
+      </Layout.ScreenWithList>
     );
   }
 }

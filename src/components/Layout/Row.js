@@ -1,7 +1,7 @@
 import React from 'react';
 import { css } from 'aphrodite/no-important';
 
-import classes from './Row.classes.js';
+import classes from './classes.js';
 
 const Row = ({ children }) => (
   <div className={css(classes.row)}>

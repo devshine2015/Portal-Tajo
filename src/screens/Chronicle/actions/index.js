@@ -34,9 +34,9 @@ function _requestHistory(vehicleId, dateFrom, dateTo, dispatch) {
 // TODO: properly generate from and to
 //  const fromString = '2016-08-21T04:38:32.000+0000';// date.toString();
   let fromString = dateFrom.toISOString();
-  fromString = fromString.slice(0, -1) + '+0000';
+  fromString = `${fromString.slice(0, -1)}+0000`;
   let toString = dateTo.toISOString();
-  toString = toString.slice(0, -1) + '+0000';
+  toString = `${toString.slice(0, -1)}+0000`;
 
   const { url, method } = endpoints.getEventsInTimeRange(vehicleId, {
     from: fromString,
@@ -56,7 +56,7 @@ function _requestHistory(vehicleId, dateFrom, dateTo, dispatch) {
     .then(toJson)
     .then(events =>
       dispatch(_newVehicleChronicleFrame(vehicleId,
-              createHistoryFrame(dateFrom, dateTo, events)))
+              createHistoryFrame(dateFrom, dateTo, events))),
     );
 }
 

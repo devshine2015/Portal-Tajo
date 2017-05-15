@@ -16,6 +16,7 @@ import {
 import rootScreen from 'screens/Root/route';
 import operationalScreen from 'screens/Operational/route';
 import reportsScreen from 'screens/ReportsScreen/route';
+import execReportsScreen from 'screens/ExecReports/route';
 import vehiclesManagerScreen from 'screens/VehiclesManagerScreen/route';
 import loginScreen from 'screens/LoginScreen/route';
 import dashboardScreen from 'screens/DashboardScreen/route';
@@ -65,6 +66,8 @@ export default function createRoutes(store) {
 
   const alertsEditorRoute = alersEditorScreen(mainMenu.sunshine.alerts);
 
+  const execReportRoute = execReportsScreen(mainMenu.sunshine.execReport);
+
   const loginRoute = loginScreen({
     path: 'login',
   });
@@ -95,6 +98,8 @@ export default function createRoutes(store) {
     operationalRoute,
     chronicleRoute,
     reportsRoute,
+    execReportRoute,
+    execReportsScreen,
     vehiclesEditorRoute,
     notFoundRoute,
     usersManagerRoute,

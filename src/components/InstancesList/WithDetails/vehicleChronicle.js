@@ -8,6 +8,8 @@ import LinearProgress from 'material-ui/LinearProgress';
 
 import { contextActions } from 'services/Global/actions';
 import { requestHistory } from 'screens/Chronicle/actions';
+import { requestSoloReport } from 'screens/ExecReports/services/actions';
+
 import {
   getChronicleTimeFrame,
   getInstanceChronicleFrameById,
@@ -76,7 +78,7 @@ const mapState = (state) => ({
 });
 const mapDispatch = {
   selectVehicle: contextActions.ctxSelectVehicle,
-  requestHistory,
+  requestHistory: requestSoloReport,
 };
 
 export default connect(mapState, mapDispatch)(pure(ChronicleListItem));

@@ -2,6 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { VelocityTransitionGroup } from 'velocity-react';
+import Layout from 'components/Layout';
 import VehiclesList from 'components/InstancesList';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
@@ -83,7 +84,7 @@ class Chronicle extends React.Component {
     }
 
     return (
-      <div className={styles.topContainer}>
+      <Layout.ScreenWithList>
 
         {this.props.isEditGF ? (
           <PowerList>
@@ -125,7 +126,7 @@ class Chronicle extends React.Component {
             <CtxtOpenGoogleMap />
           </TheMap>
         </FixedContent>
-      </div>
+      </Layout.ScreenWithList>
     );
   }
 }

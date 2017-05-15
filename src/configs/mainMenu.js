@@ -24,6 +24,10 @@ const common = {
     name: 'alerts_editor',
     path: 'alerts',
   },
+  execReport: {
+    name: 'exec_report',
+    path: 'execreport',
+  },
   profile: {
     name: 'profile',
     path: 'profile',

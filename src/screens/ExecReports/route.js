@@ -5,9 +5,9 @@ const createRoute = ({
   path,
   name,
   getComponent: (location, cb) => {
-    require.ensure([], (require) => {
+    require.ensure([], require => {
       cb(null, require('./index').default);
-    }, 'alerts');
+    }, 'execReport');
   },
 });
 
