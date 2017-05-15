@@ -13,6 +13,10 @@ function ReportVehicleFrame(dateFrom, dateTo, events, inState) {
     this.state = CHRONICLE_LOCAL_INCTANCE_STATE_NONE;
     return;
   }
+
+  this.distanceM = 0;
+  this.numberOfPosSamples = 0;
+
   this.dateFrom = dateFrom;
   this.dateFrom00 = new Date(dateFrom.getFullYear(), dateFrom.getMonth(), dateFrom.getDate());
   this.dateTo = dateTo;
@@ -77,70 +81,123 @@ ReportVehicleFrame.prototype.isStatic = function () {
   return this.isValid() && this.posData.length === 1;
 };
 
+const isPositionEvent = evnt => evnt.type === 'vehicle-position';
+
+const eventPos = evnt => evnt.ev.pos.latlon;
+
+// const latLngEucledDistance = (latLngA, latLngB) => {
+//   const dLat = latLngA.lat - latLngB.lat;
+//   const dLng = latLngA.lng - latLngB.lng;
+//   return Math.sqrt((dLat * dLat) + (dLng * dLng));
+// };
+
+// some theory here
+// http://stackoverflow.com/questions/639695/how-to-convert-latitude-or-longitude-to-meters
+// http://www.movable-type.co.uk/scripts/latlong.html
+function haversineDist(latLngA, latLngB) {  // generally used geo measurement function
+  const R = 6378.137; // Radius of earth in KM
+  const piDeg = Math.PI / 180;
+  const dLat = (latLngB.lat - latLngA.lat) * piDeg;
+  const dLon = (latLngB.lng - latLngA.lng) * piDeg;
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(latLngA.lat * piDeg) * Math.cos(latLngB.lat * piDeg) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const d = R * c;
+  return d * 1000; // meters
+}
+
+// // safe-checking
+// const eventHasPos = evnt => evnt.hasOwnProperty('ev') && evnt.ev.hasOwnProperty('pos');
+
 //
 //
 //-----------------------------------------------------------------------
 ReportVehicleFrame.prototype.parceData = function (events) {
   if (events.length < 10) {
-    console.log('history frame for ' + this.dateFrom + ' - ' + this.dateTo);
-    console.log('  EMPTY ' + events.length);
+    console.log(`history frame for ${this.dateFrom} - ${this.dateTo}`);
+    console.log(`  EMPTY ${events.length}`);
     return;
   }
-  let _dbgTime = 0;
-  const dataSize = events.length;
-  for (let i = 0; i < dataSize; ++i) {
-    const theEvent = events[i];
-    // const eventDate = new Date(theEvent.ev.ts);
-    const eventMomentTS = moment(theEvent.ev.ts).valueOf();
+
+  let prevPosSample = null;
+  let calculatedTotalDistance = 0;
+
+  // const _dbgTime = 0;
+  // const dataSize = events.length;
+
+  events.forEach((theSample) => {
+    const eventMomentTS = moment(theSample.ev.ts).valueOf();
     const eventTimeMs = eventMomentTS - this.dateFrom.getTime();
-    _dbgTime = eventTimeMs;
-    switch (theEvent.type) {
-      case 'vehicle-position':
-        this.posData.push({ timeMs: eventTimeMs,
-          pos: window.L.latLng(theEvent.ev.pos.latlon.lat, theEvent.ev.pos.latlon.lng) });
-        this.speedData.push({ timeMs: eventTimeMs, v: theEvent.ev.pos.speed });
-        this.maxSpeed = Math.max(this.maxSpeed, theEvent.ev.pos.speed);
-        break;
-      case 'vehicle-1wire-temperature':
-        if (theEvent.ev.tempInfo != null && !isNaN(theEvent.ev.tempInfo)) {
-          this.temperatureData.push({ timeMs: eventTimeMs, t: theEvent.ev.tempInfo });
-          this.maxTemp = Math.max(this.maxTemp, theEvent.ev.tempInfo);
-          this.minTemp = Math.min(this.minTemp, theEvent.ev.tempInfo);
-        }
-        break;
-      case 'vehicle-stop-stats': {
-        // skip too short stops on the history
-        const stopMinutes = theEvent.ev.stopPeriod / (1000 * 60);
-        if (stopMinutes < 2) {
-          continue;
-        }
-        this.stopEvents.push({ timeMs: eventTimeMs,
-          date: new Date(eventMomentTS),
-          pos: window.L.latLng(theEvent.ev.pos.latlon.lat, theEvent.ev.pos.latlon.lng),
-          period: theEvent.ev.stopPeriod,
-          dateStr: theEvent.ev.pos.posTime });
-        break;
+    if (isPositionEvent(theSample)) {
+      this.posData.push({ timeMs: eventTimeMs,
+        pos: window.L.latLng(eventPos(theSample).lat, eventPos(theSample).lng) });
+      this.speedData.push({ timeMs: eventTimeMs, v: theSample.ev.pos.speed });
+      this.numberOfPosSamples += 1;
+      if (prevPosSample !== null) {
+        calculatedTotalDistance += haversineDist(eventPos(prevPosSample), eventPos(theSample));
       }
+      prevPosSample = theSample;
     }
-  }
+  });
 
-  if (this.posData.length > 0) {
-    const firstSample = this.posData[0];
-    this.posData.splice(0, 0, { timeMs: 0,
-      pos: firstSample.pos });
-    this.speedData.splice(0, 0, { timeMs: 0, v: 0 });
+  this.distanceM = calculatedTotalDistance;
 
-    const lastSample = this.posData[this.posData.length - 1];
-    this.posData.push({ timeMs: lastSample.timeMs + 1,
-      pos: lastSample.pos });
-    this.speedData.push({ timeMs: lastSample.timeMs + 1, v: 0 });
-  }
-  console.log('history frame for ' + this.dateFrom + ' - ' + this.dateTo);
-  console.log(' dataTimeRangeMs ' + _dbgTime + ' of ' + this.timeRangeMs);
-  console.log('  history frame total: ' + dataSize + ' pos: ' + this.posData.length + ' temp: ' + this.temperatureData.length);
-  console.log('  -- stops: ' + this.stopEvents.length);
-  console.log(' temp range ' + this.minTemp + ' .. ' + this.maxTemp);
-  console.log(' maxSpeed ' + this.maxSpeed);
+  console.log(`total distance ${this.distanceM}`);
+
+  // for (let i = 0; i < dataSize; ++i) {
+  //   const theEvent = events[i];
+  //   // const eventDate = new Date(theEvent.ev.ts);
+  //   const eventMomentTS = moment(theEvent.ev.ts).valueOf();
+  //   const eventTimeMs = eventMomentTS - this.dateFrom.getTime();
+  //   _dbgTime = eventTimeMs;
+  //   switch (theEvent.type) {
+  //     case 'vehicle-position':
+  //       this.posData.push({ timeMs: eventTimeMs,
+  //         pos: window.L.latLng(theEvent.ev.pos.latlon.lat, theEvent.ev.pos.latlon.lng) });
+  //       this.speedData.push({ timeMs: eventTimeMs, v: theEvent.ev.pos.speed });
+  //       this.maxSpeed = Math.max(this.maxSpeed, theEvent.ev.pos.speed);
+  //       break;
+  //     case 'vehicle-1wire-temperature':
+  //       if (theEvent.ev.tempInfo != null && !isNaN(theEvent.ev.tempInfo)) {
+  //         this.temperatureData.push({ timeMs: eventTimeMs, t: theEvent.ev.tempInfo });
+  //         this.maxTemp = Math.max(this.maxTemp, theEvent.ev.tempInfo);
+  //         this.minTemp = Math.min(this.minTemp, theEvent.ev.tempInfo);
+  //       }
+  //       break;
+  //     case 'vehicle-stop-stats': {
+  //       // skip too short stops on the history
+  //       const stopMinutes = theEvent.ev.stopPeriod / (1000 * 60);
+  //       if (stopMinutes < 2) {
+  //         continue;
+  //       }
+  //       this.stopEvents.push({ timeMs: eventTimeMs,
+  //         date: new Date(eventMomentTS),
+  //         pos: window.L.latLng(theEvent.ev.pos.latlon.lat, theEvent.ev.pos.latlon.lng),
+  //         period: theEvent.ev.stopPeriod,
+  //         dateStr: theEvent.ev.pos.posTime });
+  //       break;
+  //     }
+  //   }
+  // }
+
+  // if (this.posData.length > 0) {
+  //   const firstSample = this.posData[0];
+  //   this.posData.splice(0, 0, { timeMs: 0,
+  //     pos: firstSample.pos });
+  //   this.speedData.splice(0, 0, { timeMs: 0, v: 0 });
+
+  //   const lastSample = this.posData[this.posData.length - 1];
+  //   this.posData.push({ timeMs: lastSample.timeMs + 1,
+  //     pos: lastSample.pos });
+  //   this.speedData.push({ timeMs: lastSample.timeMs + 1, v: 0 });
+  // }
+  // console.log('history frame for ' + this.dateFrom + ' - ' + this.dateTo);
+  // console.log(' dataTimeRangeMs ' + _dbgTime + ' of ' + this.timeRangeMs);
+  // console.log('  history frame total: ' + dataSize + ' pos: ' + this.posData.length + ' temp: ' + this.temperatureData.length);
+  // console.log('  -- stops: ' + this.stopEvents.length);
+  // console.log(' temp range ' + this.minTemp + ' .. ' + this.maxTemp);
+  // console.log(' maxSpeed ' + this.maxSpeed);
 };
 
 //
@@ -156,7 +213,7 @@ ReportVehicleFrame.prototype.kill = function () {
 //
 //-----------------------------------------------------------------------
 ReportVehicleFrame.prototype.getDateAtMs = function (timeMs) {
-  let aDate = new Date(timeMs + this.dateFrom00.getTime());
+  const aDate = new Date(timeMs + this.dateFrom00.getTime());
   return aDate;
 };
 
@@ -211,12 +268,13 @@ ReportVehicleFrame.prototype.findSample = function (requestMs, data) {
   let dataIdx = Math.min(dataSz - 1, Math.floor(dataSz * requestMs / this.timeRangeMs));
   const stepDir = requestMs < data[dataIdx].timeMs ? -1 : 1;
 
-  for (; dataIdx >= 0 && dataIdx < dataSz - 1; dataIdx += stepDir)
+  for (; dataIdx >= 0 && dataIdx < dataSz - 1; dataIdx += stepDir) {
     if (data[dataIdx].timeMs <= requestMs && data[dataIdx + 1].timeMs > requestMs) {
       this.lastFoundIdx = dataIdx;
     // interpolate here?
       return data[dataIdx];
     }
+  }
   return (dataIdx < 0) ? data[0] : data[dataSz - 1];
 };
 
@@ -224,7 +282,6 @@ ReportVehicleFrame.prototype.findSample = function (requestMs, data) {
 //
 //-----------------------------------------------------------------------
 ReportVehicleFrame.prototype.findSampleIdxWithT = function (requestMs, data) {
-
   if (requestMs <= 0) {
     return { idx: 0,
       t: 0 };

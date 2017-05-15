@@ -46,15 +46,11 @@ function _requestSoloReport(vehicleId, dateFrom, dateTo, dispatch) {
 //  const toString = '2016-08-22T04:38:32.000+0000';// date.toString();
 
   return api[method](url)
-    .then(toJson)
+    .then(data => data.json())
     .then(events =>
       dispatch(_newVehicleChronicleFrame(vehicleId,
               createReportFrame(dateFrom, dateTo, events))),
     );
-}
-
-function toJson(response) {
-  return response.json();
 }
 
 const _newVehicleChronicleFrame = (vehicleId, reportFrame) => ({

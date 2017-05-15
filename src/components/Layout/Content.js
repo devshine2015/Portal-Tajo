@@ -8,14 +8,15 @@ const Content = ({
   center,
   maxWidth,
   noPadding,
+  style,
 }) => {
   const className = cs(css(classes.content), {
     [css(classes.content__center)]: center,
     [css(classes.content__padding)]: !noPadding,
   });
-
+  const st = Object.assign({}, maxWidth !== undefined ? { maxWidth } : {}, style);
   return (
-    <div className={className} style={maxWidth !== undefined ? { maxWidth } : {}}>
+    <div className={className} style={st}>
       { children }
     </div>
   );
@@ -25,6 +26,7 @@ Content.defaultProps = {
   center: false,
   noPadding: false,
   maxWidth: undefined,
+  style: {},
 };
 
 Content.propTypes = {
@@ -32,6 +34,7 @@ Content.propTypes = {
   center: React.PropTypes.bool,
   maxWidth: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
   noPadding: React.PropTypes.bool,
+  style: React.PropTypes.object.isRequired,
 };
 
 export default Content;

@@ -4,7 +4,6 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import { VelocityTransitionGroup } from 'velocity-react';
 import Layout from 'components/Layout';
 import VehiclesList from 'components/InstancesList';
 import PowerList from 'components/PowerList';
@@ -12,6 +11,7 @@ import Filter from 'components/Filter';
 import SoloReport from './components/SoloReport';
 
 import { ctxGetSelectedVehicleId } from 'services/Global/reducers/contextReducer';
+import { getInstanceExecReportFrameById } from './services/reducer';
 
 
 import * as fromFleetReducer from 'services/FleetModel/reducer';
@@ -24,6 +24,8 @@ class ExecReport extends React.Component {
     if (this.props.vehicles.length === 0) {
       return null;
     }
+
+    const soloReportFrame = this.props.getSoloReportById(this.props.selectedVehicleId);
 
     return (
       <Layout.ScreenWithList>
@@ -41,7 +43,7 @@ class ExecReport extends React.Component {
             }
         />
         <Layout.FixedContent>
-          <SoloReport />
+          <SoloReport reportFrame={soloReportFrame} />
         </Layout.FixedContent>
       </Layout.ScreenWithList>
     );
@@ -52,12 +54,15 @@ ExecReport.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
   selectedVehicleId: React.PropTypes.string.isRequired,
 
+  getSoloReportById: React.PropTypes.func.isRequired,
   filterFunc: React.PropTypes.func.isRequired,
 };
 
 const mapState = state => ({
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
   selectedVehicleId: ctxGetSelectedVehicleId(state),
+  getSoloReportById: getInstanceExecReportFrameById(state),
+
 });
 const mapDispatch = {
   filterFunc: vehiclesActions.filterVehicles,
