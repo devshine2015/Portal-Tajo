@@ -202,37 +202,30 @@ const endpoints = {
   createAlertConditions: {
     url: 'alert-conditions',
     method: 'post',
-    apiVersion: 1.120,
   },
   updateAlertConditions: id => ({
     url: `alert-conditions/${id}`,
     method: 'put',
-    apiVersion: 1.120,
   }),
   deleteAlertConditions: id => ({
     url: `alert-conditions/${id}`,
     method: 'delete',
-    apiVersion: 1.120,
   }),
   getAlertConditions: {
     url: 'alert-conditions',
     method: 'get',
-    apiVersion: 1.120,
   },
   getVehicleAlertConditions: id => ({
     url: `vehicles/${id}/alert-conditions`,
     method: 'get',
-    apiVersion: 1.120,
   }),
   getAlertsInTimeRange: params => ({
     url: `alerts?${qs.stringify(params)}`,
     method: 'get',
-    apiVersion: 1.120,
   }),
   postVehicleAlertConditions: id => ({
     url: `vehicles/${id}/alert-conditions`,
     method: 'post',
-    apiVersion: 1.120,
   }),
   // MWA
   getMWAJobs: (params) => ({
