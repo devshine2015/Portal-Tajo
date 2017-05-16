@@ -126,7 +126,7 @@ class App extends React.Component {
     this.props.saveSession(profile)
       .then(this.props.fetchFleet)
       .then(this.props.fetchAlertConditions)
-      .then(this.props.fetchAlertsHistory)
+      .then(this.props.fetchNotifications)
       .then(this.props.fetchDevices);
   }
 
@@ -188,7 +188,7 @@ App.propTypes = {
   fetchAccessTokens: React.PropTypes.func.isRequired,
   fetchRolesAndPermissions: React.PropTypes.func.isRequired,
   fetchAlertConditions: React.PropTypes.func.isRequired,
-  fetchAlertsHistory: React.PropTypes.func.isRequired,
+  fetchNotifications: React.PropTypes.func.isRequired,
   setReportsMWA: React.PropTypes.func.isRequired,
 };
 
@@ -208,7 +208,7 @@ const mapDispatch = {
   fetchRolesAndPermissions,
   fetchFleet: commonFleetActions.fetchFleet,
   fetchAlertConditions: conditionsActions.fetchAlertConditions,
-  fetchAlertsHistory: journalActions.fetchAlertsHistory,
+  fetchNotifications: journalActions.fetchNotifications,
   setReportsMWA,
 };
 
