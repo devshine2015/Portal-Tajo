@@ -5,6 +5,12 @@ const classes = StyleSheet.create({
     textAlign: 'right',
     marginTop: 10,
   },
+
+  no_print: {
+    '@media print': {
+      display: 'none !important',
+    },
+  },
 });
 
 export default classes;

@@ -3,7 +3,7 @@ import { fromJS } from 'immutable';
 import {
   EXEC_REPORT_ITEM_NEW_FRAME,
 } from './actions';
-import createReportFrame from './../utils/reportVehicleFrame';
+import { createReportFrame } from './../utils/reportVehicleFrame';
 import moment from 'moment';
 
 const execReportInitialState = fromJS({

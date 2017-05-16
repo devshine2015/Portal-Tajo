@@ -8,19 +8,20 @@ const CHRONICLE_LOCAL_INCTANCE_STATE_OK_EMPTY = 'chronLocStateOk';
 const CHRONICLE_LOCAL_INCTANCE_STATE_OK_DATA = 'chronLocStateData';
 
 
-function ReportVehicleFrame(dateFrom, dateTo, events, inState) {
-  if (dateFrom === undefined) {
-    this.state = CHRONICLE_LOCAL_INCTANCE_STATE_NONE;
-    return;
-  }
-
-  this.distanceM = 0;
+function ReportVehicleFrame(dateFrom, dateTo) {
+  this.idiling = {
+    drivingTime: 0,
+    ignOffWhileStopped: 0,
+    ignOn: 0,
+    ignOnWhileStopped: 0,
+    stoppedTime: 0,
+  };
+  this.distTotal = 0;
+  this.distLastTrip = 0;
+  this.milageDistance = 0;
+  this.calculatedDistanceM = 0;
   this.numberOfPosSamples = 0;
 
-  this.dateFrom = dateFrom;
-  this.dateFrom00 = new Date(dateFrom.getFullYear(), dateFrom.getMonth(), dateFrom.getDate());
-  this.dateTo = dateTo;
-  this.timeRangeMs = dateTo.getTime() - dateFrom.getTime(); // 24*60*60*1000
   this.posData = [];
 
   this.temperatureData = [];
@@ -36,17 +37,16 @@ function ReportVehicleFrame(dateFrom, dateTo, events, inState) {
   this.lastFoundIdx = 0;
   this.lastFoundIdxT = { idx: 0, t: 0 };
 //    this.indexHint = -1;
-  this.state = inState;
-
-  if (events === null) {
+  if (dateFrom === undefined) {
+    this.state = CHRONICLE_LOCAL_INCTANCE_STATE_NONE;
     return;
   }
-  this.parceData(events);
+  this.dateFrom = dateFrom;
+  this.dateFrom00 = new Date(dateFrom.getFullYear(), dateFrom.getMonth(), dateFrom.getDate());
+  this.dateTo = dateTo;
+  this.timeRangeMs = dateTo.getTime() - dateFrom.getTime(); // 24*60*60*1000
 
-  // TODO: ? need more checks here - type of event, etc?
-  this.state = this.hasPositions() || this.hasTemperature() ?
-      CHRONICLE_LOCAL_INCTANCE_STATE_OK_DATA
-      : CHRONICLE_LOCAL_INCTANCE_STATE_OK_EMPTY;
+  this.state = CHRONICLE_LOCAL_INCTANCE_STATE_LOADING;
 }
 
 //
@@ -91,7 +91,7 @@ const eventPos = evnt => evnt.ev.pos.latlon;
 //   return Math.sqrt((dLat * dLat) + (dLng * dLng));
 // };
 
-// some theory here
+// some theory here:
 // http://stackoverflow.com/questions/639695/how-to-convert-latitude-or-longitude-to-meters
 // http://www.movable-type.co.uk/scripts/latlong.html
 function haversineDist(latLngA, latLngB) {  // generally used geo measurement function
@@ -121,7 +121,7 @@ ReportVehicleFrame.prototype.parceData = function (events) {
   }
 
   let prevPosSample = null;
-  let calculatedTotalDistance = 0;
+  this.calculatedDistanceM = 0;
 
   // const _dbgTime = 0;
   // const dataSize = events.length;
@@ -135,15 +135,11 @@ ReportVehicleFrame.prototype.parceData = function (events) {
       this.speedData.push({ timeMs: eventTimeMs, v: theSample.ev.pos.speed });
       this.numberOfPosSamples += 1;
       if (prevPosSample !== null) {
-        calculatedTotalDistance += haversineDist(eventPos(prevPosSample), eventPos(theSample));
+        this.calculatedDistanceM += haversineDist(eventPos(prevPosSample), eventPos(theSample));
       }
       prevPosSample = theSample;
     }
   });
-
-  this.distanceM = calculatedTotalDistance;
-
-  console.log(`total distance ${this.distanceM}`);
 
   // for (let i = 0; i < dataSize; ++i) {
   //   const theEvent = events[i];
@@ -313,8 +309,18 @@ ReportVehicleFrame.prototype.findSampleIdxWithT = function (requestMs, data) {
 //
 //-----------------------------------------------------------------------
 
-export default function createReportFrame(dateFrom, dateTo,
-  events = null, isLoading = false) {
-  return new ReportVehicleFrame(dateFrom, dateTo, events,
-      isLoading ? CHRONICLE_LOCAL_INCTANCE_STATE_LOADING : CHRONICLE_LOCAL_INCTANCE_STATE_NONE);
+export function createReportFrame(dateFrom, dateTo) {
+  return new ReportVehicleFrame(dateFrom, dateTo);
+}
+
+export function setReportFrameEvents(reportFrame, events) {
+  if (events === null) {
+    return;
+  }
+  reportFrame.parceData(events);
+
+  // TODO: ? need more checks here - type of event, etc?
+  reportFrame.state = reportFrame.hasPositions() || reportFrame.hasTemperature() ?
+      CHRONICLE_LOCAL_INCTANCE_STATE_OK_DATA
+      : CHRONICLE_LOCAL_INCTANCE_STATE_OK_EMPTY;
 }

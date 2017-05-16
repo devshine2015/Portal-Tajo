@@ -2,47 +2,62 @@
 // one vehicle report
 //
 import React from 'react';
-import { css } from 'aphrodite/no-important';
 import Layout from 'components/Layout';
 import Divider from 'material-ui/Divider';
-import ItemProperty from './DetailItemProperty';
+import SoloHeader from './SoloHeader';
+import SoloDetails from './SoloDetails';
 import ReportMap from './ReportMap';
 
 import MainActionButton from 'components/Controls/MainActionButton';
 
+const printJSin = require('print.js/dist/print.min.js');
 // import classes from './classes';
 
 class SoloReport extends React.Component {
 
-  doPrint() {
+  printDiv = (divName) => {
+    const printContents = document.getElementById(divName).innerHTML;
+    const originalContents = document.body.innerHTML;
 
+    document.body.innerHTML = printContents;
+
+    window.print();
+
+    document.body.innerHTML = originalContents;
   }
 
-  renderHeaderDetails() {
-    const N_A = 'N/A';
-
-    return (
-      <div>
-        <Divider />
-        <ReportMap reportFrame={this.props.reportFrame} />
-        <Divider />
-        <ItemProperty
-          title={'Distance'}
-          value={this.props.reportFrame.distanceM}
-        />
-        <ItemProperty
-          title={'Samples'}
-          value={this.props.reportFrame.numberOfPosSamples}
-        />
-      </div>
-    );
+  doPrint = () => {
+    window.print();
+    // this.printDiv('drvrSoloReport');
+    // const asdf = printJS;
+    // printJS('drvrSoloReport', 'html');
   }
-
   render() {
     return (
       <Layout.Content>
-        <Layout.Header label={'EXECUTIVE REPORT'} />
-        {this.renderHeaderDetails()}
+        <div id="drvrSoloReport" style={{ overflow: 'scroll' }}>
+          {/* <Layout.Header label={'EXECUTIVE REPORT'} />*/}
+          <table style={{ width: 600 }}>
+            <tr>
+              <th>Firstname</th>
+              <th>Lastname</th> 
+              <th>Age</th>
+            </tr>
+            <tr>
+              <td>Jill</td>
+              <td>Smith</td> 
+              <td>50</td>
+            </tr>
+            <tr>
+              <td>Eve</td>
+              <td>Jackson</td> 
+              <td>94</td>
+            </tr>
+          </table>
+          <SoloHeader vehicleId={this.props.vehicleId} />
+          <SoloDetails vehicleId={this.props.vehicleId} />
+          {/*<ReportMap reportFrame={this.props.reportFrame} />*/}
+        </div>
         <MainActionButton
           label={'PRINT'}
           onClick={this.doPrint}
@@ -53,6 +68,7 @@ class SoloReport extends React.Component {
 }
 
 SoloReport.propTypes = {
+  vehicleId: React.PropTypes.string.isRequired,
   reportFrame: React.PropTypes.object.isRequired,
 };
 

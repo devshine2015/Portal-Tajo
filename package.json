@@ -60,6 +60,7 @@
     "node-polyglot": "2.2.2",
     "node-uuid": "1.4.7",
     "object-path": "0.11.3",
+    "print.js": "^1.0.18",
     "query-string": "4.2.3",
     "ramda": "0.23.0",
     "react": "15.4.2",

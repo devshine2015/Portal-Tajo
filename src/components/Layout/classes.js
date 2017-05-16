@@ -22,6 +22,10 @@ const classes = StyleSheet.create({
     position: 'relative',
     marginLeft: '250px',
     padding: '0 15px',
+
+    '@media print': {
+      marginLeft: 0,
+    },
   },
 // ---- content
   content: {

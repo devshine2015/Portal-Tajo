@@ -2,7 +2,12 @@
   .column {
     position: fixed;
     bottom: 0;
-    // default value, have to be redefined
     top: 0;
+  }
+}
+
+@media print {
+  .column {
+    display: none;
   }
 }

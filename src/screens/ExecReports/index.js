@@ -43,7 +43,7 @@ class ExecReport extends React.Component {
             }
         />
         <Layout.FixedContent>
-          <SoloReport reportFrame={soloReportFrame} />
+          <SoloReport vehicleId={this.props.selectedVehicleId} reportFrame={soloReportFrame} />
         </Layout.FixedContent>
       </Layout.ScreenWithList>
     );

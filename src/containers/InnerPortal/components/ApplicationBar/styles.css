@@ -30,3 +30,10 @@
     height: 100%;
   }
 }
+
+
+@media print {
+  .barContainer {
+    display: none;
+  }
+}

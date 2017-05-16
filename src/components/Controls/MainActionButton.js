@@ -1,6 +1,9 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import ContentAddIcon from 'material-ui/svg-icons/content/add';
+import { css } from 'aphrodite/no-important';
+
+import classes from './classes';
 
 const DEF_STYLES = {
   icon: {
@@ -20,6 +23,7 @@ const MainActionButton = ({
     label={label}
     icon={icon}
     style={{ float: 'right' }}
+    className={css(classes.no_print)}
     primary
   />
 );
