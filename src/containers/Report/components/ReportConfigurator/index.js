@@ -133,8 +133,8 @@ class Report extends React.Component {
 
   getParams() {
     const data = {
-      start: this.state.startDate,
-      end: this.state.endDate,
+      startDate: this.state.startDate,
+      endDate: this.state.endDate,
       startTime: this.state.startTime,
       endTime: this.state.endTime,
     };

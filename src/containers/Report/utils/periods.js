@@ -3,8 +3,8 @@ import moment from 'moment';
 // compose array of dates presented in period start to end
 // result = [<date_as_ISO_string>]
 function _getPeriods({
-  start,
-  end = undefined,
+  startDate,
+  endDate = undefined,
   startTime = undefined,
   endTime = undefined,
 }, frequency = undefined) {
@@ -14,19 +14,19 @@ function _getPeriods({
   let momentTo;
 
   if (startTime) {
-    momentFrom = _setTime(start, startTime);
+    momentFrom = _setTime(startDate, startTime);
   } else {
-    momentFrom = moment(start);
+    momentFrom = moment(startDate);
   }
 
-  if (end && endTime) {
-    momentTo = _setTime(end, endTime);
-  } else if (end) {
-    momentTo = moment(end);
+  if (endDate && endTime) {
+    momentTo = _setTime(endDate, endTime);
+  } else if (endDate) {
+    momentTo = moment(endDate);
   } else if (endTime) {
-    momentTo = _setTime(end, endTime);
+    momentTo = _setTime(endDate, endTime);
   } else {
-    momentTo = moment(start);
+    momentTo = moment(startDate);
   }
 
   periods.push(momentFrom);

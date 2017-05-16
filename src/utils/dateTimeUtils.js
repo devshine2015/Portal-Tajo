@@ -33,15 +33,15 @@ const _makeEndTime = () => {
 };
 
 export const makeTimeRangeParams = ({
-  start,
-  end = undefined,
+  startDate,
+  endDate = undefined,
   startTime = undefined,
   endTime = undefined,
-} = {}) => {
-  const endDate = end || start;
+} = { ...makeDefaultDatePeriod() }) => {
+  const endD = endDate || startDate;
 
-  const fromFormatted = _formateDateForRequest(start, startTime);
-  const toFormatted = _formateDateForRequest(endDate, endTime);
+  const fromFormatted = _formateDateForRequest(startDate, startTime);
+  const toFormatted = _formateDateForRequest(endD, endTime);
 
   return {
     from: fromFormatted,
