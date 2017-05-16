@@ -31,3 +31,36 @@ const _makeEndTime = () => {
 
   return t.toDate();
 };
+
+export const makeTimeRangeParams = ({
+  start,
+  end = undefined,
+  startTime = undefined,
+  endTime = undefined,
+} = {}) => {
+  const endDate = end || start;
+
+  const fromFormatted = _formateDateForRequest(start, startTime);
+  const toFormatted = _formateDateForRequest(endDate, endTime);
+
+  return {
+    from: fromFormatted,
+    to: toFormatted,
+  };
+};
+
+// Just formatting to ISO string. Keep actual date and time values
+function _formateDateForRequest(date, time) {
+  const d = moment.isMoment(date) ? date.toDate() : date;
+
+  const result = moment({
+    y: d.getFullYear(),
+    M: d.getMonth(),
+    d: d.getDate(),
+    h: time ? time.getHours() : '00',
+    m: time ? time.getMinutes() : '00',
+    s: time ? time.getSeconds() : '00',
+  }).toISOString();
+
+  return `${result.slice(0, -1)}+0000`;
+}

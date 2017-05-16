@@ -2,15 +2,13 @@ import qs from 'query-string';
 import { api } from 'utils/api';
 import endpoints from 'configs/endpoints';
 import reporter from 'utils/reports';
+import { makeTimeRangeParams } from 'utils/dateTimeUtils';
 import {
   getSavedReportData,
   getSelectedReports,
   getAvailableReports,
 } from '../reducer';
-import {
-  prepareDataForReport,
-  getReportParams,
-} from '../utils/prepareReport';
+import { prepareDataForReport } from '../utils/prepareReport';
 import getPeriods from '../utils/periods';
 import getVehiclesForReport from '../utils/reportVehicles';
 import { makeMWADate } from 'services/MWA/actions';
@@ -46,7 +44,7 @@ function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getSta
   dispatch(_beforeGenerating());
 
   const periods = getPeriods(timePeriod, frequency);
-  const periodParams = getReportParams(timePeriod);
+  const periodParams = makeTimeRangeParams(timePeriod);
   const selectedReports = getSelectedReportsTypes(getState());
   const vehicles = getVehiclesForReport(getState());
 

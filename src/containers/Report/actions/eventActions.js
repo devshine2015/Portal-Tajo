@@ -3,9 +3,9 @@ import { api } from 'utils/api';
 import endpoints from 'configs/endpoints';
 import { requestSamplesLimit } from 'configs';
 import reporter from 'utils/reports';
+import { makeTimeRangeParams } from 'utils/dateTimeUtils';
 import { setLoader } from './loaderActions';
 import getVehiclesForReport from '../utils/reportVehicles';
-import { getReportParams } from '../utils/prepareReport';
 import calculateVehicleRows from '../specs/events';
 import { getVehiclesAmount } from 'services/FleetModel/reducer';
 import {
@@ -40,7 +40,7 @@ function _generateRawReport({ timePeriod, frequency, dateFormat }, dispatch, get
   const dateFormatWithTime = `${dateFormat} HH:mm:ss`;
   const vehiclesForRequest = getVehiclesForReport(getState());
   const selectedEvents = _getEvents(getState);
-  const periodParamsWithOptions = Object.assign({}, getReportParams(timePeriod), {
+  const periodParamsWithOptions = Object.assign({}, makeTimeRangeParams(timePeriod), {
     max: requestSamplesLimit,
     filter: 'PG',
     // no need to pass tzoffset - from/to already in UTC
