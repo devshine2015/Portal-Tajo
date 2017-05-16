@@ -24,12 +24,14 @@ class NotificationsBtn extends Component {
 
   render() {
     return (
-      <IconButton style={STYLES.button}>
+      <IconButton
+        style={STYLES.button}
+        onClick={this.props.onClick}
+      >
         <Badge
           badgeContent={this.props.count}
           badgeStyle={STYLES.badge}
           className={css(classes.badge)}
-          onClick={this.props.onClick}
           secondary
         >
           <BellInactiveIcon color="white" />
@@ -45,7 +47,7 @@ NotificationsBtn.propTypes = {
 };
 
 NotificationsBtn.defaultProps = {
-  count: 10,
+  count: 0,
 };
 
 export default NotificationsBtn;

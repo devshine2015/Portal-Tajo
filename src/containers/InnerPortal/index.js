@@ -5,23 +5,14 @@ import SnackbarNotification from 'containers/Snackbar';
 import { getFleetName } from 'services/Session/reducer';
 import ApplicationBar from './components/ApplicationBar';
 import MainSidebar from './components/MainSidebar';
-import Journal from './components/Journal/Journal';
-// import Journal from 'containers/Journal/components/Journal';
 
 import styles from './styles.css';
 
 class InnerPortal extends React.Component {
 
   state = {
-    isJournalOpen: false,
     isSidebarOpen: false,
   };
-
-  toggleJournalState = () => {
-    this.setState({
-      isJournalOpen: !this.state.isJournalOpen,
-    });
-  }
 
   toggleSidebar = () => {
     this.setState({
@@ -37,9 +28,9 @@ class InnerPortal extends React.Component {
 
           <ApplicationBar
             title={this.props.fleet}
-            toggleJournal={this.toggleJournalState}
             toggleSidebar={this.toggleSidebar}
           />
+
           <MainSidebar
             isOpened={this.state.isSidebarOpen}
             toggleSidebar={this.toggleSidebar}
@@ -51,7 +42,6 @@ class InnerPortal extends React.Component {
 
           {/* absolutely positioned stuff */}
           <SnackbarNotification />
-          { this.state.isJournalOpen && <Journal /> }
 
         </div>
       );

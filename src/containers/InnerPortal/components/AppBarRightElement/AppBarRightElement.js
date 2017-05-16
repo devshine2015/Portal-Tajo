@@ -3,7 +3,7 @@ import { css } from 'aphrodite/no-important';
 import FlatButton from 'material-ui/FlatButton';
 import endpoints from 'configs/endpoints';
 import { translate } from 'utils/i18n';
-import NotificationsBtn from './NotificationsBtn';
+import Journal from '../Journal/Journal';
 import phrases, { phrasesShape } from './PropTypes';
 import classes from './classes';
 
@@ -18,7 +18,7 @@ const STYLES = {
 const AppBarRightElement = (props, context) => {
   return (
     <div className={css(classes.rightElement)}>
-      <NotificationsBtn onClick={props.toggleJournal} />
+      <Journal />
       <FlatButton
         label={props.translations.logout}
         onClick={_onLogoutClick(context.logout)}
@@ -35,7 +35,6 @@ AppBarRightElement.contextTypes = {
 
 AppBarRightElement.propTypes = {
   translations: phrasesShape.isRequired,
-  toggleJournal: React.PropTypes.func.isRequired,
 };
 
 AppBarRightElement.defaultProps = {

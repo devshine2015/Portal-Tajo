@@ -37,13 +37,12 @@ function renderTitle(title) {
 
 const ApplicationBar = ({
   title,
-  toggleJournal,
   toggleSidebar,
 }) => (
   <div className={styles.barContainer}>
     <AppBar
       title={renderTitle(title)}
-      iconElementRight={<AppBarRightElement toggleJournal={toggleJournal} />}
+      iconElementRight={<AppBarRightElement />}
       iconStyleRight={STYLES.right}
       titleStyle={STYLES.title}
       className={styles.bar}
@@ -55,7 +54,6 @@ const ApplicationBar = ({
 
 ApplicationBar.propTypes = {
   title: React.PropTypes.string.isRequired,
-  toggleJournal: React.PropTypes.func.isRequired,
   toggleSidebar: React.PropTypes.func.isRequired,
 };
 
