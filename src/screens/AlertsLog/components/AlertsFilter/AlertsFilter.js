@@ -2,6 +2,7 @@ import React from 'react';
 import { css } from 'aphrodite/no-important';
 import FlatButton from 'material-ui/FlatButton';
 import DateRange from 'components/DateRange/DateRange';
+import { makeDefaultDatePeriod } from 'utils/dateTimeUtils';
 import classes from './classes';
 
 const STYLES = {
@@ -12,7 +13,9 @@ const STYLES = {
 
 class AlertsFilter extends React.Component {
 
-  state = {};
+  state = {
+    ...makeDefaultDatePeriod(),
+  };
 
   onStartDateChange = (_, value) => {
     this.onPeriodChange('startDate', value);
@@ -44,6 +47,10 @@ class AlertsFilter extends React.Component {
           onStartTimeChange={this.onStartTimeChange}
           onEndDateChange={this.onEndDateChange}
           onEndTimeChange={this.onEndTimeChange}
+          defaultStartDate={this.state.startDate}
+          defaultEndDate={this.state.endDate}
+          defaultStartTime={this.state.startTime}
+          defaultEndTime={this.state.endTime}
           withTime
         />
         <FlatButton

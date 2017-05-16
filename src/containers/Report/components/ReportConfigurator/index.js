@@ -28,6 +28,7 @@ import {
   getAvailableEvents,
   getSelectedReports,
 } from 'containers/Report/reducer';
+import { makeDefaultDatePeriod } from 'utils/dateTimeUtils';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './PropTypes';
@@ -62,6 +63,7 @@ class Report extends React.Component {
     this.FORM_NAME = 'configurator';
 
     this.state = {
+      ...makeDefaultDatePeriod(),
       ...getDefaultCheckedReportTypes(props.availableReports),
       // TODO: this does not handle unselected default types
       ...getStoredCheckedReportTypes(props.availableReports, props.selectedFields),
@@ -164,6 +166,10 @@ class Report extends React.Component {
               onEndDateChange={this.onEndDateChange}
               onEndTimeChange={this.onEndTimeChange}
               dateFormat={this.state.tempDateFormat}
+              defaultStartDate={this.state.startDate}
+              defaultEndDate={this.state.endDate}
+              defaultStartTime={this.state.startTime}
+              defaultEndTime={this.state.endTime}
               withTime
             />
           </div>

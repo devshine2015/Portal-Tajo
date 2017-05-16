@@ -13,34 +13,7 @@ const Dilimiter = () => {
   );
 };
 
-
-function calcStartTime() {
-  const t = moment().set({
-    hour: 0,
-    minute: 0,
-    second: 0,
-    millisecond: 0,
-  });
-  return t.toDate();
-}
-
-function calcEndTime() {
-  const t = moment().set({
-    hour: 23,
-    minute: 59,
-    second: 59,
-    millisecond: 999,
-  });
-
-  return t.toDate();
-}
-
 class DateRange extends React.Component {
-
-  defaultStartTime = calcStartTime();
-  defaultEndTime = calcEndTime();
-  defaultStartDate = moment().subtract(1, 'days').toDate();
-  defaultEndDate = this.defaultStartDate;
 
   formatDate = (date) => {
     return moment(date).format(this.props.dateFormat.toUpperCase());
@@ -57,8 +30,8 @@ class DateRange extends React.Component {
           dateHint="Start date"
           timeHint="Start time"
           formatDate={this.formatDate}
-          defaultDate={this.defaultStartDate}
-          defaultTime={this.defaultStartTime}
+          defaultDate={this.props.defaultStartDate}
+          defaultTime={this.props.defaultStartTime}
           onDateChange={this.props.onStartDateChange}
           onTimeChange={this.props.onStartTimeChange}
         />
@@ -68,8 +41,8 @@ class DateRange extends React.Component {
           dateHint="End date"
           timeHint="End time"
           formatDate={this.formatDate}
-          defaultDate={this.defaultEndDate}
-          defaultTime={this.defaultEndTime}
+          defaultDate={this.props.defaultEndDate}
+          defaultTime={this.props.defaultEndTime}
           onDateChange={this.props.onEndDateChange}
           onTimeChange={this.props.onEndTimeChange}
         />
@@ -82,6 +55,10 @@ DateRange.propTypes = {
   dateFormat: React.PropTypes.oneOf([
     'yyyy-mm-dd', 'dd-mm-yyyy',
   ]),
+  defaultStartDate: React.PropTypes.instanceOf(Date).isRequired,
+  defaultEndDate: React.PropTypes.instanceOf(Date).isRequired,
+  defaultStartTime: React.PropTypes.instanceOf(Date),
+  defaultEndTime: React.PropTypes.instanceOf(Date),
   onStartDateChange: React.PropTypes.func.isRequired,
   onStartTimeChange: React.PropTypes.func,
   onEndDateChange: React.PropTypes.func.isRequired,
