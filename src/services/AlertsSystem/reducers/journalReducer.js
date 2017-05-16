@@ -45,25 +45,8 @@ function journalReducer(state = initialState, action) {
 
 export default journalReducer;
 
-export const jrnIsOpened = state =>
-  state.get('isOpened');
-
-export const jrnGetLastOpenedTS = state =>
-  state.get('lastOpenedTS');
-
 export const jrnGetLatestRecievedTS = state =>
   state.get('lastRecievedTS');
 
 export const jrnIsWaiting = state =>
   state.get('isWaiting');
-
-export const jrnNewCount = state =>
-  Math.min(state.get('newEntriesCount'), _LOCAL_JOURNAL_SIZE_LIMIT_);
-
-export const jrnGetEntries = (state) => {
-  const theList = state.get('entries');
-  if (theList === undefined) {
-    return [];
-  }
-  return theList.toJS();
-};

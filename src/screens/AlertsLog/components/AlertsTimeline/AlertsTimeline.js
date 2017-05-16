@@ -1,8 +1,9 @@
 import React from 'react';
+import { List } from 'immutable';
 import { css } from 'aphrodite/no-important';
 import { connect } from 'react-redux';
 import { getJournalSlice } from 'services/AlertsSystem/reducer';
-import makeGetAlertEntries from './selector';
+import makeGetNotifications from 'services/AlertsSystem/selectors';
 import TimelineEvent from './TimelineEvent';
 import classes from './AlertsTimeline.classes';
 
@@ -22,7 +23,12 @@ class AlertsTimeline extends React.Component {
 
   renderEvents() {
     return this.props.entries.map((event) => {
-      return <TimelineEvent key={event.eventTS} {...event} />;
+      return (
+        <TimelineEvent
+          {...event.toJS()}
+          key={event.get('id')}
+        />
+      );
     });
   }
 
@@ -39,25 +45,14 @@ class AlertsTimeline extends React.Component {
 }
 
 AlertsTimeline.propTypes = {
-  entries: React.PropTypes.arrayOf(
-    React.PropTypes.shape({
-      eventTS: React.PropTypes.number.isRequired,
-      eventKind: React.PropTypes.string.isRequired,
-      eventName: React.PropTypes.string.isRequired,
-      ownerName: React.PropTypes.string.isRequired,
-    }).isRequired,
-  ),
-};
-
-AlertsTimeline.defaultProps = {
-  entries: [],
+  entries: React.PropTypes.instanceOf(List).isRequired,
 };
 
 const makeMapStateToProps = () => {
-  const getAlertEntries = makeGetAlertEntries();
+  const getNotifications = makeGetNotifications();
 
   const mapStateToProps = state => ({
-    entries: getAlertEntries(getJournalSlice(state)),
+    entries: getNotifications(getJournalSlice(state)),
   });
 
   return mapStateToProps;

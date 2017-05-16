@@ -29,6 +29,3 @@ export const jrnGetLatestRecievedTS = state =>
 
 export const jrnIsWaiting = state =>
   R.compose(fromJournalReducer.jrnIsWaiting, getJournalSlice)(state);
-
-export const jrnGetEntries = state =>
-  R.compose(fromJournalReducer.jrnGetEntries, getJournalSlice)(state);

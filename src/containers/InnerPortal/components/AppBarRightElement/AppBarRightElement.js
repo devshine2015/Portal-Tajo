@@ -3,7 +3,7 @@ import { css } from 'aphrodite/no-important';
 import FlatButton from 'material-ui/FlatButton';
 import endpoints from 'configs/endpoints';
 import { translate } from 'utils/i18n';
-import Journal from '../Journal/Journal';
+import Journal from '../Journal/ConnectedJournal';
 import phrases, { phrasesShape } from './PropTypes';
 import classes from './classes';
 
