@@ -24,53 +24,53 @@ const SoloDetails = ({
     return false;
   }
   return (
-    <Layout.Content>
-      <ItemProperty
-        title={'driving Time'}
-        value={reportFrame.idiling.drivingTime}
-      />
-      <ItemProperty
-        title={'ignOffWhileStopped Time'}
-        value={reportFrame.idiling.ignOffWhileStopped}
-      />
-      <ItemProperty
-        title={'ignOn Time'}
-        value={reportFrame.idiling.ignOn}
-      />
-      <ItemProperty
-        title={'ignOnWhileStopped Time'}
-        value={reportFrame.idiling.ignOnWhileStopped}
-      />
-      <ItemProperty
-        title={'stopped Time'}
-        value={reportFrame.idiling.stoppedTime}
-      />
-      <Divider />
-      <ItemProperty
-        title={'Odometr Total'}
-        value={(reportFrame.distTotal / 1000).toFixed(3)}
-      />
-      <ItemProperty
-        title={'Odometr Last Trip'}
-        value={(reportFrame.distLastTrip / 1000).toFixed(3)}
-      />
-      <ItemProperty
-        title={'Distance'}
-        value={reportFrame.milageDistance.toFixed(3)}
-      />
-      <Divider />
-      <ItemProperty
-        title={'CalculatedDistance'}
-        value={(reportFrame.calculatedDistanceM / 1000).toFixed(3)}
-      />
-      <ItemProperty
-        title={'Samples'}
-        value={reportFrame.numberOfPosSamples}
-      />
-      <ItemProperty
-        title={'Vechicle Id'}
-        value={theVehicle.id}
-      />
+    <Layout.Content style={{ alignItems: 'center' }}>
+      <table style={{ width: 400, border: 'solid 1px #aaa' }}>
+        <ItemProperty
+          title={'Driving Time'}
+          value={reportFrame.idiling.drivingTime}
+        />
+        <ItemProperty
+          title={'Stopped Time'}
+          value={reportFrame.idiling.stoppedTime}
+        />
+        <ItemProperty
+          title={'IgnOn Time'}
+          value={reportFrame.idiling.ignOn}
+        />
+        <ItemProperty
+          title={'IgnOn Stopped Time'}
+          value={reportFrame.idiling.ignOnWhileStopped}
+        />
+        <ItemProperty
+          title={'IgnOff Stopped Time'}
+          value={reportFrame.idiling.ignOffWhileStopped}
+        />
+        <ItemProperty
+          title={'Odometr Total'}
+          value={`${(reportFrame.distTotal / 1000).toFixed(1)} km`}
+        />
+        <ItemProperty
+          title={'Odometr Last Trip'}
+          value={`${(reportFrame.distLastTrip / 1000).toFixed(1)} km`}
+        />
+        <ItemProperty
+          title={'Distance'}
+          value={`${reportFrame.milageDistance.toFixed(1)} km`}
+        />
+        {/*<ItemProperty
+          title={'CalculatedDistance'}
+          value={(reportFrame.calculatedDistanceM / 1000).toFixed(3)}
+        />*/}
+        {/*<ItemProperty
+          title={'Samples'}
+          value={reportFrame.numberOfPosSamples}
+        />*/}
+        {/*<ItemProperty
+          title={'Vechicle Id'}
+          value={theVehicle.id}
+        />*/}
+      </table>
     </Layout.Content>
   );
 };

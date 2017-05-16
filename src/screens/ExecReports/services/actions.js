@@ -1,4 +1,4 @@
-// import moment from 'moment';
+import moment from 'moment';
 import qs from 'query-string';
 import { api } from 'utils/api';
 import endpoints from 'configs/endpoints';
@@ -26,12 +26,16 @@ export const requestSoloReport = (vehicleId, dateFrom, dateTo) => dispatch =>
 // };
 
 function _requestSoloReport(vehicleId, dateFrom, dateTo, dispatch) {
+
+  dateFrom = moment().subtract(7, 'days').toDate();
+  dateTo = moment().subtract(4, 'days').toDate();
+
   // setting loading state for local frame
   const theFrame = createReportFrame(dateFrom, dateTo);
   const queryString = _prepareReportsQueryString(dateFrom, dateTo);
 
   dispatch(_updateVehicleChronicleFrame(vehicleId, theFrame));
-  _fetchSoloHistory(vehicleId, theFrame, dateFrom, dateTo, dispatch);
+  // _fetchSoloHistory(vehicleId, theFrame, dateFrom, dateTo, dispatch);
   // all the reports fetches
   _fetchMilage(vehicleId, theFrame, queryString, dispatch);
   _fetchStats(vehicleId, theFrame, queryString, dispatch);

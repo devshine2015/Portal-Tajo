@@ -12,3 +12,9 @@
     flex: 1;
   }
 }
+
+@media print {
+ .journalControlBar {
+   display: none;
+  }
+}

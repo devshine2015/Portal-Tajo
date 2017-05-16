@@ -9,8 +9,8 @@ import moment from 'moment';
 const execReportInitialState = fromJS({
   // dateFrom: moment().subtract(1, 'days').toDate(),
   // dateTo: moment().toDate(),
-  dateFrom: moment().subtract(4, 'days').toDate(),
-  dateTo: moment().subtract(3, 'days').toDate(),
+  dateFrom: moment().subtract(1, 'days').toDate(),
+  dateTo: moment().toDate(),
   localFrames: new Map(),
   validFramesCount: 0,
   durtyFlag: 0,

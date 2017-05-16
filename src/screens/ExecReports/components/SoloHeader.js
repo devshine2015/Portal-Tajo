@@ -6,7 +6,6 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import Layout from 'components/Layout';
 import Divider from 'material-ui/Divider';
-import ItemProperty from './DetailItemProperty';
 
 import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
 import { getInstanceExecReportFrameById } from './../services/reducer';
@@ -15,21 +14,35 @@ import { getInstanceExecReportFrameById } from './../services/reducer';
 
 const SoloHeader = ({
   vehicleId,
-  // getSoloReportById,
+  getSoloReportById,
   getVehicleById,
 }) => {
   const theVehicle = getVehicleById(vehicleId);
-  if (theVehicle === null) {
+  const reportFrame = getSoloReportById(vehicleId);
+  if (theVehicle === null || reportFrame === null) {
     return false;
   }
   return (
     <Layout.Content>
-      <Layout.Header label={theVehicle.original.name} />
-      <Divider />
-      <ItemProperty
-        title={'Licence Plate'}
-        value={theVehicle.original.licensePlate}
+      <Layout.Header
+        label={theVehicle.original.name}
+        style={{ textAlign: 'center', paddingLeft: 0 }}
+        labelStyle={{ color: 'rgba(0, 0, 0, 0.5)' }}
       />
+      <div style={{ textAlign: 'center', paddingTop: 12 }}>
+        <span >
+          Licence Plate
+        </span>
+        <span style={{ paddingLeft: 8, fontWeight: 'bolder' }}>
+          {theVehicle.original.licensePlate}
+        </span>
+      </div>
+      <div style={{ textAlign: 'center', paddingTop: 12, paddingBottom: 32 }}>
+        <span >
+          {`Report From: ${reportFrame.dateFrom.toLocaleString()} To: ${reportFrame.dateTo.toLocaleString()}`}
+        </span>
+      </div>
+      <Divider />
     </Layout.Content>
   );
 };

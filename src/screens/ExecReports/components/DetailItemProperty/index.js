@@ -7,14 +7,19 @@ const DetailItemProperty = ({
   icon,
   value,
 }) => (
-  <div className={styles.propContainer}>
+  <tr className={styles.row}>
+    <td className={styles.titleCell}>{title}</td>
+    <td className={styles.valueCell}>{value}</td>
+  </tr>
+
+  /*<div className={styles.propContainer}>
     <span >
       {title === '' ? icon : `${title}:`}
     </span>
     <span >
-      {value}
+      {title}
     </span>
-  </div>
+  </div>*/
 );
 
 DetailItemProperty.propTypes = {
