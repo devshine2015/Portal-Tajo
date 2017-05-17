@@ -13,6 +13,13 @@ import { getInstanceExecReportFrameById } from './../services/reducer';
 
 // import classes from './classes';
 
+const valueOrLoading = (value) => {
+  return value === -1 ? 'loading...' : value;
+}
+const formatKm = (value) => {
+  return  value === 'loading...' ?  value : `${(value / 1000).toFixed(1)} km`;
+}
+
 const SoloDetails = ({
   vehicleId,
   getSoloReportById,
@@ -28,31 +35,31 @@ const SoloDetails = ({
       <table style={{ width: 400, border: 'solid 1px #aaa' }}>
         <ItemProperty
           title={'Driving Time'}
-          value={reportFrame.idiling.drivingTime}
+          value={valueOrLoading(reportFrame.idiling.drivingTime)}
         />
         <ItemProperty
           title={'Stopped Time'}
-          value={reportFrame.idiling.stoppedTime}
+          value={valueOrLoading(reportFrame.idiling.stoppedTime)}
         />
         <ItemProperty
           title={'IgnOn Time'}
-          value={reportFrame.idiling.ignOn}
+          value={valueOrLoading(reportFrame.idiling.ignOn)}
         />
         <ItemProperty
           title={'IgnOn Stopped Time'}
-          value={reportFrame.idiling.ignOnWhileStopped}
+          value={valueOrLoading(reportFrame.idiling.ignOnWhileStopped)}
         />
         <ItemProperty
           title={'IgnOff Stopped Time'}
-          value={reportFrame.idiling.ignOffWhileStopped}
+          value={valueOrLoading(reportFrame.idiling.ignOffWhileStopped)}
         />
         <ItemProperty
           title={'Odometr Total'}
-          value={`${(reportFrame.distTotal / 1000).toFixed(1)} km`}
+          value={formatKm(valueOrLoading(reportFrame.distTotal))}
         />
         <ItemProperty
           title={'Odometr Last Trip'}
-          value={`${(reportFrame.distLastTrip / 1000).toFixed(1)} km`}
+          value={formatKm(valueOrLoading(reportFrame.distLastTrip))}
         />
         <ItemProperty
           title={'Distance'}
