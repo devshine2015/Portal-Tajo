@@ -18,24 +18,38 @@ const STYLES = {
   },
 };
 
+const Icon = () => <BellInactiveIcon color="white" />;
+
+const WithBadge = (props) => {
+  return (
+    <Badge
+      badgeContent={props.count}
+      badgeStyle={STYLES.badge}
+      className={css(classes.badge)}
+      secondary
+    >
+      <Icon />
+    </Badge>
+  );
+};
+
+WithBadge.propTypes = {
+  count: React.PropTypes.number.isRequired,
+};
+
 class NotificationsBtn extends Component {
 
   state = {};
 
   render() {
+    const showBadge = this.props.count !== 0;
+
     return (
       <IconButton
         style={STYLES.button}
         onClick={this.props.onClick}
       >
-        <Badge
-          badgeContent={this.props.count}
-          badgeStyle={STYLES.badge}
-          className={css(classes.badge)}
-          secondary
-        >
-          <BellInactiveIcon color="white" />
-        </Badge>
+        { showBadge ? <WithBadge count={this.props.count} /> : <Icon /> }
       </IconButton>
     );
   }

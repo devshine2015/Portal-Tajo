@@ -9,6 +9,12 @@ import classes from './Journal.classes';
 const ANCHOR_ORIGIN = { horizontal: 'right', vertical: 'bottom' };
 const TARGET_ORIGIN = { horizontal: 'right', vertical: 'top' };
 
+const NothingToShow = () => (
+  <div className={css(classes.placeholder)}>
+    There is no notifications yet
+  </div>
+);
+
 const JournalHeader = () => (
   <div className={css(classes.header)}>
     <div className={css(classes.header__text)}>Notifications</div>
@@ -18,7 +24,7 @@ const JournalHeader = () => (
 class Journal extends React.Component {
 
   state = {
-    isOpened: true,
+    isOpened: false,
   };
 
   toggleJournal = (e) => {
@@ -55,11 +61,13 @@ class Journal extends React.Component {
   }
 
   render() {
+    const hasNotifications = this.props.notifications.size !== 0;
+
     return (
       <div>
         <NotificationsBtn
           onClick={this.toggleJournal}
-          count={10}
+          count={this.props.notifications.size}
         />
         <Popover
           anchorEl={this.state.anchorEl}
@@ -71,10 +79,12 @@ class Journal extends React.Component {
         >
           <div className={css(classes.journal)}>
             <JournalHeader />
-
-            <ul className={css(classes.entries)}>
-              { this.renderEntries() }
-            </ul>
+            { hasNotifications ? (
+              <ul className={css(classes.entries)}>
+                { this.renderEntries() }
+              </ul>
+              ) : <NothingToShow />
+            }
           </div>
         </Popover>
       </div>

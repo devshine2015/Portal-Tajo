@@ -7,7 +7,6 @@ export default StyleSheet.create({
 
   header: {
     textAlign: 'center',
-    // borderBottom: '1px solid #ccc',
   },
 
   header__text: {
@@ -17,8 +16,18 @@ export default StyleSheet.create({
     lineHeight: '40px',
   },
 
+  placeholder: {
+    fontSize: 12,
+    textTransform: 'uppercase',
+    lineHeight: '40px',
+    textAlign: 'center',
+    color: '#999',
+  },
+
   entries: {
     listStyleType: 'none',
+    maxHeight: '23vmax',
+    overflowY: 'auto',
   },
 
   entries__item: {
