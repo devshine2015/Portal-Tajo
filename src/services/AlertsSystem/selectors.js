@@ -1,8 +1,8 @@
 import { createSelector } from 'reselect';
-import { getEntries } from './reducers/nextJournalReducer';
+import { getEntriesNewestFirst } from './reducers/nextJournalReducer';
 
 export default () => {
-  return createSelector(getEntries, (entries) => {
+  return createSelector(getEntriesNewestFirst, (entries) => {
     return entries;
   });
 };

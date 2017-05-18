@@ -17,3 +17,9 @@ export default function (state = initialState, action) {
 
 export const getEntries = state =>
   state.get('entries');
+
+export const getEntriesNewestFirst = (state) => {
+  return getEntries(state).sort((a, b) => {
+    return b.get('eventTS') - a.get('eventTS');
+  });
+};
