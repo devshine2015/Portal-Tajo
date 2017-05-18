@@ -9,6 +9,13 @@ import classes from './Journal.classes';
 const ANCHOR_ORIGIN = { horizontal: 'right', vertical: 'bottom' };
 const TARGET_ORIGIN = { horizontal: 'right', vertical: 'top' };
 
+const STYLES = {
+  popover: {
+    marginTop: 8,
+    overfloY: 'inherit',
+  },
+};
+
 const NothingToShow = () => (
   <div className={css(classes.placeholder)}>
     There is no notifications yet
@@ -20,6 +27,7 @@ const JournalHeader = () => (
     <div className={css(classes.header__text)}>Notifications</div>
   </div>
 );
+
 
 class Journal extends React.Component {
 
@@ -76,6 +84,7 @@ class Journal extends React.Component {
           targetOrigin={TARGET_ORIGIN}
           onRequestClose={this.closeJournal}
           animation={PopoverAnimationVertical}
+          style={STYLES.popover}
         >
           <div className={css(classes.journal)}>
             <JournalHeader />
