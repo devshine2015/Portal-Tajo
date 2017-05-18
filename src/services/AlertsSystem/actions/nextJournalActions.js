@@ -34,14 +34,14 @@ export const fetchNotifications = (range = undefined) => async (dispatch, getSta
 function createJournalEntry(alertEvent, state) {
   const crossTime = alertEvent.ev.crossTime !== undefined ? alertEvent.ev.crossTime : 0;
   const eventDate = new Date(alertEvent.ev.ts !== undefined ? alertEvent.ev.ts : crossTime);
-  const theVehicle = getVehicleById(state, alertEvent.ev.vehicleId);
-  const condition = getAlertConditionById(state, alertEvent.ev.conditionId);
+  const imVehicle = getVehicleById(state, alertEvent.ev.vehicleId);
+  const imCondition = getAlertConditionById(state, alertEvent.ev.conditionId);
 
   return {
     id: uuid.v4(),
     eventTS: eventDate.getTime(),
     eventKind: alertEvent.ev.conditionKind,
-    eventName: condition.name,
-    ownerName: !theVehicle ? 'loading cars..' : theVehicle.getIn(['original', 'name']),
+    eventName: imCondition.get('name'),
+    ownerName: !imVehicle ? 'loading cars..' : imVehicle.getIn(['original', 'name']),
   };
 }

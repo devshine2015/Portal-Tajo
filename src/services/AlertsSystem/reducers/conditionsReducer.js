@@ -9,8 +9,8 @@ const initialState = fromJS({
 
 function alertsReducer(state = initialState, action) {
   switch (action.type) {
-    case conditionsActions.ALRT_CONDITON_SET:
-      return state.setIn(['conditions', action.condition.id], action.condition);
+    case conditionsActions.ALRT_CONDITONS_SET:
+      return state.mergeIn(['conditions'], fromJS(action.conditions));
     case conditionsActions.ALRT_VEHICLE_SET:
       return state.setIn(['vehicleConditions', action.vehicleId], action.conditions);
     case conditionsActions.ALRT_CONDITON_DEL:

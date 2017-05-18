@@ -11,7 +11,7 @@ import DeletIcon from 'material-ui/svg-icons/action/delete-forever';
 import EditIcon from 'material-ui/svg-icons/image/edit';
 import IconButton from 'material-ui/IconButton';
 
-import { deleteAlertCondition } from 'services/AlertsSystem/actions';
+import { conditionsActions } from 'services/AlertsSystem/actions';
 
 import classes from './classes';
 
@@ -129,7 +129,7 @@ AlertCard.contextTypes = {
 };
 const mapState = () => ({});
 const mapDispatch = {
-  deleteAlertCondition,
+  deleteAlertCondition: conditionsActions.deleteAlertCondition,
 };
 
 export default connect(mapState, mapDispatch)(pure(AlertCard));

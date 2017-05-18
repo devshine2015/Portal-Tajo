@@ -23,9 +23,9 @@ import endpoints from 'configs/endpoints';
 import { api } from 'utils/api';
 import { makeLocalAlertCondition } from '../alertConditionHelper';
 
-export const ALRT_CONDITON_SET = 'alrt/conditionSet';
-export const ALRT_VEHICLE_SET = 'alrt/vehAlertConditionsSet';
-export const ALRT_CONDITON_DEL = 'alrt/conditionDel';
+export const ALRT_CONDITONS_SET = 'AlertsSystem/ALERT_CONDITONS_SET';
+export const ALRT_VEHICLE_SET = 'AlertsSystem/vehAlertConditionsSet';
+export const ALRT_CONDITON_DEL = 'AlertsSystem/ALERT_CONDITION_DELETE';
 
 export const createAlertConditions = (newAlerts) => (dispatch) =>
   _createAlertConditionRequest(newAlerts, dispatch);
@@ -50,17 +50,21 @@ function _fetchConditions(dispatch, getState) {
 
   return api[method](url)
     .then(toJson)
-    .then(alerts => {
-      _setConditions(dispatch, state, alerts);
+    .then((conditions) => {
+      _setConditions(dispatch, state, conditions);
     })
     .catch((e) => {
       console.error(e);
     });
 }
-function _setConditions(dispatch, state, backEndAlerts) {
-  backEndAlerts.forEach((aElement) => {
-    dispatch(_conditionSet(makeLocalAlertCondition(aElement, state)));
+function _setConditions(dispatch, state, conditions) {
+  const result = {};
+
+  conditions.forEach((aElement) => {
+    result[aElement.id] = makeLocalAlertCondition(aElement, state);
   });
+
+  dispatch(_conditionSet(result));
 }
 
 function _fetchVehicleAlerConditions(vehicleId, dispatch) {
@@ -141,9 +145,9 @@ const _conditionDelete = alertId => ({
   alertId,
 });
 
-const _conditionSet = condition => ({
-  type: ALRT_CONDITON_SET,
-  condition,
+const _conditionSet = conditions => ({
+  type: ALRT_CONDITONS_SET,
+  conditions,
 });
 
 const _vehicleConditionsSet = (vehicleId, conditions) => ({
