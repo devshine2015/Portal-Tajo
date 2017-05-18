@@ -27,6 +27,7 @@ import { setReportsMWA } from 'containers/Report/actions/reportActions';
 import {
   conditionsActions,
   journalActions,
+  clearNotificationsListener,
 } from 'services/AlertsSystem/actions';
 
 // need this for global styling
@@ -67,6 +68,7 @@ class App extends React.Component {
   componentWillUnmount() {
     window.removeEventListener('offline', this.handleOnlineState);
     window.removeEventListener('online', this.handleOnlineState);
+    clearNotificationsListener();
   }
 
   onLoginSuccess = (profile) => {
@@ -108,6 +110,7 @@ class App extends React.Component {
 
   onLogoutSuccess = () => {
     this.props.cleanSession();
+    clearNotificationsListener();
 
     const loginUrl = isMwa ? '/mwa' : '/login';
 

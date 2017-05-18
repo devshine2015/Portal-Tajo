@@ -1,5 +1,15 @@
 import moment from 'moment';
 
+export const makePeriodForLast24Hours = () => {
+  const startDate = moment().subtract(24, 'hours').toDate();
+  const endDate = moment().toDate();
+
+  return {
+    startDate,
+    endDate,
+  };
+};
+
 export const makeDefaultDatePeriod = () => {
   const defaultStartDate = moment().subtract(1, 'days').toDate();
 
@@ -32,12 +42,16 @@ const _makeEndTime = () => {
   return t.toDate();
 };
 
+/**
+ * if *Time param it undefined, their value will be taken
+ * from provided *Date
+ */
 export const makeTimeRangeParams = ({
   startDate,
-  endDate = undefined,
   startTime = undefined,
+  endDate = undefined,
   endTime = undefined,
-} = { ...makeDefaultDatePeriod() }) => {
+}) => {
   const endD = endDate || startDate;
 
   const fromFormatted = _formateDateForRequest(startDate, startTime);
@@ -50,16 +64,16 @@ export const makeTimeRangeParams = ({
 };
 
 // Just formatting to ISO string. Keep actual date and time values
-function _formateDateForRequest(date, time) {
+function _formateDateForRequest(date, time = undefined) {
   const d = moment.isMoment(date) ? date.toDate() : date;
 
   const result = moment({
     y: d.getFullYear(),
     M: d.getMonth(),
     d: d.getDate(),
-    h: time ? time.getHours() : '00',
-    m: time ? time.getMinutes() : '00',
-    s: time ? time.getSeconds() : '00',
+    h: time ? time.getHours() : d.getHours(),
+    m: time ? time.getMinutes() : d.getMinutes(),
+    s: time ? time.getSeconds() : d.getSeconds(),
   }).toISOString();
 
   return `${result.slice(0, -1)}+0000`;

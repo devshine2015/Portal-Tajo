@@ -1,13 +1,43 @@
+import moment from 'moment';
 import { api } from 'utils/api';
 import uuid from 'node-uuid';
 import endpoints from 'configs/endpoints';
-import { makeTimeRangeParams } from 'utils/dateTimeUtils';
+import {
+  makeTimeRangeParams,
+  makePeriodForLast24Hours,
+} from 'utils/dateTimeUtils';
 import { getVehicleById } from 'services/FleetModel/reducer';
 import { getAlertConditionById } from '../reducer';
 
+// update once a minute
+const ALERTS_HISTORY_FETCH_INTERVAL_MS = 1000 * 60;
+let notificationsTimerId = null;
+
 export const JOURNAL_ENTRIES_ADD = 'alertsSystem/JOURNAL_ENTRIES_ADD';
 
-export const fetchNotifications = (range = undefined) => async (dispatch, getState) => {
+const listenForNotifications = (dispatch, initialStartDate) => {
+  let startDate = initialStartDate;
+
+  notificationsTimerId = window.setInterval(() => {
+    const endDate = moment().toDate();
+    const nextRange = { startDate, endDate };
+
+    dispatch(fetchNotifications(nextRange));
+
+    // make current endDate start date for the next request
+    startDate = endDate;
+  }, ALERTS_HISTORY_FETCH_INTERVAL_MS);
+};
+
+export const clearNotificationsListener = () => {
+  window.clearInterval(notificationsTimerId);
+};
+
+/**
+ * Get all events for last 24 hours, or withing specified time range
+ * @param {range} - object or undefined
+ */
+export const fetchNotifications = (range = makePeriodForLast24Hours()) => async (dispatch, getState) => {
   const rangeParams = makeTimeRangeParams(range);
   const { url, method } = endpoints.getAlertsInTimeRange(rangeParams);
   const state = getState();
@@ -27,6 +57,11 @@ export const fetchNotifications = (range = undefined) => async (dispatch, getSta
     type: JOURNAL_ENTRIES_ADD,
     entries: journalEntries,
   });
+
+  // start listening just once
+  if (notificationsTimerId === null) {
+    listenForNotifications(dispatch, range.endDate);
+  }
 
   return result;
 };
