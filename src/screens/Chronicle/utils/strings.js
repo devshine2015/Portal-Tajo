@@ -1,6 +1,6 @@
-import {makeStaticLableSVG, deviceAccessTime,
+import { metersToKmString, msToTimeIntervalString } from 'utils/convertors';
+import { makeStaticLableSVG, deviceAccessTime,
   notificationTimeToLeave, imageTimelapse, placesAcUnit } from './staticIcons';
-
 //
 // need this for setting content of mapBox popUp
 export function generateInnerHTMLForHistoryMoment(momentData/* , phrases = {}*/) {
@@ -29,7 +29,7 @@ export function metersToDistanceLable(meters) {
   // Math.round((meters/1000) * 10) / 10
   // Math.round((meters/100) ) / 10
   // meters to km, rounding to 1 dec point
-  return `${makeStaticLableSVG(notificationTimeToLeave)}<span style="float:right">${Math.round(meters / 100) / 10}km</span>`;
+  return `${makeStaticLableSVG(notificationTimeToLeave)}<span style="float:right">${metersToKmString(meters)}</span>`;
 }
 
 export function speedToChronicleLable(speed) {
@@ -40,29 +40,15 @@ export function temperatureToChronicleLable(temp) {
 }
 
 function dateToChronicleString(inDate) {
-  const timeStr = (inDate.getHours() < 10 ? 0 : '')
+  const timeStr = `${(inDate.getHours() < 10 ? 0 : '')
                 + inDate.getHours()
-                + ':'
-                + (inDate.getMinutes() < 10 ? 0 : '')
-                + inDate.getMinutes()
-                + ':'
-                + (inDate.getSeconds() < 10 ? 0 : '')
-                + inDate.getSeconds();
+                 }:${
+                 inDate.getMinutes() < 10 ? 0 : ''
+                 }${inDate.getMinutes()
+                 }:${
+                 inDate.getSeconds() < 10 ? 0 : ''
+                 }${inDate.getSeconds()}`;
 
   return timeStr;
 }
 
-export function msToTimeIntervalString(duration) {
-  // const milliseconds = parseInt((duration % 1000) / 100, 10);
-  // const seconds = parseInt((duration / 1000) % 60, 10);
-  const minutes = parseInt((duration / (1000 * 60)) % 60, 10);
-  const hours = parseInt((duration / (1000 * 60 * 60)) % 24, 10);
-
-  if (hours < 1) {
-    return `${minutes}min`; // + ":" + seconds + "." + milliseconds;
-  }
-//    hours = (hours < 10) ? "0" + hours : hours;
-//    minutes = (minutes < 10) ? "0" + minutes : minutes;
-//    seconds = (seconds < 10) ? "0" + seconds : seconds;
-  return `${hours}h ${minutes}min`;
-}

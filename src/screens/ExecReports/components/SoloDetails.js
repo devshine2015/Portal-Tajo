@@ -5,20 +5,13 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import Layout from 'components/Layout';
-import Divider from 'material-ui/Divider';
 import ItemProperty from './DetailItemProperty';
+import { metersToKmString, speedToString, msToTimeIntervalString } from 'utils/convertors';
 
 import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
 import { getInstanceExecReportFrameById } from './../services/reducer';
 
 // import classes from './classes';
-
-const valueOrLoading = (value) => {
-  return value === -1 ? 'loading...' : value;
-}
-const formatKm = (value) => {
-  return  value === 'loading...' ?  value : `${(value / 1000).toFixed(1)} km`;
-}
 
 const SoloDetails = ({
   vehicleId,
@@ -35,31 +28,31 @@ const SoloDetails = ({
       <table style={{ width: 400, border: 'solid 1px #aaa' }}>
         <ItemProperty
           title={'Driving Time'}
-          value={valueOrLoading(reportFrame.idiling.drivingTime)}
+          value={msToTimeIntervalString(reportFrame.idiling.drivingTime)}
         />
         <ItemProperty
           title={'Stopped Time'}
-          value={valueOrLoading(reportFrame.idiling.stoppedTime)}
+          value={msToTimeIntervalString(reportFrame.idiling.stoppedTime)}
         />
         <ItemProperty
           title={'IgnOn Time'}
-          value={valueOrLoading(reportFrame.idiling.ignOn)}
+          value={msToTimeIntervalString(reportFrame.idiling.ignOn)}
         />
         <ItemProperty
           title={'IgnOn Stopped Time'}
-          value={valueOrLoading(reportFrame.idiling.ignOnWhileStopped)}
+          value={msToTimeIntervalString(reportFrame.idiling.ignOnWhileStopped)}
         />
         <ItemProperty
           title={'IgnOff Stopped Time'}
-          value={valueOrLoading(reportFrame.idiling.ignOffWhileStopped)}
+          value={msToTimeIntervalString(reportFrame.idiling.ignOffWhileStopped)}
         />
         <ItemProperty
           title={'Odometr Total'}
-          value={formatKm(valueOrLoading(reportFrame.distTotal))}
+          value={metersToKmString(reportFrame.distTotal)}
         />
         <ItemProperty
           title={'Odometr Last Trip'}
-          value={formatKm(valueOrLoading(reportFrame.distLastTrip))}
+          value={metersToKmString(reportFrame.distLastTrip)}
         />
         <ItemProperty
           title={'Distance'}

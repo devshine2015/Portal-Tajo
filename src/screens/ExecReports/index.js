@@ -11,7 +11,6 @@ import Filter from 'components/Filter';
 import SoloReport from './components/SoloReport';
 
 import { ctxGetSelectedVehicleId } from 'services/Global/reducers/contextReducer';
-import { getInstanceExecReportFrameById } from './services/reducer';
 
 
 import * as fromFleetReducer from 'services/FleetModel/reducer';
@@ -24,8 +23,6 @@ class ExecReport extends React.Component {
     if (this.props.vehicles.length === 0) {
       return null;
     }
-
-    const soloReportFrame = this.props.getSoloReportById(this.props.selectedVehicleId);
 
     return (
       <Layout.ScreenWithList>
@@ -43,7 +40,7 @@ class ExecReport extends React.Component {
             }
         />
         <Layout.FixedContent>
-          <SoloReport vehicleId={this.props.selectedVehicleId} reportFrame={soloReportFrame} />
+          <SoloReport vehicleId={this.props.selectedVehicleId} />
         </Layout.FixedContent>
       </Layout.ScreenWithList>
     );
@@ -54,15 +51,12 @@ ExecReport.propTypes = {
   vehicles: React.PropTypes.array.isRequired,
   selectedVehicleId: React.PropTypes.string.isRequired,
 
-  getSoloReportById: React.PropTypes.func.isRequired,
   filterFunc: React.PropTypes.func.isRequired,
 };
 
 const mapState = state => ({
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
   selectedVehicleId: ctxGetSelectedVehicleId(state),
-  getSoloReportById: getInstanceExecReportFrameById(state),
-
 });
 const mapDispatch = {
   filterFunc: vehiclesActions.filterVehicles,

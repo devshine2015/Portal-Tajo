@@ -1,6 +1,10 @@
 // TODO: huge room for optimizations here - locating samaples for time, etc..
 //
 import moment from 'moment';
+import { haversineDist } from 'utils/mapBoxMap';
+import { makeTripsParcer } from './aTrip';
+import * as eventHelpers from './eventHelpers';
+
 
 const CHRONICLE_LOCAL_INCTANCE_STATE_NONE = 'chronLocStateNone';
 const CHRONICLE_LOCAL_INCTANCE_STATE_LOADING = 'chronLocStateLoading';
@@ -21,6 +25,8 @@ function ReportVehicleFrame(dateFrom, dateTo) {
   this.milageDistance = 0;
   this.calculatedDistanceM = 0;
   this.numberOfPosSamples = 0;
+
+  this.trips = [];
 
   this.posData = [];
 
@@ -81,44 +87,23 @@ ReportVehicleFrame.prototype.isStatic = function () {
   return this.isValid() && this.posData.length === 1;
 };
 
-const isPositionEvent = evnt => evnt.type === 'vehicle-position';
-
-const eventPos = evnt => evnt.ev.pos.latlon;
-
-// const latLngEucledDistance = (latLngA, latLngB) => {
-//   const dLat = latLngA.lat - latLngB.lat;
-//   const dLng = latLngA.lng - latLngB.lng;
-//   return Math.sqrt((dLat * dLat) + (dLng * dLng));
-// };
-
-// some theory here:
-// http://stackoverflow.com/questions/639695/how-to-convert-latitude-or-longitude-to-meters
-// http://www.movable-type.co.uk/scripts/latlong.html
-function haversineDist(latLngA, latLngB) {  // generally used geo measurement function
-  const R = 6378.137; // Radius of earth in KM
-  const piDeg = Math.PI / 180;
-  const dLat = (latLngB.lat - latLngA.lat) * piDeg;
-  const dLon = (latLngB.lng - latLngA.lng) * piDeg;
-  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(latLngA.lat * piDeg) * Math.cos(latLngB.lat * piDeg) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  const d = R * c;
-  return d * 1000; // meters
+//
+//
+//-----------------------------------------------------------------------
+ReportVehicleFrame.prototype.getValidTrips = function () {
+  return this.trips.filter(aTrip => aTrip.isValid());
 }
-
-// // safe-checking
-// const eventHasPos = evnt => evnt.hasOwnProperty('ev') && evnt.ev.hasOwnProperty('pos');
 
 //
 //
 //-----------------------------------------------------------------------
-ReportVehicleFrame.prototype.parceData = function (events) {
+ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) {
   if (events.length < 10) {
     console.log(`history frame for ${this.dateFrom} - ${this.dateTo}`);
     console.log(`  EMPTY ${events.length}`);
     return;
   }
+  const t0 = performance.now();
 
   let prevPosSample = null;
   this.calculatedDistanceM = 0;
@@ -126,20 +111,40 @@ ReportVehicleFrame.prototype.parceData = function (events) {
   // const _dbgTime = 0;
   // const dataSize = events.length;
 
-  events.forEach((theSample) => {
+  const tripParcer = makeTripsParcer();
+
+  events.forEach((theSample, idx) => {
+    tripParcer(theSample, idx);
     const eventMomentTS = moment(theSample.ev.ts).valueOf();
     const eventTimeMs = eventMomentTS - this.dateFrom.getTime();
-    if (isPositionEvent(theSample)) {
+    if (eventHelpers.isPositionEvent(theSample)) {
       this.posData.push({ timeMs: eventTimeMs,
-        pos: window.L.latLng(eventPos(theSample).lat, eventPos(theSample).lng) });
-      this.speedData.push({ timeMs: eventTimeMs, v: theSample.ev.pos.speed });
+        pos: window.L.latLng(eventHelpers.eventPos(theSample).lat, eventHelpers.eventPos(theSample).lng) });
+      this.speedData.push({ timeMs: eventTimeMs, v: eventHelpers.eventSpeed(theSample) });
       this.numberOfPosSamples += 1;
       if (prevPosSample !== null) {
-        this.calculatedDistanceM += haversineDist(eventPos(prevPosSample), eventPos(theSample));
+        this.calculatedDistanceM += haversineDist(eventHelpers.eventPos(prevPosSample), eventHelpers.eventPos(theSample));
       }
       prevPosSample = theSample;
     }
   });
+
+  this.trips = tripParcer();
+  this.trips.forEach(aTrip => aTrip.prepareData(events, storeUpdateCallback));
+
+     // this.mappp = this.mapifyChildren();
+  const t1 = performance.now();
+  console.log(`Report generation took ${(t1 - t0)} milliseconds.`);
+
+  // let tripIdx = 0;
+  // const oneTripProcess = () => {
+  //   this.trips[tripIdx].prepareData(events, storeUpdateCallback);
+  //   tripIdx += 1;
+  //   if (tripIdx < this.trips.length) {
+  //     window.setTimeout(oneTripProcess, 225);
+  //   }
+  // };
+  // oneTripProcess();
 
   // for (let i = 0; i < dataSize; ++i) {
   //   const theEvent = events[i];
@@ -313,11 +318,11 @@ export function createReportFrame(dateFrom, dateTo) {
   return new ReportVehicleFrame(dateFrom, dateTo);
 }
 
-export function setReportFrameEvents(reportFrame, events) {
+export function setReportFrameEvents(reportFrame, events, storeUpdateCallback) {
   if (events === null) {
     return;
   }
-  reportFrame.parceData(events);
+  reportFrame.parceData(events, storeUpdateCallback);
 
   // TODO: ? need more checks here - type of event, etc?
   reportFrame.state = reportFrame.hasPositions() || reportFrame.hasTemperature() ?

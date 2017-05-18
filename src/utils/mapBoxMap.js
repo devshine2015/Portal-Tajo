@@ -78,12 +78,18 @@ export function hideLayer(containerLayer, layer, doHide) {
   }
 }
 
+//--------------------------------------------------------------------
+//  GEO helpers
+// TODO: better use MapBox utilites?
+//
+const EarthR = 6378.137; // Radius of earth in KM
+// 6371?
 //
 // http://stackoverflow.com/questions/2637023/how-to-calculate-the-latlng-of-a-point-a-certain-distance-away-from-another
 const _toRad = nbr => (nbr * Math.PI / 180);
 const _toDeg = nbr => (nbr * 180 / Math.PI);
 export function latLngMoveTo(startLatLng, _brng, _dist) {
-  const dist = _dist / 6371;
+  const dist = _dist / EarthR;
   const brng = _toRad(_brng);
 
   const lat1 = _toRad(startLatLng.lat);
@@ -100,4 +106,18 @@ export function latLngMoveTo(startLatLng, _brng, _dist) {
   if (isNaN(lat2) || isNaN(lon2)) return startLatLng;
 
   return window.L.latLng(_toDeg(lat2), _toDeg(lon2));
+}
+
+// some theory here:
+// http://stackoverflow.com/questions/639695/how-to-convert-latitude-or-longitude-to-meters
+// http://www.movable-type.co.uk/scripts/latlong.html
+export function haversineDist(latLngA, latLngB) {  // generally used geo measurement function
+  const dLat = _toRad(latLngB.lat - latLngA.lat);
+  const dLon = _toRad(latLngB.lng - latLngA.lng);
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(_toRad(latLngA.lat)) * Math.cos(_toRad(latLngB.lat)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const d = EarthR * c;
+  return d * 1000; // meters
 }

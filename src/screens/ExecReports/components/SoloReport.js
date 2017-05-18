@@ -2,13 +2,18 @@
 // one vehicle report
 //
 import React from 'react';
+import pure from 'recompose/pure';
+import { connect } from 'react-redux';
+
 import Layout from 'components/Layout';
-import Divider from 'material-ui/Divider';
 import SoloHeader from './SoloHeader';
 import SoloDetails from './SoloDetails';
+import TripsReport from './TripsReport';
 import ReportMap from './ReportMap';
 
 import MainActionButton from 'components/Controls/MainActionButton';
+
+import { getInstanceExecReportFrameById } from './../services/reducer';
 
 // const printJSin = require('print.js/dist/print.min.js');
 // import classes from './classes';
@@ -39,6 +44,7 @@ class SoloReport extends React.Component {
           {/* <Layout.Header label={'EXECUTIVE REPORT'} />*/}
           <SoloHeader vehicleId={this.props.vehicleId} />
           <SoloDetails vehicleId={this.props.vehicleId} />
+          <TripsReport vehicleId={this.props.vehicleId} />
           {/*<ReportMap reportFrame={this.props.reportFrame} />*/}
         </div>
         <MainActionButton
@@ -52,7 +58,14 @@ class SoloReport extends React.Component {
 
 SoloReport.propTypes = {
   vehicleId: React.PropTypes.string.isRequired,
-  reportFrame: React.PropTypes.object.isRequired,
+  getSoloReportById: React.PropTypes.func.isRequired,
 };
 
-export default SoloReport;
+const mapState = state => ({
+  getSoloReportById: getInstanceExecReportFrameById(state),
+});
+
+const mapDispatch = {
+};
+
+export default connect(mapState, mapDispatch)(pure(SoloReport));

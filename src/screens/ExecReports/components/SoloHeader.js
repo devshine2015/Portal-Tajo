@@ -67,7 +67,7 @@ const SoloHeader = ({
         <span style={{ paddingLeft: 8, paddingRight: 12, fontWeight: 'bolder' }}>
           {theVehicle.original.model}
         </span>
-        <span >
+        <span>
           Year:
         </span>
         <span style={{ paddingLeft: 8, paddingRight: 12, fontWeight: 'bolder' }}>
@@ -102,6 +102,14 @@ const SoloHeader = ({
         </span>
         <span style={{ paddingLeft: 8, fontWeight: 'bolder' }}>
           {reportFrame.dateTo.toLocaleString()}
+        </span>
+      </div>
+      <div style={propDivStyle}>
+        <span >
+          Trips:
+        </span>
+        <span style={{ paddingLeft: 8, fontWeight: 'bolder' }}>
+          {reportFrame.getValidTrips().length}
         </span>
       </div>
       <Divider />

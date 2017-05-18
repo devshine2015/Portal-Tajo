@@ -12,21 +12,11 @@ import { createReportFrame, setReportFrameEvents } from './../utils/reportVehicl
 export const EXEC_REPORT_ITEM_NEW_FRAME = 'exReport/newFrame';
 
 export const requestSoloReport = (vehicleId, dateFrom, dateTo) => dispatch =>
-  _requestSoloReport(vehicleId, dateFrom, dateTo, dispatch);
+// export const requestTripsReport = (vehicleId, dateFrom, dateTo) => dispatch =>
+  _requestTripsReport(vehicleId, dateFrom, dateTo, dispatch);
 
-// export const setChronicleTimeFrame = (dateFrom, dateTo) => (dispatch, getState) => {
-//   // TODO: fix dates comparison (use moments?)
-//   //
-//   if (getChronicleTimeFrame(getState()).fromDate === dateFrom) {
-//     return;
-//   }
-//   dispatch(_chronicleSetTimeFrame(dateFrom, dateTo));
-//   dispatch(_chronicleValidateTimeFrame());
-//   dispatch(setChronicleNormalizedT(0));
-// };
 
-function _requestSoloReport(vehicleId, dateFrom, dateTo, dispatch) {
-
+function _requestTripsReport(vehicleId, dateFrom, dateTo, dispatch) {
   dateFrom = moment().subtract(7, 'days').toDate();
   dateTo = moment().subtract(4, 'days').toDate();
 
@@ -35,7 +25,7 @@ function _requestSoloReport(vehicleId, dateFrom, dateTo, dispatch) {
   const queryString = _prepareReportsQueryString(dateFrom, dateTo);
 
   dispatch(_updateVehicleChronicleFrame(vehicleId, theFrame));
-  // _fetchSoloHistory(vehicleId, theFrame, dateFrom, dateTo, dispatch);
+  _fetchSoloHistory(vehicleId, theFrame, dateFrom, dateTo, dispatch);
   // all the reports fetches
   _fetchMilage(vehicleId, theFrame, queryString, dispatch);
   _fetchStats(vehicleId, theFrame, queryString, dispatch);
@@ -59,7 +49,10 @@ function _fetchSoloHistory(vehicleId, theFrame, dateFrom, dateTo, dispatch) {
   return api[method](url)
     .then(data => data.json())
     .then((events) => {
-      setReportFrameEvents(theFrame, events);
+      setReportFrameEvents(theFrame, events, () => {
+        dispatch(_updateVehicleChronicleFrame(vehicleId, theFrame));
+      });
+
       dispatch(_updateVehicleChronicleFrame(vehicleId, theFrame));
     });
 }
@@ -68,7 +61,7 @@ function _fetchMilage(vehicleId, theFrame, queryString, dispatch) {
   const url = `${endpoints.getVehicle(vehicleId).url}/${endpoints.mileageReport.url}?${queryString}`;
   api.get(url)
     .then(data => data.json())
-    .then(milageData => {
+    .then((milageData) => {
       theFrame.milageDistance = milageData.distance;
       dispatch(_updateVehicleChronicleFrame(vehicleId, theFrame));
     });
@@ -77,26 +70,14 @@ function _fetchStats(vehicleId, theFrame, queryString, dispatch) {
   const url = `${endpoints.getVehicle(vehicleId).url}/${endpoints.getStats.url}?${queryString}`;
   api.get(url)
     .then(data => data.json())
-    .then(statsData => {
+    .then((statsData) => {
       theFrame.distTotal = statsData.dist.total;
       theFrame.distLastTrip = statsData.dist.lastTrip;
       dispatch(_updateVehicleChronicleFrame(vehicleId, theFrame));
     });
 }
 
-/// TODO: unify this, used in trports, history, ....
-function formatValue(v) {
-  if (!v) return '';
-
-  const d = moment.duration(v, 'seconds');
-  const s = d.get('seconds');
-
-  const m = d.get('minutes') + ((s > 30) ? 1 : 0);
-  const h = d.get('hours');
-  // return `${h}h ${m}m ${s}s`;
-  return `${h}h ${m}m`;
-}
-///
+// /
 // drivingTime
 // from
 // ignOffWhileStopped
@@ -108,12 +89,12 @@ function _fetchIdiling(vehicleId, theFrame, queryString, dispatch) {
   const url = `${endpoints.getVehicle(vehicleId).url}/${endpoints.idlingReport.url}?${queryString}`;
   api.get(url)
     .then(data => data.json())
-    .then(idlData => {
-      theFrame.idiling.drivingTime = formatValue(idlData.drivingTime);
-      theFrame.idiling.ignOffWhileStopped = formatValue(idlData.ignOffWhileStopped);
-      theFrame.idiling.ignOn = formatValue(idlData.ignOn);
-      theFrame.idiling.ignOnWhileStopped = formatValue(idlData.ignOnWhileStopped);
-      theFrame.idiling.stoppedTime = formatValue(idlData.stoppedTime);
+    .then((idlData) => {
+      theFrame.idiling.drivingTime = (idlData.drivingTime);
+      theFrame.idiling.ignOffWhileStopped = (idlData.ignOffWhileStopped);
+      theFrame.idiling.ignOn = (idlData.ignOn);
+      theFrame.idiling.ignOnWhileStopped = (idlData.ignOnWhileStopped);
+      theFrame.idiling.stoppedTime = (idlData.stoppedTime);
       dispatch(_updateVehicleChronicleFrame(vehicleId, theFrame));
     });
 }
@@ -121,7 +102,7 @@ function _fetchTemerature(vehicleId, theFrame, queryString, dispatch) {
   const tempQuery = `${queryString}&${qs.stringify({ downsampleSec: 30 })}`;
   const url = `${endpoints.getVehicle(vehicleId).url}/${endpoints.temperatureReport.url}?${tempQuery}`;
   api.get(url)
-    .then(data => data.json())
+    .then(data => data.json());
     // .then(statsData => {
     //   theFrame.distTotal = statsData.dist.total;
     //   theFrame.distLastTrip = statsData.dist.lastTrip;
