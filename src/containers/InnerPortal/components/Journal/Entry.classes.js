@@ -15,7 +15,11 @@ export default StyleSheet.create({
   },
 
   entry_unread: {
-    backgroundColor: '#d7ecf9',
+    backgroundColor: 'rgba(0,135,255,.1)',
+
+    ':hover': {
+      backgroundColor: 'rgba(0,135,255,.25)',
+    },
   },
 
   details: {

@@ -36,7 +36,7 @@ const JournalHeader = () => (
  * @returns {ImmutableList} notifications ids arrived after last journal closing
  */
 function findUnreadNotifications(lastClosingTS = 0, notifications) {
-  if (!lastClosingTS) {
+  if (lastClosingTS === undefined) {
     return notifications;
   }
 
