@@ -14,6 +14,10 @@ export default StyleSheet.create({
     },
   },
 
+  entry_unread: {
+    backgroundColor: '#d7ecf9',
+  },
+
   details: {
     fontSize: 14,
   },

@@ -28,25 +28,84 @@ const JournalHeader = () => (
   </div>
 );
 
+/**
+ *
+ * @param {Number} lastClosingTS
+ * @param {ImmutableList} notifications
+ *
+ * @returns {ImmutableList} notifications ids arrived after last journal closing
+ */
+function findUnreadNotifications(lastClosingTS = 0, notifications) {
+  if (!lastClosingTS) {
+    return notifications;
+  }
+
+  const result = notifications.filter((n) => {
+    return n.get('eventTS') > lastClosingTS;
+  }).map(n => n.get('id'));
+
+  return result;
+}
+
+function isNotificationUnread(notif, unreads) {
+  return unreads.indexOf(notif.get('id')) !== -1;
+}
 
 class Journal extends React.Component {
 
-  state = {
-    isOpened: false,
-  };
+  constructor(props) {
+    super(props);
+
+    const unreadNotifications = findUnreadNotifications(undefined, props.notifications);
+
+    this.state = {
+      isOpened: false,
+      lastClosingTS: 0,
+      unreadCount: unreadNotifications.size,
+      unreadNotifications,
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.notifications.size !== this.props.notifications.size) {
+      this.setUnreadNotifications(nextProps.notifications);
+    }
+  }
+
+  setUnreadNotifications(nextNotifications) {
+    const unreadNotifications = findUnreadNotifications(this.state.lastClosingTS, nextNotifications);
+
+    this.setState({
+      unreadNotifications,
+      unreadCount: unreadNotifications.size,
+    });
+  }
 
   toggleJournal = (e) => {
     e.preventDefault();
 
+    const willBeOpened = !this.state.isOpened;
+
+    if (willBeOpened) {
+      this.openJournal(e);
+    } else {
+      this.closeJournal();
+    }
+  }
+
+  openJournal = (e) => {
     this.setState({
-      isOpened: !this.state.isOpened,
+      isOpened: true,
       anchorEl: e.currentTarget,
+      unreadCount: 0,
     });
   }
 
   closeJournal = () => {
     this.setState({
       isOpened: false,
+      lastClosingTS: Date.now(),
+      unreadNotifications: new List(),
     });
   }
 
@@ -63,6 +122,7 @@ class Journal extends React.Component {
         <Entry
           {...n.toJS()}
           onDissmiss={this.dissmissEvent}
+          isUnread={isNotificationUnread(n, this.state.unreadNotifications)}
         />
       </li>
     ));
@@ -75,7 +135,7 @@ class Journal extends React.Component {
       <div>
         <NotificationsBtn
           onClick={this.toggleJournal}
-          count={this.props.notifications.size}
+          count={this.state.unreadCount}
         />
         <Popover
           anchorEl={this.state.anchorEl}

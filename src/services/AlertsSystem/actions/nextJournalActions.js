@@ -15,6 +15,24 @@ let notificationsTimerId = null;
 
 export const JOURNAL_ENTRIES_ADD = 'alertsSystem/JOURNAL_ENTRIES_ADD';
 
+// const makeFakeNotifs = () => [{
+//   ev: {
+//     ts: new Date(),
+//     vehicleId: '89058b4f-aecd-4f0b-97ea-36cec6dfc766',
+//     conditionId: 'a5f4f295-97ab-41cc-8638-553abd705ac7',
+//     conditionKind: 'temperature-alert',
+//     meta: { name: 'postman tempAlert 1' },
+//     pos: {
+//       latlon: { lat: 16.8573055267334, lng: 96.0805892944336 },
+//       speed: 0,
+//       azimuth: 286,
+//       accuracy: 1,
+//     },
+//     temp: 1.5,
+//   },
+//   type: 'vehicle-temperature-alert',
+// }];
+
 const listenForNotifications = (dispatch, initialStartDate) => {
   let startDate = initialStartDate;
 
@@ -35,7 +53,7 @@ export const clearNotificationsListener = () => {
 
 /**
  * Get all events for last 24 hours, or withing specified time range
- * @param {range} - object or undefined
+ * @param {Object} - range
  */
 export const fetchNotifications = (range = makePeriodForLast24Hours()) => async (dispatch, getState) => {
   const rangeParams = makeTimeRangeParams(range);
@@ -49,14 +67,17 @@ export const fetchNotifications = (range = makePeriodForLast24Hours()) => async 
     throw e;
   }
 
-  const journalEntries = result.map(entry =>
-    createJournalEntry(entry, state),
-  );
+  // update state only if ne alerts coming
+  if (result.length > 0) {
+    const journalEntries = result.map(entry =>
+      createJournalEntry(entry, state),
+    );
 
-  dispatch({
-    type: JOURNAL_ENTRIES_ADD,
-    entries: journalEntries,
-  });
+    dispatch({
+      type: JOURNAL_ENTRIES_ADD,
+      entries: journalEntries,
+    });
+  }
 
   // start listening just once
   if (notificationsTimerId === null) {

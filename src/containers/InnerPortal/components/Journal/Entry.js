@@ -81,11 +81,12 @@ const JournalEntry = ({
   eventName,
   ownerName,
   onDissmiss,
+  isUnread,
 }) => {
   const { icon, niceName } = getAlertByKind(eventKind);
 
   return (
-    <div className={css(classes.entry)}>
+    <div className={css([classes.entry, isUnread && classes.entry_unread])}>
       <EventIcon icon={icon} />
       <EventDetails
         ownerName={ownerName}
@@ -105,6 +106,7 @@ JournalEntry.propTypes = {
   eventName: React.PropTypes.string.isRequired,
   ownerName: React.PropTypes.string.isRequired,
   onDissmiss: React.PropTypes.func.isRequired,
+  isUnread: React.PropTypes.bool.isRequired,
 };
 
 export default JournalEntry;
