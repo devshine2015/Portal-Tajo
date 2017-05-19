@@ -7,6 +7,7 @@ import CheckboxItem from '../WithCheckboxes';
 import DetailedGFItem from '../WithDetails/gf';
 import DetailedVehicleItem from '../WithDetails/vehicle';
 import VehicleChronicleItem from '../WithDetails/vehicleChronicle';
+import VehicleExecItem from '../WithDetails/vehicleExecReport';
 import MaritimeItem from '../WithDetails/maritime';
 import MWAJobWithDetails from '../WithDetails/MWA';
 import StatusIcon from './StatusIcon';
@@ -65,6 +66,16 @@ function chooseItem(type, {
     case types.vehicleChronicle: {
       return (
         <VehicleChronicleItem
+          id={item.id}
+          isExpanded={isExpanded}
+          vehicle={item}
+          translations={translations}
+        />
+      );
+    }
+    case types.vehicleExecReport: {
+      return (
+        <VehicleExecItem
           id={item.id}
           isExpanded={isExpanded}
           vehicle={item}
@@ -181,6 +192,7 @@ GenericListItem.propTypes = {
     types.withVehicleDetails,
     types.withGFDetails,
     types.vehicleChronicle,
+    types.vehicleExecReport,
     types.maritime,
     types.simple,
   ]),

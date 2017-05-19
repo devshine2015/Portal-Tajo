@@ -7,12 +7,9 @@ import { vehicleShape } from 'services/FleetModel/PropTypes';
 import LinearProgress from 'material-ui/LinearProgress';
 
 import { contextActions } from 'services/Global/actions';
-import { requestHistory } from 'screens/Chronicle/actions';
+import { requestSoloReport } from 'screens/ExecReports/services/actions';
+import { getExecTimeFrame, getInstanceExecReportFrameById } from 'screens/ExecReports/services/reducer';
 
-import {
-  getChronicleTimeFrame,
-  getInstanceChronicleFrameById,
-} from 'screens/Chronicle/reducer';
 
 import stylesTop from '../styles.css';
 import styles from './styles.css';
@@ -21,14 +18,15 @@ import { historyDetailsShape } from '../PropTypes';
 class ChronicleListItem extends React.Component {
   onClick = () => {
     this.props.selectVehicle(this.props.id);
-    if (!this.props.getInstanceChronicleFrameById(this.props.id).isValid()) {
-      const currentTimeFrame = this.props.chronicleTimeFrame;
-      this.props.requestHistory(this.props.id, currentTimeFrame.fromDate, currentTimeFrame.toDate);
+    const chronicleFrame = this.props.getInstanceReportFrameById(this.props.id);
+    if (!chronicleFrame.isValid()) {
+      const currentTimeFrame = this.props.reportTimeFrame;
+      this.props.requestHistory(this.props.id, currentTimeFrame.dateFrom, currentTimeFrame.dateTo);
     }
   }
 
   render() {
-    const chronicleFrame = this.props.getInstanceChronicleFrameById(this.props.id);
+    const chronicleFrame = this.props.getInstanceReportFrameById(this.props.id);
     const className = classnames(stylesTop.listItemInn, {
       [styles.listItemNoChronicle]: (!chronicleFrame.isValid() && !this.props.isExpanded),
     });
@@ -47,7 +45,12 @@ class ChronicleListItem extends React.Component {
           <div >
             { this.props.translations.no_history_data }
           </div>
-          : false
+          : (
+            chronicleFrame.hasData() ?
+              <div >
+                { `reported ${chronicleFrame.getValidTrips().length} trips` }
+              </div> : false
+            )
         }
       </div>
     );
@@ -59,8 +62,8 @@ ChronicleListItem.propTypes = {
   isExpanded: React.PropTypes.bool,
   vehicle: vehicleShape.isRequired,
 
-  chronicleTimeFrame: React.PropTypes.object.isRequired,
-  getInstanceChronicleFrameById: React.PropTypes.func.isRequired,
+  reportTimeFrame: React.PropTypes.object.isRequired,
+  getInstanceReportFrameById: React.PropTypes.func.isRequired,
   selectVehicle: React.PropTypes.func.isRequired,
   requestHistory: React.PropTypes.func.isRequired,
 
@@ -71,13 +74,13 @@ ChronicleListItem.defaultProps = {
   isExpanded: false,
 };
 
-const mapState = (state) => ({
-  getInstanceChronicleFrameById: getInstanceChronicleFrameById(state),
-  chronicleTimeFrame: getChronicleTimeFrame(state),
+const mapState = state => ({
+  getInstanceReportFrameById: getInstanceExecReportFrameById(state),
+  reportTimeFrame: getExecTimeFrame(state),
 });
 const mapDispatch = {
   selectVehicle: contextActions.ctxSelectVehicle,
-  requestHistory,
+  requestHistory: requestSoloReport,
 };
 
 export default connect(mapState, mapDispatch)(pure(ChronicleListItem));

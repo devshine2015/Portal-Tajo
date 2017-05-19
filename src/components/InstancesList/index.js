@@ -76,6 +76,7 @@ InstancesList.propTypes = {
     types.withVehicleDetails,
     types.withGFDetails,
     types.vehicleChronicle,
+    types.vehicleExecReport,
     types.maritime,
     types.simple,
     types.mwaJob,
