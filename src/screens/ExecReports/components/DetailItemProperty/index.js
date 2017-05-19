@@ -4,7 +4,6 @@ import styles from './styles.css';
 
 const DetailItemProperty = ({
   title,
-  icon,
   value,
 }) => (
   <tr className={styles.row}>
@@ -27,15 +26,10 @@ DetailItemProperty.propTypes = {
     React.PropTypes.string,
     React.PropTypes.number,
   ]).isRequired,
-  icon: React.PropTypes.object,
   value: React.PropTypes.oneOfType([
     React.PropTypes.string,
     React.PropTypes.number,
   ]).isRequired,
-};
-
-DetailItemProperty.defaultProps = {
-  icon: null,
 };
 
 export default pure(DetailItemProperty);
