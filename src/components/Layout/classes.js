@@ -10,7 +10,8 @@ const classes = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: '100%',
-    backgroundColor: '#ccc',
+    // backgroundColor: '#ccc',
+    backgroundColor: 'white',
   },
 // ---- screen "info" content - what we have on right from the PowerList
   fixedContent: {
@@ -21,7 +22,7 @@ const classes = StyleSheet.create({
     overflow: 'hidden',
     position: 'relative',
     marginLeft: '250px',
-    padding: '0 15px',
+    // padding: '0 15px',
 
     '@media print': {
       marginLeft: 0,
