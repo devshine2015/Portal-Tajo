@@ -106,7 +106,7 @@ ReportVehicleFrame.prototype.isStatic = function () {
 //-----------------------------------------------------------------------
 ReportVehicleFrame.prototype.getValidTrips = function () {
   return this.trips.filter(aTrip => aTrip.isValid());
-}
+};
 
 //
 //

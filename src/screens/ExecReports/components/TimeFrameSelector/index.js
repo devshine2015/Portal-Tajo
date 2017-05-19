@@ -1,7 +1,5 @@
 import React from 'react';
 import pure from 'recompose/pure';
-import { connect } from 'react-redux';
-import moment from 'moment';
 import DatePicker from 'material-ui/DatePicker';
 import ArrowIcon from 'material-ui/svg-icons/navigation/arrow-back';
 // import { setChronicleTimeFrame } from './../../actions';
@@ -57,15 +55,6 @@ TimeFrame.propTypes = {
   translations: phrasesShape.isRequired,
 };
 
-const mapState = state => ({
-  // chronicleTimeFrame: getChronicleTimeFrame(state),
-});
-
-const mapDispatch = {
-  // setChronicleTimeFrame,
-};
-
 const PureTimeFrame = pure(TimeFrame);
-const Connected = connect(mapState, mapDispatch)(PureTimeFrame);
 
-export default translate(phrases)(Connected);
+export default translate(phrases)(PureTimeFrame);

@@ -1,7 +1,7 @@
 // TODO: huge room for optimizations here - locating samaples for time, etc..
 //
 import moment from 'moment';
-import { reverseGeocode, queueReverseGeocode } from 'utils/mapServices/google/geocode';
+import { queueReverseGeocode } from 'utils/mapServices/google/geocode';
 import { haversineDist } from 'utils/mapBoxMap';
 import * as eventHelpers from './eventHelpers';
 
@@ -92,10 +92,6 @@ const isTripStart = theSample => theSample.type === 'vehicle-ign-on';
 const isTripEnd = theSample => theSample.type === 'vehicle-ign-off';
 // const isTripStart = theSample => theSample.type === 'device-ign-on';
 // const isTripEnd = theSample => theSample.type === 'device-ign-off';
-
-function makeATrip(startSampleIdx, endSampleIdx) {
-  return { startIdx: startSampleIdx, endIdx: endSampleIdx };
-}
 
 export function makeTripsParcer() {
   const trips = [];

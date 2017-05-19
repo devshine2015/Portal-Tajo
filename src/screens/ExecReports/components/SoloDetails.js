@@ -6,7 +6,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import Layout from 'components/Layout';
 import ItemProperty from './DetailItemProperty';
-import { metersToKmString, speedToString, msToTimeIntervalString } from 'utils/convertors';
+import { metersToKmString } from 'utils/convertors';
 
 import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
 import { getInstanceExecReportFrameById } from './../services/reducer';

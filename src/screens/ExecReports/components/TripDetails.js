@@ -4,24 +4,17 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import { metersToKmString, speedToString, msToTimeIntervalString } from 'utils/convertors';
 
 import Layout from 'components/Layout';
-import Divider from 'material-ui/Divider';
 import ItemProperty from './DetailItemProperty';
 
 import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
-import { getInstanceExecReportFrameById } from './../services/reducer';
 
 // import classes from './classes';
 
-const valueOrLoading = value => value === -1 ? 'loading...' : value;
-const formatKm = value => value === 'loading...' ? value : `${(value / 1000).toFixed(1)} km`;
-
 const TripDetails = ({
   vehicleId,
-  reportFrame,
   aTripData,
   getVehicleById,
 }) => {
@@ -93,7 +86,6 @@ const TripDetails = ({
 
 TripDetails.propTypes = {
   vehicleId: React.PropTypes.string.isRequired,
-  reportFrame: React.PropTypes.object.isRequired,
   aTripData: React.PropTypes.object.isRequired,
   getVehicleById: React.PropTypes.func.isRequired,
 };

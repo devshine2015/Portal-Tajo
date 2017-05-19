@@ -7,7 +7,7 @@ export const reverseGeocode = (latLng, haveCallback, noHaveCallback) => {
   googleMapsAPI().then((maps) => {
     const geocoder = new maps.Geocoder();
 
-  console.log(` ====>>> asking geocoder  ${performance.now()} milliseconds.`);
+  // console.log(` ====>>> asking geocoder  ${performance.now()} milliseconds.`);
     geocoder.geocode({ location: latLng },
       (results, status) => {
         if (status === 'OK') {

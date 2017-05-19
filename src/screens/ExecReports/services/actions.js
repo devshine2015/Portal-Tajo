@@ -1,4 +1,3 @@
-import moment from 'moment';
 import qs from 'query-string';
 import { api } from 'utils/api';
 import endpoints from 'configs/endpoints';
@@ -25,7 +24,7 @@ export const setExecTimeFrame = (dateFrom, dateTo) => (dispatch, getState) => {
   queueReverseGeocodeClear();
 };
 
-export const requestSoloReport = (vehicleId, dateFrom, dateTo) => (dispatch, store)=>
+export const requestSoloReport = (vehicleId, dateFrom, dateTo) => (dispatch, store) =>
 // export const requestTripsReport = (vehicleId, dateFrom, dateTo) => dispatch =>
   _requestTripsReport(vehicleId, dateFrom, dateTo, dispatch, store);
 
@@ -118,7 +117,7 @@ function _fetchIdiling(vehicleId, theFrame, queryString, dispatch) {
       dispatch(_updateVehicleChronicleFrame(vehicleId, theFrame));
     });
 }
-function _fetchTemerature(vehicleId, theFrame, queryString, dispatch) {
+function _fetchTemerature(vehicleId, theFrame, queryString/* , dispatch*/) {
   const tempQuery = `${queryString}&${qs.stringify({ downsampleSec: 30 })}`;
   const url = `${endpoints.getVehicle(vehicleId).url}/${endpoints.temperatureReport.url}?${tempQuery}`;
   api.get(url)

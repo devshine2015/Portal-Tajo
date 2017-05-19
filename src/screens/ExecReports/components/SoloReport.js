@@ -11,7 +11,7 @@ import AnimatedLogo from 'components/animated';
 import SoloHeader from './SoloHeader';
 import SoloDetails from './SoloDetails';
 import TripsReport from './TripsReport';
-import ReportMap from './ReportMap';
+// import ReportMap from './ReportMap';
 
 import MainActionButton from 'components/Controls/MainActionButton';
 

@@ -11,7 +11,6 @@ import VehiclesList from 'components/InstancesList';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import SoloReport from './components/SoloReport';
-import DateRange from 'components/DateRange/DateRange';
 
 import { ctxGetSelectedVehicleId } from 'services/Global/reducers/contextReducer';
 
@@ -21,8 +20,6 @@ import { getExecTimeFrame } from './services/reducer';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import listTypes from 'components/InstancesList/types';
-import { makeDefaultDatePeriod } from 'utils/dateTimeUtils';
-import { makeTimeRangeParams } from 'utils/dateTimeUtils';
 
 import TimeFrameController from './components/TimeFrameSelector';
 import BetaLabel from './components/BetaLabel';
