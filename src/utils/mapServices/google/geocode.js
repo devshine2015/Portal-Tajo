@@ -41,3 +41,11 @@ export const queueReverseGeocode = (latLng, haveCallback, noHaveCallback) => {
   }
 };
 
+export const queueReverseGeocodeClear = () => {
+  queue.length = 0;
+  if (timerId !== 0) {
+    window.clearTimeout(timerId);
+    timerId = 0;
+  }
+};
+
