@@ -5,6 +5,7 @@ const string = PropTypes.string;
 
 const phrases = [
   'reports',
+  'exec_report',
   'vehicles_editor',
   'users',
   'operational',
@@ -21,6 +22,7 @@ const phrases = [
 
 export const phrasesShape = shape({
   reports: string.isRequired,
+  exec_report: string.isRequired,
   vehicles_editor: string.isRequired,
   users: string.isRequired,
   operational: string.isRequired,
