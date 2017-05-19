@@ -22,7 +22,7 @@ import { vehiclesActions } from 'services/FleetModel/actions';
 import listTypes from 'components/InstancesList/types';
 
 import TimeFrameController from './components/TimeFrameSelector';
-import BetaLabel from './components/BetaLabel';
+import BetaLabel from 'components/BetaLabel';
 
 
 class ExecReport extends React.Component {
