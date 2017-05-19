@@ -12,7 +12,6 @@ const REMOTE_HOST_BASE = window.location.host;
 // and keeped alive for old portal.
 export const useLegacy = type => {
   switch (type) {
-    case 'session-key': return portal === 'ssreports';
     default:
       return false;
   }
@@ -34,9 +33,7 @@ export const onStage = serverEnv === 'stage';
 export const onDev = serverEnv === 'dev';
 export const onLocal = serverEnv === 'local';
 
-// use old local storage key notation for ssreports
-export const LOCAL_STORAGE_SESSION_KEY = useLegacy('session-key') ?
-  'ngStorage-sessionId' : 'drvr_tajo-sessionId';
+export const LOCAL_STORAGE_SESSION_KEY = 'drvr_tajo-sessionId';
 
 // use to initiate root for react-router
 export const ROOT_ROUTE = _configHelpers.chooseRoot(serverEnv, portal);
