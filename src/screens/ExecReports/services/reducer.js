@@ -1,6 +1,8 @@
 // import { combineReducers } from 'redux-immutable';
 import { fromJS } from 'immutable';
 import {
+  EXEC_SET_TIMEFRAME,
+  EXEC_CLEAR_LOCAL,
   EXEC_REPORT_ITEM_NEW_FRAME,
 } from './actions';
 import { createReportFrame } from './../utils/reportVehicleFrame';
@@ -12,24 +14,26 @@ const execReportInitialState = fromJS({
   dateFrom: moment().subtract(1, 'days').toDate(),
   dateTo: moment().toDate(),
   localFrames: new Map(),
-  validFramesCount: 0,
   durtyFlag: 0,
 });
 let drty = 2;
 export default function execReportsReducer(state = execReportInitialState, action) {
   switch (action.type) {
-    // case CHRONICLE_SET_TIMEFRAME:
+    // case EXEC_REPORT_TIMEFRAME:
     //   return state.set('dateFrom', (action.dateFrom))
     //       .set('dateTo', (action.dateTo));
+    case EXEC_SET_TIMEFRAME:
+      return state.set('dateFrom', (action.dateFrom))
+          .set('dateTo', (action.dateTo));
     case EXEC_REPORT_ITEM_NEW_FRAME: {
       return state.setIn(['localFrames', action.vehicleId], action.reportFrame)
   // TODO: does not look like right way to update store....
           .set('durtyFlag', ++drty);
     }
     // // TODO: quick and dirty - just reset all
-    // case CHRONICLE_VALIDATE_TIMEFRAME: {
-    //   return state.set('localFrames', new Map()).set('validFramesCount', 0);
-    // }
+    case EXEC_CLEAR_LOCAL: {
+      return state.set('localFrames', new Map());
+    }
     default:
       return state;
   }
@@ -43,7 +47,7 @@ export const getInstanceExecReportFrameById = (state) => (id) => {
   return chrFrame;
 };
 
-// export const getChronicleTimeFrame = (state) => ({
-//   fromDate: state.getIn(['chronicle', 'dateFrom']).toJS(),
-//   toDate: state.getIn(['chronicle', 'dateTo']).toJS(),
-// });
+export const getExecTimeFrame = (state) => ({
+  dateFrom: state.getIn(['execReports', 'dateFrom']),
+  dateTo: state.getIn(['execReports', 'dateTo']),
+});

@@ -26,7 +26,7 @@ const SoloDetails = ({
   return (
     <Layout.Content style={{ alignItems: 'center' }}>
       <table style={{ width: 400, border: 'solid 1px #aaa' }}>
-        <ItemProperty
+        {/*<ItemProperty
           title={'Driving Time'}
           value={msToTimeIntervalString(reportFrame.idiling.drivingTime)}
         />
@@ -45,7 +45,7 @@ const SoloDetails = ({
         <ItemProperty
           title={'IgnOff Stopped Time'}
           value={msToTimeIntervalString(reportFrame.idiling.ignOffWhileStopped)}
-        />
+        />*/}
         <ItemProperty
           title={'Odometr Total'}
           value={metersToKmString(reportFrame.distTotal)}

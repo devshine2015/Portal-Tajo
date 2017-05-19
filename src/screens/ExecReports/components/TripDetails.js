@@ -82,10 +82,10 @@ const TripDetails = ({
           title={'Max Speed'}
           value={speedToString(aTripData.maxSpeed)}
         />
-        <ItemProperty
+        {/*<ItemProperty
           title={'Samples all/pos'}
           value={`${aTripData.numberOfSamples}/${aTripData.numberOfPosSamples}`}
-        />
+        />*/}
       </table>
     </Layout.Content>
   );

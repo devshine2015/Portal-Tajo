@@ -75,6 +75,20 @@ ReportVehicleFrame.prototype.isLoading = function () {
 //
 //
 //-----------------------------------------------------------------------
+ReportVehicleFrame.prototype.isDummy = function () {
+  return this.state === CHRONICLE_LOCAL_INCTANCE_STATE_NONE;
+};
+
+//
+//
+//-----------------------------------------------------------------------
+ReportVehicleFrame.prototype.hasData = function () {
+  return this.state === CHRONICLE_LOCAL_INCTANCE_STATE_OK_DATA;
+};
+
+//
+//
+//-----------------------------------------------------------------------
 ReportVehicleFrame.prototype.isEmpty = function () {
   return this.state === CHRONICLE_LOCAL_INCTANCE_STATE_OK_EMPTY;
 };
@@ -135,6 +149,8 @@ ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) 
      // this.mappp = this.mapifyChildren();
   const t1 = performance.now();
   console.log(`Report generation took ${(t1 - t0)} milliseconds.`);
+
+  this.state = CHRONICLE_LOCAL_INCTANCE_STATE_OK_DATA;
 
   // let tripIdx = 0;
   // const oneTripProcess = () => {

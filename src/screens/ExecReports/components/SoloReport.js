@@ -6,6 +6,8 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
 import Layout from 'components/Layout';
+import AnimatedLogo from 'components/animated';
+
 import SoloHeader from './SoloHeader';
 import SoloDetails from './SoloDetails';
 import TripsReport from './TripsReport';
@@ -38,9 +40,17 @@ class SoloReport extends React.Component {
     // printJS('drvrSoloReport', 'html');
   }
   render() {
+    // return (<AnimatedLogo.FullscreenLogo />);
+    const reportFrame = this.props.getSoloReportById(this.props.vehicleId);
+    if (reportFrame.isLoading()) {
+      return <AnimatedLogo.FullscreenLogo />;
+    }
+    if (!reportFrame.hasData()) {
+      return false;
+    }
     return (
       <Layout.Content>
-        <div id="drvrSoloReport" style={{ overflow: 'scroll' }}>
+        <div id="drvrSoloReport" style={{ overflow: 'scroll', paddingTop: 12, marginBottom: 12 }}>
           {/* <Layout.Header label={'EXECUTIVE REPORT'} />*/}
           <SoloHeader vehicleId={this.props.vehicleId} />
           <SoloDetails vehicleId={this.props.vehicleId} />
@@ -50,6 +60,7 @@ class SoloReport extends React.Component {
         <MainActionButton
           label={'PRINT'}
           onClick={this.doPrint}
+          icon={null}
         />
       </Layout.Content>
     );

@@ -3,29 +3,44 @@ import qs from 'query-string';
 import { api } from 'utils/api';
 import endpoints from 'configs/endpoints';
 import { requestSamplesLimit } from 'configs';
-import { getReportParams } from 'containers/Report/utils/prepareReport';
+import { queueReverseGeocodeClear } from 'utils/mapServices/google/geocode';
 
 // import { setLoader } from './loaderActions';
 import { createReportFrame, setReportFrameEvents } from './../utils/reportVehicleFrame';
-// import { getInstanceExecReportFrameById } from './reducer';
+import { getExecTimeFrame, getInstanceExecReportFrameById } from './reducer';
+
+export const EXEC_SET_TIMEFRAME = 'exReport/setTime';
+export const EXEC_CLEAR_LOCAL = 'exReport/clear';
 
 export const EXEC_REPORT_ITEM_NEW_FRAME = 'exReport/newFrame';
 
-export const requestSoloReport = (vehicleId, dateFrom, dateTo) => dispatch =>
+export const setExecTimeFrame = (dateFrom, dateTo) => (dispatch, getState) => {
+  // TODO: fix dates comparison (use moments?)
+  //
+  if (getExecTimeFrame(getState()).fromDate === dateFrom) {
+    return;
+  }
+  dispatch(_execSetTimeFrame(dateFrom, dateTo));
+  dispatch(_execClearLocalFrames());
+  queueReverseGeocodeClear();
+};
+
+export const requestSoloReport = (vehicleId, dateFrom, dateTo) => (dispatch, store)=>
 // export const requestTripsReport = (vehicleId, dateFrom, dateTo) => dispatch =>
-  _requestTripsReport(vehicleId, dateFrom, dateTo, dispatch);
+  _requestTripsReport(vehicleId, dateFrom, dateTo, dispatch, store);
 
 
-function _requestTripsReport(vehicleId, dateFrom, dateTo, dispatch) {
-  dateFrom = moment().subtract(7, 'days').toDate();
-  dateTo = moment().subtract(4, 'days').toDate();
+function _requestTripsReport(vehicleId, dateFrom, dateTo, dispatch, store) {
+  // dateFrom = moment().subtract(7, 'days').toDate();
+  // dateTo = moment().subtract(4, 'days').toDate();
 
   // setting loading state for local frame
   const theFrame = createReportFrame(dateFrom, dateTo);
+  dispatch(_updateVehicleChronicleFrame(vehicleId, theFrame));
+
   const queryString = _prepareReportsQueryString(dateFrom, dateTo);
 
-  dispatch(_updateVehicleChronicleFrame(vehicleId, theFrame));
-  _fetchSoloHistory(vehicleId, theFrame, dateFrom, dateTo, dispatch);
+  _fetchSoloHistory(vehicleId, theFrame, dateFrom, dateTo, dispatch, store);
   // all the reports fetches
   _fetchMilage(vehicleId, theFrame, queryString, dispatch);
   _fetchStats(vehicleId, theFrame, queryString, dispatch);
@@ -33,7 +48,7 @@ function _requestTripsReport(vehicleId, dateFrom, dateTo, dispatch) {
   _fetchTemerature(vehicleId, theFrame, queryString, dispatch);
 }
 
-function _fetchSoloHistory(vehicleId, theFrame, dateFrom, dateTo, dispatch) {
+function _fetchSoloHistory(vehicleId, theFrame, dateFrom, dateTo, dispatch, store) {
   let fromString = dateFrom.toISOString();
   fromString = `${fromString.slice(0, -1)}+0000`;
   let toString = dateTo.toISOString();
@@ -50,7 +65,12 @@ function _fetchSoloHistory(vehicleId, theFrame, dateFrom, dateTo, dispatch) {
     .then(data => data.json())
     .then((events) => {
       setReportFrameEvents(theFrame, events, () => {
-        dispatch(_updateVehicleChronicleFrame(vehicleId, theFrame));
+        const frame = getInstanceExecReportFrameById(store())(vehicleId);
+        // checking if the frame still exists in the store
+        // (not invalidated with date change)
+        if (!frame.isDummy()) {
+          dispatch(_updateVehicleChronicleFrame(vehicleId, theFrame));
+        }
       });
 
       dispatch(_updateVehicleChronicleFrame(vehicleId, theFrame));
@@ -130,12 +150,12 @@ const _updateVehicleChronicleFrame = (vehicleId, reportFrame) => ({
   reportFrame,
 });
 
-// const _chronicleSetTimeFrame = (dateFrom, dateTo) => ({
-//   type: CHRONICLE_SET_TIMEFRAME,
-//   dateFrom,
-//   dateTo,
-// });
+const _execSetTimeFrame = (dateFrom, dateTo) => ({
+  type: EXEC_SET_TIMEFRAME,
+  dateFrom,
+  dateTo,
+});
 
-// const _chronicleValidateTimeFrame = () => ({
-//   type: CHRONICLE_VALIDATE_TIMEFRAME,
-// });
+const _execClearLocalFrames = () => ({
+  type: EXEC_CLEAR_LOCAL,
+});

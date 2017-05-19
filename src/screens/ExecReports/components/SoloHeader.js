@@ -20,7 +20,8 @@ const SoloHeader = ({
 }, context) => {
   const theVehicle = getVehicleById(vehicleId);
   const reportFrame = getSoloReportById(vehicleId);
-  if (theVehicle === null || reportFrame === null) {
+  if (theVehicle === null
+  || !reportFrame.hasData()) {
     return false;
   }
   const hPadding = 7;
@@ -52,7 +53,7 @@ const SoloHeader = ({
         </span>
       </div>
       <div style={propDivStyle}>
-        {/*<span >
+        {/* <span >
           {`Make: ${theVehicle.original.make}  Model: ${theVehicle.original.model}  Year: ${theVehicle.original.year}`}
         </span>*/}
         <span >
@@ -74,7 +75,7 @@ const SoloHeader = ({
           {theVehicle.original.year}
         </span>
       </div>
-      {/*<div style={propDivStyle}>
+      {/* <div style={propDivStyle}>
         <span >
           DeviceId:
         </span>
