@@ -1,12 +1,12 @@
 @media screen and (min-width: 100px) {
   .betaContainer {
-    position: fixed;
+    position: absolute;
     pointer-events: none;
     font-size: 64px;
-    z-index: 10000;
+    z-index: 1;
     right: 30px;
-    top: 74px;
-    line-height: 64px;
+    top: 0;
+    line-height: 100%;
     font-weight: bolder;
     color: rgba(0, 0, 0, 0.11); 
   }

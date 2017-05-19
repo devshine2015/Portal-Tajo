@@ -38,7 +38,6 @@ class ExecReport extends React.Component {
     const dateFrom = this.props.execFrame.dateFrom;
     return (
       <Layout.ScreenWithList>
-        <BetaLabel />
         <PowerList
           scrollable
           filter={
@@ -55,6 +54,7 @@ class ExecReport extends React.Component {
         <Layout.FixedContent>
           <TimeFrameController dateValue={dateFrom} onChange={this.setStartDate} />
           <SoloReport vehicleId={this.props.selectedVehicleId} />
+          <BetaLabel />
         </Layout.FixedContent>
       </Layout.ScreenWithList>
     );
