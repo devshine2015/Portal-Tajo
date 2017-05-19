@@ -28,6 +28,7 @@ const phrases = {
 
     // main menu
     reports: 'reports',
+    exec_report: 'trip reports',
     vehicles_editor: 'vehicles editor',
     users: 'users',
     operational: 'operational',
