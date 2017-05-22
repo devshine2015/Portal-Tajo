@@ -12,6 +12,8 @@ const STYLES = {
   },
 };
 
+const SHOW_DISSMISS_BUTTON = false;
+
 const onDissmissClick = props => () => {
   props.onClick(props.id);
 };
@@ -94,7 +96,7 @@ const JournalEntry = ({
         kindNiceName={niceName}
         time={eventTS}
       />
-      <DissmissBtn onClick={onDissmiss} id={id} />
+      { SHOW_DISSMISS_BUTTON && <DissmissBtn onClick={onDissmiss} id={id} /> }
     </div>
   );
 };
