@@ -41,7 +41,7 @@ export const getAlertConditionByIdFunc = state => (id) => {
   if (theObj === undefined) {
     return null;
   }
-  return theObj;
+  return theObj.toJS();
 };
 
 export const getVehicleAlertConditions = state => (vehicleId) => {
