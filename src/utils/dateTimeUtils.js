@@ -16,7 +16,7 @@ export const makeDefaultDatePeriod = () => {
   return {
     startDate: defaultStartDate,
     startTime: _makeStartTime(),
-    endDate: defaultStartDate,
+    endDate: new Date(),
     endTime: _makeEndTime(),
   };
 };
