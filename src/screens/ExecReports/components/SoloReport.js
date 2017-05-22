@@ -11,6 +11,7 @@ import AnimatedLogo from 'components/animated';
 import SoloHeader from './SoloHeader';
 import SoloDetails from './SoloDetails';
 import TripsReport from './TripsReport';
+import TripsTimeLine from './TimeLine/TripsTimeLine';
 // import ReportMap from './ReportMap';
 
 import MainActionButton from 'components/Controls/MainActionButton';
@@ -54,6 +55,7 @@ class SoloReport extends React.Component {
           {/* <Layout.Header label={'EXECUTIVE REPORT'} />*/}
           <SoloHeader vehicleId={this.props.vehicleId} />
           <SoloDetails vehicleId={this.props.vehicleId} />
+          <TripsTimeLine vehicleId={this.props.vehicleId} />
           <TripsReport vehicleId={this.props.vehicleId} />
           {/*<ReportMap reportFrame={this.props.reportFrame} />*/}
         </div>

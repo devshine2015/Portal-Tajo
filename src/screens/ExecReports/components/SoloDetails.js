@@ -62,10 +62,10 @@ const SoloDetails = ({
           title={'CalculatedDistance'}
           value={(reportFrame.calculatedDistanceM / 1000).toFixed(3)}
         />*/}
-        {/*<ItemProperty
-          title={'Samples'}
-          value={reportFrame.numberOfPosSamples}
-        />*/}
+        <ItemProperty
+          title={'Samples pos/all'}
+          value={`${reportFrame.numberOfPosSamples} / ${reportFrame.numberOfSamples}`}
+        />
         {/*<ItemProperty
           title={'Vechicle Id'}
           value={theVehicle.id}

@@ -3,6 +3,8 @@
 import moment from 'moment';
 import { haversineDist } from 'utils/mapBoxMap';
 import { makeTripsParcer } from './aTrip';
+import { makeAWayPoint } from './aStopOver';
+import { makeATimeStamp } from './aTimeStamp';
 import * as eventHelpers from './eventHelpers';
 
 
@@ -25,8 +27,10 @@ function ReportVehicleFrame(dateFrom, dateTo) {
   this.milageDistance = 0;
   this.calculatedDistanceM = 0;
   this.numberOfPosSamples = 0;
+  this.numberOfSamples = 0;
 
   this.trips = [];
+  this.tripsTimeLine = [];
 
   this.posData = [];
 
@@ -105,7 +109,7 @@ ReportVehicleFrame.prototype.isStatic = function () {
 //
 //-----------------------------------------------------------------------
 ReportVehicleFrame.prototype.getValidTrips = function () {
-  return this.trips.filter(aTrip => aTrip.isValid());
+  return this.trips; //.filter(aTrip => aTrip.isValid());
 };
 
 //
@@ -121,6 +125,7 @@ ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) 
 
   let prevPosSample = null;
   this.calculatedDistanceM = 0;
+  this.numberOfSamples = events.length;
 
   // const _dbgTime = 0;
   // const dataSize = events.length;
@@ -136,15 +141,29 @@ ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) 
         pos: window.L.latLng(eventHelpers.eventPos(theSample).lat, eventHelpers.eventPos(theSample).lng) });
       this.speedData.push({ timeMs: eventTimeMs, v: eventHelpers.eventSpeed(theSample) });
       this.numberOfPosSamples += 1;
-      if (prevPosSample !== null) {
-        this.calculatedDistanceM += haversineDist(eventHelpers.eventPos(prevPosSample), eventHelpers.eventPos(theSample));
-      }
-      prevPosSample = theSample;
+      // if (prevPosSample !== null) {
+      //   this.calculatedDistanceM += haversineDist(eventHelpers.eventPos(prevPosSample), eventHelpers.eventPos(theSample));
+      // }
+      // prevPosSample = theSample;
     }
   });
 
-  this.trips = tripParcer();
-  this.trips.forEach(aTrip => aTrip.prepareData(events, storeUpdateCallback));
+  this.tripsRaw = tripParcer();
+  this.tripsRaw.forEach(aTrip => aTrip.prepareData(events, storeUpdateCallback));
+
+  this.trips = this.tripsRaw.filter(aTrip => aTrip.isValid());
+
+  let prevEndIdx = 0;
+  this.trips.forEach((aTrip) => {
+    this.tripsTimeLine.push(makeATimeStamp(moment(events[prevEndIdx].ev.ts).toDate()));
+    this.tripsTimeLine.push(makeAWayPoint(prevEndIdx, aTrip.startIdx, events));
+    this.tripsTimeLine.push(makeATimeStamp(moment(events[aTrip.startIdx].ev.ts).toDate()));
+    this.tripsTimeLine.push(aTrip);
+    prevEndIdx = aTrip.endIdx;
+  });
+  this.tripsTimeLine.push(makeATimeStamp(moment(events[prevEndIdx].ev.ts).toDate()));
+  this.tripsTimeLine.push(makeAWayPoint(prevEndIdx, events.length - 1, events));
+  this.tripsTimeLine.push(makeATimeStamp(moment(events[events.length - 1].ev.ts).toDate()));
 
      // this.mappp = this.mapifyChildren();
   const t1 = performance.now();

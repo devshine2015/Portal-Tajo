@@ -60,7 +60,7 @@ HistoryTrip.prototype.prepareData = function (eventsFrame, storeUpdateCallback) 
       prevPosSample = theSample;
     }
   }
-
+  return;
   if (this.isValid()) {
     queueReverseGeocode(eventHelpers.eventPos(startSample),
       (address) => {
