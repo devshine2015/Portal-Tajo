@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import VehiclesList from 'components/InstancesList';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
-import FixedContent from 'components/FixedContent';
+import Layout from 'components/Layout';
 import { showSnackbar } from 'containers/Snackbar/actions';
 import { getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
 import { vehiclesActions } from 'services/FleetModel/actions';
@@ -139,7 +139,7 @@ class VehiclesEditor extends React.Component {
     };
 
     return (
-      <FixedContent >
+      <Layout.FixedContent >
         <VehicleDetails
           isLoading={this.props.isLoading}
           details={data}
@@ -148,7 +148,7 @@ class VehiclesEditor extends React.Component {
           onDisable={this.onVehicleDisable}
           disabled={this.props.isLoading}
         />
-      </FixedContent>
+      </Layout.FixedContent>
     );
   }
 
