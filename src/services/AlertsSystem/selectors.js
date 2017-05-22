@@ -1,8 +1,15 @@
 import { createSelector } from 'reselect';
-import { getEntriesNewestFirst } from './reducers/nextJournalReducer';
+import { getJournalEntriesNewestFirst } from './reducers/journalReducer';
+import { getLogEntriesNewestFirst } from './reducers/logReducer';
 
-export default () => {
-  return createSelector(getEntriesNewestFirst, (entries) => {
+export const getJournalEntries = () => {
+  return createSelector(getJournalEntriesNewestFirst, (entries) => {
+    return entries;
+  });
+};
+
+export const getLogEntries = () => {
+  return createSelector(getLogEntriesNewestFirst, (entries) => {
     return entries;
   });
 };
