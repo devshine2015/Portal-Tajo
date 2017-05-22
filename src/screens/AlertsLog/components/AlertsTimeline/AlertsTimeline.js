@@ -1,12 +1,14 @@
 import React from 'react';
 import { List } from 'immutable';
 import { css } from 'aphrodite/no-important';
-import { connect } from 'react-redux';
-import { getJournalSlice } from 'services/AlertsSystem/reducer';
-import makeGetNotifications from 'services/AlertsSystem/selectors';
 import TimelineEvent from './TimelineEvent';
 import classes from './AlertsTimeline.classes';
 
+const EmptyTimeline = () => (
+  <div className={css([classes.listWrapper, classes.listWrapper_empty])}>
+    No events for specified period
+  </div>
+);
 
 const Header = () => {
   return (
@@ -48,14 +50,4 @@ AlertsTimeline.propTypes = {
   entries: React.PropTypes.instanceOf(List).isRequired,
 };
 
-const makeMapStateToProps = () => {
-  const getNotifications = makeGetNotifications();
-
-  const mapStateToProps = state => ({
-    entries: getNotifications(getJournalSlice(state)),
-  });
-
-  return mapStateToProps;
-};
-
-export default connect(makeMapStateToProps)(AlertsTimeline);
+export default AlertsTimeline;
