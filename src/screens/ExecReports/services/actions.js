@@ -1,3 +1,4 @@
+import moment from 'moment';
 import qs from 'query-string';
 import { api } from 'utils/api';
 import endpoints from 'configs/endpoints';
@@ -30,8 +31,8 @@ export const requestSoloReport = (vehicleId, dateFrom, dateTo) => (dispatch, sto
 
 
 function _requestTripsReport(vehicleId, dateFrom, dateTo, dispatch, store) {
-  // dateFrom = moment().subtract(7, 'days').toDate();
-  // dateTo = moment().subtract(4, 'days').toDate();
+  dateTo = moment(dateFrom).toDate();
+  dateFrom = moment(dateFrom).subtract(3, 'days').toDate();
 
   // setting loading state for local frame
   const theFrame = createReportFrame(dateFrom, dateTo);
@@ -56,7 +57,7 @@ function _fetchSoloHistory(vehicleId, theFrame, dateFrom, dateTo, dispatch, stor
   const { url, method } = endpoints.getEventsInTimeRange(vehicleId, {
     from: fromString,
     to: toString,
-    max: requestSamplesLimit,
+    max: 100000, //  requestSamplesLimit,
     filter: 'PG',
     // tzoffset: new Date().getTimezoneOffset(),
   });
