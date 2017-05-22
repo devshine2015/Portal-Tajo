@@ -1,16 +1,44 @@
 import moment from 'moment';
-import { api } from 'utils/api';
-import endpoints from 'configs/endpoints';
+// import { api } from 'utils/api';
+import uuid from 'node-uuid';
+// import endpoints from 'configs/endpoints';
+import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
 import { getVehicleById } from 'services/FleetModel/reducer';
-import {
-  jrnGetLatestRecievedTS,
-  jrnIsWaiting,
-  getAlertConditionById,
-} from '../reducer';
+import fetchNotificationsForTimeRange from './helpers';
+import { getAlertConditionById } from '../reducer';
 
-export const JR_OPEN = 'jrn/open';
-export const JR_ADD_ENTRIES = 'jrn/add';
-export const JR_SET_WAITING = 'jrn/wait';
+// update once a minute
+const ALERTS_HISTORY_FETCH_INTERVAL_MS = 1000 * 60;
+let notificationsTimerId = null;
+
+export const JOURNAL_ENTRIES_ADD = 'alertsSystem/JOURNAL_ENTRIES_ADD';
+
+// const makeFakeNotifs = () => [{
+//   ev: {
+//     ts: new Date(),
+//     vehicleId: '89058b4f-aecd-4f0b-97ea-36cec6dfc766',
+//     conditionId: 'a5f4f295-97ab-41cc-8638-553abd705ac7',
+//     conditionKind: 'temperature-alert',
+//     meta: { name: 'postman tempAlert 1' },
+//     pos: {
+//       latlon: { lat: 16.8573055267334, lng: 96.0805892944336 },
+//       speed: 0,
+//       azimuth: 286,
+//       accuracy: 1,
+//     },
+//     temp: 1.5,
+//   },
+//   type: 'vehicle-temperature-alert',
+// }];
+
+const listenForNotifications = (dispatch, initialStartDate) => {
+  let startDate = initialStartDate;
+
+  notificationsTimerId = window.setInterval(() => {
+    const endDate = moment().toDate();
+    const nextRange = { startDate, endDate };
+
+    dispatch(fetchRecentNotifications(nextRange));
 
 // update once a minute
 const ALERTS_HISOTYR_FETCH_INTERVAL_MS = 1000 * 60;
@@ -18,16 +46,19 @@ let fetchProcId = null;
 
 export const fetchAlertsHistory = () => _startFetching;
 
-export const jrnOpen = doOpen => ({
-  type: JR_OPEN,
-  doOpen,
-});
+/**
+ * Get all events for last 24 hours, or withing specified time range
+ * @param {Object} - range
+ */
+export const fetchRecentNotifications = (range = makePeriodForLast24Hours()) => async (dispatch, getState) => {
+  const state = getState();
+  let result;
 
-export const jrnAddEntries = (newEntriesList, latestRecievedTS) => ({
-  type: JR_ADD_ENTRIES,
-  newEntriesList,
-  latestRecievedTS,
-});
+  try {
+    result = await fetchNotificationsForTimeRange(range);
+  } catch (e) {
+    throw e;
+  }
 
 
 function _startFetching(dispatch, getState) {
