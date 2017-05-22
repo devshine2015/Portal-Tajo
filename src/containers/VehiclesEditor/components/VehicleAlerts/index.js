@@ -101,14 +101,14 @@ class VehicleAlerts extends React.Component {
           isLoading: true });
         this.fetchAlerts(nextProps.vehicleId);
       } else {
-        this.setVehicleAlerts();
+        this.setVehicleAlerts(vehAlertIds);
       }
     }
   }
   onOfKindChange = (value, theKind) => {
     const idx = this.state.alerts.map(alertId =>
         (this.props.alertById(alertId))).findIndex(alrt => alrt.kind === theKind);
-    const nextAlerts = this.state.alerts;
+    const nextAlerts = this.state.alerts.slice(0);
     if (idx >= 0) {
       nextAlerts.splice(idx, 1);
     }
@@ -116,7 +116,7 @@ class VehicleAlerts extends React.Component {
     if (anotherAlert !== null) {
       this.setState({ alerts: nextAlerts.concat(anotherAlert.id) });
     } else {
-      this.setState({ alerts: nextAlerts.slice(0) });
+      this.setState({ alerts: nextAlerts });
     }
   }
   onRemoveClick = (alertId) => {
@@ -132,18 +132,18 @@ class VehicleAlerts extends React.Component {
     this.props.postVehicleAlertConditions(this.props.vehicleId, this.state.alerts);
   }
   resetChange = () => {
-    this.setVehicleAlerts();
+    this.setVehicleAlerts(this.props.getVehicleAlerts(this.props.vehicleId));
   }
-  setVehicleAlerts = () => {
+  setVehicleAlerts = (alertsSrc) => {
     this.setState({
-      alerts: this.props.getVehicleAlerts(this.props.vehicleId).slice(0),
+      alerts: alertsSrc.slice(0),
       isLoading: false,
     });
   }
   fetchAlerts = (vehicleId) => {
     this.props.fetchVehicleAlertConditions(vehicleId)
       .then(() => {
-        this.setVehicleAlerts();
+        this.setVehicleAlerts(this.props.getVehicleAlerts(this.props.vehicleId));
       });
   }
 
