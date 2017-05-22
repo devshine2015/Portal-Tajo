@@ -152,7 +152,8 @@ class VehicleAlerts extends React.Component {
     if (!isAlerts) return null;
     const haveAlertConditions = this.props.alertConditions.length > 0;
     if (!haveAlertConditions) return null;
-    const isTouched = !ifArraysEqual(this.state.alerts, this.props.getVehicleAlerts(this.props.vehicleId));
+    const isTouched = this.props.getVehicleAlerts(this.props.vehicleId) === null
+     || !ifArraysEqual(this.state.alerts, this.props.getVehicleAlerts(this.props.vehicleId));
     return (
       <Layout.Section>
         <Layout.Header label={`ALERTS${this.state.isLoading ? ' loading...' : ''}`} />
