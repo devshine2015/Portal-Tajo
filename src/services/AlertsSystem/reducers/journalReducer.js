@@ -1,5 +1,6 @@
 import { fromJS } from 'immutable';
 import { journalActions } from '../actions';
+import sortNewestFirst from './helpers';
 
 const _LOCAL_JOURNAL_SIZE_LIMIT_ = 300;
 
@@ -48,5 +49,6 @@ export default journalReducer;
 export const jrnGetLatestRecievedTS = state =>
   state.get('lastRecievedTS');
 
-export const jrnIsWaiting = state =>
-  state.get('isWaiting');
+export const getJournalEntriesNewestFirst = (state) => {
+  return getEntries(state).sort(sortNewestFirst);
+};
