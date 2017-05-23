@@ -23,6 +23,7 @@ import endpoints from 'configs/endpoints';
 import { api } from 'utils/api';
 import { makeLocalAlertCondition } from '../alertConditionHelper';
 
+export const ALRT_CONDITIONS_READY_SET = 'alrtSys/ALRT_CONDITIONS_READY_SET';
 export const ALRT_CONDITONS_SET = 'AlertsSystem/ALERT_CONDITONS_SET';
 export const ALRT_VEHICLE_SET = 'AlertsSystem/vehAlertConditionsSet';
 export const ALRT_CONDITON_DEL = 'AlertsSystem/ALERT_CONDITION_DELETE';
@@ -70,6 +71,8 @@ function _setConditions(dispatch, state, conditions) {
 function _fetchVehicleAlerConditions(vehicleId, dispatch) {
   const { url, method } = endpoints.getVehicleAlertConditions(vehicleId);
 
+  dispatch(_conditionsReadySet(false));
+
   return api[method](url)
     .then(toJson)
     .then((alerts) => {
@@ -77,6 +80,7 @@ function _fetchVehicleAlerConditions(vehicleId, dispatch) {
     })
     .catch((e) => {
       console.error(e);
+      dispatch(_conditionsReadySet(false));
     });
 }
 function _setVehicleAlertConditions(dispatch, vehicleId, alertsList) {
@@ -154,4 +158,9 @@ const _vehicleConditionsSet = (vehicleId, conditions) => ({
   type: ALRT_VEHICLE_SET,
   vehicleId,
   conditions,
+});
+
+const _conditionsReadySet = isReady => ({
+  type: ALRT_CONDITIONS_READY_SET,
+  isReady,
 });

@@ -10,7 +10,7 @@ export default combineReducers({
   logs: logReducer,
 });
 
-const getConditionsSlice = state => state.getIn(['alerts', 'conditions']);
+export const getConditionsSlice = state => state.getIn(['alerts', 'conditions']);
 export const getJournalSlice = state => state.getIn(['alerts', 'journal']);
 export const getLogsSlice = state => state.getIn(['alerts', 'logs']);
 

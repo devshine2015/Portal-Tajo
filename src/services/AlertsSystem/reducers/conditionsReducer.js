@@ -5,16 +5,26 @@ const initialState = fromJS({
   conditions: new Map(), // map by ids
   // TODO: think about move vehicle conditions to vehiclesEditor reducer or to fleetModel
   vehicleConditions: new Map(), // map - [alertIds] by VehIds
+  isReady: false,
 });
 
 function alertsReducer(state = initialState, action) {
   switch (action.type) {
+    case conditionsActions.ALRT_CONDITIONS_READY_SET:
+      return state.set('isReady', action.isReady);
+
     case conditionsActions.ALRT_CONDITONS_SET:
-      return state.mergeIn(['conditions'], fromJS(action.conditions));
+      return state.withMutations((st) => {
+        st.mergeIn(['conditions'], fromJS(action.conditions))
+          .set('isReady', true);
+      });
+
     case conditionsActions.ALRT_VEHICLE_SET:
       return state.setIn(['vehicleConditions', action.vehicleId], action.conditions);
+
     case conditionsActions.ALRT_CONDITON_DEL:
       return state.deleteIn(['conditions', action.alertId]);
+
     default:
       return state;
   }
@@ -54,3 +64,6 @@ export const getVehicleAlertConditions = state => (vehicleId) => {
 
 export const getAlertConditionById = (state, id) =>
   state.getIn(['conditions', id]);
+
+export const getIsConditionsReady = state =>
+  state.get('isReady');

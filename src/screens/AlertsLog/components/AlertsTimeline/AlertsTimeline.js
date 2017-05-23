@@ -39,7 +39,7 @@ class AlertsTimeline extends React.Component {
       <div className={css(classes.wrapper)}>
         <Header />
 
-        { this.props.entries.size !== 0 ? <EmptyTimeline /> : (
+        { this.props.entries.size === 0 ? <EmptyTimeline /> : (
           <div className={css(classes.listWrapper)}>
             { this.renderEvents() }
           </div>
