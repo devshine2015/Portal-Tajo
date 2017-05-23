@@ -10,13 +10,21 @@ export const makePeriodForLast24Hours = () => {
   };
 };
 
+/**
+ * Create time range for current day
+ * @returns {Object} defaultPeriod
+ * @returns {Date} defaultPeriod.startDate - current date
+ * @returns {Date} defaultPeriod.startTime - date with time set to 00:00:00
+ * @returns {Date} defaultPeriod.endTime - current date
+ * @returns {Date} defaultPeriod.endTime - date with time set to 23:59:59
+ */
 export const makeDefaultDatePeriod = () => {
-  const defaultStartDate = moment().subtract(1, 'days').toDate();
+  const defaultDate = new Date();
 
   return {
-    startDate: defaultStartDate,
+    startDate: defaultDate,
     startTime: _makeStartTime(),
-    endDate: new Date(),
+    endDate: defaultDate,
     endTime: _makeEndTime(),
   };
 };
