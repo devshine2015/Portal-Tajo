@@ -15,7 +15,7 @@ function HistoryWayPoint(startSampleIdx, endSampleIdx, startSample, endSample) {
   this.durationMs = this.endDate.getTime() - this.startDate.getTime();
 
   this.latLng = eventHelpers.eventPos(startSample);
-  this.address = 'looking...';
+  this.address = 'South Okkalapa, Yangon, Myanmar (Burma)'; //  'looking...';
 }
 
 //

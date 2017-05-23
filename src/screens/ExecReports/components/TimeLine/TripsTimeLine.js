@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 
 import Layout from 'components/Layout';
 import StopOver from './StopOver';
+import Trip from './Trip';
 import TimeStamp from './TimeStamp';
 
 import { getInstanceExecReportFrameById } from './../../services/reducer';
@@ -32,15 +33,12 @@ class TripsTimeLine extends React.Component {
         return <TimeStamp date={aSegment.date} />;
       }
       else {
-        return <div>
-          {`Trip ${msToTimeIntervalString(aSegment.durationMs)} ${metersToKmString(aSegment.calculatedDistanceM)} `}
-        </div>;
+        return <Trip aTripData={aSegment} />;
       }
     });
     return (
       <Layout.Content>
-        <span> <div /> </span>
-        <span> {tripsList} </span>
+        {tripsList}
       </Layout.Content>
     );
   }

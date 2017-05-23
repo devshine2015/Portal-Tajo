@@ -53,3 +53,9 @@ export function msToTimeIntervalString(duration) {
   }
   return `${hours}h ${minutes}m`;
 }
+
+export function dateToHHMM(date) {
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  return `${hours}:${minutes < 10 ? 0 : ''}${minutes}`;
+}

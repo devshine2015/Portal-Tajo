@@ -7,9 +7,9 @@
     display: flex;
     justify-content: space-between;
   }
-  .row:nth-child(odd) {
+  /*.row:nth-child(odd) {
     background-color: #ddd;
-  }
+  }*/
   .titleCell{
     /*width: 100%;*/
     /*width: 250px;*/
@@ -22,15 +22,15 @@
     justify-content: space-between;*/
   }
   .valueCell{
-    width: 450px;
+    /*width: 450px;*/
   }
 }
 
 @media print{
-  .row:nth-child(odd) {
+  /*.row:nth-child(odd) {
     -webkit-print-color-adjust: exact;
     background-color: #eee !important;
-  }
+  }*/
   .titleCell{
     /*width: 100%;*/
     white-space: nowrap;
@@ -43,6 +43,6 @@
     /*justify-content: space-between;*/
   }
   .valueCell{
-    width: 450px;
+    /*width: 450px;*/
   }
 }
