@@ -1,54 +1,25 @@
 import { fromJS } from 'immutable';
 import { journalActions } from '../actions';
-import sortNewestFirst from './helpers';
-
-const _LOCAL_JOURNAL_SIZE_LIMIT_ = 300;
 
 const initialState = fromJS({
   entries: [],
-  newEntriesCount: 0,
-  isOpened: false,
-  lastRecievedTS: 0,
-  lastOpenedTS: 0,
-  isWaiting: false,
 });
 
-function journalReducer(state = initialState, action) {
+export default function (state = initialState, action) {
   switch (action.type) {
-    case journalActions.JR_OPEN:
-      if (!action.doOpen) {
-        return state.set('lastOpenedTS', Date.now())
-            .set('newEntriesCount', 0)
-            .set('isOpened', action.doOpen);
-      }
-      return state.set('isOpened', action.doOpen);
-    case journalActions.JR_SET_WAITING:
-      return state.set('isWaiting', true);
-    case journalActions.JR_ADD_ENTRIES: {
-      const newCount = action.newEntriesList.length;
-      let nextState = state.set('lastRecievedTS', action.latestRecievedTS)
-                      .set('isWaiting', false);
-      if (newCount > 0) {
-        const aList = state.get('entries');
-        const nextList = aList !== undefined ? aList.concat(action.newEntriesList) : action.newEntriesList;
-        nextList.sort((a, b) => (b.eventTS - a.eventTS));
-        nextList.length = Math.min(nextList.length, _LOCAL_JOURNAL_SIZE_LIMIT_);
-        nextState = nextState.set('entries', nextList)
-          .set('newEntriesCount', state.get('newEntriesCount') + newCount);
-      }
-      return nextState;
-
+    case journalActions.JOURNAL_ENTRIES_ADD: {
+      return state.update('entries', list => list.concat(fromJS(action.entries)));
     }
     default:
       return state;
   }
 }
 
-export default journalReducer;
+export const getEntries = state =>
+  state.get('entries');
 
-export const jrnGetLatestRecievedTS = state =>
-  state.get('lastRecievedTS');
-
-export const getJournalEntriesNewestFirst = (state) => {
-  return getEntries(state).sort(sortNewestFirst);
+export const getEntriesNewestFirst = (state) => {
+  return getEntries(state).sort((a, b) => {
+    return b.get('eventTS') - a.get('eventTS');
+  });
 };
