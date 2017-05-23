@@ -5,6 +5,11 @@ import SnackbarNotification from 'containers/Snackbar';
 import { getFleetName } from 'services/Session/reducer';
 import { getVehiclesStaticSlice } from 'services/FleetModel/reducer';
 import { makeGetFleetIsReady } from 'services/FleetModel/selectors';
+import { fetchDevices } from 'services/Devices/actions';
+import {
+  conditionsActions,
+  journalActions,
+} from 'services/AlertsSystem/actions';
 import ApplicationBar from './components/ApplicationBar';
 import MainSidebar from './components/MainSidebar';
 
@@ -15,6 +20,12 @@ class InnerPortal extends React.Component {
   state = {
     isSidebarOpen: false,
   };
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.fleetIsReady && nextProps.fleetIsReady) {
+      this.props.fetchPortalData();
+    }
+  }
 
   toggleSidebar = () => {
     this.setState({
@@ -65,6 +76,7 @@ InnerPortal.propTypes = {
   children: React.PropTypes.node.isRequired,
   fleet: React.PropTypes.string,
   fleetIsReady: React.PropTypes.bool.isRequired,
+  fetchPortalData: React.PropTypes.func.isRequired,
 };
 
 InnerPortal.defaultProps = {
@@ -86,4 +98,14 @@ const makeMapStateToProps = () => {
   return mapState;
 };
 
-export default connect(makeMapStateToProps)(PureInnerPortal);
+const mapDispatch = (dispatch) => {
+  return {
+    fetchPortalData: () => {
+      dispatch(conditionsActions.fetchAlertConditions())
+        .then(() => dispatch(journalActions.fetchNotifications()))
+        .then(() => dispatch(fetchDevices()));
+    },
+  };
+};
+
+export default connect(makeMapStateToProps, mapDispatch)(PureInnerPortal);

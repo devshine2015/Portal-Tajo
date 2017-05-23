@@ -12,7 +12,6 @@ import {
 import { fetchRolesAndPermissions } from 'services/Users/actions';
 import { getLocale } from 'services/Session/reducer';
 import { commonFleetActions } from 'services/FleetModel/actions';
-import { fetchDevices } from 'services/Devices/actions';
 import {
   BASE_URL,
   checkSetMwa,
@@ -24,10 +23,7 @@ import { AuthProvider, auth } from 'utils/auth';
 import { auth0Api } from 'utils/api';
 import phrases, { locales } from 'configs/phrases';
 import { setReportsMWA } from 'containers/Report/actions/reportActions';
-import {
-  conditionsActions,
-  journalActions,
-} from 'services/AlertsSystem/actions';
+import { journalActions } from 'services/AlertsSystem/actions';
 
 // need this for global styling
 require('./styles.css');
@@ -127,9 +123,6 @@ class App extends React.Component {
   _fetchData(profile) {
     this.props.saveSession(profile)
       .then(this.props.fetchFleet);
-      // .then(this.props.fetchAlertConditions)
-      // .then(this.props.fetchNotifications)
-      // .then(this.props.fetchDevices);
   }
 
   handleOnlineState = (e) => {
@@ -179,18 +172,15 @@ App.propTypes = {
   changeOnlineState: React.PropTypes.func.isRequired,
   saveSession: React.PropTypes.func.isRequired,
   cleanSession: React.PropTypes.func.isRequired,
-  fetchDevices: React.PropTypes.func.isRequired,
   fetchFleet: React.PropTypes.func.isRequired,
   children: React.PropTypes.node.isRequired,
   routes: React.PropTypes.arrayOf(
     React.PropTypes.shape({
       protected: React.PropTypes.bool,
-    })
+    }),
   ).isRequired,
   fetchAccessTokens: React.PropTypes.func.isRequired,
   fetchRolesAndPermissions: React.PropTypes.func.isRequired,
-  fetchAlertConditions: React.PropTypes.func.isRequired,
-  fetchNotifications: React.PropTypes.func.isRequired,
   setReportsMWA: React.PropTypes.func.isRequired,
 };
 
@@ -205,12 +195,9 @@ const mapDispatch = {
   changeOnlineState: onlineActions.changeOnlineState,
   saveSession: setSession,
   cleanSession,
-  fetchDevices,
   fetchAccessTokens,
   fetchRolesAndPermissions,
   fetchFleet: commonFleetActions.fetchFleet,
-  fetchAlertConditions: conditionsActions.fetchAlertConditions,
-  fetchNotifications: journalActions.fetchNotifications,
   setReportsMWA,
 };
 
