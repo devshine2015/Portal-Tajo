@@ -39,6 +39,10 @@ class AlertsFilter extends React.Component {
     });
   }
 
+  onFilterClick = () => {
+    this.props.onApply(this.state);
+  }
+
   render() {
     return (
       <div className={css(classes.filter)}>
@@ -57,10 +61,15 @@ class AlertsFilter extends React.Component {
           primary
           label="Apply"
           style={STYLES.applyBtn}
+          onClick={this.onFilterClick}
         />
       </div>
     );
   }
 }
+
+AlertsFilter.propTypes = {
+  onApply: React.PropTypes.func.isRequired,
+};
 
 export default AlertsFilter;
