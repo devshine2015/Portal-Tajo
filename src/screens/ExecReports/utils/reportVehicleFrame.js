@@ -154,15 +154,25 @@ ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) 
   this.trips = this.tripsRaw.filter(aTrip => aTrip.isValid());
 
   let prevEndIdx = 0;
+  let prevTrip = null;
   this.trips.forEach((aTrip) => {
+    aTrip.fromStopOwer = makeAWayPoint(prevEndIdx, aTrip.startIdx, events, storeUpdateCallback);
+    if (prevTrip !== null) {
+      prevTrip.toStopOver = aTrip.fromStopOwer;
+    }
     this.tripsTimeLine.push(makeATimeStamp(moment(events[prevEndIdx].ev.ts).toDate()));
-    this.tripsTimeLine.push(makeAWayPoint(prevEndIdx, aTrip.startIdx, events));
+    this.tripsTimeLine.push(aTrip.fromStopOwer);
     this.tripsTimeLine.push(makeATimeStamp(moment(events[aTrip.startIdx].ev.ts).toDate()));
     this.tripsTimeLine.push(aTrip);
     prevEndIdx = aTrip.endIdx;
+    prevTrip = aTrip;
   });
+  const aFinalStopOver = makeAWayPoint(prevEndIdx, events.length - 1, events, storeUpdateCallback);
+  if (prevTrip !== null) {
+    prevTrip.toStopOver = aFinalStopOver;
+  }
   this.tripsTimeLine.push(makeATimeStamp(moment(events[prevEndIdx].ev.ts).toDate()));
-  this.tripsTimeLine.push(makeAWayPoint(prevEndIdx, events.length - 1, events));
+  this.tripsTimeLine.push(aFinalStopOver);
   this.tripsTimeLine.push(makeATimeStamp(moment(events[events.length - 1].ev.ts).toDate()));
 
      // this.mappp = this.mapifyChildren();

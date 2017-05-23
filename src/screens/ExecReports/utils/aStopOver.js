@@ -30,10 +30,22 @@ HistoryWayPoint.prototype.isValid = function () {
 //
 //-----------------------------------------------------------------------
 
-export function makeAWayPoint(startSampleIdx, endSampleIdx, eventsFrame) {
+export function makeAWayPoint(startSampleIdx, endSampleIdx, eventsFrame, storeUpdateCallback) {
   const startSample = eventsFrame[startSampleIdx];
   const endSample = eventsFrame[endSampleIdx];
-  return new HistoryWayPoint(startSampleIdx, endSampleIdx, startSample, endSample);
+//  return new HistoryWayPoint(startSampleIdx, endSampleIdx, startSample, endSample);
+
+  const aStopOver = new HistoryWayPoint(startSampleIdx, endSampleIdx, startSample, endSample);
+  queueReverseGeocode(eventHelpers.eventPos(startSample),
+    (address) => {
+      aStopOver.address = address;
+      storeUpdateCallback();
+    },
+    () => {
+      aStopOver.address = status; // 'Address not found';
+    },
+  );
+  return aStopOver;
 }
 
 export function makeAWayPointFroTripStart(aTrip) {

@@ -18,8 +18,10 @@ function HistoryTrip(startSampleIdx, endSampleIdx) {
   this.numberOfSamples = 0;
   this.numberOfPosSamples = 0;
 
-  this.startAddress = 'North Dagon Twp, Yangon, Myanmar (Burma)';// 'looking...';
-  this.endAddress = 'South Okkalapa, Yangon, Myanmar (Burma)';// 'looking...';
+  this.fromStopOwer = null;
+  this.toStopOwer = null;
+  // this.startAddress = 'North Dagon Twp, Yangon, Myanmar (Burma)';// 'looking...';
+  // this.endAddress = 'South Okkalapa, Yangon, Myanmar (Burma)';// 'looking...';
 }
 
 //
@@ -60,7 +62,7 @@ HistoryTrip.prototype.prepareData = function (eventsFrame, storeUpdateCallback) 
       prevPosSample = theSample;
     }
   }
-  // return;
+  return;
   if (this.isValid()) {
     queueReverseGeocode(eventHelpers.eventPos(startSample),
       (address) => {

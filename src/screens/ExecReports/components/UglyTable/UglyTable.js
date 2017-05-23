@@ -40,24 +40,14 @@ const TripRow = ({
   aTrip,
 }) => (
   <TableRow className={styles.row}>
-    <TableRowColumn style={nameCellStyle}>{aTrip.startAddress}</TableRowColumn>
-    <TableRowColumn style={nameCellStyle}>{aTrip.endAddress}</TableRowColumn>
+    <TableRowColumn style={nameCellStyle}>{aTrip.fromStopOwer.address}</TableRowColumn>
+    <TableRowColumn style={nameCellStyle}>{aTrip.toStopOver.address}</TableRowColumn>
     <TableRowColumn style={cellStyle}>{dateToHHMM(aTrip.startDate)}</TableRowColumn>
     <TableRowColumn style={cellStyle}>{dateToHHMM(aTrip.endDate)}</TableRowColumn>
     <TableRowColumn style={cellStyle}>{msToTimeIntervalString(aTrip.durationMs)}</TableRowColumn>
     <TableRowColumn style={cellStyle}>{metersToKmString(aTrip.calculatedDistanceM)}</TableRowColumn>
     <TableRowColumn style={cellStyle}>{speedToString(aTrip.maxSpeed)}</TableRowColumn>
   </TableRow>
-
-  /* <tr className={styles.row}>
-    <td className={styles.addrCell}>{aTrip.startAddress}</td>
-    <td className={styles.addrCell}>{aTrip.endAddress}</td>
-    <td className={styles.dateCell}>{aTrip.startDate.toLocaleTimeString()}</td>
-    <td className={styles.dateCell}>{aTrip.startDate.toLocaleTimeString()}</td>
-    <td className={styles.durationCell}>{msToTimeIntervalString(aTrip.durationMs)}</td>
-    <td className={styles.distCell}>{metersToKmString(aTrip.calculatedDistanceM)}</td>
-    <td className={styles.speedCell}>{speedToString(aTrip.maxSpeed)}</td>
-  </tr>*/
 );
 
 TripRow.propTypes = {

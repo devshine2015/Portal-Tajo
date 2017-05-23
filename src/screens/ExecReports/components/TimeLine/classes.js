@@ -2,6 +2,8 @@ import { StyleSheet } from 'aphrodite/no-important';
 
 const classes = StyleSheet.create({
   timeStamp_container: {
+    pageBreakInside: 'avoid',
+    pageBreakAfter: 'auto',
     border: 'solid 5px rgba(0, 0, 0, 0.35)',
     // borderRadius: '50%',
     position: 'relative',
@@ -16,6 +18,7 @@ const classes = StyleSheet.create({
   },
 
   stopOver_container: {
+    pageBreakInside: 'avoid',
     // border: 'solid 1px rgba(0, 0, 0, 0.24)',
     borderLeft: 'double 16px rgba(0, 0, 0, 0.35)',
     // borderRadius: '5px',
@@ -25,6 +28,7 @@ const classes = StyleSheet.create({
     // width: '300px',
   },
   trip_container: {
+    pageBreakInside: 'avoid',
     position: 'relative',
     // border: 'solid 1px rgba(0, 0, 0, 0.24)',
     // borderRadius: '5px',
