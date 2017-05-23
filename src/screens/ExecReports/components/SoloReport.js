@@ -19,7 +19,7 @@ import TripsTimeLine from './TimeLine/TripsTimeLine';
 // import ReportMap from './ReportMap';
 
 import UglyTable from './UglyTable/UglyTable';
-
+import EventsTable from './EventsTable/EventsTable';
 
 import MainActionButton from 'components/Controls/MainActionButton';
 
@@ -35,6 +35,7 @@ class SoloReport extends React.Component {
 
     this.state = {
       uglyTable: true,
+      events: true,
       timeLine: true,
     };
   }
@@ -61,6 +62,9 @@ class SoloReport extends React.Component {
   }
   onToggleTimeLine = (e, toggled) => {
     this.setState({ timeLine: toggled });
+  }
+  onToggleEvents = (e, toggled) => {
+    this.setState({ events: toggled });
   }
 
   render() {
@@ -92,6 +96,16 @@ class SoloReport extends React.Component {
             {this.state.uglyTable &&
             <UglyTable vehicleId={this.props.vehicleId} />}
           </VelocityTransitionGroup>
+          <NoPrint>
+            <Toggle
+              label={'Events'}
+              labelPosition="right"
+              toggled={this.state.events}
+              onToggle={this.onToggleEvents}
+            />
+          </NoPrint>
+          {this.state.events &&
+          <EventsTable vehicleId={this.props.vehicleId} />}
           <NoPrint>
             <Divider />
             <Toggle

@@ -43,6 +43,7 @@ function ReportVehicleFrame(dateFrom, dateTo) {
 
   this.stopEvents = [];
 
+  this.events = [];
   //
   this.lastFoundIdx = 0;
   this.lastFoundIdxT = { idx: 0, t: 0 };
@@ -122,7 +123,7 @@ ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) 
     return;
   }
   const t0 = performance.now();
-
+  this.events = events;
   let prevPosSample = null;
   this.calculatedDistanceM = 0;
   this.numberOfSamples = events.length;
