@@ -6,6 +6,28 @@ import { getVehicleById } from 'services/FleetModel/reducer';
 import { getAlertConditionById } from '../reducer';
 
 /**
+ * keep this function to test notifications faster
+ */
+
+// const makeFakeNotifs = () => [{
+//   ev: {
+//     ts: new Date(),
+//     vehicleId: '89058b4f-aecd-4f0b-97ea-36cec6dfc766',
+//     conditionId: 'a5f4f295-97ab-41cc-8638-553abd705ac7',
+//     conditionKind: 'temperature-alert',
+//     meta: { name: 'postman tempAlert 1' },
+//     pos: {
+//       latlon: { lat: 16.8573055267334, lng: 96.0805892944336 },
+//       speed: 0,
+//       azimuth: 286,
+//       accuracy: 1,
+//     },
+//     temp: 1.5,
+//   },
+//   type: 'vehicle-temperature-alert',
+// }];
+
+/**
  * Get all events for last 24 hours, or withing specified time range
  * @param {Object} - range
  * @returns {Array} - events for the required timerange
@@ -14,6 +36,7 @@ export function fetchNotificationsForTimeRange(range) {
   const rangeParams = makeTimeRangeParams(range);
   const { url, method } = endpoints.getAlertsInTimeRange(rangeParams);
 
+  // return makeFakeNotifs();
   return api[method](url).then(res => res.json());
 }
 
