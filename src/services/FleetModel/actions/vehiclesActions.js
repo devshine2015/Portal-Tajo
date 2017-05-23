@@ -10,7 +10,7 @@ import {
   sortVehicles,
 } from '../utils/vehicleHelpers';
 
-export const FLEET_MODEL_LOADING_SET = 'portal/services/FLEET_MODEL_LOADING_SET';
+export const FLEET_MODEL_READY_SET = 'portal/services/FLEET_MODEL_READY_SET';
 export const FLEET_MODEL_VEHICLES_SET = 'portal/services/FLEET_MODEL_VEHICLES_SET';
 export const FLEET_MODEL_VEHICLES_FILTER = 'portal/services/FLEET_MODEL_VEHICLES_FILTER';
 export const FLEET_MODEL_VEHICLE_UPDATE = 'portal/services/FLEET_MODEL_VEHICLE_UPDATE';
@@ -40,7 +40,7 @@ export const fetchVehicles = () => (dispatch) => {
     ...endpoints.getStats,
   }];
 
-  dispatch(_fleetLoading(true));
+  dispatch(_fleetIsReady(false));
 
   return Promise.all(
     urls.map(({ url, method }) =>
@@ -56,7 +56,7 @@ export const fetchVehicles = () => (dispatch) => {
     }
   })
   .catch((e) => {
-    dispatch(_fleetLoading(false));
+    dispatch(_fleetIsReady(true));
     console.error(e);
   });
 };
@@ -175,7 +175,7 @@ const _vehicleDisable = id => ({
   id,
 });
 
-const _fleetLoading = isLoading => ({
-  type: FLEET_MODEL_LOADING_SET,
-  isLoading,
+const _fleetIsReady = isReady => ({
+  type: FLEET_MODEL_READY_SET,
+  isReady,
 });

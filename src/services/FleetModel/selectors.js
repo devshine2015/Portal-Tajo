@@ -1,8 +1,8 @@
 import { createSelector } from 'reselect';
-import { getIsLoading } from './reducers/vehiclesReducer';
+import { getIsReady } from './reducers/vehiclesReducer';
 
 export const makeGetFleetIsReady = () => {
-  return createSelector(getIsLoading, (isLoading) => {
-    return !isLoading;
+  return createSelector(getIsReady, (isReady) => {
+    return isReady;
   });
 };

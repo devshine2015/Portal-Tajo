@@ -90,7 +90,7 @@ const staticInitialState = fromJS({
   // they are literally cannot work without it.
   // we need to track loading process of it to be sure
   // all we need are ready for using.
-  isLoading: false,
+  isReady: false,
   // keep gloabl selelcted vehicle - to be persistent wneh switching screens/lists
   // TODO: move it to separate reducer (userContext?), with mapView params, etc
   selectedVehicleId: '',
@@ -98,11 +98,11 @@ const staticInitialState = fromJS({
 
 function staticReducer(state = staticInitialState, action) {
   switch (action.type) {
-    case vehiclesActions.FLEET_MODEL_LOADING_SET:
-      return state.set('isLoading', action.isLoading);
+    case vehiclesActions.FLEET_MODEL_READY_SET:
+      return state.set('isReady', action.isReady);
 
     case vehiclesActions.FLEET_MODEL_VEHICLES_SET:
-      return state.set('isLoading', false);
+      return state.set('isReady', true);
 
     case vehiclesActions.FLEET_MODEL_VEHICLE_SELECT:
       return state.set('selectedVehicleId', action.id);
@@ -182,8 +182,8 @@ export const getAmounts = state => ({
 export const getVehicleById = (state, id) =>
   getDynamicSlice(state).getIn(['processedList', id]);
 
-export const getIsLoading = (state) => {
-  return state.get('isLoading');
+export const getIsReady = (state) => {
+  return state.get('isReady');
 };
 
 export const getSelectedVehicleId = state =>
