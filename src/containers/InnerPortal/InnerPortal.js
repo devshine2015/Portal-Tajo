@@ -1,4 +1,5 @@
 import React from 'react';
+import AnimatedLogo from 'components/animated';
 import SnackbarNotification from 'containers/Snackbar';
 import ApplicationBar from './components/ApplicationBar';
 import MainSidebar from './components/MainSidebar';
@@ -53,7 +54,7 @@ class InnerPortal extends React.Component {
       );
     }
 
-    return <div>Loading...</div>;
+    return <AnimatedLogo.FullscreenLogo />;
   }
 }
 
