@@ -126,10 +126,10 @@ class App extends React.Component {
 
   _fetchData(profile) {
     this.props.saveSession(profile)
-      .then(this.props.fetchFleet)
-      .then(this.props.fetchAlertConditions)
-      .then(this.props.fetchNotifications)
-      .then(this.props.fetchDevices);
+      .then(this.props.fetchFleet);
+      // .then(this.props.fetchAlertConditions)
+      // .then(this.props.fetchNotifications)
+      // .then(this.props.fetchDevices);
   }
 
   handleOnlineState = (e) => {

@@ -1,3 +1,4 @@
+import { combineReducers } from 'redux-immutable';
 import { List, Map, fromJS } from 'immutable';
 import * as vehiclesActions from '../actions/vehiclesActions';
 import * as socketActions from '../actions/socketActions';
@@ -7,9 +8,6 @@ const vehiclesInitialState = fromJS({
   orderedList: [],
   deadList: [],
   delayedList: [],
-  // keep gloabl selelcted vehicle - to be persistent wneh switching screens/lists
-  // TODO: move it to separate reducer (userContext?), with mapView params, etc
-  selectedVehicleId: '',
 });
 
 function vehiclesReducer(state = vehiclesInitialState, action) {
@@ -40,9 +38,6 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
     case vehiclesActions.FLEET_MODEL_VEHICLES_FILTER:
       return state.set('processedList', new Map(action.vehicles));
 
-    case vehiclesActions.FLEET_MODEL_VEHICLE_SELECT:
-      return state.set('selectedVehicleId', action.id);
-
     case socketActions.FLEET_MODEL_SOCKET_SET_BATCH: {
       return state.withMutations(s => {
         s.mergeIn(['processedList'], action.updates)
@@ -67,8 +62,7 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
         s.deleteIn(['processedList', action.id])
          .deleteIn(['orderedList', orderedListIndex])
          .deleteIn(['deadList', deadListIndex])
-         .deleteIn(['delayedList', delayedListIndex])
-         .set('selectedVehicleId', '');
+         .deleteIn(['delayedList', delayedListIndex]);
       });
     }
 
@@ -91,7 +85,54 @@ function getValuesSafe(aList) {
   return aList;
 }
 
-export default vehiclesReducer;
+const staticInitialState = fromJS({
+  // fleet data is very important for other services/components -
+  // they are literally cannot work without it.
+  // we need to track loading process of it to be sure
+  // all we need are ready for using.
+  isLoading: false,
+  // keep gloabl selelcted vehicle - to be persistent wneh switching screens/lists
+  // TODO: move it to separate reducer (userContext?), with mapView params, etc
+  selectedVehicleId: '',
+});
+
+function staticReducer(state = staticInitialState, action) {
+  switch (action.type) {
+    case vehiclesActions.FLEET_MODEL_LOADING_SET:
+      return state.set('isLoading', action.isLoading);
+
+    case vehiclesActions.FLEET_MODEL_VEHICLES_SET:
+      return state.set('isLoading', false);
+
+    case vehiclesActions.FLEET_MODEL_VEHICLE_SELECT:
+      return state.set('selectedVehicleId', action.id);
+
+    case vehiclesActions.FLEET_MODEL_VEHICLE_DISABLE:
+      return state.set('selectedVehicleId', '');
+
+    default:
+      return state;
+  }
+}
+
+export default combineReducers({
+  // isolate dynamic, frequently changed data
+  // into dynamic reducer. With that we can eleminate
+  // unnecessaty updates of UI.
+  dynamic: vehiclesReducer,
+  // keep other, more "static" data here. For example:
+  // - fleet loadin state
+  // - user interactions-related stuff, like id of selected vehicle
+  static: staticReducer,
+});
+
+function getDynamicSlice(s) {
+  return s.get('dynamic');
+}
+
+export function getStaticSlice(s) {
+  return s.get('static');
+}
 
 export const getVehiclesEx = (state) => {
   const theObj = getProcessedVehicles(state);
@@ -107,31 +148,30 @@ export const getVehiclesEx = (state) => {
 };
 export const getVehiclesExSorted = (state) => {
   const theObj = getProcessedVehicles(state);
-  const orderedList = state.get('orderedList');
+  const orderedList = getDynamicSlice(state).get('orderedList');
 
   return orderedList.map(id => theObj.get(id)).toJS();
 };
-export const getProcessedVehicles = (state) =>
-  state.get('processedList');
-export const getSelectedVehicleId = (state) =>
-  state.get('selectedVehicleId');
+export const getProcessedVehicles = state =>
+  getDynamicSlice(state).get('processedList');
+
 export const getVehiclesAmount = state =>
-  getSizeSafe(state.get('processedList'));
+  getSizeSafe(getDynamicSlice(state).get('processedList'));
 
 export const hasProcessedVehicles = state =>
-  getSizeSafe(state.get('processedList')) > 0;
+  getSizeSafe(getDynamicSlice(state).get('processedList')) > 0;
 
 export const getDeadList = state =>
-  getValuesSafe(state.get('deadList'));
+  getValuesSafe(getDynamicSlice(state).get('deadList'));
 
 export const getDeadAmount = state =>
-  getSizeSafe(state.get('deadList'));
+  getSizeSafe(getDynamicSlice(state).get('deadList'));
 
 export const getDelayedList = state =>
-  getValuesSafe(state.get('delayedList'));
+  getValuesSafe(getDynamicSlice(state).get('delayedList'));
 
 export const getDelayedAmount = state =>
-  getSizeSafe(state.get('delayedList'));
+  getSizeSafe(getDynamicSlice(state).get('delayedList'));
 
 export const getAmounts = state => ({
   deadAmount: getDeadAmount(state),
@@ -140,4 +180,11 @@ export const getAmounts = state => ({
 });
 
 export const getVehicleById = (state, id) =>
-  state.getIn(['processedList', id]);
+  getDynamicSlice(state).getIn(['processedList', id]);
+
+export const getIsLoading = (state) => {
+  return state.get('isLoading');
+};
+
+export const getSelectedVehicleId = state =>
+  getStaticSlice(state).get('selectedVehicleId');

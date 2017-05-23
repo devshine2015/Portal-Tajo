@@ -7,6 +7,7 @@ export default combineReducers({
   locations: gfReducer,
 });
 
+
 const getByIdFunc = state => id => {
   const theMapObj = state.get('processedList');
   if (theMapObj.size === 0) {
@@ -23,6 +24,9 @@ export function getPathToVehicles(s) {
   return s.getIn(['fleet', 'vehicles']);
 }
 
+export function getVehiclesStaticSlice(s) {
+  return fromVehiclesReducer.getStaticSlice(getPathToVehicles(s));
+}
 function locations(s) {
   return s.getIn(['fleet', 'locations']);
 }
