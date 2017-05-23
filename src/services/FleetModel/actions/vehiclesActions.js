@@ -28,7 +28,7 @@ export const filterVehicles = searchString => (dispatch, getState) =>
   _filterVehicles({ searchString }, dispatch, getState);
 export const addVehicle = vehicle => (dispatch, getState) =>
   _addVehicle(vehicle, dispatch, getState);
-export const setSelectedVehicleId = (id) => ({
+export const setSelectedVehicleId = id => ({
   type: FLEET_MODEL_VEHICLE_SELECT,
   id,
 });
@@ -44,8 +44,8 @@ export const fetchVehicles = () => (dispatch) => {
 
   return Promise.all(
     urls.map(({ url, method }) =>
-      api[method](url).then(toJson)
-    )
+      api[method](url).then(toJson),
+    ),
   ).then(([vehicles = [], { status = [] } = {}]) => {
     const localObjects = makeLocalVehicles(vehicles, status);
 
@@ -55,7 +55,7 @@ export const fetchVehicles = () => (dispatch) => {
       dispatch(mwaFetchJobs());
     }
   })
-  .catch(e => {
+  .catch((e) => {
     dispatch(_fleetLoading(false));
     console.error(e);
   });
@@ -113,7 +113,7 @@ export function makeUpdateVehicleRequest(details, dispatch) {
   }, error => Promise.reject(error));
 }
 
-export const disableVehicle = vehicleId => dispatch => {
+export const disableVehicle = vehicleId => (dispatch) => {
   const { url, method } = endpoints.disableVehicle(vehicleId);
 
   return api[method](url)

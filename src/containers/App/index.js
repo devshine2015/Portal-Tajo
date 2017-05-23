@@ -1,3 +1,4 @@
+import 'font-awesome/css/font-awesome.css';
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
@@ -27,7 +28,7 @@ import { journalActions } from 'services/AlertsSystem/actions';
 
 // need this for global styling
 require('./styles.css');
-import 'font-awesome/css/font-awesome.css';
+
 
 function screenIsProtected(routes = []) {
   const lastRoute = routes[routes.length - 1];
@@ -91,7 +92,7 @@ class App extends React.Component {
         this.props.setReportsMWA();
         if (!profile.accessTokens) {
           this.props.fetchAccessTokens()
-            .then(tokens => {
+            .then((tokens) => {
               auth0Api.setAccessTokens(tokens);
 
               this.props.fetchRolesAndPermissions(tokens);

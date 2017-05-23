@@ -8,7 +8,7 @@ export default combineReducers({
 });
 
 
-const getByIdFunc = state => id => {
+const getByIdFunc = state => (id) => {
   const theMapObj = state.get('processedList');
   if (theMapObj.size === 0) {
     return null;
