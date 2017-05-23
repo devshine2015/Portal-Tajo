@@ -38,9 +38,13 @@ class AlertsTimeline extends React.Component {
     return (
       <div className={css(classes.wrapper)}>
         <Header />
-        <div className={css(classes.listWrapper)}>
-          { this.renderEvents() }
-        </div>
+
+        { this.props.entries.size !== 0 ? <EmptyTimeline /> : (
+          <div className={css(classes.listWrapper)}>
+            { this.renderEvents() }
+          </div>
+        )}
+
       </div>
     );
   }

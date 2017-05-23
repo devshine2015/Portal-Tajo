@@ -38,6 +38,18 @@ const classes = StyleSheet.create({
       borderRadius: TIMELINE_WIDTH / 2,
     },
   },
+
+  listWrapper_empty: {
+    padding: 0,
+    fontSize: 28,
+    fontWeight: 600,
+    color: '#ccc',
+    textAlign: 'center',
+
+    ':before': {
+      display: 'none',
+    },
+  },
 });
 
 export default classes;
