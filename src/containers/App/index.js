@@ -3,7 +3,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import InnerPortal from 'containers/InnerPortal';
+import InnerPortal from 'containers/InnerPortal/ConnectedInnerPortal';
 import { onlineActions } from 'services/Global/actions';
 import {
   setSession,

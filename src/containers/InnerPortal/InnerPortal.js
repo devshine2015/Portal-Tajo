@@ -1,18 +1,7 @@
 import React from 'react';
-import pure from 'recompose/pure';
-import { connect } from 'react-redux';
 import SnackbarNotification from 'containers/Snackbar';
-import { getFleetName } from 'services/Session/reducer';
-import { getVehiclesStaticSlice } from 'services/FleetModel/reducer';
-import { makeGetFleetIsReady } from 'services/FleetModel/selectors';
-import { fetchDevices } from 'services/Devices/actions';
-import {
-  conditionsActions,
-  journalActions,
-} from 'services/AlertsSystem/actions';
 import ApplicationBar from './components/ApplicationBar';
 import MainSidebar from './components/MainSidebar';
-
 import styles from './styles.css';
 
 class InnerPortal extends React.Component {
@@ -83,29 +72,4 @@ InnerPortal.defaultProps = {
   fleet: '',
 };
 
-const PureInnerPortal = pure(InnerPortal);
-
-const makeMapStateToProps = () => {
-  const getIsReady = makeGetFleetIsReady();
-
-  const mapState = (state) => {
-    return {
-      fleet: getFleetName(state),
-      fleetIsReady: getIsReady(getVehiclesStaticSlice(state)),
-    };
-  };
-
-  return mapState;
-};
-
-const mapDispatch = (dispatch) => {
-  return {
-    fetchPortalData: () => {
-      dispatch(conditionsActions.fetchAlertConditions())
-        .then(() => dispatch(journalActions.fetchNotifications()))
-        .then(() => dispatch(fetchDevices()));
-    },
-  };
-};
-
-export default connect(makeMapStateToProps, mapDispatch)(PureInnerPortal);
+export default InnerPortal;
