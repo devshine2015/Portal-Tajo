@@ -28,8 +28,8 @@ export const ALRT_CONDITONS_SET = 'AlertsSystem/ALERT_CONDITONS_SET';
 export const ALRT_VEHICLE_SET = 'AlertsSystem/vehAlertConditionsSet';
 export const ALRT_CONDITON_DEL = 'AlertsSystem/ALERT_CONDITION_DELETE';
 
-export const createAlertConditions = (newAlerts) => (dispatch) =>
-  _createAlertConditionRequest(newAlerts, dispatch);
+export const createAlertConditions = (newAlerts) => (dispatch, getState) =>
+  _createAlertConditionRequest(newAlerts, dispatch, getState);
 
 export const deleteAlertCondition = alertId => dispatch =>
   _deleteAlertRequest(alertId, dispatch);
@@ -106,13 +106,13 @@ function toJson(response) {
 /**
  * POST - new Alerts details to the server
  **/
-function _createAlertConditionRequest(alertObject, dispatch) {
+function _createAlertConditionRequest(alertObject, dispatch, getState) {
   const { url, method } = endpoints.createAlertConditions;
 
   return api[method](url, {
     payload: alertObject,
   }).then(() => {
-    _fetchConditions(dispatch);
+    _fetchConditions(dispatch, getState);
     return Promise.resolve();
   }, error => Promise.reject(error));
 }
