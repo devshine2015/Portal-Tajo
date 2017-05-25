@@ -62,28 +62,6 @@ HistoryTrip.prototype.prepareData = function (eventsFrame, storeUpdateCallback) 
       prevPosSample = theSample;
     }
   }
-  return;
-  if (this.isValid()) {
-    queueReverseGeocode(eventHelpers.eventPos(startSample),
-      (address) => {
-        this.startAddress = address;
-        storeUpdateCallback();
-      },
-      () => {
-        this.startAddress = status; // 'Address not found';
-      },
-    );
-    queueReverseGeocode(eventHelpers.eventPos(endSample),
-      (address) => {
-        this.endAddress = address;
-        storeUpdateCallback();
-      },
-      (status) => {
-        // this.endAddress = 'Address not found';
-        this.endAddress = status;
-      },
-    );
-  }
 };
 
 //

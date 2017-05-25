@@ -176,6 +176,10 @@ ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) 
   this.tripsTimeLine.push(aFinalStopOver);
   this.tripsTimeLine.push(makeATimeStamp(moment(events[events.length - 1].ev.ts).toDate()));
 
+  // mark the first and the last timestamps
+  this.tripsTimeLine[0].isATerminal = true;
+  this.tripsTimeLine[this.tripsTimeLine.length - 1].isATerminal = true;
+
      // this.mappp = this.mapifyChildren();
   const t1 = performance.now();
   console.log(`Report generation took ${(t1 - t0)} milliseconds.`);

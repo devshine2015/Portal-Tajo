@@ -53,7 +53,7 @@ const Trip = ({
   aTripData,
 }) => (
   <div className={css(classes.trip_container)}>
-    <span className={css(classes.trip_arrow)}>&#8595;</span>
+    {/*<span className={css(classes.trip_arrow)}>&#8595;</span>*/}
     {/*<span className={css(classes.trip_arrow)}>&#8681;</span>*/}
           {/*title={'Trip Duration'}*/}
 
@@ -84,6 +84,7 @@ const Trip = ({
           value={speedToString(aTripData.maxSpeed)}
         />
       </table>*/}
+    <div className={css(classes.trip_arrow)} />
   </div>
 );
 
