@@ -15,8 +15,9 @@ import VehiclesList from 'components/InstancesList';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import SoloReport from './components/SoloReport';
+import NoPrint from './components/NoPrint';
 
-import { makeDefaultDatePeriod } from 'utils/dateTimeUtils';
+// import { makeDefaultDatePeriod } from 'utils/dateTimeUtils';
 import { ctxGetSelectedVehicleId } from 'services/Global/reducers/contextReducer';
 
 import { setExecTimeFrame } from './services/actions';
@@ -28,30 +29,8 @@ import listTypes from 'components/InstancesList/types';
 
 class ExecReport extends React.Component {
 
-  state = {
-    ...makeDefaultDatePeriod(),
-  };
-
-  onStartDateChange = (_, value) => {
-    this.onPeriodChange('startDate', value);
-  }
-
-  onEndDateChange = (_, value) => {
-    this.onPeriodChange('endDate', value);
-  }
-
-  onStartTimeChange = (_, value) => {
-    this.onPeriodChange('startTime', value);
-  }
-
-  onEndTimeChange = (_, value) => {
-    this.onPeriodChange('endTime', value);
-  }
-
-  onPeriodChange = (field, value) => {
-    this.setState({
-      [field]: value,
-    });
+  onTimeFrameChange = (fromDateTime, toDateTime) => {
+    this.props.setExecTimeFrame(fromDateTime, toDateTime);
   }
 
   setStartDate = (date) => {
@@ -63,6 +42,7 @@ class ExecReport extends React.Component {
       return null;
     }
     const dateFrom = this.props.execFrame.dateFrom;
+    const dateTo = this.props.execFrame.dateTo;
     return (
       <Layout.ScreenWithList>
         <PowerList
@@ -79,18 +59,26 @@ class ExecReport extends React.Component {
             }
         />
         <Layout.FixedContent>
-          {/*<TimeFrameController dateValue={dateFrom} onChange={this.setStartDate} />*/}
-          <DateRange
-            onStartDateChange={this.onStartDateChange}
-            onStartTimeChange={this.onStartTimeChange}
-            onEndDateChange={this.onEndDateChange}
-            onEndTimeChange={this.onEndTimeChange}
-            defaultStartDate={this.state.startDate}
-            defaultEndDate={this.state.endDate}
-            defaultStartTime={this.state.startTime}
-            defaultEndTime={this.state.endTime}
-            withTime
-          />
+          {/* <TimeFrameController dateValue={dateFrom} onChange={this.setStartDate} />*/}
+          <NoPrint
+            style={{
+              position: 'absolute',
+              zIndex: 1,
+              width: '100%',
+              backgroundColor: 'white',
+              borderBottom: 'solid 1px rgba(0, 150, 136, 0.27)',
+              paddingLeft: '32px',
+            }}
+          >
+            <DateRange
+              onChange={this.onTimeFrameChange}
+              defaultStartDate={dateFrom}
+              defaultEndDate={dateTo}
+              defaultStartTime={dateFrom}
+              defaultEndTime={dateTo}
+              withTime
+            />
+          </NoPrint>
           <SoloReport vehicleId={this.props.selectedVehicleId} />
           <BetaLabel />
         </Layout.FixedContent>

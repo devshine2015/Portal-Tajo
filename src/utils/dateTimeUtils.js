@@ -1,5 +1,19 @@
 import moment from 'moment';
 
+/**
+ * combine date and time from two Date objects to a single one
+ * @param {Date} date
+ * @param {Date} time
+ * @returns {Date} date (DDMM) taken from dateDate; time (HHMM) taken from dateTime
+ */
+export const makeDateWithTime = (dateDate, dateTime) => {
+  const dateWithTime = moment(dateDate).toDate();
+  dateWithTime.setHours(dateTime.getHours());
+  dateWithTime.setMinutes(dateTime.getMinutes());
+  return dateWithTime;
+};
+
+
 export const makePeriodForLast24Hours = () => {
   const startDate = moment().subtract(24, 'hours').toDate();
   const endDate = moment().toDate();
