@@ -12,11 +12,7 @@ import TimeStamp from './TimeStamp';
 import TimeStampTerminal from './TimeStampTerminal';
 
 import { getInstanceExecReportFrameById } from './../../services/reducer';
-import { metersToKmString, speedToString, msToTimeIntervalString } from 'utils/convertors';
-
-
-// const printJSin = require('print.js/dist/print.min.js');
-// import classes from './classes';
+// import { metersToKmString, speedToString, msToTimeIntervalString } from 'utils/convertors';
 
 class TripsTimeLine extends React.Component {
 
@@ -29,16 +25,12 @@ class TripsTimeLine extends React.Component {
     const tripsList = reportFrame.tripsTimeLine.map((aSegment) => {
       if (aSegment.isAStopOver === true) {
         return <StopOver durationMs={aSegment.durationMs} address={aSegment.address} />;
-      }
-      else if (aSegment.isATerminal === true) {
+      } else if (aSegment.isATerminal === true) {
         return <TimeStampTerminal date={aSegment.date} />;
-      }
-      else if (aSegment.isATimeStamp === true) {
+      } else if (aSegment.isATimeStamp === true) {
         return <TimeStamp date={aSegment.date} />;
       }
-      else {
-        return <Trip aTripData={aSegment} />;
-      }
+      return <Trip aTripData={aSegment} />;
     });
     return (
       <Layout.Content>

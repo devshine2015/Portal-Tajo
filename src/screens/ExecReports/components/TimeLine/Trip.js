@@ -2,7 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { css } from 'aphrodite/no-important';
 
-import ItemProperty from './../DetailItemProperty';
+// import ItemProperty from './../DetailItemProperty';
 import { msToTimeIntervalString, metersToKmString, speedToString } from 'utils/convertors';
 
 // import DateIcon from 'material-ui/svg-icons/action/date-range';
@@ -53,9 +53,9 @@ const Trip = ({
   aTripData,
 }) => (
   <div className={css(classes.trip_container)}>
-    {/*<span className={css(classes.trip_arrow)}>&#8595;</span>*/}
-    {/*<span className={css(classes.trip_arrow)}>&#8681;</span>*/}
-          {/*title={'Trip Duration'}*/}
+    {/* <span className={css(classes.trip_arrow)}>&#8595;</span>*/}
+    {/* <span className={css(classes.trip_arrow)}>&#8681;</span>*/}
+    {/* title={'Trip Duration'}*/}
 
     <DetailItemProperty
       icon={<TimeIcon style={STYLES.icon} />}
@@ -70,7 +70,7 @@ const Trip = ({
       value={speedToString(aTripData.maxSpeed)}
     />
 
-      {/*<table style={{ width: 200 }}>
+    {/* <table style={{ width: 200 }}>
         <ItemProperty
           title={'Trip Duration'}
           value={msToTimeIntervalString(aTripData.durationMs)}
@@ -88,7 +88,7 @@ const Trip = ({
   </div>
 );
 
-        /*<ItemProperty
+        /* <ItemProperty
           title={'Samples all/pos'}
           value={`${aTripData.numberOfSamples}/${aTripData.numberOfPosSamples}`}
         />*/

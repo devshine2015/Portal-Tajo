@@ -1,7 +1,6 @@
 // TODO: huge room for optimizations here - locating samaples for time, etc..
 //
 import moment from 'moment';
-import { queueReverseGeocode } from 'utils/mapServices/google/geocode';
 import { haversineDist } from 'utils/mapBoxMap';
 import * as eventHelpers from './eventHelpers';
 
@@ -41,7 +40,7 @@ HistoryTrip.prototype.isValid = function () {
 //
 //
 //-----------------------------------------------------------------------
-HistoryTrip.prototype.prepareData = function (eventsFrame, storeUpdateCallback) {
+HistoryTrip.prototype.prepareData = function (eventsFrame) {
   const startSample = eventsFrame[this.startIdx];
   const endSample = eventsFrame[this.endIdx];
 

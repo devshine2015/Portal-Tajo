@@ -6,27 +6,23 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
 import { VelocityTransitionGroup } from 'velocity-react';
-import Divider from 'material-ui/Divider';
 import Toggle from 'material-ui/Toggle';
 import Layout from 'components/Layout';
 import AnimatedLogo from 'components/animated';
 
 import SoloHeader from './SoloHeader';
-import SoloDetails from './SoloDetails';
-import TripsReport from './TripsReport';
+// import SoloDetails from './SoloDetails';
+// import TripsReport from './TripsReport';
 import NoPrint from './NoPrint';
 import TripsTimeLine from './TimeLine/TripsTimeLine';
 // import ReportMap from './ReportMap';
 
 import UglyTable from './UglyTable/UglyTable';
-import EventsTable from './EventsTable/EventsTable';
+// import EventsTable from './EventsTable/EventsTable';
 
 import MainActionButton from 'components/Controls/MainActionButton';
 
 import { getInstanceExecReportFrameById } from './../services/reducer';
-
-// const printJSin = require('print.js/dist/print.min.js');
-// import classes from './classes';
 
 class SoloReport extends React.Component {
 
@@ -40,23 +36,6 @@ class SoloReport extends React.Component {
     };
   }
 
-  // printDiv = (divName) => {
-  //   const printContents = document.getElementById(divName).innerHTML;
-  //   const originalContents = document.body.innerHTML;
-
-  //   document.body.innerHTML = printContents;
-
-  //   window.print();
-
-  //   document.body.innerHTML = originalContents;
-  // }
-
-  doPrint = () => {
-    window.print();
-    // this.printDiv('drvrSoloReport');
-    // const asdf = printJS;
-    // printJS('drvrSoloReport', 'html');
-  }
   onToggleUglyTable = (e, toggled) => {
     this.setState({ uglyTable: toggled });
   }
@@ -66,9 +45,11 @@ class SoloReport extends React.Component {
   onToggleEvents = (e, toggled) => {
     this.setState({ events: toggled });
   }
+  doPrint = () => {
+    window.print();
+  }
 
   render() {
-    // return (<AnimatedLogo.FullscreenLogo />);
     const reportFrame = this.props.getSoloReportById(this.props.vehicleId);
     if (reportFrame.isLoading()) {
       return <AnimatedLogo.FullscreenLogo />;
@@ -76,27 +57,31 @@ class SoloReport extends React.Component {
     if (!reportFrame.hasData()) {
       return false;
     }
+    const aniEnter = { animation: 'slideDown', duration: 300 };
+    const aniLeave = { animation: 'slideUp', duration: 300 };
+    const sectionStyle = { padding: 32 };
     return (
-      <Layout.Content>
+      <Layout.Content noPadding>
         <div id="drvrSoloReport" style={{ overflow: 'scroll', paddingTop: 12, marginBottom: 12 }}>
           {/* <Layout.Header label={'EXECUTIVE REPORT'} />*/}
-          <SoloHeader vehicleId={this.props.vehicleId} />
-          <NoPrint>
-            <Toggle
-              label={'TripsTable'}
-              labelPosition="right"
-              toggled={this.state.uglyTable}
-              onToggle={this.onToggleUglyTable}
-            />
-          </NoPrint>
-          <VelocityTransitionGroup
-            enter={{ animation: 'slideDown', duration: 300 }}
-            leave={{ animation: 'slideUp', duration: 300 }}
-          >
-            {this.state.uglyTable &&
-            <UglyTable vehicleId={this.props.vehicleId} />}
-          </VelocityTransitionGroup>
-          <NoPrint>
+          <Layout.Section style={sectionStyle}>
+            <SoloHeader vehicleId={this.props.vehicleId} />
+          </Layout.Section>
+          <Layout.Section style={sectionStyle}>
+            <Layout.Header label={'TRIP DETAILS'} />
+            <NoPrint style={{ padding: 20 }}>
+              <Toggle
+                labelPosition="right"
+                toggled={this.state.uglyTable}
+                onToggle={this.onToggleUglyTable}
+              />
+            </NoPrint>
+            <VelocityTransitionGroup enter={aniEnter} leave={aniLeave} >
+              {this.state.uglyTable &&
+              <UglyTable vehicleId={this.props.vehicleId} />}
+            </VelocityTransitionGroup>
+          </Layout.Section>
+          {/* <NoPrint>
             <Toggle
               label={'Events'}
               labelPosition="right"
@@ -105,28 +90,34 @@ class SoloReport extends React.Component {
             />
           </NoPrint>
           {this.state.events &&
-          <EventsTable vehicleId={this.props.vehicleId} />}
-          <NoPrint>
-            <Divider />
-            <Toggle
-              label={'TimeLine'}
-              labelPosition="right"
-              defaultToggled
-              onToggle={this.onToggleTimeLine}
-            />
-          </NoPrint>
-            {this.state.timeLine &&
-            <TripsTimeLine vehicleId={this.props.vehicleId} />}
-          {/*<SoloDetails vehicleId={this.props.vehicleId} />
+          <EventsTable vehicleId={this.props.vehicleId} />}*/}
+          <Layout.Section style={sectionStyle}>
+            <Layout.Header label={'TIMELINE'} />
+            <NoPrint style={{ padding: 20 }}>
+              <Toggle
+                labelPosition="right"
+                defaultToggled
+                onToggle={this.onToggleTimeLine}
+              />
+            </NoPrint>
+            <VelocityTransitionGroup enter={aniEnter} leave={aniLeave} >
+              {this.state.timeLine &&
+              <TripsTimeLine vehicleId={this.props.vehicleId} />}
+            </VelocityTransitionGroup>
+          </Layout.Section>
+
+          {/* <SoloDetails vehicleId={this.props.vehicleId} />
           <TripsTimeLine vehicleId={this.props.vehicleId} />
           <TripsReport vehicleId={this.props.vehicleId} />*/}
-          {/*<ReportMap reportFrame={this.props.reportFrame} />*/}
+          {/* <ReportMap reportFrame={this.props.reportFrame} />*/}
         </div>
-        <MainActionButton
-          label={'PRINT'}
-          onClick={this.doPrint}
-          icon={null}
-        />
+        <div style={{ margin: 32 }}>
+          <MainActionButton
+            label={'PRINT'}
+            onClick={this.doPrint}
+            icon={null}
+          />
+        </div>
       </Layout.Content>
     );
   }

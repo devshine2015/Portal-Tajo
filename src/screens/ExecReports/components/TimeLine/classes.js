@@ -100,17 +100,17 @@ const classes = StyleSheet.create({
   //   },
   // },
 
-   propContainer: {
-    /*width: 100%;*/
+  propContainer: {
+    /* width: 100%;*/
     // maxWidth: 400,
-    /*color: #FFFFFF;*/
+    /* color: #FFFFFF;*/
     // font-size: 14px;
     // display: flex;
     // justify-content: space-between;
   },
   titleCell: {
-    /*width: 100%;*/
-    /*width: 250px;*/
+    /* width: 100%;*/
+    /* width: 250px;*/
     minWidth: 150,
     whiteSpace: 'nowrap',
     paddingLeft: 7,
@@ -121,9 +121,9 @@ const classes = StyleSheet.create({
     justify-content: space-between;*/
   },
   valueCell: {
-    /*width: 450px;*/
+    /* width: 450px;*/
   },
- 
+
 });
 
 export default classes;

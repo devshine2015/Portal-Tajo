@@ -1,7 +1,6 @@
 // TODO: huge room for optimizations here - locating samaples for time, etc..
 //
 import moment from 'moment';
-import { haversineDist } from 'utils/mapBoxMap';
 import { makeTripsParcer } from './aTrip';
 import { makeAWayPoint } from './aStopOver';
 import { makeATimeStamp } from './aTimeStamp';
@@ -124,7 +123,7 @@ ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) 
   }
   const t0 = performance.now();
   this.events = events;
-  let prevPosSample = null;
+  // let prevPosSample = null;
   this.calculatedDistanceM = 0;
   this.numberOfSamples = events.length;
 

@@ -1,8 +1,7 @@
-import moment from 'moment';
+// import moment from 'moment';
 import qs from 'query-string';
 import { api } from 'utils/api';
 import endpoints from 'configs/endpoints';
-import { requestSamplesLimit } from 'configs';
 import { queueReverseGeocodeClear } from 'utils/mapServices/google/geocode';
 
 // import { setLoader } from './loaderActions';
@@ -31,8 +30,8 @@ export const requestSoloReport = (vehicleId, dateFrom, dateTo) => (dispatch, sto
 
 
 function _requestTripsReport(vehicleId, dateFrom, dateTo, dispatch, store) {
-  dateTo = moment(dateFrom).toDate();
-  dateFrom = moment(dateFrom).subtract(3, 'days').toDate();
+  // dateTo = moment(dateFrom).toDate();
+  // dateFrom = moment(dateFrom).subtract(3, 'days').toDate();
 
   // setting loading state for local frame
   const theFrame = createReportFrame(dateFrom, dateTo);

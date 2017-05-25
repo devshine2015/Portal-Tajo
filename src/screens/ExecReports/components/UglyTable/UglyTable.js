@@ -20,6 +20,7 @@ import {
 import { getInstanceExecReportFrameById } from './../../services/reducer';
 import styles from './styles.css';
 
+const btmColorStyle = { borderBottomColor: 'gray' };
 // import classes from './classes';
 
 const cellStyle = {
@@ -39,7 +40,7 @@ const nameCellStyle = {
 const TripRow = ({
   aTrip,
 }) => (
-  <TableRow className={styles.row}>
+  <TableRow className={styles.row} style={btmColorStyle}>
     <TableRowColumn style={nameCellStyle}>{aTrip.fromStopOwer.address}</TableRowColumn>
     <TableRowColumn style={nameCellStyle}>{aTrip.toStopOver.address}</TableRowColumn>
     <TableRowColumn style={cellStyle}>{dateToHHMM(aTrip.startDate)}</TableRowColumn>
@@ -64,11 +65,12 @@ const UglyTable = ({
     return false;
   }
   const trips = reportFrame.getValidTrips().map(aTrip => <TripRow key={aTrip.startIdx} aTrip={aTrip} />);
+  const noBgdStyle = { backgroundColor: 'transparent' };
   return (
     <Layout.Content style={{ alignItems: 'center' }}>
-      <Table selectable={false}>
-        <TableHeader enableSelectAll={false}displaySelectAll={false} adjustForCheckbox={false} >
-          <TableRow>
+      <Table selectable={false} style={noBgdStyle}>
+        <TableHeader enableSelectAll={false} displaySelectAll={false} adjustForCheckbox={false} style={noBgdStyle}>
+          <TableRow style={btmColorStyle}>
             <TableHeaderColumn style={nameCellStyle}>From</TableHeaderColumn>
             <TableHeaderColumn style={nameCellStyle}>To</TableHeaderColumn>
             <TableHeaderColumn style={cellStyle}>Start</TableHeaderColumn>
@@ -78,7 +80,7 @@ const UglyTable = ({
             <TableHeaderColumn style={cellStyle}>MaxSpeed</TableHeaderColumn>
           </TableRow>
         </TableHeader>
-        <TableBody>
+        <TableBody style={noBgdStyle}>
           {trips}
         </TableBody>
       </Table>

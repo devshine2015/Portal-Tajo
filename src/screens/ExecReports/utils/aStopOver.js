@@ -2,7 +2,6 @@
 //
 import moment from 'moment';
 import { queueReverseGeocode } from 'utils/mapServices/google/geocode';
-import { haversineDist } from 'utils/mapBoxMap';
 import * as eventHelpers from './eventHelpers';
 
 function HistoryWayPoint(startSampleIdx, endSampleIdx, startSample, endSample) {
@@ -15,7 +14,7 @@ function HistoryWayPoint(startSampleIdx, endSampleIdx, startSample, endSample) {
   this.durationMs = this.endDate.getTime() - this.startDate.getTime();
 
   this.latLng = eventHelpers.eventPos(startSample);
-  this.address = 'South Okkalapa, Yangon, Myanmar (Burma)'; //  'looking...';
+  this.address = '...looking...';
 }
 
 //
@@ -46,10 +45,4 @@ export function makeAWayPoint(startSampleIdx, endSampleIdx, eventsFrame, storeUp
     },
   );
   return aStopOver;
-}
-
-export function makeAWayPointFroTripStart(aTrip) {
-  // const startSample = eventsFrame[this.startIdx];
-  // const endSample = eventsFrame[this.endIdx];
-  // return new HistoryStop(startSampleIdx, endSampleIdx, startSample, endSample);
 }

@@ -5,7 +5,6 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import Layout from 'components/Layout';
-import Divider from 'material-ui/Divider';
 
 import { getVehicleByValue } from 'services/FleetModel/utils/vehiclesMap';
 import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
@@ -30,11 +29,10 @@ const SoloHeader = ({
   // const propDivStyle = { textAlign: 'center', paddingTop: hPadding };
   const propDivStyle = { paddingLeft: 100, paddingTop: hPadding };
   return (
-    <Layout.Content style={{ paddingBottom: 32 }}>
+    <Layout.Content style={{ padding: '32px 0 32px 0' }}>
       <Layout.Header
         label={theVehicle.original.name}
         style={{ textAlign: 'center', paddingLeft: 0 }}
-        labelStyle={{ color: 'rgba(0, 0, 0, 0.5)' }}
       />
       <div style={propDivStyle}>
         <span >
@@ -113,7 +111,6 @@ const SoloHeader = ({
           {reportFrame.getValidTrips().length}
         </span>
       </div>
-      <Divider />
     </Layout.Content>
   );
 };
