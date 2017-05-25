@@ -126,13 +126,11 @@ export default combineReducers({
   static: staticReducer,
 });
 
-function getDynamicSlice(s) {
-  return s.get('dynamic');
-}
+export const getDynamicSlice = s =>
+  s.get('dynamic');
 
-export function getStaticSlice(s) {
-  return s.get('static');
-}
+export const getStaticSlice = s =>
+  s.get('static');
 
 export const getVehiclesEx = (state) => {
   const theObj = getProcessedVehicles(state);

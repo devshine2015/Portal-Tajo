@@ -20,13 +20,15 @@ const getByIdFunc = state => (id) => {
   return theObj.toJS();
 };
 
-export function getPathToVehicles(s) {
-  return s.getIn(['fleet', 'vehicles']);
-}
+export const getPathToVehicles = s =>
+  s.getIn(['fleet', 'vehicles']);
 
-export function getVehiclesStaticSlice(s) {
-  return fromVehiclesReducer.getStaticSlice(getPathToVehicles(s));
-}
+export const getVehiclesStaticSlice = s =>
+  fromVehiclesReducer.getStaticSlice(getPathToVehicles(s));
+
+const getVehiclesDynamicSlice = s =>
+  fromVehiclesReducer.getDynamicSlice(getPathToVehicles(s));
+
 function locations(s) {
   return s.getIn(['fleet', 'locations']);
 }
@@ -44,7 +46,7 @@ export const getVehiclesExSorted = state =>
 export const getVehiclesTest = state =>
   fromVehiclesReducer.getVehiclesTest(getPathToVehicles(state));
 export const getVehicleByIdFunc = state =>
-  getByIdFunc(getPathToVehicles(state));
+  getByIdFunc(getVehiclesDynamicSlice(state));
 export const getProcessedVehicles = state =>
   fromVehiclesReducer.getProcessedVehicles(getPathToVehicles(state));
 export const hasProcessedVehicles = state =>
