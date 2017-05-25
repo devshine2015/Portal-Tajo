@@ -6,12 +6,17 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
+import DateRange from 'components/DateRange/DateRange';
+// import TimeFrameController from './components/TimeFrameSelector';
+import BetaLabel from 'components/BetaLabel';
+
 import Layout from 'components/Layout';
 import VehiclesList from 'components/InstancesList';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import SoloReport from './components/SoloReport';
 
+import { makeDefaultDatePeriod } from 'utils/dateTimeUtils';
 import { ctxGetSelectedVehicleId } from 'services/Global/reducers/contextReducer';
 
 import { setExecTimeFrame } from './services/actions';
@@ -21,11 +26,33 @@ import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import listTypes from 'components/InstancesList/types';
 
-import TimeFrameController from './components/TimeFrameSelector';
-import BetaLabel from 'components/BetaLabel';
-
-
 class ExecReport extends React.Component {
+
+  state = {
+    ...makeDefaultDatePeriod(),
+  };
+
+  onStartDateChange = (_, value) => {
+    this.onPeriodChange('startDate', value);
+  }
+
+  onEndDateChange = (_, value) => {
+    this.onPeriodChange('endDate', value);
+  }
+
+  onStartTimeChange = (_, value) => {
+    this.onPeriodChange('startTime', value);
+  }
+
+  onEndTimeChange = (_, value) => {
+    this.onPeriodChange('endTime', value);
+  }
+
+  onPeriodChange = (field, value) => {
+    this.setState({
+      [field]: value,
+    });
+  }
 
   setStartDate = (date) => {
     this.props.setExecTimeFrame(date, moment(date).add(1, 'days').toDate());
@@ -52,7 +79,18 @@ class ExecReport extends React.Component {
             }
         />
         <Layout.FixedContent>
-          <TimeFrameController dateValue={dateFrom} onChange={this.setStartDate} />
+          {/*<TimeFrameController dateValue={dateFrom} onChange={this.setStartDate} />*/}
+          <DateRange
+            onStartDateChange={this.onStartDateChange}
+            onStartTimeChange={this.onStartTimeChange}
+            onEndDateChange={this.onEndDateChange}
+            onEndTimeChange={this.onEndTimeChange}
+            defaultStartDate={this.state.startDate}
+            defaultEndDate={this.state.endDate}
+            defaultStartTime={this.state.startTime}
+            defaultEndTime={this.state.endTime}
+            withTime
+          />
           <SoloReport vehicleId={this.props.selectedVehicleId} />
           <BetaLabel />
         </Layout.FixedContent>
