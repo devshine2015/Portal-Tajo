@@ -15,9 +15,10 @@ const classes = StyleSheet.create({
 
 const NoPrint = ({
   children,
+  style,
 }) => {
   if (children === null) return false;
-  return (<div className={css(classes.no_print)}>
+  return (<div className={css(classes.no_print)} style={style}>
     {children}
   </div>
   );
@@ -25,9 +26,11 @@ const NoPrint = ({
 
 NoPrint.propTypes = {
   children: React.PropTypes.any,
+  style: React.PropTypes.object,
 };
 NoPrint.defaultProps = {
   children: null,
+  style: {},
 };
 
 export default pure(NoPrint);

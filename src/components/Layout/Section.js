@@ -4,9 +4,10 @@ import classes from './classes';
 
 const Section = ({
   children,
+  style,
 }) => {
   return (
-    <div className={css(classes.sectionContainer)}>
+    <div className={css(classes.sectionContainer)} style={style}>
       { children }
     </div>
   );
@@ -14,6 +15,12 @@ const Section = ({
 
 Section.propTypes = {
   children: React.PropTypes.any.isRequired,
+  style: React.PropTypes.object,
 };
+
+Section.defaultProps = {
+  style: {},
+};
+
 
 export default Section;

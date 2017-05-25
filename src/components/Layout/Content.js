@@ -34,7 +34,7 @@ Content.propTypes = {
   center: React.PropTypes.bool,
   maxWidth: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
   noPadding: React.PropTypes.bool,
-  style: React.PropTypes.object.isRequired,
+  style: React.PropTypes.object,
 };
 
 export default Content;
