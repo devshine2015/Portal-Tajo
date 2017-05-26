@@ -22,6 +22,11 @@ const classes = StyleSheet.create({
     fontSize: 14,
   },
 
+  header__sub_highlighted: {
+    fontWeight: 600,
+    fontSize: 15,
+  },
+
   listWrapper: {
     position: 'relative',
     maxWidth: 500,

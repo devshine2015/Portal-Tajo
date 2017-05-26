@@ -10,10 +10,25 @@ import classes from './classes';
 
 class Content extends React.Component {
 
+  state = {
+    range: undefined,
+    isDefaultRange: true,
+  };
+
+  componentDidMount() {
+    if (this.props.isReady) {
+      this.getLogsForLastDay();
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (!this.props.isReady && nextProps.isReady) {
-      this.getLogs(makePeriodForLast24Hours());
+      this.getLogsForLastDay();
     }
+  }
+
+  getLogsForLastDay() {
+    this.getLogs(makePeriodForLast24Hours(), true);
   }
 
   /**
@@ -26,8 +41,16 @@ class Content extends React.Component {
    * @param {Date} range.startTime - specific time of the start
    * @param {Date} range.endTime - specific time of the end
    */
-  getLogs = (range) => {
-    this.props.fetchLogs(range);
+  getLogs = (range, isDefault) => {
+    this.props.fetchLogs(range)
+      .then(this.saveRange(range, isDefault));
+  }
+
+  saveRange = (range, isDefaultRange = false) => {
+    this.setState({
+      range,
+      isDefaultRange,
+    });
   }
 
   canShowTimeline() {
@@ -40,7 +63,11 @@ class Content extends React.Component {
         <AlertsFilter onApply={this.getLogs} />
 
         { !this.canShowTimeline() ? <AnimatedLogo.FullscreenLogo /> : (
-          <AlertsTimeline entries={this.props.entries} />
+          <AlertsTimeline
+            entries={this.props.entries}
+            dateRange={this.state.range}
+            displayDefaultRange={this.state.isDefaultRange}
+          />
         )}
 
       </FixedContent>

@@ -76,27 +76,31 @@ export const makeTimeRangeParams = ({
 }) => {
   const endD = endDate || startDate;
 
-  const fromFormatted = _formateDateForRequest(startDate, startTime);
-  const toFormatted = _formateDateForRequest(endD, endTime);
+  const fromObj = makeSingleDateString(startDate, startTime);
+  const toObj = makeSingleDateString(endD, endTime);
 
   return {
-    from: fromFormatted,
-    to: toFormatted,
+    from: _formatDateForRequest(fromObj),
+    to: _formatDateForRequest(toObj),
   };
 };
 
-// Just formatting to ISO string. Keep actual date and time values
-function _formateDateForRequest(date, time = undefined) {
+export function makeSingleDateString(date, time = undefined) {
   const d = moment.isMoment(date) ? date.toDate() : date;
 
-  const result = moment({
+  return moment({
     y: d.getFullYear(),
     M: d.getMonth(),
     d: d.getDate(),
     h: time ? time.getHours() : d.getHours(),
     m: time ? time.getMinutes() : d.getMinutes(),
     s: time ? time.getSeconds() : d.getSeconds(),
-  }).toISOString();
+  });
+}
 
-  return `${result.slice(0, -1)}+0000`;
+// Just formatting to ISO string. Keep actual date and time values
+function _formatDateForRequest(dateStr) {
+  const isoDate = dateStr.toISOString();
+
+  return `${isoDate.slice(0, -1)}+0000`;
 }
