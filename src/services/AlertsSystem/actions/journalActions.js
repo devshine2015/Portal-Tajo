@@ -1,6 +1,5 @@
 import moment from 'moment';
 import uuid from 'node-uuid';
-import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
 import { getVehicleById } from 'services/FleetModel/reducer';
 import { fetchNotificationsForTimeRange } from './helpers';
 import { getAlertConditionById } from '../reducer';
@@ -12,16 +11,16 @@ let notificationsTimerId = null;
 export const JOURNAL_ENTRIES_ADD = 'alertsSystem/JOURNAL_ENTRIES_ADD';
 
 const listenForNotifications = (dispatch, initialStartDate) => {
-  let startDate = initialStartDate;
+  let fromDate = initialStartDate;
 
   notificationsTimerId = window.setInterval(() => {
-    const endDate = moment().toDate();
-    const nextRange = { startDate, endDate };
+    const toDate = moment().toDate();
+    const nextRange = { fromDate, toDate };
 
     dispatch(fetchNotifications(nextRange));
 
-    // make current endDate start date for the next request
-    startDate = endDate;
+    // make current toDate start date for the next request
+    fromDate = toDate;
   }, ALERTS_HISTORY_FETCH_INTERVAL_MS);
 };
 
@@ -33,7 +32,7 @@ export const clearNotificationsListener = () => {
  * Get all events for last 24 hours, or withing specified time range
  * @param {Object} - range
  */
-export const fetchNotifications = (range = makePeriodForLast24Hours()) => async (dispatch, getState) => {
+export const fetchNotifications = range => async (dispatch, getState) => {
   const state = getState();
   let result;
 
@@ -57,7 +56,7 @@ export const fetchNotifications = (range = makePeriodForLast24Hours()) => async 
 
   // start listening just once
   if (notificationsTimerId === null) {
-    listenForNotifications(dispatch, range.endDate);
+    listenForNotifications(dispatch, range.toDate);
   }
 
   return result;
