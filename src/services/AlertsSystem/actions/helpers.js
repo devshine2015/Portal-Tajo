@@ -6,9 +6,8 @@ import { getVehicleById } from 'services/FleetModel/reducer';
 import { getAlertConditionById } from '../reducer';
 
 /**
- * keep this function to test notifications faster
+ * keep this function to test notifications
  */
-
 // const makeFakeNotifs = () => [{
 //   ev: {
 //     ts: new Date(),
@@ -30,10 +29,12 @@ import { getAlertConditionById } from '../reducer';
 /**
  * Get all events for last 24 hours, or withing specified time range
  * @param {Object} - range
+ * @param {Date} - range.fromDate
+ * @param {Date} - range.toDate
  * @returns {Array} - events for the required timerange
  */
-export function fetchNotificationsForTimeRange(range) {
-  const rangeParams = makeTimeRangeParams(range);
+export function fetchNotificationsForTimeRange(range = {}) {
+  const rangeParams = makeTimeRangeParams(range.fromDate, range.toDate);
   const { url, method } = endpoints.getAlertsInTimeRange(rangeParams);
 
   // return makeFakeNotifs();

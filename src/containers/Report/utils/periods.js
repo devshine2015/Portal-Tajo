@@ -1,33 +1,20 @@
 import moment from 'moment';
 
-// compose array of dates presented in period start to end
-// result = [<date_as_ISO_string>]
-function _getPeriods({
-  startDate,
-  endDate = undefined,
-  startTime = undefined,
-  endTime = undefined,
+/**
+ * @param {Object} time range
+ * @param {Date} fromDate - start of the period
+ * @param {Date} toDate - end of the period
+ * @param {String} frequency - DEPRECATED
+ * @return {Array} array of Moment dates presented in period start to end
+ */
+export default function ({
+  fromDate,
+  toDate,
 }, frequency = undefined) {
   const supportMultiPeriods = frequency !== undefined;
   const periods = [];
-  let momentFrom;
-  let momentTo;
-
-  if (startTime) {
-    momentFrom = _setTime(startDate, startTime);
-  } else {
-    momentFrom = moment(startDate);
-  }
-
-  if (endDate && endTime) {
-    momentTo = _setTime(endDate, endTime);
-  } else if (endDate) {
-    momentTo = moment(endDate);
-  } else if (endTime) {
-    momentTo = _setTime(endDate, endTime);
-  } else {
-    momentTo = moment(startDate);
-  }
+  const momentFrom = moment(fromDate);
+  const momentTo = moment(toDate);
 
   periods.push(momentFrom);
 
@@ -56,15 +43,3 @@ function _getPeriods({
 
   return periods;
 }
-
-function _setTime(date, time) {
-  const d = moment(date);
-
-  return d.set({
-    hour: time.getHours(),
-    minute: time.getMinutes(),
-    second: time.getSeconds(),
-  });
-}
-
-export default _getPeriods;

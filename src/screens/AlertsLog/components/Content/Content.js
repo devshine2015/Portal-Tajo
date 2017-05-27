@@ -36,10 +36,8 @@ class Content extends React.Component {
    * and bypassing specified range to the callback.
    *
    * @param {Object} range - time range for notifications
-   * @param {Date} range.startDate - start of the range
-   * @param {Date} range.endDate - end of the range
-   * @param {Date} range.startTime - specific time of the start
-   * @param {Date} range.endTime - specific time of the end
+   * @param {Date} range.fromDate - start of the range
+   * @param {Date} range.toDate - end of the range
    */
   getLogs = (range, isDefault) => {
     this.props.fetchLogs(range)

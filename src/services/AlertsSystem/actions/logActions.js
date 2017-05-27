@@ -1,4 +1,3 @@
-import { makeDefaultDatePeriod } from 'utils/dateTimeUtils';
 import {
   fetchNotificationsForTimeRange,
   createJournalEntry,
@@ -6,7 +5,7 @@ import {
 
 export const LOGS_ADD = 'alrtSys/LOGS_ADD';
 
-export const fetchLogs = (range = makeDefaultDatePeriod()) => async (dispatch, getState) => {
+export const fetchLogs = range => async (dispatch, getState) => {
   const state = getState();
   let result;
 

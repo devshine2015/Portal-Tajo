@@ -2,7 +2,7 @@ import React from 'react';
 import { css } from 'aphrodite/no-important';
 import FlatButton from 'material-ui/FlatButton';
 import DateRange from 'components/DateRange/DateRange';
-import { makeDefaultDatePeriod } from 'utils/dateTimeUtils';
+import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
 import classes from './classes';
 
 const STYLES = {
@@ -12,30 +12,18 @@ const STYLES = {
 };
 
 class AlertsFilter extends React.Component {
+  constructor(props) {
+    super(props);
 
-  state = {
-    ...makeDefaultDatePeriod(),
-  };
+    const { fromDate, toDate } = makePeriodForLast24Hours();
 
-  onStartDateChange = (_, value) => {
-    this.onPeriodChange('startDate', value);
+    this.state = { fromDate, toDate };
   }
 
-  onEndDateChange = (_, value) => {
-    this.onPeriodChange('endDate', value);
-  }
-
-  onStartTimeChange = (_, value) => {
-    this.onPeriodChange('startTime', value);
-  }
-
-  onEndTimeChange = (_, value) => {
-    this.onPeriodChange('endTime', value);
-  }
-
-  onPeriodChange = (field, value) => {
+  onDateTimeChange = (newFromDate, newToDate) => {
     this.setState({
-      [field]: value,
+      fromDate: newFromDate,
+      toDate: newToDate,
     });
   }
 
@@ -47,14 +35,9 @@ class AlertsFilter extends React.Component {
     return (
       <div className={css(classes.filter)}>
         <DateRange
-          onStartDateChange={this.onStartDateChange}
-          onStartTimeChange={this.onStartTimeChange}
-          onEndDateChange={this.onEndDateChange}
-          onEndTimeChange={this.onEndTimeChange}
-          defaultStartDate={this.state.startDate}
-          defaultEndDate={this.state.endDate}
-          defaultStartTime={this.state.startTime}
-          defaultEndTime={this.state.endTime}
+          onChange={this.onDateTimeChange}
+          fromDate={this.state.fromDate}
+          toDate={this.state.toDate}
           withTime
         />
         <FlatButton

@@ -6,7 +6,7 @@ import {
   RaisedButton,
   Divider,
 } from 'material-ui';
-import dateFormats from 'configs/dateFormats';
+import dateFormats, { dateTypes } from 'configs/dateFormats';
 import Form from 'components/Form';
 import SimpleError from 'components/Error';
 import DateRange from 'components/DateRange/DateRange';
@@ -61,9 +61,11 @@ class Report extends React.Component {
     super(props);
 
     this.FORM_NAME = 'configurator';
+    const { fromDate, toDate } = makeDefaultDatePeriod();
 
     this.state = {
-      ...makeDefaultDatePeriod(),
+      fromDate,
+      toDate,
       ...getDefaultCheckedReportTypes(props.availableReports),
       // TODO: this does not handle unselected default types
       ...getStoredCheckedReportTypes(props.availableReports, props.selectedFields),
@@ -91,20 +93,11 @@ class Report extends React.Component {
     });
   }
 
-  onStartDateChange = (_, value) => {
-    this.onChange('startDate', value);
-  }
-
-  onEndDateChange = (_, value) => {
-    this.onChange('endDate', value);
-  }
-
-  onStartTimeChange = (_, value) => {
-    this.onChange('startTime', value);
-  }
-
-  onEndTimeChange = (_, value) => {
-    this.onChange('endTime', value);
+  onDateTimeChange = (newFromDate, newToDate) => {
+    this.setState({
+      fromDate: newFromDate,
+      toDate: newToDate,
+    });
   }
 
   onChange = (field, value) => {
@@ -133,10 +126,8 @@ class Report extends React.Component {
 
   getParams() {
     const data = {
-      startDate: this.state.startDate,
-      endDate: this.state.endDate,
-      startTime: this.state.startTime,
-      endTime: this.state.endTime,
+      fromDate: this.state.fromDate,
+      toDate: this.state.toDate,
     };
 
     return {
@@ -161,15 +152,10 @@ class Report extends React.Component {
 
           <div className={styles.column}>
             <DateRange
-              onStartDateChange={this.onStartDateChange}
-              onStartTimeChange={this.onStartTimeChange}
-              onEndDateChange={this.onEndDateChange}
-              onEndTimeChange={this.onEndTimeChange}
+              onChange={this.onDateTimeChange}
               dateFormat={this.state.tempDateFormat}
-              defaultStartDate={this.state.startDate}
-              defaultEndDate={this.state.endDate}
-              defaultStartTime={this.state.startTime}
-              defaultEndTime={this.state.endTime}
+              fromDate={this.state.fromDate}
+              toDate={this.state.toDate}
               withTime
             />
           </div>
@@ -258,9 +244,7 @@ Report.propTypes = {
   swipeGeneratedData: React.PropTypes.func.isRequired,
   saveRawData: React.PropTypes.func.isRequired,
   errorType: React.PropTypes.string,
-  userDateFormat: React.PropTypes.oneOf([
-    'yyyy-mm-dd', 'dd-mm-yyyy',
-  ]),
+  userDateFormat: React.PropTypes.oneOf(dateTypes),
   selectedFields: React.PropTypes.object.isRequired,
   translations: phrasesShape.isRequired,
 };

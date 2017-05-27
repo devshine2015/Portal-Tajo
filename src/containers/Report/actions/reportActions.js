@@ -44,7 +44,7 @@ function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getSta
   dispatch(_beforeGenerating());
 
   const periods = getPeriods(timePeriod, frequency);
-  const periodParams = makeTimeRangeParams(timePeriod);
+  const periodParams = makeTimeRangeParams(timePeriod.fromDate, timePeriod.toDate);
   const selectedReports = getSelectedReportsTypes(getState());
   const vehicles = getVehiclesForReport(getState());
 

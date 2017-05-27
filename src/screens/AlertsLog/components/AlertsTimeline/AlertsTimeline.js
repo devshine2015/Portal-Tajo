@@ -1,22 +1,24 @@
 import React from 'react';
+import moment from 'moment';
 import { List } from 'immutable';
 import { css } from 'aphrodite/no-important';
-import { makeSingleDateString } from 'utils/dateTimeUtils';
 import TimelineEvent from './TimelineEvent';
 import classes from './AlertsTimeline.classes';
 
-function _makeHeaderTimeRange(range = {}) {
-  return {
-    from: makeSingleDateString(range.startDate, range.startTime).format('DD-MM-YYYY HH:mm'),
-    to: makeSingleDateString(range.endDate, range.endTime).format('DD-MM-YYYY HH:mm'),
-  };
-}
+const dateShape = {
+  from: React.PropTypes.string,
+  to: React.PropTypes.string,
+};
 
 const EmptyTimeline = () => (
   <div className={css([classes.listWrapper, classes.listWrapper_empty])}>
     No events for specified period
   </div>
 );
+
+
+
+
 
 const DEFAULT_TIME_RANGE_TEXT = 'last 24 hours';
 
@@ -27,13 +29,17 @@ HighlitedText.propTypes = {
   children: React.PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
+
+
+
+
 const PeriodText = ({ dateRange, isDefaultRange }) => {
   let Text;
 
   if (isDefaultRange) {
     Text = () => <HighlitedText>{ DEFAULT_TIME_RANGE_TEXT }</HighlitedText>;
   } else {
-    Text = () => <span><HighlitedText>{dateRange.from}</HighlitedText> to <HighlitedText>{dateRange.to}</HighlitedText></span>;
+    Text = () => <span>the period from <HighlitedText>{dateRange.from}</HighlitedText> to <HighlitedText>{dateRange.to}</HighlitedText></span>;
   }
 
   return <Text />;
@@ -41,11 +47,13 @@ const PeriodText = ({ dateRange, isDefaultRange }) => {
 
 PeriodText.propTypes = {
   isDefaultRange: React.PropTypes.bool.isRequired,
-  dateRange: React.PropTypes.shape({
-    from: React.PropTypes.string,
-    to: React.PropTypes.string,
-  }).isRequired,
+  dateRange: React.PropTypes.shape(dateShape).isRequired,
 };
+
+
+
+
+
 
 const Header = ({
   ...rest,
@@ -64,15 +72,25 @@ const Header = ({
 Header.propTypes = {
   amount: React.PropTypes.number.isRequired,
   isDefaultRange: React.PropTypes.bool.isRequired,
-  dateRange: React.PropTypes.shape({
-    from: React.PropTypes.string,
-    to: React.PropTypes.string,
-  }),
+  dateRange: React.PropTypes.shape(dateShape),
 };
 
 Header.defaultTypes = {
   dateRange: undefined,
 };
+
+
+
+
+
+function _makeHeaderTimeRange(range = {}) {
+  const format = 'DD-MM-YYYY HH:mm';
+
+  return {
+    from: moment(range.fromDate).format(format),
+    to: moment(range.toDate).format(format),
+  };
+}
 
 class AlertsTimeline extends React.Component {
 
@@ -113,10 +131,8 @@ AlertsTimeline.propTypes = {
   entries: React.PropTypes.instanceOf(List).isRequired,
   displayDefaultRange: React.PropTypes.bool.isRequired,
   dateRange: React.PropTypes.shape({
-    startDate: React.PropTypes.instanceOf(Date).isRequired,
-    startTime: React.PropTypes.instanceOf(Date),
-    endDate: React.PropTypes.instanceOf(Date).isRequired,
-    endTime: React.PropTypes.instanceOf(Date),
+    fromDate: React.PropTypes.instanceOf(Date).isRequired,
+    toDate: React.PropTypes.instanceOf(Date).isRequired,
   }),
 };
 
