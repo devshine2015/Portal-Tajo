@@ -8,6 +8,8 @@ const formats = [{
   value: 'dd-mm-yyyy',
 }];
 
+export const dateTypes = formats.map(f => f.value);
+
 export default {
   formats,
   default: formats[0],

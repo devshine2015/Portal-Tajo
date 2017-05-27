@@ -1,102 +1,94 @@
 import moment from 'moment';
 
+const DEFAULT_START_TIME = {
+  h: 0,
+  m: 0,
+  s: 0,
+  ms: 0,
+};
+
+const DEFAULT_END_TIME = {
+  h: 23,
+  m: 59,
+  s: 59,
+  ms: 999,
+};
+
 /**
  * combine date and time from two Date objects to a single one
- * @param {Date} date
- * @param {Date} time
+ * @param {Date} dateDate
+ * @param {Date} dateTime
  * @returns {Date} date (DDMM) taken from dateDate; time (HHMM) taken from dateTime
  */
 export const makeDateWithTime = (dateDate, dateTime) => {
+  // make new instance of date to mutate
   const dateWithTime = moment(dateDate).toDate();
+
   dateWithTime.setHours(dateTime.getHours());
   dateWithTime.setMinutes(dateTime.getMinutes());
+  dateWithTime.setSeconds(dateTime.getSeconds());
+
   return dateWithTime;
 };
 
 
 export const makePeriodForLast24Hours = () => {
-  const startDate = moment().subtract(24, 'hours').toDate();
-  const endDate = moment().toDate();
+  const fromDate = moment().subtract(24, 'hours').toDate();
+  const toDate = moment().toDate();
 
   return {
-    startDate,
-    endDate,
+    fromDate,
+    toDate,
   };
 };
 
 /**
  * Create time range for current day
  * @returns {Object} defaultPeriod
- * @returns {Date} defaultPeriod.startDate - current date
- * @returns {Date} defaultPeriod.startTime - date with time set to 00:00:00
- * @returns {Date} defaultPeriod.endTime - current date
- * @returns {Date} defaultPeriod.endTime - date with time set to 23:59:59
+ * @returns {Date} defaultPeriod.fromDate - date of the start of the period
+ * @returns {Date} defaultPeriod.toDate - date of the end of the period
  */
 export const makeDefaultDatePeriod = () => {
-  const defaultDate = new Date();
+  const defaultDate = moment();
 
   return {
-    startDate: defaultDate,
-    startTime: _makeStartTime(),
-    endDate: defaultDate,
-    endTime: _makeEndTime(),
+    fromDate: defaultDate.clone().set(DEFAULT_START_TIME).toDate(),
+    toDate: defaultDate.clone().set(DEFAULT_END_TIME).toDate(),
   };
-};
-
-const _makeStartTime = () => {
-  const t = moment().set({
-    hour: 0,
-    minute: 0,
-    second: 0,
-    millisecond: 0,
-  });
-  return t.toDate();
-};
-
-const _makeEndTime = () => {
-  const t = moment().set({
-    hour: 23,
-    minute: 59,
-    second: 59,
-    millisecond: 999,
-  });
-
-  return t.toDate();
 };
 
 /**
- * if *Time param it undefined, their value will be taken
- * from provided *Date
+ * Converts date period to format backend will undestand (ISO)
+ * @param {Date} - fromDate - start of the period
+ * @param {Date} - toDate - end of the period
+ * @return {Object}
+ * @return {String} - from - fromDate arg formatted for request
+ * @return {String} - to - toDate arg formatted for request
  */
-export const makeTimeRangeParams = ({
-  startDate,
-  startTime = undefined,
-  endDate = undefined,
-  endTime = undefined,
-}) => {
-  const endD = endDate || startDate;
+export const makeTimeRangeParams = (fromDate, toDate) => {
+  const to = toDate || fromDate;
 
-  const fromObj = makeSingleDateString(startDate, startTime);
-  const toObj = makeSingleDateString(endD, endTime);
+  // const fromObj = makeSingleDateString(fromDate);
+  // const toObj = makeSingleDateString(to);
 
   return {
-    from: _formatDateForRequest(fromObj),
-    to: _formatDateForRequest(toObj),
+    from: _formatDateForRequest(fromDate),
+    to: _formatDateForRequest(to),
   };
 };
 
-export function makeSingleDateString(date, time = undefined) {
-  const d = moment.isMoment(date) ? date.toDate() : date;
+// export function makeSingleDateString(date) {
+//   const d = moment.isMoment(date) ? date.toDate() : date;
 
-  return moment({
-    y: d.getFullYear(),
-    M: d.getMonth(),
-    d: d.getDate(),
-    h: time ? time.getHours() : d.getHours(),
-    m: time ? time.getMinutes() : d.getMinutes(),
-    s: time ? time.getSeconds() : d.getSeconds(),
-  });
-}
+//   return moment({
+//     y: d.getFullYear(),
+//     M: d.getMonth(),
+//     d: d.getDate(),
+//     h: time ? time.getHours() : d.getHours(),
+//     m: time ? time.getMinutes() : d.getMinutes(),
+//     s: time ? time.getSeconds() : d.getSeconds(),
+//   });
+// }
 
 // Just formatting to ISO string. Keep actual date and time values
 function _formatDateForRequest(dateStr) {
