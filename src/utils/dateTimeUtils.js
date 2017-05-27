@@ -21,7 +21,6 @@ const DEFAULT_END_TIME = {
  * @returns {Date} date (DDMM) taken from dateDate; time (HHMM) taken from dateTime
  */
 export const makeDateWithTime = (dateDate, dateTime) => {
-  // make new instance of date to mutate
   const dateWithTime = moment(dateDate).toDate();
 
   dateWithTime.setHours(dateTime.getHours());
@@ -68,29 +67,17 @@ export const makeDefaultDatePeriod = () => {
 export const makeTimeRangeParams = (fromDate, toDate) => {
   const to = toDate || fromDate;
 
-  // const fromObj = makeSingleDateString(fromDate);
-  // const toObj = makeSingleDateString(to);
-
   return {
     from: _formatDateForRequest(fromDate),
     to: _formatDateForRequest(to),
   };
 };
 
-// export function makeSingleDateString(date) {
-//   const d = moment.isMoment(date) ? date.toDate() : date;
-
-//   return moment({
-//     y: d.getFullYear(),
-//     M: d.getMonth(),
-//     d: d.getDate(),
-//     h: time ? time.getHours() : d.getHours(),
-//     m: time ? time.getMinutes() : d.getMinutes(),
-//     s: time ? time.getSeconds() : d.getSeconds(),
-//   });
-// }
-
-// Just formatting to ISO string. Keep actual date and time values
+/**
+ * formatting argument to DRVR ENGINE compatible date string
+ * @param {Date} dateStr - date to be formatted
+ * @return {String}
+ */
 function _formatDateForRequest(dateStr) {
   const isoDate = dateStr.toISOString();
 
