@@ -72,10 +72,8 @@ class ExecReport extends React.Component {
           >
             <DateRange
               onChange={this.onTimeFrameChange}
-              defaultStartDate={dateFrom}
-              defaultEndDate={dateTo}
-              defaultStartTime={dateFrom}
-              defaultEndTime={dateTo}
+              fromDate={dateFrom}
+              toDate={dateTo}
               withTime
             />
           </NoPrint>
