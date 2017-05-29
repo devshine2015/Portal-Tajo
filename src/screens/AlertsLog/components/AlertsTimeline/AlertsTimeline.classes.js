@@ -9,26 +9,6 @@ const classes = StyleSheet.create({
     maxWidth: 500,
   },
 
-  header: {
-    margin: '20px 0 15px',
-    textAlign: 'center',
-  },
-
-  header__main: {
-    fontSize: 18,
-    marginBottom: 5,
-  },
-
-  header__sub: {
-    color: 'rgba(0,0,0,.55)',
-    fontSize: 14,
-  },
-
-  header__sub_highlighted: {
-    fontWeight: 600,
-    fontSize: 15,
-  },
-
   filter: {
     marginBottom: 16,
   },
