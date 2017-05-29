@@ -2,7 +2,9 @@ import React from 'react';
 import { css } from 'aphrodite/no-important';
 import FlatButton from 'material-ui/FlatButton';
 import DateRange from 'components/DateRange/DateRange';
+import Layout from 'components/Layout';
 import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
+import TypesFilter from '../TypesFilter/TypesFilter';
 import classes from './classes';
 
 const STYLES = {
@@ -11,7 +13,7 @@ const STYLES = {
   },
 };
 
-class AlertsFilter extends React.Component {
+class Filter extends React.Component {
   constructor(props) {
     super(props);
 
@@ -34,25 +36,34 @@ class AlertsFilter extends React.Component {
   render() {
     return (
       <div className={css(classes.filter)}>
-        <DateRange
-          onChange={this.onDateTimeChange}
-          fromDate={this.state.fromDate}
-          toDate={this.state.toDate}
-          withTime
-        />
-        <FlatButton
-          primary
-          label="Apply"
-          style={STYLES.applyBtn}
-          onClick={this.onFilterClick}
-        />
+        <Layout.Row>
+          <DateRange
+            onChange={this.onDateTimeChange}
+            fromDate={this.state.fromDate}
+            toDate={this.state.toDate}
+            withTime
+          />
+        </Layout.Row>
+
+        <Layout.Row>
+          <TypesFilter />
+        </Layout.Row>
+
+        <Layout.Row className={css(classes.buttonsWrapper)}>
+          <FlatButton
+            primary
+            label="Apply"
+            style={STYLES.applyBtn}
+            onClick={this.onFilterClick}
+          />
+        </Layout.Row>
       </div>
     );
   }
 }
 
-AlertsFilter.propTypes = {
+Filter.propTypes = {
   onApply: React.PropTypes.func.isRequired,
 };
 
-export default AlertsFilter;
+export default Filter;

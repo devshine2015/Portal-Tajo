@@ -4,7 +4,7 @@ import { css } from 'aphrodite/no-important';
 import FixedContent from 'components/FixedContent';
 import AnimatedLogo from 'components/animated';
 import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
-import AlertsFilter from '../AlertsFilter/AlertsFilter';
+import Filter from '../Filter/Filter';
 import AlertsTimeline from '../AlertsTimeline/AlertsTimeline';
 import classes from './classes';
 
@@ -58,7 +58,7 @@ class Content extends React.Component {
   render() {
     return (
       <FixedContent containerClassName={css(classes.contentWrapper)}>
-        <AlertsFilter onApply={this.getLogs} />
+        <Filter onApply={this.getLogs} />
 
         { !this.canShowTimeline() ? <AnimatedLogo.FullscreenLogo /> : (
           <AlertsTimeline
