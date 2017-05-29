@@ -2,6 +2,8 @@ import React from 'react';
 import moment from 'moment';
 import { List } from 'immutable';
 import { css } from 'aphrodite/no-important';
+import { ALERT_KINDS } from 'services/AlertsSystem/alertKinds';
+import LogsFilter from '../KindsFilter/KindsFilter';
 import TimelineEvent from './TimelineEvent';
 import classes from './AlertsTimeline.classes';
 
@@ -17,9 +19,6 @@ const EmptyTimeline = () => (
 );
 
 
-
-
-
 const DEFAULT_TIME_RANGE_TEXT = 'last 24 hours';
 
 const HighlitedText = ({ children }) =>
@@ -28,9 +27,6 @@ const HighlitedText = ({ children }) =>
 HighlitedText.propTypes = {
   children: React.PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
 };
-
-
-
 
 
 const PeriodText = ({ dateRange, isDefaultRange }) => {
@@ -49,10 +45,6 @@ PeriodText.propTypes = {
   isDefaultRange: React.PropTypes.bool.isRequired,
   dateRange: React.PropTypes.shape(dateShape).isRequired,
 };
-
-
-
-
 
 
 const Header = ({
@@ -80,9 +72,6 @@ Header.defaultTypes = {
 };
 
 
-
-
-
 function _makeHeaderTimeRange(range = {}) {
   const format = 'DD-MM-YYYY HH:mm';
 
@@ -92,7 +81,34 @@ function _makeHeaderTimeRange(range = {}) {
   };
 }
 
+function makeFilterFromKinds() {
+  return new List(ALERT_KINDS).map(kind => kind.value);
+}
+
 class AlertsTimeline extends React.Component {
+
+  state = {
+    activeKinds: makeFilterFromKinds(),
+  };
+
+  /**
+   * Update local state of active filters.
+   * Filters array is immutable.
+   *
+   * @param {String} nextKind - one of available alerts kinds
+   */
+  onFilterKindsChange = (nextKind) => {
+    const filterIndex = this.state.activeKinds.indexOf(nextKind);
+    const nextFilters = this.state.activeKinds.update((list) => {
+      if (filterIndex !== -1) return list.delete(filterIndex);
+
+      return list.push(nextKind);
+    });
+
+    this.setState({
+      activeKinds: nextFilters,
+    });
+  }
 
   renderEvents() {
     return this.props.entries.map((event) => {
@@ -114,6 +130,13 @@ class AlertsTimeline extends React.Component {
           dateRange={range}
           amount={this.props.entries.size}
           isDefaultRange={this.props.displayDefaultRange}
+        />
+
+        <LogsFilter
+          onKindsChange={this.onFilterKindsChange}
+          activeFilters={this.state.activeKinds}
+          containerClassName={css(classes.filter)}
+          labelClassName={css(classes.filter__label)}
         />
 
         { this.props.entries.size === 0 ? <EmptyTimeline /> : (

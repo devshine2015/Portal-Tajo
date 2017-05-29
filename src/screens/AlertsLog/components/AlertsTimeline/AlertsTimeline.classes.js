@@ -6,8 +6,7 @@ const LIST_LEFT_PADDING = 120;
 
 const classes = StyleSheet.create({
   wrapper: {
-    width: '100%',
-    padding: '0 20px',
+    maxWidth: 500,
   },
 
   header: {
@@ -25,6 +24,15 @@ const classes = StyleSheet.create({
   header__sub_highlighted: {
     fontWeight: 600,
     fontSize: 15,
+  },
+
+  filter: {
+    marginBottom: 16,
+  },
+
+  filter__label: {
+    width: LIST_LEFT_PADDING,
+    paddingRight: EVENT_LINE_WIDTH,
   },
 
   listWrapper: {

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import cs from 'classnames';
 import { List } from 'immutable';
 import { css } from 'aphrodite/no-important';
 import IconButton from 'material-ui/IconButton';
@@ -62,9 +63,16 @@ class KindsFilter extends Component {
   }
 
   render() {
+    const containerClassName = cs(css(classes.kinds), this.props.containerClassName);
+    const listClassName = cs(css(classes.list), this.props.listClassName);
+    const labelClassName = cs(css(classes.label), this.props.labelClassName);
+
     return (
-      <div className={css(classes.kinds)}>
-        { this.renderKinds() }
+      <div className={containerClassName}>
+        <span className={labelClassName}>Filter by kind:</span>
+        <div className={listClassName}>
+          { this.renderKinds() }
+        </div>
       </div>
     );
   }
@@ -73,6 +81,15 @@ class KindsFilter extends Component {
 KindsFilter.propTypes = {
   onKindsChange: React.PropTypes.func.isRequired,
   activeFilters: React.PropTypes.instanceOf(List).isRequired,
+  containerClassName: React.PropTypes.string,
+  listClassName: React.PropTypes.string,
+  labelClassName: React.PropTypes.string,
+};
+
+KindsFilter.defaultProps = {
+  containerClassName: '',
+  listClassName: '',
+  labelClassName: '',
 };
 
 export default KindsFilter;
