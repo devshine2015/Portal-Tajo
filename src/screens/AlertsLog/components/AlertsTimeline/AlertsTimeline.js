@@ -49,21 +49,28 @@ PeriodText.propTypes = {
 
 const Header = ({
   ...rest,
-  amount,
+  totalAmount,
+  filteredAmount,
+  isFiltered,
 }) => {
   return (
     <div className={css(classes.header)}>
       <h3 className={css(classes.header__main)}>Historical Timeline</h3>
-      <p className={css(classes.header__sub)}>
-        Showing <HighlitedText>{amount}</HighlitedText> events for <PeriodText {...rest} />
-      </p>
+      <p>Total <HighlitedText>{totalAmount}</HighlitedText> events for <PeriodText {...rest} /></p>
+      { isFiltered && (
+        <p className={css(classes.header__sub)}>
+          Showing <HighlitedText>{filteredAmount}</HighlitedText> filtered events
+        </p>
+      )}
     </div>
   );
 };
 
 Header.propTypes = {
-  amount: React.PropTypes.number.isRequired,
+  totalAmount: React.PropTypes.number.isRequired,
+  filteredAmount: React.PropTypes.number,
   isDefaultRange: React.PropTypes.bool.isRequired,
+  isFiltered: React.PropTypes.bool.isRequired,
   dateRange: React.PropTypes.shape(dateShape),
 };
 
@@ -87,9 +94,17 @@ function makeFilterFromKinds() {
 
 class AlertsTimeline extends React.Component {
 
-  state = {
-    activeKinds: makeFilterFromKinds(),
-  };
+  constructor(props) {
+    super(props);
+
+    const filterKinds = makeFilterFromKinds();
+
+    this.totalFiltersAmount = filterKinds.length;
+
+    this.state = {
+      activeKinds: filterKinds,
+    };
+  }
 
   /**
    * Update local state of active filters.
@@ -110,12 +125,12 @@ class AlertsTimeline extends React.Component {
     });
   }
 
+  filterEvents = (event) => {
+    return this.state.activeKinds.indexOf(event.get('eventKind')) !== -1;
+  }
+
   renderEvents() {
-    return this.props.entries.map((event) => {
-      const isFilteredOut = this.state.activeKinds.indexOf(event.get('eventKind')) === -1;
-
-      if (isFilteredOut) return null;
-
+    return this.props.entries.filter(this.filterEvents).map((event) => {
       return (
         <TimelineEvent
           {...event.toJS()}
@@ -127,13 +142,17 @@ class AlertsTimeline extends React.Component {
 
   render() {
     const range = _makeHeaderTimeRange(this.props.dateRange);
+    const isFilterActive = this.state.activeKinds.size !== this.totalFiltersAmount;
+    const entries = this.renderEvents();
 
     return (
       <div className={css(classes.wrapper)}>
         <Header
           dateRange={range}
-          amount={this.props.entries.size}
           isDefaultRange={this.props.displayDefaultRange}
+          totalAmount={this.props.entries.size}
+          isFiltered={isFilterActive}
+          filteredAmount={entries.size}
         />
 
         <LogsFilter
@@ -145,7 +164,7 @@ class AlertsTimeline extends React.Component {
 
         { this.props.entries.size === 0 ? <EmptyTimeline /> : (
           <div className={css(classes.listWrapper)}>
-            { this.renderEvents() }
+            { entries }
           </div>
         )}
 

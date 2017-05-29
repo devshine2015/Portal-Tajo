@@ -14,7 +14,10 @@ const classes = StyleSheet.create({
     textAlign: 'center',
   },
 
-  header__main: {},
+  header__main: {
+    fontSize: 18,
+    marginBottom: 5,
+  },
 
   header__sub: {
     color: 'rgba(0,0,0,.55)',
