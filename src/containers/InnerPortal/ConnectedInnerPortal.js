@@ -7,6 +7,7 @@ import {
   conditionsActions,
   journalActions,
 } from 'services/AlertsSystem/actions';
+import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
 import InnerPortal from './InnerPortal';
 
 const makeMapStateToProps = () => {
@@ -26,7 +27,7 @@ const mapDispatch = (dispatch) => {
   return {
     fetchPortalData: () => {
       dispatch(conditionsActions.fetchAlertConditions())
-        .then(() => dispatch(journalActions.fetchNotifications()))
+        .then(() => dispatch(journalActions.fetchNotifications(makePeriodForLast24Hours())))
         .then(() => dispatch(fetchDevices()));
     },
   };
