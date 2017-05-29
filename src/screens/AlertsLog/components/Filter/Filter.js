@@ -1,10 +1,11 @@
 import React from 'react';
+import { List } from 'immutable';
 import { css } from 'aphrodite/no-important';
 import FlatButton from 'material-ui/FlatButton';
 import DateRange from 'components/DateRange/DateRange';
 import Layout from 'components/Layout';
 import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
-import TypesFilter from '../TypesFilter/TypesFilter';
+import KindsFilter from '../KindsFilter/KindsFilter';
 import classes from './classes';
 
 const STYLES = {
@@ -46,7 +47,10 @@ class Filter extends React.Component {
         </Layout.Row>
 
         <Layout.Row>
-          <TypesFilter />
+          <KindsFilter
+            onKindsChange={this.props.onKindsChange}
+            activeFilters={this.props.activeFilters}
+          />
         </Layout.Row>
 
         <Layout.Row className={css(classes.buttonsWrapper)}>
@@ -64,6 +68,8 @@ class Filter extends React.Component {
 
 Filter.propTypes = {
   onApply: React.PropTypes.func.isRequired,
+  onKindsChange: React.PropTypes.func.isRequired,
+  activeFilters: React.PropTypes.instanceOf(List).isRequired,
 };
 
 export default Filter;

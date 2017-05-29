@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { css } from 'aphrodite/no-important';
 import { List } from 'immutable';
+import { css } from 'aphrodite/no-important';
 import IconButton from 'material-ui/IconButton';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import { ALERT_KINDS } from 'services/AlertsSystem/alertKinds';
@@ -39,32 +39,11 @@ FilterKind.propTypes = {
 };
 
 
-function makeFilterFromKinds() {
-  return new List(ALERT_KINDS).map(kind => kind.value);
-}
-
 class KindsFilter extends Component {
-
-  state = {
-    activeFilters: makeFilterFromKinds(),
-  };
-
-  onKindClick = (alertKind) => {
-    const filterIndex = this.state.activeFilters.indexOf(alertKind);
-    const nextFilters = this.state.activeFilters.update((list) => {
-      if (filterIndex !== -1) return list.delete(filterIndex);
-
-      return list.push(alertKind);
-    });
-
-    this.setState({
-      activeFilters: nextFilters,
-    });
-  }
 
   renderKinds() {
     return ALERT_KINDS.map((kind) => {
-      const isActive = this.state.activeFilters.indexOf(kind.value) !== -1;
+      const isActive = this.props.activeFilters.indexOf(kind.value) !== -1;
       const icon = React.cloneElement(kind.icon, {
         color: isActive ? '#fff' : '#bbb',
       });
@@ -73,7 +52,7 @@ class KindsFilter extends Component {
         <FilterKind
           key={kind.value}
           icon={icon}
-          onClick={this.onKindClick}
+          onClick={this.props.onKindsChange}
           isActive={isActive}
           kind={kind.value}
           niceName={kind.niceName}
@@ -91,6 +70,9 @@ class KindsFilter extends Component {
   }
 }
 
-KindsFilter.propKinds = {};
+KindsFilter.propTypes = {
+  onKindsChange: React.PropTypes.func.isRequired,
+  activeFilters: React.PropTypes.instanceOf(List).isRequired,
+};
 
 export default KindsFilter;
