@@ -73,6 +73,7 @@ const classes = StyleSheet.create({
   row: {
     display: 'flex',
     flex: 1,
+    width: '100%',
   },
 });
 

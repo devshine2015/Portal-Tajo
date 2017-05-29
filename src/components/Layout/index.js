@@ -5,8 +5,7 @@ import Section from './Section';
 import Header from './Header';
 import Row from './Row';
 
-const Layout = () => ({
-});
+const Layout = {};
 
 Layout.ScreenWithList = ScreenWithList;
 Layout.FixedContent = FixedContent;
