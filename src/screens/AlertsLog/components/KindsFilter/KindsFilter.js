@@ -16,18 +16,21 @@ const FilterKind = muiThemeable()(({
   muiTheme,
 }) => {
   const click = () => onClick(kind);
+  const style = {
+    backgroundColor: isActive ? muiTheme.palette.primary4Color : '#f1f1f1',
+  };
 
   return (
-    <IconButton
-      onClick={click}
-      tooltip={niceName}
-      className={css(classes.kind)}
-      style={{
-        backgroundColor: isActive ? muiTheme.palette.primary4Color : '#f1f1f1',
-      }}
-    >
-      { icon }
-    </IconButton>
+    <div className={css(classes.kindWrapper)}>
+      <IconButton
+        onClick={click}
+        tooltip={niceName}
+        className={css(classes.kind)}
+        style={style}
+      >
+        { icon }
+      </IconButton>
+    </div>
   );
 });
 

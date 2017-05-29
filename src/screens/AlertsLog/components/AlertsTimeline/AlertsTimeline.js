@@ -112,6 +112,10 @@ class AlertsTimeline extends React.Component {
 
   renderEvents() {
     return this.props.entries.map((event) => {
+      const isFilteredOut = this.state.activeKinds.indexOf(event.get('eventKind')) === -1;
+
+      if (isFilteredOut) return null;
+
       return (
         <TimelineEvent
           {...event.toJS()}

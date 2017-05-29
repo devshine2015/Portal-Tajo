@@ -9,8 +9,20 @@ export default StyleSheet.create({
 
   list: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     flex: 1,
+  },
+
+  kindWrapper: {
+    margin: '0 5px',
+
+    ':first-child': {
+      marginLeft: 0,
+    },
+
+    ':last-child': {
+      marginRight: 0,
+    },
   },
 
   kind: {
