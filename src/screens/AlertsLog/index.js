@@ -1,11 +1,11 @@
 import React from 'react';
 import Content from './components/Content/ConnectedContent';
-import VehiclesList from './components/VehiclesList/VehiclesList';
+import VehiclesList from './components/VehiclesList/ConnectedVehiclesList';
 
 const AlertLogs = () => (
   <div style={{ height: '100%' }}>
-    <VehiclesList key="powerlist" />
-    <Content key="content" />
+    <VehiclesList />
+    <Content />
   </div>
 );
 

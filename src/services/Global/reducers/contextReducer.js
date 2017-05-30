@@ -76,3 +76,6 @@ export const ctxGetPowListTabType = state =>
 
 export const getVehicleFilterString = state =>
   state.get('vehicleFilterString');
+
+export const getSelectedVehicleId = state =>
+  state.get('selectedVehicleId');

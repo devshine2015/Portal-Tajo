@@ -1,21 +1,13 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import VehiclesList from 'components/InstancesList';
-import { vehiclesActions } from 'services/FleetModel/actions';
 import vehicleShape from 'services/FleetModel/PropTypes';
-import { getPathToVehicles } from 'services/FleetModel/reducer';
-import { getPathToGlobalContext } from 'services/Global/reducer';
-import {
-  makeGetVehicles,
-  makeGetFilterString,
-} from './selectors';
 
 class AlertsVehiclesList extends React.Component {
 
-  onItemClick = (itemId) => {
-    console.log(itemId);
+  onItemClick = (vehicleId) => {
+    this.props.selectVehicle(vehicleId);
   }
 
   renderList() {
@@ -24,6 +16,7 @@ class AlertsVehiclesList extends React.Component {
         data={this.props.vehicles}
         selectedItems={this.props.selectedVehicles}
         onItemClick={this.onItemClick}
+        currentExpandedItemId={this.props.selectedVehicleId}
       />
     );
   }
@@ -47,6 +40,7 @@ class AlertsVehiclesList extends React.Component {
 
 AlertsVehiclesList.propTypes = {
   filterFunc: React.PropTypes.func.isRequired,
+  selectVehicle: React.PropTypes.func.isRequired,
   vehicles: React.PropTypes.arrayOf(
     React.PropTypes.shape(vehicleShape).isRequired,
   ).isRequired,
@@ -54,34 +48,14 @@ AlertsVehiclesList.propTypes = {
   selectedVehicles: React.PropTypes.arrayOf(
     React.PropTypes.string.isRequired,
   ),
+  selectedVehicleId: React.PropTypes.string,
   filterString: React.PropTypes.string,
 };
 
 AlertsVehiclesList.defaultProps = {
+  selectedVehicleId: undefined,
   filterString: '',
   selectedVehicles: [],
 };
 
-const makeMapStateToProps = () => {
-  const getVehicles = makeGetVehicles();
-  const getFilterString = makeGetFilterString();
-
-  const mapState = (state) => {
-    const vehicles = getVehicles(getPathToVehicles(state));
-    const filterString = getFilterString(getPathToGlobalContext(state));
-
-    return {
-      vehicles,
-      filterString,
-    };
-  };
-
-  return mapState;
-};
-
-const mapDispatch = {
-  filterFunc: vehiclesActions.filterVehicles,
-};
-
-export default connect(makeMapStateToProps, mapDispatch)(AlertsVehiclesList);
-
+export default AlertsVehiclesList;

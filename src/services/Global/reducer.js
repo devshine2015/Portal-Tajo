@@ -24,3 +24,6 @@ export const getErrorType = state =>
 
 export const getVehicleFilterString = state =>
   fromContextReducer.getVehicleFilterString(getPathToGlobalContext(state));
+
+export const getSelectedVehicleId = state =>
+  fromContextReducer.selectedVehicleId(getPathToGlobalContext(state));
