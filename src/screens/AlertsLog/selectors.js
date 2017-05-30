@@ -1,5 +1,8 @@
 import { createSelector } from 'reselect';
-import { getVehiclesExSorted } from 'services/FleetModel/reducers/vehiclesReducer';
+import {
+  getVehiclesExSorted,
+  getVehicleById,
+} from 'services/FleetModel/reducers/vehiclesReducer';
 import {
   getVehicleFilterString,
   getSelectedVehicleId,
@@ -20,5 +23,11 @@ export const makeGetSelectedVehicleId = () => {
 export const makeGetFilterString = () => {
   return createSelector(getVehicleFilterString, (filterString) => {
     return filterString;
+  });
+};
+
+export const makeGetSelectedVehicleName = () => {
+  return createSelector(getVehicleById, (imVehicle) => {
+    return imVehicle ? imVehicle.getIn(['original', 'name']) : undefined;
   });
 };

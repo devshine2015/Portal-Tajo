@@ -39,14 +39,24 @@ PeriodText.propTypes = {
 };
 
 
+const HeaderTitle = ({ vehicleName }) => (
+  <h3 className={css(classes.header__main)}>Historical Timeline { vehicleName && `for ${vehicleName}` }</h3>
+);
+
+HeaderTitle.propTypes = {
+  vehicleName: React.PropTypes.string,
+};
+
 const Header = ({
   ...rest,
   totalAmount,
   filteredAmount,
   isFiltered,
+  selectedVehicleName,
 }) => (
   <div className={css(classes.header)}>
-    <h3 className={css(classes.header__main)}>Historical Timeline</h3>
+    <HeaderTitle vehicleName={selectedVehicleName} />
+
     <p>Total <HighlitedText>{totalAmount}</HighlitedText> events for <PeriodText {...rest} /></p>
     { isFiltered && (
       <p className={css(classes.header__sub)}>
@@ -62,10 +72,12 @@ Header.propTypes = {
   isDefaultRange: React.PropTypes.bool.isRequired,
   isFiltered: React.PropTypes.bool.isRequired,
   dateRange: React.PropTypes.shape(dateShape),
+  selectedVehicleName: React.PropTypes.string,
 };
 
 Header.defaultTypes = {
   dateRange: undefined,
+  selectedVehicleName: undefined,
 };
 
 export default Header;

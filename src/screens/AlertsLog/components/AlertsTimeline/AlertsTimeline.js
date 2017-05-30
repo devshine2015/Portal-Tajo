@@ -84,6 +84,7 @@ class AlertsTimeline extends React.Component {
           totalAmount={this.props.entries.size}
           isFiltered={isFilterActive}
           filteredAmount={entries.size}
+          selectedVehicleName={this.props.selectedVehicleName}
         />
 
         <LogsFilter
@@ -111,10 +112,12 @@ AlertsTimeline.propTypes = {
     fromDate: React.PropTypes.instanceOf(Date).isRequired,
     toDate: React.PropTypes.instanceOf(Date).isRequired,
   }),
+  selectedVehicleName: React.PropTypes.string,
 };
 
 AlertsTimeline.defaultTypes = {
   dateRange: undefined,
+  selectedVehicleName: undefined,
 };
 
 export default AlertsTimeline;

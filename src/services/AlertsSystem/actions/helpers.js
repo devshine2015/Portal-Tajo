@@ -64,6 +64,7 @@ function _createJournalEntry(alertEvent, state) {
     eventTS: eventDate.getTime(),
     eventKind: alertEvent.ev.conditionKind,
     eventName: imCondition.get('name'),
-    ownerName: !imVehicle ? 'loading cars..' : imVehicle.getIn(['original', 'name']),
+    ownerName: imVehicle.getIn(['original', 'name']),
+    ownerId: imVehicle.get('id'),
   };
 }

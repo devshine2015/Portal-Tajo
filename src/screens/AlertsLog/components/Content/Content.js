@@ -13,6 +13,7 @@ class Content extends React.Component {
   state = {
     range: undefined,
     isDefaultRange: true,
+    needToFilter: false,
   };
 
   componentDidMount() {
@@ -25,6 +26,8 @@ class Content extends React.Component {
     if (!this.props.isReady && nextProps.isReady) {
       this.getLogsForLastDay();
     }
+
+    this.setNeedToFilter(nextProps);
   }
 
   getLogsForLastDay() {
@@ -44,6 +47,16 @@ class Content extends React.Component {
       .then(this.saveRange(range, isDefault));
   }
 
+  /**
+   * flag needed to reduce unnecessary filtering of alerts
+   * @param {Object} nextProps - future props
+   */
+  setNeedToFilter(nextProps) {
+    this.setState({
+      needToFilter: this.props.selectedVehicleId !== nextProps.selectedVehicleId,
+    });
+  }
+
   saveRange = (range, isDefaultRange = false) => {
     this.setState({
       range,
@@ -56,15 +69,20 @@ class Content extends React.Component {
   }
 
   render() {
+    const filteredEntries = this.state.needToFilter ?
+      this.props.entries.filter(entry => entry.get('ownerId') === this.props.selectedVehicleId) :
+      this.props.entries;
+
     return (
       <FixedContent containerClassName={css(classes.contentWrapper)}>
         <Filter onApply={this.getLogs} />
 
         { !this.canShowTimeline() ? <AnimatedLogo.FullscreenLogo /> : (
           <AlertsTimeline
-            entries={this.props.entries}
+            entries={filteredEntries}
             dateRange={this.state.range}
             displayDefaultRange={this.state.isDefaultRange}
+            selectedVehicleName={this.props.selectedVehicleName}
           />
         )}
 
@@ -77,6 +95,13 @@ Content.propTypes = {
   fetchLogs: React.PropTypes.func.isRequired,
   entries: React.PropTypes.instanceOf(List).isRequired,
   isReady: React.PropTypes.bool.isRequired,
+  selectedVehicleId: React.PropTypes.string,
+  selectedVehicleName: React.PropTypes.string,
+};
+
+Content.defaultProps = {
+  selectedVehicleId: undefined,
+  selectedVehicleName: undefined,
 };
 
 export default Content;
