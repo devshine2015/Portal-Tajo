@@ -9,11 +9,9 @@ export const getJournalEntries = () => {
   });
 };
 
-export const makeGetLogEntries = () => {
-  return createSelector(getLogEntriesNewestFirst, (entries) => {
-    return entries;
-  });
-};
+export const selectLogEntries = createSelector(getLogEntriesNewestFirst, (entries) => {
+  return entries;
+});
 
 export const makeGetIsConditionsReady = () => {
   return createSelector(getIsConditionsReady, (isReady) => {
