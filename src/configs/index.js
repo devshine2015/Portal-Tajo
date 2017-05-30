@@ -1,7 +1,8 @@
 import * as _configHelpers from './_helpers';
 
 const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080'; // for localhost
-// const DEV_ENGINE_BASE = 'drvrstage.cloudapp.net:8080'; // for localhost
+// const DEV_ENGINE_BASE = 'drvrstage.cloudapp.net:8080'; // for stage
+// const DEV_ENGINE_BASE = 'drvrapp.net'; // for prod
 const REMOTE_HOST_BASE = window.location.host;
 
 // support or not some old stuff depends on environment
