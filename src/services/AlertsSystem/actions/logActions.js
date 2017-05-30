@@ -1,6 +1,6 @@
 import {
   fetchNotificationsForTimeRange,
-  createJournalEntry,
+  createJournalEntries,
 } from './helpers';
 
 export const LOGS_ADD = 'alrtSys/LOGS_ADD';
@@ -16,9 +16,7 @@ export const fetchLogs = range => async (dispatch, getState) => {
   }
 
   if (result.length > 0) {
-    const logEntries = result.map(entry =>
-      createJournalEntry(entry, state),
-    );
+    const logEntries = createJournalEntries(result, state);
 
     dispatch({
       type: LOGS_ADD,

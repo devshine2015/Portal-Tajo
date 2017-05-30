@@ -41,7 +41,19 @@ export function fetchNotificationsForTimeRange(range = {}) {
   return api[method](url).then(res => res.json());
 }
 
-export function createJournalEntry(alertEvent, state) {
+/**
+ * Filter out events with conditions id not represented in state
+ * and creates local representations of other events
+ * @param {Array} entries - alerts entries from backend
+ * @param {ImmutableMap} state - app state
+ * @return {Array}
+ */
+export function createJournalEntries(entries = [], state) {
+  return entries.filter(entry => Boolean(getAlertConditionById(state, entry.ev.conditionId)))
+    .map(entry => _createJournalEntry(entry, state));
+}
+
+function _createJournalEntry(alertEvent, state) {
   const crossTime = alertEvent.ev.crossTime !== undefined ? alertEvent.ev.crossTime : 0;
   const eventDate = new Date(alertEvent.ev.ts !== undefined ? alertEvent.ev.ts : crossTime);
   const imVehicle = getVehicleById(state, alertEvent.ev.vehicleId);
