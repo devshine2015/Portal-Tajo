@@ -3,7 +3,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { Chip, Popover } from 'material-ui';
 import { VelocityTransitionGroup } from 'velocity-react';
-import * as alertKinds from 'services/AlertsSystem/alertKinds';
+// import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import { getAlertConditions } from 'services/AlertsSystem/reducer';
 
 const stylesChip = {
@@ -31,9 +31,8 @@ class AlertsList extends React.Component {
               // <Avatar color="#156671" icon={alertKinds.getAlertByKind(item.kind).icon} />
     const alertsToPick = this.props.alerts
         .filter(item => !this.vehicleHasAlert(item.id)
-            && item.kind === alertKinds._ALERT_KIND_GF
-            && item.onEnter === this.props.onEnter)
-        // // doing this so we have original GFs names            
+            && this.props.alertFilter(item))
+        // // doing this so we have original GFs names
         // .map((item) => {
         //   const gfObject = this.props.gfById(item.gfId);
         //   return { name: gfObject.name, id: item.id };
@@ -48,7 +47,7 @@ class AlertsList extends React.Component {
           onTouchTap={() => this.onItemClick(item.id)}
           style={stylesChip}
         >
-          {item.gfName}
+          {item.gfName !== '' ? item.gfName : item.name}
         </Chip>);
 
     return (
@@ -76,7 +75,7 @@ AlertsList.propTypes = {
   isOpen: React.PropTypes.bool.isRequired,
   handleRequestClose: React.PropTypes.func.isRequired,
   anchorEl: React.PropTypes.object,
-  onEnter: React.PropTypes.bool.isRequired,
+  alertFilter: React.PropTypes.func.isRequired,
   vehicleAlerts: React.PropTypes.array.isRequired,
   doAddAlert: React.PropTypes.func.isRequired,
   // getVehicleAlerts: React.PropTypes.func.isRequired,

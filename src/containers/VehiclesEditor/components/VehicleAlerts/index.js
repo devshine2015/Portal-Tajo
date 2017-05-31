@@ -168,25 +168,35 @@ class VehicleAlerts extends React.Component {
             onOfKindChange={this.onOfKindChange}
             vehicleAlerts={this.state.alerts}
           />
-          <AlertOfKindSelector
+          {/* <AlertOfKindSelector
             myKind={alertKinds._ALERT_KIND_ODO}
             onOfKindChange={this.onOfKindChange}
             vehicleAlerts={this.state.alerts}
+          />*/}
+          <GFAlerts
+            title="Maintenance"
+            vehicleAlerts={this.state.alerts}
+            vehicleId={this.props.vehicleId}
+            doAddAlert={this.doAddAlert}
+            onRemoveClick={this.onRemoveClick}
+            alertFilter={a => (a.kind === alertKinds._ALERT_KIND_ODO)}
           />
           {/* put all the GF alerts with chips here?*/}
           <GFAlerts
+            title="On Enter Location"
             vehicleAlerts={this.state.alerts}
             vehicleId={this.props.vehicleId}
             doAddAlert={this.doAddAlert}
             onRemoveClick={this.onRemoveClick}
-            onEnter
+            alertFilter={a => (a.kind === alertKinds._ALERT_KIND_GF && a.onEnter === true)}
           />
           <GFAlerts
+            title="On Exit Location"
             vehicleAlerts={this.state.alerts}
             vehicleId={this.props.vehicleId}
             doAddAlert={this.doAddAlert}
             onRemoveClick={this.onRemoveClick}
-            onEnter={false}
+            alertFilter={a => (a.kind === alertKinds._ALERT_KIND_GF && a.onEnter === false)}
           />
           <FormButtons
             onSubmit={this.saveAlerts}

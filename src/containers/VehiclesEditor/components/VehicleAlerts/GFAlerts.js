@@ -48,14 +48,14 @@ class GFAlerts extends React.Component {
     // const alertKindData = alertKinds.getAlertByKind(alertKinds._ALERT_KIND_GF);
     // <Avatar color="#156671" icon={alertKindData.icon} />
     const myGFAlerts = this.props.vehicleAlerts.map(alertId => (this.props.alertById(alertId)))
-        .filter(alrt => alrt !== null && alrt.kind === alertKinds._ALERT_KIND_GF && alrt.onEnter === this.props.onEnter)
+        .filter(alrt => alrt !== null && this.props.alertFilter(alrt))
         .map(alrt => (
           <Chip
             key={alrt.id}
             onRequestDelete={() => (this.props.onRemoveClick(alrt.id))}
             style={stylesChip}
           >
-            {alrt.gfName}
+            {alrt.gfName !== '' ? alrt.gfName : alrt.name}
           </Chip>));
     return (
       <Card
@@ -64,7 +64,7 @@ class GFAlerts extends React.Component {
         onExpandChange={this.handleExpandChange}
       >
         <CardHeader
-          title={`${this.props.onEnter ? 'On Enter' : 'On Exit'} Location:
+          title={`${this.props.title}:
             ${myGFAlerts.length === 0 ? 'no' : myGFAlerts.length} alerts`}
           actAsExpander
           showExpandableButton
@@ -92,7 +92,7 @@ class GFAlerts extends React.Component {
               vehicleId={this.props.vehicleId}
               vehicleAlerts={this.props.vehicleAlerts}
               doAddAlert={this.props.doAddAlert}
-              onEnter={this.props.onEnter}
+              alertFilter={this.props.alertFilter}
             />
 
             <div className={styles.chipsWrapper}>
@@ -113,7 +113,8 @@ class GFAlerts extends React.Component {
 }
 
 GFAlerts.propTypes = {
-  onEnter: React.PropTypes.bool.isRequired,
+  title: React.PropTypes.string.isRequired,
+  alertFilter: React.PropTypes.func.isRequired,
   vehicleId: React.PropTypes.string.isRequired,
   vehicleAlerts: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
   alertById: React.PropTypes.func.isRequired,
