@@ -24,7 +24,7 @@ const stylesChip = {
 //   float: 'right',
 // };
 
-class GFAlerts extends React.Component {
+class AlertOfKindMultiSelector extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -112,7 +112,7 @@ class GFAlerts extends React.Component {
   }
 }
 
-GFAlerts.propTypes = {
+AlertOfKindMultiSelector.propTypes = {
   title: React.PropTypes.string.isRequired,
   alertFilter: React.PropTypes.func.isRequired,
   vehicleId: React.PropTypes.string.isRequired,
@@ -129,5 +129,5 @@ const mapState = state => ({
 const mapDispatch = {
 };
 
-export default connect(mapState, mapDispatch)(pure(GFAlerts));
+export default connect(mapState, mapDispatch)(pure(AlertOfKindMultiSelector));
 
