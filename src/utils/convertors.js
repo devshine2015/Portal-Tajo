@@ -40,7 +40,8 @@ export function msToTimeIntervalString(duration) {
   const minuttesInt = ((duration / (1000 * 60)) % 60)
           + (secondsInt > 30 ? 1 : 0);
   const minutes = parseInt(minuttesInt, 10);
-  const hours = parseInt((duration / (1000 * 60 * 60)) % 24, 10);
+  // const hours = parseInt((duration / (1000 * 60 * 60)) % 24, 10);
+  const hours = parseInt((duration / (1000 * 60 * 60)), 10);
 
   // const d = moment.duration(v, 'seconds');
   // const s = d.get('seconds');
@@ -58,4 +59,8 @@ export function dateToHHMM(date) {
   const hours = date.getHours();
   const minutes = date.getMinutes();
   return `${hours}:${minutes < 10 ? 0 : ''}${minutes}`;
+}
+
+export function temperatureToString(temp) {
+  return `${temp.toFixed(1)}${String.fromCharCode(176)}C`;
 }

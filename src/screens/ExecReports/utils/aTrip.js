@@ -13,7 +13,12 @@ function HistoryTrip(startSampleIdx, endSampleIdx) {
   this.durationMs = 0;
   this.calculatedDistanceM = 0;
   this.maxSpeed = 0;
-  this.avrgSpeed = 0;
+  this.avrSpeed = 0;
+
+  this.minTemp = 500;
+  this.maxTemp = -500;
+  this.avrTemp = undefined;
+  
   this.numberOfSamples = 0;
   this.numberOfPosSamples = 0;
 
@@ -38,6 +43,15 @@ HistoryTrip.prototype.isValid = function () {
 };
 
 //
+//-----------------------------------------------------------------------
+//
+HistoryTrip.prototype.hasTemperature = function () {
+  return this.avrTemp !== undefined;
+  // return this.durationMs > 5 * 1000 * 60;
+};
+
+
+//
 //
 //-----------------------------------------------------------------------
 HistoryTrip.prototype.prepareData = function (eventsFrame) {
@@ -60,6 +74,15 @@ HistoryTrip.prototype.prepareData = function (eventsFrame) {
       }
       prevPosSample = theSample;
     }
+    if (eventHelpers.isTemperatureEvent(theSample)) {
+      const tempValue = eventHelpers.eventTemp(theSample);
+      this.maxTemp = Math.max(this.maxTemp, tempValue);
+      this.minTemp = Math.min(this.minTemp, tempValue);
+    }
+  }
+  this.avrSpeed = (this.calculatedDistanceM / 1000) / (this.durationMs / 1000 / 60 / 60);
+  if (this.minTemp <= this.maxTemp) {
+    this.avrTemp = (this.minTemp + this.maxTemp) / 2;
   }
 };
 
