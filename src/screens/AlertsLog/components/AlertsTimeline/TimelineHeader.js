@@ -57,7 +57,10 @@ const Header = ({
   <div className={css(classes.header)}>
     <HeaderTitle vehicleName={selectedVehicleName} />
 
-    <p>Total <HighlitedText>{totalAmount}</HighlitedText> events for <PeriodText {...rest} /></p>
+    <p className={css(classes.header__sub)}>
+      Total <HighlitedText>{totalAmount}</HighlitedText> events for <PeriodText {...rest} />
+    </p>
+
     { isFiltered && (
       <p className={css(classes.header__sub)}>
         Showing <HighlitedText>{filteredAmount}</HighlitedText> filtered events

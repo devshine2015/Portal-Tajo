@@ -87,12 +87,14 @@ class AlertsTimeline extends React.Component {
           selectedVehicleName={this.props.selectedVehicleName}
         />
 
-        <LogsFilter
-          onKindsChange={this.onFilterKindsChange}
-          activeFilters={this.state.activeKinds}
-          containerClassName={css(classes.filter)}
-          labelClassName={css(classes.filter__label)}
-        />
+        { this.props.entries.size !== 0 && (
+          <LogsFilter
+            onKindsChange={this.onFilterKindsChange}
+            activeFilters={this.state.activeKinds}
+            containerClassName={css(classes.filter)}
+            labelClassName={css(classes.filter__label)}
+          />
+        )}
 
         { this.props.entries.size === 0 ? <EmptyTimeline /> : (
           <div className={css(classes.listWrapper)}>
