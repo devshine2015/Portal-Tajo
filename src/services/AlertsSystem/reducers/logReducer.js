@@ -8,7 +8,7 @@ const initialState = fromJS({
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case logActions.LOGS_ADD:
+    case logActions.LOGS_SET:
       return state.set('entries', fromJS(action.entries));
 
     default:

@@ -3,7 +3,7 @@ import {
   createJournalEntries,
 } from './helpers';
 
-export const LOGS_ADD = 'alrtSys/LOGS_ADD';
+export const LOGS_SET = 'alrtSys/LOGS_SET';
 
 export const fetchLogs = range => async (dispatch, getState) => {
   const state = getState();
@@ -19,7 +19,7 @@ export const fetchLogs = range => async (dispatch, getState) => {
     const logEntries = createJournalEntries(result, state);
 
     dispatch({
-      type: LOGS_ADD,
+      type: LOGS_SET,
       entries: logEntries,
     });
   }
