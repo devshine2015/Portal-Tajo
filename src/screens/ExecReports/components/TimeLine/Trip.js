@@ -3,7 +3,8 @@ import pure from 'recompose/pure';
 import { css } from 'aphrodite/no-important';
 
 // import ItemProperty from './../DetailItemProperty';
-import { msToTimeIntervalString, metersToKmString, speedToString } from 'utils/convertors';
+import { msToTimeIntervalString, metersToKmString,
+  speedToString, temperatureToString } from 'utils/convertors';
 
 // import DateIcon from 'material-ui/svg-icons/action/date-range';
 import TimeIcon from 'material-ui/svg-icons/device/access-time';
@@ -69,6 +70,17 @@ const Trip = ({
       icon={<SpeedIcon style={STYLES.icon} />}
       value={speedToString(aTripData.maxSpeed)}
     />
+    { aTripData.hasTemperature() && 
+      <div>
+        <DetailItemProperty
+          title={'maxT'}
+          value={temperatureToString(aTripData.maxTemp)}
+        />
+        <DetailItemProperty
+          title={'minT'}
+          value={temperatureToString(aTripData.minTemp)}
+        />
+      </div>}
 
     {/* <table style={{ width: 200 }}>
         <ItemProperty

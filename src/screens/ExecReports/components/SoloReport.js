@@ -61,12 +61,16 @@ class SoloReport extends React.Component {
     const aniLeave = { animation: 'slideUp', duration: 300 };
     const sectionStyle = { padding: 32 };
     return (
-      <Layout.Content noPadding>
+      <Layout.Content noPadding maxWidth={'inherit'}>
         <div id="drvrSoloReport" style={{ overflow: 'scroll', paddingTop: 12, marginBottom: 12 }}>
           {/* <Layout.Header label={'EXECUTIVE REPORT'} />*/}
           <Layout.Section style={sectionStyle}>
             <SoloHeader vehicleId={this.props.vehicleId} />
           </Layout.Section>
+          {/*<Layout.Section style={sectionStyle}>
+            <Layout.Header label={'OVERVIEW'} />
+            <SoloDetails vehicleId={this.props.vehicleId} />
+          </Layout.Section>*/}
           <Layout.Section style={sectionStyle}>
             <Layout.Header label={'TRIP DETAILS'} />
             <NoPrint style={{ padding: 20 }}>
