@@ -15,7 +15,7 @@ const StopOver = ({
       {address}
     </div>
     <div>
-      {`Stoped for ${msToTimeIntervalString(durationMs)}`}
+      {`Stopped for ${msToTimeIntervalString(durationMs)}`}
     </div>
   </div>
 );
