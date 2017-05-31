@@ -2,7 +2,7 @@
 //
 import moment from 'moment';
 import { makeTripsParcer } from './aTrip';
-import { makeAWayPoint } from './aStopOver';
+import { makeAStopOver } from './aStopOver';
 import { makeATimeStamp } from './aTimeStamp';
 import * as eventHelpers from './eventHelpers';
 
@@ -54,7 +54,7 @@ function ReportVehicleFrame(dateFrom, dateTo) {
   this.dateFrom = dateFrom;
   this.dateFrom00 = new Date(dateFrom.getFullYear(), dateFrom.getMonth(), dateFrom.getDate());
   this.dateTo = dateTo;
-  this.timeRangeMs = dateTo.getTime() - dateFrom.getTime(); // 24*60*60*1000
+  this.durationMs = this.dateTo.getTime() - this.dateFrom.getTime();
 
   this.state = CHRONICLE_LOCAL_INCTANCE_STATE_LOADING;
 }
@@ -125,6 +125,8 @@ ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) 
   this.events = events;
   // let prevPosSample = null;
   this.calculatedDistanceM = 0;
+  this.totalStoOverDurationMs = 0;
+  this.totalTripDurationMs = 0;  
   this.numberOfSamples = events.length;
 
   // const _dbgTime = 0;
@@ -156,7 +158,9 @@ ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) 
   let prevEndIdx = 0;
   let prevTrip = null;
   this.trips.forEach((aTrip) => {
-    aTrip.fromStopOwer = makeAWayPoint(prevEndIdx, aTrip.startIdx, events, storeUpdateCallback);
+    aTrip.fromStopOwer = makeAStopOver(prevEndIdx, aTrip.startIdx, events, storeUpdateCallback);
+    this.totalStoOverDurationMs += aTrip.fromStopOwer.durationMs;
+    this.totalTripDurationMs += aTrip.durationMs;
     if (prevTrip !== null) {
       prevTrip.toStopOver = aTrip.fromStopOwer;
     }
@@ -167,7 +171,8 @@ ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) 
     prevEndIdx = aTrip.endIdx;
     prevTrip = aTrip;
   });
-  const aFinalStopOver = makeAWayPoint(prevEndIdx, events.length - 1, events, storeUpdateCallback);
+  const aFinalStopOver = makeAStopOver(prevEndIdx, events.length - 1, events, storeUpdateCallback);
+  this.totalStoOverDurationMs += aFinalStopOver.durationMs;
   if (prevTrip !== null) {
     prevTrip.toStopOver = aFinalStopOver;
   }
@@ -179,7 +184,8 @@ ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) 
   this.tripsTimeLine[0].isATerminal = true;
   this.tripsTimeLine[this.tripsTimeLine.length - 1].isATerminal = true;
 
-     // this.mappp = this.mapifyChildren();
+
+
   const t1 = performance.now();
   console.log(`Report generation took ${(t1 - t0)} milliseconds.`);
 
@@ -243,7 +249,7 @@ ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) 
   //   this.speedData.push({ timeMs: lastSample.timeMs + 1, v: 0 });
   // }
   // console.log('history frame for ' + this.dateFrom + ' - ' + this.dateTo);
-  // console.log(' dataTimeRangeMs ' + _dbgTime + ' of ' + this.timeRangeMs);
+  // console.log(' dataTimeRangeMs ' + _dbgTime + ' of ' + this.durationMs);
   // console.log('  history frame total: ' + dataSize + ' pos: ' + this.posData.length + ' temp: ' + this.temperatureData.length);
   // console.log('  -- stops: ' + this.stopEvents.length);
   // console.log(' temp range ' + this.minTemp + ' .. ' + this.maxTemp);
@@ -315,7 +321,7 @@ ReportVehicleFrame.prototype.findSample = function (requestMs, data) {
     return data[0];
   }
   const dataSz = data.length;
-  let dataIdx = Math.min(dataSz - 1, Math.floor(dataSz * requestMs / this.timeRangeMs));
+  let dataIdx = Math.min(dataSz - 1, Math.floor(dataSz * requestMs / this.durationMs));
   const stepDir = requestMs < data[dataIdx].timeMs ? -1 : 1;
 
   for (; dataIdx >= 0 && dataIdx < dataSz - 1; dataIdx += stepDir) {
@@ -337,7 +343,7 @@ ReportVehicleFrame.prototype.findSampleIdxWithT = function (requestMs, data) {
       t: 0 };
   }
   const dataSz = data.length;
-  let dataIdx = this.lastFoundIdx; // Math.min(dataSz - 1, Math.floor(dataSz * requestMs / this.timeRangeMs));
+  let dataIdx = this.lastFoundIdx; // Math.min(dataSz - 1, Math.floor(dataSz * requestMs / this.durationMs));
   const stepDir = requestMs < data[dataIdx].timeMs ? -1 : 1;
 
   for (; dataIdx >= 0 && dataIdx < dataSz - 1; dataIdx += stepDir) {

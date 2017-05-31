@@ -29,7 +29,7 @@ HistoryWayPoint.prototype.isValid = function () {
 //
 //-----------------------------------------------------------------------
 
-export function makeAWayPoint(startSampleIdx, endSampleIdx, eventsFrame, storeUpdateCallback) {
+export function makeAStopOver(startSampleIdx, endSampleIdx, eventsFrame, storeUpdateCallback) {
   const startSample = eventsFrame[startSampleIdx];
   const endSample = eventsFrame[endSampleIdx];
 //  return new HistoryWayPoint(startSampleIdx, endSampleIdx, startSample, endSample);
