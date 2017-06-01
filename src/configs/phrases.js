@@ -254,7 +254,7 @@ const phrases = {
 
     // -- alerts conditions
     mwa_jobs_nbr: 'No. of Jobs',
-    mwa_jobs_t: 'Jobs Time',
+    mwa_jobs_t: ' Jobs Summary',
     job_name: 'Job Name',
     job_from: 'From',
     job_to: 'To',
@@ -506,7 +506,7 @@ const phrases = {
 
     // -- mwa reports
     mwa_jobs_nbr: 'ปริมาณงาน',
-    mwa_jobs_t: 'เวลาปฏิบัติงาน',
+    mwa_jobs_t: 'สรุปงาน',
     job_name: 'รหัสงาน',
     job_from: 'เวลาเปิดงาน',
     job_to: 'เวลาสิ้นสุดงานภาคสนาม',
