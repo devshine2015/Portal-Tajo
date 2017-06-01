@@ -47,8 +47,8 @@ describe('Fleet model vehicle helpers', function() {
     });
   });
 
-  describe('makeLocalVehicle()', function() {
-    const makeLocalVehicle = helpers.makeLocalVehicle;
+  describe('imMakeLocalVehicle()', function() {
+    const imMakeLocalVehicle = helpers.imMakeLocalVehicle;
 
     before('create vehicle', function() {
     });
@@ -57,19 +57,19 @@ describe('Fleet model vehicle helpers', function() {
       const status = {
         status: 'some_other_status',
       };
-      const resultWitStatus = makeLocalVehicle(status);
+      const resultWitStatus = imMakeLocalVehicle(status);
 
       should.equal(resultWitStatus, null);
     });
 
     it('should return immutable Map', function() {
-      const result = makeLocalVehicle(backEndObject);
+      const result = imMakeLocalVehicle(backEndObject);
 
       result.should.be.an.instanceOf(Map);
     });
 
     it('vehicle should has all required properties', function() {
-      const result = makeLocalVehicle(backEndObject, normalStats).toJS();
+      const result = imMakeLocalVehicle(backEndObject, normalStats).toJS();
 
       result.should.have.property('activityStatus')
         .that.oneOf(['dead', 'delayed', 'ok']);
@@ -90,7 +90,7 @@ describe('Fleet model vehicle helpers', function() {
     });
 
     it('should has \'original\' and \'id\' properties', function() {
-      const result = makeLocalVehicle(backEndObject).toJS();
+      const result = imMakeLocalVehicle(backEndObject).toJS();
 
       result.should.have.ownProperty('original');
       result.should.have.property('id')
@@ -100,7 +100,7 @@ describe('Fleet model vehicle helpers', function() {
     it('should set kind explicitly if it is not defined', function() {
       delete backEndObject.kind;
 
-      const kindResult = makeLocalVehicle(backEndObject).toJS();
+      const kindResult = imMakeLocalVehicle(backEndObject).toJS();
 
       kindResult.original.kind.should.be.equal('UNDEFINED');
     });
