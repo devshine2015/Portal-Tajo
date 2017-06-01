@@ -259,6 +259,7 @@ const phrases = {
     job_from: 'From',
     job_to: 'To',
     job_duration: 'Duration',
+    job_pipe: 'Pipe Size',
     // -- end alerts conditions
   },
 
@@ -510,6 +511,7 @@ const phrases = {
     job_from: 'เวลาเปิดงาน',
     job_to: 'เวลาสิ้นสุดงานภาคสนาม',
     job_duration: 'ระยะเวลาปฏิบัติงาน',
+    job_pipe: 'Pipe Size',
     // -- end mwa reports
   },
 };
