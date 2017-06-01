@@ -105,6 +105,8 @@ export function makeUpdateVehicleRequest(details, dispatch) {
       original: details,
       //
       marker: details.meta.marker,
+      driverId: details.meta.driverId,
+
       dist: {
         total: details.odometer.value,
       },
