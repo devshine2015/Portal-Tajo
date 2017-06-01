@@ -11,8 +11,6 @@ import AlertsList from './AlertsList';
 
 import { getAlertConditionByIdFunc } from 'services/AlertsSystem/reducer';
 
-import * as alertKinds from 'services/AlertsSystem/alertKinds';
-
 import styles from './styles.css';
 
 const stylesChip = {

@@ -85,7 +85,7 @@ class ListItemVehicle extends React.Component {
             value={license}
           />
         }
-        { isMwa &&
+        { driverName !== N_A &&
           <ItemProperty
             title={this.props.translations.driver_name}
             value={driverName}

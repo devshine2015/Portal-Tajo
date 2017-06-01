@@ -49,6 +49,7 @@ export const detailsShape = shape({
     number,
   ]).isRequired,
   marker: string.isRequired,
+  driverId: string.isRequired,
 });
 
 export default phrases;

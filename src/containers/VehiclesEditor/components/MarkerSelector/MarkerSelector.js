@@ -16,12 +16,6 @@ const STYLES = {
 };
 
 class MarkerSelector extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedKind: props.kind,
-    };
-  }
   renderMarkerMenuItems() {
     return Object.keys(markerTypes).map(key => {
       const kind = markerTypes[key];
@@ -40,11 +34,6 @@ class MarkerSelector extends React.PureComponent {
   }
 
   render() {
-    // if (this.props.kind) {
-    //   const selectedKind = getVehicleByValue(this.props.kind);
-    //   SelectedKindIcon = () => selectedKind.icon;
-    // }
-
     return (
       <div className={css(classes.kindOfSelector)} key="marker" >
         <div className={css(classes.kindOfLabel)}>

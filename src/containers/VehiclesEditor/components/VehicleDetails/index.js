@@ -13,6 +13,7 @@ import DeviceEditor from '../DeviceEditor';
 import VehicleAlerts from '../VehicleAlerts';
 import VehicleKindSelector from '../VehicleKindSelector';
 import MarkerSelector from '../MarkerSelector/MarkerSelector';
+import DriverSelector from '../DriverSelector/DriverSelector';
 // import VehicleDisabler from '../VehicleDisabler';
 import { translate } from 'utils/i18n';
 import permitted from 'utils/permissionsRequired';
@@ -32,6 +33,7 @@ function setVehicleState(props) {
     deviceId: props.details.deviceId || '',
     isMiles: false,
     marker: props.details.marker,
+    driverId: props.details.driverId,
     isTouched: false,
   });
 }
@@ -85,6 +87,7 @@ class VehicleDetails extends React.Component {
       },
       meta: {
         marker: this.state.marker,
+        driverId: this.state.driverId,
       },
     });
 
@@ -123,6 +126,13 @@ class VehicleDetails extends React.Component {
   onMarkerChange = (e, key, value) => {
     this.setState({
       marker: value,
+      isTouched: true,
+    });
+  }
+
+  onDriverChange = (e, key, value) => {
+    this.setState({
+      driverId: value,
       isTouched: true,
     });
   }
@@ -221,6 +231,7 @@ class VehicleDetails extends React.Component {
               checked={this.state.isMiles}
               onCheck={this.onIsMilesChange}
             />
+            <DriverSelector driverId={this.state.driverId} onChange={this.onDriverChange} />
             <MarkerSelector kind={this.state.marker} onChange={this.onMarkerChange} />
             <FormButtons
               onSubmit={this.onSubmit}
