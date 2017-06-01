@@ -11,6 +11,7 @@ import Warn from './Warn';
 
 import { isEscape, isMwa } from 'configs';
 import { vehicleShape } from 'services/FleetModel/PropTypes';
+import { getDriverByIdFunc } from 'services/FleetModel/reducer';
 
 import stylesBase from '../styles.css';
 import styles from './styles.css';
@@ -62,11 +63,9 @@ class ListItemVehicle extends React.Component {
         && this.props.vehicle.original.licensePlate !== undefined ?
           this.props.vehicle.original.licensePlate
           : N_A;
-    const driverName = this.props.vehicle.original !== undefined
-        && this.props.vehicle.original.meta !== undefined
-        && this.props.vehicle.original.meta.driverName !== undefined ?
-          this.props.vehicle.original.meta.driverName
-          : N_A;
+    const theDriverObj = this.props.driverById(this.props.vehicle.driverId);
+    const driverName = theDriverObj === null ? N_A
+          : theDriverObj.name;
     return (
       <div>
         <Divider />
@@ -160,6 +159,7 @@ ListItemVehicle.propTypes = {
   isExpanded: React.PropTypes.bool,
   vehicle: vehicleShape.isRequired,
   mapStoreSetPan: React.PropTypes.func.isRequired,
+  driverById: React.PropTypes.func.isRequired,
 
   translations: vehicleDetailsShape.isRequired,
 };
@@ -168,7 +168,9 @@ ListItemVehicle.defaultProps = {
   isExpanded: false,
 };
 
-const mapState = null;
+const mapState = state => ({
+  driverById: getDriverByIdFunc(state),
+});
 const mapDispatch = {
   selectVehicle: contextActions.ctxSelectVehicle,
   mapStoreSetPan,
