@@ -511,7 +511,7 @@ const phrases = {
     job_from: 'เวลาเปิดงาน',
     job_to: 'เวลาสิ้นสุดงานภาคสนาม',
     job_duration: 'ระยะเวลาปฏิบัติงาน',
-    job_pipe: 'Pipe Size',
+    job_pipe: 'ขนาดท่อ',
     // -- end mwa reports
   },
 };
