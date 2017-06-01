@@ -148,8 +148,8 @@ function _reportRequest(vehicles = [], {
   if (customReportKind === 'mwa'
   || customReportKind === 'mwaTime') {
     const { url, method, apiVersion } = endpoints.getMWAJobs({
-      from: makeMWADate(timePeriod.start),
-      to: makeMWADate(timePeriod.end),
+      from: makeMWADate(timePeriod.fromDate),
+      to: makeMWADate(timePeriod.toDate),
     });
     requestsToResolve = [api[method](url, { apiVersion }).then(toJson)];
   } else {
