@@ -107,9 +107,9 @@ export const prepareDataForReport = (
                 order,
                 value: N_A,
               };
-              secondPassResult.push(result[rowNumber].concat(column).concat(column).concat(column).concat(column).concat(column).concat(column));
-              // result[rowNumber] = result[rowNumber].concat(column).concat(column).concat(column).concat(column);
-              // ++rowNumber;
+              secondPassResult.push(result[rowNumber].concat(column).concat(column).concat(column).concat(column)
+                .concat(column)
+                .concat(column));
             } else {
               jobs.forEach(aJob => {
                 const startD = moment(aJob.DT_JOB_OPEN);
