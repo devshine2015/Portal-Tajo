@@ -202,7 +202,7 @@ export function updateLocalVehicles(wsStatuses, getState) {
   };
 }
 
-export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
+export function imMakeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
   if (backEndObject.status !== 'active') {
     return null;
   }
@@ -220,11 +220,14 @@ export function makeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
   }
   const marker = backEndObject.hasOwnProperty('meta') && backEndObject.meta.hasOwnProperty('marker') ?
         backEndObject.meta.marker : markerTypes.Icon;
+  const driverId = backEndObject.hasOwnProperty('meta') && backEndObject.meta.hasOwnProperty('driverId') ?
+        backEndObject.meta.driverId : '';
   return initilalValues.withMutations((s) => {
     s.merge(_makeImmutableVehicle({ vehicleStats }))
      .set('original', fromJS(backEndObject))
      .set('id', backEndObject.id)
-     .set('marker', marker);
+     .set('marker', marker)
+     .set('driverId', driverId);
   });
 }
 
@@ -248,7 +251,7 @@ export function makeLocalVehicles(backEndVehiclesList = [], statsList = []) {
 
   backEndVehiclesList.forEach((aVehicle) => {
     const vehicleStats = getVehicleById(aVehicle.id, statsList).vehicle;
-    const imLocalVehicle = makeLocalVehicle(aVehicle, vehicleStats, now);
+    const imLocalVehicle = imMakeLocalVehicle(aVehicle, vehicleStats, now);
 
     if (imLocalVehicle) {
       localVehicles[aVehicle.id] = imLocalVehicle;

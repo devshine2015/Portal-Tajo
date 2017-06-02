@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux-immutable';
 import vehiclesReducer, * as fromVehiclesReducer from './reducers/vehiclesReducer';
 import gfReducer, * as fromgfReducer from './reducers/gfReducer';
+import driversReducer, * as fromDriversReducer from './reducers/driversReducer';
 
 export default combineReducers({
   vehicles: vehiclesReducer,
   locations: gfReducer,
+  drivers: driversReducer,
 });
 
 
@@ -28,6 +30,10 @@ export const getVehiclesStaticSlice = s =>
 
 const getVehiclesDynamicSlice = s =>
   fromVehiclesReducer.getDynamicSlice(getPathToVehicles(s));
+
+function drivers(s) {
+  return s.getIn(['fleet', 'drivers']);
+}
 
 function locations(s) {
   return s.getIn(['fleet', 'locations']);
@@ -76,3 +82,8 @@ export const getGFByIdFunc = state =>
   getByIdFunc(locations(state));
 export const getProcessedGFs = state =>
   fromgfReducer.getProcessedGFs(locations(state));
+
+export const getDrivers = state =>
+  fromDriversReducer.getDrivers(drivers(state));
+export const getDriverByIdFunc = state =>
+  getByIdFunc(drivers(state));

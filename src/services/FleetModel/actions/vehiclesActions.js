@@ -6,7 +6,7 @@ import { filterProcessedListByName } from '../utils/filtering';
 import { getProcessedVehicles } from '../reducer';
 import {
   makeLocalVehicles,
-  makeLocalVehicle,
+  imMakeLocalVehicle,
   sortVehicles,
 } from '../utils/vehicleHelpers';
 
@@ -79,7 +79,7 @@ function _filterVehicles({ searchString }, dispatch, getState) {
 // resort vehicles and update
 // - fleet.vehicles.orderedList
 function _addVehicle(vehicle, dispatch, getState) {
-  const imLocalVehicle = makeLocalVehicle(vehicle);
+  const imLocalVehicle = imMakeLocalVehicle(vehicle);
   const imVehiclesMap = getProcessedVehicles(getState());
   const nextVehiclesMap = imVehiclesMap.set(vehicle.id, imLocalVehicle);
   const orderedList = sortVehicles(nextVehiclesMap.toArray());
@@ -105,6 +105,8 @@ export function makeUpdateVehicleRequest(details, dispatch) {
       original: details,
       //
       marker: details.meta.marker,
+      driverId: details.meta.driverId,
+
       dist: {
         total: details.odometer.value,
       },

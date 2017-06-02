@@ -83,6 +83,13 @@ const endpoints = {
     apiVersion: 1,
   }),
 
+  // drivers
+  getDrivers: {
+    url: 'drivers',
+    method: 'get',
+    apiVersion: 1,
+  },
+
   // stats
   getStats: {
     url: 'status',

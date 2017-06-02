@@ -92,6 +92,9 @@ export const prepareDataForReport = (
         if (domainData.customReportKind === 'mwaTime') {
             // MWA case ---------
           rowNumber = totalRowsCount;
+          if (!result[rowNumber]) {
+            result[rowNumber] = [];
+          }
 
           domainData.vehicles.forEach(aVeh => {
             const order = Math.max(0, selectedTypes.indexOf(filteredTypesByDomain[domain].reportType));
@@ -109,9 +112,14 @@ export const prepareDataForReport = (
               jobs.forEach(aJob => {
                 const startD = moment(aJob.DT_JOB_OPEN);
                 const endD = moment(aJob.DT_FIELD_END);
+                const pipeSize = aJob.PIPE_SIZE_DESC !== null ? aJob.PIPE_SIZE_DESC : 'N/A';
                 const columnN = {
                   order,
                   value: aJob.WLMA_JOB_CODE,
+                };
+                const columnPipe = {
+                  order,
+                  value: pipeSize,
                 };
                 const columnT0 = {
                   order,
@@ -128,7 +136,9 @@ export const prepareDataForReport = (
                   order,
                   value: `${deltaHvr}${moment.utc(deltaMs).format(':mm')}`,
                 };
-                secondPassResult.push(result[rowNumber].concat(columnN).concat(columnT0).concat(columnT1).concat(columnD));
+                secondPassResult.push(result[rowNumber].concat(columnN)
+                      .concat(columnPipe).concat(columnT0).concat(columnT1)
+                      .concat(columnD));
               });
             }
             ++rowNumber;

@@ -1,7 +1,6 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import { Avatar, SelectField, MenuItem } from 'material-ui';
 import { getVehicleAlertConditions,
     getAlertConditionByIdFunc, getAlertConditions } from 'services/AlertsSystem/reducer';
 import Layout from 'components/Layout';
@@ -10,77 +9,8 @@ import { conditionsActions } from 'services/AlertsSystem/actions';
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import { isAlerts } from 'configs';
 import { ifArraysEqual } from 'utils/arrays';
-import GFAlerts from './GFAlerts';
-
-import styles from './styles.css';
-
-// const stylesChip = {
-//   margin: 4,
-// };
-
-const AlertOfKindSelectorFn = ({
-  myKind,
-  alertConditions,
-  onOfKindChange,
-  vehicleAlerts,
-  alertById,
-}, context) => {
-  const myAlertOfKind = vehicleAlerts.map(alertId => (alertById(alertId)))
-    // check for null - the alert condition might be not loaded yet
-    .find(alrt => alrt !== null && alrt.kind === myKind);
-  const theKindData = alertKinds.getAlertByKind(myKind);
-  // const Icon = () => React.cloneElement(theKindData.icon, {
-  //       className: styles.vehicleIcon,
-  //     });
-  const itemsList = [(<MenuItem key={'NONE'} value={'NONE'} primaryText={'No Alert'} />)]
-    .concat(alertConditions.filter(alrt => alrt.kind === myKind)
-      .map(alrt => <MenuItem key={alrt.id} value={alrt.id} primaryText={alrt.name} />));
-  // const itemsList = alertConditions.filter(alrt => alrt.kind === myKind)
-  //   .map(alrt => <MenuItem value={alrt.id} primaryText={alrt.name} />);
-  return (
-    <div className={styles.kindOfSelector} key={myKind} >
-      <div className={styles.kindOfLabel}>
-        <Avatar
-          backgroundColor={context.muiTheme.palette.primary1Color}
-          color="#fff"
-          icon={theKindData.icon}
-          style={{ position: 'relative', top: '6px' }}
-        />
-        <span className={styles.kindOfName}> {theKindData.niceName} </span>
-      </div>
-      <SelectField
-        autoWidth
-        hintText={'SPEED'}
-        name="kind"
-        value={myAlertOfKind !== undefined ? myAlertOfKind.id : 'NONE'}
-        onChange={(e, key, value) => { onOfKindChange(value, myKind); }}
-        style={{ top: '3px' }}
-      >
-        {itemsList}
-      </SelectField>
-    </div>);
-};
-
-AlertOfKindSelectorFn.propTypes = {
-  myKind: React.PropTypes.string.isRequired,
-  onOfKindChange: React.PropTypes.func.isRequired,
-
-  alertConditions: React.PropTypes.array.isRequired,
-  vehicleAlerts: React.PropTypes.array.isRequired,
-  alertById: React.PropTypes.func.isRequired,
-};
-AlertOfKindSelectorFn.contextTypes = {
-  muiTheme: React.PropTypes.object.isRequired,
-};
-
-const mapStateA = state => ({
-  getVehicleAlerts: getVehicleAlertConditions(state),
-  alertById: getAlertConditionByIdFunc(state),
-  alertConditions: getAlertConditions(state),
-});
-
-const AlertOfKindSelector = connect(mapStateA)(pure(AlertOfKindSelectorFn));
-
+import AlertOfKindMultiSelector from './AlertOfKindMultiSelector';
+import AlertOfKindSelector from './AlertsOfKindSelector';
 
 class VehicleAlerts extends React.Component {
   constructor(props) {
@@ -168,25 +98,30 @@ class VehicleAlerts extends React.Component {
             onOfKindChange={this.onOfKindChange}
             vehicleAlerts={this.state.alerts}
           />
-          <AlertOfKindSelector
-            myKind={alertKinds._ALERT_KIND_ODO}
-            onOfKindChange={this.onOfKindChange}
+          <AlertOfKindMultiSelector
+            title="Maintenance"
             vehicleAlerts={this.state.alerts}
+            vehicleId={this.props.vehicleId}
+            doAddAlert={this.doAddAlert}
+            onRemoveClick={this.onRemoveClick}
+            alertFilter={a => (a.kind === alertKinds._ALERT_KIND_ODO)}
           />
           {/* put all the GF alerts with chips here?*/}
-          <GFAlerts
+          <AlertOfKindMultiSelector
+            title="On Enter Location"
             vehicleAlerts={this.state.alerts}
             vehicleId={this.props.vehicleId}
             doAddAlert={this.doAddAlert}
             onRemoveClick={this.onRemoveClick}
-            onEnter
+            alertFilter={a => (a.kind === alertKinds._ALERT_KIND_GF && a.onEnter === true)}
           />
-          <GFAlerts
+          <AlertOfKindMultiSelector
+            title="On Exit Location"
             vehicleAlerts={this.state.alerts}
             vehicleId={this.props.vehicleId}
             doAddAlert={this.doAddAlert}
             onRemoveClick={this.onRemoveClick}
-            onEnter={false}
+            alertFilter={a => (a.kind === alertKinds._ALERT_KIND_GF && a.onEnter === false)}
           />
           <FormButtons
             onSubmit={this.saveAlerts}
