@@ -57,7 +57,7 @@ class ListItemVehicle extends React.Component {
               ? `${(this.props.vehicle.fuelNormalized * 100).toFixed(0)}%` : N_A}`;
     const igintion = `${this.props.vehicle.ignOn
               ? `${this.props.vehicle.ignOn ? 'on' : 'off'}` : N_A}`;
-   const jobsCount = this.props.vehicle.mwa === undefined ? 0 :
+    const jobsCount = this.props.vehicle.mwa === undefined ? 0 :
         (this.props.vehicle.mwa.jobs === undefined ? 0 :
             this.props.vehicle.mwa.jobs.length);
 
