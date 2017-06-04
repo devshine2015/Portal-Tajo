@@ -241,6 +241,8 @@ const phrases = {
     license_plate: 'License Plate',
     driver_name: 'Driver Name',
     door_open_close: 'Door Open/Close',
+    door_open_close_opened: 'open',
+    door_open_close_closed: 'closed',
     engine_status: 'Engine Status',
     fuel_level: 'Fuel Level',
 
@@ -494,6 +496,8 @@ const phrases = {
     license_plate: 'ทะเบียน',
     driver_name: 'ชื่อคนขับ',
     door_open_close: 'สถานะประตู',
+    door_open_close_opened: 'เปิด',
+    door_open_close_closed: 'ปิด',
     engine_status: 'สถานะเครื่องยนต์',
     fuel_level: 'ระดับน้ำมัน',
 

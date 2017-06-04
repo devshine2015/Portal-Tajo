@@ -1,3 +1,6 @@
+// ---------------
+//
+
 import { Map, fromJS } from 'immutable';
 import { LAG_INDICAION_TRH_MIN, LAG_INDICAION_TRH_NOIGN_MIN } from 'utils/constants';
 import { sortByName } from 'utils/sorting';
@@ -51,6 +54,7 @@ function _makeImmutableVehicle({
   const hasDist = vehicleStats.hasOwnProperty('dist');
   const hasTemp = vehicleStats.hasOwnProperty('temp');
   const hasFuel = vehicleStats.hasOwnProperty('fuel');
+  const hasIgnition = vehicleStats.hasOwnProperty('ignOn');
 
   const isDead = _checkIsDead(hasPosition);
   const ignitionOn = checkIgnition(vehicleStats.ignOn);
@@ -78,6 +82,12 @@ function _makeImmutableVehicle({
       s.set('fuelNormalized', vehicleStats.fuel.fuelLevelPerc / 100);
     } else {
       s.set('fuelNormalized', undefined);
+    }
+
+    if (hasIgnition) {
+      s.set('ignOn', vehicleStats.ignOn);
+    } else {
+      s.set('ignOn', undefined);
     }
 
     if (hasTemp) {
