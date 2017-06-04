@@ -2,7 +2,7 @@ import { api } from 'utils/api';
 import { isMwa } from 'configs';
 import endpoints from 'configs/endpoints';
 import { mwaFetchJobs } from 'services/MWA/actions';
-import { filterProcessedListByName } from '../utils/filtering';
+import filterProcessedList from '../utils/filtering';
 import { getProcessedVehicles } from '../reducer';
 import {
   makeLocalVehicles,
@@ -67,9 +67,9 @@ function _filterVehicles({ searchString }, dispatch, getState) {
   const options = {
     searchString,
     objectsList: originVehicles,
-    path: 'original.name',
+    paths: ['original.name', 'original.licensePlate'],
   };
-  const filteredVehicles = filterProcessedListByName(options);
+  const filteredVehicles = filterProcessedList(options);
 
   dispatch(_vehiclesFilterUpdate(filteredVehicles, searchString));
 }
