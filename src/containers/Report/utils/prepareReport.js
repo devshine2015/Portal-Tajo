@@ -97,29 +97,34 @@ export const prepareDataForReport = (
           }
 
           domainData.vehicles.forEach(aVeh => {
+            const N_A = 'N/A';
+
             const order = Math.max(0, selectedTypes.indexOf(filteredTypesByDomain[domain].reportType));
             let jobs = mwaGetJobsForVehicle(aVeh.id, domainData[0].RESULTS);
             jobs = jobs.filter(aJob => aJob.DT_FIELD_END !== null && aJob.DT_JOB_OPEN !== null);
             if (jobs.length === 0) {
               const column = {
                 order,
-                value: 'N/A',
+                value: N_A,
               };
-              secondPassResult.push(result[rowNumber].concat(column).concat(column).concat(column).concat(column));
-              // result[rowNumber] = result[rowNumber].concat(column).concat(column).concat(column).concat(column);
-              // ++rowNumber;
+              secondPassResult.push(result[rowNumber].concat(column).concat(column).concat(column).concat(column)
+                .concat(column)
+                .concat(column));
             } else {
               jobs.forEach(aJob => {
                 const startD = moment(aJob.DT_JOB_OPEN);
                 const endD = moment(aJob.DT_FIELD_END);
-                const pipeSize = aJob.PIPE_SIZE_DESC !== null ? aJob.PIPE_SIZE_DESC : 'N/A';
                 const columnN = {
                   order,
                   value: aJob.WLMA_JOB_CODE,
                 };
+                const columnJobStatus = {
+                  order,
+                  value: aJob.JOB_STATUS_DESC !== null ? aJob.JOB_STATUS_DESC : N_A,
+                };
                 const columnPipe = {
                   order,
-                  value: pipeSize,
+                  value: aJob.PIPE_SIZE_DESC !== null ? aJob.PIPE_SIZE_DESC : N_A,
                 };
                 const columnT0 = {
                   order,
@@ -136,8 +141,12 @@ export const prepareDataForReport = (
                   order,
                   value: `${deltaHvr}${moment.utc(deltaMs).format(':mm')}`,
                 };
-                secondPassResult.push(result[rowNumber].concat(columnN)
-                      .concat(columnPipe).concat(columnT0).concat(columnT1)
+                secondPassResult.push(result[rowNumber]
+                      .concat(columnN)
+                      .concat(columnJobStatus)
+                      .concat(columnPipe)
+                      .concat(columnT0)
+                      .concat(columnT1)
                       .concat(columnD));
               });
             }

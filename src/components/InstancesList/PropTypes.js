@@ -20,6 +20,8 @@ const phrases = {
   license_plate: '',
   driver_name: '',
   door_open_close: '',
+  door_open_close_opened: '',
+  door_open_close_closed: '',
   engine_status: '',
   fuel_level: '',
 };

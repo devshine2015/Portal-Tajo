@@ -55,6 +55,8 @@ class ListItemVehicle extends React.Component {
     const speed = `${this.props.vehicle.speed.toFixed(1)} ${this.props.translations.speed_km_h}`;
     const fuel = `${this.props.vehicle.fuelNormalized
               ? `${(this.props.vehicle.fuelNormalized * 100).toFixed(0)}%` : N_A}`;
+    const igintion = `${this.props.vehicle.ignOn
+              ? `${this.props.vehicle.ignOn ? 'on' : 'off'}` : N_A}`;
     const jobsCount = this.props.vehicle.mwa === undefined ? 0 :
         (this.props.vehicle.mwa.jobs === undefined ? 0 :
             this.props.vehicle.mwa.jobs.length);
@@ -100,15 +102,13 @@ class ListItemVehicle extends React.Component {
         { isMwa &&
           <ItemProperty
             title={this.props.translations.door_open_close}
-            value={N_A}
+            value={this.props.translations.door_open_close_closed}
           />
         }
-        { isMwa &&
-          <ItemProperty
-            title={this.props.translations.engine_status}
-            value={N_A}
-          />
-        }
+        <ItemProperty
+          title={this.props.translations.engine_status}
+          value={igintion}
+        />
         <ItemProperty
           title={this.props.translations.fuel_level}
           value={fuel}
