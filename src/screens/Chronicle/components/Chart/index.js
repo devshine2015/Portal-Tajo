@@ -63,20 +63,20 @@ class ChartBox extends React.Component {
     const yScaleFuel = scaleLinear().range([myHeight - paddings.bottom, paddings.top])
       .domain([0, 1]);
     const lineGenSpeed = line()
-      .x((d) => (xScale(d.timeMs)))
-      .y((d) => (yScaleSpeed(d.v)));
+      .x(d => (xScale(d.timeMs)))
+      .y(d => (yScaleSpeed(d.v)));
     const lineGenTemp = line()
-      .x((d) => (xScale(d.timeMs)))
-      .y((d) => (yScaleTemp(d.t)));
+      .x(d => (xScale(d.timeMs)))
+      .y(d => (yScaleTemp(d.t)));
     const lineGenFuel = line()
-      .x((d) => (xScale(d.timeMs)))
-      .y((d) => (yScaleFuel(d.f)));
+      .x(d => (xScale(d.timeMs)))
+      .y(d => (yScaleFuel(d.f)));
 
     this.setState({
       speedChartPathD: lineGenSpeed(srcFrame.speedData),
       tempChartPathD: srcFrame.hasTemperature() ? lineGenTemp(srcFrame.temperatureData) : '',
       fuelChartPathD: srcFrame.hasFuel() ? lineGenFuel(srcFrame.fuelData) : '',
-   });
+    });
   }
 
   saveNode = (node) => {
