@@ -15,4 +15,9 @@
     fill: none;
     pointer-events: none;
   }
+  .fuelChart {
+    stroke: #497b52;
+    fill: none;
+    pointer-events: none;
+  }
 }

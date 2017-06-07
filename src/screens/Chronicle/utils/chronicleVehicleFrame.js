@@ -1,7 +1,8 @@
 // TODO: huge room for optimizations here - locating samaples for time, etc..
 //
-import createFramePlayer from './chronicleFramePlayer';
 import moment from 'moment';
+import createFramePlayer from './chronicleFramePlayer';
+import * as eventHelpers from 'screens/ExecReports/utils/eventHelpers';
 
 const CHRONICLE_LOCAL_INCTANCE_STATE_NONE = 'chronLocStateNone';
 const CHRONICLE_LOCAL_INCTANCE_STATE_LOADING = 'chronLocStateLoading';
@@ -23,6 +24,8 @@ function ChronicleVehicleFrame(dateFrom, dateTo, events, inState) {
   this.temperatureData = [];
   this.minTemp = 300;
   this.maxTemp = -300;
+
+  this.fuelData = [];
 
   this.speedData = [];
   this.maxSpeed = 0;
@@ -110,6 +113,13 @@ ChronicleVehicleFrame.prototype.parceData = function (events) {
           this.minTemp = Math.min(this.minTemp, theEvent.ev.tempInfo);
         }
         break;
+      case 'vehicle-fuel': {
+        const fuelValue = eventHelpers.eventFuel(theEvent);
+        if (fuelValue !== undefined) {
+          this.fuelData.push({ timeMs: eventTimeMs, f: fuelValue });
+        }
+        break;
+      }
       case 'vehicle-stop-stats': {
         // skip too short stops on the history
         const stopMinutes = theEvent.ev.stopPeriod / (1000 * 60);
@@ -226,6 +236,12 @@ ChronicleVehicleFrame.prototype.hasTemperature = function () {
 //-----------------------------------------------------------------------
 ChronicleVehicleFrame.prototype.hasPositions = function () {
   return this.posData.length > 5;
+};
+//
+//
+//-----------------------------------------------------------------------
+ChronicleVehicleFrame.prototype.hasFuel = function () {
+  return this.fuelData.length > 5;
 };
 
 //

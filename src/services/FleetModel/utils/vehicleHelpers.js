@@ -34,6 +34,19 @@ export function getActivityStatus(isDead, isDelayed) {
   return 'ok';
 }
 
+export function extractFuelNormalized(fuelInfo) {
+  if (fuelInfo.hasOwnProperty('fuelLevelAbs')) {
+      // range 0-12000, inversed
+      // make it [0-1]
+    return Math.min(Math.max(12000 - fuelInfo.fuelLevelAbs, 0) / 12000, 1);
+  }
+  if (fuelInfo.hasOwnProperty('fuelLevelPerc')) {
+      // percentage, 0-100
+    return Math.min(1, fuelInfo.fuelLevelPerc / 100);
+  }
+  return undefined;
+}
+
 /**
  * create new immutable vehicle if imVehicle not defined,
  * will update given imVehicle in other case.
@@ -73,16 +86,7 @@ function _makeImmutableVehicle({
      .set('ignitionOn', ignitionOn)
      .set('isDelayedWithIgnitionOff', localTimings.isDelayedWithIgnitionOff);
 
-    if (hasFuel && vehicleStats.fuel.hasOwnProperty('fuelLevelAbs')) {
-      // range 0-12000, inversed
-      // make it [0-1]
-      s.set('fuelNormalized', Math.min(Math.max(12000 - vehicleStats.fuel.fuelLevelAbs, 0) / 12000, 1));
-    } else if (hasFuel && vehicleStats.fuel.hasOwnProperty('fuelLevelPerc')) {
-      // percentage, 0-100
-      s.set('fuelNormalized', vehicleStats.fuel.fuelLevelPerc / 100);
-    } else {
-      s.set('fuelNormalized', undefined);
-    }
+    s.set('fuelNormalized', hasFuel ? extractFuelNormalized(vehicleStats.fuel) : undefined);
 
     if (hasIgnition) {
       s.set('ignOn', vehicleStats.ignOn);

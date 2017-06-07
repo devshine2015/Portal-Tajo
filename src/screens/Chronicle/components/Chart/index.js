@@ -14,6 +14,7 @@ class ChartBox extends React.Component {
     this.state = {
       speedChartPathD: '',
       tempChartPathD: '',
+      fuelChartPathD: '',
     };
   }
 
@@ -35,6 +36,7 @@ class ChartBox extends React.Component {
       this.setState({
         speedChartPathD: '',
         tempChartPathD: '',
+        fuelChartPathD: '',
       });
       return;
     }
@@ -58,17 +60,23 @@ class ChartBox extends React.Component {
       .domain([0, srcFrame.maxSpeed]);
     const yScaleTemp = scaleLinear().range([myHeight - paddings.bottom, paddings.top])
       .domain([srcFrame.minTemp - tempRangePadding, srcFrame.maxTemp + tempRangePadding]);
+    const yScaleFuel = scaleLinear().range([myHeight - paddings.bottom, paddings.top])
+      .domain([0, 1]);
     const lineGenSpeed = line()
       .x((d) => (xScale(d.timeMs)))
       .y((d) => (yScaleSpeed(d.v)));
     const lineGenTemp = line()
       .x((d) => (xScale(d.timeMs)))
       .y((d) => (yScaleTemp(d.t)));
+    const lineGenFuel = line()
+      .x((d) => (xScale(d.timeMs)))
+      .y((d) => (yScaleFuel(d.f)));
 
     this.setState({
       speedChartPathD: lineGenSpeed(srcFrame.speedData),
       tempChartPathD: srcFrame.hasTemperature() ? lineGenTemp(srcFrame.temperatureData) : '',
-    });
+      fuelChartPathD: srcFrame.hasFuel() ? lineGenFuel(srcFrame.fuelData) : '',
+   });
   }
 
   saveNode = (node) => {
@@ -83,6 +91,7 @@ class ChartBox extends React.Component {
       >
         <path d={this.state.speedChartPathD} className={styles.speedChart} />
         <path d={this.state.tempChartPathD} className={styles.tempChart} />
+        <path d={this.state.fuelChartPathD} className={styles.fuelChart} />
       </svg>
     );
   }
