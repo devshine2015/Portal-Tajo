@@ -10,6 +10,7 @@ const phrases = {
     save: 'Save',
     cancel: 'Cancel',
     reset: 'Reset',
+    n_a: 'N/A',
     // -- end generic
 
     // chronicle
@@ -262,6 +263,7 @@ const phrases = {
     job_to: 'To',
     job_duration: 'Duration',
     job_pipe: 'Pipe Size',
+    job_pipe_type: 'Pipe Type',
     job_status: 'Job Status',
    // -- end alerts conditions
   },
@@ -277,6 +279,7 @@ const phrases = {
     cancel: 'ยกเลิก',
     save: 'บันทึก',
     reset: 'รีเซ็ต',
+    n_a: 'N/A',
     // -- end generic
 
     // chronicle
@@ -517,6 +520,7 @@ const phrases = {
     job_to: 'เวลาสิ้นสุดงานภาคสนาม',
     job_duration: 'ระยะเวลาปฏิบัติงาน',
     job_pipe: 'ขนาดท่อ',
+    job_pipe_type: 'Pipe Type',
     job_status: 'สถานะงาน',
     // -- end mwa reports
   },

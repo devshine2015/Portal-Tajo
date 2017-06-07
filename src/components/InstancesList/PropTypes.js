@@ -24,6 +24,10 @@ const phrases = {
   door_open_close_closed: '',
   engine_status: '',
   fuel_level: '',
+  n_a: '',
+  job_status: '',
+  job_pipe: '',
+  job_pipe_type: '',
 };
 
 
