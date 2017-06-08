@@ -11,6 +11,7 @@ import moment from 'moment';
 
 const chronicleInitialState = fromJS({
   normalized100T: 0,
+  // default time frame -24 hvrs from now on START of the app
   dateFrom: moment().subtract(1, 'days').toDate(),
   dateTo: moment().toDate(),
   localFrames: new Map(),
