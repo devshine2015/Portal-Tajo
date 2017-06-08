@@ -32,6 +32,10 @@ const common = {
     name: 'profile',
     path: 'profile',
   },
+  alertsLogs: {
+    name: 'alerts_logs',
+    path: 'alertslogs',
+  },
 };
 
 const escapePortal = {
@@ -50,10 +54,6 @@ const escapePortal = {
   devices: {
     name: 'devices_manager',
     path: 'devices',
-  },
-  alertsLogs: {
-    name: 'alerts_logs',
-    path: 'alertslogs',
   },
 };
 

@@ -25,6 +25,7 @@ import profileScreen from 'screens/Profile/route';
 import alersEditorScreen from 'screens/AlertsEditor/route';
 import notFoundScreen from 'screens/NotFound/route';
 import usersManagerScreen from 'screens/UsersManager/route';
+import alertLogsScreen from 'screens/AlertsLog/route';
 
 export default function createRoutes(store) {
   const { injectReducer } = getHooks(store);
@@ -68,6 +69,8 @@ export default function createRoutes(store) {
 
   const execReportRoute = execReportsScreen(mainMenu.sunshine.execReport);
 
+  const alertsLogsRoute = alertLogsScreen(mainMenu.escape.alertsLogs);
+
   const loginRoute = loginScreen({
     path: 'login',
   });
@@ -99,10 +102,10 @@ export default function createRoutes(store) {
     chronicleRoute,
     reportsRoute,
     execReportRoute,
-    execReportsScreen,
     vehiclesEditorRoute,
     notFoundRoute,
     usersManagerRoute,
+    alertsLogsRoute,
 // TODO: uncomment when releasing alerts system
 //    alertsEditorRoute,
 //    profileRoute
