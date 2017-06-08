@@ -53,13 +53,14 @@ MainMenu.contextTypes = {
 MainMenu.propTypes = {
   closeSidebar: React.PropTypes.func.isRequired,
   pages: React.PropTypes.arrayOf(pageShape).isRequired,
-  role: React.PropTypes.oneOf(rolesEnum).isRequired,
+  role: React.PropTypes.oneOf(rolesEnum),
 
   translations: phrasesShape.isRequired,
 };
 
 MainMenu.defaultProps = {
   translations: phrases,
+  role: 'admin',
 };
 
 const Pure = pure(MainMenu);

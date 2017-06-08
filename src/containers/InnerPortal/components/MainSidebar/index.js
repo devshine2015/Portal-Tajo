@@ -40,11 +40,12 @@ MainSidebar.propTypes = {
   isOpened: React.PropTypes.bool.isRequired,
   pages: React.PropTypes.array,
   toggleSidebar: React.PropTypes.func.isRequired,
-  role: React.PropTypes.oneOf(rolesEnum).isRequired,
+  role: React.PropTypes.oneOf(rolesEnum),
 };
 
 MainSidebar.defaultProps = {
   pages: [],
+  role: 'admin',
 };
 
 const mapState = state => ({
