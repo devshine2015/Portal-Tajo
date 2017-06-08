@@ -78,6 +78,7 @@ class SubPeriod extends React.Component {
           defaultDate={date}
           onChange={this.onDateChange}
           underlineStyle={STYLES.underline}
+          maxDate={new Date()}
         />
 
         { withTime && (
