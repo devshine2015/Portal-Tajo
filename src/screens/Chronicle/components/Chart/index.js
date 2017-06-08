@@ -48,6 +48,7 @@ class ChartBox extends React.Component {
     const myHeight = mySvgElement.clientHeight;
     const srcFrame = chronicleFrame;
     const tempRangePadding = 3;
+    const fuelRangePadding = 0.05;
     const paddings = {
       top: 10,
       right: 0,
@@ -61,7 +62,7 @@ class ChartBox extends React.Component {
     const yScaleTemp = scaleLinear().range([myHeight - paddings.bottom, paddings.top])
       .domain([srcFrame.minTemp - tempRangePadding, srcFrame.maxTemp + tempRangePadding]);
     const yScaleFuel = scaleLinear().range([myHeight - paddings.bottom, paddings.top])
-      .domain([0, 1]);
+      .domain([srcFrame.minFuel - fuelRangePadding, srcFrame.maxFuel + fuelRangePadding]);
     const lineGenSpeed = line()
       .x(d => (xScale(d.timeMs)))
       .y(d => (yScaleSpeed(d.v)));

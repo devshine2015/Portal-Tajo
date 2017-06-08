@@ -128,7 +128,10 @@ ChronicleFramePlayer.prototype.getMomentDataAtNormalized = function (normalizedT
     pos: this.chronicleFrame.getPosAtMs(timeMs),
     speed: this.chronicleFrame.getSpeedAtLastPos(),
     temperature: this.chronicleFrame.hasTemperature() ?
-      this.chronicleFrame.getTemperatureAtMs(timeMs) : null };
+      this.chronicleFrame.getTemperatureAtMs(timeMs) : null,
+    fuel: this.chronicleFrame.hasFuel() ?
+      this.chronicleFrame.getFuelAtMs(timeMs) : null,
+  };
 };
 
 // current frameData obj is:

@@ -26,6 +26,8 @@ function ChronicleVehicleFrame(dateFrom, dateTo, events, inState) {
   this.maxTemp = -300;
 
   this.fuelData = [];
+  this.minFuel = 1;
+  this.maxFuel = 0;
 
   this.speedData = [];
   this.maxSpeed = 0;
@@ -117,6 +119,8 @@ ChronicleVehicleFrame.prototype.parceData = function (events) {
         const fuelValue = eventHelpers.eventFuel(theEvent);
         if (fuelValue !== undefined) {
           this.fuelData.push({ timeMs: eventTimeMs, f: fuelValue });
+          this.maxFuel = Math.max(this.maxFuel, fuelValue);
+          this.minFuel = Math.min(this.minFuel, fuelValue);
         }
         break;
       }
@@ -223,6 +227,14 @@ ChronicleVehicleFrame.prototype.getPosAtMs = function (timeMs) {
 ChronicleVehicleFrame.prototype.getTemperatureAtMs = function (timeMs) {
   const tempSample = this.findSample(Math.floor(timeMs), this.temperatureData);
   return tempSample.t;
+};
+
+//
+//
+//-----------------------------------------------------------------------
+ChronicleVehicleFrame.prototype.getFuelAtMs = function (timeMs) {
+  const fuelSample = this.findSample(Math.floor(timeMs), this.fuelData);
+  return fuelSample.f;
 };
 
 //

@@ -36,12 +36,13 @@ export function getActivityStatus(isDead, isDelayed) {
 
 export function extractFuelNormalized(fuelInfo) {
   if (fuelInfo.hasOwnProperty('fuelLevelAbs')) {
-      // range 0-12000, inversed
+      // in: range 0-12000, inversed
       // make it [0-1]
     return Math.min(Math.max(12000 - fuelInfo.fuelLevelAbs, 0) / 12000, 1);
   }
   if (fuelInfo.hasOwnProperty('fuelLevelPerc')) {
-      // percentage, 0-100
+      // in: percentage, 0-100
+      // make it [0-1]
     return Math.min(1, fuelInfo.fuelLevelPerc / 100);
   }
   return undefined;
