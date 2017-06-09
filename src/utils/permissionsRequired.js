@@ -36,6 +36,10 @@ export default (permissions = []) => (Component) => {
     currentUserRole: React.PropTypes.string.isRequired,
   };
 
+  PermissionsRequired.defaultProps = {
+    currentUserRole: 'admin',
+  };
+
   const mapState = state => ({
     currentUserRole: getUserRole(state),
   });
