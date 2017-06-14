@@ -16,7 +16,6 @@ function ChronicleVehicleFrame(dateFrom, dateTo, events, inState) {
     return;
   }
   this.dateFrom = dateFrom;
-  this.dateFrom00 = new Date(dateFrom.getFullYear(), dateFrom.getMonth(), dateFrom.getDate());
   this.dateTo = dateTo;
   this.timeRangeMs = dateTo.getTime() - dateFrom.getTime(); // 24*60*60*1000
   this.posData = [];
@@ -172,7 +171,7 @@ ChronicleVehicleFrame.prototype.kill = function () {
 //
 //-----------------------------------------------------------------------
 ChronicleVehicleFrame.prototype.getDateAtMs = function (timeMs) {
-  let aDate = new Date(timeMs + this.dateFrom00.getTime());
+  let aDate = new Date(timeMs + this.dateFrom.getTime());
   return aDate;
 };
 

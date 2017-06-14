@@ -45,7 +45,7 @@ export function temperatureToChronicleLable(temp) {
 }
 
 export function fuelToChronicleLable(fuelNormalized) {
-  return `${makeStaticLableSVG(localGasStation)}<span style="float:right">${(fuelNormalized*100).toFixed(0)}%</span>`;
+  return `${makeStaticLableSVG(localGasStation)}<span style="float:right">${(fuelNormalized * 100).toFixed(0)}%</span>`;
 }
 
 function dateToChronicleString(inDate) {
