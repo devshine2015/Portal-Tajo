@@ -21,7 +21,8 @@ export const setChronicleNormalizedT = normalized100T => ({
 export const setChronicleTimeFrame = (dateFrom, dateTo) => (dispatch, getState) => {
   // TODO: fix dates comparison (use moments?)
   //
-  if (getChronicleTimeFrame(getState()).fromDate === dateFrom) {
+  if (getChronicleTimeFrame(getState()).fromDate === dateFrom
+      && getChronicleTimeFrame(getState()).toDate === dateTo) {
     return;
   }
   dispatch(_chronicleSetTimeFrame(dateFrom, dateTo));
