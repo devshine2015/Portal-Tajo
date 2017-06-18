@@ -16,6 +16,7 @@ import ChroniclePath from 'containers/Map/OnMapElements/ChroniclePath';
 import ChronicleMarker from 'containers/Map/OnMapElements/ChronicleMarker';
 import ChronicleEventMarker from 'containers/Map/OnMapElements/ChronicleEventMarker';
 import CtxtOpenGoogleMap from 'containers/Map/OnMapElements/CtxtMenuOpenGMap';
+import mapMWAJobChronicleMarkerMaker from 'containers/Map/OnMapElements/MWAJobChronicleMarker';
 
 import {
   getInstanceChronicleFrameById,
@@ -70,6 +71,11 @@ class Chronicle extends React.Component {
     />
           );
 
+  makeChronoMWAMarker = (aJob, idx) => {
+    aJob.idx = idx;
+    return mapMWAJobChronicleMarkerMaker(aJob);
+  }
+
   render() {
     if (this.props.vehicles.length === 0) {
       return null;
@@ -81,6 +87,14 @@ class Chronicle extends React.Component {
     && chronicleFrame.hasPositions()
     && chronicleFrame.stopEvents.length > 0) {
       stopEvents = chronicleFrame.stopEvents.map(this.makeChronoEventMarker);
+    }
+
+    let mwaJobs = [];
+    if (chronicleFrame.isValid()
+    && chronicleFrame.hasPositions()
+    && chronicleFrame.mwaJobs !== undefined
+    && chronicleFrame.mwaJobs.length > 0) {
+      mwaJobs = chronicleFrame.mwaJobs.map(this.makeChronoMWAMarker);
     }
 
     return (
@@ -122,6 +136,7 @@ class Chronicle extends React.Component {
             {this.props.vehicles.map(this.makeChronoPath)}
             {this.props.vehicles.map(this.makeChronoMarker)}
             {stopEvents}
+            {mwaJobs}
             <GFEditorMapComponent />
             <CtxtOpenGoogleMap />
           </TheMap>

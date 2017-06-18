@@ -4,7 +4,7 @@
   div.leaflet-map-pane > div.leaflet-objects-pane > div.leaflet-popup-pane > div > div.leaflet-popup-content-wrapper
   div.leaflet-map-pane > div.leaflet-objects-pane > div.leaflet-popup-pane > div > div.leaflet-popup-content-wrapper*/
   /*#app > div > div.content__src-containers-InnerPortal-styles__mMm_v > div > div.fixedContent__src-components-FixedContent-styles__3eUbg.fixedContent__src-containers-Chronicle-styles__Ux3hv > div.mapContainer__src-containers-MapFleet-styles__I2Y2K.leaflet-container.leaflet-fade-anim > div.leaflet-map-pane > div.leaflet-objects-pane > div.leaflet-popup-pane > div > div.leaflet-popup-content-wrapper*/
-    :global(div.leaflet-popup-content-wrapper){
+    :global(div.leaflet-popup-content-wrapper) {
       /*background: #2c3e50;*/
       /*background: #3388ff;*/
       /*background: #2768c3;*/
@@ -17,8 +17,13 @@
       border-radius: 2px;
       pointer-events: none;
       }
+    :global(div.widePopUp) {
+      width: 175px !important;
+      /*overflow: hidden;*/
+      }
     :global(div.leaflet-popup-content) {
       min-width: 100px;
+      /*width: 200px;*/
       padding: 3px;
       margin: 0;
       font-weight: lighter;

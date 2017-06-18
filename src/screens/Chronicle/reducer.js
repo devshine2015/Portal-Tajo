@@ -5,6 +5,7 @@ import {
   CHRONICLE_SET_TIMEFRAME,
   CHRONICLE_ITEM_NEW_FRAME,
   CHRONICLE_VALIDATE_TIMEFRAME,
+  CHRONICLE_MWA_JOBS,
 } from './actions';
 import createHistoryFrame from './utils/chronicleVehicleFrame';
 import moment from 'moment';
@@ -34,6 +35,14 @@ export default function chronicleReducer(state = chronicleInitialState, action) 
       return newState.setIn(['localFrames', action.vehicleId], action.chronicleFrame)
   // TODO: does not look like right way to update store....
           .set('durtyFlag', ++drty);
+    }
+    case CHRONICLE_MWA_JOBS: {
+      const chrFrame = state.getIn(['localFrames', action.vehicleId]);
+      chrFrame.mwaJobs = action.mwaJobs;
+      return state.set('durtyFlag', ++drty);
+  //     return state.setIn(['localFrames', action.vehicleId, 'mwaJobs'], action.mwaJobs)
+  // // TODO: does not look like right way to update store....
+  //         .set('durtyFlag', ++drty);
     }
     // // TODO: quick and dirty - just reset all
     case CHRONICLE_VALIDATE_TIMEFRAME: {

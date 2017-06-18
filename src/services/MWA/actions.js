@@ -12,16 +12,17 @@ import { onStage, onDev, onLocal } from 'configs';
 import { getMWAJobsAsIM } from './reducer';
 import { filterProcessedListByName } from '../FleetModel/utils/filtering';
 
+import { chronicleMWAJobs } from 'screens/Chronicle/actions';
 
 // import staticData from './staticData';
 
 export const MWA_ADD_JOBS = 'mwa/add';
 export const MWA_SELECT_JOB = 'mwa/slct';
 
-export const mwaFilterJobs = (searchString) => (dispatch, getState) =>
+export const mwaFilterJobs = searchString => (dispatch, getState) =>
   _filterMWA({ searchString }, dispatch, getState);
 
-export const mwaSelectJob = (id) => (dispatch) => dispatch({
+export const mwaSelectJob = id => dispatch => dispatch({
   type: MWA_SELECT_JOB,
   id,
 });
@@ -61,111 +62,67 @@ function _fetchJobs(dispatch, getState) {
     to: makeMWADate(dateTo),
   });
   return api[method](url, { apiVersion })
-    .then((response) => (
-      response.json())
+    .then(response => (
+      response.json()),
     )
-    .then(mwaData => {
+    .then((mwaData) => {
       // console.log(mwaData);
       _addJobs(dispatch, getState, mwaData.RESULTS);
     })
-    .catch(e => {
+    .catch((e) => {
       console.error(e);
     });
 }
 
+const isDateTimeWithinTimeframe = (fromDateTime, toDateTime, refDateTime) =>
+  (refDateTime.getTime() > fromDateTime.getTime()
+  && refDateTime.getTime() < toDateTime.getTime());
 
-// function asdf(data) {
-//   console.log('then --- ');
-//   const text = data.text();
-//   console.log('then --- ', text);
-//   return data.json();
-// }
+const jobWithinTimeframe = (from, to, aJob) => {
+  const begin = moment(aJob.DT_FIELD_BEGIN).toDate();
+  const end = moment(aJob.DT_FIELD_END).toDate();
+  const open = moment(aJob.DT_JOB_OPEN).toDate();
+  const close = moment(aJob.DT_JOB_CLOSE).toDate();
+  return isDateTimeWithinTimeframe(from, to, begin)
+        || isDateTimeWithinTimeframe(from, to, end)
+        || isDateTimeWithinTimeframe(from, to, open)
+        || isDateTimeWithinTimeframe(from, to, close)
+        || isDateTimeWithinTimeframe(begin, end, from);
+};
 
-// function _fetchJobsNotWorking(dispatch, getState) {
-  // const theUrl = 'http://115.31.184.236:2557/WLMA-SERVICE-GATEWAY/WlmaRepairJobServlet?USER=00100193&PASSWORD=81dc9bdb52d04dc20036dbd8313ed055&BRANCH_CODE=01&DATE_BEGIN=20170325';
-  // const theUrl = 'http://115.31.184.236:2557/WLMA-SERVICE-GATEWAY/WlmaRepairJobServlet?USER=00100193&PASSWORD=81dc9bdb52d04dc20036dbd8313ed055&BRANCH_CODE=01&DATE_BEGIN=20170328';
+export function mwaFetchChronicleJobs(vehicleId, dateFrom, dateTo, dispatch) {
+  // const dateFrom = moment().subtract(1, 'days').toDate();
+  // const dateTo = moment().toDate();
 
-  // let xhr = new XMLHttpRequest();
-  // xhr.open('GET', theUrl, true);
-  // // xhr.overrideMimeType("text/plain; charset=x-user-defined");
-  //    xhr.setRequestHeader('mode', 'no-cors');
-  //   //  xhr.setRequestHeader('Access-Control-Allow-Headers', '*');
-  //   //   xhr.setRequestHeader('Content-type', 'application/ecmascript');
-  //   //   xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-  // xhr.onreadystatechange = (e) => {
-  //   console.log(xhr.readyState);
-  //   console.log(xhr.status);
-  //   console.log(xhr.responseText);
-  // };
-  // xhr.onload = function (e) {
-  //   if (xhr.readyState === 4) {
-  //     if (xhr.status === 200) {
-  //       console.log(xhr.responseText);
-  //     } else {
-  //       console.error(xhr.statusText);
-  //     }
-  //   }
-  // };
-
-  // xhr.send();
-
-  //   fetchJsonp(theUrl, { headers: {
-  //      'content-type': 'application/json',
-  //   accept: 'application/json',
-  // }
-  // })
-  //     .then(asdf)
-  //   // .then(function(json) {
-  //   //   console.log('parsed json', json);
-  //   // })
-  //     .catch(function (ex) {
-  //       console.log('parsing failed', ex);
-  //     });
-
-  // jsonp(theUrl, {}, (err, data) =>
-  // {
-  //   console.log(data);
-  //   const jsn = data.json();
-  // });
-
-  // return fetch(theUrl, {
-  //   mode: 'no-cors',
-  //   headers: {
-      //  mode: 'no-cors',
-      // 'content-type': 'application/json',
-      //  accept: 'application/json',
-      //  Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-      // Accept: 'application/json;charset=UTF-8',
-      // 'Accept-Encoding': 'gzip, deflate, sdch',
-      // method: method || null,
-      // body: data || null,
-  //   }
-  // })
-    // .then(() => 'asdf')
-    // .then(resp => resp.json())
-    // .then(resp => {
-    //   console.log(resp);
-      // debugger
-      // console.log(resp.headers.get('Content-Type'))
-      // console.log(resp.headers.get('Date'))
-      // console.log(resp.response)
-      // console.log(resp.statusText)
-      // const txt = resp.text();
-      // const jsn = resp.json();
-      //  const bdy = resp.body;
-      // return jsn;
-    // })
-    // .then(aData => {
-    //   console.log(aData);
-    // })
-    // .then(handleResponse)
-    // .then(jobs => {
-    //   _addJobs(dispatch, alerts);
-    // })
-//     .catch(e => {
-//       console.error(e);
-//     });
-// }
+  // dates like this '20170325',
+  // pad from-to by one day
+  const { url, method, apiVersion } = endpoints.getMWAJobs({
+    from: makeMWADate(moment(dateFrom).subtract(1, 'days').toDate()),
+    to: makeMWADate(moment(dateTo).add(1, 'days').toDate()),
+  });
+  return api[method](url, { apiVersion })
+    .then(response => (
+      response.json()),
+    )
+    .then((mwaData) => {
+      // console.log(mwaData);
+      // const myJobs = mwaData.RESULTS.filter(aJob => mapJobToCar(aJob.TEAM_ID) === vehicleId);
+      const myJobsFltr = mwaData.RESULTS.filter(aJob => mapJobToCar(aJob.TEAM_ID) === vehicleId
+          && jobWithinTimeframe(dateFrom, dateTo, aJob))
+          .map(aJob => Object.assign({}, aJob, {
+            id: aJob.WLMA_JOB_CODE,
+            name: aJob.WLMA_JOB_CODE,
+            begin: moment(aJob.DT_FIELD_BEGIN).toDate(),
+            end: moment(aJob.DT_FIELD_END).toDate(),
+          }));
+          // .forEach(aJob => ensureHasLocations(aJob));
+      console.log(myJobsFltr);
+      dispatch(chronicleMWAJobs(vehicleId, myJobsFltr));
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+}
 
 const ensureHasLocations = (aJob) => {
   if (aJob.X === null
@@ -179,7 +136,7 @@ const ensureHasLocations = (aJob) => {
   aJob.isDelayedWithIgnitionOff = false;
 };
 
-const invalidJob = (aJob) => (
+const invalidJob = aJob => (
   aJob.X === null
   || aJob.Y === null
   || (aJob.JOB_STATUS_CODE !== 'J01'
@@ -227,6 +184,7 @@ const carTeamMapProd = {
 
 const mapJobToCar = (aJobKey) => {
   const teamMap = (onDev || onLocal) ? carTeamMapDev : (onStage ? carTeamMapStage : carTeamMapProd);
+  // const teamMap = carTeamMapProd; // carTeamMapStage;
   if (!(aJobKey in teamMap)) {
     return null;
   }
@@ -242,10 +200,10 @@ function _addJobs(dispatch, getState, mwaJobs) {
   const carsJobs = {};
   const processedList = getProcessedVehicles(getState());
 
-  mwaJobs.forEach(aJob => {
+  mwaJobs.forEach((aJob) => {
     ensureHasLocations(aJob);
     if (!invalidJob(aJob)) {
-      let ownerCarId = mapJobToCar(aJob.TEAM_ID);
+      const ownerCarId = mapJobToCar(aJob.TEAM_ID);
       if (ownerCarId !== null) {
         const imLocalVehicle = processedList.get(ownerCarId);
         if (imLocalVehicle !== undefined) {
@@ -266,7 +224,7 @@ function _addJobs(dispatch, getState, mwaJobs) {
   });
 
   dispatch(_mwaJobs(jobs));
-  for (let property in carsJobs) {
+  for (const property in carsJobs) {
     if (carsJobs.hasOwnProperty(property)) {
       const vehId = property;
       dispatch(vehiclesActions._vehicleUpdate({
@@ -290,7 +248,7 @@ function _filterMWA({ searchString }, dispatch, getState) {
   dispatch(_mwaJobs(filteredJobs));
 }
 
-const _mwaJobs = (jobs) => ({
+const _mwaJobs = jobs => ({
   type: MWA_ADD_JOBS,
   jobs,
 });

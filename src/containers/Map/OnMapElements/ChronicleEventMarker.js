@@ -24,9 +24,9 @@ class ChronicleMarker extends React.Component {
       return;
     }
     this.theMarker = window.L.marker(this.props.chronicleEvent.pos)
-    .bindPopup(dateToChronicleLable(this.props.chronicleEvent.date)
-    + '<br>'
-    + msToDurtationLable(this.props.chronicleEvent.period),
+    .bindPopup(`${dateToChronicleLable(this.props.chronicleEvent.date)
+     }<br>${
+     msToDurtationLable(this.props.chronicleEvent.period)}`,
       {
         offset: [0, 0],
 //              className: 'ddsMapHistorySecondaryPopup',

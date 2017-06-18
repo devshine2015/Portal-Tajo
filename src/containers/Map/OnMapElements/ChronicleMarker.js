@@ -16,7 +16,7 @@ class ChronicleMarker extends React.Component {
   }
 
   componentWillUnmount() {
-// TODO: need to delete MapBox markers?
+  // TODO: need to delete MapBox markers?
     this.removeMarker();
   }
 
@@ -27,7 +27,7 @@ class ChronicleMarker extends React.Component {
   }
 
   createMarkers() {
-    const vehicleMArkerColor = '#3388ff'; //'#2c3e50'
+    const vehicleMArkerColor = '#3388ff'; // '#2c3e50'
     const markerR = 5;
     const startPos = window.L.latLng(0, 0);
     this.theMarkerSecondary = window.L.circleMarker(startPos,
@@ -122,7 +122,7 @@ ChronicleMarker.propTypes = {
   // translations: phrasesShape.isRequired,
 };
 
-const mapState = (state) => ({
+const mapState = state => ({
   normalized100T: getNormalized100T(state),
 });
 

@@ -21,8 +21,12 @@ export function generateInnerHTMLForHistoryMoment(momentData/* , phrases = {}*/)
   return content;
 }
 
+export function textLable(lable, value, needsBr = true) {
+  return `${needsBr ? '<br>' : ''}${lable}<span style="float:right">${value}</span>`;
+}
+
 export function dateToChronicleLable(inDate) {
-  return `${makeStaticLableSVG(deviceAccessTime)}<span style="float:right">${dateToChronicleString(inDate)}</span>`;
+  return `${makeStaticLableSVG(deviceAccessTime)}<span style="float:right">${dateToChronicleStringTime(inDate)}</span>`;
 }
 
 export function msToDurtationLable(duration) {
@@ -48,16 +52,30 @@ export function fuelToChronicleLable(fuelNormalized) {
   return `${makeStaticLableSVG(localGasStation)}<span style="float:right">${(fuelNormalized * 100).toFixed(0)}%</span>`;
 }
 
-function dateToChronicleString(inDate) {
+function dateToChronicleStringTime(inDate) {
   const timeStr = `${(inDate.getHours() < 10 ? 0 : '')
                 + inDate.getHours()
                  }:${
                  inDate.getMinutes() < 10 ? 0 : ''
                  }${inDate.getMinutes()
-                 }:${
-                 inDate.getSeconds() < 10 ? 0 : ''
-                 }${inDate.getSeconds()}`;
-
+                 }`;
+                //  :${
+                //  inDate.getSeconds() < 10 ? 0 : ''
+                //  }${inDate.getSeconds()}`;
   return timeStr;
 }
 
+export function dateToChronicleString(inDate) {
+  const timeStr = `${inDate.toLocaleDateString()}
+                  ${' '}
+                  ${(inDate.getHours() < 10 ? 0 : '')
+                  + inDate.getHours()
+                 }:${
+                 inDate.getMinutes() < 10 ? 0 : ''
+                 }${inDate.getMinutes()
+                 }`;
+                //  :${
+                //  inDate.getSeconds() < 10 ? 0 : ''
+                //  }${inDate.getSeconds()}`;
+  return timeStr;
+}

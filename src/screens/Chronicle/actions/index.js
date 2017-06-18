@@ -1,15 +1,19 @@
 // import moment from 'moment';
 import { api } from 'utils/api';
 import endpoints from 'configs/endpoints';
-import { requestSamplesLimit } from 'configs';
+import { requestSamplesLimit, isMwa } from 'configs';
 // import { setLoader } from './loaderActions';
 import createHistoryFrame from './../utils/chronicleVehicleFrame';
 import { getChronicleTimeFrame } from './../reducer';
+
+import { mwaFetchChronicleJobs } from 'services/MWA/actions';
 
 export const CHRONICLE_ITEM_NEW_FRAME = 'chronicle/newFrame';
 export const CHRONICLE_SET_T = 'chronicle/setT';
 export const CHRONICLE_SET_TIMEFRAME = 'chronicle/setTimeFrame';
 export const CHRONICLE_VALIDATE_TIMEFRAME = 'chronicle/validateTimeFrame';
+
+export const CHRONICLE_MWA_JOBS = 'chronicle/mwaJobs';
 
 export const requestHistory = (vehicleId, dateFrom, dateTo) => dispatch =>
   _requestHistory(vehicleId, dateFrom, dateTo, dispatch);
@@ -58,7 +62,12 @@ function _requestHistory(vehicleId, dateFrom, dateTo, dispatch) {
     .then(events =>
       dispatch(_newVehicleChronicleFrame(vehicleId,
               createHistoryFrame(dateFrom, dateTo, events))),
-    );
+    )
+    .then(() => {
+      if (isMwa) {
+        mwaFetchChronicleJobs(vehicleId, dateFrom, dateTo, dispatch);
+      }
+    });
 }
 
 function toJson(response) {
@@ -79,4 +88,10 @@ const _chronicleSetTimeFrame = (dateFrom, dateTo) => ({
 
 const _chronicleValidateTimeFrame = () => ({
   type: CHRONICLE_VALIDATE_TIMEFRAME,
+});
+
+export const chronicleMWAJobs = (vehicleId, mwaJobs) => ({
+  type: CHRONICLE_MWA_JOBS,
+  vehicleId,
+  mwaJobs,
 });
