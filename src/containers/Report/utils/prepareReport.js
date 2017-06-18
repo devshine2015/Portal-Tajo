@@ -92,12 +92,12 @@ export const prepareDataForReport = (
         if (domainData.customReportKind === 'mwaTime') {
             // MWA case ---------
           rowNumber = totalRowsCount;
-          if (!result[rowNumber]) {
-            result[rowNumber] = [];
-          }
 
           domainData.vehicles.forEach(aVeh => {
             const N_A = 'N/A';
+            if (!result[rowNumber]) {
+              result[rowNumber] = [];
+            }
 
             const order = Math.max(0, selectedTypes.indexOf(filteredTypesByDomain[domain].reportType));
             let jobs = mwaGetJobsForVehicle(aVeh.id, domainData[0].RESULTS);
