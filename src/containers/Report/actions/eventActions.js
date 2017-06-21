@@ -40,7 +40,7 @@ function _generateRawReport({ timePeriod, frequency, dateFormat }, dispatch, get
   const dateFormatWithTime = `${dateFormat} HH:mm:ss`;
   const vehiclesForRequest = getVehiclesForReport(getState());
   const selectedEvents = _getEvents(getState);
-  const periodParamsWithOptions = Object.assign({}, makeTimeRangeParams(timePeriod), {
+  const periodParamsWithOptions = Object.assign({}, makeTimeRangeParams(timePeriod.fromDate, timePeriod.toDate), {
     max: requestSamplesLimit,
     filter: 'PG',
     // no need to pass tzoffset - from/to already in UTC
