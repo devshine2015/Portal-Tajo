@@ -32,7 +32,7 @@ const PreviewTable = ({
   ));
 
   return (
-    <div>
+    <div style={{ margin: '24px 0 24px 0' }}>
       <Table>
         <TableHeader
           displaySelectAll={false}

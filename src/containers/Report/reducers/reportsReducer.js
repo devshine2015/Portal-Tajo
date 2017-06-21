@@ -5,6 +5,7 @@ import baseSpecs from '../specs/base';
 import mileageSpecs from '../specs/mileage';
 import mwaJobs from '../specs/mwaJobs';
 import mwaJobsTime from '../specs/mwaJobsTime';
+import mwaPipeSizeCount from '../specs/mwaJobsSizes';
 // import idlingSpecs from '../specs/idling';
 import statsSpecs from '../specs/stats';
 
@@ -15,7 +16,7 @@ const specs = baseSpecs
     !spec.hasOwnProperty('available') || spec.available
   );
 const specsMWA = baseSpecs
-  .concat( mwaJobs, mwaJobsTime, mileageSpecs, tempSpecs, statsSpecs)
+  .concat( mwaJobs, mwaPipeSizeCount, mwaJobsTime, mileageSpecs, tempSpecs, statsSpecs)
   .filter(spec =>
     !spec.hasOwnProperty('available') || spec.available
   );

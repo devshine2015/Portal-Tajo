@@ -10,7 +10,21 @@ function dataReducer(state = dataInitialState, action) {
   switch (action.type) {
     case reportActions.REPORT_DATA_SAVE:
     case reportActions.REPORT_GENERATING_SUCCESS:
-      return new List(action.reportData);
+      return new List(action.reportData.table);
+
+    case reportActions.REPORT_DATA_REMOVE:
+    case reportActions.REPORT_BEFORE_GENERATING:
+      return new List();
+
+    default:
+      return state;
+  }
+}
+function secondaryDataReducer(state = dataInitialState, action) {
+  switch (action.type) {
+    case reportActions.REPORT_DATA_SAVE:
+    case reportActions.REPORT_GENERATING_SUCCESS:
+      return new List(action.reportData.secondaryTable);
 
     case reportActions.REPORT_DATA_REMOVE:
     case reportActions.REPORT_BEFORE_GENERATING:
@@ -25,6 +39,7 @@ export default combineReducers({
   configurator: configuratorReducer,
   vehicles: availableVehiclesReducer,
   data: dataReducer,
+  secondaryData: secondaryDataReducer,
 });
 
 function getConfigurator(s) {
@@ -35,11 +50,15 @@ function getVehicles(s) {
   return s.getIn(['reports', 'vehicles']);
 }
 
-export const getSavedReportData = (state) =>
+export const getSavedReportData = state =>
   state.getIn(['reports', 'data']);
-export const appHasStoredReport = (state) =>
+export const appHasStoredReport = state =>
   state.getIn(['reports', 'data']).size !== 0;
 
+export const getSavedReportSecondaryData = state =>
+  state.getIn(['reports', 'secondaryData']);
+export const appHasStoredSecondaryReport = state =>
+  state.getIn(['reports', 'secondaryData']).size !== 0;
 
 export const getAvailableReports = state =>
   fromConfigReducer.getAvailableReports(getConfigurator(state));
@@ -83,5 +102,5 @@ export const getSelectedVehiclesAmount = state =>
 export const isVehicleAlreadyAdded = (state, id) =>
   fromVehiclesReducer.findIndexById(getVehicles(state), id);
 
-export const getIsFiltering = (state) =>
+export const getIsFiltering = state =>
   fromVehiclesReducer.isFiltering(getVehicles(state));

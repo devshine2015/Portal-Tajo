@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import cs from 'classnames';
+import Divider from 'material-ui/Divider';
 import ReportConfigurator from './components/ReportConfigurator';
 import PreviewTable from './components/PreviewTable';
 import VehiclesList from './components/VehiclesList';
@@ -11,6 +12,8 @@ import {
   getSelectedReports,
   getSavedReportData,
   appHasStoredReport,
+  getSavedReportSecondaryData,
+  appHasStoredSecondaryReport,
 } from './reducer';
 import { reportActions } from './actions';
 
@@ -18,25 +21,15 @@ const ReportsScreen = ({
   availableReports,
   data,
   hasReport,
+  secondaryData,
+  hasSecondaryReport,
   saveGenerated,
   selectedFields,
   vehiclesClassName,
   contentClassName,
 }, context) => {
-  // const headers = selectedFields.map(index => (
-  //   availableReports[index].label
-  // ));
-  const headers = [];
-  selectedFields.forEach(index => {
-    if (availableReports[index].multiLabel !== undefined) {
-      headers.push(...(availableReports[index].multiLabel.map(
-          lbl => context.translator.getTranslation(lbl))));
-    } else {
-      headers.push(context.translator.getTranslation(availableReports[index].name));
-    }
-    // headers.push(availableReports[index].multiLabel !== undefined ?
-    //       ...(availableReports[index].multiLabel) : availableReports[index].label);
-  });
+  const headers = reportActions.getHeaders(context.translator, selectedFields, availableReports, false);
+  const headersSecondary = reportActions.getHeaders(context.translator, selectedFields, availableReports, true);
 
   const className = cs('configurator', contentClassName);
 
@@ -51,10 +44,14 @@ const ReportsScreen = ({
           hasReport={hasReport}
           saveReport={() => saveGenerated(context.translator)}
         />
-
         <PreviewTable
           headers={headers}
           data={data}
+        />
+        <Divider />
+        <PreviewTable
+          headers={headersSecondary}
+          data={secondaryData}
         />
       </FixedContent>
     </div>
@@ -71,6 +68,8 @@ ReportsScreen.propTypes = {
   contentClassName: React.PropTypes.string,
   data: React.PropTypes.object.isRequired,
   hasReport: React.PropTypes.bool.isRequired,
+  secondaryData: React.PropTypes.object.isRequired,
+  hasSecondaryReport: React.PropTypes.bool.isRequired,
   saveGenerated: React.PropTypes.func.isRequired,
   selectedFields: React.PropTypes.object.isRequired,
 };
@@ -82,11 +81,13 @@ ReportsScreen.defaultProps = {
 
 const PureReportsScreen = pure(ReportsScreen);
 
-const mapState = (state) => ({
+const mapState = state => ({
   availableReports: getAvailableReports(state).toArray(),
   data: getSavedReportData(state),
   hasReport: appHasStoredReport(state),
   selectedFields: getSelectedReports(state),
+  secondaryData: getSavedReportSecondaryData(state),
+  hasSecondaryReport: appHasStoredSecondaryReport(state),
 });
 const mapDispatch = {
   saveGenerated: reportActions.saveGenerated,

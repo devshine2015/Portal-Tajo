@@ -5,6 +5,7 @@ import reporter from 'utils/reports';
 import { makeTimeRangeParams } from 'utils/dateTimeUtils';
 import {
   getSavedReportData,
+  getSavedReportSecondaryData,
   getSelectedReports,
   getAvailableReports,
 } from '../reducer';
@@ -60,15 +61,16 @@ function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getSta
 
   return Promise.all(
     Object.values(fieldsToCall)
-      .map(({ domain, query = {}, endpoint = '', customReportKind = null }) => (
+      .map(({ domain, query = {}, endpoint = '', customReportKind = undefined, customReportGenerator = undefined }) => (
         _reportRequest(vehicles, {
           domain,
           endpoint,
           customReportKind,
+          customReportGenerator,
           timePeriod,
           queryString: `${qs.stringify(periodParams)}&${qs.stringify(query)}`,
         })
-      ))
+      )),
     ).then((reports = []) => {
       const result = {};
 
@@ -88,11 +90,12 @@ function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getSta
           result[domain] = vehicles;
         }
 
-        reports.forEach(r => {
+        reports.forEach((r) => {
           if (r.domain === domain) {
             result[domain] = r.report;
-            if (r.customReportKind !== null) {
+            if (r.customReportKind !== undefined) {
               result[domain].customReportKind = r.customReportKind;
+              result[domain].customReportGenerator = r.customReportGenerator;
               result[domain].vehicles = vehicles;
             }
           }
@@ -103,10 +106,10 @@ function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getSta
       return result;
     })
     .then(prepareDataForReport(selectedReports, periods, frequency, dateFormat))
-    .then(table => {
-      dispatch(_generatingSuccess(table));
+    .then((generatedTables) => {
+      dispatch(_generatingSuccess(generatedTables));
     })
-    .catch(e => {
+    .catch((e) => {
       if (e && e.response && e.response.status === 500) {
         dispatch(_generatingFail('Server error'));
       }
@@ -116,9 +119,15 @@ function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getSta
 
 function _saveGenerated(translator, dispatch, getState) {
   const reportData = getSavedReportData(getState()).toArray();
-  const headers = _getHeaders(translator, getState());
+  const headers = _getHeaders(translator, getState(), false);
 
-  return reporter(reportData, headers);
+  const reportSecondaryData = getSavedReportSecondaryData(getState()).toArray();
+  const headersSecondary = _getHeaders(translator, getState(), true);
+
+  reporter(reportData, headers, { fileName: 'CustomReport' });
+  if (reportSecondaryData.length > 0) {
+    reporter(reportSecondaryData, headersSecondary, { fileName: 'PipeSizeReport' });
+  }
 }
 
 const _beforeGenerating = () => ({
@@ -140,20 +149,22 @@ function _reportRequest(vehicles = [], {
   endpoint,
   // custom query needs peroidParam
   customReportKind,
+  customReportGenerator,
   timePeriod,
   domain,
   queryString,
 } = {}) {
   let requestsToResolve = [];
   if (customReportKind === 'mwa'
-  || customReportKind === 'mwaTime') {
+  || customReportKind === 'mwaTime'
+  || customReportKind === 'mwaSizeNbr') {
     const { url, method, apiVersion } = endpoints.getMWAJobs({
       from: makeMWADate(timePeriod.fromDate),
       to: makeMWADate(timePeriod.toDate),
     });
     requestsToResolve = [api[method](url, { apiVersion }).then(toJson)];
   } else {
-    requestsToResolve = vehicles.map(v => {
+    requestsToResolve = vehicles.map((v) => {
       const url = `${endpoints.getVehicle(v.id).url}/${endpoint}?${queryString}`;
       return api.get(url).then(toJson);
     });
@@ -163,6 +174,7 @@ function _reportRequest(vehicles = [], {
   ).then(res => ({
     domain,
     customReportKind,
+    customReportGenerator,
     report: res,
   }));
 }
@@ -176,25 +188,31 @@ function getSelectedReportsTypes(state) {
   const availableFields = getAvailableReports(state).toArray();
   const result = {};
 
-  selectedReports.forEach(i => {
+  selectedReports.forEach((i) => {
     result[availableFields[i].reportType] = availableFields[i];
   });
 
   return result;
 }
 
-function _getHeaders(translator, state) {
-  const selectedReports = getSelectedReports(state).toArray();
-  const availableFields = getAvailableReports(state).toArray();
+function _getHeaders(translator, state, useSecondary) {
+  return getHeaders(translator, getSelectedReports(state).toArray(),
+      getAvailableReports(state).toArray(), useSecondary);
+}
+
+export function getHeaders(translator, selectedReports, availableFields, useSecondary) {
   const result = [];
 
   selectedReports.forEach((index) => {
-//    result.push(availableFields[index].label);
-    if (availableFields[index].multiLabel !== undefined) {
-      result.push(...(availableFields[index].multiLabel.map(
-          lbl => translator.getTranslation(lbl))));
-    } else {
-      result.push(translator.getTranslation(availableFields[index].name));
+    const isSecondary = availableFields[index].isSecondary === true;
+    if (isSecondary === useSecondary) {
+  //    result.push(availableFields[index].label);
+      if (availableFields[index].multiLabel !== undefined) {
+        result.push(...(availableFields[index].multiLabel.map(
+            lbl => translator.getTranslation(lbl))));
+      } else {
+        result.push(translator.getTranslation(availableFields[index].name));
+      }
     }
   });
 

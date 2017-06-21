@@ -20,6 +20,7 @@ const phrases = {
   geofences: 'Geofence crossing (coming soon)',
   mwa_jobs_nbr: 'Nr of jobs',
   mwa_jobs_t: 'T of jobs',
+  mwa_jobs_pipe_count: 'pipe Sz Count',
 };
 
 export const phrasesShape = shape({

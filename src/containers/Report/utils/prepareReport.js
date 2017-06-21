@@ -2,7 +2,7 @@ import moment from 'moment';
 import { mwaGetJobsForVehicle } from 'services/MWA/actions';
 
 export const prepareDataForReport = (
-  selectedReports = {}, periods = [], frequency, dateFormat
+  selectedReports = {}, periods = [], frequency, dateFormat,
 ) =>
   (reports = {}) => {
     let result = [];
@@ -72,7 +72,7 @@ export const prepareDataForReport = (
           // MWA case ---------
           rowNumber = totalRowsCount;
 
-          domainData.vehicles.forEach(aVeh => {
+          domainData.vehicles.forEach((aVeh) => {
             if (!result[rowNumber]) {
               result[rowNumber] = [];
             }
@@ -93,7 +93,7 @@ export const prepareDataForReport = (
             // MWA case ---------
           rowNumber = totalRowsCount;
 
-          domainData.vehicles.forEach(aVeh => {
+          domainData.vehicles.forEach((aVeh) => {
             const N_A = 'N/A';
             if (!result[rowNumber]) {
               result[rowNumber] = [];
@@ -111,7 +111,7 @@ export const prepareDataForReport = (
                 .concat(column)
                 .concat(column));
             } else {
-              jobs.forEach(aJob => {
+              jobs.forEach((aJob) => {
                 const startD = moment(aJob.DT_JOB_OPEN);
                 const endD = moment(aJob.DT_FIELD_END);
                 const columnN = {
@@ -154,8 +154,7 @@ export const prepareDataForReport = (
           });
         }
       });
-      if (secondPassResult.length > result.length)
-        result = secondPassResult;
+      if (secondPassResult.length > result.length) { result = secondPassResult; }
       totalRowsCount += maxRowsCount;
     });
     // sort columns in rows
@@ -168,8 +167,20 @@ export const prepareDataForReport = (
       result[k] = sortedRow;
     }
 
-    return Promise.resolve(result);
+    return Promise.resolve({ table: result, secondaryTable: _generateSecondaryTable(reports) });
   };
+
+function _generateSecondaryTable(reports) {
+  let result = [];
+  // Object.entries(reports).forEach(([domain, domainData]) => {
+  Object.entries(reports).forEach((aReport) => {
+    const domainData = aReport[1];
+    if (domainData.customReportGenerator !== undefined) {
+      result = domainData.customReportGenerator(domainData);
+    }
+  });
+  return result;
+}
 
 function _calculateColumn({
   filteredTypesToCalc,

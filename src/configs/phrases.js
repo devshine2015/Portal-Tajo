@@ -258,6 +258,7 @@ const phrases = {
     // -- alerts conditions
     mwa_jobs_nbr: 'No. of Jobs',
     mwa_jobs_t: ' Jobs Summary',
+    mwa_jobs_pipe_count: 'Jobs No. per PipeSize',
     job_name: 'Job Name',
     job_from: 'From',
     job_to: 'To',
@@ -515,6 +516,7 @@ const phrases = {
     // -- mwa reports
     mwa_jobs_nbr: 'ปริมาณงาน',
     mwa_jobs_t: 'สรุปงาน',
+    mwa_jobs_pipe_count: 'ปริมาณงานต่อทีมแบ่งตามขนาดท่อ',
     job_name: 'รหัสงาน',
     job_from: 'เวลาเปิดงาน',
     job_to: 'เวลาสิ้นสุดงานภาคสนาม',
