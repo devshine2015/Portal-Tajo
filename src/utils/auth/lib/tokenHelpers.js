@@ -1,4 +1,5 @@
 import jwtDecode from 'jwt-decode';
+import R from 'ramda';
 
 /**
  *
@@ -6,9 +7,7 @@ import jwtDecode from 'jwt-decode';
  * id_token and access_token inside session data.
  *
  **/
-export function sessionHasJWT(session) {
-  return Object.hasOwnProperty.call(session, 'id_token');
-}
+export const getToken = R.propOr(R.prop('id_token'), 'session-id');
 
 function _decode(token) {
   let decoded;
@@ -23,10 +22,10 @@ function _decode(token) {
 }
 
 export function takeProfile(session) {
-  const hasJWT = sessionHasJWT(session);
+  const token = getToken(session);
 
-  if (hasJWT) {
-    const decoded = _decode(session.id_token);
+  if (token) {
+    const decoded = _decode(token);
 
     return {
       name: decoded.name,

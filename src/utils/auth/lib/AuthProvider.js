@@ -177,10 +177,10 @@ class AuthProvider extends React.Component {
     login(payload, options)
       .then(validateSession)
       // session contain just id_token if authenticated with auth0
-      .then(({ session, hasJWT }) => {
-        if (hasJWT) {
+      .then(({ session, token }) => {
+        if (token) {
           // get additional user info with permissions and roles
-          return fetchProfile(session.id_token)
+          return fetchProfile(token)
             .then(profile => ({
               profile: Object.assign({}, profile, session),
             }))
