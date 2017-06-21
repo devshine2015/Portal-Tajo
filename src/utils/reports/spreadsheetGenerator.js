@@ -5,12 +5,12 @@
 
 function Book(headers = [], data = [], {
   fileName = 'Sheet1',
-  fileType = 'csv',
+  fileType = 'xls',
 } = {}) {
   this.headers = headers;
   this.rowData = data;
   this.fileName = fileName;
-  this.fileType = `text/${fileType};charset=utf-8`;
+  this.fileType = `text/${fileType};charset=UTF-8`;
 }
 
 /**
@@ -34,13 +34,20 @@ Book.prototype.createBook = function () {
  * Generate file out of data and download it
  */
 Book.prototype.download = function (data = '') {
-  const file = new Blob([data], { type: this.fileType });
+  /**
+   * prepend BOM special character to tell excel to read
+   * document in UTF-8 encoding.
+   * @see https://docs.microsoft.com/en-us/scripting/javascript/advanced/special-characters-javascript
+   * @see https://stackoverflow.com/questions/17879198/adding-utf-8-bom-to-string-blob
+   */
+  const excelReadable = ['\ufeff', data];
+  const file = new Blob(excelReadable, { type: this.fileType });
 
   const url = window.URL.createObjectURL(file);
   const link = document.createElement('a');
   link.href = url;
   link.style = 'hidden';
-  link.download = `${this.fileName}.csv`;
+  link.download = `${this.fileName}.xls`;
 
   document.body.appendChild(link);
   link.click();
@@ -97,7 +104,7 @@ function _addRow(array = []) {
   let row = '';
 
   array.forEach(el => {
-    row += el !== undefined ? `${JSON.stringify(el).replace(/\\n/g, '\\n')},` : '';
+    row += el !== undefined ? `${JSON.stringify(el).replace(/\\n/g, '\\n')}\t` : '';
   });
 
   // remove last comma
