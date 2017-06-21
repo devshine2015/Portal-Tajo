@@ -11,6 +11,7 @@ import { isAlerts } from 'configs';
 import { ifArraysEqual } from 'utils/arrays';
 import AlertOfKindMultiSelector from './AlertOfKindMultiSelector';
 import AlertOfKindSelector from './AlertsOfKindSelector';
+import AlertOfKindToggle from './AlertsOfKindToggle';
 
 class VehicleAlerts extends React.Component {
   constructor(props) {
@@ -48,6 +49,23 @@ class VehicleAlerts extends React.Component {
     } else {
       this.setState({ alerts: nextAlerts });
     }
+  }
+  onOfKindToggle = (isOn, theKind) => {
+    const idx = this.state.alerts.map(alertId =>
+        (this.props.alertById(alertId))).findIndex(alrt => alrt.kind === theKind);
+    const nextAlerts = this.state.alerts.slice(0);
+    // if exists - remove
+    if (idx >= 0) {
+      nextAlerts.splice(idx, 1);
+      this.setState({ alerts: nextAlerts });
+      return;
+    }
+    const theAlertCondition = this.props.alertConditions.find(alrt => alrt.kind === theKind);
+    if (theAlertCondition === undefined) {
+      // we do not have alert conditon of theKind
+      return;
+    }
+    this.setState({ alerts: nextAlerts.concat(theAlertCondition.id) });
   }
   onRemoveClick = (alertId) => {
     this.setState({ alerts: this.state.alerts.filter(el => (el !== alertId)) });
@@ -96,6 +114,11 @@ class VehicleAlerts extends React.Component {
           <AlertOfKindSelector
             myKind={alertKinds._ALERT_KIND_TEMPERATURE}
             onOfKindChange={this.onOfKindChange}
+            vehicleAlerts={this.state.alerts}
+          />
+          <AlertOfKindToggle
+            myKind={alertKinds._ALERT_KIND_IDLE}
+            onOfKindChange={this.onOfKindToggle}
             vehicleAlerts={this.state.alerts}
           />
           <AlertOfKindMultiSelector
