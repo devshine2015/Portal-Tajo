@@ -5,7 +5,7 @@
 
 function Book(headers = [], data = [], {
   fileName = 'Sheet1',
-  fileType = 'xls',
+  fileType = 'csv',
 } = {}) {
   this.headers = headers;
   this.rowData = data;
@@ -47,7 +47,7 @@ Book.prototype.download = function (data = '') {
   const link = document.createElement('a');
   link.href = url;
   link.style = 'hidden';
-  link.download = `${this.fileName}.xls`;
+  link.download = `${this.fileName}.csv`;
 
   document.body.appendChild(link);
   link.click();
