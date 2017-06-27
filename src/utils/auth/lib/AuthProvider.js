@@ -178,7 +178,7 @@ class AuthProvider extends React.Component {
       // session contain just id_token if authenticated with auth0
       .then(enrichProfileWithAuth0)
       // at this point we have enriched profile with data came from auth0,
-      // or regular session-id came from engine.
+      // or regular sessionId came from engine.
       .then((profile) => {
         this.auth.takeProfileAuthData(profile);
 

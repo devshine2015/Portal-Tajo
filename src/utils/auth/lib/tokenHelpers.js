@@ -9,7 +9,8 @@ const hasIdToken = R.has('id_token');
  * Trying to get token out of provided object, which represents user profile.
  * Since we have multiple variations of that token name in the profile.
  * session-id is temporal name of token coming from backend,
- * here we checking all possibilities: 'session-id' or 'id_token'
+ * here we checking all possibilities: 'session-id' or 'id_token'.
+ * session-id going to be renamed to id_token soon.
  */
 export const getIdToken = R.ifElse(hasIdToken, tryGetIdToken, tryGetSessionId);
 

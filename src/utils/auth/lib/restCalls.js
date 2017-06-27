@@ -84,9 +84,9 @@ export const enrichProfileWithAuth0 = ({ session, token }) => {
       // next implementation of fetching and aggregating of the user info is living here.
       // no need to make extra login for technical users anymore.
 
-      // @session has session-id equal to @token, but we also map token to id_token prop
-      // to make it futureproof for transition period.
-      // No need to worry about such duplication, it's not a 🐞.
+      // @session has session-id property which is equal to @token.
+      // since we mapping ig to @id_token there is no need for such duplication.
+      delete session['session-id'];
 
       // Probably here will be also another call to endpoints.getUserInfoNext for detailed userinfo
       return Object.assign({}, session, {
@@ -95,5 +95,5 @@ export const enrichProfileWithAuth0 = ({ session, token }) => {
     }
   }
 
-  return { profile: session };
+  return session;
 };
