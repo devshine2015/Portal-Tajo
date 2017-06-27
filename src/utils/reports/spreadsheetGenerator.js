@@ -104,7 +104,7 @@ function _addRow(array = []) {
   let row = '';
 
   array.forEach(el => {
-    row += el !== undefined ? `${JSON.stringify(el).replace(/\\n/g, '\\n')}\t` : '';
+    row += el !== undefined ? `${JSON.stringify(el).replace(/\\n/g, '\\n')},` : '';
   });
 
   // remove last comma
