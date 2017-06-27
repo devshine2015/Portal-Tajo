@@ -1,12 +1,18 @@
 import qs from 'query-string';
-import BaseAPIClass from './BaseAPIClass';
-import { protocol, socketProtocol, ENGINE_BASE } from 'configs';
+import {
+  protocol,
+  socketProtocol,
+  ENGINE_BASE,
+  serverEnv,
+} from 'configs';
 import {
   getSessionToken,
+  getIdToken,
   getFleetName,
 } from 'services/Session/reducer';
 import { getErrorType } from 'services/Global/reducer';
 import { errorsActions } from 'services/Global/actions';
+import BaseAPIClass from './BaseAPIClass';
 
 const HEADERS = {
   'content-type': 'application/json',
@@ -31,6 +37,23 @@ function makeUrl(apiVersion, url, fleet, host = undefined) {
   return result;
 }
 
+/**
+ * get token which will serve as part of Bearer to make requiests
+ * to Engine. It might be old-fashioned sessionid
+ * or new-shiny-bright auth0 JWT.
+ * result depends on a backend server: local/dev or stage/prod.
+ * @param {ImmutableMap} state - app state
+ *
+ * @returns {String} token
+ */
+function getAuthString(state) {
+  if (serverEnv === 'local' || serverEnv === 'dev') {
+    return getIdToken(state);
+  }
+
+  return getSessionToken(state);
+}
+
 class DrvrEngineApi extends BaseAPIClass {
 
   _invoke(method, url, {
@@ -40,17 +63,18 @@ class DrvrEngineApi extends BaseAPIClass {
     optionalFleet,
     host,
   } = {}) {
-    const hasError = !!getErrorType(this.getState());
+    const state = this.getState();
+    const hasError = !!getErrorType(state);
 
     // reset error if have some
     if (hasError) {
       this.dispatch(errorsActions.resetError());
     }
 
-    const fleet = optionalFleet || getFleetName(this.getState());
+    const fleet = optionalFleet || getFleetName(state);
     const urlToInvoke = makeUrl(apiVersion, url, fleet, host);
     const headers = Object.assign({}, HEADERS, {
-      ['DRVR-SESSION']: getSessionToken(this.getState()),
+      'DRVR-SESSION': getAuthString(state),
     }, {
       ...optionalHeaders,
     });
@@ -59,9 +83,10 @@ class DrvrEngineApi extends BaseAPIClass {
   }
 
   invokeWebSocket(url, options) {
-    const fleet = getFleetName(this.getState());
+    const state = this.getState();
+    const fleet = getFleetName(state);
     const sessionId = {
-      ['DRVR-SESSION']: getSessionToken(this.getState()),
+      'DRVR-SESSION': getAuthString(state),
     };
     const params = Object.assign({}, { ...sessionId }, { ...options });
     const query = params ? `?${qs.stringify(params)}` : '';

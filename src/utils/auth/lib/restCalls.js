@@ -16,7 +16,7 @@ export const login = (payload, {
     .then(res => res.json());
 };
 
-export const additionalLogin = () => {
+const additionalLogin = (profile) => {
   const { url, method, apiVersion } = endpoints.login;
   const payload = {
     username: 'mwa_technical',
@@ -34,7 +34,10 @@ export const additionalLogin = () => {
   }
 
   return api[method](url, { payload, apiVersion })
-    .then(res => res.json());
+    .then(res => res.json())
+    .then(res => Object.assign({}, profile, {
+      sessionId: res.sessionId,
+    }));
 };
 
 export const logout = ({
@@ -49,12 +52,48 @@ export const logout = ({
   return api[method](url, options);
 };
 
-export const fetchProfile = idToken => {
+const fetchProfile = (token) => {
   const { url, method } = endpoints.getUserInfo;
   const options = {
-    payload: { id_token: idToken },
+    payload: { id_token: token },
   };
 
   return auth0Api[method](url, options)
     .then(res => res.json());
+};
+
+// const fetchProfileNext = (token) => {
+//   const { url, method } = endpoints.getUserInfoNext;
+//   const options = {
+//     payload: { id_token: token },
+//   };
+
+//   return auth0Api[method](url, options)
+//     .then(res => res.json());
+// };
+
+export const enrichProfileWithAuth0 = ({ session, token }) => {
+  if (token) {
+    // get complete user info from auth0
+    if (serverEnv === 'prod') {
+      // 21.06.2017 - here lives a current production code for getting user info
+      return fetchProfile(token)
+        .then(profile => Object.assign({}, profile, session))
+        .then(additionalLogin);
+    } else if (serverEnv === 'local' || serverEnv === 'dev') {
+      // next implementation of fetching and aggregating of the user info is living here.
+      // no need to make extra login for technical users anymore.
+
+      // @session has session-id equal to @token, but we also map token to id_token prop
+      // to make it futureproof for transition period.
+      // No need to worry about such duplication, it's not a 🐞.
+
+      // Probably here will be also another call to endpoints.getUserInfoNext for detailed userinfo
+      return Object.assign({}, session, {
+        id_token: token,
+      });
+    }
+  }
+
+  return { profile: session };
 };

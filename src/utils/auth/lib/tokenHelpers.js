@@ -1,13 +1,17 @@
 import jwtDecode from 'jwt-decode';
 import R from 'ramda';
 
+const tryGetSessionId = R.prop('sessionId');
+const tryGetIdToken = R.prop('id_token');
+const hasIdToken = R.has('id_token');
+
 /**
- *
- * Users, authenticated via auth0 has
- * id_token and access_token inside session data.
- *
- **/
-export const getToken = R.propOr(R.prop('id_token'), 'session-id');
+ * Trying to get token out of provided object, which represents user session or profile.
+ * Since we have multiple variations of that token name in the profile
+ * here we checking all possibilities: 'sessionId', 'session-id' or 'id_token'
+ * ...what a mess...
+ */
+export const getToken = R.ifElse(hasIdToken, tryGetIdToken, tryGetSessionId);
 
 function _decode(token) {
   let decoded;

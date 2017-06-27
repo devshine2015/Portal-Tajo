@@ -38,6 +38,10 @@ const endpoints = {
     url: `${apis.auth0Api.url}/tokeninfo`,
     method: 'post',
   },
+  getUserInfoNext: {
+    url: 'auth0/userinfo',
+    method: 'post',
+  },
 
   // locations
   getGFs: {

@@ -10,9 +10,8 @@ import {
 import validateSession from './validateSession';
 import {
   login,
-  additionalLogin,
   logout,
-  fetchProfile,
+  enrichProfileWithAuth0,
 } from './restCalls';
 
 class Auth {
@@ -93,7 +92,7 @@ class Auth {
     return isAuthorized();
   }
 
-  takeProfileAuthData = profile => {
+  takeProfileAuthData = (profile) => {
     this.initialAuthenticationComplete = true;
 
     if (profile.id_token !== undefined) {
@@ -177,33 +176,15 @@ class AuthProvider extends React.Component {
     login(payload, options)
       .then(validateSession)
       // session contain just id_token if authenticated with auth0
-      .then(({ session, token }) => {
-        if (token) {
-          // get additional user info with permissions and roles
-          return fetchProfile(token)
-            .then(profile => ({
-              profile: Object.assign({}, profile, session),
-            }))
-            .then(({ profile }) =>
-              additionalLogin()
-                .then(res => ({
-                  profile: Object.assign({}, profile, {
-                    sessionId: res.sessionId,
-                  }),
-                }))
-            );
-        }
-
-        return { profile: session };
-      })
+      .then(enrichProfileWithAuth0)
       // at this point we have enriched profile with data came from auth0,
       // or regular session-id came from engine.
-      .then(({ profile }) => {
+      .then((profile) => {
         this.auth.takeProfileAuthData(profile);
 
         return Promise.resolve(profile);
       })
-      .then(profile => {
+      .then((profile) => {
         // true - session must been saved after login
         this.authenticate(profile, true);
 

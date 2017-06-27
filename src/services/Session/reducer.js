@@ -28,6 +28,8 @@ const initialState = fromJS({
     authExtApi: undefined,
   },
 
+  id_token: undefined,
+
   /**
    *
    * keep roles and permissions
@@ -71,8 +73,12 @@ export const getProfileData = state => ({
 
 export const getSessionData = state =>
   state.get('session');
+
 export const getSessionToken = state =>
-  state.getIn(['session', 'sessionId']);
+  state.getIn(['session', 'sessionId']) || state.getIn(['session', 'session-id']);
+export const getIdToken = state =>
+  state.getIn(['session', 'idToken']) || state.getIn(['session', 'id_token']);
+
 export const getUserRole = state => {
   if (state.getIn(['session', 'roles']) !== undefined) {
     return state.getIn(['session', 'roles', 0]);
