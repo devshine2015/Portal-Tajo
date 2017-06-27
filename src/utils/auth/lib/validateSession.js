@@ -1,10 +1,10 @@
 import {
   isTokenExpired,
-  getToken,
+  getIdToken,
 } from './tokenHelpers';
 
 function validateSession(session) {
-  const token = getToken(session);
+  const token = getIdToken(session);
 
   // don't validate regular sessions
   if (token) {
