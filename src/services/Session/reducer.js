@@ -24,9 +24,14 @@ const initialState = fromJS({
   },
 
   /**
+   * token to access to /userinfo endpoint
+   * @since new login api
+   */
+  access_token: undefined,
+
+  /**
    *
-   * tokents to external API`s
-   * current user has access to
+   * tokents to external auth0 API`s
    *
    */
   accessTokens: {

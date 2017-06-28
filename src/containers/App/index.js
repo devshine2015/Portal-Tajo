@@ -99,15 +99,29 @@ class App extends React.Component {
         this.props.setReportsMWA();
       }
 
+      // fetch access tokens and optionally roles and permissions
+      // just for those clients who are using auth0
       if (profile.id_token) {
         if (!profile.accessTokens) {
+          // all customers will have access to users management system
+          // so we need to get access for those apis
           this.props.fetchAccessTokens()
             .then((tokens) => {
               auth0Api.setAccessTokens(tokens);
 
-              this.props.fetchRolesAndPermissions(tokens);
+              /**
+               * but only for mwa we have to keep asking
+               * for user permissions and role with extra call
+               * this must be @deprecated since there will not be
+               * any difference between mwa and other customers anymore.
+               *
+               * With new login system permissions and roles already in profile
+               */
+              if (this.isMwaProfile) {
+                this.props.fetchRolesAndPermissions(tokens);
+              }
             });
-        } else {
+        } else if (this.isMwaProfile) {
           this.props.fetchRolesAndPermissions(profile.accessTokens);
         }
       }
@@ -118,6 +132,12 @@ class App extends React.Component {
     this.props.cleanSession();
     journalActions.clearNotificationsListener();
 
+    /**
+     * @deprecated
+     * soon there will not be
+     * any difference between mwa and other customers anymore.
+     * So login url finally be unified: '/login'
+     */
     const loginUrl = this.isMwaProfile || this.state.initialLocation.search('mwa') !== -1 ? '/mwa' : '/login';
 
     // we need reset it
