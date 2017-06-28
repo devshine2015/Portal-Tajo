@@ -27,7 +27,7 @@ const additionalLogin = (profile) => {
    * this is needed for mwa until all clients won't user
    * auth0 service.
    */
-  if (serverEnv === 'dev' || serverEnv === 'local') {
+  if (serverEnv === 'dev') {
     payload.password = 'EH8NAsy5';
   } else {
     payload.password = 'o48ab1Ul29$b';
@@ -75,7 +75,7 @@ export const enrichProfileWithAuth0 = ({ session, token }) => {
       return fetchProfile(token)
         .then(profile => Object.assign({}, profile, session))
         .then(additionalLogin);
-    } else if (serverEnv === 'local' || serverEnv === 'dev') {
+    } else if (serverEnv === 'dev') {
       // next implementation of fetching and aggregating of the user info is living here.
       // no need to make extra login for technical users anymore.
 
