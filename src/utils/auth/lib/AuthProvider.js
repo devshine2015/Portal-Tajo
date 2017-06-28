@@ -23,9 +23,6 @@ class Auth {
 
     this.initialAuthenticationComplete = false;
 
-    // read session data from local storage asap
-    // this.init();
-
     this.onInitSuccessSubs = [];
     this.onInitFailSubs = [];
   }
