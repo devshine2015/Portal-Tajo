@@ -7,9 +7,9 @@ const REMOTE_HOST_BASE = window.location.host;
 
 export const version = process.env.DRVR_VERSION;
 export const portal = process.env.DRVR_PROJECT;
-export const protocol = document.location.protocol;
+export const protocol = window.location.protocol;
 export const isSecure = protocol.search('https') !== -1;
-export const socketProtocol = isSecure ? 'wss' : 'ws';
+export const socketProtocol = isSecure ? 'wss:' : 'ws:';
 // TODO: we are in the middle of renaming tajo->escape; update here when done
 export const isEscape = portal === 'tajo';
 // export const isSunshine = !isEscape;

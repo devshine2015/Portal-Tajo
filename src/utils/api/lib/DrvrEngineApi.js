@@ -21,7 +21,7 @@ const HEADERS = {
 };
 
 const BASE_URL = `${protocol}//${ENGINE_BASE}`;
-const SOCKET_URL = `${socketProtocol}://${ENGINE_BASE}/engine`;
+const SOCKET_URL = `${socketProtocol}//${ENGINE_BASE}/engine`;
 
 // construct URL depends on API version
 function makeUrl(apiVersion, url, fleet, host = undefined) {
