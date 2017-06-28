@@ -8,10 +8,8 @@ import { translate } from 'utils/i18n';
 
 import phrases, { phrasesShape } from './PropTypes';
 
-const fleets = ['mwa'];
-
-function _renderFleets() {
-  return fleets.map(fleet => (
+function _renderFleets(availableFleets) {
+  return availableFleets.map(fleet => (
     <MenuItem
       key={fleet}
       value={fleet}
@@ -24,6 +22,7 @@ const FleetSelector = ({
   translations,
   onChange,
   value,
+  availableFleets,
 }, {
   authorizeWithRole,
 }) => {
@@ -41,7 +40,7 @@ const FleetSelector = ({
       value={value}
       onChange={onChange}
     >
-      { _renderFleets() }
+      { _renderFleets(availableFleets) }
     </SelectField>
   );
 };
@@ -54,6 +53,9 @@ FleetSelector.propTypes = {
   translations: phrasesShape.isRequired,
   onChange: PropTypes.func.isRequired,
   value: PropTypes.string,
+  availableFleets: React.PropTypes.arrayOf(
+    React.PropTypes.string,
+  ).isRequired,
 };
 
 export default translate(phrases)(FleetSelector);

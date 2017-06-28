@@ -3,20 +3,30 @@ import PropTypes from 'prop-types';
 import { Map } from 'immutable';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
-import {
-  TextField,
-} from 'material-ui';
+import { TextField } from 'material-ui';
 import FormComponents from 'components/User/FormComponents';
-import RolesSelector from '../RolesSelector';
-import FleetSelector from '../FleetSelector';
 import { usersActions } from 'services/Users/actions';
 import {
   getIsLoading,
   getRoles,
 } from 'services/Users/reducer';
+import {
+  getFleetName,
+  getUserRole,
+} from 'services/Session/reducer';
 import { translate } from 'utils/i18n';
+import RolesSelector from '../RolesSelector';
+import FleetSelector from '../FleetSelector';
 
 import phrases, { phrasesShape } from './PropTypes';
+
+function getAvailableFleets(currentRole, currentUserFleet = '') {
+  if (currentRole === 'uber') {
+    return ['mwa', 'some', 'other', 'fleet'];
+  }
+
+  return [currentUserFleet];
+}
 
 class NewUserForm extends React.Component {
   constructor(props) {
@@ -28,7 +38,7 @@ class NewUserForm extends React.Component {
       email: undefined,
       password: undefined,
       role: undefined,
-      fleet: 'mwa',
+      fleet: props.currentUserFleet,
     };
   }
 
@@ -119,6 +129,7 @@ class NewUserForm extends React.Component {
           <FleetSelector
             onChange={this.onFleetChange}
             value={this.state.fleet}
+            availableFleets={getAvailableFleets(this.props.currentUserRole, this.props.currentUserFleet)}
           />
 
           <FormComponents.Buttons
@@ -144,6 +155,8 @@ NewUserForm.propTypes = {
   isOpened: PropTypes.bool.isRequired,
   translations: phrasesShape.isRequired,
   roles: PropTypes.instanceOf(Map).isRequired,
+  currentUserFleet: React.PropTypes.string.isRequired,
+  currentUserRole: React.PropTypes.string.isRequired,
 };
 
 NewUserForm.defaultProps = {
@@ -153,6 +166,8 @@ NewUserForm.defaultProps = {
 const mapState = state => ({
   isLoading: getIsLoading(state),
   roles: getRoles(state),
+  currentUserFleet: getFleetName(state),
+  currentUserRole: getUserRole(state),
 });
 const mapDispatch = {
   createUser: usersActions.createUser,
