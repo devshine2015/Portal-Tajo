@@ -1,10 +1,9 @@
 import * as _configHelpers from './_helpers';
 
-const PRODUCTION_ENGINE_BASE = 'drvrapp.net';
-const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080'; // for dev testing
-// const DEV_ENGINE_BASE = 'drvrstage.cloudapp.net:8080'; // for stage testing
-// const DEV_ENGINE_BASE = PRODUCTION_ENGINE_BASE; // for prod testing
-const REMOTE_HOST_BASE = PRODUCTION_ENGINE_BASE;
+// const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080'; // for dev testing
+const DEV_ENGINE_BASE = 'drvrstage.cloudapp.net:8080'; // for stage testing
+// const DEV_ENGINE_BASE = 'drvrapp.net'; // for prod testing
+const REMOTE_HOST_BASE = window.location.host;
 
 // support or not some old stuff depends on environment
 // for example:
@@ -32,7 +31,7 @@ export const isEscape = portal === 'tajo';
  * the url of remote server. In case of running locally
  * it could be any server.
  * @const {DEV_ENGINE_BASE} serve as a endpoint to server you want to test during development.
- * @const {REMOTE_HOST_BASE} is the production server.
+ * @const {REMOTE_HOST_BASE} is any remote environment
  */
 export const ENGINE_BASE = _configHelpers.isRunningOnLocalhost() ? DEV_ENGINE_BASE : REMOTE_HOST_BASE;
 
@@ -66,7 +65,7 @@ export let isNoIcons = false;
 
 export let isMaritime = false;
 export let isMwa;
-export const checkSetMwa = (itIsMwa = undefined) => {
+export const setMwa = (itIsMwa = undefined) => {
   // set ismwa if argument exist
   if (itIsMwa !== undefined) {
     if (typeof itIsMwa === 'string') {
