@@ -18,6 +18,7 @@ import {
   BASE_URL,
   checkSetMwa,
   isMwa,
+  LOCAL_STORAGE_SESSION_KEY,
 } from 'configs';
 import drvrDevTheme from 'configs/theme';
 import { TranslationProvider } from 'utils/i18n';
@@ -150,6 +151,7 @@ class App extends React.Component {
       <AuthProvider
         onLoginSuccess={this.onLoginSuccess}
         onLogoutSuccess={this.onLogoutSuccess}
+        localStorageKey={LOCAL_STORAGE_SESSION_KEY}
       >
         <TranslationProvider
           phrases={phrases}

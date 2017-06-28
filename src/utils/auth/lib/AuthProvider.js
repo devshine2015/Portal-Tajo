@@ -1,7 +1,6 @@
 import React from 'react';
 import R from 'ramda';
 import PropTypes from 'prop-types';
-import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
 import {
   readSessionFromLocalStorage,
   cleanLocalStorage,
@@ -31,8 +30,8 @@ class Auth {
     this.onInitFailSubs = [];
   }
 
-  init() {
-    readSessionFromLocalStorage(LOCAL_STORAGE_SESSION_KEY)
+  init(localStorageKey) {
+    readSessionFromLocalStorage(localStorageKey)
       .then(validateSession)
       .then(this._initSuccess, this._initFail);
   }
@@ -135,7 +134,7 @@ class AuthProvider extends React.Component {
     this.auth.onInitSuccess(this.authenticate);
     this.auth.onInitFail(this.unauthenticate);
 
-    auth.init();
+    auth.init(props.localStorageKey);
   }
 
   getChildContext() {
@@ -151,7 +150,7 @@ class AuthProvider extends React.Component {
   }
 
   unauthenticate = () => {
-    cleanLocalStorage(LOCAL_STORAGE_SESSION_KEY);
+    cleanLocalStorage(this.props.localStorageKey);
 
     if (typeof this.props.onLogoutSuccess === 'function') {
       this.props.onLogoutSuccess();
@@ -162,7 +161,7 @@ class AuthProvider extends React.Component {
     // we don't need to save session for every case
     // e.g. when authenticated from localStorage
     if (save) {
-      saveSession(LOCAL_STORAGE_SESSION_KEY, profile);
+      saveSession(this.props.localStorageKey, profile);
     }
 
     if (typeof this.props.onLoginSuccess === 'function') {
@@ -206,6 +205,7 @@ AuthProvider.propTypes = {
   children: PropTypes.any.isRequired,
   onLoginSuccess: PropTypes.func,
   onLogoutSuccess: PropTypes.func,
+  localStorageKey: React.PropTypes.string.isRequired,
 };
 
 AuthProvider.childContextTypes = {
