@@ -1,6 +1,8 @@
 import 'font-awesome/css/font-awesome.css';
+
 import React from 'react';
 import PropTypes from 'prop-types';
+import R from 'ramda';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -16,8 +18,7 @@ import { getLocale } from 'services/Session/reducer';
 import { commonFleetActions } from 'services/FleetModel/actions';
 import {
   BASE_URL,
-  checkSetMwa,
-  isMwa,
+  setMwa,
   LOCAL_STORAGE_SESSION_KEY,
 } from 'configs';
 import drvrDevTheme from 'configs/theme';
@@ -53,7 +54,9 @@ class App extends React.Component {
       authenticationFinished: false,
     };
 
-    checkSetMwa(context.router.location.pathname);
+    this.isMwaProfile = undefined;
+
+    setMwa(context.router.location.pathname);
 
     auth.onInitSuccess(this.onLoginSuccess);
   }
@@ -72,8 +75,10 @@ class App extends React.Component {
   onLoginSuccess = (profile) => {
     if (this.state.authenticationFinished) return;
 
+    this.isMwaProfile = isItMwaProfile(profile);
+    setMwa(this.isMwaProfile);
+
     if (profile.id_token) {
-      checkSetMwa(true);
       auth0Api.setIdToken(profile.id_token);
     }
 
@@ -90,8 +95,11 @@ class App extends React.Component {
         this.context.router.replace(`${BASE_URL}/`);
       }
 
-      if (isMwa) {
+      if (this.isMwaProfile) {
         this.props.setReportsMWA();
+      }
+
+      if (profile.id_token) {
         if (!profile.accessTokens) {
           this.props.fetchAccessTokens()
             .then((tokens) => {
@@ -110,7 +118,7 @@ class App extends React.Component {
     this.props.cleanSession();
     journalActions.clearNotificationsListener();
 
-    const loginUrl = isMwa ? '/mwa' : '/login';
+    const loginUrl = this.isMwaProfile || this.state.initialLocation.search('mwa') !== -1 ? '/mwa' : '/login';
 
     // we need reset it
     // to support login flow
@@ -208,3 +216,5 @@ const mapDispatch = {
 const PureApp = pure(App);
 
 export default connect(mapState, mapDispatch)(PureApp);
+
+const isItMwaProfile = R.propEq('fleet', 'mwa');
