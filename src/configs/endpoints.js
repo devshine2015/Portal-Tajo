@@ -1,4 +1,5 @@
 import qs from 'query-string';
+import { onDev } from './index';
 
 const apis = {
   auth0Api: {
@@ -7,11 +8,12 @@ const apis = {
   },
   managmentAPI: {
     name: 'mgmtApi',
-    url: 'https://drvr.auth0.com/api/v2',
+    url: onDev ? 'http://thomas-drvr.eu.auth0.com/' : 'https://drvr.auth0.com/api/v2',
   },
   authorizationExtAPI: {
     name: 'authExtApi',
-    url: 'https://drvr.us.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api',
+    url: onDev ? 'https://thomas-drvr.eu.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api' :
+                 'https://drvr.us.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api',
   },
 };
 
