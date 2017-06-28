@@ -1,24 +1,40 @@
 // For using inside configs only
 
-function existInUrl(where = 'origin', part) {
-  return window.location[where].search(part) !== -1;
+/**
+ * @param {String} part - what to search for in the string
+ * @param {String} string - where to search
+ * @returns {Boolean}
+ */
+function existInString(part, string = '') {
+  return string.search(part) !== -1;
 }
 
-export const chooseServerEnv = () => {
-  if (existInUrl('origin', 'drvrapp.net')) {
+/**
+ * checks if current url is matching one of
+ * predefined urls, usually assocated with localhost
+ * @returns {Boolean}
+ */
+export const isRunningOnLocalhost = () =>
+  ['127.0.0.1', 'localhost'].indexOf(window.location.hostname) !== -1;
+
+/**
+ * Map provided url to a server environment string.
+ * @param {String} serverUrl - url of the server
+ * @returns {String} it might be: 'production', 'stage', 'dev'
+ */
+export const chooseServerEnv = (serverUrl) => {
+  if (existInString('drvrapp.net', serverUrl)) {
     return 'production';
-  } else if (existInUrl('origin', 'drvrstage')) {
+  } else if (existInString('drvrstage', serverUrl)) {
     return 'stage';
-  } else if (existInUrl('origin', 'ddsdev')) {
-    return 'dev';
   }
 
-  return 'local';
+  return 'dev';
 };
 
 function chooseProjectFolder(serverEnv, project) {
   // serve all projects from the root on the local server
-  if (serverEnv === 'local') {
+  if (isRunningOnLocalhost()) {
     return '';
   }
 
@@ -33,7 +49,7 @@ function checkExtraRoot(extras = [], projectFolder) {
   let result = projectFolder;
 
   for (let i = 0; i < extras.length; i++) {
-    if (existInUrl('pathname', extras[i])) {
+    if (existInString(extras[i], window.location.pathname)) {
       result = !projectFolder ? extras[i] : `${extras[i]}/${projectFolder}`;
     }
   }

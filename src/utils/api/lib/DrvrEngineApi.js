@@ -3,7 +3,7 @@ import {
   protocol,
   socketProtocol,
   ENGINE_BASE,
-  serverEnv,
+  onDev,
 } from 'configs';
 import {
   getSessionToken,
@@ -47,7 +47,7 @@ function makeUrl(apiVersion, url, fleet, host = undefined) {
  * @returns {String} token
  */
 function getAuthString(state) {
-  if (serverEnv === 'local' || serverEnv === 'dev') {
+  if (onDev) {
     return getIdToken(state);
   }
 

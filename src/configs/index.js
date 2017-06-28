@@ -1,9 +1,10 @@
 import * as _configHelpers from './_helpers';
 
-const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080'; // for localhost
-// const DEV_ENGINE_BASE = 'drvrstage.cloudapp.net:8080'; // for stage
-// const DEV_ENGINE_BASE = 'drvrapp.net'; // for prod
-const REMOTE_HOST_BASE = window.location.host;
+const PRODUCTION_ENGINE_BASE = 'drvrapp.net';
+// const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080'; // for dev testing
+const DEV_ENGINE_BASE = 'drvrstage.cloudapp.net:8080'; // for stage testing
+// const DEV_ENGINE_BASE = PRODUCTION_ENGINE_BASE; // for prod testing
+const REMOTE_HOST_BASE = PRODUCTION_ENGINE_BASE;
 
 // support or not some old stuff depends on environment
 // for example:
@@ -27,12 +28,22 @@ export const socketProtocol = isSecure ? 'wss' : 'ws';
 export const isEscape = portal === 'tajo';
 // export const isSunshine = !isEscape;
 
-// environments definitions
-export const serverEnv = _configHelpers.chooseServerEnv();
+/**
+ * the url of remote server. In case of running locally
+ * it could be any server.
+ * @const {DEV_ENGINE_BASE} serve as a endpoint to server you want to test during development.
+ * @const {REMOTE_HOST_BASE} is the production server.
+ */
+export const ENGINE_BASE = _configHelpers.isRunningOnLocalhost() ? DEV_ENGINE_BASE : REMOTE_HOST_BASE;
+
+/**
+ * store name of server environment
+ */
+export const serverEnv = _configHelpers.chooseServerEnv(ENGINE_BASE);
+
 export const onProduction = serverEnv === 'production';
 export const onStage = serverEnv === 'stage';
 export const onDev = serverEnv === 'dev';
-export const onLocal = serverEnv === 'local';
 
 export const LOCAL_STORAGE_SESSION_KEY = 'drvr_tajo-sessionId';
 
@@ -41,9 +52,6 @@ export const ROOT_ROUTE = _configHelpers.chooseRoot(serverEnv, portal);
 
 // use it for navigation throught app
 export const BASE_URL = ROOT_ROUTE === '/' ? '' : ROOT_ROUTE;
-
-// onLocal true only on localhost
-export const ENGINE_BASE = onLocal ? DEV_ENGINE_BASE : REMOTE_HOST_BASE;
 
 // TODO: this is to toggle alerts while in development
 // remove this when Alerts System done/released
