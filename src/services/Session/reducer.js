@@ -7,7 +7,15 @@ import {
 } from './actions';
 
 const initialState = fromJS({
+  /** @deprecated */
   sessionId: undefined,
+
+  /**
+   * fleet name.
+   * Could come from different sources.
+   * @deprecated source is drvr engine
+   * or auth0
+   */
   fleet: undefined,
   role: undefined,
   settings: {
@@ -28,6 +36,11 @@ const initialState = fromJS({
     authExtApi: undefined,
   },
 
+  /**
+   * token to interact with auth0 services directly
+   * or @since all clients will be moved to auth0
+   * it's going to replace sessionId as a authorization token in requests header
+   */
   id_token: undefined,
 
   /**
