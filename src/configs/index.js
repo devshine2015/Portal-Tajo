@@ -1,22 +1,9 @@
 import * as _configHelpers from './_helpers';
 
-// const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080'; // for dev testing
-const DEV_ENGINE_BASE = 'drvrstage.cloudapp.net:8080'; // for stage testing
+const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080'; // for dev testing
+// const DEV_ENGINE_BASE = 'drvrstage.cloudapp.net:8080'; // for stage testing
 // const DEV_ENGINE_BASE = 'drvrapp.net'; // for prod testing
 const REMOTE_HOST_BASE = window.location.host;
-
-// support or not some old stuff depends on environment
-// for example:
-// at 18.10.2016 we have had 2 versions of LoginAPI.
-// new one works locally and on ddsdev,
-// while old one works on stage && production
-// and keeped alive for old portal.
-export const useLegacy = type => {
-  switch (type) {
-    default:
-      return false;
-  }
-};
 
 export const version = process.env.DRVR_VERSION;
 export const portal = process.env.DRVR_PROJECT;
