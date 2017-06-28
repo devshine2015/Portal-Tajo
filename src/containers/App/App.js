@@ -97,18 +97,12 @@ class App extends React.Component {
               auth0Api.setAccessTokens(tokens);
 
               /**
-               * but only for mwa we have to keep asking
-               * for user permissions and role with extra call
-               * this must be @deprecated since there will not be
-               * any difference between mwa and other customers anymore.
-               *
-               * With new login system permissions and roles already in profile
+               * fetch list of all available permissions and roles for users management
+               * @todo it hasn't be here, since it's used for users management only.
                */
-              if (this.isMwaProfile) {
-                this.props.fetchRolesAndPermissions(tokens);
-              }
+              this.props.fetchRolesAndPermissions(tokens);
             });
-        } else if (this.isMwaProfile) {
+        } else {
           this.props.fetchRolesAndPermissions(profile.accessTokens);
         }
       }
