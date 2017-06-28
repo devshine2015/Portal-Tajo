@@ -2,13 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import FlatButton from 'material-ui/FlatButton';
-import endpoints from 'configs/endpoints';
 import { translate } from 'utils/i18n';
 import Journal from '../Journal';
 import phrases, { phrasesShape } from './PropTypes';
 import classes from './classes';
-
-const _onLogoutClick = cb => () => cb(endpoints.logout);
 
 const STYLES = {
   logoutLabel: {
@@ -22,7 +19,7 @@ const AppBarRightElement = (props, context) => {
       <Journal />
       <FlatButton
         label={props.translations.logout}
-        onClick={_onLogoutClick(context.logout)}
+        onClick={context.logout}
         hoverColor="transparent"
         labelStyle={STYLES.logoutLabel}
       />

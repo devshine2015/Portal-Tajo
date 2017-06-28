@@ -1,8 +1,8 @@
 import * as _configHelpers from './_helpers';
 
 const PRODUCTION_ENGINE_BASE = 'drvrapp.net';
-// const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080'; // for dev testing
-const DEV_ENGINE_BASE = 'drvrstage.cloudapp.net:8080'; // for stage testing
+const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080'; // for dev testing
+// const DEV_ENGINE_BASE = 'drvrstage.cloudapp.net:8080'; // for stage testing
 // const DEV_ENGINE_BASE = PRODUCTION_ENGINE_BASE; // for prod testing
 const REMOTE_HOST_BASE = PRODUCTION_ENGINE_BASE;
 
@@ -65,17 +65,15 @@ export let isNoIcons = false;
 // is it used before being set?
 
 export let isMaritime = false;
-export let isMwa = false;
+export let isMwa;
 export const checkSetMwa = (itIsMwa = undefined) => {
   // set ismwa if argument exist
   if (itIsMwa !== undefined) {
     if (typeof itIsMwa === 'string') {
-      isMwa = itIsMwa.indexOf('mwa') !== -1;
+      isMwa = itIsMwa === 'mwa';
     } else if (typeof itIsMwa === 'boolean') {
       isMwa = itIsMwa;
     }
-    // isMwa = true;
-    // isAlerts = isMwa;
   }
 };
 

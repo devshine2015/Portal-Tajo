@@ -40,14 +40,9 @@ const additionalLogin = (profile) => {
     }));
 };
 
-export const logout = ({
-  url,
-  method,
-  apiVersion,
-}) => {
-  const options = {
-    apiVersion,
-  };
+export const logout = () => {
+  const { url, method, apiVersion } = endpoints.logout;
+  const options = { apiVersion };
 
   return api[method](url, options);
 };

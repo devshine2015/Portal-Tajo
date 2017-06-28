@@ -191,8 +191,8 @@ class AuthProvider extends React.Component {
       })
   )
 
-  logout = (options = {}) => (
-    logout(options)
+  logout = () => (
+    logout()
       .then(this.unauthenticate())
   )
 
