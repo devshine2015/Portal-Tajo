@@ -57,15 +57,15 @@ const fetchProfile = (token) => {
     .then(res => res.json());
 };
 
-// const fetchProfileNext = (token) => {
-//   const { url, method } = endpoints.getUserInfoNext;
-//   const options = {
-//     payload: { id_token: token },
-//   };
+const fetchProfileNext = (accessToken) => {
+  const { url, method, apiVersion } = endpoints.getUserInfoNext;
+  const optionalHeaders = {
+    Authorization: `Bearer ${accessToken}`,
+  };
 
-//   return auth0Api[method](url, options)
-//     .then(res => res.json());
-// };
+  return api[method](url, { optionalHeaders, apiVersion })
+    .then(res => res.json());
+};
 
 export const enrichProfileWithAuth0 = ({ session, token }) => {
   if (token) {
@@ -73,20 +73,34 @@ export const enrichProfileWithAuth0 = ({ session, token }) => {
     if (serverEnv === 'prod') {
       // 21.06.2017 - here lives a current production code for getting user info
       return fetchProfile(token)
-        .then(profile => Object.assign({}, profile, session))
+        .then(userDetails => Object.assign({}, userDetails, session))
         .then(additionalLogin);
     } else if (serverEnv === 'dev') {
       // next implementation of fetching and aggregating of the user info is living here.
       // no need to make extra login for technical users anymore.
+      return fetchProfileNext(session.access_token)
+        .then(({
+          nickname,
+          email_verified,
+          name,
+          updated_at,
+          picture,
+        }) => Object.assign({}, session, {
+          nickname,
+          email_verified,
+          name,
+          updated_at,
+          picture,
+        }))
+        .then((userDetails) => {
+          // @userDetails has session-id property which is equal to @token.
+          // since we mapping ig to @id_token there is no need for such duplication.
+          delete userDetails['session-id'];
 
-      // @session has session-id property which is equal to @token.
-      // since we mapping ig to @id_token there is no need for such duplication.
-      delete session['session-id'];
-
-      // Probably here will be also another call to endpoints.getUserInfoNext for detailed userinfo
-      return Object.assign({}, session, {
-        id_token: token,
-      });
+          return Object.assign({}, userDetails, {
+            id_token: token,
+          });
+        });
     }
   }
 

@@ -42,7 +42,8 @@ const endpoints = {
   },
   getUserInfoNext: {
     url: 'auth0/userinfo',
-    method: 'post',
+    method: 'get',
+    apiVersion: 1.1,
   },
 
   // locations
