@@ -8,7 +8,7 @@ const apis = {
   },
   managmentAPI: {
     name: 'mgmtApi',
-    url: onDev ? 'http://thomas-drvr.eu.auth0.com/' : 'https://drvr.auth0.com/api/v2',
+    url: onDev ? 'https://thomas-drvr.eu.auth0.com/api/v2' : 'https://drvr.auth0.com/api/v2',
   },
   authorizationExtAPI: {
     name: 'authExtApi',
