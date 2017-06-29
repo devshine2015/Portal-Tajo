@@ -38,20 +38,20 @@ function makeUrl(apiVersion, url, fleet, host = undefined) {
 }
 
 /**
- * get token which will serve as part of Bearer to make requiests
+ * get authorisation header for request
  * to Engine. It might be old-fashioned sessionid
  * or new-shiny-bright auth0 JWT.
- * result depends on a backend server: local/dev or stage/prod.
+ * result depends on a backend server: dev or prod.
  * @param {ImmutableMap} state - app state
  *
- * @returns {String} token
+ * @returns {Object} auth header
  */
-function getAuthString(state) {
-  if (onDev) {
-    return getIdToken(state);
-  }
+function getAuthHeader(state) {
+  const authHeaderKey = onDev ? 'DRVR-TOKEN' : 'DRVR-SESSION';
 
-  return getSessionToken(state);
+  return {
+    [authHeaderKey]: onDev ? getIdToken(state) : getSessionToken(state),
+  };
 }
 
 class DrvrEngineApi extends BaseAPIClass {
@@ -73,11 +73,7 @@ class DrvrEngineApi extends BaseAPIClass {
 
     const fleet = optionalFleet || getFleetName(state);
     const urlToInvoke = makeUrl(apiVersion, url, fleet, host);
-    const headers = Object.assign({}, HEADERS, {
-      'DRVR-SESSION': getAuthString(state),
-    }, {
-      ...optionalHeaders,
-    });
+    const headers = Object.assign({}, HEADERS, getAuthHeader(state), optionalHeaders);
 
     return this._prepareRequest(method, urlToInvoke, headers, payload);
   }
@@ -85,10 +81,7 @@ class DrvrEngineApi extends BaseAPIClass {
   invokeWebSocket(url, options) {
     const state = this.getState();
     const fleet = getFleetName(state);
-    const sessionId = {
-      'DRVR-SESSION': getAuthString(state),
-    };
-    const params = Object.assign({}, { ...sessionId }, { ...options });
+    const params = Object.assign({}, getAuthHeader(state), options);
     const query = params ? `?${qs.stringify(params)}` : '';
     const socketURL = `${SOCKET_URL}/${fleet}/${url}${query}`;
 
