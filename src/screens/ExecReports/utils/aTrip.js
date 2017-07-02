@@ -10,15 +10,17 @@ function HistoryTrip(startSampleIdx, endSampleIdx) {
 
   this.startDate = null;
   this.endDate = null;
-  this.durationMs = 0;
+  this.durationTotalMs = 0;
+  this.calculatedOperationalDurationMs = 0;
+  this.calculatedIdleDurationMs = 0;
   this.calculatedDistanceM = 0;
   this.maxSpeed = 0;
-  this.avrSpeed = 0;
+  this.avgSpeed = 0;
 
   this.minTemp = 500;
   this.maxTemp = -500;
   this.avrTemp = undefined;
-  
+
   this.numberOfSamples = 0;
   this.numberOfPosSamples = 0;
 
@@ -60,7 +62,7 @@ HistoryTrip.prototype.prepareData = function (eventsFrame) {
 
   this.startDate = moment(startSample.ev.ts).toDate();
   this.endDate = moment(endSample.ev.ts).toDate();
-  this.durationMs = this.endDate.getTime() - this.startDate.getTime();
+  this.durationTotalMs = this.endDate.getTime() - this.startDate.getTime();
 
   let prevPosSample = null;
   for (let idx = this.startIdx; idx < this.endIdx; idx += 1) {
@@ -71,6 +73,10 @@ HistoryTrip.prototype.prepareData = function (eventsFrame) {
       this.maxSpeed = Math.max(this.maxSpeed, eventHelpers.eventSpeed(theSample));
       if (prevPosSample !== null) {
         this.calculatedDistanceM += haversineDist(eventHelpers.eventPos(prevPosSample), eventHelpers.eventPos(theSample));
+
+        if (eventHelpers.eventSpeed(prevPosSample) === 0) {
+          this.calculatedIdleDurationMs += moment(theSample.ev.ts).diff(moment(prevPosSample.ev.ts));
+        }
       }
       prevPosSample = theSample;
     }
@@ -80,7 +86,11 @@ HistoryTrip.prototype.prepareData = function (eventsFrame) {
       this.minTemp = Math.min(this.minTemp, tempValue);
     }
   }
-  this.avrSpeed = (this.calculatedDistanceM / 1000) / (this.durationMs / 1000 / 60 / 60);
+  this.calculatedOperationalDurationMs = this.durationTotalMs - this.calculatedIdleDurationMs;
+  // calculate avrage speed if operated at least one minute
+  this.avgSpeed = this.calculatedOperationalDurationMs > 1000 * 60
+    ? (this.calculatedDistanceM / 1000) / (this.calculatedOperationalDurationMs / 1000 / 60 / 60)
+    : 0;
   if (this.minTemp <= this.maxTemp) {
     this.avrTemp = (this.minTemp + this.maxTemp) / 2;
   }

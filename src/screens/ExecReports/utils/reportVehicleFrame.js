@@ -5,6 +5,7 @@ import { makeTripsParcer } from './aTrip';
 import { makeAStopOver } from './aStopOver';
 import { makeATimeStamp } from './aTimeStamp';
 import * as eventHelpers from './eventHelpers';
+import { haversineDist } from 'utils/mapBoxMap';
 
 
 const CHRONICLE_LOCAL_INCTANCE_STATE_NONE = 'chronLocStateNone';
@@ -109,7 +110,7 @@ ReportVehicleFrame.prototype.isStatic = function () {
 //
 //-----------------------------------------------------------------------
 ReportVehicleFrame.prototype.getValidTrips = function () {
-  return this.trips; //.filter(aTrip => aTrip.isValid());
+  return this.trips; // .filter(aTrip => aTrip.isValid());
 };
 
 //
@@ -126,7 +127,7 @@ ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) 
   // let prevPosSample = null;
   this.calculatedDistanceM = 0;
   this.totalStoOverDurationMs = 0;
-  this.totalTripDurationMs = 0;  
+  this.totalTripDurationMs = 0;
   this.numberOfSamples = events.length;
 
   // const _dbgTime = 0;
@@ -184,76 +185,93 @@ ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) 
   this.tripsTimeLine[0].isATerminal = true;
   this.tripsTimeLine[this.tripsTimeLine.length - 1].isATerminal = true;
 
-
+  this.calculateTotals();
 
   const t1 = performance.now();
   console.log(`Report generation took ${(t1 - t0)} milliseconds.`);
 
   this.state = CHRONICLE_LOCAL_INCTANCE_STATE_OK_DATA;
+};
 
-  // let tripIdx = 0;
-  // const oneTripProcess = () => {
-  //   this.trips[tripIdx].prepareData(events, storeUpdateCallback);
-  //   tripIdx += 1;
-  //   if (tripIdx < this.trips.length) {
-  //     window.setTimeout(oneTripProcess, 225);
-  //   }
-  // };
-  // oneTripProcess();
+//
+//
+//-----------------------------------------------------------------------
+ReportVehicleFrame.prototype.calculateTotals = function () {
+  this.perDayTotals = [];
+  this.totalDistanceM = 0;
+  // this.totalRestMs = totalStoOverDurationMs;
+  this.totalOperatinMs = 0;
+  this.totalIdleMs = 0;
+  this.totalMaxSpeed = 0;
+  this.totalAvgSpeed = 0;
 
-  // for (let i = 0; i < dataSize; ++i) {
-  //   const theEvent = events[i];
-  //   // const eventDate = new Date(theEvent.ev.ts);
-  //   const eventMomentTS = moment(theEvent.ev.ts).valueOf();
-  //   const eventTimeMs = eventMomentTS - this.dateFrom.getTime();
-  //   _dbgTime = eventTimeMs;
-  //   switch (theEvent.type) {
-  //     case 'vehicle-position':
-  //       this.posData.push({ timeMs: eventTimeMs,
-  //         pos: window.L.latLng(theEvent.ev.pos.latlon.lat, theEvent.ev.pos.latlon.lng) });
-  //       this.speedData.push({ timeMs: eventTimeMs, v: theEvent.ev.pos.speed });
-  //       this.maxSpeed = Math.max(this.maxSpeed, theEvent.ev.pos.speed);
-  //       break;
-  //     case 'vehicle-1wire-temperature':
-  //       if (theEvent.ev.tempInfo != null && !isNaN(theEvent.ev.tempInfo)) {
-  //         this.temperatureData.push({ timeMs: eventTimeMs, t: theEvent.ev.tempInfo });
-  //         this.maxTemp = Math.max(this.maxTemp, theEvent.ev.tempInfo);
-  //         this.minTemp = Math.min(this.minTemp, theEvent.ev.tempInfo);
-  //       }
-  //       break;
-  //     case 'vehicle-stop-stats': {
-  //       // skip too short stops on the history
-  //       const stopMinutes = theEvent.ev.stopPeriod / (1000 * 60);
-  //       if (stopMinutes < 2) {
-  //         continue;
-  //       }
-  //       this.stopEvents.push({ timeMs: eventTimeMs,
-  //         date: new Date(eventMomentTS),
-  //         pos: window.L.latLng(theEvent.ev.pos.latlon.lat, theEvent.ev.pos.latlon.lng),
-  //         period: theEvent.ev.stopPeriod,
-  //         dateStr: theEvent.ev.pos.posTime });
-  //       break;
-  //     }
-  //   }
-  // }
+  this.calculatePerDayTotals();
 
-  // if (this.posData.length > 0) {
-  //   const firstSample = this.posData[0];
-  //   this.posData.splice(0, 0, { timeMs: 0,
-  //     pos: firstSample.pos });
-  //   this.speedData.splice(0, 0, { timeMs: 0, v: 0 });
+  this.getValidTrips().forEach((aTrip) => {
+    this.totalDistanceM += aTrip.calculatedDistanceM;
+    this.totalIdleMs += aTrip.calculatedIdleDurationMs;
+    this.totalOperatinMs += aTrip.calculatedOperationalDurationMs;
+    this.totalMaxSpeed = Math.max(this.totalMaxSpeed, aTrip.maxSpeed);
+// TODO: calculate average speed properly
+    this.totalAvgSpeed += aTrip.avgSpeed;
+  });
+// TODO: calculate average speed properly
+  this.totalAvgSpeed /= this.getValidTrips().length;
 
-  //   const lastSample = this.posData[this.posData.length - 1];
-  //   this.posData.push({ timeMs: lastSample.timeMs + 1,
-  //     pos: lastSample.pos });
-  //   this.speedData.push({ timeMs: lastSample.timeMs + 1, v: 0 });
-  // }
-  // console.log('history frame for ' + this.dateFrom + ' - ' + this.dateTo);
-  // console.log(' dataTimeRangeMs ' + _dbgTime + ' of ' + this.durationMs);
-  // console.log('  history frame total: ' + dataSize + ' pos: ' + this.posData.length + ' temp: ' + this.temperatureData.length);
-  // console.log('  -- stops: ' + this.stopEvents.length);
-  // console.log(' temp range ' + this.minTemp + ' .. ' + this.maxTemp);
-  // console.log(' maxSpeed ' + this.maxSpeed);
+  this.grandTotal = {
+    date: null,
+    calculatedDistanceM: this.totalDistanceM,
+    calculatedIdleDurationMs: this.totalIdleMs,
+    calculatedOperationalDurationMs: this.totalOperatinMs,
+    calculatedRestMs: this.durationMs - (this.totalIdleMs + this.totalOperatinMs),
+  };
+};
+
+//
+//
+//-----------------------------------------------------------------------
+ReportVehicleFrame.prototype.calculatePerDayTotals = function () {
+  let prevPosSample = null;
+  let calculatedDistanceM = 0;
+  let calculatedIdleDurationMs = 0;
+  let calculatedOperationalDurationMs = 0;
+  let calcDate = moment(this.dateFrom).toDate();
+  let currentDateDay = moment(this.dateFrom).date();
+  this.events.forEach((theSample) => {
+    if (eventHelpers.isPositionEvent(theSample)) {
+      this.numberOfPosSamples += 1;
+      this.maxSpeed = Math.max(this.maxSpeed, eventHelpers.eventSpeed(theSample));
+      if (prevPosSample !== null) {
+        calculatedDistanceM += haversineDist(eventHelpers.eventPos(prevPosSample), eventHelpers.eventPos(theSample));
+        const timeDeltaMs = moment(theSample.ev.ts).diff(moment(prevPosSample.ev.ts));
+        if (eventHelpers.eventSpeed(prevPosSample) === 0) {
+          calculatedIdleDurationMs += timeDeltaMs;
+        } else {
+          calculatedOperationalDurationMs += timeDeltaMs;
+        }
+      }
+      prevPosSample = theSample;
+    }
+    const date = moment(theSample.ev.ts).date();
+    if (currentDateDay !== date) {
+      const newCalcDate = moment(theSample.ev.ts).toDate();
+
+      this.perDayTotals.push({
+        date: calcDate,
+        calculatedDistanceM,
+        calculatedIdleDurationMs,
+        calculatedOperationalDurationMs,
+        calculatedRestMs: ((newCalcDate.getTime() - calcDate.getTime())
+                  - calculatedOperationalDurationMs
+                  - calculatedIdleDurationMs),
+      });
+      calculatedDistanceM = 0;
+      calculatedIdleDurationMs = 0;
+      calculatedOperationalDurationMs = 0;
+      currentDateDay = date;
+      calcDate = newCalcDate;
+    }
+  });
 };
 
 //
