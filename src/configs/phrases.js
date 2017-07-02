@@ -299,6 +299,7 @@ const phrases = {
 
     // main menu
     reports: 'รายงาน',
+    exec_report: 'รายงานทริป',
     vehicles_editor: 'จัดการยานพาหนะ',
     operational: 'ปฏิบัติการ',
     review: 'ภาพรวม',
@@ -306,6 +307,7 @@ const phrases = {
     users: 'ผู้ใช้',
     profile: 'โปรไฟล์',
     alerts_editor: 'จัดการการเตือน',
+    alerts_logs: 'รายงานการแจ้งเตือน',
     // -- end main menu
 
     // dashboard screen
