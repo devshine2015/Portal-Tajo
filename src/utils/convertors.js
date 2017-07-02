@@ -58,7 +58,7 @@ export function msToTimeIntervalString(duration) {
 export function dateToHHMM(date) {
   const hours = date.getHours();
   const minutes = date.getMinutes();
-  return `${hours}:${minutes < 10 ? 0 : ''}${minutes}`;
+  return `${date.toLocaleDateString()} ${hours}:${minutes < 10 ? 0 : ''}${minutes}`;
 }
 
 export function temperatureToString(temp) {
