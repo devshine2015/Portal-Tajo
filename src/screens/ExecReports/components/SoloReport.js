@@ -18,6 +18,7 @@ import TripsTimeLine from './TimeLine/TripsTimeLine';
 // import ReportMap from './ReportMap';
 
 import UglyTable from './UglyTable/UglyTable';
+import TotalsTable from './TotalsTable/TotalsTable';
 // import EventsTable from './EventsTable/EventsTable';
 
 import MainActionButton from 'components/Controls/MainActionButton';
@@ -83,6 +84,8 @@ class SoloReport extends React.Component {
             <VelocityTransitionGroup enter={aniEnter} leave={aniLeave} >
               {this.state.uglyTable &&
               <UglyTable vehicleId={this.props.vehicleId} />}
+              {this.state.uglyTable &&
+              <TotalsTable vehicleId={this.props.vehicleId} />}
             </VelocityTransitionGroup>
           </Layout.Section>
           {/* <NoPrint>
@@ -95,7 +98,7 @@ class SoloReport extends React.Component {
           </NoPrint>
           {this.state.events &&
           <EventsTable vehicleId={this.props.vehicleId} />}*/}
-          <Layout.Section style={sectionStyle}>
+          {/*<Layout.Section style={sectionStyle}>
             <Layout.Header label={'TIMELINE'} />
             <NoPrint style={{ padding: 20 }}>
               <Toggle
@@ -108,7 +111,7 @@ class SoloReport extends React.Component {
               {this.state.timeLine &&
               <TripsTimeLine vehicleId={this.props.vehicleId} />}
             </VelocityTransitionGroup>
-          </Layout.Section>
+          </Layout.Section>*/}
 
           {/* <SoloDetails vehicleId={this.props.vehicleId} />
           <TripsTimeLine vehicleId={this.props.vehicleId} />
