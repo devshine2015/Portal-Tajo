@@ -1,6 +1,10 @@
 import moment from 'moment';
 import { mwaGetJobsForVehicle } from 'services/MWA/actions';
+import { isJobWithinPeriod } from '../specs/mwaJobsSizes';
 
+// TODO: verify: for MWA reports assuming the report timeFrame is
+// from periods[0] to periods[1]
+// using this to filter out jobs
 export const prepareDataForReport = (
   selectedReports = {}, periods = [], frequency, dateFormat,
 ) =>
@@ -79,7 +83,9 @@ export const prepareDataForReport = (
             const order = Math.max(0, selectedTypes.indexOf(filteredTypesByDomain[domain].reportType));
             const column = {
               order,
-              value: mwaGetJobsForVehicle(aVeh.id, domainData[0].RESULTS).length,
+              // value: mwaGetJobsForVehicle(aVeh.id, domainData[0].RESULTS).length,
+              value: mwaGetJobsForVehicle(aVeh.id, domainData[0].RESULTS)
+                .filter(aJob => isJobWithinPeriod(aJob, periods[0], periods[1])).length,
             };
             result[rowNumber] = result[rowNumber].concat(column);
             rowNumber++;
@@ -100,8 +106,10 @@ export const prepareDataForReport = (
             }
 
             const order = Math.max(0, selectedTypes.indexOf(filteredTypesByDomain[domain].reportType));
-            let jobs = mwaGetJobsForVehicle(aVeh.id, domainData[0].RESULTS);
-            jobs = jobs.filter(aJob => aJob.DT_FIELD_END !== null && aJob.DT_JOB_OPEN !== null);
+            const jobs = mwaGetJobsForVehicle(aVeh.id, domainData[0].RESULTS)
+              .filter(aJob => aJob.DT_FIELD_END !== null && aJob.DT_JOB_OPEN !== null)
+              .filter(aJob => isJobWithinPeriod(aJob, periods[0], periods[1]));
+
             if (jobs.length === 0) {
               const column = {
                 order,
@@ -167,16 +175,16 @@ export const prepareDataForReport = (
       result[k] = sortedRow;
     }
 
-    return Promise.resolve({ table: result, secondaryTable: _generateSecondaryTable(reports) });
+    return Promise.resolve({ table: result, secondaryTable: _generateSecondaryTable(reports, periods) });
   };
 
-function _generateSecondaryTable(reports) {
+function _generateSecondaryTable(reports, fromToPeriods) {
   let result = [];
   // Object.entries(reports).forEach(([domain, domainData]) => {
   Object.entries(reports).forEach((aReport) => {
     const domainData = aReport[1];
     if (domainData.customReportGenerator !== undefined) {
-      result = domainData.customReportGenerator(domainData);
+      result = domainData.customReportGenerator(domainData, fromToPeriods);
     }
   });
   return result;
