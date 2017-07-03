@@ -1,30 +1,5 @@
 import R from 'ramda';
 
-/**
- * @deprecated
- */
-function _cleanExact(key, newData = []) {
-  let needCleanEverything = false;
-
-  // clean up localStorage item
-  if (newData.length === 0) {
-    needCleanEverything = true;
-  }
-
-  if (needCleanEverything) {
-    return clean(key).then(() => Promise.resolve(newData));
-  }
-
-  try {
-    // replace existing values
-    window.localStorage.setItem(key, JSON.stringify(newData));
-
-    return newData;
-  } catch (e) {
-    return false;
-  }
-}
-
 export function read(key) {
   try {
     const savedData = window.localStorage.getItem(key);
@@ -69,19 +44,6 @@ export function clean(key) {
   } catch (e) {
     return Promise.resolve(false);
   }
-}
-
-/**
- * @deprecated used just in offline mode foe installer, which is not used at all.
- */
-export function cleanExactIndexies(key, indexesToRemove = []) {
-  return read(key).then((savedData = []) => {
-    indexesToRemove.forEach((i) => {
-      savedData.splice(i, 1);
-    });
-
-    return _cleanExact(key, savedData);
-  });
 }
 
 export function updateProfileInLocalStorage({
@@ -133,7 +95,6 @@ export default {
   read,
   save,
   clean,
-  cleanExactIndexies,
   updateProfileInLocalStorage,
   removeProfilePropsInLocalStorage,
 };

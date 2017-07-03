@@ -9,18 +9,12 @@ import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
 import Layout from 'components/Layout';
 import Form from 'components/Form';
-import Dialog from './components/Dialog';
 import DeviceSelector from 'containers/DeviceSelector';
-import OfflineData from './components/OfflineData';
-import { formActions, offlineDataActions } from './actions';
 import { validateForm } from 'utils/forms';
-import { getAppOnlineState } from 'services/Global/reducer';
-import {
-  getLoaderState,
-  installerHasOfflineData,
-} from './reducer';
 import { showSnackbar } from 'containers/Snackbar/actions';
 import { translate } from 'utils/i18n';
+import { formActions } from './actions';
+import { getLoaderState } from './reducer';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './PropTypes';
@@ -40,21 +34,12 @@ class Installer extends React.Component {
     this.state = {
       fields: initialFields,
       cannotSubmit: true,
-      dialogIsOpen: this.dialogIsOpen(props),
       noDeviceSelectedError: false,
       deviceSelected: false,
       haveToReset: false,
     };
 
     this.onSubmit = this.onSubmit.bind(this);
-  }
-
-  componentWillMount() {
-    this.props.checkStorage();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.notify(nextProps);
   }
 
   onChange = (e) => {
@@ -70,7 +55,7 @@ class Installer extends React.Component {
     this.updateState(name, v);
   }
 
-  onDeviceSelect = imei => {
+  onDeviceSelect = (imei) => {
     const fields = this.state.fields.set('imei', imei);
 
     this.setState({
@@ -94,11 +79,7 @@ class Installer extends React.Component {
     }
 
     if (!validateForm(fields)) {
-      if (this.props.isOnline) {
-        this.submitForm(fields);
-      } else {
-        this.saveLocally(fields);
-      }
+      this.submitForm(fields);
     }
   }
 
@@ -113,10 +94,6 @@ class Installer extends React.Component {
     });
   }
 
-  dialogIsOpen(props) {
-    return props.hasOfflineData && props.isOnline;
-  }
-
   submitForm = (fields) => {
     this.props.submitForm(fields).then(() => {
       this.props.showSnackbar(this.props.translations.send_success, 2000);
@@ -124,29 +101,6 @@ class Installer extends React.Component {
     }, () => {
       this.saveLocally(fields);
     });
-  }
-
-  saveLocally = (fields) => {
-    this.props.saveLocally(fields).then(() => {
-      this.props.showSnackbar(this.props.translations.saved_locally, 2000);
-      this.resetForm();
-    }, error => {
-      console.error(error);
-      this.props.showSnackbar(this.props.translations.cannot_save_locally, 2000);
-    });
-  }
-
-  notify = (nextProps) => {
-    // show/hide notifiation only navigator.onLine changed
-    if (nextProps.hasOfflineData && (!this.props.isOnline && nextProps.isOnline)) {
-      this.setState({
-        dialogIsOpen: true,
-      });
-    } else if (nextProps.hasOfflineData && (this.props.isOnline && !nextProps.isOnline)) {
-      this.closeDialog();
-    } else if (!nextProps.hasOfflineData) {
-      this.closeDialog();
-    }
   }
 
   resetForm = () => {
@@ -162,28 +116,10 @@ class Installer extends React.Component {
     formNode.reset();
   }
 
-  sendFromDialog = (e) => {
-    e.preventDefault();
-
-    this.props.sendFromStorage().catch(() => {
-      this.closeDialog();
-    });
-
-    this.setState({
-      dialogIsOpen: this.dialogIsOpen(this.props),
-    });
-  }
-
-  closeDialog = () => {
-    this.setState({
-      dialogIsOpen: false,
-    });
-  }
-
   render() {
     const { translations } = this.props;
 
-    let mainButtonText = this.props.isOnline ? translations.send : translations.save_locally;
+    let mainButtonText = translations.send;
     const mainButtonDisabled = this.state.cannotSubmit || this.props.isLoading;
 
     if (this.props.isLoading) {
@@ -202,7 +138,7 @@ class Installer extends React.Component {
               fullWidth
               name="name"
               onChange={this.onChange}
-              floatingLabelText={ translations.vehicle_name }
+              floatingLabelText={translations.vehicle_name}
               required
             />
             <TextField
@@ -222,13 +158,13 @@ class Installer extends React.Component {
               fullWidth
               name="odometer"
               onChange={this.onChange}
-              floatingLabelText={ translations.odo_value }
+              floatingLabelText={translations.odo_value}
               required
               type="number"
             />
             <Checkbox
               className={styles.odo}
-              label={ translations.odo_in_miles }
+              label={translations.odo_in_miles}
               name="isMiles"
               onCheck={this.onChange}
             />
@@ -243,20 +179,10 @@ class Installer extends React.Component {
               />
               <FlatButton
                 onClick={this.resetForm}
-                label={ translations.reset }
+                label={translations.reset}
               />
             </div>
           </Form>
-          <OfflineData
-            sendData={this.props.sendFromStorage}
-            cleanData={this.props.cleanOfflineData}
-            isOnline={this.props.isOnline}
-          />
-          <Dialog
-            open={this.state.dialogIsOpen}
-            handleSend={this.sendFromDialog}
-            handleClose={this.closeDialog}
-          />
         </div>
       </Layout.Content>
     );
@@ -264,13 +190,7 @@ class Installer extends React.Component {
 }
 
 Installer.propTypes = {
-  checkStorage: PropTypes.func.isRequired,
-  cleanOfflineData: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  isOnline: PropTypes.bool.isRequired,
-  hasOfflineData: PropTypes.bool.isRequired, // eslint-disable-line
-  saveLocally: PropTypes.func.isRequired,
-  sendFromStorage: PropTypes.func.isRequired,
   showSnackbar: PropTypes.func.isRequired,
   submitForm: PropTypes.func.isRequired,
 
@@ -281,16 +201,10 @@ Installer.defaultProps = {
   translations: phrases,
 };
 
-const mapState = (state) => ({
+const mapState = state => ({
   isLoading: getLoaderState(state),
-  isOnline: getAppOnlineState(state),
-  hasOfflineData: installerHasOfflineData(state),
 });
 const mapDispatch = {
-  checkStorage: offlineDataActions.checkStorage,
-  cleanOfflineData: offlineDataActions.cleanOfflineData,
-  saveLocally: offlineDataActions.saveLocally,
-  sendFromStorage: offlineDataActions.sendFromStorage,
   showSnackbar,
   submitForm: formActions.submitForm,
 };

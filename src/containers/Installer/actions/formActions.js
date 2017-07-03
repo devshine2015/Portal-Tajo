@@ -1,9 +1,9 @@
 import { api } from 'utils/api';
 import endpoints from 'configs/endpoints';
-import { setLoaderState } from './loaderActions';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import { attachDevice } from 'services/Devices/actions';
 import { mockRequiredBackendProps } from 'services/FleetModel/utils/vehicleHelpers';
+import { setLoaderState } from './loaderActions';
 
 export const INSTALLER_SUBMIT_SUCCESS = 'portal/Installer/INSTALLER_SUBMIT_SUCCESS';
 export const INSTALLER_SUBMIT_FAILURE = 'portal/Installer/INSTALLER_SUBMIT_FAILURE';
@@ -20,13 +20,13 @@ export const sendData = (formData, dispatch) => {
 
   return api[method](url, vehiclePayload)
     .then(res => res.json())
-    .then(vehicle => {
+    .then((vehicle) => {
       dispatch(vehiclesActions.addVehicle(vehicle));
       dispatch(attachDevice(vehicle.id, formData.imei));
 
       return vehicle.id;
     })
-    .then(vehicleId => {
+    .then((vehicleId) => {
       dispatch(setLoaderState(false));
       dispatch({
         type: vehiclesActions.FLEET_MODEL_ATTACH_DEVICE,
@@ -35,7 +35,7 @@ export const sendData = (formData, dispatch) => {
       });
 
       return Promise.resolve();
-    }, error => {
+    }, (error) => {
       console.error(error);
       dispatch(setLoaderState(false));
 
