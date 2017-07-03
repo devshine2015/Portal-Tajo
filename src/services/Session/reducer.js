@@ -7,15 +7,6 @@ import {
 } from './actions';
 
 const initialState = fromJS({
-  /** @deprecated */
-  sessionId: undefined,
-
-  /**
-   * fleet name.
-   * Could come from different sources.
-   * @deprecated source is drvr engine
-   * or auth0
-   */
   fleet: undefined,
   role: undefined,
   settings: {
@@ -92,12 +83,10 @@ export const getProfileData = state => ({
 export const getSessionData = state =>
   state.get('session');
 
-export const getSessionToken = state =>
-  state.getIn(['session', 'sessionId']);
 export const getIdToken = state =>
   state.getIn(['session', 'id_token']);
 
-export const getUserRole = state => {
+export const getUserRole = (state) => {
   if (state.getIn(['session', 'roles']) !== undefined) {
     return state.getIn(['session', 'roles', 0]);
   }
@@ -105,7 +94,7 @@ export const getUserRole = state => {
   return state.getIn(['session', 'role']);
 };
 
-export const getFleetName = state => {
+export const getFleetName = (state) => {
   if (state.getIn(['session', 'user_metadata', 'fleet']) !== undefined) {
     return state.getIn(['session', 'user_metadata', 'fleet']);
   }

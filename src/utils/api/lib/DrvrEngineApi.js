@@ -3,10 +3,8 @@ import {
   protocol,
   socketProtocol,
   ENGINE_BASE,
-  onDev,
 } from 'configs';
 import {
-  getSessionToken,
   getIdToken,
   getFleetName,
 } from 'services/Session/reducer';
@@ -39,18 +37,14 @@ function makeUrl(apiVersion, url, fleet, host = undefined) {
 
 /**
  * get authorisation header for request
- * to Engine. It might be old-fashioned sessionid
- * or new-shiny-bright auth0 JWT.
- * result depends on a backend server: dev or prod.
+ * to Engine.
  * @param {ImmutableMap} state - app state
  *
  * @returns {Object} auth header
  */
 function getAuthHeader(state) {
-  const authHeaderKey = onDev ? 'DRVR-TOKEN' : 'DRVR-SESSION';
-
   return {
-    [authHeaderKey]: onDev ? getIdToken(state) : getSessionToken(state),
+    'DRVR-TOKEN': getIdToken(state),
   };
 }
 
