@@ -94,7 +94,7 @@ export function updateProfileInLocalStorage({
       return Promise.resolve(false);
     }
 
-    const oldFieldVal = R.ifElse(R.has(field), R.prop(field), {})(profile);
+    const oldFieldVal = R.propOr({}, field)(profile);
     const newFieldVal = Object.assign({}, oldFieldVal, newValue);
 
     savedData.profile[field] = newFieldVal;
@@ -115,7 +115,7 @@ function removeProfilePropsInLocalStorage({
       return Promise.resolve(false);
     }
 
-    const fieldValue = R.ifElse(R.has(field), R.prop(field), {})(profile);
+    const fieldValue = R.propOr({}, field)(profile);
 
     props.forEach((p) => {
       delete fieldValue[p];
