@@ -60,6 +60,14 @@ export const updateUserSettings = (saveToStorage = true, settings) => (dispatch)
   });
 };
 
+const updateUserAccessTokens = (tokens) => {
+  return updateProfileInLocalStorage({
+    key: LOCAL_STORAGE_SESSION_KEY,
+    newValue: tokens,
+    field: 'accessTokens',
+  });
+};
+
 export const updateLanguage = nextLang => (dispatch) => {
   dispatch(updateUserSettings(true, {
     lang: nextLang,
@@ -99,7 +107,7 @@ export const fetchAccessTokens = () => (dispatch) => {
     })
     .then(() => {
       dispatch(_accessTokensSet(tokens));
-
+      updateUserAccessTokens(tokens);
       return Promise.resolve(tokens);
     });
 };
