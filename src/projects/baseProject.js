@@ -2,8 +2,6 @@
  * boilerplate to bundle up running project
  */
 
-import 'babel-polyfill';
-
 // Load the favicon, the manifest.json file and the .htaccess file
 import 'file-loader?name=[name].[ext]!../favicon.ico';
 import 'file-loader?name=[name].[ext]!../manifest.json'; // manifest for mobile devices

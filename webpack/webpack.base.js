@@ -16,7 +16,7 @@ console.log(NODE_ENV);
 const devCssLoaders = 'style-loader!css-loader?localIdentName=[local]__[path][name]__[hash:base64:5]&modules&importLoaders=1&sourceMap!postcss-loader';
 
 module.exports = (options) => ({
-  entry: options.entry,
+  entry: ['babel-polyfill'].concat(options.entry),
   output: Object.assign({
     // put build into specified folder
     path: options.outputFolder,
