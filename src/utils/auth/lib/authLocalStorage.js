@@ -8,40 +8,49 @@ import versions from 'configs/versions';
 import validateToken from './validateToken';
 
 /**
+ * Read data from local storage, veryfing its version and
+ * token expiration date
+ * @param {String} localStorageKey - key to local storage entry
  *
- * read local storage,
- * and return its content.
- *
- * Will return FALSE if schema of stored data
- * doesn't coincide with the version supported by
- * running codebase version.
- *
- * Legacy stuff:
- *  1. assume that session contant could be just a token string, Return string.
- *  2. Session is an array of sessions for other fleets.
- *     But actually it can be one session - one fleet.
- *     Return VALUES content;
- *
- **/
-
+ * @returns {Promise} which represents an profile object
+ */
 export const readSessionFromLocalStorage = localStorageKey =>
   read(localStorageKey)
     .then(_checkVersion)
     .then(validateToken);
 
-export const saveSession = (localStorageKey, session) =>
-  save(localStorageKey, session, versions.authentication.currentVersion);
+/**
+ * Saves profile to localStorage to provided key
+ * Also adding version of current authentication mechanism
+ * for later verification, ie. on page reload
+ * @param {String} localStorageKey
+ * @param {Object} profile
+ */
+export const saveProfile = (localStorageKey, profile) =>
+  save(localStorageKey, profile, versions.authentication.currentVersion);
 
-export const cleanLocalStorage = localStorageKey => clean(localStorageKey);
+/**
+ * @interface
+ * @param {String} key - key to local storage entry
+ */
+export const cleanLocalStorage = clean;
 
-const _getSavedProfile = R.prop('profile');
+const savedProfile = R.prop('profile');
+
+/**
+ * Verify version of stored data againt version of currently
+ * running codebase
+ * @param {Object|null} savedData - data read from local storage
+ *
+ * @returns {Object} if version is ok.
+ */
 const _checkVersion = (savedData = null) => {
-  if (R.isNil(savedData)) return Promise.reject('Unauthorised');
+  if (R.isNil(savedData)) throw new Error('Unauthorised');
 
-  if (versions.authentication.verify(savedData)) {
-    return Promise.resolve(_getSavedProfile(savedData));
+  if (!versions.authentication.verify(savedData)) {
+    throw new Error('Wrong version');
   }
 
-  return Promise.reject({ message: 'wrong version' });
+  return savedProfile(savedData);
 };
 
