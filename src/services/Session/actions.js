@@ -6,8 +6,10 @@ import {
 } from 'configs';
 import endpoints from 'configs/endpoints';
 import { api } from 'utils/api';
-import storage from 'utils/localStorage';
-import { getSessionToken } from './reducer';
+import {
+  removeProfilePropsInLocalStorage,
+  updateProfileInLocalStorage,
+} from 'utils/localStorage';
 
 export const SESSION_SET = 'services/Session/SESSION_SET';
 export const SESSION_CLEAN = 'services/Session/SESSION_CLEAN';
@@ -16,7 +18,7 @@ export const SESSION_ACCESS_TOKENS_SAVE = 'services/Session/SESSION_ACCESS_TOKEN
 
 const takeFleetName = R.propOr('', 'fleet');
 
-export const setSession = session => dispatch => {
+export const setSession = session => (dispatch) => {
   checkSetMaritime(takeFleetName(session));
   checkSetNoIcons(takeFleetName(session));
 
@@ -33,27 +35,23 @@ export const cleanSession = () => ({
 });
 
 // saveToStorage - clean settings from local storage if FALSE
-export const updateUserSettings = (saveToStorage = true, settings) => (dispatch, getState) => {
-  const sessionId = getSessionToken(getState());
-
+export const updateUserSettings = (saveToStorage = true, settings) => (dispatch) => {
   if (!saveToStorage) {
     dispatch(_userSettingsUpdate(settings));
 
-    return storage.removePropsBySessionId({
+    return removeProfilePropsInLocalStorage({
       key: LOCAL_STORAGE_SESSION_KEY,
-      sessionId,
       props: Object.keys(settings),
       field: 'settings',
     });
   }
 
-  return storage.updatePropBySessionId({
+  return updateProfileInLocalStorage({
     key: LOCAL_STORAGE_SESSION_KEY,
-    sessionId,
     newValue: settings,
     field: 'settings',
   })
-  .then(result => {
+  .then((result) => {
     if (result) {
       dispatch(_userSettingsUpdate(settings));
     }
@@ -62,19 +60,7 @@ export const updateUserSettings = (saveToStorage = true, settings) => (dispatch,
   });
 };
 
-// saveToStorage - clean settings from local storage if FALSE
-const updateUserAccessTokens = tokens => (dispatch, getState) => {
-  const sessionId = getSessionToken(getState());
-
-  return storage.updatePropBySessionId({
-    key: LOCAL_STORAGE_SESSION_KEY,
-    sessionId,
-    newValue: tokens,
-    field: 'accessTokens',
-  });
-};
-
-export const updateLanguage = nextLang => dispatch => {
+export const updateLanguage = nextLang => (dispatch) => {
   dispatch(updateUserSettings(true, {
     lang: nextLang,
   }));
@@ -94,7 +80,7 @@ const _fetchMgmtExtentionAccessToken = () => {
     .then(res => res.json());
 };
 
-export const fetchAccessTokens = () => dispatch => {
+export const fetchAccessTokens = () => (dispatch) => {
   const tokens = {};
   const cacheToken = (token, name) => {
     if (token.access_token) {
@@ -103,17 +89,16 @@ export const fetchAccessTokens = () => dispatch => {
   };
 
   return _fetchAuthExtentionAccessToken()
-    .then(token => {
+    .then((token) => {
       cacheToken(token, 'authExtApi');
 
       return _fetchMgmtExtentionAccessToken();
     })
-    .then(token => {
+    .then((token) => {
       cacheToken(token, 'mgmtApi');
     })
     .then(() => {
       dispatch(_accessTokensSet(tokens));
-      dispatch(updateUserAccessTokens(tokens));
 
       return Promise.resolve(tokens);
     });

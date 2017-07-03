@@ -3,10 +3,10 @@ import {
   getIdToken,
 } from './tokenHelpers';
 
-async function validateSession(session) {
-  const token = await getIdToken(session);
+async function validateToken(profile = {}) {
+  const token = await getIdToken(profile);
 
-  // token somehow is undefined. We need unauthenticate user
+  // token is undefined. We need unauthenticate user
   if (!token) throw new Error('Unauthorised');
 
   const tokenExpired = await isTokenExpired(token);
@@ -14,9 +14,9 @@ async function validateSession(session) {
   if (tokenExpired) throw new Error('Token has been expired');
 
   return {
-    session,
+    profile,
     token,
   };
 }
 
-export default validateSession;
+export default validateToken;

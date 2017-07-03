@@ -1,6 +1,6 @@
 import { api } from 'utils/api';
 import endpoints from 'configs/endpoints';
-import validateSession from './validateSession';
+import validateToken from './validateToken';
 
 export const login = (username, password) => {
   const { url, method, apiVersion } = endpoints.login;
@@ -14,7 +14,7 @@ export const login = (username, password) => {
 
   return api[method](url, options)
     .then(res => res.json())
-    .then(validateSession)
+    .then(validateToken)
     .then(getFullProfile);
 };
 
@@ -41,15 +41,15 @@ const fetchProfile = (accessToken) => {
     .then(res => res.json());
 };
 
-const getFullProfile = ({ session, token }) => {
-  return fetchProfile(session.access_token)
+const getFullProfile = ({ profile, token }) => {
+  return fetchProfile(profile.access_token)
     .then(({
       nickname,
       email_verified,
       name,
       updated_at,
       picture,
-    }) => Object.assign({}, session, {
+    }) => Object.assign({}, profile, {
       nickname,
       email_verified,
       name,

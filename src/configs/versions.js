@@ -1,3 +1,4 @@
+
 export default {
   authentication: {
     verify(savedData) {
@@ -5,10 +6,10 @@ export default {
         return true;
       }
 
-      const version = savedData.hasOwnProperty('ver') && savedData.ver || 1;
+      const version = Object.hasOwnProperty.call(savedData, 'ver') ? savedData.ver : 1;
 
       return version === this.currentVersion;
     },
-    currentVersion: 2.41,
+    currentVersion: 2.5,
   },
 };

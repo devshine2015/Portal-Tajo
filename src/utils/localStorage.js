@@ -1,31 +1,8 @@
-function _getValueById(sessionId, list) {
-  const result = {};
+import R from 'ramda';
 
-  for (let i = 0; i < list.length; i++) {
-    if (list[i].sessionId === sessionId) {
-      result.value = list[i];
-      result.index = i;
-      break;
-    }
-  }
-
-  return result;
-}
-
-function _checkIfValueExist(val, list) {
-  // assume same data already saved if list has entries
-  let exist = false;
-
-  for (let i = 0; i < list.length; i++) {
-    if (list[i].sessionId === val.sessionId) {
-      exist = i;
-      break;
-    }
-  }
-
-  return exist;
-}
-
+/**
+ * @deprecated
+ */
 function _cleanExact(key, newData = []) {
   let needCleanEverything = false;
 
@@ -64,8 +41,8 @@ export function save(key, value, version = undefined) {
     return read(key).then((data) => {
       const savedData = data || {};
 
-      if (!savedData.hasOwnProperty('values')) {
-        savedData.values = [];
+      if (!R.has('profile')) {
+        savedData.profile = {};
       }
 
       // update version if specified
@@ -74,11 +51,9 @@ export function save(key, value, version = undefined) {
       }
 
       // don't save same value one more time
-      if (_checkIfValueExist(value, savedData.values) === false) {
-        savedData.values.push(value);
+      savedData.profile = value;
 
-        window.localStorage.setItem(key, JSON.stringify(savedData));
-      }
+      window.localStorage.setItem(key, JSON.stringify(savedData));
 
       return savedData;
     });
@@ -96,25 +71,12 @@ export function clean(key) {
   }
 }
 
-export function cleanExactValues(key, values = []) {
-  return read(key).then((savedData) => {
-    if (!savedData) return Promise.resolve();
-
-    values.forEach(value => {
-      const indexToDelete = _checkIfValueExist(value, savedData.values);
-
-      if (indexToDelete !== false) {
-        savedData.values.splice(indexToDelete, 1);
-      }
-    });
-
-    return _cleanExact(key, savedData.values);
-  });
-}
-
+/**
+ * @deprecated used just in offline mode foe installer, which is not used at all.
+ */
 export function cleanExactIndexies(key, indexesToRemove = []) {
   return read(key).then((savedData = []) => {
-    indexesToRemove.forEach(i => {
+    indexesToRemove.forEach((i) => {
       savedData.splice(i, 1);
     });
 
@@ -122,22 +84,20 @@ export function cleanExactIndexies(key, indexesToRemove = []) {
   });
 }
 
-export function updatePropBySessionId({
-  key, sessionId, newValue, field,
+export function updateProfileInLocalStorage({
+  key, newValue, field,
 } = {}) {
-  return read(key).then((savedData = []) => {
-    const { value, index } = _getValueById(sessionId, savedData.values);
+  return read(key).then((savedData = {}) => {
+    const profile = savedData.profile;
 
-    if (index === undefined || !savedData.hasOwnProperty('values')) {
+    if (R.isNil(profile)) {
       return Promise.resolve(false);
     }
 
-    const oldFieldVal = value.hasOwnProperty(field) ? value[field] : {};
-    const newFieldVal = Object.assign({}, oldFieldVal, {
-      ...newValue,
-    });
+    const oldFieldVal = R.ifElse(R.has(field), R.prop(field), {})(profile);
+    const newFieldVal = Object.assign({}, oldFieldVal, newValue);
 
-    savedData.values[index][field] = newFieldVal;
+    savedData.profile[field] = newFieldVal;
 
     window.localStorage.setItem(key, JSON.stringify(savedData));
 
@@ -145,23 +105,23 @@ export function updatePropBySessionId({
   });
 }
 
-function removePropsBySessionId({
-  key, sessionId, props = [], field,
+function removeProfilePropsInLocalStorage({
+  key, props = [], field,
 } = {}) {
-  return read(key).then((savedData = []) => {
-    const { value, index } = _getValueById(sessionId, savedData.values);
+  return read(key).then((savedData = {}) => {
+    const profile = savedData.profile;
 
-    if (index === undefined || !savedData.hasOwnProperty('values')) {
+    if (R.isNil(profile)) {
       return Promise.resolve(false);
     }
 
-    const fieldValue = value.hasOwnProperty(field) ? value[field] : {};
+    const fieldValue = R.ifElse(R.has(field), R.prop(field), {})(profile);
 
-    props.forEach(p => {
+    props.forEach((p) => {
       delete fieldValue[p];
     });
 
-    savedData.values[index][field] = fieldValue;
+    savedData.profile[field] = fieldValue;
 
     window.localStorage.setItem(key, JSON.stringify(savedData));
 
@@ -174,7 +134,6 @@ export default {
   save,
   clean,
   cleanExactIndexies,
-  cleanExactValues,
-  updatePropBySessionId,
-  removePropsBySessionId,
+  updateProfileInLocalStorage,
+  removeProfilePropsInLocalStorage,
 };

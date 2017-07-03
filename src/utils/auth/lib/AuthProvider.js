@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {
   readSessionFromLocalStorage,
   cleanLocalStorage,
-  saveSession,
+  saveProfile,
 } from './authLocalStorage';
 import {
   login,
@@ -30,12 +30,12 @@ class Auth {
       .then(this._initSuccess, this._initFail);
   }
 
-  _initSuccess = ({ session }) => {
-    this.takeProfileAuthData(session);
-    this.onInitSuccessSubs.forEach(cb => cb(session));
+  _initSuccess = ({ profile }) => {
+    this.takeProfileAuthData(profile);
+    this.onInitSuccessSubs.forEach(cb => cb(profile));
   }
 
-  _initFail = error => {
+  _initFail = (error) => {
     console.warn(error);
     this.cleanAuthData();
     this.onInitFailSubs.forEach(cb => cb());
@@ -155,7 +155,7 @@ class AuthProvider extends React.Component {
     // we don't need to save session for every case
     // e.g. when authenticated from localStorage
     if (save) {
-      saveSession(this.props.localStorageKey, profile);
+      saveProfile(this.props.localStorageKey, profile);
     }
 
     if (typeof this.props.onLoginSuccess === 'function') {

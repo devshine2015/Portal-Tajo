@@ -1,10 +1,11 @@
+import R from 'ramda';
 import {
   read,
   save,
   clean,
 } from 'utils/localStorage';
-import VERSIONS from 'configs/versions';
-import validateSession from './validateSession';
+import versions from 'configs/versions';
+import validateToken from './validateToken';
 
 /**
  *
@@ -26,34 +27,21 @@ import validateSession from './validateSession';
 export const readSessionFromLocalStorage = localStorageKey =>
   read(localStorageKey)
     .then(_checkVersion)
-    .then((sessions) => {
-      if (sessions && typeof sessions === 'string') {
-        return Promise.resolve({ sessionId: sessions });
-      } else if (sessions) {
-        if (sessions.length !== 0) {
-          // assuming first value is correct
-          // TODO -- deprecate multi-login functionality
-          const session = sessions[0];
-          return Promise.resolve(session);
-        }
-      }
-
-      return Promise.reject('"readSessionFromLocalStorage" sais - nothing to read.');
-    })
-    .then(validateSession);
+    .then(validateToken);
 
 export const saveSession = (localStorageKey, session) =>
-  save(localStorageKey, session, VERSIONS.authentication.currentVersion);
+  save(localStorageKey, session, versions.authentication.currentVersion);
 
 export const cleanLocalStorage = localStorageKey => clean(localStorageKey);
 
-const _checkVersion = savedData => {
-  const toReturn = savedData && Object.hasOwnProperty.call(savedData, 'values') ?
-    savedData.values : savedData;
+const _getSavedProfile = R.prop('profile');
+const _checkVersion = (savedData = null) => {
+  if (R.isNil(savedData)) return Promise.reject('Unauthorised');
 
-  if (VERSIONS.authentication.verify(savedData)) {
-    return Promise.resolve(toReturn);
+  if (versions.authentication.verify(savedData)) {
+    return Promise.resolve(_getSavedProfile(savedData));
   }
+
   return Promise.reject({ message: 'wrong version' });
 };
 
