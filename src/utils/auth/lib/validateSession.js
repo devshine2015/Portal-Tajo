@@ -3,22 +3,20 @@ import {
   getIdToken,
 } from './tokenHelpers';
 
-function validateSession(session) {
-  const token = getIdToken(session);
+async function validateSession(session) {
+  const token = await getIdToken(session);
 
-  // don't validate regular sessions
-  if (token) {
-    const tokenExpired = isTokenExpired(token);
+  // token somehow is undefined. We need unauthenticate user
+  if (!token) throw new Error('Unauthorised');
 
-    if (tokenExpired) {
-      return Promise.reject('token expired');
-    }
-  }
+  const tokenExpired = await isTokenExpired(token);
 
-  return Promise.resolve({
+  if (tokenExpired) throw new Error('Token has been expired');
+
+  return {
     session,
     token,
-  });
+  };
 }
 
 export default validateSession;

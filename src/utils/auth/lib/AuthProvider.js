@@ -6,11 +6,9 @@ import {
   cleanLocalStorage,
   saveSession,
 } from './authLocalStorage';
-import validateSession from './validateSession';
 import {
   login,
   logout,
-  enrichProfileWithAuth0,
 } from './restCalls';
 
 class Auth {
@@ -29,7 +27,6 @@ class Auth {
 
   init(localStorageKey) {
     readSessionFromLocalStorage(localStorageKey)
-      .then(validateSession)
       .then(this._initSuccess, this._initFail);
   }
 
@@ -168,25 +165,23 @@ class AuthProvider extends React.Component {
 
   isAuthenticated = () => this.auth.initialAuthenticationComplete
 
-  login = (payload, options = {}) => (
-    login(payload, options)
-      .then(validateSession)
-      // session contain just id_token if authenticated with auth0
-      .then(enrichProfileWithAuth0)
-      // at this point we have enriched profile with data came from auth0,
-      // or regular sessionId came from engine.
+  /**
+   * Perform login flow
+   * @callback
+   * @param {String} username
+   * @param {String} password
+   *
+   * @returns {Promise} result will contain an Object representing profile.
+   */
+  login = (username, password) =>
+    login(username, password)
       .then((profile) => {
         this.auth.takeProfileAuthData(profile);
-
-        return Promise.resolve(profile);
-      })
-      .then((profile) => {
         // true - session must been saved after login
         this.authenticate(profile, true);
 
         return profile;
       })
-  )
 
   logout = () => (
     logout()

@@ -13,8 +13,6 @@ import ButtonWithProgress from 'components/ButtonWithProgress';
 import { errorsActions } from 'services/Global/actions';
 import { getErrorType } from 'services/Global/reducer';
 import { translate } from 'utils/i18n';
-import { isMwa } from 'configs';
-import endpoints from 'configs/endpoints';
 
 import styles from './styles.css';
 import phrases, { phrasesShape } from './PropTypes';
@@ -52,20 +50,14 @@ class LoginForm extends React.Component {
   onSubmit = (e) => {
     e.preventDefault();
 
-    const payload = {
-      username: this.state.username,
-      password: this.state.password,
-    };
-
     this.changeLoadingState(true);
 
-    const loginDescriptor = isMwa ? endpoints.loginAuth0 : endpoints.login;
+    this.context.login(this.state.username, this.state.password)
+      .then(null, (err) => {
+        if (err) console.error(err);
 
-    this.context.login(payload, loginDescriptor).then(null, err => {
-      if (err) console.error(err);
-
-      this.changeLoadingState(false);
-    });
+        this.changeLoadingState(false);
+      });
   }
 
   changeLoadingState = nextState => {
