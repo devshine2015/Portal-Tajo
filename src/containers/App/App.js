@@ -28,10 +28,6 @@ function screenIsProtected(routes = []) {
   return Object.hasOwnProperty.call(lastRoute, 'protected') ? lastRoute.protected : true;
 }
 
-function needRedirect(fromLocation) {
-  return fromLocation === '/login' || fromLocation === '/mwa';
-}
-
 class App extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -40,8 +36,6 @@ class App extends React.Component {
       initialLocation: context.router.location.pathname,
       authenticationFinished: false,
     };
-
-    this.isMwaProfile = undefined;
 
     setMwa(context.router.location.pathname);
 
@@ -62,8 +56,8 @@ class App extends React.Component {
   onLoginSuccess = (profile) => {
     if (this.state.authenticationFinished) return;
 
-    this.isMwaProfile = isItMwaProfile(profile);
-    setMwa(this.isMwaProfile);
+    const isMwaProfile = isItMwaProfile(profile);
+    setMwa(isMwaProfile);
 
     if (profile.id_token) {
       auth0Api.setIdToken(profile.id_token);
@@ -78,11 +72,10 @@ class App extends React.Component {
     this.setState({
       authenticationFinished: true,
     }, () => {
-      if (needRedirect(this.state.initialLocation)) {
-        this.context.router.replace(`${BASE_URL}/`);
-      }
+      // go to the root of app
+      this.context.router.replace(`${BASE_URL}/`);
 
-      if (this.isMwaProfile) {
+      if (isMwaProfile) {
         this.props.setReportsMWA();
       }
 
@@ -113,13 +106,7 @@ class App extends React.Component {
     this.props.cleanSession();
     journalActions.clearNotificationsListener();
 
-    /**
-     * @deprecated
-     * soon there will not be
-     * any difference between mwa and other customers anymore.
-     * So login url finally be unified: '/login'
-     */
-    const loginUrl = this.isMwaProfile || this.state.initialLocation.search('mwa') !== -1 ? '/mwa' : '/login';
+    const loginUrl = '/login';
 
     // we need reset it
     // to support login flow
