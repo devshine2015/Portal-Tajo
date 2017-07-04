@@ -30,7 +30,7 @@ class Auth {
       .then(this._initSuccess, this._initFail);
   }
 
-  _initSuccess = ({ profile }) => {
+  _initSuccess = (profile) => {
     this.takeProfileAuthData(profile);
     this.onInitSuccessSubs.forEach(cb => cb(profile));
   }

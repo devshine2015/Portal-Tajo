@@ -3,6 +3,12 @@ import {
   getIdToken,
 } from './tokenHelpers';
 
+/**
+ * Retrieves token from providet object and validates its expiration date
+ * @param {Object} profile
+ *
+ * @returns {Object} profile if token is valid
+ */
 async function validateToken(profile = {}) {
   const token = await getIdToken(profile);
 
@@ -13,10 +19,7 @@ async function validateToken(profile = {}) {
 
   if (tokenExpired) throw new Error('Token has been expired');
 
-  return {
-    profile,
-    token,
-  };
+  return profile;
 }
 
 export default validateToken;

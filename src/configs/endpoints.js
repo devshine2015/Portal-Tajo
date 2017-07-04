@@ -37,10 +37,6 @@ const endpoints = {
 
   // profile
   getUserInfo: {
-    url: `${apis.auth0Api.url}/tokeninfo`,
-    method: 'post',
-  },
-  getUserInfoNext: {
     url: 'auth0/userinfo',
     method: 'get',
     apiVersion: 1.1,

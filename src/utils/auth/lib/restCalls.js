@@ -32,7 +32,7 @@ export const logout = () => {
  * @returns {Promise}
  */
 const fetchProfile = (accessToken) => {
-  const { url, method, apiVersion } = endpoints.getUserInfoNext;
+  const { url, method, apiVersion } = endpoints.getUserInfo;
   const optionalHeaders = {
     Authorization: `Bearer ${accessToken}`,
   };
@@ -41,7 +41,7 @@ const fetchProfile = (accessToken) => {
     .then(res => res.json());
 };
 
-const getFullProfile = ({ profile, token }) => {
+const getFullProfile = (profile) => {
   return fetchProfile(profile.access_token)
     .then(({
       nickname,
@@ -55,14 +55,5 @@ const getFullProfile = ({ profile, token }) => {
       name,
       updated_at,
       picture,
-    }))
-    .then((userDetails) => {
-      // @userDetails has session-id property which is equal to @token.
-      // since we mapping ig to @id_token there is no need for such duplication.
-      delete userDetails['session-id'];
-
-      return Object.assign({}, userDetails, {
-        id_token: token,
-      });
-    });
+    }));
 };

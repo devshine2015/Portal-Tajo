@@ -1,18 +1,13 @@
 import jwtDecode from 'jwt-decode';
 import R from 'ramda';
 
-const tryGetSessionId = R.prop('session-id');
-const tryGetIdToken = R.prop('id_token');
-const hasIdToken = R.has('id_token');
-
 /**
- * Trying to get token out of provided object, which represents user profile.
- * Since we have multiple variations of that token name in the profile.
- * session-id is temporal name of token coming from backend,
- * here we checking all possibilities: 'session-id' or 'id_token'.
- * session-id going to be renamed to id_token soon.
+ * get token out of provided object, which represents user profile.
+ * @param {Object} profile
+ *
+ * @returns {String} representing token
  */
-export const getIdToken = R.ifElse(hasIdToken, tryGetIdToken, tryGetSessionId);
+export const getIdToken = R.prop('id_token');
 
 function _decode(token) {
   let decoded;
