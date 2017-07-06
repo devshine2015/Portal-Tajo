@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { api, auth0Api } from 'utils/api';
+import { api, getExtentionAuthorizationHeader } from 'utils/api';
 import endpoints from 'configs/endpoints';
 import { getRoleIdByUserId } from '../reducer';
 import { userToRolesSet } from './usersActions';
@@ -10,12 +10,15 @@ export const ROLE_DELETE = 'services/UsersManager/ROLE_DELETE';
 export const ROLE_ASSIGN = 'services/UsersManager/ROLE_ASSIGN';
 export const ROLE_UNASSIGN = 'services/UsersManager/ROLE_UNASSIGN';
 
-export const fetchRoles = accessToken => dispatch => {
-  const { url, method, apiVersion } = endpoints.getRoles;
-  const payload = {
-    access_token: accessToken,
-  };
-  return api[method](url, { payload, apiVersion })
+export const fetchRoles = accessToken => (dispatch) => {
+  const { url, method, apiVersion, extName } = endpoints.getRoles;
+
+  return api[method](url, {
+    apiVersion,
+    optionalHeaders: getExtentionAuthorizationHeader(extName, {
+      authExtAccessToken: accessToken,
+    }),
+  })
     .then(res => res.json())
     .then(res => {
       const rolesMap = {};

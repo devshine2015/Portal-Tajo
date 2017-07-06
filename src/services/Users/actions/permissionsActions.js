@@ -1,17 +1,20 @@
 import uuid from 'node-uuid';
-import { api } from 'utils/api';
+import { api, getExtentionAuthorizationHeader } from 'utils/api';
 import endpoints from 'configs/endpoints';
 
 export const PERMISSIONS_FETCH_SUCCESS = 'services/usersManager/PERMISSIONS_FETCH_SUCCESS';
 export const PERMISSION_CREATE = 'services/UsersManager/PERMISSION_CREATE';
 export const PERMISSION_DELETE = 'services/UsersManager/PERMISSION_DELETE';
 
-export const fetchPermissions = accessToken => dispatch => {
-  const { url, method, apiVersion } = endpoints.getPermissions;
-  const payload = {
-    access_token: accessToken,
-  };
-  return api[method](url, { payload, apiVersion })
+export const fetchPermissions = accessToken => (dispatch) => {
+  const { url, method, apiVersion, extName } = endpoints.getPermissions;
+
+  return api[method](url, {
+    apiVersion,
+    optionalHeaders: getExtentionAuthorizationHeader(extName, {
+      authExtAccessToken: accessToken,
+    }),
+  })
     .then(res => res.json())
     .then(res => {
       const permsMap = {};

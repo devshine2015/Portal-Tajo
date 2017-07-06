@@ -177,13 +177,15 @@ const endpoints = {
   },
   getPermissions: {
     url: 'auth0/permissions',
-    method: 'post',
+    method: 'get',
     apiVersion: 1.1,
+    extName: apis.authorizationExtAPI.name,
   },
   getRoles: {
     url: 'auth0/roles',
-    method: 'post',
+    method: 'get',
     apiVersion: 1.1,
+    extName: apis.authorizationExtAPI.name,
   },
   assignRoleToUser: id => ({
     url: `${apis.authorizationExtAPI.url}/users/${id}/roles`,

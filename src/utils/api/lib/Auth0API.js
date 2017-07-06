@@ -1,29 +1,10 @@
 import BaseAPIClass from './BaseAPIClass';
+import getExtentionAuthorizationHeader from './authHeaderHelper';
 
 const HEADERS = {
   'content-type': 'application/json',
   accept: 'application/json',
 };
-
-function _attachAuthorizationHeader(_this, extName) {
-  let token = 'Bearer ';
-
-  switch (extName) {
-    case 'mgmtApi': {
-      token += _this.mgmtAccessToken;
-      break;
-    }
-    case 'authExtApi': {
-      token += _this.authExtAccessToken;
-      break;
-    }
-    default: token += _this.idToken;
-  }
-
-  return {
-    Authorization: token,
-  };
-}
 
 class Auth0API extends BaseAPIClass {
   constructor() {
@@ -51,7 +32,11 @@ class Auth0API extends BaseAPIClass {
     payload = {},
     extName = undefined,
   } = {}) => {
-    const headers = Object.assign({}, HEADERS, _attachAuthorizationHeader(this, extName));
+    const headers = Object.assign({}, HEADERS, getExtentionAuthorizationHeader(extName, {
+      mgmtAccessToken: this.mgmtAccessToken,
+      authExtAccessToken: this.authExtAccessToken,
+      idToken: this.idToken,
+    }));
 
     return this._prepareRequest(method, url, headers, payload);
   }
