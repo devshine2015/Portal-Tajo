@@ -8,8 +8,7 @@
     "react",
     // "stage-0",
     ["env", {
-      "debug": true,
-      "modules": false
+      "debug": true
     }]
   ],
   "env": {
@@ -21,17 +20,6 @@
         "transform-react-remove-prop-types",
         "transform-react-constant-elements",
         "transform-react-inline-elements"
-      ]
-    },
-    "test": {
-      "presets": [
-        "react",
-        // "stage-0",
-        ["env", {
-          "targets": {
-            "node": "current"
-          }
-        }]
       ]
     }
   }
