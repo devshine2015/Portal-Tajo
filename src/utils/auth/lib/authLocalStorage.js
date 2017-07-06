@@ -1,5 +1,5 @@
 import R from 'ramda';
-import drvrStorage from 'utils/localStorageNext';
+import drvrStorage from 'utils/drvrStorage';
 import verifyVersion, { CURRENT_AUTH_VERSION } from './versionHelper';
 import validateToken from './validateToken';
 

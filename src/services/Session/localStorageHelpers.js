@@ -1,5 +1,5 @@
 import R from 'ramda';
-import drvrStorage from './localStorageNext';
+import drvrStorage from 'utils/drvrStorage';
 
 export async function updateProfileInLocalStorage({
   key, newValue, field,

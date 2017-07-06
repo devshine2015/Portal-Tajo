@@ -9,7 +9,7 @@ import { api } from 'utils/api';
 import {
   removeProfilePropsInLocalStorage,
   updateProfileInLocalStorage,
-} from 'utils/localStorage';
+} from './localStorageHelpers';
 
 export const SESSION_SET = 'services/Session/SESSION_SET';
 export const SESSION_CLEAN = 'services/Session/SESSION_CLEAN';

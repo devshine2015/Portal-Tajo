@@ -1,4 +1,4 @@
-import drvrStorage from 'utils/localStorageNext';
+import drvrStorage from 'utils/drvrStorage';
 import * as _configHelpers from './_helpers';
 
 const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080'; // for dev testing
