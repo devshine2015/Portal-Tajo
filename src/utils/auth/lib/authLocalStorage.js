@@ -1,9 +1,5 @@
 import R from 'ramda';
-import {
-  read,
-  save,
-  clean,
-} from 'utils/localStorage';
+import drvrStorage from 'utils/localStorageNext';
 import versions from 'configs/versions';
 import validateToken from './validateToken';
 
@@ -15,7 +11,7 @@ import validateToken from './validateToken';
  * @returns {Promise} which represents an profile object
  */
 export const readSessionFromLocalStorage = localStorageKey =>
-  read(localStorageKey)
+  drvrStorage.load(localStorageKey)
     .then(_checkVersion)
     .then(validateToken);
 
@@ -27,13 +23,13 @@ export const readSessionFromLocalStorage = localStorageKey =>
  * @param {Object} profile
  */
 export const saveProfile = (localStorageKey, profile) =>
-  save(localStorageKey, profile, versions.authentication.currentVersion);
+  drvrStorage.save(localStorageKey, profile, versions.authentication.currentVersion);
 
 /**
  * @interface
  * @param {String} key - key to local storage entry
  */
-export const cleanLocalStorage = clean;
+export const cleanLocalStorage = drvrStorage.remove;
 
 const savedProfile = R.prop('profile');
 
