@@ -16,12 +16,14 @@ import configureStore from 'configs/store';
 import getHooks from './utils/hooks';
 import { getHistory } from './utils/routerHelpers';
 import createRoutes from './utils/createRoutes';
+import { init as initConfigs } from 'configs';
 
 require('velocity-animate');
 require('velocity-animate/velocity.ui');
 require('sanitize.css/sanitize.css');
 
 const DEF_ANCHOR_ID = 'app';
+initConfigs();
 
 const renderProject = ({
   anchorId = DEF_ANCHOR_ID,

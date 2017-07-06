@@ -1,3 +1,4 @@
+import drvrStorage from 'utils/localStorageNext';
 import * as _configHelpers from './_helpers';
 
 const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080'; // for dev testing
@@ -86,3 +87,7 @@ const boldGreen = 'font-weight: 700; color: green;';
 console.log(`%cCurrent version: %c${version}`, bold, boldGreen);
 console.log(`%cServer env: %c${serverEnv}`, bold, boldGreen);
 console.log(`%cProject: %c${portal}`, bold, boldGreen);
+
+export const init = () => {
+  window.drvrStorage = drvrStorage.init(window.localStorage);
+};
