@@ -32,7 +32,7 @@ export const onProduction = serverEnv === 'production';
 export const onStage = serverEnv === 'stage';
 export const onDev = serverEnv === 'dev';
 
-export const LOCAL_STORAGE_SESSION_KEY = 'drvr_tajo-sessionId';
+export const LOCAL_STORAGE_SESSION_KEY = 'drvr:profile';
 
 // use to initiate root for react-router
 export const ROOT_ROUTE = _configHelpers.chooseRoot(serverEnv, portal);

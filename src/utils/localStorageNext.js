@@ -38,7 +38,15 @@ class DrvrStorage {
   }
 
   async save(key, data) {
-    const savedData = await this.read(key);
+    let savedData;
+
+    try {
+      savedData = await this.load(key);
+    } catch (err) {
+      if (R.propEq('NotFoundError', err)) {
+        savedData = {};
+      }
+    }
 
     if (!R.has('profile', savedData)) {
       savedData.profile = {};
@@ -53,7 +61,7 @@ class DrvrStorage {
 
     this.storage.save({
       key,
-      rawData: savedData,
+      data: savedData,
     });
 
     return savedData;

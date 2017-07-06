@@ -2,7 +2,7 @@ import React from 'react';
 import R from 'ramda';
 import PropTypes from 'prop-types';
 import {
-  readSessionFromLocalStorage,
+  readProfileFromLocalStorage,
   cleanLocalStorage,
   saveProfile,
 } from './authLocalStorage';
@@ -26,7 +26,7 @@ class Auth {
   }
 
   init(localStorageKey) {
-    readSessionFromLocalStorage(localStorageKey)
+    readProfileFromLocalStorage(localStorageKey)
       .then(this._initSuccess, this._initFail);
   }
 

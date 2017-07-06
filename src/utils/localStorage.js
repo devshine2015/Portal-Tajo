@@ -1,22 +1,6 @@
 import R from 'ramda';
 import drvrStorage from './localStorageNext';
 
-export function read(key) {
-  return drvrStorage.load(key);
-}
-
-// save just unique data
-export function save(key, value, version = undefined) {
-  return drvrStorage.save(key, {
-    value,
-    version,
-  });
-}
-
-export function clean(key) {
-  return drvrStorage.remove(key);
-}
-
 export async function updateProfileInLocalStorage({
   key, newValue, field,
 } = {}) {
@@ -30,9 +14,11 @@ export async function updateProfileInLocalStorage({
   const oldFieldVal = R.propOr({}, field)(profile);
   const newFieldVal = Object.assign({}, oldFieldVal, newValue);
 
-  savedData.profile[field] = newFieldVal;
+  profile[field] = newFieldVal;
 
-  await drvrStorage.save(key, savedData);
+  await drvrStorage.save(key, {
+    value: profile,
+  });
 
   return true;
 }
@@ -53,17 +39,16 @@ async function removeProfilePropsInLocalStorage({
     delete fieldValue[p];
   });
 
-  savedData.profile[field] = fieldValue;
+  profile[field] = fieldValue;
 
-  await drvrStorage.save(key, savedData);
+  await drvrStorage.save(key, {
+    value: profile,
+  });
 
   return true;
 }
 
 export default {
-  read,
-  save,
-  clean,
   updateProfileInLocalStorage,
   removeProfilePropsInLocalStorage,
 };
