@@ -1,8 +1,8 @@
 import { api } from 'utils/api';
 import endpoints from 'configs/endpoints';
-import validateToken from './validateToken';
+import validateProfile from './validateProfile';
 
-export const login = (username, password) => {
+export const login = async (username, password) => {
   const { url, method, apiVersion } = endpoints.login;
   const options = {
     apiVersion,
@@ -12,10 +12,15 @@ export const login = (username, password) => {
     },
   };
 
-  return api[method](url, options)
-    .then(res => res.json())
-    .then(validateToken)
-    .then(getFullProfile);
+  try {
+    const profile = await api[method](url, options).then(res => res.json());
+
+    if (!validateProfile(profile)) throw new Error('Token is invalid');
+
+    return getFullProfile(profile);
+  } catch (err) {
+    throw new Error(err);
+  }
 };
 
 export const logout = () => {

@@ -1,7 +1,7 @@
 import R from 'ramda';
 import drvrStorage from 'utils/drvrStorage';
 import verifyVersion, { CURRENT_AUTH_VERSION } from './versionHelper';
-import validateToken from './validateToken';
+import validateProfile from './validateProfile';
 
 const _takeProfile = R.propOr({}, 'profile');
 const _takeVersion = R.prop('ver');
@@ -21,9 +21,8 @@ export const readProfileFromLocalStorage = async (localStorageKey) => {
   }
 
   const profile = _takeProfile(savedData);
-  const isTokenValid = Boolean(validateToken(profile));
 
-  if (!isTokenValid) throw new Error('Token has been expired');
+  if (!validateProfile(profile)) throw new Error('Token is invalid');
 
   return profile;
 };
