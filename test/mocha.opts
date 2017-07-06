@@ -1,3 +1,5 @@
---require babel-register
+--compilers js:babel-core/register
+--require babel-polyfill
 --require ./test/setup.js
+--require ./test/helper.js
 src/**/specs/*.spec.js

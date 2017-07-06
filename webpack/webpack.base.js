@@ -32,6 +32,19 @@ module.exports = (options) => ({
         options: options.babelQuery || {},
       }],
     }, {
+      test: /\.js?$/,
+      include: [
+        path.join(__dirname, '../node_modules/react-native-storage'),
+      ],
+      use: [{
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true,
+          presets: ['es2015', 'stage-1', 'react'],
+          plugins: ['transform-runtime'],
+        },
+      }],
+    }, {
       // Transform our own .css files with PostCSS and CSS-modules
       test: /\.css$/,
       exclude: /node_modules/,
