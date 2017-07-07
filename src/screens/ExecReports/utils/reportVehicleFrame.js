@@ -145,7 +145,9 @@ ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) 
       this.speedData.push({ timeMs: eventTimeMs, v: eventHelpers.eventSpeed(theSample) });
       this.numberOfPosSamples += 1;
       // if (prevPosSample !== null) {
-      //   this.calculatedDistanceM += haversineDist(eventHelpers.eventPos(prevPosSample), eventHelpers.eventPos(theSample));
+      //   eventHelpers.eventSetCalculatedDeltaM(theSample,
+      //       haversineDist(eventHelpers.eventPos(prevPosSample), eventHelpers.eventPos(theSample)));
+      //   // this.calculatedDistanceM += haversineDist(eventHelpers.eventPos(prevPosSample), eventHelpers.eventPos(theSample));
       // }
       // prevPosSample = theSample;
     }
@@ -185,7 +187,7 @@ ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) 
   this.tripsTimeLine[0].isATerminal = true;
   this.tripsTimeLine[this.tripsTimeLine.length - 1].isATerminal = true;
 
-  this.calculateTotals();
+  this.calculatePerDayTotals();
 
   const t1 = performance.now();
   console.log(`Report generation took ${(t1 - t0)} milliseconds.`);
@@ -196,82 +198,79 @@ ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) 
 //
 //
 //-----------------------------------------------------------------------
-ReportVehicleFrame.prototype.calculateTotals = function () {
-  this.perDayTotals = [];
-  this.totalDistanceM = 0;
-  // this.totalRestMs = totalStoOverDurationMs;
-  this.totalOperatinMs = 0;
-  this.totalIdleMs = 0;
-  this.totalMaxSpeed = 0;
-  this.totalAvgSpeed = 0;
-
-  this.calculatePerDayTotals();
-
-  this.getValidTrips().forEach((aTrip) => {
-    this.totalDistanceM += aTrip.calculatedDistanceM;
-    this.totalIdleMs += aTrip.calculatedIdleDurationMs;
-    this.totalOperatinMs += aTrip.calculatedOperationalDurationMs;
-    this.totalMaxSpeed = Math.max(this.totalMaxSpeed, aTrip.maxSpeed);
-// TODO: calculate average speed properly
-    this.totalAvgSpeed += aTrip.avgSpeed;
-  });
-// TODO: calculate average speed properly
-  this.totalAvgSpeed /= this.getValidTrips().length;
-
-  this.grandTotal = {
-    date: null,
-    calculatedDistanceM: this.totalDistanceM,
-    calculatedIdleDurationMs: this.totalIdleMs,
-    calculatedOperationalDurationMs: this.totalOperatinMs,
-    calculatedRestMs: this.durationMs - (this.totalIdleMs + this.totalOperatinMs),
-  };
-};
-
-//
-//
-//-----------------------------------------------------------------------
 ReportVehicleFrame.prototype.calculatePerDayTotals = function () {
+  this.perDayTotals = [];
+  this.grandTotal = {
+    calculatedDistanceM: 0,
+    calculatedIdleDurationMs: 0,
+    calculatedOperationalDurationMs: 0,
+    calculatedRestMs: 0,
+  };
+
   let prevPosSample = null;
   let calculatedDistanceM = 0;
   let calculatedIdleDurationMs = 0;
   let calculatedOperationalDurationMs = 0;
-  let calcDate = moment(this.dateFrom).toDate();
-  let currentDateDay = moment(this.dateFrom).date();
+  let refDayStartMoment = moment(this.dateFrom);
+  let refDayEndMoment = moment(this.dateFrom).startOf('day').add(1, 'days');
+
   this.events.forEach((theSample) => {
+    // TODO: verify - considering only pos samples
     if (eventHelpers.isPositionEvent(theSample)) {
-      this.numberOfPosSamples += 1;
+      let thisRefMoment = moment(theSample.ev.ts);
+      const isNextDay = thisRefMoment.isAfter(refDayEndMoment);
+
+      if (isNextDay) {
+        thisRefMoment = refDayEndMoment;
+      }
       this.maxSpeed = Math.max(this.maxSpeed, eventHelpers.eventSpeed(theSample));
       if (prevPosSample !== null) {
-        calculatedDistanceM += haversineDist(eventHelpers.eventPos(prevPosSample), eventHelpers.eventPos(theSample));
-        const timeDeltaMs = moment(theSample.ev.ts).diff(moment(prevPosSample.ev.ts));
+        const distM = haversineDist(eventHelpers.eventPos(prevPosSample), eventHelpers.eventPos(theSample));
+        calculatedDistanceM += distM;
+        this.grandTotal.calculatedDistanceM += distM;
+        const timeDeltaMs = thisRefMoment.diff(moment(prevPosSample.ev.ts));
         if (eventHelpers.eventSpeed(prevPosSample) === 0) {
           calculatedIdleDurationMs += timeDeltaMs;
+          this.grandTotal.calculatedIdleDurationMs += timeDeltaMs;
         } else {
           calculatedOperationalDurationMs += timeDeltaMs;
+          this.grandTotal.calculatedOperationalDurationMs += timeDeltaMs;
         }
       }
       prevPosSample = theSample;
-    }
-    const date = moment(theSample.ev.ts).date();
-    if (currentDateDay !== date) {
-      const newCalcDate = moment(theSample.ev.ts).toDate();
-
-      this.perDayTotals.push({
-        date: calcDate,
-        calculatedDistanceM,
-        calculatedIdleDurationMs,
-        calculatedOperationalDurationMs,
-        calculatedRestMs: ((newCalcDate.getTime() - calcDate.getTime())
-                  - calculatedOperationalDurationMs
-                  - calculatedIdleDurationMs),
-      });
-      calculatedDistanceM = 0;
-      calculatedIdleDurationMs = 0;
-      calculatedOperationalDurationMs = 0;
-      currentDateDay = date;
-      calcDate = newCalcDate;
+      // need to flip to next day?
+      if (isNextDay) {
+        this.perDayTotals.push({
+          dateMoment: refDayStartMoment,
+          calculatedDistanceM,
+          calculatedIdleDurationMs,
+          calculatedOperationalDurationMs,
+          calculatedRestMs: ((refDayEndMoment.valueOf() - refDayStartMoment.valueOf())
+                    - calculatedOperationalDurationMs
+                    - calculatedIdleDurationMs),
+        });
+        calculatedDistanceM = 0;
+        calculatedIdleDurationMs = 0;
+        calculatedOperationalDurationMs = 0;
+        refDayStartMoment = moment(refDayEndMoment);
+        refDayEndMoment = refDayEndMoment.add(1, 'days');
+      }
     }
   });
+  // add the rest as the last day
+  // const refLastMoment = moment(this.dateTo);
+  this.perDayTotals.push({
+    dateMoment: refDayStartMoment,
+    calculatedDistanceM,
+    calculatedIdleDurationMs,
+    calculatedOperationalDurationMs,
+    calculatedRestMs: ((moment(this.dateTo).valueOf() - refDayStartMoment.valueOf())
+                  - calculatedOperationalDurationMs
+                  - calculatedIdleDurationMs),
+  });
+
+  this.grandTotal.calculatedRestMs = this.durationMs - this.grandTotal.calculatedIdleDurationMs
+          - this.grandTotal.calculatedOperationalDurationMs;
 };
 
 //

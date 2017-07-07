@@ -37,7 +37,7 @@ const TotalRow = ({
   aTotal,
 }) => (
   <TableRow className={styles.row} style={btmColorStyle}>
-    <TableRowColumn style={cellStyle}>{aTotal.date !== null ? aTotal.date.toLocaleDateString() : 'Grand Total'}</TableRowColumn>
+    <TableRowColumn style={cellStyle}>{aTotal.dateMoment !== undefined ? aTotal.dateMoment.toDate().toLocaleDateString() : 'Grand Total'}</TableRowColumn>
     <TableRowColumn style={cellStyle}>{msToTimeIntervalString(aTotal.calculatedRestMs)}</TableRowColumn>
     <TableRowColumn style={cellStyle}>{msToTimeIntervalString(aTotal.calculatedOperationalDurationMs)}</TableRowColumn>
     <TableRowColumn style={cellStyle}>{msToTimeIntervalString(aTotal.calculatedIdleDurationMs)}</TableRowColumn>
@@ -60,7 +60,7 @@ const UglyTable = ({
   if (reportFrame === null) {
     return false;
   }
-  const totals = reportFrame.perDayTotals.map(aTotal => <TotalRow key={aTotal.date.getTime()} aTotal={aTotal} />);
+  const totals = reportFrame.perDayTotals.map(aTotal => <TotalRow key={aTotal.dateMoment.valueOf()} aTotal={aTotal} />);
   totals.push(<TotalRow key={0} aTotal={reportFrame.grandTotal} />);
   const noBgdStyle = { backgroundColor: 'transparent' };
   return (

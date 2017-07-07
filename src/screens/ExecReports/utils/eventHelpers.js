@@ -14,3 +14,7 @@ export const eventPos = evnt => evnt.ev.pos.latlon;
 export const eventSpeed = evnt => evnt.ev.pos.speed;
 export const eventTemp = evnt => evnt.ev.tempInfo;
 export const eventFuel = evnt => extractFuelNormalized(evnt.ev.fuelInfo);
+export const eventCalculatedDeltaM = evnt => (evnt.calculatedDeltaM !== undefined ? evnt.calculatedDeltaM : 0);
+
+
+export const eventSetCalculatedDeltaM = (evnt, deltaM) => { evnt.calculatedDeltaM = deltaM; };
