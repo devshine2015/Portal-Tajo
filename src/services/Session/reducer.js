@@ -85,6 +85,8 @@ export const getSessionData = state =>
 
 export const getIdToken = state =>
   state.getIn(['session', 'id_token']);
+export const getMainAccessToken = state =>
+  state.getIn(['session', 'access_token']);
 
 export const getUserRole = (state) => {
   if (state.getIn(['session', 'roles']) !== undefined) {

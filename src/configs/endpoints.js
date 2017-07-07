@@ -29,11 +29,11 @@ const endpoints = {
     method: 'post',
     apiVersion: 1.1,
   },
-  logout: {
-    url: 'login',
-    method: 'delete',
+  logout: accessToken => ({
+    url: `logout/${accessToken}`,
+    method: 'get',
     apiVersion: 1.1,
-  },
+  }),
 
   // profile
   getUserInfo: {

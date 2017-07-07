@@ -13,13 +13,15 @@ const STYLES = {
   },
 };
 
+const onLogoutClick = (props, context) => () => context.logout(props.accessToken);
+
 const AppBarRightElement = (props, context) => {
   return (
     <div className={css(classes.rightElement)}>
       <Journal />
       <FlatButton
         label={props.translations.logout}
-        onClick={context.logout}
+        onClick={onLogoutClick(props, context)}
         hoverColor="transparent"
         labelStyle={STYLES.logoutLabel}
       />
@@ -33,6 +35,7 @@ AppBarRightElement.contextTypes = {
 
 AppBarRightElement.propTypes = {
   translations: phrasesShape.isRequired,
+  accessToken: React.PropTypes.string.isRequired,
 };
 
 AppBarRightElement.defaultProps = {

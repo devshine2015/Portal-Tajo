@@ -183,9 +183,8 @@ class AuthProvider extends React.Component {
         return profile;
       })
 
-  logout = () => (
-    logout()
-      .then(this.unauthenticate())
+  logout = accessToken => (
+    logout(accessToken).then(this.unauthenticate)
   )
 
   render() {

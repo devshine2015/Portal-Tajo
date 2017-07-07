@@ -23,11 +23,19 @@ export const login = async (username, password) => {
   }
 };
 
-export const logout = () => {
-  const { url, method, apiVersion } = endpoints.logout;
+export const logout = async (accessToken) => {
+  const { url, method, apiVersion } = endpoints.logout(accessToken);
   const options = { apiVersion };
 
-  return api[method](url, options);
+  try {
+    const result = await api[method](url, options);
+
+    return result.status === 200;
+  } catch (err) {
+    console.error(err);
+
+    throw Error(err);
+  }
 };
 
 /**

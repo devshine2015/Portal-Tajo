@@ -39,11 +39,12 @@ function renderTitle(title) {
 const ApplicationBar = ({
   title,
   toggleSidebar,
+  accessToken,
 }) => (
   <div className={styles.barContainer}>
     <AppBar
       title={renderTitle(title)}
-      iconElementRight={<AppBarRightElement />}
+      iconElementRight={<AppBarRightElement accessToken={accessToken} />}
       iconStyleRight={STYLES.right}
       titleStyle={STYLES.title}
       className={styles.bar}
@@ -56,6 +57,7 @@ const ApplicationBar = ({
 ApplicationBar.propTypes = {
   title: PropTypes.string.isRequired,
   toggleSidebar: PropTypes.func.isRequired,
+  accessToken: React.PropTypes.string.isRequired,
 };
 
 const PureApplicationBar = pure(withRouter(ApplicationBar));

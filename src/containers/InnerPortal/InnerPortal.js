@@ -37,6 +37,7 @@ class InnerPortal extends React.Component {
           <ApplicationBar
             title={this.props.fleet}
             toggleSidebar={this.toggleSidebar}
+            accessToken={this.props.accessToken}
           />
 
           <MainSidebar
@@ -68,10 +69,12 @@ InnerPortal.propTypes = {
   fleet: PropTypes.string,
   fleetIsReady: PropTypes.bool.isRequired,
   fetchPortalData: PropTypes.func.isRequired,
+  accessToken: React.PropTypes.string,
 };
 
 InnerPortal.defaultProps = {
   fleet: '',
+  accessToken: undefined,
 };
 
 export default InnerPortal;

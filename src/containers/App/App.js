@@ -103,9 +103,6 @@ class App extends React.Component {
   }
 
   onLogoutSuccess = () => {
-    this.props.cleanSession();
-    journalActions.clearNotificationsListener();
-
     const loginUrl = '/login';
 
     // we need reset it
@@ -114,6 +111,8 @@ class App extends React.Component {
       initialLocation: loginUrl,
       authenticationFinished: false,
     }, () => {
+      this.props.cleanSession();
+      journalActions.clearNotificationsListener();
       auth0Api.clean();
       this.context.router.replace(`${BASE_URL}${loginUrl}`);
     });

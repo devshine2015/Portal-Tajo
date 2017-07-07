@@ -42,6 +42,7 @@ class Auth0API extends BaseAPIClass {
   }
 
   clean() {
+    this.idToken = undefined;
     this.mgmtAccessToken = undefined;
     this.authExtAccessToken = undefined;
   }

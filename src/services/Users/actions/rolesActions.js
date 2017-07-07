@@ -1,5 +1,9 @@
 import R from 'ramda';
-import { api, getExtentionAuthorizationHeader } from 'utils/api';
+import {
+  api,
+  auth0Api,
+  getExtentionAuthorizationHeader,
+} from 'utils/api';
 import endpoints from 'configs/endpoints';
 import { getRoleIdByUserId } from '../reducer';
 import { userToRolesSet } from './usersActions';
