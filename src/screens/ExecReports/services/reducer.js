@@ -11,8 +11,8 @@ import moment from 'moment';
 const execReportInitialState = fromJS({
   // dateFrom: moment().subtract(1, 'days').toDate(),
   // dateTo: moment().toDate(),
-  dateFrom: moment().subtract(1, 'days').toDate(),
-  dateTo: moment().toDate(),
+  dateFrom: moment().startOf('day').subtract(1, 'days').toDate(),
+  dateTo: moment().startOf('day').toDate(),
   localFrames: new Map(),
   durtyFlag: 0,
 });
