@@ -9,17 +9,16 @@ import { metersToKmString, speedToString, msToTimeIntervalString,
 const jsPDF = require('jspdf');
 require('jspdf-autotable');
 
-export default function generatReportPDF(reportFrame, reportNode) {
-  // const columns = getColumns();
-  // const rows = getData(reportFrame);
+export default function generatReportPDF(reportFrame, theVehicle, reportNode) {
   const doc = new jsPDF('l');
 
   doc.text(`Report from ${reportFrame.dateFrom.toLocaleString()} to ${reportFrame.dateTo.toLocaleString()} `, 7, 15);
-  doc.text("Per-Trip Report", 7, 25);
+  doc.text(`Licence Plate: ${theVehicle.original.licensePlate}`, 7, 21);
+  doc.text("Per-Trip Report", 7, 35);
 
   doc.autoTable(getColumns(), getData(reportFrame), {
     // startY: doc.autoTable.previous.finalY + 1,
-    startY: 32,
+    startY: 38,
     margin: { horizontal: 7 },
     bodyStyles: { valign: 'top' },
     styles: { overflow: 'linebreak', columnWidth: 'wrap' },
@@ -28,11 +27,11 @@ export default function generatReportPDF(reportFrame, reportNode) {
     tableWidth: 'auto',
   });
 
-  doc.text("Per-Day Report", 7, doc.autoTable.previous.finalY + 15);
+  doc.text("Per-Day Report", 7, doc.autoTable.previous.finalY + 25);
   // doc.text("Per-Day Report", 7, doc.autoTable.previous.finalY + 15);
 
   doc.autoTable(getColumnsTotals(), getDataTotals(reportFrame), {
-    startY: doc.autoTable.previous.finalY + 35,
+    startY: doc.autoTable.previous.finalY + 28,
     margin: { horizontal: 7 },
     bodyStyles: { valign: 'top' },
     styles: { overflow: 'linebreak', columnWidth: 'wrap' },
