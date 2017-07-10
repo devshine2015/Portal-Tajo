@@ -2,64 +2,116 @@
 // one vehicle report table
 // PDF generation
 //
-
-import ReactDOM from 'react-dom';
-
-const pdgMake = require('pdfmake');
+import { metersToKmString, speedToString, msToTimeIntervalString,
+  dateToHHMM } from 'utils/convertors';
 
 
 const jsPDF = require('jspdf');
 require('jspdf-autotable');
 
-function pdfMake(){
-
-  const docDefinition = { 
-    pageSize: 'A4',
-    pageOrientation: 'landscape',
-    content: 'This is an sample PDF printed with pdfMake',
-  };
-  pdfMake.createPdf(docDefinition).download('pdfMake.pdf');
-}
-
-export default function generatReportPDF(reportFrame) {
-
-pdfMake();
-return;
-
-  const columns = ['ID', 'Name', 'Country', 'eMail', 'LOMG'];
-  const rows = [
-      [1, 'Shaw', 'สร้างสถานที่แบบหลายเหลี่ยม', 'Manuel_Morissette@yahoo.com',
-      'Tenetur perspiciatis fuga et distinctio in fugiat aspernatur amet voluptas corrupti qui et animi tempore asperiores maxime nobis eos rerum'],
-      [2, 'Nelson', 'Kazakhstan', 'Manuel_Morissette@yahoo.com',
-      'Tenetur perspiciatis fuga et distinctio in fugiat aspernatur amet voluptas corrupti qui et animi tempore asperiores maxime nobis eos rerum'],
-      [3, 'Garcia', 'Madagascar', 'Manuel_Morissette@yahoo.com',
-      'Tenetur perspiciatis fuga et distinctio in fugiat aspernatur amet voluptas corrupti qui et animi tempore asperiores maxime nobis eos rerum'],
-  ];
-
-
-  const aNode = ReactDOM.findDOMNode(reportFrame);
-  const t1 = aNode.childNodes[0].childNodes[0];
-  const t2 = aNode.childNodes[1].childNodes[0];
-  // Only pt supported (not mm or in)
+export default function generatReportPDF(reportFrame, reportNode) {
+  // const columns = getColumns();
+  // const rows = getData(reportFrame);
   const doc = new jsPDF('l');
-  const jsTableH = doc.autoTableHtmlToJson(t1);
-  const jsTable = doc.autoTableHtmlToJson(t2);
-  // console.log(jsTable);
-  // doc.autoTable(jsTableH.columns, jsTable.data, {
-  //   margin: { horizontal: 7 },
-  //   bodyStyles: { valign: 'top' },
-  //   styles: { overflow: 'linebreak', columnWidth: 'wrap' },
-  //   columnStyles: { text: { columnWidth: 'auto' } },
-  //   // styles: { overflow: 'linebreak', columnWidth: 'wrap' },
-  //   // columnStyles: { text: { columnWidth: 'auto' } },
-  // });
-  doc.autoTable(columns, rows, 
-    {
+
+  doc.autoTable(getColumns(), getData(reportFrame), {
+    startY: 20, // doc.autoTable.previous.finalY + 15,
     margin: { horizontal: 7 },
     bodyStyles: { valign: 'top' },
     styles: { overflow: 'linebreak', columnWidth: 'wrap' },
-    columnStyles: { text: { columnWidth: 'auto' } }
-    });
-  doc.save('tableData.pdf');
+    columnStyles: { text: { columnWidth: 'auto' } },
+  });
+
+  doc.autoTable(getColumnsTotals(), getDataTotals(reportFrame), {
+    startY: doc.autoTable.previous.finalY + 15,
+    margin: { horizontal: 7 },
+    bodyStyles: { valign: 'top' },
+    styles: { overflow: 'linebreak', columnWidth: 'wrap' },
+    columnStyles: { text: { columnWidth: 'auto' } },
+  });
+
+
+  doc.save('tripReport.pdf');
 }
 
+const breakLongString = (inString, breakLimit) => {
+  let dstString = '';
+  let thisLineCount = 0;
+  for (let i = 0; i < inString.length; ++i) {
+    if (thisLineCount > breakLimit && inString[i] === ' ') {
+      thisLineCount = 0;
+      dstString = dstString.concat('\n');
+    } else {
+      ++thisLineCount;
+      dstString = dstString.concat(inString[i]);
+    }
+  }
+  return dstString;
+};
+
+const getColumns = function () {
+  return [
+    // -----
+        { title: 'Rest\nDuration', dataKey: 'restDuration' },
+        { title: 'Start', dataKey: 'start' },
+        { title: 'From', dataKey: 'from' },
+        { title: 'End', dataKey: 'end' },
+        { title: 'To', dataKey: 'to' },
+        { title: 'Operation\nDuration', dataKey: 'operation' },
+        { title: 'Idle', dataKey: 'idle' },
+        { title: 'Dist', dataKey: 'dist' },
+        { title: 'MaxV', dataKey: 'maxV' },
+        { title: 'AvgV', dataKey: 'avgV' },
+  ];
+};
+
+const makeDataRow = aTrip => (
+  {
+    // // -------
+    restDuration: msToTimeIntervalString(aTrip.fromStopOwer.durationMs),
+    start: dateToHHMM(aTrip.startDate),
+    from: breakLongString(aTrip.fromStopOwer.address, 20),
+    // from: 'Tenetur perspiciatis fuga et distinctio in fugiat aspernatur amet voluptas corrupti qui et animi tempore asperiores maxime nobis eos rerum',
+    end: dateToHHMM(aTrip.endDate),
+    to: breakLongString(aTrip.toStopOver.address, 20),
+    operation: msToTimeIntervalString(aTrip.calculatedOperationalDurationMs),
+    idle: msToTimeIntervalString(aTrip.calculatedIdleDurationMs),
+    dist: metersToKmString(aTrip.calculatedDistanceM),
+    maxV: speedToString(aTrip.maxSpeed),
+    avgV: speedToString(aTrip.avgSpeed),
+  }
+);
+
+const getData = reportFrame =>
+  reportFrame.getValidTrips().map(aTrip => makeDataRow(aTrip));
+
+
+// ------ TOTALS -----
+
+const getColumnsTotals = function () {
+  return [
+    // -----
+        { title: 'Date', dataKey: 'date' },
+        { title: 'Rest\nDuration', dataKey: 'restDuration' },
+        { title: 'Operation\nDuration', dataKey: 'operation' },
+        { title: 'Idle', dataKey: 'idle' },
+        { title: 'Dist', dataKey: 'dist' },
+  ];
+};
+
+const makeDataRowTotals = aTotal => (
+  {
+    // // -------
+    date: aTotal.dateMoment !== undefined ? aTotal.dateMoment.toDate().toLocaleDateString() : 'Grand Total',
+    restDuration: msToTimeIntervalString(aTotal.calculatedRestMs),
+    operation: msToTimeIntervalString(aTotal.calculatedOperationalDurationMs),
+    idle: msToTimeIntervalString(aTotal.calculatedIdleDurationMs),
+    dist: metersToKmString(aTotal.calculatedDistanceM),
+  }
+);
+
+const getDataTotals = (reportFrame) => {
+  const totalsData = reportFrame.perDayTotals().map(aTrip => makeDataRowTotals(aTrip));
+  totalsData.push(makeDataRowTotals(reportFrame.grandTotal));
+  return totalsData;
+}

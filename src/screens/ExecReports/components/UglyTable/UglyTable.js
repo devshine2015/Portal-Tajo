@@ -73,32 +73,38 @@ TripRow.propTypes = {
   aTrip: React.PropTypes.object.isRequired,
 };
 
-const TotalRow = ({
-  reportFrame,
-}) => (
-  <TableRow className={styles.row} style={{ ...btmColorStyle, ...totalRowStyle }}>
-    <TableRowColumn style={cellStyle}>{msToTimeIntervalString(reportFrame.durationMs)}</TableRowColumn>
-    <TableRowColumn style={cellStyle}>-</TableRowColumn>
-    <TableRowColumn style={nameCellStyle}>-</TableRowColumn>
-    <TableRowColumn style={cellStyle}>-</TableRowColumn>
-    <TableRowColumn style={nameCellStyle}>-</TableRowColumn>
-    <TableRowColumn style={cellStyle}>{msToTimeIntervalString(reportFrame.totalOperatinMs)}</TableRowColumn>
-    <TableRowColumn style={cellStyle}>{msToTimeIntervalString(reportFrame.totalIdleMs)}</TableRowColumn>
-    <TableRowColumn style={cellStyle}>{metersToKmString(reportFrame.totalDistanceM)}</TableRowColumn>
-    <TableRowColumn style={cellStyle}>{speedToString(reportFrame.totalMaxSpeed)}</TableRowColumn>
-    <TableRowColumn style={cellStyle}>{speedToString(reportFrame.totalAvgSpeed)}</TableRowColumn>
-  </TableRow>
-);
+// maybe we will need to add total row at the end of the table?
+// const TotalRow = ({
+//   reportFrame,
+// }) => (
+//   <TableRow className={styles.row} style={{ ...btmColorStyle, ...totalRowStyle }}>
+//     <TableRowColumn style={cellStyle}>{msToTimeIntervalString(reportFrame.durationMs)}</TableRowColumn>
+//     <TableRowColumn style={cellStyle}>-</TableRowColumn>
+//     <TableRowColumn style={nameCellStyle}>-</TableRowColumn>
+//     <TableRowColumn style={cellStyle}>-</TableRowColumn>
+//     <TableRowColumn style={nameCellStyle}>-</TableRowColumn>
+//     <TableRowColumn style={cellStyle}>{msToTimeIntervalString(reportFrame.totalOperatinMs)}</TableRowColumn>
+//     <TableRowColumn style={cellStyle}>{msToTimeIntervalString(reportFrame.totalIdleMs)}</TableRowColumn>
+//     <TableRowColumn style={cellStyle}>{metersToKmString(reportFrame.totalDistanceM)}</TableRowColumn>
+//     <TableRowColumn style={cellStyle}>{speedToString(reportFrame.totalMaxSpeed)}</TableRowColumn>
+//     <TableRowColumn style={cellStyle}>{speedToString(reportFrame.totalAvgSpeed)}</TableRowColumn>
+//   </TableRow>
+// );
 
-TotalRow.propTypes = {
-  reportFrame: React.PropTypes.object.isRequired,
-};
+// TotalRow.propTypes = {
+//   reportFrame: React.PropTypes.object.isRequired,
+// };
 
 
 class UglyTable extends React.Component {
   doPrint = () => {
+    const reportFrame = this.props.getSoloReportById(this.props.vehicleId);
+    if (reportFrame === null) {
+      return false;
+    }
+
     // generatReportPDF(this.props.getSoloReportById(this.props.vehicleId));
-    generatReportPDF(this.tableRef);
+    generatReportPDF(reportFrame, this.tableRef);
 //    window.print();
   }
 
