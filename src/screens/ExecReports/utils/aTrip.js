@@ -39,7 +39,8 @@ HistoryTrip.prototype.isValid = function () {
   // disregard "empty" trips
   const isEmpty = this.maxSpeed === 0
     || this.calculatedDistanceM === 0
-    || this.numberOfPosSamples < 5;
+    || this.numberOfPosSamples < 5
+    || this.durationTotalMs < 1000 * 60 * 3;
   return !isEmpty;
   // return this.durationMs > 5 * 1000 * 60;
 };
@@ -128,7 +129,7 @@ export function makeTripsParcer() {
     } else if (isTripStart(theSample)) {
       tripStartSampleIdx = idx;
     }
-    return trips;
+    return trips.filter(aTrip => aTrip.isValid());
   };
   return processor;
 }
