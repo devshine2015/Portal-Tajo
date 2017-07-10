@@ -23,9 +23,6 @@ module.exports = (options) => ({
     publicPath: '/',
     sourceMapFilename: 'js/[name].js.map',
   }, options.output), // Merge with env dependent settings
-  node: {
-    fs: 'empty',
-  },
   module: {
     rules: [{
       test: /\.js$|\.jsx$/, // Transform all .js files required somewhere with Babel
@@ -72,9 +69,6 @@ module.exports = (options) => ({
     }, {
       test: /\.svg$/,
       loader: 'svg-react-loader',
-    }, {
-      test: /\.(png|woff|woff2|eot|ttf|svg)$/, 
-      loader: 'url-loader?limit=100000',
     }],
   },
   plugins: options.plugins.concat([
