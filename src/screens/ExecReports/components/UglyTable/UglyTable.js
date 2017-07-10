@@ -8,8 +8,6 @@ import { metersToKmString, speedToString, msToTimeIntervalString,
   dateToHHMM, temperatureToString } from 'utils/convertors';
 
 import Layout from 'components/Layout';
-import MainActionButton from 'components/Controls/MainActionButton';
-import generatReportPDF from './UglyTablePDF';
 
 import {
   Table,
@@ -97,17 +95,6 @@ TripRow.propTypes = {
 
 
 class UglyTable extends React.Component {
-  doPrint = () => {
-    const reportFrame = this.props.getSoloReportById(this.props.vehicleId);
-    if (reportFrame === null) {
-      return false;
-    }
-
-    // generatReportPDF(this.props.getSoloReportById(this.props.vehicleId));
-    generatReportPDF(reportFrame, this.tableRef);
-//    window.print();
-  }
-
   render() {
     const reportFrame = this.props.getSoloReportById(this.props.vehicleId);
     if (reportFrame === null) {
@@ -144,18 +131,10 @@ class UglyTable extends React.Component {
             {trips}
           </TableBody>
         </Table>
-        <div style={{ margin: 32 }}>
-          <MainActionButton
-            label={'PRINT'}
-            onClick={this.doPrint}
-            icon={null}
-          />
-        </div>
       </Layout.Content>
     );
   }
 }
-
 
 UglyTable.propTypes = {
   vehicleId: React.PropTypes.string.isRequired,

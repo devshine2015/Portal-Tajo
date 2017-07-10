@@ -14,20 +14,30 @@ export default function generatReportPDF(reportFrame, reportNode) {
   // const rows = getData(reportFrame);
   const doc = new jsPDF('l');
 
+  doc.text(`Report from ${reportFrame.dateFrom.toLocaleString()} to ${reportFrame.dateTo.toLocaleString()} `, 7, 15);
+  doc.text("Per-Trip Report", 7, 25);
+
   doc.autoTable(getColumns(), getData(reportFrame), {
-    startY: 20, // doc.autoTable.previous.finalY + 15,
+    // startY: doc.autoTable.previous.finalY + 1,
+    startY: 32,
     margin: { horizontal: 7 },
     bodyStyles: { valign: 'top' },
     styles: { overflow: 'linebreak', columnWidth: 'wrap' },
     columnStyles: { text: { columnWidth: 'auto' } },
+    showHeader: 'firstPage',
+    tableWidth: 'auto',
   });
 
+  doc.text("Per-Day Report", 7, doc.autoTable.previous.finalY + 15);
+  // doc.text("Per-Day Report", 7, doc.autoTable.previous.finalY + 15);
+
   doc.autoTable(getColumnsTotals(), getDataTotals(reportFrame), {
-    startY: doc.autoTable.previous.finalY + 15,
+    startY: doc.autoTable.previous.finalY + 35,
     margin: { horizontal: 7 },
     bodyStyles: { valign: 'top' },
     styles: { overflow: 'linebreak', columnWidth: 'wrap' },
     columnStyles: { text: { columnWidth: 'auto' } },
+    showHeader: 'firstPage',
   });
 
 
@@ -111,7 +121,7 @@ const makeDataRowTotals = aTotal => (
 );
 
 const getDataTotals = (reportFrame) => {
-  const totalsData = reportFrame.perDayTotals().map(aTrip => makeDataRowTotals(aTrip));
+  const totalsData = reportFrame.perDayTotals.map(aTrip => makeDataRowTotals(aTrip));
   totalsData.push(makeDataRowTotals(reportFrame.grandTotal));
   return totalsData;
 }

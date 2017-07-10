@@ -19,6 +19,7 @@ import TripsTimeLine from './TimeLine/TripsTimeLine';
 
 import UglyTable from './UglyTable/UglyTable';
 import TotalsTable from './TotalsTable/TotalsTable';
+import generatReportPDF from './UglyTable/UglyTablePDF';
 // import EventsTable from './EventsTable/EventsTable';
 
 import MainActionButton from 'components/Controls/MainActionButton';
@@ -49,6 +50,18 @@ class SoloReport extends React.Component {
   doPrint = () => {
     window.print();
   }
+  doSavePDF = () => {
+    const reportFrame = this.props.getSoloReportById(this.props.vehicleId);
+    if (reportFrame === null) {
+      return false;
+    }
+
+    // generatReportPDF(this.props.getSoloReportById(this.props.vehicleId));
+    generatReportPDF(reportFrame, this.tableRef);
+//    window.print();
+  }
+
+
 
   render() {
     const reportFrame = this.props.getSoloReportById(this.props.vehicleId);
@@ -86,6 +99,14 @@ class SoloReport extends React.Component {
               <UglyTable vehicleId={this.props.vehicleId} />}
               {this.state.uglyTable &&
               <TotalsTable vehicleId={this.props.vehicleId} />}
+              <div style={{ paddingBottom: 20 }}>
+                <MainActionButton
+                label={'Save PDF'}
+                onClick={this.doSavePDF}
+                icon={null}
+                />
+              </div>
+
             </VelocityTransitionGroup>
           </Layout.Section>
           {/* <NoPrint>
