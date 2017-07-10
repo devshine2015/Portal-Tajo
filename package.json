@@ -62,7 +62,6 @@
     "moment": "2.13.0",
     "node-polyglot": "2.2.2",
     "node-uuid": "1.4.7",
-    "pdfmake": "^0.1.31",
     "query-string": "4.2.3",
     "ramda": "0.23.0",
     "react": "15.4.2",
