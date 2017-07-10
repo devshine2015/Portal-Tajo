@@ -25,6 +25,7 @@ import generatReportPDF from './UglyTable/UglyTablePDF';
 import MainActionButton from 'components/Controls/MainActionButton';
 
 import { getInstanceExecReportFrameById } from './../services/reducer';
+import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
 
 class SoloReport extends React.Component {
 
@@ -57,11 +58,9 @@ class SoloReport extends React.Component {
     }
 
     // generatReportPDF(this.props.getSoloReportById(this.props.vehicleId));
-    generatReportPDF(reportFrame, this.tableRef);
+    generatReportPDF(reportFrame, this.props.getVehicleById(this.props.vehicleId), this.tableRef);
 //    window.print();
   }
-
-
 
   render() {
     const reportFrame = this.props.getSoloReportById(this.props.vehicleId);
@@ -81,7 +80,7 @@ class SoloReport extends React.Component {
           <Layout.Section style={sectionStyle}>
             <SoloHeader vehicleId={this.props.vehicleId} />
           </Layout.Section>
-          {/*<Layout.Section style={sectionStyle}>
+          {/* <Layout.Section style={sectionStyle}>
             <Layout.Header label={'OVERVIEW'} />
             <SoloDetails vehicleId={this.props.vehicleId} />
           </Layout.Section>*/}
@@ -99,11 +98,18 @@ class SoloReport extends React.Component {
               <UglyTable vehicleId={this.props.vehicleId} />}
               {this.state.uglyTable &&
               <TotalsTable vehicleId={this.props.vehicleId} />}
+              <div style={{ }}>
+                <MainActionButton
+                  label={'Save Excel'}
+                  onClick={this.doSavePDF}
+                  icon={null}
+                />
+              </div>
               <div style={{ paddingBottom: 20 }}>
                 <MainActionButton
-                label={'Save PDF'}
-                onClick={this.doSavePDF}
-                icon={null}
+                  label={'Save PDF'}
+                  onClick={this.doSavePDF}
+                  icon={null}
                 />
               </div>
 
@@ -119,7 +125,7 @@ class SoloReport extends React.Component {
           </NoPrint>
           {this.state.events &&
           <EventsTable vehicleId={this.props.vehicleId} />}*/}
-          {/*<Layout.Section style={sectionStyle}>
+          {/* <Layout.Section style={sectionStyle}>
             <Layout.Header label={'TIMELINE'} />
             <NoPrint style={{ padding: 20 }}>
               <Toggle
@@ -154,10 +160,12 @@ class SoloReport extends React.Component {
 SoloReport.propTypes = {
   vehicleId: React.PropTypes.string.isRequired,
   getSoloReportById: React.PropTypes.func.isRequired,
+  getVehicleById: React.PropTypes.func.isRequired,
 };
 
 const mapState = state => ({
   getSoloReportById: getInstanceExecReportFrameById(state),
+  getVehicleById: getVehicleByIdFunc(state),
 });
 
 const mapDispatch = {
