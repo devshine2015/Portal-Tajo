@@ -22,7 +22,7 @@ import { getInstanceExecReportFrameById } from './../../services/reducer';
 import styles from './styles.css';
 
 const btmColorStyle = { borderBottomColor: 'gray' };
-const totalRowStyle = { WebkitPrintColorAdjust: 'exact', backgroundColor: 'beige', fontWeight: 'bold' };
+// const totalRowStyle = { WebkitPrintColorAdjust: 'exact', backgroundColor: 'beige', fontWeight: 'bold' };
 // import classes from './classes';
 
 const cellStyle = {
@@ -41,9 +41,9 @@ const nameCellStyle = {
   fontSize: '11px',
 };
 
-const boldStyle = {
-  fontWeight: 'bold',
-};
+// const boldStyle = {
+//   fontWeight: 'bold',
+// };
 
 const TripRow = ({
   aTrip,

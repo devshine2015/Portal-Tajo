@@ -4,8 +4,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import { metersToKmString, speedToString, msToTimeIntervalString,
-  dateToHHMM, temperatureToString } from 'utils/convertors';
+import { metersToKmString, msToTimeIntervalString } from 'utils/convertors';
 
 import Layout from 'components/Layout';
 
@@ -22,7 +21,7 @@ import { getInstanceExecReportFrameById } from './../../services/reducer';
 import styles from './styles.css';
 
 const btmColorStyle = { borderBottomColor: 'gray' };
-const totalRowStyle = { WebkitPrintColorAdjust: 'exact', backgroundColor: 'beige', fontWeight: 'bold' };
+// const totalRowStyle = { WebkitPrintColorAdjust: 'exact', backgroundColor: 'beige', fontWeight: 'bold' };
 // import classes from './classes';
 
 const cellStyle = {

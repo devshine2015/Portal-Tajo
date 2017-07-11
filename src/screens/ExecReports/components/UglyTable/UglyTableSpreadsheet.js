@@ -48,11 +48,11 @@ const makeDataRow = aTrip => (
 const getColumnsTotals = function () {
   return [
     // -----
-        'Date',
-        'Rest\nDuration',
-        'Operation\nDuration', 
-        'Idle',
-        'Dist',
+    'Date',
+    'Rest\nDuration',
+    'Operation\nDuration',
+    'Idle',
+    'Dist',
   ];
 };
 
@@ -71,4 +71,4 @@ const getDataTotals = (reportFrame) => {
   const totalsData = reportFrame.perDayTotals.map(aTrip => makeDataRowTotals(aTrip));
   totalsData.push(makeDataRowTotals(reportFrame.grandTotal));
   return totalsData;
-}
+};

@@ -6,11 +6,11 @@ import { metersToKmString, speedToString, msToTimeIntervalString,
   dateToHHMM } from 'utils/convertors';
 
 
-const jsPDF = require('jspdf');
+const JsPDF = require('jspdf');
 require('jspdf-autotable');
 
-export default function generatReportPDF(reportFrame, theVehicle, reportNode) {
-  const doc = new jsPDF('l');
+export default function generatReportPDF(reportFrame, theVehicle) {
+  const doc = new JsPDF('l');
 
   doc.text(`Report from ${reportFrame.dateFrom.toLocaleString()} to ${reportFrame.dateTo.toLocaleString()} `, 7, 15);
   doc.text(`Licence Plate: ${theVehicle.original.licensePlate}`, 7, 21);
@@ -123,4 +123,4 @@ const getDataTotals = (reportFrame) => {
   const totalsData = reportFrame.perDayTotals.map(aTrip => makeDataRowTotals(aTrip));
   totalsData.push(makeDataRowTotals(reportFrame.grandTotal));
   return totalsData;
-}
+};
