@@ -20,6 +20,7 @@ import TripsTimeLine from './TimeLine/TripsTimeLine';
 import UglyTable from './UglyTable/UglyTable';
 import TotalsTable from './TotalsTable/TotalsTable';
 import generatReportPDF from './UglyTable/UglyTablePDF';
+import generatReportSpreadsheet from './UglyTable/UglyTableSpreadsheet';
 // import EventsTable from './EventsTable/EventsTable';
 
 import MainActionButton from 'components/Controls/MainActionButton';
@@ -54,13 +55,19 @@ class SoloReport extends React.Component {
   doSavePDF = () => {
     const reportFrame = this.props.getSoloReportById(this.props.vehicleId);
     if (reportFrame === null) {
-      return false;
+      return;
     }
 
-    // generatReportPDF(this.props.getSoloReportById(this.props.vehicleId));
     generatReportPDF(reportFrame, this.props.getVehicleById(this.props.vehicleId), this.tableRef);
-//    window.print();
   }
+  doSaveEXCEL = () => {
+    const reportFrame = this.props.getSoloReportById(this.props.vehicleId);
+    if (reportFrame === null) {
+      return;
+    }
+    generatReportSpreadsheet(reportFrame, this.props.getVehicleById(this.props.vehicleId), { fileName: 'tripReport' });
+  }
+
 
   render() {
     const reportFrame = this.props.getSoloReportById(this.props.vehicleId);
@@ -100,8 +107,8 @@ class SoloReport extends React.Component {
               <TotalsTable vehicleId={this.props.vehicleId} />}
               <div style={{ }}>
                 <MainActionButton
-                  label={'Save Excel'}
-                  onClick={this.doSavePDF}
+                  label={'Save Spreadsheet'}
+                  onClick={this.doSaveEXCEL}
                   icon={null}
                 />
               </div>

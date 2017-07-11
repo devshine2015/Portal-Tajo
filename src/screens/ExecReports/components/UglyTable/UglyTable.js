@@ -97,7 +97,8 @@ TripRow.propTypes = {
 class UglyTable extends React.Component {
   render() {
     const reportFrame = this.props.getSoloReportById(this.props.vehicleId);
-    if (reportFrame === null) {
+    if (reportFrame === null
+      || reportFrame.getValidTrips().length < 1) {
       return false;
     }
     const trips = reportFrame.getValidTrips().map(aTrip => <TripRow key={aTrip.startIdx} aTrip={aTrip} />);
