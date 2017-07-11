@@ -60,7 +60,7 @@ const Trip = ({
 
     <DetailItemProperty
       icon={<TimeIcon style={STYLES.icon} />}
-      value={msToTimeIntervalString(aTripData.durationMs)}
+      value={msToTimeIntervalString(aTripData.durationTotalMs)}
     />
     <DetailItemProperty
       icon={<DistanceIcon style={STYLES.icon} />}
