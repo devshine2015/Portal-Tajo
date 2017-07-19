@@ -37,8 +37,6 @@ class App extends React.Component {
       authenticationFinished: false,
     };
 
-    setMwa(context.router.location.pathname);
-
     auth.onInitSuccess(this.onLoginSuccess);
   }
 
