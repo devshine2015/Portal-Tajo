@@ -72,4 +72,6 @@ class DrvrStorage {
   }
 }
 
-export default new DrvrStorage();
+const storage = new DrvrStorage();
+
+export default storage;

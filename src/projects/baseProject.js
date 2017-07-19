@@ -17,6 +17,7 @@ import getHooks from './utils/hooks';
 import { getHistory } from './utils/routerHelpers';
 import createRoutes from './utils/createRoutes';
 import { init as initConfigs } from 'configs';
+import getInitialState from './helpers';
 
 require('velocity-animate');
 require('velocity-animate/velocity.ui');
@@ -25,12 +26,13 @@ require('sanitize.css/sanitize.css');
 const DEF_ANCHOR_ID = 'app';
 initConfigs();
 
-const renderProject = ({
+const renderProject = async ({
   anchorId = DEF_ANCHOR_ID,
   routesConfig,
   createReducer,
 }) => {
-  const initialState = {};
+  const initialState = await getInitialState();
+  // Create redux store with history
   const store = configureStore(initialState, browserHistory, createReducer);
   const { injectReducer } = getHooks(store, createReducer);
   const routes = createRoutes(store.dispatch, getHistory(store, browserHistory), injectReducer, routesConfig);
