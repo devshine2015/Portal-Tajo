@@ -20,7 +20,8 @@ module.exports = (options) => ({
   output: Object.assign({
     // put build into specified folder
     path: options.outputFolder,
-    publicPath: '/',
+    publicPath: options.publicPath || '/',
+    // add this path to static files in index.html
     sourceMapFilename: 'js/[name].js.map',
   }, options.output), // Merge with env dependent settings
   module: {

@@ -13,8 +13,6 @@ module.exports = require('./webpack.base')({
   output: {
     filename: 'js/[name].js',
     chunkFilename: 'js/[name].chunk.js',
-    // add this path to static files in index.html
-    publicPath: '',
   },
 
   // where compile locally
