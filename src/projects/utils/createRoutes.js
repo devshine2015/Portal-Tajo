@@ -15,10 +15,10 @@ const createRootRoute = (screenCreator, menu) => screenCreator({
   },
 });
 
-export default function createRoutes(dispatch, history, injectReducer, configs = {}) {
+export default function createRoutes(dispatch, history, injectReducer, auth, configs = {}) {
   const { screens, initialScreenConfig, menu } = configs;
 
-  const screenCreator = makeScreenCreator(dispatch, injectReducer);
+  const screenCreator = makeScreenCreator(dispatch, injectReducer, auth);
   const rootRoute = createRootRoute(screenCreator, menu);
   const rootChildRoutes = screens.map(screenCreator);
 

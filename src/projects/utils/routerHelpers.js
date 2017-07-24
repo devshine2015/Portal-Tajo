@@ -49,7 +49,7 @@ export function getHistory(store, history) {
  * @param {Function} injectReducer - sreens needs a way to inject reducers asyncroniously
  * @return {Function} actual screen creator
  */
-export function makeScreenCreator(dispatch, injectReducer) {
+export function makeScreenCreator(dispatch, injectReducer, auth) {
   /**
    * Make screen out of provided options and cretation function
    * @param {Function} routeCreator - actual function to run to create route
@@ -62,6 +62,7 @@ export function makeScreenCreator(dispatch, injectReducer) {
     if (rule !== undefined && typeof rule === 'function' && !rule()) return null;
 
     const toInject = Object.assign({}, options, {
+      auth,
       dispatch,
       injectReducer,
       errorHandler,

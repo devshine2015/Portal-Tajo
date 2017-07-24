@@ -31,11 +31,12 @@ const renderProject = async ({
   routesConfig,
   createReducer,
 }) => {
+  const auth = { auth: 'lol' };
   const initialState = await getInitialState();
   // Create redux store with history
   const store = configureStore(initialState, browserHistory, createReducer);
   const { injectReducer } = getHooks(store, createReducer);
-  const routes = createRoutes(store.dispatch, getHistory(store, browserHistory), injectReducer, routesConfig);
+  const routes = createRoutes(store.dispatch, getHistory(store, browserHistory), injectReducer, auth, routesConfig);
 
   ReactDOM.render(
     <Provider store={store}>
