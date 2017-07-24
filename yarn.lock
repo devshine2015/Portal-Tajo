@@ -7102,7 +7102,7 @@ vary@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.0.tgz#e1e5affbbd16ae768dd2674394b9ad3022653140"
 
-velocity-animate@1.5.0:
+velocity-animate@1.5.0, velocity-animate@^1.2.3:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/velocity-animate/-/velocity-animate-1.5.0.tgz#fc8771d8dfe1136ff02a707e10fbb0957c4b030f"
 
