@@ -32,18 +32,25 @@ class Authentication {
 
   /**
    * Authenticate user with traditional username/password approach
+   * @param {String} username - email, username or something else
+   * @param {String} password
+   * @param {Function} cb - callback which has (err, profile) signature
    */
   traditionalLogin = (username, password, cb) => {
     login(username, password)
-      .then((profile) => {
-        this.accessToken = profile.access_token;
+      .then((loginData) => {
+        this.accessToken = loginData.access_token;
 
-        this._getUserInfo(profile.access_token, cb);
+        this._getUserInfo(loginData, cb);
       });
   }
 
-  _getUserInfo = (accessToken, cb) => {
-    this.auth0.client.userInfo(accessToken, cb);
+  _getUserInfo = (sessionData, cb) => {
+    this.auth0.client.userInfo(sessionData.access_token, (err, user) => {
+      const profile = Object.assign({}, user, sessionData);
+
+      cb(err, profile);
+    });
   }
 
   isAuthenticated = () => {
