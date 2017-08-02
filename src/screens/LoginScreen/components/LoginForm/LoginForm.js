@@ -52,22 +52,22 @@ class LoginForm extends React.Component {
 
     this.changeLoadingState(true);
 
-    this.props.route.auth.traditionalLogin(this.state.username, this.state.password, (err, profile) => {
-      this.changeLoadingState(false);
-
-      if (err) {
-        console.error(err);
-      } else {
-        this.__sideEffects(profile);
-        this.context.router.replace(`${BASE_URL}/`);
-      }
-    });
+    this.props.route.auth.traditionalLogin(this.state.username, this.state.password, this.onLoginFinish);
   }
 
-  changeLoadingState = (nextState) => {
-    this.setState({
-      isLoading: nextState,
-    });
+  onLoginFinish = (err, profile) => {
+    this.changeLoadingState(false);
+
+    if (err) {
+      console.error(err);
+    } else {
+      this.__sideEffects(profile);
+      this.context.router.replace(`${BASE_URL}/`);
+    }
+  }
+
+  changeLoadingState = (isLoading) => {
+    this.setState({ isLoading });
   }
 
   /**
@@ -78,9 +78,11 @@ class LoginForm extends React.Component {
     const isMwaProfile = isItMwaProfile(profile);
 
     if (isMwaProfile) {
-      setMwa(isMwaProfile);
+      setMwa(true);
       this.props.setReportsMWA();
     }
+
+    this.props.fetchAccessTokens();
   }
 
   render() {
@@ -146,6 +148,7 @@ LoginForm.propTypes = {
     }).isRequired,
   }).isRequired,
   setReportsMWA: PropTypes.func.isRequired,
+  fetchAccessTokens: PropTypes.func.isRequired,
 };
 
 LoginForm.defaultProps = {
