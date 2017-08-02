@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import pure from 'recompose/pure';
-import { connect } from 'react-redux';
 import Form from 'components/Form';
 import {
   TextField,
@@ -10,8 +8,6 @@ import {
 } from 'material-ui';
 import SimpleError from 'components/Error';
 import ButtonWithProgress from 'components/ButtonWithProgress';
-import { errorsActions } from 'services/Global/actions';
-import { getErrorType } from 'services/Global/reducer';
 import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
@@ -35,7 +31,7 @@ class LoginForm extends React.Component {
     };
   }
 
-  onChange = e => {
+  onChange = (e) => {
     const { name, value } = e.target;
 
     this.setState({
@@ -52,15 +48,17 @@ class LoginForm extends React.Component {
 
     this.changeLoadingState(true);
 
-    this.context.login(this.state.username, this.state.password)
-      .then(null, (err) => {
+    this.props.route.auth.traditionalLogin(this.state.username, this.state.password)
+      .then(() => {
+        this.props.router.replace('/');
+      }, (err) => {
         if (err) console.error(err);
 
         this.changeLoadingState(false);
       });
   }
 
-  changeLoadingState = nextState => {
+  changeLoadingState = (nextState) => {
     this.setState({
       isLoading: nextState,
     });
@@ -86,13 +84,13 @@ class LoginForm extends React.Component {
               <TextField
                 fullWidth
                 name="username"
-                placeholder={ translations.username }
+                placeholder={translations.username}
                 onChange={this.onChange}
               />
               <TextField
                 fullWidth
                 name="password"
-                placeholder={ translations.password }
+                placeholder={translations.password}
                 type="password"
                 onChange={this.onChange}
               />
@@ -115,34 +113,22 @@ class LoginForm extends React.Component {
   }
 }
 
-LoginForm.contextTypes = {
-  login: PropTypes.func.isRequired,
-};
-
 LoginForm.propTypes = {
-  // login: React.PropTypes.func.isRequired,
   errorType: PropTypes.string,
   resetError: PropTypes.func.isRequired,
-  // goToRoot: React.PropTypes.func.isRequired,
-
   translations: phrasesShape.isRequired,
+  router: PropTypes.shape({
+    replace: PropTypes.func.isRequired,
+  }).isRequired,
+  route: PropTypes.shape({
+    auth: PropTypes.shape({
+      traditionalLogin: PropTypes.func.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 LoginForm.defaultProps = {
   errorType: undefined,
 };
 
-const PureLoginForm = pure(LoginForm);
-
-const mapState = (state) => ({
-  errorType: getErrorType(state),
-});
-const mapDispatch = dispatch => ({
-  // login: data => dispatch(loginActions.login(data)),
-  resetError: () => dispatch(errorsActions.resetError()),
-  // goToRoot: () => dispatch(push(`${BASE_URL}/`)),
-});
-
-const Connected = connect(mapState, mapDispatch)(PureLoginForm);
-
-export default translate(phrases)(Connected);
+export default translate(phrases)(LoginForm);

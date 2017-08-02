@@ -86,6 +86,7 @@ export default function createRoutes(store, auth) {
   const loginCallbackRoute = loginCallbackScreen({ auth });
 
   const loginRoute = loginScreen({
+    auth,
     childRoutes: [loginCallbackRoute],
   });
 

@@ -1,7 +1,9 @@
 const createRoute = ({
   childRoutes,
+  auth,
 }) => ({
   childRoutes,
+  auth,
   name: 'login',
   path: '/login',
   getComponent: (location, cb) => {

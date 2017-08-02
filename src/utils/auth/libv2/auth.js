@@ -1,6 +1,7 @@
 import auth0 from 'auth0-js';
 import AUTH_CONFIG from './auth.variables';
 import isTokenExpired from './tokenHelpers';
+import { login } from './apiCalls';
 
 /**
  * @description
@@ -26,6 +27,13 @@ class Authentication {
   constructor(token = undefined) {
     this.token = token;
     this.authenticated = this.isAuthenticated();
+  }
+
+  /**
+   * Authenticate user with traditional username/password approach
+   */
+  traditionalLogin = async (username, password) => {
+    return login(username, password);
   }
 
   isAuthenticated = () => {

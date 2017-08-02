@@ -12,6 +12,12 @@ class App extends React.Component {
   }
 
   render() {
+    const { isAuthenticated } = this.props.route.auth;
+
+    if (isAuthenticated()) {
+      console.log('authenticated');
+    }
+
     return (
       <TranslationProvider
         phrases={phrases}
