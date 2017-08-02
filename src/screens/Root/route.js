@@ -28,9 +28,11 @@ const createRoute = ({
   name = NAME,
   dispatch,
   mainMenu = [],
+  auth,
 }) => ({
   path,
   name,
+  auth,
   component: require('./index').default,
   indexRoute: {},
   childRoutes: [],
