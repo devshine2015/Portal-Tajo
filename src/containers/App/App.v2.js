@@ -5,20 +5,22 @@ import phrases, { locales } from 'configs/phrases';
 import { BASE_URL } from 'configs';
 import { TranslationProvider } from 'utils/i18n';
 
+const handleRouting = (isAuthenticated, router) => {
+  if (!isAuthenticated()) {
+    router.replace(`${BASE_URL}/login`);
+  } else {
+    router.replace(`${BASE_URL}/`);
+  }
+};
+
 class App extends React.Component {
   componentWillMount() {
     const { isAuthenticated } = this.props.route.auth;
 
-    if (!isAuthenticated()) this.context.router.replace(`${BASE_URL}/login`);
+    handleRouting(isAuthenticated, this.context.router);
   }
 
   render() {
-    const { isAuthenticated } = this.props.route.auth;
-
-    if (isAuthenticated()) {
-      console.log('authenticated');
-    }
-
     return (
       <TranslationProvider
         phrases={phrases}
@@ -34,7 +36,7 @@ class App extends React.Component {
 }
 
 App.contextTypes = {
-  router: React.PropTypes.object,
+  router: PropTypes.object,
 };
 
 App.propTypes = {
