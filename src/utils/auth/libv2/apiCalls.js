@@ -21,7 +21,6 @@ export const login = async (username, password) => {
 
     if (!isProfileValid(profile)) throw new Error('Token is invalid');
 
-    // return getFullProfile(profile);
     return profile;
   } catch (err) {
     throw new Error(err);

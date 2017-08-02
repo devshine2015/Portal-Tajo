@@ -2,13 +2,14 @@ import React, { PropTypes } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import drvrDevTheme from 'configs/theme';
 import phrases, { locales } from 'configs/phrases';
+import { BASE_URL } from 'configs';
 import { TranslationProvider } from 'utils/i18n';
 
 class App extends React.Component {
   componentWillMount() {
     const { isAuthenticated } = this.props.route.auth;
 
-    if (!isAuthenticated()) this.props.router.replace('/login');
+    if (!isAuthenticated()) this.context.router.replace(`${BASE_URL}/login`);
   }
 
   render() {
@@ -32,15 +33,16 @@ class App extends React.Component {
   }
 }
 
+App.contextTypes = {
+  router: React.PropTypes.object,
+};
+
 App.propTypes = {
   locale: PropTypes.string,
   route: PropTypes.shape({
     auth: PropTypes.shape({
       isAuthenticated: PropTypes.func.isRequired,
     }).isRequired,
-  }).isRequired,
-  router: PropTypes.shape({
-    replace: PropTypes.func.isRequired,
   }).isRequired,
   children: PropTypes.node.isRequired,
 };

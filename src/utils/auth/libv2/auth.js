@@ -27,13 +27,23 @@ class Authentication {
   constructor(token = undefined) {
     this.token = token;
     this.authenticated = this.isAuthenticated();
+    this.accessToken = null;
   }
 
   /**
    * Authenticate user with traditional username/password approach
    */
-  traditionalLogin = async (username, password) => {
-    return login(username, password);
+  traditionalLogin = (username, password, cb) => {
+    login(username, password)
+      .then((profile) => {
+        this.accessToken = profile.access_token;
+
+        this._getUserInfo(profile.access_token, cb);
+      });
+  }
+
+  _getUserInfo = (accessToken, cb) => {
+    this.auth0.client.userInfo(accessToken, cb);
   }
 
   isAuthenticated = () => {

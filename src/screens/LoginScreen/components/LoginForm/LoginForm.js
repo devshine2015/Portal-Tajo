@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import R from 'ramda';
 import Form from 'components/Form';
 import {
   TextField,
@@ -9,7 +10,10 @@ import {
 import SimpleError from 'components/Error';
 import ButtonWithProgress from 'components/ButtonWithProgress';
 import { translate } from 'utils/i18n';
-
+import {
+  BASE_URL,
+  setMwa,
+} from 'configs';
 import styles from './styles.css';
 import phrases, { phrasesShape } from './PropTypes';
 
@@ -48,20 +52,35 @@ class LoginForm extends React.Component {
 
     this.changeLoadingState(true);
 
-    this.props.route.auth.traditionalLogin(this.state.username, this.state.password)
-      .then(() => {
-        this.props.router.replace('/');
-      }, (err) => {
-        if (err) console.error(err);
+    this.props.route.auth.traditionalLogin(this.state.username, this.state.password, (err, profile) => {
+      this.changeLoadingState(false);
 
-        this.changeLoadingState(false);
-      });
+      if (err) {
+        console.error(err);
+      } else {
+        this.__sideEffects(profile);
+        this.context.router.replace(`${BASE_URL}/`);
+      }
+    });
   }
 
   changeLoadingState = (nextState) => {
     this.setState({
       isLoading: nextState,
     });
+  }
+
+  /**
+   * Stuff which sets some global vars...
+   * @param {Object} profile
+   */
+  __sideEffects(profile) {
+    const isMwaProfile = isItMwaProfile(profile);
+
+    if (isMwaProfile) {
+      setMwa(isMwaProfile);
+      this.props.setReportsMWA();
+    }
   }
 
   render() {
@@ -113,18 +132,20 @@ class LoginForm extends React.Component {
   }
 }
 
+LoginForm.contextTypes = {
+  router: PropTypes.object,
+};
+
 LoginForm.propTypes = {
   errorType: PropTypes.string,
   resetError: PropTypes.func.isRequired,
   translations: phrasesShape.isRequired,
-  router: PropTypes.shape({
-    replace: PropTypes.func.isRequired,
-  }).isRequired,
   route: PropTypes.shape({
     auth: PropTypes.shape({
       traditionalLogin: PropTypes.func.isRequired,
     }).isRequired,
   }).isRequired,
+  setReportsMWA: PropTypes.func.isRequired,
 };
 
 LoginForm.defaultProps = {
@@ -132,3 +153,5 @@ LoginForm.defaultProps = {
 };
 
 export default translate(phrases)(LoginForm);
+
+const isItMwaProfile = R.propEq('fleet', 'mwa');
