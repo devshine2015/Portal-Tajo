@@ -71,7 +71,7 @@ class LoginForm extends React.Component {
   }
 
   /**
-   * Stuff which sets some global vars...
+   * Stuff which sets some global vars, API calls etc..
    * @param {Object} profile
    */
   __sideEffects(profile) {
@@ -82,7 +82,8 @@ class LoginForm extends React.Component {
       this.props.setReportsMWA();
     }
 
-    this.props.fetchAccessTokens();
+    this.props.setSession(profile)
+      .then(this.props.fetchAccessTokens);
   }
 
   render() {
@@ -149,6 +150,7 @@ LoginForm.propTypes = {
   }).isRequired,
   setReportsMWA: PropTypes.func.isRequired,
   fetchAccessTokens: PropTypes.func.isRequired,
+  setSession: PropTypes.func.isRequired,
 };
 
 LoginForm.defaultProps = {

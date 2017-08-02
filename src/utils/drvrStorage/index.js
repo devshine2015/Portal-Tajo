@@ -5,13 +5,13 @@ import R from 'ramda';
  * Creates new storage system
  */
 class DrvrStorage {
-  constructor() {
-    /**
-     * Hold a link to global object which has .drvrStorage
-     * @static
-     */
-    this.storage = null;
-  }
+  /**
+   * Hold a link to global object which has .drvrStorage
+   * @static
+   */
+  storage = null;
+
+  CURRENT_VERSION = 2.51;
 
   /**
    * Initialise storage system with platphorm-specific settings.
@@ -34,7 +34,7 @@ class DrvrStorage {
     return this.storage.load({
       key,
       autoSync: false,
-    });
+    }).then(this.verifyVersion);
   }
 
   async save(key, data) {
@@ -52,12 +52,8 @@ class DrvrStorage {
       savedData.profile = {};
     }
 
-    // override version if specified
-    if (!R.isNil(data.version)) {
-      savedData.ver = data.version;
-    }
-
-    savedData.profile = data.value;
+    savedData.profile = R.propOr(data, 'value')(data);
+    savedData.ver = R.propOr(this.CURRENT_VERSION, 'version')(data);
 
     this.storage.save({
       key,
@@ -69,6 +65,20 @@ class DrvrStorage {
 
   async remove(key) {
     return this.storage.remove({ key });
+  }
+
+  verifyVersion = (savedData = {}) => {
+    const version = R.prop('ver', savedData);
+
+    if (R.isNil(version)) {
+      return savedData;
+    }
+
+    if (version !== this.CURRENT_VERSION) {
+      throw new Error('Saved data schema version is outdated.');
+    }
+
+    return savedData;
   }
 }
 

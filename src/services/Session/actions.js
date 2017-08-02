@@ -6,6 +6,7 @@ import {
 } from 'configs';
 import endpoints from 'configs/endpoints';
 import { api } from 'utils/api';
+import drvrStorage from 'utils/drvrStorage';
 import {
   removeProfilePropsInLocalStorage,
   updateProfileInLocalStorage,
@@ -21,6 +22,8 @@ const takeFleetName = R.propOr('', 'fleet');
 export const setSession = session => (dispatch) => {
   checkSetMaritime(takeFleetName(session));
   checkSetNoIcons(takeFleetName(session));
+
+  drvrStorage.save(LOCAL_STORAGE_SESSION_KEY, session);
 
   dispatch({
     type: SESSION_SET,
