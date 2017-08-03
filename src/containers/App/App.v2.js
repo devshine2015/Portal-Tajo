@@ -2,24 +2,9 @@ import React, { PropTypes } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import drvrDevTheme from 'configs/theme';
 import phrases, { locales } from 'configs/phrases';
-import { BASE_URL } from 'configs';
 import { TranslationProvider } from 'utils/i18n';
 
-const handleRouting = (isAuthenticated, router) => {
-  if (!isAuthenticated()) {
-    router.replace(`${BASE_URL}/login`);
-  } else {
-    router.replace(`${BASE_URL}/`);
-  }
-};
-
 class App extends React.Component {
-  componentWillMount() {
-    const { isAuthenticated } = this.props.route.auth;
-
-    handleRouting(isAuthenticated, this.context.router);
-  }
-
   render() {
     return (
       <TranslationProvider
@@ -34,10 +19,6 @@ class App extends React.Component {
     );
   }
 }
-
-App.contextTypes = {
-  router: PropTypes.object,
-};
 
 App.propTypes = {
   locale: PropTypes.string,
