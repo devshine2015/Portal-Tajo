@@ -18,7 +18,7 @@ const initialState = fromJS({
    * token to access to /userinfo endpoint
    * @since new login api
    */
-  access_token: undefined,
+  accessToken: undefined,
 
   /**
    *
@@ -37,7 +37,7 @@ const initialState = fromJS({
    * or @since all clients will be moved to auth0
    * it's going to replace sessionId as a authorization token in requests header
    */
-  id_token: undefined,
+  idToken: undefined,
 
   /**
    *
@@ -84,9 +84,9 @@ export const getSessionData = state =>
   state.get('session');
 
 export const getIdToken = state =>
-  state.getIn(['session', 'id_token']);
+  state.getIn(['session', 'idToken']);
 export const getMainAccessToken = state =>
-  state.getIn(['session', 'access_token']);
+  state.getIn(['session', 'accessToken']);
 
 export const getUserRole = (state) => {
   if (state.getIn(['session', 'roles']) !== undefined) {
