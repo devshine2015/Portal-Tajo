@@ -32,9 +32,12 @@ const renderProject = async ({
   routesConfig,
   createReducer,
 }) => {
-  const { initialState, idToken } = await getInitialState();
+  const { initialState, profile } = await getInitialState();
   // instantiate auth with read token
-  const auth = new Authentication(idToken);
+  const auth = new Authentication({
+    idToken: profile.id_token,
+    accessToken: profile.accessToken,
+  });
 
   // Create redux store with history
   const store = configureStore(initialState, browserHistory, createReducer);
