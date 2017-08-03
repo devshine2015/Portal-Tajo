@@ -83,7 +83,10 @@ export default function createRoutes(store, auth) {
 
   const alertsLogsRoute = alertLogsScreen(mainMenu.escape.alertsLogs);
 
-  const loginCallbackRoute = loginCallbackScreen({ auth });
+  const loginCallbackRoute = loginCallbackScreen({
+    auth,
+    dispatch: store.dispatch,
+  });
 
   const loginRoute = loginScreen({
     auth,

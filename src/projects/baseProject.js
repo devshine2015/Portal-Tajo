@@ -18,6 +18,10 @@ import { getHistory } from './utils/routerHelpers';
 import createRoutes from './utils/createRoutes';
 import { init as initConfigs } from 'configs';
 import { Authentication } from 'utils/auth';
+import {
+  onSuccess,
+  onFailure,
+} from 'services/Session/authHelpers';
 import getInitialState from './helpers';
 
 require('velocity-animate');
@@ -33,14 +37,16 @@ const renderProject = async ({
   createReducer,
 }) => {
   const { initialState, profile } = await getInitialState();
+  // Create redux store with history
+  const store = configureStore(initialState, browserHistory, createReducer);
   // instantiate auth with read token
   const auth = new Authentication({
     idToken: profile.id_token,
     accessToken: profile.accessToken,
+    onSuccess: data => onSuccess(data, store.dispatch),
+    onFailure: () => onFailure(store.dispatch),
   });
 
-  // Create redux store with history
-  const store = configureStore(initialState, browserHistory, createReducer);
   const { injectReducer } = getHooks(store, createReducer);
   const routes = createRoutes(store.dispatch, getHistory(store, browserHistory), injectReducer, auth, routesConfig);
 

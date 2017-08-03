@@ -11,7 +11,7 @@ class DrvrStorage {
    */
   storage = null;
 
-  CURRENT_VERSION = 2.51;
+  PROFILE_SCHEMA_VERSION = 2.51;
 
   /**
    * Initialise storage system with platphorm-specific settings.
@@ -37,7 +37,7 @@ class DrvrStorage {
     }).then(this.verifyVersion);
   }
 
-  async save(key, data) {
+  async save(key, data, appendVersion = false) {
     let savedData;
 
     try {
@@ -48,12 +48,12 @@ class DrvrStorage {
       }
     }
 
-    if (!R.has('profile', savedData)) {
-      savedData.profile = {};
+    if (appendVersion) {
+      savedData.profile = data;
+      savedData.ver = this.PROFILE_SCHEMA_VERSION;
+    } else {
+      savedData = data;
     }
-
-    savedData.profile = R.propOr(data, 'value')(data);
-    savedData.ver = R.propOr(this.CURRENT_VERSION, 'version')(data);
 
     this.storage.save({
       key,
@@ -74,7 +74,7 @@ class DrvrStorage {
       return savedData;
     }
 
-    if (version !== this.CURRENT_VERSION) {
+    if (version !== this.PROFILE_SCHEMA_VERSION) {
       throw new Error('Saved data schema version is outdated.');
     }
 

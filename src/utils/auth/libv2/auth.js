@@ -1,7 +1,9 @@
 import auth0 from 'auth0-js';
-import AUTH_CONFIG from './auth.variables';
+import R from 'ramda';
+import AUTH_CONFIG from './variables';
 import isTokenExpired from './tokenHelpers';
 import { login } from './apiCalls';
+import * as socialHelpers from './socialAuthHelpers';
 
 /**
  * @description
@@ -14,6 +16,10 @@ import { login } from './apiCalls';
  * 3. should be reusable for both mobile and web apps
  */
 
+const getIdToken = R.ifElse(R.has('id_token'), R.prop('id_token'), R.prop('idToken'));
+const getAccessToken = R.ifElse(R.has('access_token'), R.prop('access_token'), R.prop('accessToken'));
+
+
 class Authentication {
   auth0 = new auth0.WebAuth({
     domain: AUTH_CONFIG.domain,
@@ -24,10 +30,29 @@ class Authentication {
     scope: 'openid',
   });
 
-  constructor(token = undefined) {
-    this.token = token;
-    this.authenticated = this.isAuthenticated();
-    this.accessToken = null;
+  idToken = null;
+  accessToken = null;
+  storageKey = 'drvrAuth';
+
+  constructor({
+    idToken = undefined,
+    accessToken = undefined,
+    onSuccess,
+    onFailure,
+  }) {
+    this.initialAuthentication(accessToken, idToken, onSuccess, onFailure);
+  }
+
+  async initialAuthentication(accessToken, idToken, onSuccess, onFailure) {
+    if (await socialHelpers.isAuthenticating(this.storageKey)) return;
+
+    if (!isTokenExpired(idToken)) {
+      this._authenticate(accessToken, idToken);
+      onSuccess();
+    } else {
+      this._unauthenticate();
+      onFailure();
+    }
   }
 
   /**
@@ -38,23 +63,67 @@ class Authentication {
    */
   traditionalLogin = (username, password, cb) => {
     login(username, password)
-      .then((loginData) => {
-        this.accessToken = loginData.access_token;
-
-        this._getUserInfo(loginData, cb);
+      .then((loginResult) => {
+        this._authenticate(loginResult.access_token, loginResult.id_token);
+        this._getUserInfo(loginResult, cb);
       });
   }
 
-  _getUserInfo = (sessionData, cb) => {
-    this.auth0.client.userInfo(sessionData.access_token, (err, user) => {
-      const profile = Object.assign({}, user, sessionData);
+  authorize = (provider) => {
+    socialHelpers.setIsAuthenticating(this.storageKey);
+    this.auth0.authorize({ connection: provider });
+  }
+
+  handleAuthentication = (onSuccess, onFailure) => {
+    this.auth0.parseHash((err, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        this._authenticate(authResult.accessToken, authResult.idToken);
+
+        this._getUserInfo(authResult, (error, profile) => {
+          if (error) onFailure();
+          else onSuccess(profile);
+        });
+
+        socialHelpers.cleanIsAuthenticating(this.storageKey);
+      } else if (err) {
+        this._unauthenticate();
+        onFailure();
+        socialHelpers.cleanIsAuthenticating(this.storageKey);
+
+        console.log(err);
+      }
+    });
+  }
+
+  _getUserInfo = (authResult = {}, cb) => {
+    this.auth0.client.userInfo(getAccessToken(authResult), (err, user) => {
+      // format profile to convenient structure
+      const profile = Object.assign({}, user, authResult, {
+        accessToken: getAccessToken(authResult),
+        idToken: getIdToken(authResult),
+      });
+
+      delete profile.access_token;
+      delete profile.id_token;
 
       cb(err, profile);
     });
   }
 
-  isAuthenticated = () => {
-    return !isTokenExpired(this.token);
+  _authenticate = (accessToken, idToken) => {
+    this.accessToken = accessToken;
+    this.idToken = idToken;
+  }
+
+  _unauthenticate = () => {
+    this.accessToken = null;
+    this.idToken = null;
+  }
+
+  isAuthenticated = (idToken = undefined) => {
+    const tokenToVerify = idToken || this.idToken;
+
+    return !isTokenExpired(tokenToVerify);
   }
 }
 

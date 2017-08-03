@@ -23,7 +23,7 @@ export const setSession = session => (dispatch) => {
   checkSetMaritime(takeFleetName(session));
   checkSetNoIcons(takeFleetName(session));
 
-  drvrStorage.save(LOCAL_STORAGE_SESSION_KEY, session);
+  drvrStorage.save(LOCAL_STORAGE_SESSION_KEY, session, true);
 
   dispatch({
     type: SESSION_SET,

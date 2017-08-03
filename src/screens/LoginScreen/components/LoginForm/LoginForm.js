@@ -6,6 +6,7 @@ import {
   TextField,
   Paper,
   Divider,
+  RaisedButton,
 } from 'material-ui';
 import SimpleError from 'components/Error';
 import ButtonWithProgress from 'components/ButtonWithProgress';
@@ -53,6 +54,10 @@ class LoginForm extends React.Component {
     this.changeLoadingState(true);
 
     this.props.route.auth.traditionalLogin(this.state.username, this.state.password, this.onLoginFinish);
+  }
+
+  onGoogleLoginClick = () => {
+    this.props.route.auth.authorize('google-oauth2');
   }
 
   onLoginFinish = (err, profile) => {
@@ -128,8 +133,14 @@ class LoginForm extends React.Component {
 
             </Form>
             { this.props.errorType !== '' && <SimpleError type={this.props.errorType} />}
+            <RaisedButton
+              label="Login with Google"
+              onClick={this.onGoogleLoginClick}
+              primary
+            />
           </div>
         </Paper>
+        {this.props.children}
       </div>
     );
   }
@@ -140,12 +151,14 @@ LoginForm.contextTypes = {
 };
 
 LoginForm.propTypes = {
+  children: PropTypes.element,
   errorType: PropTypes.string,
   resetError: PropTypes.func.isRequired,
   translations: phrasesShape.isRequired,
   route: PropTypes.shape({
     auth: PropTypes.shape({
       traditionalLogin: PropTypes.func.isRequired,
+      authorize: PropTypes.func.isRequired,
     }).isRequired,
   }).isRequired,
   setReportsMWA: PropTypes.func.isRequired,
@@ -155,6 +168,7 @@ LoginForm.propTypes = {
 
 LoginForm.defaultProps = {
   errorType: undefined,
+  children: null,
 };
 
 export default translate(phrases)(LoginForm);
