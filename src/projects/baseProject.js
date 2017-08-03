@@ -41,10 +41,10 @@ const renderProject = async ({
   const store = configureStore(initialState, browserHistory, createReducer);
   // instantiate auth with read token
   const auth = new Authentication({
-    idToken: profile.id_token,
+    idToken: profile.idToken,
     accessToken: profile.accessToken,
-    onSuccess: data => onSuccess(data, store.dispatch),
-    onFailure: () => onFailure(store.dispatch),
+    onInitSuccess: overwrite => onSuccess(profile, store.dispatch, { overwrite }),
+    onInitFailure: () => onFailure(store.dispatch),
   });
 
   const { injectReducer } = getHooks(store, createReducer);

@@ -23,7 +23,9 @@ export const REPORT_SELECTED_ADD = 'portal/Report/REPORT_SELECTED_ADD';
 export const REPORT_SELECTED_REMOVE = 'portal/Report/REPORT_SELECTED_REMOVE';
 export const REPORT_SET_MWA = 'portal/Report/SET_MWA';
 
-export const setReportsMWA = () => dispatch => dispatch({ type: REPORT_SET_MWA });
+export const setReportsMWA = () => ({
+  type: REPORT_SET_MWA,
+});
 
 export const generateReport = params => (dispatch, getState) =>
   _generateReport(params, dispatch, getState);

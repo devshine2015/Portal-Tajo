@@ -16,9 +16,7 @@ export async function updateProfileInLocalStorage({
 
   profile[field] = newFieldVal;
 
-  await drvrStorage.save(key, {
-    value: profile,
-  });
+  await drvrStorage.save(key, profile, true);
 
   return true;
 }
@@ -41,9 +39,7 @@ async function removeProfilePropsInLocalStorage({
 
   profile[field] = fieldValue;
 
-  await drvrStorage.save(key, {
-    value: profile,
-  });
+  await drvrStorage.save(key, profile, true);
 
   return true;
 }

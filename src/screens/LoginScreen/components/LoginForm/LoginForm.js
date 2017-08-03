@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import R from 'ramda';
 import Form from 'components/Form';
 import {
   TextField,
@@ -11,10 +10,6 @@ import {
 import SimpleError from 'components/Error';
 import ButtonWithProgress from 'components/ButtonWithProgress';
 import { translate } from 'utils/i18n';
-import {
-  BASE_URL,
-  setMwa,
-} from 'configs';
 import styles from './styles.css';
 import phrases, { phrasesShape } from './PropTypes';
 
@@ -53,42 +48,21 @@ class LoginForm extends React.Component {
 
     this.changeLoadingState(true);
 
-    this.props.route.auth.traditionalLogin(this.state.username, this.state.password, this.onLoginFinish);
+    this.props.route.auth.traditionalLogin(this.state.username, this.state.password, (profile) => {
+      this.changeLoadingState(false);
+      this.props.onLoginSuccess(profile);
+    }, () => {
+      this.changeLoadingState(false);
+      this.props.onLoginFailure();
+    });
   }
 
   onGoogleLoginClick = () => {
     this.props.route.auth.authorize('google-oauth2');
   }
 
-  onLoginFinish = (err, profile) => {
-    this.changeLoadingState(false);
-
-    if (err) {
-      console.error(err);
-    } else {
-      this.__sideEffects(profile);
-      this.context.router.replace(`${BASE_URL}/`);
-    }
-  }
-
   changeLoadingState = (isLoading) => {
     this.setState({ isLoading });
-  }
-
-  /**
-   * Stuff which sets some global vars, API calls etc..
-   * @param {Object} profile
-   */
-  __sideEffects(profile) {
-    const isMwaProfile = isItMwaProfile(profile);
-
-    if (isMwaProfile) {
-      setMwa(true);
-      this.props.setReportsMWA();
-    }
-
-    this.props.setSession(profile)
-      .then(this.props.fetchAccessTokens);
   }
 
   render() {
@@ -146,10 +120,6 @@ class LoginForm extends React.Component {
   }
 }
 
-LoginForm.contextTypes = {
-  router: PropTypes.object,
-};
-
 LoginForm.propTypes = {
   children: PropTypes.element,
   errorType: PropTypes.string,
@@ -161,9 +131,8 @@ LoginForm.propTypes = {
       authorize: PropTypes.func.isRequired,
     }).isRequired,
   }).isRequired,
-  setReportsMWA: PropTypes.func.isRequired,
-  fetchAccessTokens: PropTypes.func.isRequired,
-  setSession: PropTypes.func.isRequired,
+  onLoginFailure: PropTypes.func.isRequired,
+  onLoginSuccess: PropTypes.func.isRequired,
 };
 
 LoginForm.defaultProps = {
@@ -172,5 +141,3 @@ LoginForm.defaultProps = {
 };
 
 export default translate(phrases)(LoginForm);
-
-const isItMwaProfile = R.propEq('fleet', 'mwa');

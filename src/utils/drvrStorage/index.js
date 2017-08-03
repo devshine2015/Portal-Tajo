@@ -11,7 +11,7 @@ class DrvrStorage {
    */
   storage = null;
 
-  PROFILE_SCHEMA_VERSION = 2.51;
+  PROFILE_SCHEMA_VERSION = 2.52;
 
   /**
    * Initialise storage system with platphorm-specific settings.

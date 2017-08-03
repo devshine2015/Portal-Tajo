@@ -37,10 +37,10 @@ class Authentication {
   constructor({
     idToken = undefined,
     accessToken = undefined,
-    onSuccess,
-    onFailure,
+    onInitSuccess,
+    onInitFailure,
   }) {
-    this.initialAuthentication(accessToken, idToken, onSuccess, onFailure);
+    this.initialAuthentication(accessToken, idToken, onInitSuccess, onInitFailure);
   }
 
   async initialAuthentication(accessToken, idToken, onSuccess, onFailure) {
@@ -48,7 +48,7 @@ class Authentication {
 
     if (!isTokenExpired(idToken)) {
       this._authenticate(accessToken, idToken);
-      onSuccess();
+      onSuccess(false);
     } else {
       this._unauthenticate();
       onFailure();
@@ -61,11 +61,15 @@ class Authentication {
    * @param {String} password
    * @param {Function} cb - callback which has (err, profile) signature
    */
-  traditionalLogin = (username, password, cb) => {
+  traditionalLogin = (username, password, onSuccess, onFailure) => {
     login(username, password)
       .then((loginResult) => {
         this._authenticate(loginResult.access_token, loginResult.id_token);
-        this._getUserInfo(loginResult, cb);
+
+        this._getUserInfo(loginResult, (error, profile) => {
+          if (error) onFailure();
+          else onSuccess(profile);
+        });
       });
   }
 
