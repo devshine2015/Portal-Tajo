@@ -22,10 +22,6 @@ import DriverSelector from '../DriverSelector/DriverSelector';
 import styles from './styles.css';
 import phrases, { detailsShape } from './PropTypes';
 
-const PERMISSIONS = [
-  permissions.VEHICLE_DISABLE,
-];
-
 function setVehicleState(props) {
   return Object.assign({}, props.details, {
     deviceId: props.details.deviceId || '',
@@ -159,7 +155,6 @@ class VehicleDetails extends React.Component {
 
   render() {
     const { translations } = this.props;
-    // const canDisable = this.props.userPermittedTo[permissions.VEHICLE_DISABLE];
 
     return (
       <div className={styles.details}>
@@ -239,40 +234,9 @@ class VehicleDetails extends React.Component {
             />
           </Layout.Content>
         </Layout.Section>
-        <VehicleAlerts vehicleId={this.props.details.id} />
-        {/* <Layout.Section>
-            <div className={styles.buttons}>
-              <ButtonWithProgress
-                className={styles.buttons__button}
-                disabled={this.props.disabled}
-                onClick={this.onSubmit}
-                isLoading={this.props.isLoading}
-                label={translations.save}
-                type="submit"
-                primary
-              />
-              <FlatButton
-                className={styles.buttons__button}
-                onClick={this.props.onCancel}
-                label={translations.cancel}
-              />
-
-              { canDisable && (
-                <VehicleDisabler
-                  className={styles.buttons__button}
-                  label={translations.disable}
-                  disabled={this.props.disabled}
-                  isLoading={this.props.isLoading}
-                  disableVehicle={this.props.onDisable}
-                  meta={{
-                    vehicleName: this.props.details.name,
-                    vehicleId: this.props.details.id,
-                    deviceId: this.props.details.deviceId,
-                  }}
-                />
-              )}
-            </div>
-          </Layout.Section>*/}
+        <VehicleAlerts
+          vehicleId={this.props.details.id}
+        />
       </div>
     );
   }
@@ -294,6 +258,5 @@ VehicleDetails.propTypes = {
 };
 
 const Translated = translate(phrases)(VehicleDetails);
-const WithPermissions = permitted(PERMISSIONS)(Translated);
 
-export default pure(WithPermissions);
+export default pure(Translated);

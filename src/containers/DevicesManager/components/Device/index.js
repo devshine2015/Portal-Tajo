@@ -11,16 +11,11 @@ import {
 } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import WarningIcon from 'material-ui/svg-icons/alert/warning';
-import { permissions } from 'configs/roles';
-import permitted from 'utils/permissionsRequired';
 import theme from 'configs/theme';
+import { authorizeWithPermissions } from 'utils/authz';
 import { deactivateDevice } from 'services/Devices/actions';
 
 import styles from './styles.css';
-
-const PERMISSIONS = [
-  permissions.DEVICES_DEACTIVATE,
-];
 
 const STYLES = {
   warningicon: {
@@ -29,9 +24,7 @@ const STYLES = {
   },
 };
 
-function userCan(permission, userPermittedTo) {
-  return userPermittedTo[permission];
-}
+const canDeactivateDevice = () => authorizeWithPermissions('delete:device');
 
 function renderActions(onDiactivate) {
   return (
@@ -50,7 +43,7 @@ const deviceNotAttached = 'Not attached to any vehicle';
 const ErrorText = ({ children }) => <div className={styles.error}>{children}</div>;
 
 ErrorText.propTypes = {
-  children: PropTypes.any.isRequired,
+  children: PropTypes.any.isRequired, // eslint-disable-line
 };
 
 // show warning if device not attached
@@ -127,15 +120,14 @@ Text.propTypes = {
 class Device extends React.Component {
 
   onDiactivate = () => {
-    const { userPermittedTo, deactivateDevice, ...rest } = this.props;
+    const { deactivateDevice, ...rest } = this.props; // eslint-disable-line
 
     deactivateDevice(rest);
   }
 
   render() {
-    const canDeactivate = userCan(permissions.DEVICES_DEACTIVATE, this.props.userPermittedTo);
     const cardClassName = cs(styles.card, {
-      [styles.card_withActions]: canDeactivate,
+      [styles.card_withActions]: canDeactivateDevice(),
     });
 
     return (
@@ -151,7 +143,7 @@ class Device extends React.Component {
             // vehicleName={this.props.vehicleName}
             vehicleIsFault={this.props.vehicleIsFault}
           />
-          { canDeactivate && renderActions(this.onDiactivate) }
+          { canDeactivateDevice() && renderActions(this.onDiactivate) }
         </Card>
 
         <Status
@@ -174,7 +166,7 @@ Device.propTypes = {
   vehicleIsFault: PropTypes.bool.isRequired,
 
   // name of assotiated vehicle
-  // vehicleName: React.PropTypes.string.isRequired,
+  // vehicleName: PropTypes.string.isRequired,
 
   // original properties from backend
   original: PropTypes.shape({
@@ -195,9 +187,6 @@ Device.propTypes = {
     vehicleId: PropTypes.string,
   }).isRequired,
 
-  // object with available permissions from permitted
-  userPermittedTo: PropTypes.object.isRequired,
-
   // callback on deactivate
   deactivateDevice: PropTypes.func.isRequired,
 };
@@ -207,6 +196,6 @@ const mapDispatch = {
   deactivateDevice,
 };
 
-const PureDevice = pure(permitted(PERMISSIONS)(Device));
+const PureDevice = pure(Device);
 
 export default connect(mapState, mapDispatch)(PureDevice);

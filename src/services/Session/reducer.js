@@ -8,7 +8,6 @@ import {
 
 const initialState = fromJS({
   fleet: undefined,
-  role: undefined,
   settings: {
     dateFormat: undefined,
     lang: undefined,
@@ -44,7 +43,6 @@ const initialState = fromJS({
    * keep roles and permissions
    * for displaying it ...later... in user profile...
    * don't rely on it for checking permissions
-   * use context of AuthProvider instead.
    *
    **/
   roles: undefined,

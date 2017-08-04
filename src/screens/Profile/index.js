@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
+import { authorizeWithPermissions } from 'utils/authz';
 import Layout from 'components/Layout';
 import ProfileDetails from './components/ProfileDetails';
 import LanguageWidget from './components/LanguageWidget';
 
 import classes from './classes';
 
-const userCanSeeProfile = context => context.authorizeWithPerms('view:profile');
+const userCanSeeProfile = () => authorizeWithPermissions('view:profile');
 
-const ProfileScreen = (props, context) => (
+const ProfileScreen = () => (
   <Layout.Content>
-    { userCanSeeProfile(context) && (
+    { userCanSeeProfile() && (
       <div className={css(classes.widget)}>
         <ProfileDetails />
       </div>
@@ -21,9 +22,5 @@ const ProfileScreen = (props, context) => (
     </div>
   </Layout.Content>
 );
-
-ProfileScreen.contextTypes = {
-  authorizeWithPerms: PropTypes.func.isRequired,
-};
 
 export default ProfileScreen;

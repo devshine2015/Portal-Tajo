@@ -3,16 +3,12 @@ import PropTypes from 'prop-types';
 import IconButton from 'material-ui/IconButton';
 import RemoveIcon from 'material-ui/svg-icons/content/remove-circle-outline';
 import pure from 'recompose/pure';
-import { permissions } from 'configs/roles';
+import { authorizeWithPermissions } from 'utils/authz';
 import DeviceSelector from 'containers/DeviceSelector';
-import permitted from 'utils/permissionsRequired';
 
 import styles from './styles.css';
 
-const PERMISSIONS = [
-  permissions.DEVICES_DETACH,
-  permissions.DEVICES_ATTACH,
-];
+const canEdit = () => authorizeWithPermissions('view:vehicle_device');
 
 const EditorButton = ({
   onClick,
@@ -30,7 +26,6 @@ const EditorButton = ({
 );
 
 EditorButton.propTypes = {
-  // false by default
   disabled: PropTypes.bool,
 
   // callback fired on button click
@@ -41,6 +36,10 @@ EditorButton.propTypes = {
 
   // text to display on button hover
   tooltip: PropTypes.string.isRequired,
+};
+
+EditorButton.defaultProps = {
+  disabled: false,
 };
 
 class DeviceEditor extends React.Component {
@@ -67,7 +66,7 @@ class DeviceEditor extends React.Component {
     });
   }
 
-  onNewDeviceSelect = imei => {
+  onNewDeviceSelect = (imei) => {
     this.setState({
       haveToReset: false,
     }, () => {
@@ -84,12 +83,10 @@ class DeviceEditor extends React.Component {
 
   render() {
     const hasDevice = !!this.props.deviceId;
-    const canAttach = this.props.userPermittedTo[permissions.DEVICES_ATTACH];
-    const canDetach = this.props.userPermittedTo[permissions.DEVICES_DETACH];
 
     const inputField = (
       <DeviceSelector
-        disabled={!canAttach}
+        disabled={!canEdit()}
         canRefresh={false}
         value={this.props.deviceId}
         reset={this.state.haveToReset}
@@ -101,7 +98,7 @@ class DeviceEditor extends React.Component {
       <div className={styles.editor}>
         { inputField }
 
-        { hasDevice && canDetach && (
+        { hasDevice && canEdit() && (
           <EditorButton
             tooltip="Detach device"
             icon={<RemoveIcon />}
@@ -119,16 +116,15 @@ DeviceEditor.propTypes = {
   // could be empty
   deviceId: PropTypes.string,
 
-  // id of vehicle
-  // vehicleId: React.PropTypes.string.isRequired,
-
-  userPermittedTo: PropTypes.object,
-
   // callback on attach/detach device
   // returns new deviceId
   updateDeviceId: PropTypes.func.isRequired,
 };
 
-const PureDeviceEditor = pure(permitted(PERMISSIONS)(DeviceEditor));
+DeviceEditor.defaultProps = {
+  deviceId: '',
+};
+
+const PureDeviceEditor = pure(DeviceEditor);
 
 export default PureDeviceEditor;

@@ -4,24 +4,20 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import { permissions } from 'configs/roles';
-import permitted from 'utils/permissionsRequired';
+import { authorizeWithPermissions } from 'utils/authz';
+import { creatorActions } from 'containers/DevicesManager/actions';
+import { getIsEditing } from 'containers/DevicesManager/reducer';
 import Layout from 'components/Layout';
 import DevicesList from './components/DevicesList';
 import Toolbox from './components/Toolbox';
 import DeviceCreator from './components/DeviceCreator';
-import { getIsEditing } from 'containers/DevicesManager/reducer';
-import { creatorActions } from 'containers/DevicesManager/actions';
 
 import styles from './styles.css';
 
-const PERMISSIONS = [
-  permissions.DEVICES_SEE,
-  permissions.DEVICES_CREATE,
-];
+const canCreateDevice = () => authorizeWithPermissions('add:device');
 
-function renderAddButton(userPermittedTo, onClick) {
-  if (userPermittedTo[permissions.DEVICES_CREATE]) {
+function renderAddButton(onClick) {
+  if (canCreateDevice()) {
     return (
       <FloatingActionButton
         onClick={onClick}
@@ -36,14 +32,9 @@ function renderAddButton(userPermittedTo, onClick) {
 }
 
 const DevicesManager = ({
-  userPermittedTo,
   isEditing,
   openEditor,
 }) => {
-  if (!userPermittedTo[permissions.DEVICES_SEE]) {
-    return null;
-  }
-
   return (
     <Layout.Content>
       <div className={styles.managerContainer}>
@@ -53,15 +44,13 @@ const DevicesManager = ({
 
         <DevicesList />
 
-        { !isEditing && renderAddButton(userPermittedTo, openEditor) }
+        { !isEditing && renderAddButton(openEditor) }
       </div>
     </Layout.Content>
   );
 };
 
 DevicesManager.propTypes = {
-  userPermittedTo: PropTypes.object.isRequired,
-
   // callback on add button click
   openEditor: PropTypes.func.isRequired,
 
@@ -72,9 +61,11 @@ DevicesManager.propTypes = {
 const mapState = state => ({
   isEditing: getIsEditing(state),
 });
+
 const mapDispatch = {
   openEditor: creatorActions.openEditor,
 };
 
-const PureDevicesManager = pure(permitted(PERMISSIONS)(DevicesManager));
+const PureDevicesManager = pure(DevicesManager);
+
 export default connect(mapState, mapDispatch)(PureDevicesManager);

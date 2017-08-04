@@ -12,11 +12,8 @@ import MenuItem from './components/ManuItem';
 import styles from './styles.css';
 import phrases from './PropTypes';
 
-const canShowUsersManager = () => {
-  const permissionAsked = 'view:users_manager';
-
-  return authorizeWithPermissions(permissionAsked)[permissionAsked];
-};
+const canShowUsersManager = () => authorizeWithPermissions('view:users_manager');
+const canShowDevicesManager = () => authorizeWithPermissions('view:devices_manager');
 
 const MainMenu = ({
   pages,
@@ -26,6 +23,7 @@ const MainMenu = ({
   const menuItems = pages.map((page) => {
     if (page.name === 'users' && !canShowUsersManager()) return null;
     if (page.name === 'alerts_editor' && !isAlerts) return null;
+    if (page.name === 'devices_manager' && canShowDevicesManager()) return null;
 
     return (
       <MenuItem
