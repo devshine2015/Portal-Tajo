@@ -1,194 +1,61 @@
-/**
- * @deprecated
- */
+import React, { PropTypes } from 'react';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import drvrDevTheme from 'configs/theme';
+import phrases, { locales } from 'configs/phrases';
+import { TranslationProvider } from 'utils/i18n';
+import InnerPortal from 'containers/InnerPortal';
 
 import 'font-awesome/css/font-awesome.css';
+import './styles.css';
 
-import React from 'react';
-import R from 'ramda';
-import pure from 'recompose/pure';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import InnerPortal from 'containers/InnerPortal/ConnectedInnerPortal';
-import {
-  BASE_URL,
-  setMwa,
-  LOCAL_STORAGE_SESSION_KEY,
-} from 'configs';
-import drvrDevTheme from 'configs/theme';
-import { TranslationProvider } from 'utils/i18n';
-import { AuthProvider, auth } from 'utils/auth';
-import { auth0Api } from 'utils/api';
-import phrases, { locales } from 'configs/phrases';
-import { journalActions } from 'services/AlertsSystem/actions';
+const DEF_LOCALE = 'en';
 
-// need this for global styling
-require('./styles.css');
+const CommonWrappers = ({ children }) => (
+  <TranslationProvider
+    phrases={phrases}
+    locales={locales}
+    locale={DEF_LOCALE}
+  >
+    <MuiThemeProvider muiTheme={drvrDevTheme}>
+      {children}
+    </MuiThemeProvider>
+  </TranslationProvider>
+);
 
-function screenIsProtected(routes = []) {
-  const lastRoute = routes[routes.length - 1];
-
-  // if screen don't have 'protected' property
-  // consider it as protected by default
-  return Object.hasOwnProperty.call(lastRoute, 'protected') ? lastRoute.protected : true;
-}
+CommonWrappers.propTypes = {
+  children: PropTypes.element.isRequired,
+};
 
 class App extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {
-      initialLocation: context.router.location.pathname,
-      authenticationFinished: false,
-    };
-
-    auth.onInitSuccess(this.onLoginSuccess);
-  }
-
-  componentDidMount() {
-    window.addEventListener('offline', this.handleOnlineState);
-    window.addEventListener('online', this.handleOnlineState);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('offline', this.handleOnlineState);
-    window.removeEventListener('online', this.handleOnlineState);
-    journalActions.clearNotificationsListener();
-  }
-
-  onLoginSuccess = (profile) => {
-    if (this.state.authenticationFinished) return;
-
-    const isMwaProfile = isItMwaProfile(profile);
-    setMwa(isMwaProfile);
-
-    if (profile.id_token) {
-      auth0Api.setIdToken(profile.id_token);
-    }
-
-    if (profile.accessTokens) {
-      auth0Api.setAccessTokens(profile.accessTokens);
-    }
-
-    this._fetchData(profile);
-
-    this.setState({
-      authenticationFinished: true,
-    }, () => {
-      // go to the root of app
-      this.context.router.replace(`${BASE_URL}/`);
-
-      if (isMwaProfile) {
-        this.props.setReportsMWA();
-      }
-
-      // fetch access tokens and optionally roles and permissions
-      // just for those clients who are using auth0
-      if (profile.id_token) {
-        if (!profile.accessTokens) {
-          // all customers will have access to users management system
-          // so we need to get access for those apis
-          this.props.fetchAccessTokens()
-            .then((tokens) => {
-              auth0Api.setAccessTokens(tokens);
-
-              /**
-               * fetch list of all available permissions and roles for users management
-               * @todo it hasn't be here, since it's used for users management only.
-               */
-              this.props.fetchRolesAndPermissions(tokens);
-            });
-        } else {
-          this.props.fetchRolesAndPermissions(profile.accessTokens);
-        }
-      }
-    });
-  }
-
-  onLogoutSuccess = () => {
-    const loginUrl = '/login';
-
-    // we need reset it
-    // to support login flow
-    this.setState({
-      initialLocation: loginUrl,
-      authenticationFinished: false,
-    }, () => {
-      this.props.cleanSession();
-      journalActions.clearNotificationsListener();
-      auth0Api.clean();
-      this.context.router.replace(`${BASE_URL}${loginUrl}`);
-    });
-  }
-
-  _fetchData(profile) {
-    this.props.saveSession(profile)
-      .then(this.props.fetchFleet);
-  }
-
-  handleOnlineState = (e) => {
-    this.props.changeOnlineState(e.type === 'online');
-  }
-
   render() {
-    let children = this.props.children;
+    const { isAuthenticated } = this.props.route.auth;
 
-    const screenProtected = screenIsProtected(this.props.routes);
-
-    if (this.state.authenticationFinished && screenProtected) {
-      children = (
-        <InnerPortal>
-          {children}
-        </InnerPortal>
+    // case for login screen
+    if (!isAuthenticated()) {
+      return (
+        <CommonWrappers>
+          { this.props.children }
+        </CommonWrappers>
       );
-    } else if (!this.state.authenticationFinished && screenProtected) {
-      children = null;
     }
 
     return (
-      <AuthProvider
-        onLoginSuccess={this.onLoginSuccess}
-        onLogoutSuccess={this.onLogoutSuccess}
-        localStorageKey={LOCAL_STORAGE_SESSION_KEY}
-      >
-        <TranslationProvider
-          phrases={phrases}
-          locales={locales}
-          locale={this.props.locale}
-        >
-          <MuiThemeProvider muiTheme={drvrDevTheme}>
-            {children}
-          </MuiThemeProvider>
-        </TranslationProvider>
-      </AuthProvider>
+      <CommonWrappers>
+        <InnerPortal auth={this.props.route.auth}>
+          { this.props.children }
+        </InnerPortal>
+      </CommonWrappers>
     );
   }
 }
 
-App.contextTypes = {
-  router: React.PropTypes.object,
-};
-
 App.propTypes = {
-  locale: React.PropTypes.string,
-  changeOnlineState: React.PropTypes.func.isRequired,
-  saveSession: React.PropTypes.func.isRequired,
-  cleanSession: React.PropTypes.func.isRequired,
-  fetchFleet: React.PropTypes.func.isRequired,
-  children: React.PropTypes.node.isRequired,
-  routes: React.PropTypes.arrayOf(
-    React.PropTypes.shape({
-      protected: React.PropTypes.bool,
-    }),
-  ).isRequired,
-  fetchAccessTokens: React.PropTypes.func.isRequired,
-  fetchRolesAndPermissions: React.PropTypes.func.isRequired,
-  setReportsMWA: React.PropTypes.func.isRequired,
+  route: PropTypes.shape({
+    auth: PropTypes.shape({
+      isAuthenticated: PropTypes.func.isRequired,
+    }).isRequired,
+  }).isRequired,
+  children: PropTypes.node.isRequired,
 };
 
-App.defaultProps = {
-  locale: 'en',
-};
-
-export default pure(App);
-
-const isItMwaProfile = R.propEq('fleet', 'mwa');
+export default App;

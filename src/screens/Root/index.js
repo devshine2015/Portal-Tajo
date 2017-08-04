@@ -1,3 +1,3 @@
-import App from 'containers/App/App.v2';
+import App from 'containers/App';
 
 export default App;
