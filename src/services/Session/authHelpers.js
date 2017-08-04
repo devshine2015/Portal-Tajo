@@ -15,12 +15,12 @@ import {
 } from './actions';
 
 const isItMwaProfile = R.propEq('fleet', 'mwa');
-const needRedirect = R.test(/\/login/, window.location.pathname);
+const needRedirect = R.test(/\/login/);
 
 export const onSuccess = (profile = {}, dispatch, {
   overwrite = true,
 } = {}) => {
-  if (needRedirect) {
+  if (needRedirect(window.location.pathname)) {
     getHistory().push(BASE_URL);
   }
 
