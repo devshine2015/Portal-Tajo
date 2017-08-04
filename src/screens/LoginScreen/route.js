@@ -11,7 +11,6 @@ const createRoute = ({
       cb(null, require('./index').default);
     }, 'login');
   },
-  protected: false,
 });
 
 export default createRoute;

@@ -13,7 +13,6 @@ const createRoute = ({
     }, 'dashboard');
   },
   childRoutes: [],
-  protected: true,
 });
 
 export default createRoute;

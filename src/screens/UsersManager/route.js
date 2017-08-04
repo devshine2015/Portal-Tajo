@@ -11,7 +11,6 @@ const createRoute = ({
       cb(null, require('./index').default);
     }, 'usersManager');
   },
-  protected: true,
 });
 
 export default createRoute;

@@ -12,7 +12,6 @@ const createRoute = ({
     }, 'history');
   },
   childRoutes: [],
-  protected: true,
 });
 
 export default createRoute;

@@ -12,7 +12,6 @@ const createRoute = ({
     }, 'map');
   },
   childRoutes: [],
-  protected: true,
 });
 
 export default createRoute;

@@ -26,7 +26,6 @@ const createRoute = ({
       importModules.catch(errorHandler);
     }, 'reports');
   },
-  protected: true,
 });
 
 export default createRoute;

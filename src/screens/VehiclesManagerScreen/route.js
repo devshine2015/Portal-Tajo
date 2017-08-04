@@ -26,7 +26,6 @@ const createRoute = ({
       importModules.catch(errorHandler);
     }, 'vehicleEditor');
   },
-  protected: true,
 });
 
 export default createRoute;

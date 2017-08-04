@@ -111,7 +111,6 @@ export default function createRoutes(store, enchantedHistory, auth) {
   rootRoute.indexRoute = {
     component: dashboardRoute.component,
     name: dashboardRoute.name,
-    protected: dashboardRoute.protected,
   };
 
   // order of menu depends of pushing order

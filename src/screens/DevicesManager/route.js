@@ -31,7 +31,6 @@ const createRoute = ({
       importModules.catch(errorHandler);
     }, 'devices');
   },
-  protected: true,
 });
 
 export default createRoute;
