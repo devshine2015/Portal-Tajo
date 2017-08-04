@@ -18,6 +18,7 @@ import { getHistory } from './utils/routerHelpers';
 import createRoutes from './utils/createRoutes';
 import { init as initConfigs } from 'configs';
 import { Authentication } from 'utils/auth';
+import { create as createHistory } from 'utils/history';
 import {
   onSuccess,
   onFailure,
@@ -37,8 +38,12 @@ const renderProject = async ({
   createReducer,
 }) => {
   const { initialState, profile } = await getInitialState();
+  // create history which allow to use it everywhere
+  // (Not just in components).
+  // use this to init Router and store
+  const history = createHistory();
   // Create redux store with history
-  const store = configureStore(initialState, browserHistory, createReducer);
+  const store = configureStore(initialState, history, createReducer);
   // instantiate auth with read token
   const auth = new Authentication({
     idToken: profile.idToken,

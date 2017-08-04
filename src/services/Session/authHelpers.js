@@ -1,11 +1,11 @@
 import R from 'ramda';
-import { browserHistory } from 'react-router';
 import drvrStorage from 'utils/drvrStorage';
 import {
   BASE_URL,
   LOCAL_STORAGE_SESSION_KEY,
   setMwa,
 } from 'configs';
+import getHistory from 'utils/history';
 import { setReportsMWA } from 'containers/Report/actions/reportActions';
 import {
   setSession,
@@ -13,9 +13,16 @@ import {
   fetchAccessTokens,
 } from './actions';
 
+const isItMwaProfile = R.propEq('fleet', 'mwa');
+const needRedirect = R.test(/\/login/, window.location.pathname);
+
 export const onSuccess = (profile = {}, dispatch, {
   overwrite = true,
 } = {}) => {
+  if (needRedirect) {
+    getHistory().push(BASE_URL);
+  }
+
   if (overwrite) {
     drvrStorage.save(LOCAL_STORAGE_SESSION_KEY, profile, true);
   }
@@ -24,7 +31,7 @@ export const onSuccess = (profile = {}, dispatch, {
 };
 
 export const onFailure = (dispatch) => {
-  browserHistory.replace(`${BASE_URL}/login`);
+  getHistory().replace(`${BASE_URL}/login`);
   dispatch(cleanSession());
   drvrStorage.remove(LOCAL_STORAGE_SESSION_KEY);
 };
@@ -44,5 +51,3 @@ function __sideEffects(profile = {}, dispatch) {
   dispatch(setSession(profile))
     .then(() => dispatch(fetchAccessTokens()));
 }
-
-const isItMwaProfile = R.propEq('fleet', 'mwa');
