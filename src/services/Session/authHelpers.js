@@ -6,6 +6,7 @@ import {
   setMwa,
 } from 'configs';
 import getHistory from 'utils/history';
+import { setAuthorization } from 'utils/authz';
 import { setReportsMWA } from 'containers/Report/actions/reportActions';
 import { commonFleetActions } from 'services/FleetModel/actions';
 import {
@@ -27,6 +28,8 @@ export const onSuccess = (profile = {}, dispatch, {
   if (overwrite) {
     drvrStorage.save(LOCAL_STORAGE_SESSION_KEY, profile, true);
   }
+
+  setAuthorization(profile);
 
   __sideEffects(profile, dispatch);
 };

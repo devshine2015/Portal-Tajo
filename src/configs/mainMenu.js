@@ -1,5 +1,3 @@
-import roles from 'configs/roles';
-
 const common = {
   reports: {
     name: 'reports',
@@ -12,9 +10,6 @@ const common = {
   users: {
     name: 'users',
     path: 'users',
-    includeRoles: [
-      roles.uber, roles.admin,
-    ],
   },
   operational: {
     name: 'operational',
