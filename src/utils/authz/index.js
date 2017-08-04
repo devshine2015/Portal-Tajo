@@ -10,14 +10,12 @@ const checkRole = (role = '') => hasInArray(role, roles);
 
 /**
  * Answers to question if user has given permission
- * @param {ArrayOfStrings} permissionsAsked - list of asked permissions
- * @return {Object} - each pair {permissionsAsked[i]: Boolean}
+ * @param {ArrayOfStrings|String} permissionsAsked - list of asked permissions
+ * @return {Object|Buulean} - each pair {permissionsAsked[i]: Boolean} or boolean if permissionsAsked is a String
  */
-export function authorizeWithPermissions(permissionsAsked = []) {
+export function authorizeWithPermissions(permissionsAsked) {
   if (isString(permissionsAsked)) {
-    return {
-      [permissionsAsked]: checkPermission(permissionsAsked),
-    };
+    return checkPermission(permissionsAsked);
   }
 
   const result = {};
