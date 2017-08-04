@@ -25,7 +25,7 @@ class InnerPortal extends React.Component {
   }
 
   canShowContent() {
-    return this.context.authenticated() && this.props.fleetIsReady;
+    return this.props.fleetIsReady;
   }
 
   render() {
@@ -59,10 +59,6 @@ class InnerPortal extends React.Component {
     return <AnimatedLogo.FullscreenLogo />;
   }
 }
-
-InnerPortal.contextTypes = {
-  authenticated: PropTypes.func.isRequired,
-};
 
 InnerPortal.propTypes = {
   children: PropTypes.node.isRequired,

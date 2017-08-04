@@ -7,6 +7,7 @@ import {
 } from 'configs';
 import getHistory from 'utils/history';
 import { setReportsMWA } from 'containers/Report/actions/reportActions';
+import { commonFleetActions } from 'services/FleetModel/actions';
 import {
   setSession,
   cleanSession,
@@ -49,5 +50,6 @@ function __sideEffects(profile = {}, dispatch) {
   }
 
   dispatch(setSession(profile))
-    .then(() => dispatch(fetchAccessTokens()));
+    .then(() => dispatch(fetchAccessTokens()))
+    .then(() => dispatch(commonFleetActions.fetchFleet()));
 }
