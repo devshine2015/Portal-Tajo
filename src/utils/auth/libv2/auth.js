@@ -93,6 +93,10 @@ class Authentication {
     });
   }
 
+  logout = () => {
+    console.log('logging out...');
+  }
+
   _getUserInfo = (authResult = {}, cb) => {
     this.auth0.client.userInfo(getAccessToken(authResult), (err, user) => {
       // format profile to convenient structure

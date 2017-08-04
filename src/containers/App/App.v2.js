@@ -38,7 +38,7 @@ class App extends React.Component {
 
     return (
       <CommonWrappers>
-        <InnerPortal>
+        <InnerPortal auth={this.props.route.auth}>
           { this.props.children }
         </InnerPortal>
       </CommonWrappers>
