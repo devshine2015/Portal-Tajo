@@ -2,7 +2,10 @@ import auth0 from 'auth0-js';
 import R from 'ramda';
 import AUTH_CONFIG from './variables';
 import isTokenExpired from './tokenHelpers';
-import { login } from './apiCalls';
+import {
+  login,
+  logout,
+} from './apiCalls';
 import * as socialHelpers from './socialAuthHelpers';
 
 /**
@@ -93,8 +96,12 @@ class Authentication {
     });
   }
 
-  logout = () => {
-    console.log('logging out...');
+  logout = (successCallback) => {
+    logout(this.accessToken)
+      .then(() => {
+        this._unauthenticate();
+        successCallback();
+      });
   }
 
   _getUserInfo = (authResult = {}, cb) => {

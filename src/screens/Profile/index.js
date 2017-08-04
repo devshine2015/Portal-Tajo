@@ -12,7 +12,7 @@ const userCanSeeProfile = () => authorizeWithPermissions('view:profile');
 
 const ProfileScreen = () => (
   <Layout.Content>
-    { userCanSeeProfile() && (
+    { !userCanSeeProfile() && (
       <div className={css(classes.widget)}>
         <ProfileDetails />
       </div>

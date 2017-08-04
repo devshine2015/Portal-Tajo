@@ -40,6 +40,12 @@ export const onFailure = (dispatch) => {
   drvrStorage.remove(LOCAL_STORAGE_SESSION_KEY);
 };
 
+export const onLogoutSuccess = (dispatch) => {
+  getHistory().replace(`${BASE_URL}/login`);
+  dispatch(cleanSession());
+  drvrStorage.remove(LOCAL_STORAGE_SESSION_KEY);
+};
+
 /**
  * Stuff which sets some global vars, API calls etc..
  * @param {Object} profile

@@ -26,3 +26,18 @@ export const login = async (username, password) => {
     throw new Error(err);
   }
 };
+
+export const logout = async (accessToken) => {
+  const { url, method, apiVersion } = endpoints.logout(accessToken);
+  const options = { apiVersion };
+
+  try {
+    const result = await api[method](url, options);
+
+    return result.status === 200;
+  } catch (err) {
+    console.error(err);
+
+    throw Error(err);
+  }
+};

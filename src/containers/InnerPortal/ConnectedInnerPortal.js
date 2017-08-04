@@ -9,6 +9,7 @@ import {
   journalActions,
 } from 'services/AlertsSystem/actions';
 import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
+import { onLogoutSuccess } from 'services/Session/authHelpers';
 import InnerPortal from './InnerPortal';
 
 const makeMapStateToProps = () => {
@@ -28,6 +29,7 @@ const makeMapStateToProps = () => {
 
 const mapDispatch = (dispatch) => {
   return {
+    onLogoutSuccess: () => onLogoutSuccess(dispatch),
     fetchPortalData: () => {
       dispatch(conditionsActions.fetchAlertConditions())
         .then(() => dispatch(journalActions.fetchNotifications(makePeriodForLast24Hours())))

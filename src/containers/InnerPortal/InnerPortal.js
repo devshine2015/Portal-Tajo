@@ -28,6 +28,10 @@ class InnerPortal extends React.Component {
     return this.props.fleetIsReady;
   }
 
+  onLogout = () => {
+    this.props.auth.logout(this.props.onLogoutSuccess);
+  }
+
   render() {
     // hide InnerPortal from unauthenticated users
     if (this.canShowContent()) {
@@ -37,7 +41,7 @@ class InnerPortal extends React.Component {
           <ApplicationBar
             title={this.props.fleet}
             toggleSidebar={this.toggleSidebar}
-            logout={this.props.auth.logout}
+            logout={this.onLogout}
           />
 
           <MainSidebar
@@ -68,6 +72,7 @@ InnerPortal.propTypes = {
   auth: PropTypes.shape({
     logout: PropTypes.func.isRequired,
   }).isRequired,
+  onLogoutSuccess: PropTypes.func.isRequired,
 };
 
 InnerPortal.defaultProps = {
