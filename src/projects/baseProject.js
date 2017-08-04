@@ -45,12 +45,14 @@ const renderProject = async ({
   // Create redux store with history
   const store = configureStore(initialState, history, createReducer);
   // instantiate auth with read token
-  const auth = new Authentication({
-    idToken: profile.idToken,
-    accessToken: profile.accessToken,
-    onInitSuccess: overwrite => onSuccess(profile, store.dispatch, { overwrite }),
-    onInitFailure: () => onFailure(store.dispatch),
-  });
+  const auth = new Authentication();
+
+  await auth.initialAuthentication(
+    profile.accessToken,
+    profile.idToken,
+    overwrite => onSuccess(profile, store.dispatch, { overwrite }),
+    () => onFailure(store.dispatch),
+  );
 
   const { injectReducer } = getHooks(store, createReducer);
   const routes = createRoutes(store.dispatch, getHistory(store, browserHistory), injectReducer, auth, routesConfig);

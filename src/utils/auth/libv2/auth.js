@@ -34,17 +34,10 @@ class Authentication {
   accessToken = null;
   storageKey = 'drvrAuth';
 
-  constructor({
-    idToken = undefined,
-    accessToken = undefined,
-    onInitSuccess,
-    onInitFailure,
-  }) {
-    this.initialAuthentication(accessToken, idToken, onInitSuccess, onInitFailure);
-  }
-
   async initialAuthentication(accessToken, idToken, onSuccess, onFailure) {
-    if (await socialHelpers.isAuthenticating(this.storageKey)) return;
+    const isAuthenticating = await socialHelpers.isAuthenticating(this.storageKey);
+
+    if (isAuthenticating) return;
 
     if (!isTokenExpired(idToken)) {
       this._authenticate(accessToken, idToken);
@@ -75,6 +68,7 @@ class Authentication {
 
   authorize = (provider) => {
     socialHelpers.setIsAuthenticating(this.storageKey);
+
     this.auth0.authorize({ connection: provider });
   }
 
