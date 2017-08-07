@@ -14,7 +14,8 @@
   "env": {
     "production": {
       "only": [
-        "src"
+        "src",
+        "node_modules/react-native-storage"
       ],
       "plugins": [
         "transform-react-remove-prop-types",
