@@ -1,4 +1,5 @@
 # ignore specific files
-src/*.ico
-src/*.html
+src/**/*.ico
+src/**/*.html
+src/**/*.ejs
 src/manifest.json

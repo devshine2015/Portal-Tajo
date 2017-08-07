@@ -4,7 +4,9 @@
 
 const path = require('path');
 const webpack = require('webpack');
+
 const PACKAGE = require('../package.json');
+
 const NODE_ENV = process.env.NODE_ENV || 'development';
 // const cssnext = require('postcss-cssnext');
 // const postcssFocus = require('postcss-focus');

@@ -3,7 +3,8 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-// const cssLoaders = require('./cssConfigs');
+const commonConfigs = require('./commons.json');
+
 const PROJECT = process.env.DRVR_PROJECT;
 
 module.exports = require('./webpack.base')({
@@ -46,8 +47,7 @@ module.exports = require('./webpack.base')({
     }),
 
     // Minify and optimize the index.html
-    new HtmlWebpackPlugin({
-      template: 'src/index.html',
+    new HtmlWebpackPlugin(Object.assign({}, commonConfigs.htmlPlugin, {
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -60,7 +60,6 @@ module.exports = require('./webpack.base')({
         minifyCSS: true,
         minifyURLs: true,
       },
-      inject: true,
     }),
 
     // Extract the CSS into a seperate file
