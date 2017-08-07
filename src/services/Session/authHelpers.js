@@ -58,7 +58,28 @@ function __sideEffects(profile = {}, dispatch) {
     dispatch(setReportsMWA());
   }
 
+  initOneSignal();
+
   dispatch(setSession(profile))
     .then(() => dispatch(fetchAccessTokens()))
     .then(() => dispatch(commonFleetActions.fetchFleet()));
+}
+
+/**
+ * Init OneSignal client
+ */
+function initOneSignal() {
+  const OneSignal = window.OneSignal || [];
+  const ONE_SIGNAL_APP_ID = '54d2b573-aec9-44e4-be03-9745b7724fbe';
+
+  OneSignal.push(['init', {
+    appId: ONE_SIGNAL_APP_ID,
+    autoRegister: false, /* Set to true to automatically prompt visitors */
+    httpPermissionRequest: {
+      enable: true,
+    },
+    notifyButton: {
+      enable: true, /* Set to false to hide */
+    },
+  }]);
 }
