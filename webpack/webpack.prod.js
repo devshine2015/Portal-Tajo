@@ -17,7 +17,6 @@ module.exports = require('./webpack.base')({
   output: {
     filename: 'js/[name]_[chunkhash].js',
     chunkFilename: 'js/[name]_[chunkhash].chunk.js',
-    publicPath: '',
   },
 
   // where compile locally
@@ -60,7 +59,7 @@ module.exports = require('./webpack.base')({
         minifyCSS: true,
         minifyURLs: true,
       },
-    }),
+    })),
 
     // Extract the CSS into a seperate file
     // new ExtractTextPlugin({css/[name].[contenthash].css'),
