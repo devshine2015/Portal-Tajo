@@ -1,10 +1,8 @@
 import React from 'react';
 import { getHooks } from 'utils/hooks';
-import { Router, browserHistory } from 'react-router';
+import { Router } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
-import {
-  isAlerts,
-} from 'configs';
+import { isAlerts } from 'configs';
 import mainMenu from 'configs/mainMenu';
 import {
   errorHandler,
@@ -18,8 +16,8 @@ import reportsScreen from 'screens/ReportsScreen/route';
 import execReportsScreen from 'screens/ExecReports/route';
 import vehiclesManagerScreen from 'screens/VehiclesManagerScreen/route';
 import loginScreen from 'screens/LoginScreen/route';
-// import loginCallbackScreen from 'screens/LoginCallback/route';
-import dashboardScreen from 'screens/Dashboard/route';
+import loginCallbackScreen from 'screens/LoginCallback/route';
+import dashboardScreen from 'screens/DashboardScreen/route';
 import chronicleScreen from 'screens/Chronicle/route';
 import profileScreen from 'screens/Profile/route';
 import alersEditorScreen from 'screens/AlertsEditor/route';
@@ -27,10 +25,10 @@ import notFoundScreen from 'screens/NotFound/route';
 import usersManagerScreen from 'screens/UsersManager/route';
 import alertLogsScreen from 'screens/AlertsLog/route';
 
-export default function createRoutes(store) {
+export default function createRoutes(store, enchantedHistory, auth) {
   const { injectReducer } = getHooks(store);
 
-  const history = syncHistoryWithStore(browserHistory, store, {
+  const history = syncHistoryWithStore(enchantedHistory, store, {
     selectLocationState: selectLocationState(),
   });
 
@@ -71,8 +69,15 @@ export default function createRoutes(store) {
 
   const alertsLogsRoute = alertLogsScreen(mainMenu.escape.alertsLogs);
 
+  const loginCallbackRoute = loginCallbackScreen({
+    auth,
+    dispatch: store.dispatch,
+  });
+
   const loginRoute = loginScreen({
+    auth,
     path: 'login',
+    childRoutes: [loginCallbackRoute],
   });
 
   const notFoundRoute = notFoundScreen({
@@ -83,6 +88,7 @@ export default function createRoutes(store) {
     path: '/',
     dispatch: store.dispatch,
     mainMenu: mainMenu.sunshine,
+    auth,
   });
 
   rootRoute.indexRoute = {
