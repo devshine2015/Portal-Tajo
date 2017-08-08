@@ -1,15 +1,15 @@
 import { useRouterHistory } from 'react-router';
 import { createHistory } from 'history';
-import { BASE_URL } from 'configs';
 
 let history = null;
 
 /*
-* List of available paramse https://www.npmjs.com/package/history
+* List of available params https://www.npmjs.com/package/history
 * */
-export function create() {
+export function create(base) {
   history = useRouterHistory(createHistory)({
-    basename: BASE_URL,
+    // see https://www.npmjs.com/package/history#using-a-base-url
+    basename: base,
   });
 
   return getHistory();

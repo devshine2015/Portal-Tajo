@@ -16,7 +16,10 @@ import configureStore from 'configs/store';
 import getHooks from './utils/hooks';
 import { getHistory } from './utils/routerHelpers';
 import createRoutes from './utils/createRoutes';
-import { init as initConfigs } from 'configs';
+import {
+  init as initConfigs,
+  portal,
+} from 'configs';
 import { Authentication } from 'utils/auth';
 import { create as createHistory } from 'utils/history';
 import {
@@ -41,7 +44,7 @@ const renderProject = async ({
   // create history which allow to use it everywhere
   // (Not just in components).
   // use this to init Router and store
-  const history = createHistory();
+  const history = createHistory(getBase());
   // Create redux store with history
   const store = configureStore(initialState, history, createReducer);
   // instantiate auth with read token
@@ -66,3 +69,7 @@ const renderProject = async ({
 };
 
 export default renderProject;
+
+function getBase() {
+  return portal === 'tajo' ? '/tajo' : '';
+}
