@@ -1,11 +1,12 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const commonConfigs = require('./commons.json');
-// const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const baseConfig = require('./webpack.base').default;
+const getPublicPath = require('./webpack.base').getPublicPath;
 
 const PROJECT = process.env.DRVR_PROJECT;
 
-module.exports = require('./webpack.base')({
+module.exports = baseConfig({
   // skip all hot-reloading stuff
   entry: [
     path.join(process.cwd(), `src/projects/${PROJECT}`),
@@ -21,7 +22,7 @@ module.exports = require('./webpack.base')({
 
   plugins: [
     new HtmlWebpackPlugin(Object.assign({}, commonConfigs.htmlPlugin, {
-      base: PROJECT === 'tajo' ? '/tajo' : '',
+      base: getPublicPath(),
     })),
   ],
 });

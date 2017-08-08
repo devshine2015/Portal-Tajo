@@ -8,9 +8,6 @@ const PACKAGE = require('../package.json');
 
 const PROJECT = process.env.DRVR_PROJECT;
 const NODE_ENV = process.env.NODE_ENV || 'development';
-// const cssnext = require('postcss-cssnext');
-// const postcssFocus = require('postcss-focus');
-// const postcssReporter = require('postcss-reporter');
 
 console.log(JSON.stringify(PACKAGE.version));
 console.log(NODE_ENV);
@@ -21,12 +18,14 @@ function getPublicPath() {
   return PROJECT === 'tajo' ? '/tajo' : '';
 }
 
-module.exports = (options) => ({
+module.exports.getPublicPath = getPublicPath;
+
+module.exports.default = options => ({
   entry: ['babel-polyfill'].concat(options.entry),
   output: Object.assign({
     // put build into specified folder
     path: options.outputFolder,
-    publicPath: /* options.publicPath || */ getPublicPath(),
+    publicPath: getPublicPath(),
     // add this path to static files in index.html
     sourceMapFilename: 'js/[name].js.map',
   }, options.output), // Merge with env dependent settings

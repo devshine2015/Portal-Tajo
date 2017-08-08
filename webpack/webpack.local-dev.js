@@ -5,11 +5,13 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const baseConfig = require('./webpack.base').default;
+const getPublicPath = require('./webpack.base').getPublicPath;
 const commonConfigs = require('./commons.json');
 
 const PROJECT = process.env.DRVR_PROJECT;
 
-module.exports = require('./webpack.base')({
+module.exports = baseConfig({
   // Add hot reloading in development
   entry: [
     'webpack-hot-middleware/client',
@@ -30,7 +32,7 @@ module.exports = require('./webpack.base')({
     new webpack.HotModuleReplacementPlugin(), // Tell webpack we want hot reloading
     new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin(Object.assign({}, commonConfigs.htmlPlugin, {
-      base: PROJECT === 'tajo' ? '/tajo/' : '',
+      base: getPublicPath(),
     })),
   ],
 
