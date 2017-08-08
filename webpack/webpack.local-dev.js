@@ -20,6 +20,7 @@ module.exports = require('./webpack.base')({
   output: {
     filename: 'js/[name].js',
     chunkFilename: 'js/[name].chunk.js',
+    publicPath: '/',
   },
 
   // where compile locally

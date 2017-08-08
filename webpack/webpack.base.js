@@ -4,9 +4,9 @@
 
 const path = require('path');
 const webpack = require('webpack');
-
 const PACKAGE = require('../package.json');
 
+const PROJECT = process.env.DRVR_PROJECT;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 // const cssnext = require('postcss-cssnext');
 // const postcssFocus = require('postcss-focus');
@@ -17,12 +17,16 @@ console.log(NODE_ENV);
 
 const devCssLoaders = 'style-loader!css-loader?localIdentName=[local]__[path][name]__[hash:base64:5]&modules&importLoaders=1&sourceMap!postcss-loader';
 
+function getPublicPath() {
+  return PROJECT === 'tajo' ? '/tajo/' : '';
+}
+
 module.exports = (options) => ({
   entry: ['babel-polyfill'].concat(options.entry),
   output: Object.assign({
     // put build into specified folder
     path: options.outputFolder,
-    publicPath: options.publicPath || '/',
+    publicPath: options.publicPath || getPublicPath(),
     // add this path to static files in index.html
     sourceMapFilename: 'js/[name].js.map',
   }, options.output), // Merge with env dependent settings
@@ -100,7 +104,7 @@ module.exports = (options) => ({
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(NODE_ENV),
-        DRVR_PROJECT: JSON.stringify(process.env.DRVR_PROJECT),
+        DRVR_PROJECT: JSON.stringify(PROJECT),
         DRVR_VERSION: JSON.stringify(PACKAGE.version),
       },
     }),
