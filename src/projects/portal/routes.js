@@ -3,7 +3,6 @@ import { getHooks } from 'utils/hooks';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import {
-  ROOT_ROUTE,
   isAlerts,
 } from 'configs';
 import mainMenu from 'configs/mainMenu';
@@ -81,7 +80,7 @@ export default function createRoutes(store) {
   });
 
   const rootRoute = rootScreen({
-    path: ROOT_ROUTE,
+    path: '/',
     dispatch: store.dispatch,
     mainMenu: mainMenu.sunshine,
   });

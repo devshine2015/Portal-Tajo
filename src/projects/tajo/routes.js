@@ -2,7 +2,6 @@ import React from 'react';
 import { getHooks } from 'utils/hooks';
 import { Router } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
-import { ROOT_ROUTE } from 'configs';
 import mainMenu from 'configs/mainMenu';
 import {
   errorHandler,
@@ -102,7 +101,11 @@ export default function createRoutes(store, enchantedHistory, auth) {
   });
 
   const rootRoute = rootScreen({
-    path: ROOT_ROUTE,
+    /**
+     * root path is a '/' forever. It wiil be served from 'basename' set in history utility.
+     * @see https://www.npmjs.com/package/history#using-a-base-url
+     * */
+    path: '/',
     dispatch: store.dispatch,
     mainMenu: mainMenu.escape,
     auth,

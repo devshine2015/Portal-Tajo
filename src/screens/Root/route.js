@@ -1,5 +1,4 @@
 import { setInnerPortalPages } from 'containers/InnerPortal/actions';
-import { BASE_URL } from 'configs';
 
 const NAME = 'root';
 
@@ -9,13 +8,13 @@ function patchMenuPaths(menu = {}, rootRoute = {}) {
 
   const filtered = Object.values(menu)
     .filter(item => rootChildrens.indexOf(item.path) !== -1)
-    .map(item => {
+    .map((item) => {
       const index = rootChildrens.indexOf(item.path);
 
       return {
         ...item,
         index,
-        path: `${BASE_URL}/${item.path}`,
+        path: `/${item.path}`,
       };
     })
     .sort((a, b) => a.index - b.index);

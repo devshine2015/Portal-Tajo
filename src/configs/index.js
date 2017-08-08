@@ -34,12 +34,6 @@ export const onDev = serverEnv === 'dev';
 
 export const LOCAL_STORAGE_SESSION_KEY = 'drvr:profile';
 
-// use to initiate root for react-router
-export const ROOT_ROUTE = _configHelpers.chooseRoot(serverEnv, portal);
-
-// use it for navigation throught app
-export const BASE_URL = ROOT_ROUTE === '/' ? '' : ROOT_ROUTE;
-
 // TODO: this is to toggle alerts while in development
 // remove this when Alerts System done/released
 export let isAlerts = true;

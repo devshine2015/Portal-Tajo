@@ -1,7 +1,6 @@
 import R from 'ramda';
 import drvrStorage from 'utils/drvrStorage';
 import {
-  BASE_URL,
   LOCAL_STORAGE_SESSION_KEY,
   setMwa,
 } from 'configs';
@@ -22,7 +21,7 @@ export const onSuccess = (profile = {}, dispatch, {
   overwrite = true,
 } = {}) => {
   if (needRedirect(window.location.pathname)) {
-    getHistory().push(BASE_URL);
+    getHistory().push('/');
   }
 
   if (overwrite) {
@@ -35,13 +34,13 @@ export const onSuccess = (profile = {}, dispatch, {
 };
 
 export const onFailure = (dispatch) => {
-  getHistory().replace(`${BASE_URL}/login`);
+  getHistory().replace('/login');
   dispatch(cleanSession());
   drvrStorage.remove(LOCAL_STORAGE_SESSION_KEY);
 };
 
 export const onLogoutSuccess = (dispatch) => {
-  getHistory().replace(`${BASE_URL}/login`);
+  getHistory().replace('/login');
   dispatch(cleanSession());
   drvrStorage.remove(LOCAL_STORAGE_SESSION_KEY);
 };
