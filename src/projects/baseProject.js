@@ -18,7 +18,7 @@ import { getHistory } from './utils/routerHelpers';
 import createRoutes from './utils/createRoutes';
 import {
   init as initConfigs,
-  portal,
+  project,
 } from 'configs';
 import { Authentication } from 'utils/auth';
 import { create as createHistory } from 'utils/history';
@@ -71,5 +71,5 @@ const renderProject = async ({
 export default renderProject;
 
 function getBase() {
-  return portal === 'tajo' ? '/tajo' : '';
+  return project === 'tajo' ? '/tajo' : '';
 }

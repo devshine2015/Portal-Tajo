@@ -7,12 +7,12 @@ const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080'; // for dev testing
 const REMOTE_HOST_BASE = window.location.host;
 
 export const version = process.env.DRVR_VERSION;
-export const portal = process.env.DRVR_PROJECT;
+export const project = process.env.DRVR_PROJECT;
 export const protocol = window.location.protocol;
 export const isSecure = protocol.search('https') !== -1;
 export const socketProtocol = isSecure ? 'wss:' : 'ws:';
 // TODO: we are in the middle of renaming tajo->escape; update here when done
-export const isEscape = portal === 'tajo';
+export const isEscape = project === 'tajo';
 // export const isSunshine = !isEscape;
 
 /**
@@ -80,7 +80,7 @@ const boldGreen = 'font-weight: 700; color: green;';
 
 console.log(`%cCurrent version: %c${version}`, bold, boldGreen);
 console.log(`%cServer env: %c${serverEnv}`, bold, boldGreen);
-console.log(`%cProject: %c${portal}`, bold, boldGreen);
+console.log(`%cProject: %c${project}`, bold, boldGreen);
 
 export const init = () => {
   window.drvrStorage = drvrStorage.init(window.localStorage);

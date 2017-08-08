@@ -5,7 +5,6 @@ const logger = require('./logger');
 
 const frontend = require('./middlewares/frontendMiddleware');
 const isDev = process.env.NODE_ENV !== 'production';
-// const portal = process.env.DRVR_PROJECT;
 
 const app = express();
 
