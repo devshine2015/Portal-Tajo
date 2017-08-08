@@ -18,7 +18,7 @@ console.log(NODE_ENV);
 const devCssLoaders = 'style-loader!css-loader?localIdentName=[local]__[path][name]__[hash:base64:5]&modules&importLoaders=1&sourceMap!postcss-loader';
 
 function getPublicPath() {
-  return PROJECT === 'tajo' ? '/tajo/' : '';
+  return PROJECT === 'tajo' ? '/tajo' : '';
 }
 
 module.exports = (options) => ({
@@ -26,7 +26,7 @@ module.exports = (options) => ({
   output: Object.assign({
     // put build into specified folder
     path: options.outputFolder,
-    publicPath: options.publicPath || getPublicPath(),
+    publicPath: /* options.publicPath || */ getPublicPath(),
     // add this path to static files in index.html
     sourceMapFilename: 'js/[name].js.map',
   }, options.output), // Merge with env dependent settings

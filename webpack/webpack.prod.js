@@ -47,6 +47,7 @@ module.exports = require('./webpack.base')({
 
     // Minify and optimize the index.html
     new HtmlWebpackPlugin(Object.assign({}, commonConfigs.htmlPlugin, {
+      base: PROJECT === 'tajo' ? '/tajo' : '',
       minify: {
         removeComments: true,
         collapseWhitespace: true,

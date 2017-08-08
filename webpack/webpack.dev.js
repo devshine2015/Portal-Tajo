@@ -20,6 +20,8 @@ module.exports = require('./webpack.base')({
   outputFolder: path.resolve(process.cwd(), `builds/dev/${PROJECT}`),
 
   plugins: [
-    new HtmlWebpackPlugin(commonConfigs.htmlPlugin),
+    new HtmlWebpackPlugin(Object.assign({}, commonConfigs.htmlPlugin, {
+      base: PROJECT === 'tajo' ? '/tajo' : '',
+    })),
   ],
 });

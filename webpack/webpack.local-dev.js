@@ -20,7 +20,6 @@ module.exports = require('./webpack.base')({
   output: {
     filename: 'js/[name].js',
     chunkFilename: 'js/[name].chunk.js',
-    publicPath: '/',
   },
 
   // where compile locally
@@ -30,7 +29,9 @@ module.exports = require('./webpack.base')({
   plugins: [
     new webpack.HotModuleReplacementPlugin(), // Tell webpack we want hot reloading
     new webpack.NoEmitOnErrorsPlugin(),
-    new HtmlWebpackPlugin(commonConfigs.htmlPlugin),
+    new HtmlWebpackPlugin(Object.assign({}, commonConfigs.htmlPlugin, {
+      base: PROJECT === 'tajo' ? '/tajo/' : '',
+    })),
   ],
 
   // Tell babel that we want to hot-reload
