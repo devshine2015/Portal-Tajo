@@ -30,6 +30,7 @@ class AlertsList extends React.Component {
   render() {
               // <Avatar color="#156671" icon={alertKinds.getAlertByKind(item.kind).icon} />
     const alertsToPick = this.props.alerts
+        .filter(item => item.gfInvalid === undefined)
         .filter(item => !this.vehicleHasAlert(item.id)
             && this.props.alertFilter(item))
         // // doing this so we have original GFs names

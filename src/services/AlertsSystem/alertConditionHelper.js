@@ -13,8 +13,9 @@ const safeGetGFData = (originObject, state) => {
     return { gfId: '', gfName: '' };
   }
   const theGF = getGFByIdFunc(state)(originObject.gfId);
+  // TODO: need something smarter for invalid GFs
   if (theGF === null) {
-    return { gfId: originObject.gfId, gfName: '_DELETED_GF_' };
+    return { gfId: originObject.gfId, gfName: '_DELETED_GF_', gfInvalid: true };
   }
   return { gfId: originObject.gfId, gfName: theGF.name };
 };
