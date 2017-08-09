@@ -5,7 +5,7 @@ import { getProcessedGFs } from '../reducer';
 import { filterProcessedListByName } from '../utils/filtering';
 
 import { makeGFAlertConditionBackEndObject } from 'services/AlertsSystem/alertConditionHelper';
-import { createAlertConditions } from 'services/AlertsSystem/actions';
+import { createAlertConditions } from 'services/AlertsSystem/actions/conditionsActions';
 
 export const FLEET_MODEL_GF_SET = 'portal/services/FLEET_MODEL_GF_SET';
 export const FLEET_MODEL_GF_FILTER = 'portal/services/FLEET_MODEL_GF_FILTER';
@@ -54,7 +54,7 @@ function _createGFRequest(gfObject, index, dispatch, getState) {
       createAlertConditions([
         makeGFAlertConditionBackEndObject(gfObj, true),
         makeGFAlertConditionBackEndObject(gfObj, false),
-      ])(dispatch);
+      ])(dispatch, getState);
     }
   })
 // ---<<< REMOVE THIS over
