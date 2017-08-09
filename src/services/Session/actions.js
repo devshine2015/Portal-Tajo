@@ -5,7 +5,7 @@ import {
   checkSetNoIcons,
 } from 'configs';
 import endpoints from 'configs/endpoints';
-import { api } from 'utils/api';
+import { api, auth0Api } from 'utils/api';
 import {
   removeProfilePropsInLocalStorage,
   updateProfileInLocalStorage,
@@ -108,6 +108,8 @@ export const fetchAccessTokens = () => (dispatch) => {
     .then(() => {
       dispatch(_accessTokensSet(tokens));
       updateUserAccessTokens(tokens);
+      auth0Api.setAccessTokens(tokens);
+
       return Promise.resolve(tokens);
     });
 };
