@@ -66,7 +66,7 @@ class Authentication {
           if (error) onFailure();
           else onSuccess(profile);
         });
-      });
+      }, onFailure);
   }
 
   authorize = (provider) => {
