@@ -20,7 +20,7 @@ import {
   init as initConfigs,
   project,
 } from 'configs';
-import { Authentication } from 'utils/auth';
+import Authentication from 'utils/auth';
 import { create as createHistory } from 'utils/history';
 import {
   onSuccess,
