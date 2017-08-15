@@ -1,27 +1,38 @@
 import React, { PropTypes } from 'react';
 import { css } from 'aphrodite/no-important';
+import { VelocityComponent } from 'velocity-react';
 import Userpic from 'components/Userpic';
-import classes, { size } from './classes';
+import classes, { AVATAR_SIZE } from './classes';
+
 
 const Avatar = ({
   src,
+  show,
 }) => {
+  const animation = `transition.expand${show ? 'In' : 'Out'}`;
+
   return (
-    <div className={css(classes.avatar)}>
-      <Userpic
-        src={src}
-        size={size}
-        style={{
-          maxWidth: '100%',
-          height: 'auto',
-        }}
-      />
-    </div>
+    <VelocityComponent
+      animation={animation}
+      duration={300}
+    >
+      <div className={css(classes.avatar)}>
+        <Userpic
+          src={src}
+          size={AVATAR_SIZE}
+          style={{
+            maxWidth: '100%',
+            height: 'auto',
+          }}
+        />
+      </div>
+    </VelocityComponent>
   );
 };
 
 Avatar.propTypes = {
   src: PropTypes.string.isRequired,
+  show: PropTypes.bool.isRequired,
 };
 
 export default Avatar;
