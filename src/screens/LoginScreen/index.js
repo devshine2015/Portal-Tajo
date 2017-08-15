@@ -1,4 +1,12 @@
-// import LoginForm from './components/LoginForm';
-import LoginForm2 from './components/LoginForm2';
+import React from 'react';
+import { css } from 'aphrodite/no-important';
+import LoginForm from './components/LoginForm2';
+import classes from './classes';
 
-export default LoginForm2;
+const LoginPage = () => (
+  <div className={css(classes.page)}>
+    <LoginForm />
+  </div>
+);
+
+export default LoginPage;
