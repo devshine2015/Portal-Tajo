@@ -136,7 +136,7 @@ ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) 
   const tripParcer = makeTripsParcer();
 
   events.forEach((theSample, idx) => {
-    tripParcer(theSample, idx);
+    tripParcer.processSample(theSample, idx);
     const eventMomentTS = moment(theSample.ev.ts).valueOf();
     const eventTimeMs = eventMomentTS - this.dateFrom.getTime();
     if (eventHelpers.isPositionEvent(theSample)) {
@@ -144,19 +144,14 @@ ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) 
         pos: window.L.latLng(eventHelpers.eventPos(theSample).lat, eventHelpers.eventPos(theSample).lng) });
       this.speedData.push({ timeMs: eventTimeMs, v: eventHelpers.eventSpeed(theSample) });
       this.numberOfPosSamples += 1;
-      // if (prevPosSample !== null) {
-      //   eventHelpers.eventSetCalculatedDeltaM(theSample,
-      //       haversineDist(eventHelpers.eventPos(prevPosSample), eventHelpers.eventPos(theSample)));
-      //   // this.calculatedDistanceM += haversineDist(eventHelpers.eventPos(prevPosSample), eventHelpers.eventPos(theSample));
-      // }
-      // prevPosSample = theSample;
     }
   });
 
-  this.tripsRaw = tripParcer();
+  this.tripsRaw = tripParcer.finalize(events.length - 1);
   this.tripsRaw.forEach(aTrip => aTrip.prepareData(events, storeUpdateCallback));
 
   this.trips = this.tripsRaw.filter(aTrip => aTrip.isValid());
+  this.trips.forEach(aTrip => aTrip.markSamples(events));
 
   let prevEndIdx = 0;
   let prevTrip = null;
@@ -199,6 +194,91 @@ ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) 
 //
 //-----------------------------------------------------------------------
 ReportVehicleFrame.prototype.calculatePerDayTotals = function () {
+  this.perDayTotals = [];
+  this.grandTotal = {
+    calculatedDistanceM: 0,
+    calculatedIdleDurationMs: 0,
+    calculatedOperationalDurationMs: 0,
+    calculatedRestMs: 0,
+  };
+
+  let prevPosSample = null;
+  let calculatedDistanceM = 0;
+  let calculatedIdleDurationMs = 0;
+  let calculatedOperationalDurationMs = 0;
+  let refDayStartMoment = moment(this.dateFrom);
+  let refDayEndMoment = moment(this.dateFrom).startOf('day').add(1, 'days');
+  let refTripIdx = -1;
+
+  // TODO: verify - considering only pos samples
+  this.events.filter(theSample => eventHelpers.isPositionEvent(theSample) && theSample.myTripIdx !== undefined)
+    .forEach((theSample) => {
+      let thisRefMoment = moment(theSample.ev.ts);
+      const isNextDay = thisRefMoment.isAfter(refDayEndMoment);
+
+      // new/next trip - restart prevPos
+      if (theSample.myTripIdx !== refTripIdx) {
+        prevPosSample = null;
+        refTripIdx = theSample.myTripIdx;
+        return;
+      }
+
+      if (isNextDay) {
+        thisRefMoment = refDayEndMoment;
+      }
+      this.maxSpeed = Math.max(this.maxSpeed, eventHelpers.eventSpeed(theSample));
+      if (prevPosSample !== null) {
+        const distM = haversineDist(eventHelpers.eventPos(prevPosSample), eventHelpers.eventPos(theSample));
+        calculatedDistanceM += distM;
+        this.grandTotal.calculatedDistanceM += distM;
+        const timeDeltaMs = thisRefMoment.diff(moment(prevPosSample.ev.ts));
+        if (eventHelpers.eventSpeed(prevPosSample) === 0) {
+          calculatedIdleDurationMs += timeDeltaMs;
+          this.grandTotal.calculatedIdleDurationMs += timeDeltaMs;
+        } else {
+          calculatedOperationalDurationMs += timeDeltaMs;
+          this.grandTotal.calculatedOperationalDurationMs += timeDeltaMs;
+        }
+      }
+      prevPosSample = theSample;
+      // need to flip to next day?
+      if (isNextDay) {
+        this.perDayTotals.push({
+          dateMoment: refDayStartMoment,
+          calculatedDistanceM,
+          calculatedIdleDurationMs,
+          calculatedOperationalDurationMs,
+          calculatedRestMs: ((refDayEndMoment.valueOf() - refDayStartMoment.valueOf())
+                    - calculatedOperationalDurationMs
+                    - calculatedIdleDurationMs),
+        });
+        calculatedDistanceM = 0;
+        calculatedIdleDurationMs = 0;
+        calculatedOperationalDurationMs = 0;
+        refDayStartMoment = moment(refDayEndMoment);
+        refDayEndMoment = refDayEndMoment.add(1, 'days');
+      }
+    });
+  // add the rest as the last day
+  // const refLastMoment = moment(this.dateTo);
+  this.perDayTotals.push({
+    dateMoment: refDayStartMoment,
+    calculatedDistanceM,
+    calculatedIdleDurationMs,
+    calculatedOperationalDurationMs,
+    calculatedRestMs: ((moment(this.dateTo).valueOf() - refDayStartMoment.valueOf())
+                  - calculatedOperationalDurationMs
+                  - calculatedIdleDurationMs),
+  });
+
+  this.grandTotal.calculatedRestMs = this.durationMs - this.grandTotal.calculatedIdleDurationMs
+          - this.grandTotal.calculatedOperationalDurationMs;
+};
+
+//
+//
+//-----------------------------------------------------------------------
+ReportVehicleFrame.prototype.calculatePerDayTotals_old = function () {
   this.perDayTotals = [];
   this.grandTotal = {
     calculatedDistanceM: 0,

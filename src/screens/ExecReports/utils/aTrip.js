@@ -4,6 +4,8 @@ import moment from 'moment';
 import { haversineDist } from 'utils/mapBoxMap';
 import * as eventHelpers from './eventHelpers';
 
+let tripCountIdx = 0;
+
 function HistoryTrip(startSampleIdx, endSampleIdx) {
   this.startIdx = startSampleIdx;
   this.endIdx = endSampleIdx;
@@ -66,6 +68,7 @@ HistoryTrip.prototype.prepareData = function (eventsFrame) {
   this.durationTotalMs = this.endDate.getTime() - this.startDate.getTime();
 
   let prevPosSample = null;
+
   for (let idx = this.startIdx; idx < this.endIdx; idx += 1) {
     const theSample = eventsFrame[idx];
     this.numberOfSamples += 1;
@@ -100,6 +103,16 @@ HistoryTrip.prototype.prepareData = function (eventsFrame) {
 //
 //
 //-----------------------------------------------------------------------
+HistoryTrip.prototype.markSamples = function (eventsFrame) {
+  ++tripCountIdx;
+  for (let idx = this.startIdx; idx < this.endIdx; idx += 1) {
+    eventsFrame[idx].myTripIdx = tripCountIdx;
+  }
+};
+
+//
+//
+//-----------------------------------------------------------------------
 
 const isTripStart = theSample => theSample.type === 'vehicle-ign-on';
 const isTripEnd = theSample => theSample.type === 'vehicle-ign-off';
@@ -110,17 +123,7 @@ export function makeTripsParcer() {
   const trips = [];
   let tripStartSampleIdx = -1;
 
-  const processor = (theSample, idx) => {
-    if (theSample === undefined) {
-      return trips;
-    }
-    // let dbg = null;
-    // if(theSample.type !== 'vehicle-position'
-    // && theSample.type !== 'vehicle-fuel'
-    // && theSample.type !== 'device-1wire-temperature') {
-    //   dbg = theSample;
-    // }
-
+  const processSample = (theSample, idx) => {
     if (tripStartSampleIdx !== -1) {
       if (isTripEnd(theSample)) {
         trips.push(new HistoryTrip(tripStartSampleIdx, idx));
@@ -129,7 +132,12 @@ export function makeTripsParcer() {
     } else if (isTripStart(theSample)) {
       tripStartSampleIdx = idx;
     }
-    return trips.filter(aTrip => aTrip.isValid());
   };
-  return processor;
+  const finalize = (lastIdx) => {
+    if (tripStartSampleIdx !== -1) {
+      trips.push(new HistoryTrip(tripStartSampleIdx, lastIdx));
+    }
+    return trips;
+  };
+  return { processSample, finalize };
 }
