@@ -19,7 +19,6 @@ import * as socialHelpers from './socialAuthHelpers';
  * 3. should be reusable for both mobile and web apps
  */
 
-const getIdToken = R.ifElse(R.has('id_token'), R.prop('id_token'), R.prop('idToken'));
 const getAccessToken = R.ifElse(R.has('access_token'), R.prop('access_token'), R.prop('accessToken'));
 
 function cleanupProfile(profile = {}) {
@@ -27,9 +26,7 @@ function cleanupProfile(profile = {}) {
 
   const cleaned = Object.assign({}, profile, {
     user_id: profile.sub,
-    idToken: getIdToken(profile),
     roles: profile[`${PREFIX}roles`],
-    accessToken: getAccessToken(profile),
     permission: profile[`${PREFIX}permissions`],
     app_metadata: profile[`${PREFIX}app_metadata`],
     user_metadata: profile[`${PREFIX}user_metadata`],
@@ -38,8 +35,6 @@ function cleanupProfile(profile = {}) {
   // all this properties already mirrored above
   // so we can clean object from them
   delete cleaned.sub;
-  delete cleaned.id_token;
-  delete cleaned.access_token;
   delete cleaned[`${PREFIX}roles`];
   delete cleaned[`${PREFIX}permissions`];
   delete cleaned[`${PREFIX}app_metadata`];
@@ -56,7 +51,7 @@ class Authentication {
     redirectUri: AUTH_CONFIG.callbackUrl,
     audience: `https://${AUTH_CONFIG.domain}/userinfo`,
     responseType: 'token id_token',
-    scope: 'profile email',
+    scope: 'openid profile email',
   });
 
   idToken = null;
@@ -133,8 +128,7 @@ class Authentication {
   _getUserInfo = (authResult = {}, cb) => {
     this.auth0.client.userInfo(getAccessToken(authResult), (err, user) => {
       // format profile to convenient structure
-      const profile = Object.assign({}, user, authResult);
-      const cleaned = cleanupProfile(profile);
+      const cleaned = cleanupProfile(user);
 
       cb(err, cleaned);
     });
