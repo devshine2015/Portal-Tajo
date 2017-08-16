@@ -20,6 +20,11 @@ const endpoints = {
     method: 'post',
     apiVersion: 1.1,
   },
+  logout: accessToken => ({
+    url: `logout/${accessToken}`,
+    method: 'get',
+    apiVersion: 1.1,
+  }),
 
   // locations
   getGFs: {
