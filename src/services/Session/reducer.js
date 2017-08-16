@@ -14,12 +14,6 @@ const initialState = fromJS({
   },
 
   /**
-   * token to access to /userinfo endpoint
-   * @since new login api
-   */
-  accessToken: undefined,
-
-  /**
    *
    * tokents to external auth0 API`s
    *
@@ -83,16 +77,9 @@ export const getSessionData = state =>
 
 export const getIdToken = state =>
   state.getIn(['session', 'idToken']);
-export const getMainAccessToken = state =>
-  state.getIn(['session', 'accessToken']);
 
-export const getUserRole = (state) => {
-  if (state.getIn(['session', 'roles']) !== undefined) {
-    return state.getIn(['session', 'roles', 0]);
-  }
-
-  return state.getIn(['session', 'role']);
-};
+export const getUserRole = state =>
+  state.getIn(['session', 'roles', 0]);
 
 export const getFleetName = (state) => {
   if (state.getIn(['session', 'user_metadata', 'fleet']) !== undefined) {
