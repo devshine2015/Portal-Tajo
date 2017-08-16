@@ -82,8 +82,8 @@ export const getUserRole = state =>
   state.getIn(['session', 'roles', 0]);
 
 export const getFleetName = (state) => {
-  if (state.getIn(['session', 'user_metadata', 'fleet']) !== undefined) {
-    return state.getIn(['session', 'user_metadata', 'fleet']);
+  if (state.getIn(['session', 'app_metadata', 'fleet']) !== undefined) {
+    return state.getIn(['session', 'app_metadata', 'fleet']);
   }
 
   return state.getIn(['session', 'fleet']);
