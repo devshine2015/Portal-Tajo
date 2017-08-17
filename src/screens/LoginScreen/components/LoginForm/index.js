@@ -1,3 +1,3 @@
-import ConnectedLoginForm from './ConnectedLoginForm';
+import LoginForm from './ConnectedLoginForm';
 
-export default ConnectedLoginForm;
+export default LoginForm;

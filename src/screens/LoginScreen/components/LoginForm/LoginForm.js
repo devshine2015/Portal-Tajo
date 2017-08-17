@@ -1,46 +1,62 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Form from 'components/Form';
+import R from 'ramda';
+import { css } from 'aphrodite/no-important';
+import cs from 'classnames';
 import {
-  TextField,
   Paper,
-  Divider,
-  RaisedButton,
+  TextField,
 } from 'material-ui';
+import drvrStorage from 'utils/drvrStorage';
+import { DRVR_PROFILE_LAST_KEY } from 'configs';
 import SimpleError from 'components/Error';
-import ButtonWithProgress from 'components/ButtonWithProgress';
-import { translate } from 'utils/i18n';
-import styles from './styles.css';
-import phrases, { phrasesShape } from './PropTypes';
+import Avatar from './Avatar';
+import HelperLink from './HelperLink';
+import LoginButton from './LoginButton';
+import classes from './classes';
 
-const FORM_NAME = 'login';
-const Header = ({ text }) => <h4 className={styles.header}>{ text }</h4>;
-
-Header.propTypes = {
-  text: PropTypes.string.isRequired,
+const STYLES = {
+  paper: {
+    borderRadius: 10,
+  },
 };
 
-class LoginForm extends React.Component {
-  constructor(props, context) {
-    super(props, context);
 
+const getPicture = R.ifElse(R.isNil, R.always(null), R.ifElse(R.has('picture'), R.prop('picture'), R.always(null)));
+const getEmail = R.ifElse(R.isNil, R.always(''), R.ifElse(R.has('email'), R.prop('email'), R.always('')));
+const notNil = R.compose(R.not, R.isNil);
+const notEmpty = R.compose(R.not, R.isEmpty);
+
+class LoginForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.emailRef = null;
+    this.passRef = null;
     this.state = {
-      username: null,
-      password: null,
+      password: '',
+      email: '',
       isLoading: false,
+      profile: null,
     };
   }
 
-  onChange = (e) => {
-    const { name, value } = e.target;
+  async componentWillMount() {
+    try {
+      const prevProfile = await drvrStorage.load(DRVR_PROFILE_LAST_KEY);
 
-    this.setState({
-      [name]: value,
-    }, () => {
-      if (this.props.errorType !== '') {
-        this.props.resetError();
+      this.setState({
+        profile: prevProfile,
+        email: getEmail(prevProfile),
+      });
+      this.focusOn(this.passRef);
+    } catch (err) {
+      if (err.name.toLowerCase() === 'notfounderror') {
+        // do nothing if no previous profile has been found
+        // except focusing on appropriate node
+        this.focusOn(this.emailRef);
       }
-    });
+    }
   }
 
   onSubmit = (e) => {
@@ -48,12 +64,23 @@ class LoginForm extends React.Component {
 
     this.changeLoadingState(true);
 
-    this.props.route.auth.traditionalLogin(this.state.username, this.state.password, (profile) => {
+    this.props.route.auth.traditionalLogin(this.state.email, this.state.password, (profile) => {
       this.changeLoadingState(false);
       this.props.onLoginSuccess(profile);
     }, () => {
       this.changeLoadingState(false);
       this.props.onLoginFailure();
+    });
+  }
+
+  onType = (e) => {
+    const { name, value } = e.target;
+    const { errorType, resetError } = this.props;
+
+    if (notEmpty(errorType)) resetError();
+
+    this.setState({
+      [name]: value,
     });
   }
 
@@ -65,56 +92,108 @@ class LoginForm extends React.Component {
     this.setState({ isLoading });
   }
 
+  hideProfile = () => {
+    this.setState({
+      profile: null,
+      email: '',
+    });
+    // now we can remove previous profile
+    drvrStorage.remove(DRVR_PROFILE_LAST_KEY);
+    this.focusOnEmail();
+  }
+
+  saveRef = propName => (node) => {
+    if (node) {
+      this[propName] = node;
+    }
+  }
+
+  focusOn = (node) => {
+    node.focus();
+  }
+
+  focusOnEmail() {
+    this.emailRef.focus();
+  }
+
+  renderError() {
+    const { errorType } = this.props;
+
+    if (notNil(errorType)) {
+      return (
+        <div className={css(classes.error)}>
+          <SimpleError
+            type={this.props.errorType}
+            color="#fff"
+          />
+        </div>
+      );
+    }
+
+    return null;
+  }
+
+  renderAvatar() {
+    const { profile } = this.state;
+    const showProfile = notNil(profile);
+    const picture = getPicture(profile);
+
+    if (notNil(picture)) {
+      return (
+        <Avatar
+          src={picture}
+          show={showProfile}
+        />
+      );
+    }
+
+    return null;
+  }
+
   render() {
-    const { translations } = this.props;
-    const isDisabled = !this.state.username || !this.state.password;
-    const buttonText = !this.state.isLoading ? translations.signin : `${translations.signing}...`;
-    const { isLoading } = this.state;
+    const showProfile = notNil(this.state.profile);
+    const innClassName = cs(css(classes.inn), {
+      [css(classes.inn_short)]: !showProfile,
+    });
 
     return (
-      <div className={styles.loginContainer}>
-        <Paper>
-          <div className={styles.paper__inn}>
-            <Header text={translations.login} />
-            <Divider />
-            <Form
-              name={FORM_NAME}
-              onSubmit={this.onSubmit}
-              className={styles.loginForm}
-            >
-              <TextField
-                fullWidth
-                name="username"
-                placeholder={translations.username}
-                onChange={this.onChange}
-              />
-              <TextField
-                fullWidth
-                name="password"
-                placeholder={translations.password}
-                type="password"
-                onChange={this.onChange}
-              />
-
-              <ButtonWithProgress
-                isLoading={isLoading}
-                disabled={isDisabled || isLoading}
-                label={buttonText}
-                type="submit"
-                onClick={this.onSubmit}
-                primary
-              />
-
-            </Form>
-            { this.props.errorType !== '' && <SimpleError type={this.props.errorType} />}
-            <RaisedButton
-              label="Login with Google"
-              onClick={this.onGoogleLoginClick}
-              primary
+      <div className={css(classes.wrapper)}>
+        { this.renderError() }
+        <Paper
+          zDepth={2}
+          style={STYLES.paper}
+        >
+          <form
+            className={innClassName}
+            onSubmit={this.onSubmit}
+          >
+            { this.renderAvatar() }
+            <TextField
+              fullWidth
+              name="email"
+              floatingLabelText="Email address"
+              ref={this.saveRef('emailRef')}
+              value={this.state.email}
+              onChange={this.onType}
             />
-          </div>
+            <TextField
+              fullWidth
+              name="password"
+              ref={this.saveRef('passRef')}
+              floatingLabelText="Password"
+              type="password"
+              onChange={this.onType}
+            />
+            <div className={css(classes.links)}>
+              <HelperLink onClick={() => ({})} text="Forgot password?" />
+              { showProfile && <HelperLink onClick={this.hideProfile} text="Not me" /> }
+            </div>
+            <LoginButton
+              onClick={this.onSubmit}
+              isLoading={this.state.isLoading}
+            />
+          </form>
         </Paper>
-        {this.props.children}
       </div>
     );
   }
@@ -124,7 +203,6 @@ LoginForm.propTypes = {
   children: PropTypes.element,
   errorType: PropTypes.string,
   resetError: PropTypes.func.isRequired,
-  translations: phrasesShape.isRequired,
   route: PropTypes.shape({
     auth: PropTypes.shape({
       traditionalLogin: PropTypes.func.isRequired,
@@ -140,4 +218,4 @@ LoginForm.defaultProps = {
   children: null,
 };
 
-export default translate(phrases)(LoginForm);
+export default LoginForm;

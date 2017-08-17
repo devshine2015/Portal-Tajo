@@ -32,7 +32,8 @@ export const onProduction = serverEnv === 'production';
 export const onStage = serverEnv === 'stage';
 export const onDev = serverEnv === 'dev';
 
-export const LOCAL_STORAGE_SESSION_KEY = 'drvr:profile';
+export const DRVR_PROFILE_KEY = 'drvr:profile';
+export const DRVR_PROFILE_LAST_KEY = 'drvr:profile:last';
 
 // TODO: this is to toggle alerts while in development
 // remove this when Alerts System done/released

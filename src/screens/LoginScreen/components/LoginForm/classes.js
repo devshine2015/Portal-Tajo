@@ -8,11 +8,12 @@ export default StyleSheet.create({
   wrapper: {
     width: 400,
     marginTop: 150,
-    position: 'relative',
     height: '100%', // make sure wrapper has height of the childrens
+    position: 'relative', // so we can position some elements like error without visual impact to main layout
   },
 
   inn: {
+    position: 'relative',
     padding: '100px 40px 70px',
     transition: 'padding-top .25s',
   },
@@ -78,5 +79,11 @@ export default StyleSheet.create({
     ':hover': {
       cursor: 'not-allowed',
     },
+  },
+
+  error: {
+    position: 'absolute',
+    width: '100%',
+    marginTop: -50,
   },
 });

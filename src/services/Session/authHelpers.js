@@ -1,7 +1,8 @@
 import R from 'ramda';
 import drvrStorage from 'utils/drvrStorage';
 import {
-  LOCAL_STORAGE_SESSION_KEY,
+  DRVR_PROFILE_KEY,
+  DRVR_PROFILE_LAST_KEY,
   setMwa,
 } from 'configs';
 import getHistory from 'utils/history';
@@ -25,7 +26,8 @@ export const onSuccess = (profile = {}, dispatch, {
   }
 
   if (overwrite) {
-    drvrStorage.save(LOCAL_STORAGE_SESSION_KEY, profile, true);
+    drvrStorage.remove(DRVR_PROFILE_LAST_KEY);
+    drvrStorage.save(DRVR_PROFILE_KEY, profile, true);
   }
 
   setAuthorization(profile);
@@ -36,13 +38,21 @@ export const onSuccess = (profile = {}, dispatch, {
 export const onFailure = (dispatch) => {
   getHistory().replace('/login');
   dispatch(cleanSession());
-  drvrStorage.remove(LOCAL_STORAGE_SESSION_KEY);
+  drvrStorage.remove(DRVR_PROFILE_KEY);
 };
 
-export const onLogoutSuccess = (dispatch) => {
-  getHistory().replace('/login');
+export const onLogoutSuccess = async (dispatch) => {
   dispatch(cleanSession());
-  drvrStorage.remove(LOCAL_STORAGE_SESSION_KEY);
+
+  const saved = await drvrStorage.load(DRVR_PROFILE_KEY);
+  const toSave = {
+    email: R.path(['profile', 'email'], saved),
+    picture: R.path(['profile', 'picture'], saved),
+  };
+  await drvrStorage.save(DRVR_PROFILE_LAST_KEY, toSave);
+  await drvrStorage.remove(DRVR_PROFILE_KEY);
+
+  getHistory().replace('/login');
 };
 
 /**

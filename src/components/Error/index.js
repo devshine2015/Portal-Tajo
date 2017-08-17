@@ -5,23 +5,26 @@ import { translate } from 'utils/i18n';
 import styles from './styles.css';
 import phrases, { phrasesShape } from './PropTypes';
 
-const Error = ({
+const Err = ({
   type,
+  color,
   translations,
 }) => (
-  <div className={styles.error}>
+  <div style={{ color }} className={styles.error}>
     { translations[type] }
   </div>
 );
 
-Error.propTypes = {
-  type: PropTypes.string.isRequired,
+Err.propTypes = {
+  type: React.PropTypes.string.isRequired,
+  color: React.PropTypes.string,
 
   translations: phrasesShape.isRequired,
 };
 
-Error.defaultProps = {
+Err.defaultProps = {
+  color: 'red',
   translations: phrases,
 };
 
-export default translate()(Error);
+export default translate()(Err);

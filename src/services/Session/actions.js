@@ -1,6 +1,6 @@
 import R from 'ramda';
 import {
-  LOCAL_STORAGE_SESSION_KEY,
+  DRVR_PROFILE_KEY,
   checkSetMaritime,
   checkSetNoIcons,
 } from 'configs';
@@ -40,14 +40,14 @@ export const updateUserSettings = (saveToStorage = true, settings) => (dispatch)
     dispatch(_userSettingsUpdate(settings));
 
     return removeProfilePropsInLocalStorage({
-      key: LOCAL_STORAGE_SESSION_KEY,
+      key: DRVR_PROFILE_KEY,
       props: Object.keys(settings),
       field: 'settings',
     });
   }
 
   return updateProfileInLocalStorage({
-    key: LOCAL_STORAGE_SESSION_KEY,
+    key: DRVR_PROFILE_KEY,
     newValue: settings,
     field: 'settings',
   })
@@ -62,7 +62,7 @@ export const updateUserSettings = (saveToStorage = true, settings) => (dispatch)
 
 const updateUserAccessTokens = (tokens) => {
   return updateProfileInLocalStorage({
-    key: LOCAL_STORAGE_SESSION_KEY,
+    key: DRVR_PROFILE_KEY,
     newValue: tokens,
     field: 'accessTokens',
   });
