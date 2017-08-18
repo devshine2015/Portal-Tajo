@@ -1,4 +1,5 @@
 import React from 'react';
+import { isMwa } from 'configs';
 import Layout from 'components/Layout';
 import { FleetSummaryWidget } from './components/FleetSummary';
 import JobsWidget from './components/JobsWidget';
@@ -7,7 +8,7 @@ import classes from './classes';
 const DashboardScreen = () => (
   <Layout.Content center>
     <FleetSummaryWidget containerClass={classes.dashboard__summaryGroup} />
-    <JobsWidget />
+    { !isMwa && <JobsWidget /> }
   </Layout.Content>
 );
 
