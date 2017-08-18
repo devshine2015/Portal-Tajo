@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from 'components/Layout';
-import { FleetSummaryWidget } from 'containers/FleetSummary';
+import { FleetSummaryWidget } from './components/FleetSummary';
 import classes from './classes';
 
 const DashboardScreen = () => (
