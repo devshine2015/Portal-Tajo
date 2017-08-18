@@ -4,11 +4,10 @@ import { css } from 'aphrodite/no-important';
 import Paper from 'material-ui/Paper';
 import { isEscape } from 'configs';
 import theme from 'configs/theme';
-import Icon from '../Icons';
-import { amountsShape } from '../../PropTypes';
 import { translate } from 'utils/i18n';
-
+import Icon from '../Icons';
 import classes from './classes';
+import amountsPropType from '../../PropTypes';
 import phrases, { phrasesShape } from './PropTypes';
 
 const STYLES = {
@@ -39,7 +38,7 @@ const Amount = ({
 }) => {
   const paperClassName = css(
     classes.amount,
-    fullwidth && classes.amount_fullwidth
+    fullwidth && classes.amount_fullwidth,
   );
 
   return (
@@ -84,7 +83,7 @@ const FullSummary = ({
     <Amount
       icon={<Icon.CarIcon color={theme.palette.primary3Color} />}
       amount={amounts.vehiclesAmount}
-      helpText={ translations.vehicles_amount }
+      helpText={translations.vehicles_amount}
     />
     { AMOUNT_TYPES_AVAILABILITY.devices &&
       <Amount
@@ -96,9 +95,9 @@ const FullSummary = ({
     <Amount
       icon={<Icon.NotReportedIcon color={theme.palette.accent2Color} />}
       amount={amounts.deadAmount}
-      helpText={ translations.never_reported }
+      helpText={translations.never_reported}
     />
-    {/*<Amount
+    {/* <Amount
       icon={<Icon.DelayedIcon color={theme.palette.accent2Color} />}
       amount={amounts.delayedAmount}
       helpText="vehicles sending delayed messages"
@@ -108,8 +107,7 @@ const FullSummary = ({
 );
 
 FullSummary.propTypes = {
-  amounts: amountsShape.isRequired,
-
+  amounts: amountsPropType.isRequired,
   translations: phrasesShape.isRequired,
 };
 FullSummary.defaultProps = {

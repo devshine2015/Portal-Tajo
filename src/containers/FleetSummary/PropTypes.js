@@ -1,15 +1,8 @@
-import React from 'react';
+import { PropTypes } from 'react';
 
-const shape = React.PropTypes.shape;
-const number = React.PropTypes.number;
-
-export const amountsShape = shape({
-  vehiclesAmount: number.isRequired,
-  devicesAmount: number.isRequired,
-  delayedAmount: number.isRequired,
-  deadAmount: number.isRequired,
+export default PropTypes.shape({
+  vehiclesAmount: PropTypes.number.isRequired,
+  devicesAmount: PropTypes.number.isRequired,
+  delayedAmount: PropTypes.number.isRequired,
+  deadAmount: PropTypes.number.isRequired,
 });
-
-export default {
-  amountsShape,
-};
