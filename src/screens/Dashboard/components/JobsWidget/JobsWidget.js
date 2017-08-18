@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { css } from 'aphrodite/no-important';
 import fetchJobsCall from 'services/MWA/helpers';
-
+import JobsChart from './components/JobsChart';
 import classes from './classes';
 
 async function getJobs() {
@@ -34,6 +34,9 @@ class JobsWidget extends Component {
     return (
       <div className={css(classes.wrapper)}>
         { this.state.jobs.length } jobs
+
+        <JobsChart jobs={this.state.jobs} />
+
         <div>
           <button onClick={this.fetchJobs}>Fetch jobs</button>
         </div>

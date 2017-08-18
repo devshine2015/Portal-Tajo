@@ -4,5 +4,6 @@ export default StyleSheet.create({
   wrapper: {
     border: '1px solid #ccc',
     padding: 20,
+    width: '100%',
   },
 });
