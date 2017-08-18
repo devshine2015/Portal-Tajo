@@ -1,20 +1,11 @@
-// import 'whatwg-fetch';
-// import fetchJsonp from 'fetch-jsonp';
-// require ('jsonp');
-// import jsonp 'jsonp';
-// import { makeLocalAlertCondition } from './alertConditionHelper';
-import endpoints from 'configs/endpoints';
-import { api } from 'utils/api';
+import moment from 'moment';
+import { onStage, onDev } from 'configs';
 import { getProcessedVehicles } from 'services/FleetModel/reducer';
 import { vehiclesActions } from 'services/FleetModel/actions';
-import moment from 'moment';
-import { onStage, onDev, onLocal } from 'configs';
-import { getMWAJobsAsIM } from './reducer';
-import { filterProcessedListByName } from '../FleetModel/utils/filtering';
-
+import { filterProcessedListByName } from 'services/FleetModel/utils/filtering';
 import { chronicleMWAJobs } from 'screens/Chronicle/actions';
-
-// import staticData from './staticData';
+import { getMWAJobsAsIM } from './reducer';
+import fetchJobsCall from './helpers';
 
 export const MWA_ADD_JOBS = 'mwa/add';
 export const MWA_SELECT_JOB = 'mwa/slct';
@@ -27,7 +18,6 @@ export const mwaSelectJob = id => dispatch => dispatch({
   id,
 });
 
-// export const mwaFetchJobs = () => _fetchJobs;
 export const mwaFetchJobs = () => _startFetching;
 
 // update once a 5 mins or so
@@ -38,33 +28,15 @@ function _startFetching(dispatch, getState) {
   if (fetchProcId !== null) {
     return;
   }
+
+  const fetchJobs = makeFetchJobs(dispatch, getState);
   // do the first tick right away - so we are actual
-  _fetchFunk(dispatch, getState)();
-  fetchProcId = window.setInterval(_fetchFunk(dispatch, getState), MWA_JOBS_FETCH_INTERVAL_MS);
+  fetchJobs();
+  fetchProcId = window.setInterval(fetchJobs, MWA_JOBS_FETCH_INTERVAL_MS);
 }
 
-const _fetchFunk = (dispatch, getState) => () => {
-  _fetchJobs(dispatch, getState);
-};
-
-
-const padZero = inNumber => inNumber < 10 ? `0${inNumber}` : inNumber;
-export const makeMWADate = inDate =>
-  `${inDate.getFullYear()}${padZero(inDate.getMonth() + 1)}${padZero(inDate.getDate())}`;
-
-function _fetchJobs(dispatch, getState) {
-  const dateFrom = moment().subtract(1, 'days').toDate();
-  const dateTo = moment().toDate();
-
-  // dates like this '20170325',
-  const { url, method, apiVersion } = endpoints.getMWAJobs({
-    from: makeMWADate(dateFrom),
-    to: makeMWADate(dateTo),
-  });
-  return api[method](url, { apiVersion })
-    .then(response => (
-      response.json()),
-    )
+const makeFetchJobs = (dispatch, getState) => () => {
+  return fetchJobsCall()
     .then((mwaData) => {
       // console.log(mwaData);
       _addJobs(dispatch, getState, mwaData.RESULTS);
@@ -72,7 +44,7 @@ function _fetchJobs(dispatch, getState) {
     .catch((e) => {
       console.error(e);
     });
-}
+};
 
 const isDateTimeWithinTimeframe = (fromDateTime, toDateTime, refDateTime) =>
   (refDateTime.getTime() > fromDateTime.getTime()
@@ -91,19 +63,12 @@ const jobWithinTimeframe = (from, to, aJob) => {
 };
 
 export function mwaFetchChronicleJobs(vehicleId, dateFrom, dateTo, dispatch) {
-  // const dateFrom = moment().subtract(1, 'days').toDate();
-  // const dateTo = moment().toDate();
-
   // dates like this '20170325',
   // pad from-to by one day
-  const { url, method, apiVersion } = endpoints.getMWAJobs({
-    from: makeMWADate(moment(dateFrom).subtract(1, 'days').toDate()),
-    to: makeMWADate(moment(dateTo).add(1, 'days').toDate()),
-  });
-  return api[method](url, { apiVersion })
-    .then(response => (
-      response.json()),
-    )
+  const fromDate = moment(dateFrom).subtract(1, 'days').toDate();
+  const toDate = moment(dateTo).add(1, 'days').toDate();
+
+  return fetchJobsCall({ fromDate, toDate })
     .then((mwaData) => {
       // console.log(mwaData);
       // const myJobs = mwaData.RESULTS.filter(aJob => mapJobToCar(aJob.TEAM_ID) === vehicleId);
