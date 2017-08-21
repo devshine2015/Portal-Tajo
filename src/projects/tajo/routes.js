@@ -19,7 +19,7 @@ import vehiclesManagerScreen from 'screens/VehiclesManagerScreen/route';
 import usersManagerScreen from 'screens/UsersManager/route';
 import devicesManagerScreen from 'screens/DevicesManager/route';
 import loginScreen from 'screens/LoginScreen/route';
-import loginCallbackScreen from 'screens/LoginCallback/route';
+// import loginCallbackScreen from 'screens/LoginCallback/route';
 import dashboardScreen from 'screens/Dashboard/route';
 import profileScreen from 'screens/Profile/route';
 import alertsEditorScreen from 'screens/AlertsEditor/route';
