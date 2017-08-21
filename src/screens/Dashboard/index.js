@@ -8,7 +8,7 @@ import classes from './classes';
 const DashboardScreen = () => (
   <Layout.Content center>
     <FleetSummaryWidget containerClass={classes.dashboard__summaryGroup} />
-    { !isMwa && <JobsWidget /> }
+    { isMwa && <JobsWidget /> }
   </Layout.Content>
 );
 

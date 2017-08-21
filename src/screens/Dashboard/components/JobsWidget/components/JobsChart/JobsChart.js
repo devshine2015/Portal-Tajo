@@ -2,9 +2,13 @@
 import React, { Component, PropTypes } from 'react';
 import R from 'ramda';
 import { bb } from 'billboard.js';
+import { css } from 'aphrodite/no-important';
+import classes, { HORIZONTAL } from './classes';
 
-const buildChart = (node, json) => 
-  bb.generate({
+const buildChart = (node, json) => {
+  const { width } = node.getBoundingClientRect();
+
+  return bb.generate({
     data: {
       json,
       keys: {
@@ -24,8 +28,12 @@ const buildChart = (node, json) =>
     tooltip: {
       show: false,
     },
-    bindto: node
+    bindto: node,
+    size: {
+      width: width - (HORIZONTAL * 2),
+    }
   });
+}
 
 /**
  * format jobs into array consumable by bar chart
@@ -57,13 +65,19 @@ class JobsChart extends Component {
   }
 
   componentDidMount() {
-    // buildChart(this.chartRef);
+    buildChart(this.chartRef, formatJobs(this.props.jobs));
   }
-  
+
+  componentDidUpdate(prevProps, prevState) {
+    buildChart(this.chartRef, formatJobs(prevProps.jobs));
+  }
   
   render() {
     return (
-      <div ref={ref => this.chartRef = ref} />
+      <div
+        ref={ref => this.chartRef = ref}
+        className={css(classes.chart)}
+      />
     );
   }
 }

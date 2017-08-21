@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import { css } from 'aphrodite/no-important';
+import {
+  Paper,
+  Divider,
+ } from 'material-ui';
 import fetchJobsCall from 'services/MWA/helpers';
+import Widget from 'components/Widget';
+import RunningLogo from 'components/animated';
+import Header from './components/JobsHeader';
 import JobsChart from './components/JobsChart';
 import classes from './classes';
 
@@ -22,25 +29,64 @@ class JobsWidget extends Component {
 
   state = {
     jobs: [],
+    isLoading: true,
   };
 
-  fetchJobs = async () => {
-    const jobs = await getJobs();
-
-    this.setState({ jobs });
+  componentWillMount() {
+    this.fetchJobs();
   }
 
-  render() {
-    return (
-      <div className={css(classes.wrapper)}>
-        { this.state.jobs.length } jobs
+  fetchJobs = async () => {
+    this.setState({
+      isLoading: true,
+    });
+    const jobs = await getJobs();
 
+    this.setState({
+      jobs,
+      isLoading: false,
+    });
+  }
+
+  renderInn() {
+    const Inn = ({ children }) => <div className={css(classes.inn)}>{ children }</div>;
+
+    if (this.state.isLoading) {
+      return (
+        <Inn>
+          <RunningLogo.AnimatedLogo containerColor="#fafafa" />
+        </Inn>
+      );
+    }
+
+    return (
+      <Inn>
+        <Header />
+        <Divider />
         <JobsChart jobs={this.state.jobs} />
 
         <div>
           <button onClick={this.fetchJobs}>Fetch jobs</button>
         </div>
-      </div>
+      </Inn>
+    );
+  }
+
+  render() {
+    return (
+      <Widget
+        containerClass={classes.wrapper}
+        title={`${this.state.jobs.length} Jobs`}
+      >
+        <Paper
+          zDepth={1}
+          style={{
+            width: '100%',
+          }}
+        >
+          { this.renderInn() }
+        </Paper>
+      </Widget>
     );
   }
 }
