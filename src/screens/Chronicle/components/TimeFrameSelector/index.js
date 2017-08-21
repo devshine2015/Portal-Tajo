@@ -1,7 +1,7 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import DateRange from 'components/DateRange/DateRange';
+import { DateRange } from 'components/DateRange';
 import { setChronicleTimeFrame } from './../../actions';
 import { getChronicleTimeFrame } from './../../reducer';
 import { translate } from 'utils/i18n';

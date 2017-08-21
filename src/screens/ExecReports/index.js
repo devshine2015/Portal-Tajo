@@ -6,7 +6,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-import DateRange from 'components/DateRange/DateRange';
+import { DateRange } from 'components/DateRange';
 // import TimeFrameController from './components/TimeFrameSelector';
 import BetaLabel from 'components/BetaLabel';
 

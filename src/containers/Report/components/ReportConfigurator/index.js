@@ -9,7 +9,7 @@ import {
 import dateFormats, { dateTypes } from 'configs/dateFormats';
 import Form from 'components/Form';
 import SimpleError from 'components/Error';
-import DateRange from 'components/DateRange/DateRange';
+import { DateRange } from 'components/DateRange';
 import { getDateFormat } from 'services/Session/reducer';
 import { translate } from 'utils/i18n';
 import DateFormatSelectorWithMemory from '../DateFormatSelectorWithMemory';
