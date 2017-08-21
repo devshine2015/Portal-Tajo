@@ -1,3 +1,4 @@
+import R from 'ramda';
 import { api } from 'utils/api';
 import endpoints from 'configs/endpoints';
 import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
@@ -6,6 +7,15 @@ const padZero = inNumber => inNumber < 10 ? `0${inNumber}` : inNumber;
 const makeMWADate = inDate =>
   `${inDate.getFullYear()}${padZero(inDate.getMonth() + 1)}${padZero(inDate.getDate())}`;
 
+const dates = ({ fromDate, toDate } = {}) => {
+  if (R.isNil(fromDate) || R.isNil(toDate)) {
+    const defPeriod = makePeriodForLast24Hours();
+
+    return defPeriod;
+  }
+
+  return { fromDate, toDate };
+};
 /**
  * make call to mwa endpoint.
  * @param {Object} period
@@ -14,7 +24,9 @@ const makeMWADate = inDate =>
  *
  * @returns {Promise} jobs
  */
-export default ({ fromDate, toDate } = makePeriodForLast24Hours()) => {
+export default (period = {}) => {
+  const { fromDate, toDate } = dates(period);
+
   // dates like this '20170325',
   const { url, method, apiVersion } = endpoints.getMWAJobs({
     from: makeMWADate(fromDate),
