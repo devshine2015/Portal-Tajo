@@ -9,11 +9,12 @@ import Widget from 'components/Widget';
 import RunningLogo from 'components/animated';
 import Header from './components/JobsHeader';
 import JobsChart from './components/JobsChart';
+import JobsFooter from './components/JobsFooter';
 import classes from './classes';
 
-async function getJobs() {
+async function getJobs({ fromDate, toDate } = {}) {
   try {
-    const response = await fetchJobsCall();
+    const response = await fetchJobsCall({ fromDate, toDate });
 
     if (response.STATUS === 'success') {
       return response.RESULTS;
@@ -30,45 +31,41 @@ class JobsWidget extends Component {
   state = {
     jobs: [],
     isLoading: true,
+    updatedAt: undefined,
   };
 
   componentWillMount() {
     this.fetchJobs();
   }
 
-  fetchJobs = async () => {
+  fetchJobs = async ({ fromDate, toDate } = {}) => {
     this.setState({
       isLoading: true,
     });
-    const jobs = await getJobs();
+
+    const jobs = await getJobs({ fromDate, toDate });
 
     this.setState({
       jobs,
+      updatedAt: new Date(),
       isLoading: false,
     });
   }
 
   renderInn() {
-    const Inn = ({ children }) => <div className={css(classes.inn)}>{ children }</div>;
-
-    if (this.state.isLoading) {
-      return (
-        <Inn>
-          <RunningLogo.AnimatedLogo containerColor="#fafafa" />
-        </Inn>
-      );
-    }
+    const { isLoading, jobs, updatedAt } = this.state;
 
     return (
-      <Inn>
-        <Header />
-        <Divider />
-        <JobsChart jobs={this.state.jobs} />
-
-        <div>
-          <button onClick={this.fetchJobs}>Fetch jobs</button>
-        </div>
-      </Inn>
+      <div className={css(classes.inn)}>
+        <Header fetchJobs={this.fetchJobs} />
+        {
+          isLoading ? <RunningLogo.AnimatedLogo containerColor="#fafafa" /> : ([
+            <Divider key="divider" />,
+            <JobsChart jobs={jobs} key="jobs" />,
+            <JobsFooter updatedAt={updatedAt} key="footer" />,
+          ])
+        }
+      </div>
     );
   }
 

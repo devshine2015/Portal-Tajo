@@ -2,21 +2,26 @@
 import React, { Component, PropTypes } from 'react';
 import R from 'ramda';
 import { bb } from 'billboard.js';
+import 'billboard.js/dist/billboard.css';
 import { css } from 'aphrodite/no-important';
 import classes, { HORIZONTAL } from './classes';
 
 const buildChart = (node, json) => {
-  const { width } = node.getBoundingClientRect();
+  const { width, height } = node.getBoundingClientRect();
 
   return bb.generate({
     data: {
       json,
+      labels: true,
+      colors: {
+        totalJobs: '#51b9ff',
+      },
       keys: {
         x: 'teamId',
         value: ['totalJobs']
       },
       names: {
-        totalJobs: 'Total amount of jobs',
+        totalJobs: 'Total assigned jobs',
       },
       type: 'bar'
     },
@@ -26,12 +31,16 @@ const buildChart = (node, json) => {
       }
     },
     tooltip: {
-      show: false,
+      // show: false,
     },
     bindto: node,
     size: {
       width: width - (HORIZONTAL * 2),
-    }
+      height,
+    },
+    legend: {
+      hide: true,
+    },
   });
 }
 
