@@ -4,7 +4,7 @@ import theme from 'configs/theme';
 const classes = StyleSheet.create({
   logo: {
     display: 'flex',
-    height: '100%',
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -15,9 +15,11 @@ const classes = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    height: 'auto',
+    height: '100%',
   },
-
+  logo_centered: {
+    flex: 1,
+  },
   text: {
     marginLeft: 5,
   },

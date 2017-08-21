@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { css } from 'aphrodite/no-important';
 import RunningLogo from './RunningLogo';
 
@@ -10,9 +10,13 @@ const AnimatedLoadingLogo = ({
   logoColor,
   textColor,
   showText,
-  fullscreen,
+  containerClassName,
+  containerStyle,
 }) => (
-  <div className={css(classes.logo, fullscreen && classes.logo_fullscreen)}>
+  <div
+    className={css(classes.logo, containerClassName)}
+    style={containerStyle}
+  >
     <RunningLogo radius={radius} color={logoColor} />
 
     { showText && (
@@ -27,26 +31,28 @@ const AnimatedLoadingLogo = ({
 );
 
 AnimatedLoadingLogo.propTypes = {
-  showText: React.PropTypes.bool,
-  loadingText: React.PropTypes.string,
-  radius: React.PropTypes.number,
-  logoColor: React.PropTypes.string,
-  textColor: React.PropTypes.string,
-  fullscreen: React.PropTypes.bool,
+  showText: PropTypes.bool,
+  loadingText: PropTypes.string,
+  radius: PropTypes.number,
+  logoColor: PropTypes.string,
+  textColor: PropTypes.string,
+  containerClassName: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  containerStyle: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 AnimatedLoadingLogo.defaultProps = {
+  containerClassName: undefined, // aphrodite class name
+  containerStyle: {},
   loadingText: 'loading...',
   radius: 10,
   logoColor: '#009688',
   textColor: '#009688',
   showText: true,
-  fullscreen: false,
 };
 
-const FullscreenAnimatedLoadingLogo = (props) => (
+const FullscreenAnimatedLoadingLogo = props => (
   <AnimatedLoadingLogo
-    fullscreen
+    containerClassName={classes.logo_fullscreen}
     radius={30}
     showText={false}
     logoColor="#e1e1e1"
@@ -54,9 +60,31 @@ const FullscreenAnimatedLoadingLogo = (props) => (
   />
 );
 
-const AnimatedLogo = {
+const AnimatedLogo = ({
+  containerColor,
+  ...rest
+}) => (
+  <AnimatedLoadingLogo
+    containerClassName={classes.logo_centered}
+    containerStyle={{
+      backgroundColor: containerColor,
+    }}
+    radius={30}
+    showText={false}
+    logoColor="#e1e1e1"
+    {...rest}
+  />
+);
+
+AnimatedLogo.propTypes = {
+  containerColor: PropTypes.string,
+};
+AnimatedLogo.defaultProps = {
+  containerColor: '#fff',
+};
+
+export default {
+  AnimatedLogo: AnimatedLogo,
   LoadingLogo: AnimatedLoadingLogo,
   FullscreenLogo: FullscreenAnimatedLoadingLogo,
 };
-
-export default AnimatedLogo;
