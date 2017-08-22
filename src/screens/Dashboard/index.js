@@ -1,7 +1,7 @@
 import React from 'react';
 import { isMwa } from 'configs';
 import Layout from 'components/Layout';
-import { FleetSummaryWidget } from './components/FleetSummary';
+import FleetSummaryWidget from './components/FleetSummary';
 import JobsWidget from './components/JobsWidget';
 import classes from './classes';
 

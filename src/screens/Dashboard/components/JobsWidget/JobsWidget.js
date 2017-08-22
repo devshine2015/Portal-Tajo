@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import { css } from 'aphrodite/no-important';
-import {
-  Paper,
-  Divider,
- } from 'material-ui';
+import Divider from 'material-ui/Divider';
 import fetchJobsCall from 'services/MWA/helpers';
-import Widget from 'components/Widget';
+import Widget, { WidgetPaper } from 'components/Widget';
 import RunningLogo from 'components/animated';
 import Header from './components/JobsHeader';
 import JobsChart from './components/JobsChart';
@@ -60,39 +57,32 @@ class JobsWidget extends Component {
   renderInn() {
     const { isLoading, jobs, updatedAt } = this.state;
 
-    return (
-      <div className={css(classes.inn)}>
-        <Header
-          fetchJobs={this.fetchJobs}
-          resize={this.resizeWidget}
-          isFullscreen={this.state.isFullscreen}
-        />
-        {
-          isLoading ? <RunningLogo.AnimatedLogo containerColor="#fafafa" /> : ([
-            <Divider key="divider" />,
-            <JobsChart jobs={jobs} key="jobs" isFullscreen={this.state.isFullscreen} />,
-            <JobsFooter updatedAt={updatedAt} key="footer" />,
-          ])
-        }
-      </div>
-    );
+    if (isLoading) {
+      return <RunningLogo.AnimatedLogo containerColor="#fafafa" />;
+    }
+
+    return ([
+      <Divider key="divider" />,
+      <JobsChart jobs={jobs} key="jobs" isFullscreen={this.state.isFullscreen} />,
+      <JobsFooter updatedAt={updatedAt} key="footer" />,
+    ]);
   }
 
   render() {
-
     return (
       <Widget
-        containerClass={classes.wrapper}
+        containerClassName={css(classes.wrapper)}
         title={`${this.state.jobs.length} Jobs`}
       >
-        <Paper
-          zDepth={1}
-          style={{
-            width: '100%',
-          }}
-        >
+        <WidgetPaper innerClassName={css(classes.inn)}>
+          <Header
+            fetchJobs={this.fetchJobs}
+            resize={this.resizeWidget}
+            isFullscreen={this.state.isFullscreen}
+          />
+
           { this.renderInn() }
-        </Paper>
+        </WidgetPaper>
       </Widget>
     );
   }
