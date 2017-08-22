@@ -32,10 +32,15 @@ class JobsWidget extends Component {
     jobs: [],
     isLoading: true,
     updatedAt: undefined,
+    isFullscreen: false,
   };
 
   componentWillMount() {
     this.fetchJobs();
+  }
+
+  resizeWidget = (isFullscreen) => {
+    this.setState({ isFullscreen });
   }
 
   fetchJobs = async ({ fromDate, toDate } = {}) => {
@@ -57,11 +62,15 @@ class JobsWidget extends Component {
 
     return (
       <div className={css(classes.inn)}>
-        <Header fetchJobs={this.fetchJobs} />
+        <Header
+          fetchJobs={this.fetchJobs}
+          resize={this.resizeWidget}
+          isFullscreen={this.state.isFullscreen}
+        />
         {
           isLoading ? <RunningLogo.AnimatedLogo containerColor="#fafafa" /> : ([
             <Divider key="divider" />,
-            <JobsChart jobs={jobs} key="jobs" />,
+            <JobsChart jobs={jobs} key="jobs" isFullscreen={this.state.isFullscreen} />,
             <JobsFooter updatedAt={updatedAt} key="footer" />,
           ])
         }
@@ -70,6 +79,7 @@ class JobsWidget extends Component {
   }
 
   render() {
+
     return (
       <Widget
         containerClass={classes.wrapper}

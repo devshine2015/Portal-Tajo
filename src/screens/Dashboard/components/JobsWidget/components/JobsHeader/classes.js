@@ -10,7 +10,7 @@ export default StyleSheet.create({
   datePlaceholder: {
     textTransform: 'uppercase',
     color: theme.palette.secondaryTextColor,
-    transition: 'all .3s',
+    transition: 'color .3s',
     cursor: 'pointer',
     fontSize: 12,
 

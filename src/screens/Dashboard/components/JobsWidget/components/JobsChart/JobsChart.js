@@ -6,9 +6,10 @@ import 'billboard.js/dist/billboard.css';
 import { css } from 'aphrodite/no-important';
 import classes, { HORIZONTAL } from './classes';
 
-const buildChart = (node, json) => {
-  const { width, height } = node.getBoundingClientRect();
-
+const buildChart = (node, json, {
+  width,
+  height,
+} = node.getBoundingClientRect()) => {
   return bb.generate({
     data: {
       json,
@@ -66,19 +67,41 @@ function formatJobs(jobs = []) {
 
 class JobsChart extends Component {
   chartRef = null;
-
-  componentWillReceiveProps(nextProps) {
-    // it's better to validate by ts
-    // if (nextProps.jobs.length !== 0 && nextProps.jobs.length !== this.props.jobs.length)
-      buildChart(this.chartRef, formatJobs(nextProps.jobs));
-  }
+  chart = null;
+  originalSize = null;
+  fullScreenSize = {
+    width: 900,
+    height: 500,
+  };
 
   componentDidMount() {
-    buildChart(this.chartRef, formatJobs(this.props.jobs));
+    const { width, height } = this.chartRef.getBoundingClientRect();
+    this.originalSize = {
+      width,
+      height,
+    };
+
+    this.chart = buildChart(this.chartRef, formatJobs(this.props.jobs));
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    // it's better to validate by ts
+    if (nextProps.jobs.length !== 0 && nextProps.jobs.length !== this.props.jobs.length)
+      this.chart.load(formatJobs(nextProps.jobs));
+
+    this.doResize(nextProps);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    buildChart(this.chartRef, formatJobs(prevProps.jobs));
+    this.chart.load(formatJobs(prevProps.jobs));
+  }
+
+  doResize(nextProps) {
+    if (!this.props.isFullscreen && nextProps.isFullscreen) {
+      this.chart.resize(this.fullScreenSize);
+    } else if (this.props.isFullscreen && !nextProps.isFullscreen) {
+      this.chart.resize(this.originalSize);
+    }
   }
   
   render() {
@@ -93,6 +116,7 @@ class JobsChart extends Component {
 
 JobsChart.propTypes = {
   jobs: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isFullscreen: PropTypes.bool.isRequired,
 };
 
 export default JobsChart;

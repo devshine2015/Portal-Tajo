@@ -3,10 +3,12 @@ import { css } from 'aphrodite/no-important';
 import IconButton from 'material-ui/IconButton';
 import UpdateIcon from 'material-ui/svg-icons/navigation/refresh';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
+import FullscreenIcon from 'material-ui/svg-icons/navigation/fullscreen';
+import ExitFullScreenIcon from 'material-ui/svg-icons/navigation/fullscreen-exit';
 import { DateRangeWithButton } from 'components/DateRange';
 import classes from './classes';
 
-const RefreshButton = ({ onClick, icon }) => {
+const Button = ({ onClick, icon }) => {
   return (
     <IconButton onClick={onClick}>
       { React.cloneElement(icon, {
@@ -17,11 +19,11 @@ const RefreshButton = ({ onClick, icon }) => {
   );
 };
 
-RefreshButton.propTypes = {
+Button.propTypes = {
   onClick: PropTypes.func,
   icon: PropTypes.element.isRequired,
 };
-RefreshButton.defaultProps = {
+Button.defaultProps = {
   onClick: null,
 };
 
@@ -36,6 +38,12 @@ class JobsHeader extends Component {
     });
   }
 
+  toggleFullScreen = () => {
+    const isFullscreen = !this.props.isFullscreen;
+
+    this.props.resize(isFullscreen);
+  }
+
   renderDateRange() {
     const { showDateRange } = this.state;
     const DEFAULT_TEXT = 'another period?';
@@ -46,9 +54,9 @@ class JobsHeader extends Component {
           key="dateRange"
           withTime={false}
           onApply={this.props.fetchJobs}
-          button={<RefreshButton icon={<UpdateIcon />} />}
+          button={<Button icon={<UpdateIcon />} />}
         />,
-        <RefreshButton
+        <Button
           key="closeRange"
           onClick={this.toggleDateRange}
           icon={<CloseIcon />}
@@ -66,10 +74,22 @@ class JobsHeader extends Component {
     );
   }
 
+  renderExpander() {
+    const icon = this.props.isFullscreen ? <ExitFullScreenIcon /> : <FullscreenIcon />;
+
+    return (
+      <Button
+        onClick={this.toggleFullScreen}
+        icon={icon}
+      />
+    );
+  }
+
   render() {
     return (
       <div className={css(classes.header)}>
         { this.renderDateRange() }
+        { this.renderExpander() }
       </div>
     );
   }
@@ -77,6 +97,8 @@ class JobsHeader extends Component {
 
 JobsHeader.propTypes = {
   fetchJobs: PropTypes.func.isRequired,
+  resize: PropTypes.func.isRequired,
+  isFullscreen: PropTypes.bool.isRequired,
 };
 
 export default JobsHeader;
