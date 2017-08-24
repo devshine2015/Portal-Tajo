@@ -1,7 +1,9 @@
 import R from 'ramda';
 import { api } from 'utils/api';
+import { onStage, onDev } from 'configs';
 import endpoints from 'configs/endpoints';
 import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
+import teams from './teams';
 
 const padZero = inNumber => inNumber < 10 ? `0${inNumber}` : inNumber;
 const makeMWADate = inDate =>
@@ -16,6 +18,9 @@ const dates = ({ fromDate, toDate } = {}) => {
 
   return { fromDate, toDate };
 };
+
+const chooseTeam = () => R.ifElse(onDev, R.always(teams.dev), R.ifElse(onStage, R.always(teams.stage), R.always(teams.prod)));
+
 /**
  * make call to mwa endpoint.
  * @param {Object} period
@@ -36,3 +41,22 @@ export default (period = {}) => {
   return api[method](url, { apiVersion })
     .then(response => response.json());
 };
+
+/**
+ * Find vehicle assigned to team
+ * @param {String|Number} teamId - id of the team
+ * @return {String|Null} id of the vehicle assigned to team or null if assignment doesn't exist
+ */
+export const mapTeamToCar = (teamId) => {
+  const team = chooseTeam();
+
+  if (!(teamId in team)) {
+    return null;
+  }
+
+  return team[teamId];
+};
+
+export function mwaGetJobsForVehicle(vehicleId, jobs) {
+  return jobs.filter(aJob => (mapTeamToCar(aJob.TEAM_ID) === vehicleId));
+}

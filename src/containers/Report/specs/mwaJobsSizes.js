@@ -1,6 +1,6 @@
 // jobs number per pipe size
 import moment from 'moment';
-import { mwaGetJobsForVehicle } from 'services/MWA/actions';
+import { mwaGetJobsForVehicle } from 'services/MWA/helpers';
 import { msToTimeIntervalString } from 'utils/convertors';
 
 const fields = [{
