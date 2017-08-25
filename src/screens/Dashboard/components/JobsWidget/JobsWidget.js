@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import pure from 'recompose/pure';
 import { css } from 'aphrodite/no-important';
 import Divider from 'material-ui/Divider';
 import fetchJobsCall from 'services/MWA/helpers';
@@ -67,6 +68,7 @@ class JobsWidget extends Component {
         key="jobs"
         vehicles={this.props.vehicles}
         jobs={jobs}
+        lastUpdate={this.state.updatedAt}
         isFullscreen={this.state.isFullscreen}
       />,
       <JobsFooter updatedAt={updatedAt} key="footer" />,
@@ -103,4 +105,4 @@ JobsWidget.defaultProps = {
   isResizable: false,
 };
 
-export default JobsWidget;
+export default pure(JobsWidget);

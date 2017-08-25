@@ -6,11 +6,13 @@ import { css } from 'aphrodite/no-important';
 import { mapTeamToCar } from 'services/MWA/helpers';
 import classes, { HORIZONTAL } from './classes';
 
-const buildChart = (node, json, {
-  width,
-  height,
-} = node.getBoundingClientRect()) =>
-  bb.generate({
+const buildChart = (node, json) => {
+  const {
+    width,
+    height,
+  } = node.getBoundingClientRect();
+
+  return bb.generate({
     data: {
       json,
       labels: true,
@@ -43,6 +45,7 @@ const buildChart = (node, json, {
       hide: true,
     },
   });
+};
 
 const getVehicleName = (teamId, vehicles = {}) => {
   const vehicleId = mapTeamToCar(teamId);
@@ -79,11 +82,6 @@ class JobsChart extends Component {
 
   chartRef = null;
   chart = null;
-  originalSize = null;
-  fullScreenSize = {
-    width: 900,
-    height: 500,
-  };
 
   componentDidMount() {
     this.chartInit();
@@ -91,32 +89,12 @@ class JobsChart extends Component {
 
   componentWillReceiveProps(nextProps) {
     // it's better to validate by ts
-    if (nextProps.jobs.length !== 0 && nextProps.jobs.length !== this.props.jobs.length) {
+    if (nextProps.lastUpdate !== this.props.lastUpdate) {
       this.chart.load(formatJobs(nextProps.jobs, this.props.vehicles));
-    }
-
-    this.doResize(nextProps);
-  }
-
-  componentDidUpdate(prevProps) {
-    this.chart.load(formatJobs(prevProps.jobs, this.props.vehicles));
-  }
-
-  doResize(nextProps) {
-    if (!this.props.isFullscreen && nextProps.isFullscreen) {
-      this.chart.resize(this.fullScreenSize);
-    } else if (this.props.isFullscreen && !nextProps.isFullscreen) {
-      this.chart.resize(this.originalSize);
     }
   }
 
   chartInit() {
-    const { width, height } = this.chartRef.getBoundingClientRect();
-    this.originalSize = {
-      width,
-      height,
-    };
-
     this.chart = buildChart(this.chartRef, formatJobs(this.props.jobs, this.props.vehicles));
   }
 
@@ -133,6 +111,7 @@ class JobsChart extends Component {
 JobsChart.propTypes = {
   jobs: PropTypes.arrayOf(PropTypes.object).isRequired,
   isFullscreen: PropTypes.bool.isRequired,
+  lastUpdate: PropTypes.instanceOf(Date).isRequired,
   vehicles: PropTypes.object.isRequired, // eslint-disable-line
 };
 
