@@ -29,9 +29,7 @@ export const additionalLogin = () => {
    */
   if (serverEnv === 'dev' || serverEnv === 'local') {
     payload.password = 'EH8NAsy5';
-  } else if (serverEnv === 'stage') {
-    payload.password = '027z9CUz7v!*';
-  } else if (serverEnv === 'production') {
+  } else {
     payload.password = 'o48ab1Ul29$b';
   }
 
