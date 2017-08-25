@@ -83,6 +83,7 @@ class JobsWidget extends Component {
           <Header
             fetchJobs={this.fetchJobs}
             resize={this.resizeWidget}
+            isResizable={this.props.isResizable}
             isFullscreen={this.state.isFullscreen}
           />
 
@@ -95,6 +96,11 @@ class JobsWidget extends Component {
 
 JobsWidget.propTypes = {
   vehicles: PropTypes.object.isRequired, // eslint-disable-line
+  isResizable: PropTypes.bool,
+};
+
+JobsWidget.defaultProps = {
+  isResizable: false,
 };
 
 export default JobsWidget;

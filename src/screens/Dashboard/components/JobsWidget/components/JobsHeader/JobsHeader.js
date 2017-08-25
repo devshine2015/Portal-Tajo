@@ -89,7 +89,7 @@ class JobsHeader extends Component {
     return (
       <div className={css(classes.header)}>
         { this.renderDateRange() }
-        { this.renderExpander() }
+        { this.props.isResizable && this.renderExpander() }
       </div>
     );
   }
@@ -99,6 +99,7 @@ JobsHeader.propTypes = {
   fetchJobs: PropTypes.func.isRequired,
   resize: PropTypes.func.isRequired,
   isFullscreen: PropTypes.bool.isRequired,
+  isResizable: PropTypes.bool.isRequired,
 };
 
 export default JobsHeader;
