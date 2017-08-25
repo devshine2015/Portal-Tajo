@@ -19,7 +19,15 @@ const dates = ({ fromDate, toDate } = {}) => {
   return { fromDate, toDate };
 };
 
-const chooseTeam = () => R.ifElse(onDev, R.always(teams.dev), R.ifElse(onStage, R.always(teams.stage), R.always(teams.prod)));
+const chooseTeam = () => {
+  if (onDev) {
+    return teams.dev;
+  } else if (onStage) {
+    return teams.stage;
+  }
+
+  return teams.prod;
+};
 
 /**
  * make call to mwa endpoint.

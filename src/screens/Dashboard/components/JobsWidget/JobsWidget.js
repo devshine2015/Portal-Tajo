@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { css } from 'aphrodite/no-important';
 import Divider from 'material-ui/Divider';
 import fetchJobsCall from 'services/MWA/helpers';
@@ -63,7 +63,12 @@ class JobsWidget extends Component {
 
     return ([
       <Divider key="divider" />,
-      <JobsChart jobs={jobs} key="jobs" isFullscreen={this.state.isFullscreen} />,
+      <JobsChart
+        key="jobs"
+        vehicles={this.props.vehicles}
+        jobs={jobs}
+        isFullscreen={this.state.isFullscreen}
+      />,
       <JobsFooter updatedAt={updatedAt} key="footer" />,
     ]);
   }
@@ -88,6 +93,8 @@ class JobsWidget extends Component {
   }
 }
 
-JobsWidget.propTypes = {};
+JobsWidget.propTypes = {
+  vehicles: PropTypes.object.isRequired, // eslint-disable-line
+};
 
 export default JobsWidget;
