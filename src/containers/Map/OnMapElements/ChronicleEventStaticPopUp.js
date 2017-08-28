@@ -4,10 +4,10 @@ import pure from 'recompose/pure';
 import { hideLayer } from 'utils/mapBoxMap';
 import { dateToChronicleLable, msToDurtationLable } from 'screens/Chronicle/utils/strings';
 
-class ChronicleMarker extends React.Component {
+class ChroniclePopUp extends React.Component {
   constructor(props) {
     super(props);
-    this.theMarker = null;
+    this.thePopUp = null;
   }
 
   componentWillMount() {
@@ -16,15 +16,14 @@ class ChronicleMarker extends React.Component {
 
   componentWillUnmount() {
 // TODO: need to delete MapBox markers?
-    this.removeMarker();
+    this.removePopUp();
   }
 
   setUp() {
-    if (this.theMarker !== null) {
+    if (this.thePopUp !== null) {
       return;
     }
-    this.theMarker = window.L.marker(this.props.chronicleEvent.pos);
-    const popUp = window.L.popup({
+    this.thePopUp = window.L.popup({
       offset: [0, 0],
 //              className: 'ddsMapHistorySecondaryPopup',
       closeButton: false,
@@ -38,16 +37,14 @@ class ChronicleMarker extends React.Component {
     msToDurtationLable(this.props.chronicleEvent.period)}`)
     .setLatLng((this.props.chronicleEvent.pos));
 
-    this.theMarker.bindPopup(popUp);
-
-    hideLayer(this.props.theMap, this.theMarker, false);
+    hideLayer(this.props.theMap, this.thePopUp, false);
   }
 
-  removeMarker() {
+  removePopUp() {
     if (this.props.theMap === null) {
       return;
     }
-    hideLayer(this.props.theMap, this.theMarker, true);
+    hideLayer(this.props.theMap, this.thePopUp, true);
   }
 
   render() {
@@ -56,9 +53,9 @@ class ChronicleMarker extends React.Component {
   }
 }
 
-ChronicleMarker.propTypes = {
+ChroniclePopUp.propTypes = {
   theMap: React.PropTypes.object.isRequired,
   chronicleEvent: React.PropTypes.object.isRequired,
 };
 
-export default pure(ChronicleMarker);
+export default pure(ChroniclePopUp);
