@@ -103,8 +103,6 @@ const ensureHasLocations = (aJob) => {
   aJob.isDelayedWithIgnitionOff = false;
 };
 
-
-
 function _addJobs(dispatch, getState, mwaJobs) {
   const jobs = {};
   const carsJobs = {};

@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { api } from 'utils/api';
-import { onStage, onDev } from 'configs';
+import { onDev } from 'configs';
 import endpoints from 'configs/endpoints';
 import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
 import teams from './teams';
@@ -22,8 +22,6 @@ const dates = ({ fromDate, toDate } = {}) => {
 const chooseTeam = () => {
   if (onDev) {
     return teams.dev;
-  } else if (onStage) {
-    return teams.stage;
   }
 
   return teams.prod;
@@ -71,10 +69,6 @@ export function mwaGetJobsForVehicle(vehicleId, jobs) {
 
 const VALID_JOB_CODES = ['J01', 'J02', 'J03'];
 const validStatusCode = statusCode => R.contains(statusCode, VALID_JOB_CODES);
-
-const validJob = job => !(
-  job.X === null
-  || job.Y === null
-  || !validStatusCode(job.JOB_STATUS_CODE));
+const validJob = job => R.not(R.isNil(job.X) || R.isNil(job.Y) || !validStatusCode(job.JOB_STATUS_CODE));
 
 export const filterValidJobs = (jobs = []) => jobs.filter(validJob);

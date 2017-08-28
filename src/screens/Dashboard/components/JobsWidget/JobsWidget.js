@@ -64,7 +64,7 @@ class JobsWidget extends Component {
     if (isLoading) {
       return <RunningLogo.AnimatedLogo containerColor="#fafafa" />;
     }
-    
+
     const chart = jobs.length === 0 ? <Placeholder key="plaholder" /> : (
       <JobsChart
         key="jobs"

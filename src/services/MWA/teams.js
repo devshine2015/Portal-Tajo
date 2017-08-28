@@ -10,6 +10,7 @@ export default {
     1079: '11898c6d-80bf-480d-8885-3f9cc290097a',
     54299: 'afef9397-7618-4209-a87d-5bbf70e6361b',
   },
+  //  stage provides vehicles with ids equal to prod
   stage: {
     1045: 'f0b72aec-a835-4535-95d0-704467469598',
     1046: '2762f192-5b31-4785-96ba-3eae272d78ab',
