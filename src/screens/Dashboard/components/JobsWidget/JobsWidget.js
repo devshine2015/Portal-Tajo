@@ -2,11 +2,14 @@ import React, { Component, PropTypes } from 'react';
 import pure from 'recompose/pure';
 import { css } from 'aphrodite/no-important';
 import Divider from 'material-ui/Divider';
-import fetchJobsCall from 'services/MWA/helpers';
+import fetchJobsCall, {
+  // filterValidJobs,
+} from 'services/MWA/helpers';
 import Widget, { WidgetPaper } from 'components/Widget';
 import RunningLogo from 'components/animated';
 import Header from './components/JobsHeader';
 import JobsChart from './components/JobsChart';
+import Placeholder from './components/Placeholder';
 import JobsFooter from './components/JobsFooter';
 import classes from './classes';
 
@@ -61,16 +64,20 @@ class JobsWidget extends Component {
     if (isLoading) {
       return <RunningLogo.AnimatedLogo containerColor="#fafafa" />;
     }
-
-    return ([
-      <Divider key="divider" />,
+    
+    const chart = jobs.length === 0 ? <Placeholder key="plaholder" /> : (
       <JobsChart
         key="jobs"
         vehicles={this.props.vehicles}
         jobs={jobs}
         lastUpdate={this.state.updatedAt}
         isFullscreen={this.state.isFullscreen}
-      />,
+      />
+    );
+
+    return ([
+      <Divider key="divider" />,
+      chart,
       <JobsFooter updatedAt={updatedAt} key="footer" />,
     ]);
   }
@@ -79,7 +86,7 @@ class JobsWidget extends Component {
     return (
       <Widget
         containerClassName={css(classes.wrapper)}
-        title={`${this.state.jobs.length} Jobs`}
+        title="Jobs"
       >
         <WidgetPaper innerClassName={css(classes.inn)}>
           <Header
