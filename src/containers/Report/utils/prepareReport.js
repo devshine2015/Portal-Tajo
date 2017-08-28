@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { mwaGetJobsForVehicle } from 'services/MWA/actions';
+import { mwaGetJobsForVehicle } from 'services/MWA/helpers';
 import { isJobWithinPeriod } from '../specs/mwaJobsSizes';
 
 // TODO: verify: for MWA reports assuming the report timeFrame is

@@ -3,6 +3,7 @@ import { api } from 'utils/api';
 import endpoints from 'configs/endpoints';
 import reporter from 'utils/reports';
 import { makeTimeRangeParams } from 'utils/dateTimeUtils';
+import fetchJobsCall from 'services/MWA/helpers';
 import {
   getSavedReportData,
   getSavedReportSecondaryData,
@@ -12,7 +13,6 @@ import {
 import { prepareDataForReport } from '../utils/prepareReport';
 import getPeriods from '../utils/periods';
 import getVehiclesForReport from '../utils/reportVehicles';
-import { makeMWADate } from 'services/MWA/actions';
 
 export const REPORT_DATA_SAVE = 'portal/Report/REPORT_DATA_SAVE';
 export const REPORT_DATA_REMOVE = 'portal/Report/REPORT_DATA_REMOVE';
@@ -158,11 +158,10 @@ function _reportRequest(vehicles = [], {
   if (customReportKind === 'mwa'
   || customReportKind === 'mwaTime'
   || customReportKind === 'mwaSizeNbr') {
-    const { url, method, apiVersion } = endpoints.getMWAJobs({
-      from: makeMWADate(timePeriod.fromDate),
-      to: makeMWADate(timePeriod.toDate),
-    });
-    requestsToResolve = [api[method](url, { apiVersion }).then(toJson)];
+    requestsToResolve = [fetchJobsCall({
+      fromDate: timePeriod.fromDate,
+      toDate: timePeriod.toDate,
+    })];
   } else {
     requestsToResolve = vehicles.map((v) => {
       const url = `${endpoints.getVehicle(v.id).url}/${endpoint}?${queryString}`;

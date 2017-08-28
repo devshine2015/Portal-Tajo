@@ -23,7 +23,7 @@ class ChroniclePath extends React.Component {
   }
 
   createPathStartEndMarkers() {
-    const srcPosArray = this.props.chronicleFrame.posData;    
+    const srcPosArray = this.props.chronicleFrame.posData;
     const headContainerStyle = `padding: 0 3px 0 3px;
     height: 24px;
     width: 50px;

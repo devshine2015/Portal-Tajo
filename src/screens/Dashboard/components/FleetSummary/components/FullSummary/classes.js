@@ -35,8 +35,10 @@ const classes = StyleSheet.create({
   },
   amount__inn: {
     display: 'flex',
+    flex: 1,
     alignItems: 'center',
-    width: 170,
+    justifyContent: 'center',
+    height: 100,
   },
   amount__icon: {
     display: 'inline-flex',

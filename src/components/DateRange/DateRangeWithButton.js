@@ -1,18 +1,10 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import { css } from 'aphrodite/no-important';
-import FlatButton from 'material-ui/FlatButton';
 import { DateRange } from 'components/DateRange';
-// import Layout from 'components/Layout';
 import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
 import classes from './classes';
 
-const STYLES = {
-  applyBtn: {
-    marginLeft: 10,
-  },
-};
-
-class Filter extends React.Component {
+class DateRangeWithButton extends Component {
   constructor(props) {
     super(props);
 
@@ -29,31 +21,33 @@ class Filter extends React.Component {
   }
 
   onFilterClick = () => {
+    // do custom logic with date range
     this.props.onApply(this.state);
   }
 
   render() {
+    const { onApply, button, ...rest } = this.props;
+    const btn = React.cloneElement(button, {
+      onClick: this.onFilterClick,
+    });
+
     return (
-      <div className={css(classes.filter)}>
+      <div className={css(classes.filter__wrapper)}>
         <DateRange
           onChange={this.onDateTimeChange}
           fromDate={this.state.fromDate}
           toDate={this.state.toDate}
-          withTime
+          {...rest}
         />
-        <FlatButton
-          primary
-          label="Apply"
-          style={STYLES.applyBtn}
-          onClick={this.onFilterClick}
-        />
+        { btn }
       </div>
     );
   }
 }
 
-Filter.propTypes = {
-  onApply: React.PropTypes.func.isRequired,
+DateRangeWithButton.propTypes = {
+  onApply: PropTypes.func.isRequired,
+  button: PropTypes.element.isRequired,
 };
 
-export default Filter;
+export default DateRangeWithButton;

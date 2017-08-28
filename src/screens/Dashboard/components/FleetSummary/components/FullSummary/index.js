@@ -1,20 +1,22 @@
 import React from 'react';
 import pure from 'recompose/pure';
 import { css } from 'aphrodite/no-important';
-import Paper from 'material-ui/Paper';
 import { isEscape } from 'configs';
 import theme from 'configs/theme';
-import Icon from '../Icons';
-import { amountsShape } from '../../PropTypes';
 import { translate } from 'utils/i18n';
-
+import Widget, { WidgetPaper } from 'components/Widget';
+import Icon from '../Icons';
 import classes from './classes';
+import amountsPropType from '../../PropTypes';
 import phrases, { phrasesShape } from './PropTypes';
 
 const STYLES = {
   icon: {
     width: 40,
     height: 40,
+  },
+  widgetPaper: {
+    width: '49%',
   },
 };
 
@@ -35,15 +37,9 @@ const Amount = ({
   amount,
   helpText,
   icon,
-  fullwidth,
 }) => {
-  const paperClassName = css(
-    classes.amount,
-    fullwidth && classes.amount_fullwidth
-  );
-
   return (
-    <Paper className={paperClassName}>
+    <WidgetPaper style={STYLES.widgetPaper}>
       <div className={css(classes.amount__inn)}>
         <div className={css(classes.amount__icon)}>
           { React.cloneElement(icon, {
@@ -59,7 +55,7 @@ const Amount = ({
           </div>
         </div>
       </div>
-    </Paper>
+    </WidgetPaper>
   );
 };
 
@@ -67,49 +63,41 @@ Amount.propTypes = {
   amount: React.PropTypes.number.isRequired,
   helpText: React.PropTypes.string.isRequired,
   icon: React.PropTypes.node.isRequired,
-
-  // will took full width of the parent if true
-  fullwidth: React.PropTypes.bool,
-};
-
-Amount.defaultProps = {
-  fullwidth: false,
 };
 
 const FullSummary = ({
   amounts,
   translations,
 }) => (
-  <div className={css(classes.fullSummary)}>
+  <Widget title={translations.fleet_summary_title}>
     <Amount
       icon={<Icon.CarIcon color={theme.palette.primary3Color} />}
       amount={amounts.vehiclesAmount}
-      helpText={ translations.vehicles_amount }
+      helpText={translations.vehicles_amount}
     />
-    { AMOUNT_TYPES_AVAILABILITY.devices &&
+    { AMOUNT_TYPES_AVAILABILITY.devices && (
       <Amount
         icon={<Icon.DeviceIcon color={theme.palette.primary3Color} />}
         amount={amounts.devicesAmount}
         helpText="devices in fleet"
       />
-    }
+    )}
     <Amount
       icon={<Icon.NotReportedIcon color={theme.palette.accent2Color} />}
       amount={amounts.deadAmount}
-      helpText={ translations.never_reported }
+      helpText={translations.never_reported}
     />
-    {/*<Amount
-      icon={<Icon.DelayedIcon color={theme.palette.accent2Color} />}
-      amount={amounts.delayedAmount}
-      helpText="vehicles sending delayed messages"
-      fullwidth={AVAILABLE_TYPES_COUNT % 2 !== 0}
-    />*/}
-  </div>
+    {/* <Amount
+          icon={<Icon.DelayedIcon color={theme.palette.accent2Color} />}
+          amount={amounts.delayedAmount}
+          helpText="vehicles sending delayed messages"
+        />
+    */}
+  </Widget>
 );
 
 FullSummary.propTypes = {
-  amounts: amountsShape.isRequired,
-
+  amounts: amountsPropType.isRequired,
   translations: phrasesShape.isRequired,
 };
 FullSummary.defaultProps = {

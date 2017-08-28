@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import pure from 'recompose/pure';
-import Icon from '../Icons';
-import { amountsShape } from '../../PropTypes';
 import { isEscape } from 'configs';
 import theme from 'configs/theme';
-
+import Icon from '../Icons';
+import amountsPropType from '../../PropTypes';
 import styles from './styles.css';
 
 const STYLES = {
@@ -44,8 +43,8 @@ const Amount = ({
 
 
 Amount.propTypes = {
-  amount: React.PropTypes.number,
-  icon: React.PropTypes.node.isRequired,
+  amount: PropTypes.number,
+  icon: PropTypes.node.isRequired,
 };
 
 Amount.defaultProps = {
@@ -70,7 +69,7 @@ const SimpleSummary = ({
       amount={amounts.deadAmount}
       icon={<Icon.NotReportedIcon color={theme.palette.accent2Color} />}
     />
-    {/*<Amount
+    {/* <Amount
       amount={amounts.delayedAmount}
       icon={<Icon.DelayedIcon color={theme.palette.accent2Color} />}
     />*/}
@@ -78,7 +77,7 @@ const SimpleSummary = ({
 );
 
 SimpleSummary.propTypes = {
-  amounts: amountsShape.isRequired,
+  amounts: amountsPropType.isRequired,
 };
 
 export default pure(SimpleSummary);

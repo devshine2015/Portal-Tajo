@@ -16,6 +16,10 @@ const classes = StyleSheet.create({
     width: 150,
     marginBottom: 5,
   },
+
+  filter__wrapper: {
+    display: 'flex',
+  },
 });
 
 export default classes;
