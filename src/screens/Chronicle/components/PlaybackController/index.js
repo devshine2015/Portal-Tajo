@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { setChronicleNormalizedT } from './../../actions';
 import { getNormalized100T } from './../../reducer';
 import { translate } from 'utils/i18n';
+// import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 
 import IconButton from 'material-ui/IconButton';
 import PlayIcon1 from 'material-ui/svg-icons/av/play-arrow';
@@ -109,59 +111,74 @@ class PlaybackCtr extends React.Component {
     this.playbackSpeed = 100 / (timeToPlayMin * 60 * 30);
   }
 
+  toggleEvents = () => {
+    this.props.toggleEventsCallback();
+  }
+
   render() {
     const { translations } = this.props;
-
+    const toggleBtnStyle = { display: 'inline-flex',
+      float: 'right',
+      margin: '5px' };
     return (
       <div className={styles.containerBox}>
         <IconButton
-          tooltip={ translations.pause }
+          tooltip={translations.pause}
           onClick={() => (this.playSpeed(0))}
           key="pauseBtn"
         >
           <PauseIcon color={this.getBtnColor(0)} hoverColor={this.getBtnHoverColor(0)} />
         </IconButton>
         <IconButton
-          tooltip={ translations.play }
+          tooltip={translations.play}
           onClick={() => (this.playSpeed(1))}
           key="playBtn"
         >
           <PlayIcon1 color={this.getBtnColor(1)} hoverColor={this.getBtnHoverColor(1)} />
         </IconButton>
         <IconButton
-          tooltip={ `${translations.play} 2` }
+          tooltip={`${translations.play} 2`}
           onClick={() => (this.playSpeed(2))}
           key="playBtn2"
         >
           <PlayIcon2 color={this.getBtnColor(2)} hoverColor={this.getBtnHoverColor(2)} />
         </IconButton>
         <IconButton
-          tooltip={ `${translations.play} 3` }
+          tooltip={`${translations.play} 3`}
           onClick={() => (this.playSpeed(3))}
           key="playBtn3"
         >
           <PlayIcon3 color={this.getBtnColor(3)} hoverColor={this.getBtnHoverColor(3)} />
         </IconButton>
         <IconButton
-          tooltip={ `${translations.play} 4` }
+          tooltip={`${translations.play} 4`}
           onClick={() => (this.playSpeed(4))}
           key="playBtn4"
         >
           <PlayIcon4 color={this.getBtnColor(4)} hoverColor={this.getBtnHoverColor(4)} />
         </IconButton>
+
+        <div style={toggleBtnStyle}>
+          <FlatButton
+            label={'STOPS'}
+            onClick={this.toggleEvents}
+            labelStyle={{ color: 'rgb(178, 223, 219)' }}
+          />
+        </div>
       </div>
     );
   }
 }
 
 PlaybackCtr.propTypes = {
+  toggleEventsCallback: React.PropTypes.func.isRequired,
   setChronicleNormalizedT: React.PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
   normalized100T: React.PropTypes.number.isRequired, // eslint-disable-line react/no-unused-prop-types
 
   translations: phrasesShape.isRequired,
 };
 
-const mapState = (state) => ({
+const mapState = state => ({
   normalized100T: getNormalized100T(state),
 });
 const mapDispatch = {

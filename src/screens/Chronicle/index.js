@@ -15,6 +15,7 @@ import TheMap from 'containers/Map/MapContainer';
 import ChroniclePath from 'containers/Map/OnMapElements/ChroniclePath';
 import ChronicleMarker from 'containers/Map/OnMapElements/ChronicleMarker';
 import ChronicleEventMarker from 'containers/Map/OnMapElements/ChronicleEventMarker';
+import ChronicleEventStaticPopUp from 'containers/Map/OnMapElements/ChronicleEventStaticPopUp';
 import CtxtOpenGoogleMap from 'containers/Map/OnMapElements/CtxtMenuOpenGMap';
 import mapMWAJobChronicleMarkerMaker from 'containers/Map/OnMapElements/MWAJobChronicleMarker';
 
@@ -35,6 +36,18 @@ import listTypes from 'components/InstancesList/types';
 import styles from './styles.css';
 
 class Chronicle extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      expandStopEvents: false,
+    };
+  }
+
+  expandStopsToggle = () => {
+    this.setState({
+      expandStopEvents: !this.state.expandStopEvents,
+    });
+  }
 
   // make all the on-map markers - helpers for render
   makeChronoPath = (v) => {
@@ -70,6 +83,13 @@ class Chronicle extends React.Component {
       chronicleEvent={v}
     />
           );
+  makeChronoEventStaticPopups = (v, idx) => (
+    <ChronicleEventStaticPopUp
+      key={`${this.props.selectedVehicleId + idx}CrSt`}
+      theLayer={this.theMap}
+      chronicleEvent={v}
+    />
+      );
 
   makeChronoMWAMarker = (aJob, idx) => {
     aJob.idx = idx;
@@ -86,8 +106,16 @@ class Chronicle extends React.Component {
     if (chronicleFrame.isValid()
     && chronicleFrame.hasPositions()
     && chronicleFrame.stopEvents.length > 0) {
-      stopEvents = chronicleFrame.stopEvents.map(this.makeChronoEventMarker);
+      stopEvents = this.state.expandStopEvents ? chronicleFrame.stopEvents.map(this.makeChronoEventStaticPopups)
+      : chronicleFrame.stopEvents.map(this.makeChronoEventMarker);
     }
+
+    // let stopEventsPopups = [];
+    // if (chronicleFrame.isValid()
+    // && chronicleFrame.hasPositions()
+    // && chronicleFrame.stopEvents.length > 0) {
+    //   stopEventsPopups = chronicleFrame.stopEvents.map(this.makeChronoEventStaticPopups);
+    // }
 
     let mwaJobs = [];
     if (chronicleFrame.isValid()
@@ -127,7 +155,7 @@ class Chronicle extends React.Component {
               leave={{ animation: 'slideUp' }}
             >
               { this.props.hasChroniclePlayableFrames ?
-                <PlaybackController />
+                <PlaybackController toggleEventsCallback={this.expandStopsToggle} />
                 : false
               }
             </VelocityTransitionGroup>
