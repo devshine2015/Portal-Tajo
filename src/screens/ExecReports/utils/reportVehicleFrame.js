@@ -148,7 +148,7 @@ ReportVehicleFrame.prototype.parceData = function (events, storeUpdateCallback) 
   });
 
   this.tripsRaw = tripParcer.finalize(events.length - 1);
-  this.tripsRaw.forEach(aTrip => aTrip.prepareData(events, storeUpdateCallback));
+  this.tripsRaw.forEach(aTrip => aTrip.prepareData(events, this.dateFrom));
 
   this.trips = this.tripsRaw.filter(aTrip => aTrip.isValid());
   this.trips.forEach(aTrip => aTrip.markSamples(events));
@@ -218,16 +218,17 @@ ReportVehicleFrame.prototype.calculatePerDayTotals = function () {
 
       // new/next trip - restart prevPos
       if (theSample.myTripIdx !== refTripIdx) {
-        prevPosSample = null;
+        prevPosSample = refTripIdx === -1 ? theSample : null;
         refTripIdx = theSample.myTripIdx;
         return;
       }
-
+      let dayWithNoSamples = false;
       if (isNextDay) {
         thisRefMoment = refDayEndMoment;
+        dayWithNoSamples = (prevPosSample !== null) && thisRefMoment.isBefore(moment(prevPosSample.ev.ts));
       }
       this.maxSpeed = Math.max(this.maxSpeed, eventHelpers.eventSpeed(theSample));
-      if (prevPosSample !== null) {
+      if (prevPosSample !== null && !dayWithNoSamples) {
         const distM = haversineDist(eventHelpers.eventPos(prevPosSample), eventHelpers.eventPos(theSample));
         calculatedDistanceM += distM;
         this.grandTotal.calculatedDistanceM += distM;

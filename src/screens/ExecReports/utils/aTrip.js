@@ -59,11 +59,13 @@ HistoryTrip.prototype.hasTemperature = function () {
 //
 //
 //-----------------------------------------------------------------------
-HistoryTrip.prototype.prepareData = function (eventsFrame) {
+HistoryTrip.prototype.prepareData = function (eventsFrame, historyStart) {
   const startSample = eventsFrame[this.startIdx];
   const endSample = eventsFrame[this.endIdx];
 
-  this.startDate = moment(startSample.ev.ts).toDate();
+  // handle the case when trip started before history begin dateTime
+  this.startDate = this.startIdx === 0 && !isTripStart(startSample) ?
+    moment(historyStart).toDate() : moment(startSample.ev.ts).toDate();
   this.endDate = moment(endSample.ev.ts).toDate();
   this.durationTotalMs = this.endDate.getTime() - this.startDate.getTime();
 
