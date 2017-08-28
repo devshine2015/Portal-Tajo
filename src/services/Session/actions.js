@@ -2,6 +2,7 @@ import R from 'ramda';
 import {
   LOCAL_STORAGE_SESSION_KEY,
   checkSetMaritime,
+  checkSetNoIcons,
 } from 'configs';
 import endpoints from 'configs/endpoints';
 import { api } from 'utils/api';
@@ -17,6 +18,7 @@ const takeFleetName = R.propOr('', 'fleet');
 
 export const setSession = session => dispatch => {
   checkSetMaritime(takeFleetName(session));
+  checkSetNoIcons(takeFleetName(session));
 
   dispatch({
     type: SESSION_SET,
