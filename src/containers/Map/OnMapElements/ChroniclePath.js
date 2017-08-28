@@ -34,7 +34,7 @@ class ChroniclePath extends React.Component {
     left: -20px;
     background-color: rgba(255, 255, 255, 0.75);
     border: 3px solid orange;
-    border-radius: 5px;`;    
+    border-radius: 5px;`;
     this.thePathStart = window.L.marker(srcPosArray[0].pos, {
       icon: window.L.divIcon({
         className: 'drvr-leaflet-div-icon',
