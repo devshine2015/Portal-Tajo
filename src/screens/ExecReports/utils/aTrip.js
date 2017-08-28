@@ -121,7 +121,7 @@ const isTripEnd = theSample => theSample.type === 'vehicle-ign-off';
 
 export function makeTripsParcer() {
   const trips = [];
-  let tripStartSampleIdx = -1;
+  let tripStartSampleIdx = 0; // this should take care of a trip which started before the hisotry first sample
 
   const processSample = (theSample, idx) => {
     if (tripStartSampleIdx !== -1) {
