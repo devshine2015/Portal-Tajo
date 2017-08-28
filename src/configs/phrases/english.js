@@ -266,4 +266,9 @@ export default {
   job_pipe_type: 'Pipe Type',
   job_status: 'Job Status',
  // -- end alerts conditions
+
+ // -- notifications panel
+  notifications: 'notifications',
+  there_is_no_notifications_yet: 'there is no notifications yet',
+ // -- end notifications panel
 };

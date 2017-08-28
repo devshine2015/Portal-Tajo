@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { List } from 'immutable';
 import { css } from 'aphrodite/no-important';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
+import {
+  translate,
+  makePhrasesShape,
+} from 'utils/i18n';
 import NotificationsBtn from './NotificationsBtn';
 import Entry from './Entry';
 import classes from './Journal.classes';
+import { notificationPhrases } from './PropTypes';
 
 const ANCHOR_ORIGIN = { horizontal: 'right', vertical: 'bottom' };
 const TARGET_ORIGIN = { horizontal: 'right', vertical: 'top' };
@@ -16,17 +21,25 @@ const STYLES = {
   },
 };
 
-const NothingToShow = () => (
+const NothingToShow = ({ text }) => (
   <div className={css(classes.placeholder)}>
-    There is no notifications yet
+    { text }
   </div>
 );
 
-const JournalHeader = () => (
+NothingToShow.propTypes = {
+  text: PropTypes.string.isRequired,
+};
+
+const JournalHeader = ({ text }) => (
   <div className={css(classes.header)}>
-    <div className={css(classes.header__text)}>Notifications</div>
+    <div className={css(classes.header__text)}>{ text }</div>
   </div>
 );
+
+JournalHeader.propTypes = {
+  text: PropTypes.string.isRequired,
+};
 
 /**
  *
@@ -147,12 +160,12 @@ class Journal extends React.Component {
           style={STYLES.popover}
         >
           <div className={css(classes.journal)}>
-            <JournalHeader />
+            <JournalHeader text={this.props.translations.notifications} />
             { hasNotifications ? (
               <ul className={css(classes.entries)}>
                 { this.renderEntries() }
               </ul>
-              ) : <NothingToShow />
+              ) : <NothingToShow text={this.props.translations.there_is_no_notifications_yet} />
             }
           </div>
         </Popover>
@@ -163,6 +176,7 @@ class Journal extends React.Component {
 
 Journal.propTypes = {
   notifications: React.PropTypes.instanceOf(List).isRequired,
+  translations: makePhrasesShape(notificationPhrases).isRequired,
 };
 
-export default Journal;
+export default translate(notificationPhrases)(Journal);

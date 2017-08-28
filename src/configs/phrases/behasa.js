@@ -264,5 +264,10 @@ export default {
   job_pipe: 'Pipe Size',
   job_pipe_type: 'Pipe Type',
   job_status: 'Job Status',
- // -- end alerts conditions
+  // -- end alerts conditions
+
+  // -- notifications panel
+  notifications: 'notifikasi',
+  there_is_no_notifications_yet: 'belum ada notifikasi',
+  // -- end notifications panel
 };

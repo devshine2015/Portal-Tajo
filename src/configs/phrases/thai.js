@@ -256,4 +256,9 @@ export default {
   job_pipe_type: 'Pipe Type',
   job_status: 'สถานะงาน',
   // -- end mwa reports
+
+  // -- notifications panel
+  notifications: 'การแจ้งเตือน',
+  there_is_no_notifications_yet: 'ยังไม่มีการแจ้งเตือน',
+ // -- end notifications panel
 };
