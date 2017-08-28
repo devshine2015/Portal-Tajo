@@ -68,3 +68,13 @@ export const mapTeamToCar = (teamId) => {
 export function mwaGetJobsForVehicle(vehicleId, jobs) {
   return jobs.filter(aJob => (mapTeamToCar(aJob.TEAM_ID) === vehicleId));
 }
+
+const VALID_JOB_CODES = ['J01', 'J02', 'J03'];
+const validStatusCode = statusCode => R.contains(statusCode, VALID_JOB_CODES);
+
+const validJob = job => !(
+  job.X === null
+  || job.Y === null
+  || !validStatusCode(job.JOB_STATUS_CODE));
+
+export const filterValidJobs = (jobs = []) => jobs.filter(validJob);

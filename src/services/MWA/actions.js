@@ -1,5 +1,4 @@
 import moment from 'moment';
-import R from 'ramda';
 import { getProcessedVehicles } from 'services/FleetModel/reducer';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import { filterProcessedListByName } from 'services/FleetModel/utils/filtering';
@@ -7,6 +6,7 @@ import { chronicleMWAJobs } from 'screens/Chronicle/actions';
 import { getMWAJobsAsIM } from './reducer';
 import fetchJobsCall, {
   mapTeamToCar,
+  filterValidJobs,
 } from './helpers';
 
 export const MWA_ADD_JOBS = 'mwa/add';
@@ -103,37 +103,31 @@ const ensureHasLocations = (aJob) => {
   aJob.isDelayedWithIgnitionOff = false;
 };
 
-const VALID_JOB_CODES = ['J01', 'J02', 'J03'];
-const validStatusCode = statusCode => R.contains(statusCode, VALID_JOB_CODES);
 
-const invalidJob = job => (
-  job.X === null
-  || job.Y === null
-  || !validStatusCode(job.JOB_STATUS_CODE));
 
 function _addJobs(dispatch, getState, mwaJobs) {
   const jobs = {};
   const carsJobs = {};
   const processedList = getProcessedVehicles(getState());
+  const validJobs = filterValidJobs(mwaJobs);
 
-  mwaJobs.forEach((aJob) => {
+  validJobs.forEach((aJob) => {
     ensureHasLocations(aJob);
-    if (!invalidJob(aJob)) {
-      const ownerCarId = mapTeamToCar(aJob.TEAM_ID);
-      if (ownerCarId !== null) {
-        const imLocalVehicle = processedList.get(ownerCarId);
-        if (imLocalVehicle !== undefined) {
-          aJob.id = aJob.WLMA_JOB_CODE;
-          aJob.name = aJob.WLMA_JOB_CODE;
-          aJob.vehicleId = ownerCarId;
-          aJob.vehicleName = imLocalVehicle.getIn(['original', 'name']);
-          aJob.filteredOut = false;
-          jobs[aJob.WLMA_JOB_CODE] = aJob;
-          if (!(ownerCarId in carsJobs)) {
-            carsJobs[ownerCarId] = [aJob.id];
-          } else {
-            carsJobs[ownerCarId].push(aJob.id);
-          }
+    const ownerCarId = mapTeamToCar(aJob.TEAM_ID);
+
+    if (ownerCarId !== null) {
+      const imLocalVehicle = processedList.get(ownerCarId);
+      if (imLocalVehicle !== undefined) {
+        aJob.id = aJob.WLMA_JOB_CODE;
+        aJob.name = aJob.WLMA_JOB_CODE;
+        aJob.vehicleId = ownerCarId;
+        aJob.vehicleName = imLocalVehicle.getIn(['original', 'name']);
+        aJob.filteredOut = false;
+        jobs[aJob.WLMA_JOB_CODE] = aJob;
+        if (!(ownerCarId in carsJobs)) {
+          carsJobs[ownerCarId] = [aJob.id];
+        } else {
+          carsJobs[ownerCarId].push(aJob.id);
         }
       }
     }
