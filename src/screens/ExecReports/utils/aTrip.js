@@ -104,7 +104,7 @@ HistoryTrip.prototype.prepareData = function (eventsFrame) {
 //
 //-----------------------------------------------------------------------
 HistoryTrip.prototype.markSamples = function (eventsFrame) {
-  ++tripCountIdx;
+  ++tripCountIdx; // eslint-disable-line
   for (let idx = this.startIdx; idx < this.endIdx; idx += 1) {
     eventsFrame[idx].myTripIdx = tripCountIdx;
   }
