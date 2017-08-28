@@ -49,6 +49,8 @@ export const ENGINE_BASE = onLocal ? DEV_ENGINE_BASE : REMOTE_HOST_BASE;
 // remove this when Alerts System done/released
 export let isAlerts = true;
 
+export let isNoIcons = false;
+
 // TODO: this is runtime, defined after login; should be in some other place
 // TODO: now for dev/test hardcoded value
 // TODO: probably this should be undef initially - handle it properly?
@@ -72,6 +74,14 @@ export const checkSetMwa = (itIsMwa = undefined) => {
 export function checkSetMaritime(fleetName) {
   isMaritime = fleetName.indexOf('maritime') !== -1;
 }
+
+//
+// TODO: this shoulc be set in configs/profile, saved locally
+// for now - always enabling for CIPTA
+export function checkSetNoIcons(fleetName) {
+  isNoIcons = fleetName.indexOf('cipta') !== -1;
+}
+
 
 // TODO: quick fix - just doubled prev limit - need some proven number
 // TODO: currently using same for hisotry (24hvr) and reports (arbitrary time range)
