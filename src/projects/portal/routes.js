@@ -17,7 +17,7 @@ import execReportsScreen from 'screens/ExecReports/route';
 import vehiclesManagerScreen from 'screens/VehiclesManagerScreen/route';
 import loginScreen from 'screens/LoginScreen/route';
 import loginCallbackScreen from 'screens/LoginCallback/route';
-import dashboardScreen from 'screens/DashboardScreen/route';
+import dashboardScreen from 'screens/Dashboard/route';
 import chronicleScreen from 'screens/Chronicle/route';
 import profileScreen from 'screens/Profile/route';
 import alersEditorScreen from 'screens/AlertsEditor/route';

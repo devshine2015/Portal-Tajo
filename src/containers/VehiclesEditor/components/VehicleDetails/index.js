@@ -6,12 +6,10 @@ import {
   TextField,
   Checkbox,
 } from 'material-ui';
-import { permissions } from 'configs/roles';
 import {
   translate,
   makePhrasesShape,
 } from 'utils/i18n';
-import permitted from 'utils/permissionsRequired';
 import Layout from 'components/Layout';
 import FormButtons from 'components/Controls/FormButtons';
 import DeviceEditor from '../DeviceEditor';
