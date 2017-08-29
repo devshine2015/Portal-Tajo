@@ -1,20 +1,19 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import pure from 'recompose/pure';
+import { css } from 'aphrodite/no-important';
 import { connect } from 'react-redux';
-
+import { TextField, Paper } from 'material-ui';
+import {
+  translate,
+  makePhrasesShape,
+} from 'utils/i18n';
 import { makeAlertConditionBackEndObject } from 'services/AlertsSystem/alertConditionHelper';
 import { conditionsActions } from 'services/AlertsSystem/actions';
 import { showSnackbar } from 'containers/Snackbar/actions';
-
-import { TextField, Paper } from 'material-ui';
-
-import { css } from 'aphrodite/no-important';
-// import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
-
-import classes from './classes';
-
 import FormButtons from 'components/Controls/FormButtons';
 import Layout from 'components/Layout';
+import classes from './classes';
+import phrases from './PropTypes';
 
 function setAlertState(props) {
   return {
@@ -65,20 +64,26 @@ class SpeedForm extends React.Component {
   }
 
   postNew = (newAlert) => {
-    this.props.createAlertConditions([newAlert])
+    // eslint-disable-next-line
+    const { translations, showSnackbar, createAlertConditions } = this.props;
+
+    createAlertConditions([newAlert])
     .then(() => {
-      this.props.showSnackbar('New Alert created successfuly', 3000);
+      showSnackbar(translations.new_alert_condition_created_successfully, 3000);
     }, () => {
-      this.props.showSnackbar('Failed to create new ALERT', 5000);
+      showSnackbar(translations.failed_to_create_new_alert_condition, 5000);
     });
   }
 
   putExisting = (newAlert) => {
-    this.props.updateAlertCondition(newAlert)
+    // eslint-disable-next-line
+    const { translations, showSnackbar, updateAlertCondition } = this.props;
+
+    updateAlertCondition(newAlert)
     .then(() => {
-      this.props.showSnackbar('Alert updated successfuly', 3000);
+      showSnackbar(translations.alert_condition_updated_successfuly, 3000);
     }, () => {
-      this.props.showSnackbar('Failed to change alert ALERT', 5000);
+      showSnackbar(translations.failed_to_change_alert_alert_condition, 5000);
     });
   }
   render() {
@@ -95,7 +100,7 @@ class SpeedForm extends React.Component {
     return (
       <Paper zDepth={5} className={css(classes.formWrapper__inn)} >
         {this.newAlert && <Layout.Header
-          label={this.props.headerTitle}
+          label={this.props.translations.new_alert_condition}
           style={{ padding: '0' }}
           labelStyle={{ fontSize: 16,
             color: 'rgba(0, 0, 0, 0.3)',
@@ -107,7 +112,7 @@ class SpeedForm extends React.Component {
           key="name"
           name="name"
           onChange={this.onChange}
-          floatingLabelText="alert name"
+          floatingLabelText={this.props.translations.alert_name}
           value={this.state.name}
         />
         {fields}
@@ -123,20 +128,19 @@ class SpeedForm extends React.Component {
 }
 
 SpeedForm.propTypes = {
-  headerTitle: React.PropTypes.string.isRequired,
-  alert: React.PropTypes.object,
-  closeForm: React.PropTypes.func.isRequired,
-  controlledFields: React.PropTypes.arrayOf(
-    React.PropTypes.shape({
-      fieldName: React.PropTypes.string.isRequired,
-      label: React.PropTypes.string.isRequired,
+  alert: PropTypes.object,
+  closeForm: PropTypes.func.isRequired,
+  controlledFields: PropTypes.arrayOf(
+    PropTypes.shape({
+      fieldName: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
     })
   ).isRequired,
-
-  children: React.PropTypes.array,
-  createAlertConditions: React.PropTypes.func.isRequired,
-  updateAlertCondition: React.PropTypes.func.isRequired,
-  showSnackbar: React.PropTypes.func.isRequired,
+  children: PropTypes.array,
+  createAlertConditions: PropTypes.func.isRequired,
+  updateAlertCondition: PropTypes.func.isRequired,
+  showSnackbar: PropTypes.func.isRequired,
+  translations: makePhrasesShape(phrases).isRequired,
 };
 
 const mapState = null;
@@ -147,6 +151,6 @@ const mapDispatch = {
   showSnackbar,
 };
 
-export default connect(mapState, mapDispatch)(pure(SpeedForm));
+export default connect(mapState, mapDispatch)(pure(translate(phrases)(SpeedForm)));
 
 // export default pure(SpeedForm);

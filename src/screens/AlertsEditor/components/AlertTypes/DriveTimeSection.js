@@ -1,17 +1,27 @@
 import React from 'react';
 import pure from 'recompose/pure';
-
+import {
+  translate,
+  makePhrasesShape,
+} from 'utils/i18n';
+import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import AlertsSection from './AlertsSection';
 import TimeForm from './TimeForm';
-import * as alertKinds from 'services/AlertsSystem/alertKinds';
+import phrases from './PropTypes';
 
-const AlertsDriveTime = () => (
+const AlertsDriveTime = ({
+  translations,
+}) => (
   <AlertsSection
     renderForm={(options) => (<TimeForm {...options} />)}
     myAlertKind={alertKinds._ALERT_KIND_DRIVE_TIME}
-    actionButtonLabel={"ADD ALERT"}
-    headerLabel={"DRIVE TIME ALERTS"}
+    actionButtonLabel={translations.add_alert}
+    headerLabel={translations.drive_time.toUpperCase()}
   />
 );
 
-export default pure(AlertsDriveTime);
+AlertsDriveTime.propTypes = {
+  translations: makePhrasesShape(phrases).isRequired,
+};
+
+export default pure(translate(phrases)(AlertsDriveTime));

@@ -253,7 +253,7 @@ export default {
   ctx_gmap: 'Google Maps',
   // -- end map context menu
 
-  // -- alerts conditions
+  // -- mwa reports
   mwa_jobs_nbr: 'No. of Jobs',
   mwa_jobs_t: 'Jobs Summary',
   mwa_jobs_pipe_count: 'Jobs No. per PipeSize',
@@ -264,10 +264,22 @@ export default {
   job_pipe: 'Pipe Size',
   job_pipe_type: 'Pipe Type',
   job_status: 'Job Status',
-  // -- end alerts conditions
+  // -- end mwa reports
 
   // -- notifications panel
   notifications: 'notifikasi',
   there_is_no_notifications_yet: 'belum ada notifikasi',
   // -- end notifications panel
+
+  // -- alerts editor
+  geofence: 'geofence',
+  idling: 'diam',
+  speeding: 'ngebut',
+  drive_time: 'waktu mengemudi',
+  add_alert: 'tambah peringatan',
+  alert_name: 'alert name',
+  speed_limit: 'batas kecepatan',
+  new_alert_condition: 'kondisi peringatan baru',
+  distance_limit: 'batas jarak',
+  // -- end alerts editor
 };

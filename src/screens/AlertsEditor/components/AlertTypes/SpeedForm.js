@@ -1,28 +1,34 @@
 import React from 'react';
 import pure from 'recompose/pure';
-
+import {
+  translate,
+  makePhrasesShape,
+} from 'utils/i18n';
 import AlertForm from './AlertForm';
+import phrases from './PropTypes';
 
 const SpeedForm = ({
   alert,
   closeForm,
   isOpened,
+  translations,
 }) => (
   <AlertForm
     alert={alert}
-    headerTitle={"New Speed Limit Alert Condition"}
     closeForm={closeForm}
     isOpened={isOpened}
-    controlledFields={[{ fieldName: 'maxSpeed',
-      label: 'Speed Limit' }]}
+    controlledFields={[{
+      fieldName: 'maxSpeed',
+      label: translations.speed_limit,
+    }]}
   />
 );
 
 SpeedForm.propTypes = {
   alert: React.PropTypes.object,
   closeForm: React.PropTypes.func.isRequired,
-  // isLoading: React.PropTypes.bool.isRequired,
   isOpened: React.PropTypes.bool.isRequired,
+  translations: makePhrasesShape(phrases).isRequired,
 };
 
-export default pure(SpeedForm);
+export default pure(translate(phrases)(SpeedForm));

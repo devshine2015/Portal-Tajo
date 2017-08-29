@@ -1,28 +1,34 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import pure from 'recompose/pure';
-
+import {
+  translate,
+  makePhrasesShape,
+} from 'utils/i18n';
 import AlertForm from './AlertForm';
+import phrases from './PropTypes';
 
 const OdoForm = ({
   alert,
   closeForm,
   isOpened,
+  translations,
 }) => (
   <AlertForm
     alert={alert}
-    headerTitle={"New Distance Alert Condition"}
     closeForm={closeForm}
     isOpened={isOpened}
-    controlledFields={[{ fieldName: 'odoValue',
-      label: 'Distance Limit' }]}
+    controlledFields={[{
+      fieldName: 'odoValue',
+      label: translations.distance_limit,
+    }]}
   />
 );
 
 OdoForm.propTypes = {
-  alert: React.PropTypes.object,
-  closeForm: React.PropTypes.func.isRequired,
-  // isLoading: React.PropTypes.bool.isRequired,
-  isOpened: React.PropTypes.bool.isRequired,
+  alert: PropTypes.object,
+  closeForm: PropTypes.func.isRequired,
+  isOpened: PropTypes.bool.isRequired,
+  translations: makePhrasesShape(phrases).isRequired,
 };
 
-export default pure(OdoForm);
+export default pure(translate(phrases)(OdoForm));

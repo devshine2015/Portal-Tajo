@@ -1,0 +1,16 @@
+export default [
+  'speeding',
+  'temperature',
+  'odometer',
+  'drive_time',
+  'add_alert',
+  'alert_name',
+  'speed_limit',
+  'new_alert_condition',
+  'maxTemp',
+  'distance_limit',
+  'new_alert_condition_created_successfully',
+  'failed_to_create_new_alert_condition',
+  'alert_condition_updated_successfuly',
+  'failed_to_change_alert_alert_condition',
+];

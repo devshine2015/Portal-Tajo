@@ -1,28 +1,33 @@
-import React from 'react';
-// import pure from 'recompose/pure';
-
+import React, { PropTypes } from 'react';
+import {
+  translate,
+  makePhrasesShape,
+} from 'utils/i18n';
 import AlertForm from './AlertForm';
+import phrases from './PropTypes';
 
 const TempForm = ({
   alert,
   closeForm,
   isOpened,
+  translations,
 }) => (
   <AlertForm
     alert={alert}
-    headerTitle={"New Temperature Alert Condition"}
     closeForm={closeForm}
     isOpened={isOpened}
-    controlledFields={[{ fieldName: 'maxTemp',
-      label: 'Maximum temperature' }]}
+    controlledFields={[{
+      fieldName: 'maxTemp',
+      label: translations.maxTemp,
+    }]}
   />
 );
 
 TempForm.propTypes = {
-  alert: React.PropTypes.object,
-  closeForm: React.PropTypes.func.isRequired,
-  // isLoading: React.PropTypes.bool.isRequired,
-  isOpened: React.PropTypes.bool.isRequired,
+  alert: PropTypes.object,
+  closeForm: PropTypes.func.isRequired,
+  isOpened: PropTypes.bool.isRequired,
+  translations: makePhrasesShape(phrases).isRequired,
 };
 
-export default TempForm;
+export default translate(phrases)(TempForm);

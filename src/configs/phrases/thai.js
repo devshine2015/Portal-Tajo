@@ -260,5 +260,17 @@ export default {
   // -- notifications panel
   notifications: 'การแจ้งเตือน',
   there_is_no_notifications_yet: 'ยังไม่มีการแจ้งเตือน',
- // -- end notifications panel
+  // -- end notifications panel
+
+  // -- alerts editor
+  geofence: 'รั้วทางภูมิศาสตร์',
+  idling: 'ไม่ทำงาน',
+  speeding: 'การเร่ง',
+  drive_time: 'เวลาขับรถ',
+  add_alert: 'เพิ่มการแจ้งเตือน',
+  alert_name: 'ชื่อการแจ้งเตือน',
+  speed_limit: 'จำกัด ความเร็ว',
+  new_alert_condition: 'สภาพการแจ้งเตือนใหม่',
+  distance_limit: 'ระยะทาง',
+  // -- end alerts editor
 };

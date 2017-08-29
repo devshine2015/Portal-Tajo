@@ -254,7 +254,7 @@ export default {
   ctx_gmap: 'Google Maps',
   // -- end map context menu
 
-  // -- alerts conditions
+  // -- mwa reports
   mwa_jobs_nbr: 'No. of Jobs',
   mwa_jobs_t: ' Jobs Summary',
   mwa_jobs_pipe_count: 'Jobs No. per PipeSize',
@@ -265,10 +265,26 @@ export default {
   job_pipe: 'Pipe Size',
   job_pipe_type: 'Pipe Type',
   job_status: 'Job Status',
- // -- end alerts conditions
+  // -- end mwa reports
 
- // -- notifications panel
+  // -- notifications panel
   notifications: 'notifications',
   there_is_no_notifications_yet: 'there is no notifications yet',
- // -- end notifications panel
+  // -- end notifications panel
+
+  // -- alerts editor
+  geofence: 'geofence',
+  idling: 'idling',
+  speeding: 'speeding',
+  drive_time: 'drive time',
+  add_alert: 'add alert',
+  alert_name: 'alert name',
+  speed_limit: 'speed limit',
+  new_alert_condition: 'new alert condition',
+  distance_limit: 'distance limit',
+  new_alert_condition_created_successfully: 'New alert condition created successfully',
+  failed_to_create_new_alert_condition: 'Failed to create new alert condition',
+  alert_condition_updated_successfuly: 'Alert condition updated successfuly',
+  failed_to_change_alert_alert_condition: 'Failed to change alert alert condition',
+  // -- end alerts editor
 };
