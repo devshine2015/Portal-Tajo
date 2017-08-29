@@ -259,8 +259,8 @@ export default {
   mwa_jobs_t: ' Jobs Summary',
   mwa_jobs_pipe_count: 'Jobs No. per PipeSize',
   job_name: 'Job Name',
-  job_from: 'From',
-  job_to: 'To',
+  from: 'from',
+  to: 'to',
   job_duration: 'Duration',
   job_pipe: 'Pipe Size',
   job_pipe_type: 'Pipe Type',
@@ -286,5 +286,14 @@ export default {
   failed_to_create_new_alert_condition: 'Failed to create new alert condition',
   alert_condition_updated_successfuly: 'Alert condition updated successfuly',
   failed_to_change_alert_alert_condition: 'Failed to change alert alert condition',
+  // -- end alerts editor
+
+  // -- alerts editor
+  apply: 'apply',
+  historical_timeline: 'historical timeline',
+  events: 'events',
+  for_last_24_hours: 'for last 24 hours',
+  total: 'total',
+  filter_by_type: 'filter by type',
   // -- end alerts editor
 };

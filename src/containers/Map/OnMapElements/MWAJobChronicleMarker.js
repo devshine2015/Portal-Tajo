@@ -80,9 +80,9 @@ class MWAJobChronicleMarker extends React.Component {
           title: aJob.name,
           riseOnHover: true,
         })
-        .bindPopup(`${textLable(this.context.translator.getTranslation('job_from'),
+        .bindPopup(`${textLable(this.context.translator.getTranslation('from'),
            dateToChronicleString(aJob.begin), false)}
-        ${textLable(this.context.translator.getTranslation('job_to'),
+        ${textLable(this.context.translator.getTranslation('to'),
           dateToChronicleString(aJob.end))}
         ${textLable(this.context.translator.getTranslation('job_duration'),
           msToTimeIntervalString(aJob.end.getTime() - aJob.begin.getTime()))}

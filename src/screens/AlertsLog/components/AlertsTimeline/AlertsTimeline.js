@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import moment from 'moment';
 import { List } from 'immutable';
 import { css } from 'aphrodite/no-important';
 import { ALERT_KINDS } from 'services/AlertsSystem/alertKinds';
-import LogsFilter from '../KindsFilter/KindsFilter';
+import LogsFilter from '../KindsFilter';
 import TimelineHeader from './TimelineHeader';
 import TimelineEvent from './TimelineEvent';
 import classes from './AlertsTimeline.classes';
@@ -87,7 +87,7 @@ class AlertsTimeline extends React.Component {
           selectedVehicleName={this.props.selectedVehicleName}
         />
 
-        { this.props.entries.size !== 0 && (
+        { this.props.entries.size === 0 && (
           <LogsFilter
             onKindsChange={this.onFilterKindsChange}
             activeFilters={this.state.activeKinds}
@@ -108,13 +108,13 @@ class AlertsTimeline extends React.Component {
 }
 
 AlertsTimeline.propTypes = {
-  entries: React.PropTypes.instanceOf(List).isRequired,
-  displayDefaultRange: React.PropTypes.bool.isRequired,
-  dateRange: React.PropTypes.shape({
-    fromDate: React.PropTypes.instanceOf(Date).isRequired,
-    toDate: React.PropTypes.instanceOf(Date).isRequired,
+  entries: PropTypes.instanceOf(List).isRequired,
+  displayDefaultRange: PropTypes.bool.isRequired,
+  dateRange: PropTypes.shape({
+    fromDate: PropTypes.instanceOf(Date).isRequired,
+    toDate: PropTypes.instanceOf(Date).isRequired,
   }),
-  selectedVehicleName: React.PropTypes.string,
+  selectedVehicleName: PropTypes.string,
 };
 
 AlertsTimeline.defaultTypes = {

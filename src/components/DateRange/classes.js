@@ -19,6 +19,7 @@ const classes = StyleSheet.create({
 
   filter__wrapper: {
     display: 'flex',
+    alignItems: 'center',
   },
 });
 

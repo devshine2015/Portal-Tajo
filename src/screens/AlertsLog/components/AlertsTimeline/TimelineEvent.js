@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import moment from 'moment';
 import { css } from 'aphrodite/no-important';
 import { getAlertByKind } from 'services/AlertsSystem/alertKinds';
@@ -15,7 +15,7 @@ const EventTime = ({
 };
 
 EventTime.propTypes = {
-  time: React.PropTypes.number.isRequired,
+  time: PropTypes.number.isRequired,
 };
 
 const EventIcon = ({
@@ -29,7 +29,7 @@ const EventIcon = ({
 };
 
 EventIcon.propTypes = {
-  icon: React.PropTypes.element.isRequired,
+  icon: PropTypes.element.isRequired,
 };
 
 const EventDetails = ({
@@ -50,9 +50,9 @@ const EventDetails = ({
 };
 
 EventDetails.propTypes = {
-  eventName: React.PropTypes.string.isRequired,
-  ownerName: React.PropTypes.string.isRequired,
-  kindNiceName: React.PropTypes.string.isRequired,
+  eventName: PropTypes.string.isRequired,
+  ownerName: PropTypes.string.isRequired,
+  kindNiceName: PropTypes.string.isRequired,
 };
 
 const TimelineEvent = ({
@@ -77,10 +77,10 @@ const TimelineEvent = ({
 };
 
 TimelineEvent.propTypes = {
-  eventTS: React.PropTypes.number.isRequired,
-  eventKind: React.PropTypes.string.isRequired,
-  eventName: React.PropTypes.string.isRequired,
-  ownerName: React.PropTypes.string.isRequired,
+  eventTS: PropTypes.number.isRequired,
+  eventKind: PropTypes.string.isRequired,
+  eventName: PropTypes.string.isRequired,
+  ownerName: PropTypes.string.isRequired,
 };
 
 TimelineEvent.defaultProps = {};

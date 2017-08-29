@@ -1,31 +1,34 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { css } from 'aphrodite/no-important';
+import {
+  translate,
+  makePhrasesShape,
+} from 'utils/i18n';
+import phrases from '../../PropTYpes';
 import classes from './TimelineHeader.classes';
 
-const DEFAULT_TIME_RANGE_TEXT = 'last 24 hours';
-
 const dateShape = {
-  from: React.PropTypes.string,
-  to: React.PropTypes.string,
+  from: PropTypes.string,
+  to: PropTypes.string,
 };
 
 const HighlitedText = ({ children }) =>
   <span className={css(classes.header__sub_highlighted)}>{ children }</span>;
 
 HighlitedText.propTypes = {
-  children: React.PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
+  children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 
-const PeriodText = ({ dateRange, isDefaultRange }) => {
+const PeriodText = ({ dateRange, isDefaultRange, translations }) => {
   let Text;
 
   if (isDefaultRange) {
-    Text = () => <HighlitedText>{ DEFAULT_TIME_RANGE_TEXT }</HighlitedText>;
+    Text = () => <HighlitedText>{ translations.for_last_24_hours }</HighlitedText>;
   } else {
     Text = () => (
       <span>
-        the period from <HighlitedText>{dateRange.from}</HighlitedText> to <HighlitedText>{dateRange.to}</HighlitedText>
+        {translations.from} <HighlitedText>{dateRange.from}</HighlitedText> {translations.to} <HighlitedText>{dateRange.to}</HighlitedText>
       </span>
     );
   }
@@ -34,17 +37,23 @@ const PeriodText = ({ dateRange, isDefaultRange }) => {
 };
 
 PeriodText.propTypes = {
-  isDefaultRange: React.PropTypes.bool.isRequired,
-  dateRange: React.PropTypes.shape(dateShape).isRequired,
+  isDefaultRange: PropTypes.bool.isRequired,
+  dateRange: PropTypes.shape(dateShape).isRequired,
+  translations: makePhrasesShape(phrases).isRequired,
 };
 
 
-const HeaderTitle = ({ vehicleName }) => (
-  <h3 className={css(classes.header__main)}>Historical Timeline { vehicleName && `for ${vehicleName}` }</h3>
+const HeaderTitle = ({ vehicleName, translations }) => (
+  <h3 className={css(classes.header__main)}>
+    { translations.historical_timeline }
+    <br />
+    { vehicleName && vehicleName }
+  </h3>
 );
 
 HeaderTitle.propTypes = {
-  vehicleName: React.PropTypes.string,
+  vehicleName: PropTypes.string,
+  translations: makePhrasesShape(phrases).isRequired,
 };
 
 const Header = ({
@@ -53,29 +62,34 @@ const Header = ({
   filteredAmount,
   isFiltered,
   selectedVehicleName,
+  translations,
 }) => (
   <div className={css(classes.header)}>
-    <HeaderTitle vehicleName={selectedVehicleName} />
+    <HeaderTitle
+      vehicleName={selectedVehicleName}
+      translations={translations}
+    />
 
     <p className={css(classes.header__sub)}>
-      Total <HighlitedText>{totalAmount}</HighlitedText> events for <PeriodText {...rest} />
+      {translations.total} <HighlitedText>{totalAmount}</HighlitedText> {translations.events} <PeriodText translations={translations} {...rest} />
     </p>
 
     { isFiltered && (
       <p className={css(classes.header__sub)}>
-        Showing <HighlitedText>{filteredAmount}</HighlitedText> filtered events
+        <HighlitedText>{filteredAmount}</HighlitedText>{` ${translations.events}`}
       </p>
     )}
   </div>
 );
 
 Header.propTypes = {
-  totalAmount: React.PropTypes.number.isRequired,
-  filteredAmount: React.PropTypes.number,
-  isDefaultRange: React.PropTypes.bool.isRequired,
-  isFiltered: React.PropTypes.bool.isRequired,
-  dateRange: React.PropTypes.shape(dateShape),
-  selectedVehicleName: React.PropTypes.string,
+  totalAmount: PropTypes.number.isRequired,
+  filteredAmount: PropTypes.number,
+  isDefaultRange: PropTypes.bool.isRequired,
+  isFiltered: PropTypes.bool.isRequired,
+  dateRange: PropTypes.shape(dateShape),
+  selectedVehicleName: PropTypes.string,
+  translations: makePhrasesShape(phrases).isRequired,
 };
 
 Header.defaultTypes = {
@@ -83,4 +97,4 @@ Header.defaultTypes = {
   selectedVehicleName: undefined,
 };
 
-export default Header;
+export default translate(phrases)(Header);

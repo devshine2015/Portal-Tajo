@@ -1,10 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import cs from 'classnames';
 import { List } from 'immutable';
 import { css } from 'aphrodite/no-important';
 import IconButton from 'material-ui/IconButton';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import { ALERT_KINDS } from 'services/AlertsSystem/alertKinds';
+import {
+  translate,
+  makePhrasesShape,
+} from 'utils/i18n';
+import phrases from '../../PropTYpes';
 import classes from './classes';
 
 const FilterKind = muiThemeable()(({
@@ -35,11 +40,11 @@ const FilterKind = muiThemeable()(({
 });
 
 FilterKind.propTypes = {
-  niceName: React.PropTypes.string.isRequired,
-  kind: React.PropTypes.string.isRequired,
-  icon: React.PropTypes.element.isRequired,
-  onClick: React.PropTypes.func.isRequired,
-  isActive: React.PropTypes.bool.isRequired,
+  niceName: PropTypes.string.isRequired,
+  kind: PropTypes.string.isRequired,
+  icon: PropTypes.element.isRequired,
+  onClick: PropTypes.func.isRequired,
+  isActive: PropTypes.bool.isRequired,
 };
 
 
@@ -72,7 +77,9 @@ class KindsFilter extends Component {
 
     return (
       <div className={containerClassName}>
-        <span className={labelClassName}>Filter by kind:</span>
+        <span className={labelClassName}>
+          { `${this.props.translations.filter_by_type}:` }
+        </span>
         <div className={listClassName}>
           { this.renderKinds() }
         </div>
@@ -82,11 +89,12 @@ class KindsFilter extends Component {
 }
 
 KindsFilter.propTypes = {
-  onKindsChange: React.PropTypes.func.isRequired,
-  activeFilters: React.PropTypes.instanceOf(List).isRequired,
-  containerClassName: React.PropTypes.string,
-  listClassName: React.PropTypes.string,
-  labelClassName: React.PropTypes.string,
+  onKindsChange: PropTypes.func.isRequired,
+  activeFilters: PropTypes.instanceOf(List).isRequired,
+  containerClassName: PropTypes.string,
+  listClassName: PropTypes.string,
+  labelClassName: PropTypes.string,
+  translations: makePhrasesShape(phrases).isRequired,
 };
 
 KindsFilter.defaultProps = {
@@ -95,4 +103,4 @@ KindsFilter.defaultProps = {
   labelClassName: '',
 };
 
-export default KindsFilter;
+export default translate(phrases)(KindsFilter);

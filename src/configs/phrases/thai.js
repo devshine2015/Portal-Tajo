@@ -249,8 +249,8 @@ export default {
   mwa_jobs_t: 'สรุปงาน',
   mwa_jobs_pipe_count: 'ปริมาณงานต่อทีมแบ่งตามขนาดท่อ',
   job_name: 'รหัสงาน',
-  job_from: 'เวลาเปิดงาน',
-  job_to: 'เวลาสิ้นสุดงานภาคสนาม',
+  from: 'จาก',
+  to: 'ถึึง',
   job_duration: 'ระยะเวลาปฏิบัติงาน',
   job_pipe: 'ขนาดท่อ',
   job_pipe_type: 'Pipe Type',
@@ -272,5 +272,14 @@ export default {
   speed_limit: 'จำกัด ความเร็ว',
   new_alert_condition: 'สภาพการแจ้งเตือนใหม่',
   distance_limit: 'ระยะทาง',
+  // -- end alerts editor
+
+  // -- alerts editor
+  apply: 'ใช้',
+  historical_timeline: 'ประวัติไทม์ไลน์',
+  events: 'เหตุการณ์',
+  for_last_24_hours: 'สำหรับ 24 ชั่วโมงที่ผ่านมา',
+  total: 'ทั้งหมด',
+  filter_by_type: 'กรองตามประเภท',
   // -- end alerts editor
 };

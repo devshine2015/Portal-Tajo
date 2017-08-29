@@ -9,6 +9,7 @@ const classes = StyleSheet.create({
   header__main: {
     fontSize: 18,
     marginBottom: 5,
+    textTransform: 'capitalize',
   },
 
   header__sub: {

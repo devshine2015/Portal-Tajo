@@ -258,8 +258,8 @@ export default {
   mwa_jobs_t: 'Jobs Summary',
   mwa_jobs_pipe_count: 'Jobs No. per PipeSize',
   job_name: 'Job Name',
-  job_from: 'From',
-  job_to: 'To',
+  from: 'dari',
+  to: 'ke',
   job_duration: 'Duration',
   job_pipe: 'Pipe Size',
   job_pipe_type: 'Pipe Type',
@@ -281,5 +281,14 @@ export default {
   speed_limit: 'batas kecepatan',
   new_alert_condition: 'kondisi peringatan baru',
   distance_limit: 'batas jarak',
+  // -- end alerts editor
+
+  // -- alerts editor
+  apply: 'terapkan',
+  historical_timeline: 'riwayat waktu',
+  events: 'kejadian',
+  for_last_24_hours: '24 jam terakhir',
+  total: 'total',
+  filter_by_type: 'saring berdasarkan jenisnya',
   // -- end alerts editor
 };

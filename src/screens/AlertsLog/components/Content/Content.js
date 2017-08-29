@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { List } from 'immutable';
 import { css } from 'aphrodite/no-important';
+import FlatButton from 'material-ui/FlatButton';
 import FixedContent from 'components/FixedContent';
 import AnimatedLogo from 'components/animated';
 import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
-import Filter from '../Filter/Filter';
-import AlertsTimeline from '../AlertsTimeline/AlertsTimeline';
+import {
+  translate,
+  makePhrasesShape,
+} from 'utils/i18n';
+import { DateRangeWithButton } from 'components/DateRange';
+import AlertsTimeline from '../AlertsTimeline';
+import phrases from '../../PropTYpes';
 import classes from './classes';
 
 class Content extends React.Component {
@@ -58,7 +64,16 @@ class Content extends React.Component {
   render() {
     return (
       <FixedContent containerClassName={css(classes.contentWrapper)}>
-        <Filter onApply={this.getLogs} />
+        <DateRangeWithButton
+          withTime={false}
+          onApply={this.getLogs}
+          button={(
+            <FlatButton
+              primary
+              label={this.props.translations.apply}
+            />
+          )}
+        />
 
         { !this.canShowTimeline() ? <AnimatedLogo.FullscreenLogo /> : (
           <AlertsTimeline
@@ -75,11 +90,12 @@ class Content extends React.Component {
 }
 
 Content.propTypes = {
-  fetchLogs: React.PropTypes.func.isRequired,
-  entries: React.PropTypes.instanceOf(List).isRequired,
-  isReady: React.PropTypes.bool.isRequired,
-  selectedVehicleId: React.PropTypes.string,
-  selectedVehicleName: React.PropTypes.string,
+  fetchLogs: PropTypes.func.isRequired,
+  entries: PropTypes.instanceOf(List).isRequired,
+  isReady: PropTypes.bool.isRequired,
+  selectedVehicleId: PropTypes.string,
+  selectedVehicleName: PropTypes.string,
+  translations: makePhrasesShape(phrases).isRequired,
 };
 
 Content.defaultProps = {
@@ -87,4 +103,4 @@ Content.defaultProps = {
   selectedVehicleName: undefined,
 };
 
-export default Content;
+export default translate(phrases)(Content);

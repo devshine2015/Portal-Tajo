@@ -1,6 +1,6 @@
 import React from 'react';
-import Content from './components/Content/ConnectedContent';
-import VehiclesList from './components/VehiclesList/ConnectedVehiclesList';
+import Content from './components/Content';
+import VehiclesList from './components/VehiclesList';
 
 const AlertLogs = () => (
   <div style={{ height: '100%' }}>

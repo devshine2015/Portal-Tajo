@@ -31,6 +31,7 @@ export default StyleSheet.create({
 
   label: {
     textAlign: 'right',
+    textTransform: 'capitalize',
     color: 'rgba(0,0,0,.55)',
     fontWeight: 600,
     fontSize: 14,

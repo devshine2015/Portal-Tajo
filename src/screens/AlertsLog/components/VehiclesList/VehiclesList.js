@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import VehiclesList from 'components/InstancesList';
@@ -39,17 +39,17 @@ class AlertsVehiclesList extends React.Component {
 }
 
 AlertsVehiclesList.propTypes = {
-  filterFunc: React.PropTypes.func.isRequired,
-  selectVehicle: React.PropTypes.func.isRequired,
-  vehicles: React.PropTypes.arrayOf(
-    React.PropTypes.shape(vehicleShape).isRequired,
+  filterFunc: PropTypes.func.isRequired,
+  selectVehicle: PropTypes.func.isRequired,
+  vehicles: PropTypes.arrayOf(
+    PropTypes.shape(vehicleShape).isRequired,
   ).isRequired,
   // array of ids
-  selectedVehicles: React.PropTypes.arrayOf(
-    React.PropTypes.string.isRequired,
+  selectedVehicles: PropTypes.arrayOf(
+    PropTypes.string.isRequired,
   ),
-  selectedVehicleId: React.PropTypes.string,
-  filterString: React.PropTypes.string,
+  selectedVehicleId: PropTypes.string,
+  filterString: PropTypes.string,
 };
 
 AlertsVehiclesList.defaultProps = {
