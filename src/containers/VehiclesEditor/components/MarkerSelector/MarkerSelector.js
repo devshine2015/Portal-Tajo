@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { css } from 'aphrodite/no-important';
 import markerTypes from 'services/FleetModel/utils/markerTypes';
 import {
   SelectField,
   MenuItem,
 } from 'material-ui';
+import {
+  translate,
+  makePhrasesShape,
+} from 'utils/i18n';
 import classes from './classes';
+import phrases from './PropTypes';
 
 // let SelectedKindIcon = () => null;
 const STYLES = {
@@ -17,7 +22,7 @@ const STYLES = {
 
 class MarkerSelector extends React.PureComponent {
   renderMarkerMenuItems() {
-    return Object.keys(markerTypes).map(key => {
+    return Object.keys(markerTypes).map((key) => {
       const kind = markerTypes[key];
       // const Icon = () => React.cloneElement(kind.icon, {
       //   className: css(classes.vehicleIcon),
@@ -26,7 +31,7 @@ class MarkerSelector extends React.PureComponent {
         <MenuItem
           key={kind}
           value={kind}
-          primaryText={ kind }
+          primaryText={this.props.translations[kind]}
           style={STYLES.menuItem}
         />
       );
@@ -35,17 +40,21 @@ class MarkerSelector extends React.PureComponent {
 
   render() {
     return (
-      <div className={css(classes.kindOfSelector)} key="marker" >
+      <div className={css(classes.kindOfSelector)}>
         <div className={css(classes.kindOfLabel)}>
-          <span className={css(classes.kindOfName)}> Map Marker</span>
+          <span className={css(classes.kindOfName)}>
+            { this.props.translations.map_marker }
+          </span>
         </div>
         <SelectField
           autoWidth
-          hintText={'marker kind'}
           name="markerKind"
           value={this.props.kind}
           onChange={this.props.onChange}
-          style={{ top: -12, width: 100, }}
+          style={{
+            top: -12,
+            width: 100,
+          }}
         >
           {this.renderMarkerMenuItems()}
         </SelectField>
@@ -54,8 +63,9 @@ class MarkerSelector extends React.PureComponent {
 }
 
 MarkerSelector.propTypes = {
-  kind: React.PropTypes.string.isRequired,
-  onChange: React.PropTypes.func.isRequired,
+  kind: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  translations: makePhrasesShape(phrases).isRequired,
 };
 
-export default MarkerSelector;
+export default translate(phrases)(MarkerSelector);

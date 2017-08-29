@@ -76,7 +76,6 @@ export default {
 
   // report available types
   date: 'tanggal',
-  name: 'nama kendaraan',
   mileage: 'jarak tempuh mengemudi (km.)',
   minTemp: 'temperatur minimum',
   maxTemp: 'temperatur maksimum',
@@ -123,6 +122,17 @@ export default {
   odometer_value: 'odometer (km.)',
   vehicle_kind_hint: 'Jenis Kendaraan',
   disable: 'disable',
+  parameters: 'parameter',
+  driver: 'pengemudi',
+  select_driver: 'pilih pengemudi',
+  map_marker: 'penanda',
+  icon: 'ikon',
+  alerts: 'alerts',
+  no_alerts: 'tidak ada peringatan',
+  maintenance: 'perawatan',
+  name: 'nama',
+  on_enter_location: 'di lokasi masuk',
+  on_exit_location: 'di lokasi keluar',
   // -- end vehicle details
 
   // vehicle kinds

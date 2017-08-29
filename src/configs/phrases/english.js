@@ -13,7 +13,7 @@ export default {
   // -- end generic
 
   // chronicle
-  loading: 'LOADING...',
+  loading: 'loading...',
   please_wait: 'please wait',
   no_data: 'NO DATA',
   please_select_vehicle: 'please select vehicle',
@@ -76,7 +76,6 @@ export default {
 
   // report available types
   date: 'date',
-  name: 'vehicle name',
   mileage: 'driving distance (km.)',
   minTemp: 'min. temperature',
   maxTemp: 'max. temperature',
@@ -126,6 +125,18 @@ export default {
   odometer_value: 'Odometer (km.)',
   vehicle_kind_hint: 'Kind of the Vehicle',
   disable: 'disable',
+  parameters: 'parameters',
+  driver: 'driver',
+  select_driver: 'select driver',
+  map_marker: 'map marker',
+  icon: 'icon',
+  alerts: 'alerts',
+  no_alerts: 'no alerts',
+  maintenance: 'maintenance',
+  name: 'name',
+  on_enter_location: 'on enter location',
+  on_exit_location: 'on exit location',
+  add: 'add',
   // -- end vehicle details
 
   // vehicle kinds

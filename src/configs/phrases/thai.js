@@ -71,7 +71,6 @@ export default {
 
   // report available types
   date: 'วันที่',
-  name: 'ชื่อยานพาหนะ',
   mileage: 'ระยะทาง (กิโลเมตร)',
   minTemp: 'อุณหภูมิต่ำสุด',
   maxTemp: 'อุณหภูมิสูงสุด',
@@ -116,6 +115,18 @@ export default {
   year_of_manufacture: 'ปีที่ผลิต',
   odometer_value: 'มาตรวัดระยะทาง (กิโลเมตร)',
   vehicle_kind_hint: 'ประเภทของยานพาหนะ',
+  disable: 'disable',
+  parameters: 'พารามิเตอร์',
+  driver: 'คนขับรถ',
+  select_driver: 'เลือกคนขับรถ',
+  map_marker: 'เครื่องหมายแผนที่',
+  icon: 'ไอคอน',
+  alerts: 'alerts',
+  no_alerts: 'ไม่มีการแจ้งเตือน',
+  maintenance: 'ซ่อมบำรุง',
+  name: 'ชื่อ',
+  on_enter_location: 'เข้าสู่ตำแหน่งที่ตั้ง',
+  on_exit_location: 'ทางออกตำแหน่งที่ตั้ง ',
   // -- end vehicle details
 
   // vehicle kinds

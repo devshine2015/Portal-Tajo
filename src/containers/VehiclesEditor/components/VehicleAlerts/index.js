@@ -1,17 +1,22 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
+import { isAlerts } from 'configs';
+import {
+  translate,
+  makePhrasesShape,
+} from 'utils/i18n';
+import { ifArraysEqual } from 'utils/arrays';
+import { conditionsActions } from 'services/AlertsSystem/actions';
+import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import { getVehicleAlertConditions,
     getAlertConditionByIdFunc, getAlertConditions } from 'services/AlertsSystem/reducer';
 import Layout from 'components/Layout';
 import FormButtons from 'components/Controls/FormButtons';
-import { conditionsActions } from 'services/AlertsSystem/actions';
-import * as alertKinds from 'services/AlertsSystem/alertKinds';
-import { isAlerts } from 'configs';
-import { ifArraysEqual } from 'utils/arrays';
 import AlertOfKindMultiSelector from './AlertOfKindMultiSelector';
 import AlertOfKindSelector from './AlertsOfKindSelector';
 import AlertOfKindToggle from './AlertsOfKindToggle';
+import phrases from './PropTypes';
 
 class VehicleAlerts extends React.Component {
   constructor(props) {
@@ -101,10 +106,12 @@ class VehicleAlerts extends React.Component {
     const haveAlertConditions = this.props.alertConditions.length > 0;
     if (!haveAlertConditions) return null;
     const isTouched = this.props.getVehicleAlerts(this.props.vehicleId) === null
-     || !ifArraysEqual(this.state.alerts, this.props.getVehicleAlerts(this.props.vehicleId));
+    || !ifArraysEqual(this.state.alerts, this.props.getVehicleAlerts(this.props.vehicleId));
+    const { translations } = this.props;
+
     return (
       <Layout.Section>
-        <Layout.Header label={`ALERTS${this.state.isLoading ? ' loading...' : ''}`} />
+        <Layout.Header label={`${translations.alerts}${this.state.isLoading ? ` ${translations.loading}` : ''}`} />
         <Layout.Content>
           <AlertOfKindSelector
             myKind={alertKinds._ALERT_KIND_SPEEDING}
@@ -122,7 +129,7 @@ class VehicleAlerts extends React.Component {
             vehicleAlerts={this.state.alerts}
           />
           <AlertOfKindMultiSelector
-            title="Maintenance"
+            title={translations.maintenance}
             vehicleAlerts={this.state.alerts}
             vehicleId={this.props.vehicleId}
             doAddAlert={this.doAddAlert}
@@ -131,7 +138,7 @@ class VehicleAlerts extends React.Component {
           />
           {/* put all the GF alerts with chips here?*/}
           <AlertOfKindMultiSelector
-            title="On Enter Location"
+            title={translations.on_enter_location}
             vehicleAlerts={this.state.alerts}
             vehicleId={this.props.vehicleId}
             doAddAlert={this.doAddAlert}
@@ -139,7 +146,7 @@ class VehicleAlerts extends React.Component {
             alertFilter={a => (a.kind === alertKinds._ALERT_KIND_GF && a.onEnter === true)}
           />
           <AlertOfKindMultiSelector
-            title="On Exit Location"
+            title={translations.on_exit_location}
             vehicleAlerts={this.state.alerts}
             vehicleId={this.props.vehicleId}
             doAddAlert={this.doAddAlert}
@@ -149,7 +156,7 @@ class VehicleAlerts extends React.Component {
           <FormButtons
             onSubmit={this.saveAlerts}
             onCancel={this.resetChange}
-            cancelLabel={'reset'}
+            cancelLabel={translations.reset}
             isDisabled={!isTouched}
           />
         </Layout.Content>
@@ -159,12 +166,13 @@ class VehicleAlerts extends React.Component {
 }
 
 VehicleAlerts.propTypes = {
-  vehicleId: React.PropTypes.string.isRequired,
-  getVehicleAlerts: React.PropTypes.func.isRequired,
-  fetchVehicleAlertConditions: React.PropTypes.func.isRequired,
-  postVehicleAlertConditions: React.PropTypes.func.isRequired,
-  alertById: React.PropTypes.func.isRequired,
-  alertConditions: React.PropTypes.array.isRequired,
+  vehicleId: PropTypes.string.isRequired,
+  getVehicleAlerts: PropTypes.func.isRequired,
+  fetchVehicleAlertConditions: PropTypes.func.isRequired,
+  postVehicleAlertConditions: PropTypes.func.isRequired,
+  alertById: PropTypes.func.isRequired,
+  alertConditions: PropTypes.array.isRequired,
+  translations: makePhrasesShape(phrases).isRequired,
 };
 
 const mapState = state => ({
@@ -179,5 +187,5 @@ const mapDispatch = {
 
 const PureVehicleAlerts = pure(VehicleAlerts);
 
-export default connect(mapState, mapDispatch)(PureVehicleAlerts);
+export default connect(mapState, mapDispatch)(translate(phrases)(PureVehicleAlerts));
 

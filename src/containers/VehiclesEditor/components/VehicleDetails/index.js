@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import pure from 'recompose/pure';
 import R from 'ramda';
 import {
@@ -6,23 +6,20 @@ import {
   Checkbox,
 } from 'material-ui';
 import { permissions } from 'configs/roles';
+import {
+  translate,
+  makePhrasesShape,
+} from 'utils/i18n';
+import permitted from 'utils/permissionsRequired';
 import Layout from 'components/Layout';
 import FormButtons from 'components/Controls/FormButtons';
-
 import DeviceEditor from '../DeviceEditor';
 import VehicleAlerts from '../VehicleAlerts';
 import VehicleKindSelector from '../VehicleKindSelector';
 import MarkerSelector from '../MarkerSelector/MarkerSelector';
 import DriverSelector from '../DriverSelector/DriverSelector';
-// import VehicleDisabler from '../VehicleDisabler';
-import { translate } from 'utils/i18n';
-import permitted from 'utils/permissionsRequired';
-
 import styles from './styles.css';
-import phrases, {
-  phrasesShape,
-  detailsShape,
-} from './PropTypes';
+import phrases, { detailsShape } from './PropTypes';
 
 const PERMISSIONS = [
   permissions.VEHICLE_DISABLE,
@@ -166,7 +163,7 @@ class VehicleDetails extends React.Component {
     return (
       <div className={styles.details}>
         <Layout.Section>
-          <Layout.Header label={'PARAMETERS'} />
+          <Layout.Header label={translations.parameters} />
           <Layout.Content>
             <TextField
               fullWidth
@@ -236,14 +233,12 @@ class VehicleDetails extends React.Component {
             <FormButtons
               onSubmit={this.onSubmit}
               onCancel={this.resetChanges}
-              cancelLabel={'reset'}
+              cancelLabel={translations.reset}
               isDisabled={!this.state.isTouched}
             />
           </Layout.Content>
         </Layout.Section>
-        <VehicleAlerts
-          vehicleId={this.props.details.id}
-        />
+        <VehicleAlerts vehicleId={this.props.details.id} />
         {/* <Layout.Section>
             <div className={styles.buttons}>
               <ButtonWithProgress
@@ -283,17 +278,17 @@ class VehicleDetails extends React.Component {
 }
 
 VehicleDetails.propTypes = {
-  // disabled: React.PropTypes.bool.isRequired,
-  // isLoading: React.PropTypes.bool.isRequired,
+  // disabled: PropTypes.bool.isRequired,
+  // isLoading: PropTypes.bool.isRequired,
   details: detailsShape.isRequired,
-  onSave: React.PropTypes.func.isRequired,
-  onCancel: React.PropTypes.func.isRequired,
-  // onDisable: React.PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  // onDisable: PropTypes.func.isRequired,
 
-  translations: phrasesShape.isRequired,
+  translations: makePhrasesShape(phrases).isRequired,
 
-  // userPermittedTo: React.PropTypes.shape({
-  //   [permissions.VEHICLE_DISABLE]: React.PropTypes.bool.isRequired,
+  // userPermittedTo: PropTypes.shape({
+  //   [permissions.VEHICLE_DISABLE]: PropTypes.bool.isRequired,
   // }),
 };
 

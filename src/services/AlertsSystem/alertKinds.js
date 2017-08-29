@@ -60,7 +60,7 @@ export const ALERT_KINDS = [
     ),
   }, {
     value: _ALERT_KIND_ODO,
-    niceName: 'Odometr',
+    niceName: 'Odometer',
     icon: <IconOdo />,
     makeBEObject: (inState) => (
       {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { css } from 'aphrodite/no-important';
@@ -6,9 +6,13 @@ import {
   SelectField,
   MenuItem,
 } from 'material-ui';
-import classes from './classes';
-
+import {
+  translate,
+  makePhrasesShape,
+} from 'utils/i18n';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
+import classes from './classes';
+import phrases from './PropTypes';
 
 // let SelectedKindIcon = () => null;
 const STYLES = {
@@ -29,13 +33,17 @@ class DriverSelector extends React.PureComponent {
   }
 
   render() {
+    const { translations } = this.props;
+
     return (
-      <div className={css(classes.kindOfSelector)} key="driver" >
+      <div className={css(classes.kindOfSelector)}>
         <div className={css(classes.kindOfLabel)}>
-          <span className={css(classes.kindOfName)}> Driver</span>
+          <span className={css(classes.kindOfName)}>
+            { translations.driver }
+          </span>
         </div>
         <SelectField
-          hintText={'select driver'}
+          hintText={translations.select_driver}
           name="driver"
           value={this.props.driverId}
           onChange={this.props.onChange}
@@ -48,15 +56,15 @@ class DriverSelector extends React.PureComponent {
 }
 
 DriverSelector.propTypes = {
-  driverId: React.PropTypes.string,
-  drivers: React.PropTypes.array.isRequired,
-  onChange: React.PropTypes.func.isRequired,
+  driverId: PropTypes.string,
+  drivers: PropTypes.array.isRequired,
+  onChange: PropTypes.func.isRequired,
+  translations: makePhrasesShape(phrases).isRequired,
 };
 
 const mapState = state => ({
   drivers: fromFleetReducer.getDrivers(state),
 });
-const mapDispatch = {
-};
+const mapDispatch = null;
 
-export default connect(mapState, mapDispatch)(pure(DriverSelector));
+export default connect(mapState, mapDispatch)(pure(translate(phrases)(DriverSelector)));

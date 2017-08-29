@@ -1,26 +1,22 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { VelocityTransitionGroup } from 'velocity-react';
 import { Chip, Card, CardHeader, CardText } from 'material-ui';
-
+import {
+  translate,
+  makePhrasesShape,
+} from 'utils/i18n';
 import MainActionButton from 'components/Controls/MainActionButton';
-// import Layout from 'components/Layout';
-
-import AlertsList from './AlertsList';
-
 import { getAlertConditionByIdFunc } from 'services/AlertsSystem/reducer';
-
+import AlertsList from './AlertsList';
 import styles from './styles.css';
+import phrases from './PropTypes';
 
 const stylesChip = {
   margin: 4,
   height: 32,
 };
-
-// const stylesAddBtn = {
-//   float: 'right',
-// };
 
 class AlertOfKindMultiSelector extends React.Component {
   constructor(props) {
@@ -43,8 +39,7 @@ class AlertOfKindMultiSelector extends React.Component {
     this.setState({ isAdding: false });
   }
   render() {
-    // const alertKindData = alertKinds.getAlertByKind(alertKinds._ALERT_KIND_GF);
-    // <Avatar color="#156671" icon={alertKindData.icon} />
+    const { translations } = this.props;
     const myGFAlerts = this.props.vehicleAlerts.map(alertId => (this.props.alertById(alertId)))
         .filter(alrt => alrt !== null && this.props.alertFilter(alrt))
         .map(alrt => (
@@ -55,6 +50,8 @@ class AlertOfKindMultiSelector extends React.Component {
           >
             {alrt.gfName !== '' ? alrt.gfName : alrt.name}
           </Chip>));
+    const cardTitleAlertsAmount = myGFAlerts.length === 0 ? translations.no_alerts : `${myGFAlerts.length} ${translations.alerts}`;
+
     return (
       <Card
         className={styles.wrapper}
@@ -62,8 +59,7 @@ class AlertOfKindMultiSelector extends React.Component {
         onExpandChange={this.handleExpandChange}
       >
         <CardHeader
-          title={`${this.props.title}:
-            ${myGFAlerts.length === 0 ? 'no' : myGFAlerts.length} alerts`}
+          title={`${this.props.title}: ${cardTitleAlertsAmount}`}
           actAsExpander
           showExpandableButton
         />
@@ -79,7 +75,7 @@ class AlertOfKindMultiSelector extends React.Component {
               }}
             >
               <MainActionButton
-                label={'ADD'}
+                label={translations.add}
                 onClick={this.onAddClick}
               />
             </div>
@@ -111,21 +107,20 @@ class AlertOfKindMultiSelector extends React.Component {
 }
 
 AlertOfKindMultiSelector.propTypes = {
-  title: React.PropTypes.string.isRequired,
-  alertFilter: React.PropTypes.func.isRequired,
-  vehicleId: React.PropTypes.string.isRequired,
-  vehicleAlerts: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
-  alertById: React.PropTypes.func.isRequired,
-
-  doAddAlert: React.PropTypes.func.isRequired,
-  onRemoveClick: React.PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  alertFilter: PropTypes.func.isRequired,
+  vehicleId: PropTypes.string.isRequired,
+  vehicleAlerts: PropTypes.arrayOf(PropTypes.string).isRequired,
+  alertById: PropTypes.func.isRequired,
+  translations: makePhrasesShape(phrases).isRequired,
+  doAddAlert: PropTypes.func.isRequired,
+  onRemoveClick: PropTypes.func.isRequired,
 };
 
 const mapState = state => ({
   alertById: getAlertConditionByIdFunc(state),
 });
-const mapDispatch = {
-};
+const mapDispatch = null;
 
-export default connect(mapState, mapDispatch)(pure(AlertOfKindMultiSelector));
+export default connect(mapState, mapDispatch)(pure(translate(phrases)(AlertOfKindMultiSelector)));
 

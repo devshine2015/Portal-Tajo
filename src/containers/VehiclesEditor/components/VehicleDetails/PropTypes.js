@@ -5,35 +5,22 @@ const string = PropTypes.string;
 const number = PropTypes.number;
 const oneOfType = PropTypes.oneOfType;
 
-const phrases = {
-  vehicle_name: 'Vehicle Name',
-  license: 'License Plate Number',
-  imei: 'IMEI',
-  manufacturer: 'Manufacturer',
-  odo_in_miles: 'ODO value in miles',
-  model_name: 'Model Name',
-  year: 'Year of Manufacture',
-  odometer_value: 'Odometer (km.)',
-  vehicle_kind_hint: 'Kind of the Vehicle',
-  save: 'Save',
-  cancel: 'Cancel',
-  disable: 'disable',
-};
-
-export const phrasesShape = shape({
-  vehicle_name: string.isRequired,
-  license: string.isRequired,
-  imei: string.isRequired,
-  manufacturer: string.isRequired,
-  odo_in_miles: string.isRequired,
-  model_name: string.isRequired,
-  year: string.isRequired,
-  odometer_value: string.isRequired,
-  save: string.isRequired,
-  cancel: string.isRequired,
-  vehicle_kind_hint: string.isRequired,
-  disable: string.isRequired,
-});
+const phrases = [
+  'vehicle_name',
+  'license',
+  'imei',
+  'manufacturer',
+  'odo_in_miles',
+  'model_name',
+  'year',
+  'odometer_value',
+  'vehicle_kind_hint',
+  'save',
+  'cancel',
+  'disable',
+  'parameters',
+  'reset',
+];
 
 export const detailsShape = shape({
   id: string.isRequired,
