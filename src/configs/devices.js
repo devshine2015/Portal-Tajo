@@ -73,6 +73,10 @@ const rawDevices = [{
   manufacturer: 'GlobalStar',
   model: 'SmartOne C (SAT)',
   name: 'Drvr SmartOne C (SAT)',
+}, {
+  manufacturer: 'Teltonika',
+  model: 'FM3600',
+  name: 'Drvr FM3600 (SAT)',
 }];
 
 let devices;
