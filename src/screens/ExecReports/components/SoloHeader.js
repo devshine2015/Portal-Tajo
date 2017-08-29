@@ -1,21 +1,55 @@
-//
-// one vehicle report
-//
-import React from 'react';
+import React, { PropTypes } from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import Layout from 'components/Layout';
-
+import {
+  translate,
+  makePhrasesShape,
+} from 'utils/i18n';
 import { getVehicleByValue } from 'services/FleetModel/utils/vehiclesMap';
 import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
-import { getInstanceExecReportFrameById } from './../services/reducer';
+import Layout from 'components/Layout';
+import { getInstanceExecReportFrameById } from '../services/reducer';
+import phrases from './PropTypes';
 
-// import classes from './classes';
+const STYLES = {
+  title: {
+    textTransform: 'capitalize',
+  },
+  value: {
+    paddingLeft: 8,
+    paddingRight: 12,
+    fontWeight: 'bolder',
+  },
+};
+
+const Title = ({ text }) => (
+  <span style={STYLES.title}>
+    { `${text}:` }
+  </span>
+);
+
+Title.propTypes = {
+  text: PropTypes.string.isRequired,
+};
+
+const Value = ({ text }) => (
+  <span style={STYLES.value}>
+    { text }
+  </span>
+);
+
+Value.propTypes = {
+  text: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
+};
 
 const SoloHeader = ({
   vehicleId,
   getSoloReportById,
   getVehicleById,
+  translations,
 }, context) => {
   const theVehicle = getVehicleById(vehicleId);
   const reportFrame = getSoloReportById(vehicleId);
@@ -35,43 +69,20 @@ const SoloHeader = ({
         style={{ textAlign: 'center', paddingLeft: 0 }}
       />
       <div style={propDivStyle}>
-        <span >
-          Kind:
-        </span>
-        <span style={{ paddingLeft: 8, paddingRight: 12, fontWeight: 'bolder' }}>
-          {kindLabel}
-        </span>
+        <Title text={translations.kind} />
+        <Value text={kindLabel} />
       </div>
       <div style={propDivStyle}>
-        <span >
-          Licence Plate:
-        </span>
-        <span style={{ paddingLeft: 8, fontWeight: 'bolder' }}>
-          {theVehicle.original.licensePlate}
-        </span>
+        <Title text={translations.license} />
+        <Value text={theVehicle.original.licensePlate} />
       </div>
       <div style={propDivStyle}>
-        {/* <span >
-          {`Make: ${theVehicle.original.make}  Model: ${theVehicle.original.model}  Year: ${theVehicle.original.year}`}
-        </span>*/}
-        <span >
-          Make:
-        </span>
-        <span style={{ paddingLeft: 8, paddingRight: 12, fontWeight: 'bolder' }}>
-          {theVehicle.original.make}
-        </span>
-        <span >
-          Model:
-        </span>
-        <span style={{ paddingLeft: 8, paddingRight: 12, fontWeight: 'bolder' }}>
-          {theVehicle.original.model}
-        </span>
-        <span>
-          Year:
-        </span>
-        <span style={{ paddingLeft: 8, paddingRight: 12, fontWeight: 'bolder' }}>
-          {theVehicle.original.year}
-        </span>
+        <Title text={translations.make} />
+        <Value text={theVehicle.original.make} />
+        <Title text={translations.model_name} />
+        <Value text={theVehicle.original.model} />
+        <Title text={translations.year} />
+        <Value text={theVehicle.original.year} />
       </div>
       {/* <div style={propDivStyle}>
         <span >
@@ -90,47 +101,34 @@ const SoloHeader = ({
         </span>
       </div>*/}
       <div style={propDivStyle}>
-        <span >
-          Report from:
-        </span>
-        <span style={{ paddingLeft: 8, paddingRight: 8, fontWeight: 'bolder' }}>
-          {reportFrame.dateFrom.toLocaleString()}
-        </span>
-        <span >
-          to:
-        </span>
-        <span style={{ paddingLeft: 8, fontWeight: 'bolder' }}>
-          {reportFrame.dateTo.toLocaleString()}
-        </span>
+        <Title text={translations.report_from} />
+        <Value text={reportFrame.dateFrom.toLocaleString()} />
+        <Title text={translations.to} />
+        <Value text={reportFrame.dateTo.toLocaleString()} />
       </div>
       <div style={propDivStyle}>
-        <span >
-          Trips:
-        </span>
-        <span style={{ paddingLeft: 8, fontWeight: 'bolder' }}>
-          {reportFrame.getValidTrips().length}
-        </span>
+        <Title text={translations.trips} />
+        <Value text={reportFrame.getValidTrips().length} />
       </div>
     </Layout.Content>
   );
 };
 
 SoloHeader.contextTypes = {
-  translator: React.PropTypes.object.isRequired,
+  translator: PropTypes.object.isRequired,
 };
 
 SoloHeader.propTypes = {
-  vehicleId: React.PropTypes.string.isRequired,
-
-  getSoloReportById: React.PropTypes.func.isRequired,
-  getVehicleById: React.PropTypes.func.isRequired,
+  vehicleId: PropTypes.string.isRequired,
+  translations: makePhrasesShape(phrases).isRequired,
+  getSoloReportById: PropTypes.func.isRequired,
+  getVehicleById: PropTypes.func.isRequired,
 };
 
 const mapState = state => ({
   getSoloReportById: getInstanceExecReportFrameById(state),
   getVehicleById: getVehicleByIdFunc(state),
 });
-const mapDispatch = {
-};
+const mapDispatch = null;
 
-export default connect(mapState, mapDispatch)(pure(SoloHeader));
+export default connect(mapState, mapDispatch)(pure(translate(phrases)(SoloHeader)));

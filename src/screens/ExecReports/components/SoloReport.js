@@ -1,32 +1,29 @@
-//
-// one vehicle report
-//
-import React from 'react';
+import React, { PropTypes } from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-
 import { VelocityTransitionGroup } from 'velocity-react';
 import Toggle from 'material-ui/Toggle';
+import {
+  translate,
+  makePhrasesShape,
+} from 'utils/i18n';
+import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
 import Layout from 'components/Layout';
+import MainActionButton from 'components/Controls/MainActionButton';
 import AnimatedLogo from 'components/animated';
-
 import SoloHeader from './SoloHeader';
 // import SoloDetails from './SoloDetails';
 // import TripsReport from './TripsReport';
 import NoPrint from './NoPrint';
 import TripsTimeLine from './TimeLine/TripsTimeLine';
 // import ReportMap from './ReportMap';
-
 import UglyTable from './UglyTable/UglyTable';
 import TotalsTable from './TotalsTable/TotalsTable';
 import generatReportPDF from './UglyTable/UglyTablePDF';
 import generatReportSpreadsheet from './UglyTable/UglyTableSpreadsheet';
 // import EventsTable from './EventsTable/EventsTable';
-
-import MainActionButton from 'components/Controls/MainActionButton';
-
 import { getInstanceExecReportFrameById } from './../services/reducer';
-import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
+import phrases from './PropTypes';
 
 class SoloReport extends React.Component {
 
@@ -70,6 +67,7 @@ class SoloReport extends React.Component {
 
 
   render() {
+    const { translations } = this.props;
     const reportFrame = this.props.getSoloReportById(this.props.vehicleId);
     if (reportFrame.isLoading()) {
       return <AnimatedLogo.FullscreenLogo />;
@@ -92,7 +90,7 @@ class SoloReport extends React.Component {
             <SoloDetails vehicleId={this.props.vehicleId} />
           </Layout.Section>*/}
           <Layout.Section style={sectionStyle}>
-            <Layout.Header label={'TRIP DETAILS'} />
+            <Layout.Header label={translations.trip_details} />
             <NoPrint style={{ padding: 20 }}>
               <Toggle
                 labelPosition="right"
@@ -107,14 +105,14 @@ class SoloReport extends React.Component {
               <TotalsTable vehicleId={this.props.vehicleId} />}
               <div style={{ }}>
                 <MainActionButton
-                  label={'Save Spreadsheet'}
+                  label={translations.save_spreadsheet}
                   onClick={this.doSaveEXCEL}
                   icon={null}
                 />
               </div>
               <div style={{ paddingBottom: 20 }}>
                 <MainActionButton
-                  label={'Save PDF'}
+                  label={translations.save_pdf}
                   onClick={this.doSavePDF}
                   icon={null}
                 />
@@ -133,7 +131,7 @@ class SoloReport extends React.Component {
           {this.state.events &&
           <EventsTable vehicleId={this.props.vehicleId} />}*/}
           <Layout.Section style={sectionStyle}>
-            <Layout.Header label={'TIMELINE'} />
+            <Layout.Header label={translations.timeline} />
             <NoPrint style={{ padding: 20 }}>
               <Toggle
                 labelPosition="right"
@@ -154,7 +152,7 @@ class SoloReport extends React.Component {
         </div>
         <div style={{ margin: 32 }}>
           <MainActionButton
-            label={'PRINT'}
+            label={translations.print}
             onClick={this.doPrint}
             icon={null}
           />
@@ -165,9 +163,10 @@ class SoloReport extends React.Component {
 }
 
 SoloReport.propTypes = {
-  vehicleId: React.PropTypes.string.isRequired,
-  getSoloReportById: React.PropTypes.func.isRequired,
-  getVehicleById: React.PropTypes.func.isRequired,
+  vehicleId: PropTypes.string.isRequired,
+  getSoloReportById: PropTypes.func.isRequired,
+  getVehicleById: PropTypes.func.isRequired,
+  translations: makePhrasesShape(phrases).isRequired,
 };
 
 const mapState = state => ({
@@ -175,7 +174,6 @@ const mapState = state => ({
   getVehicleById: getVehicleByIdFunc(state),
 });
 
-const mapDispatch = {
-};
+const mapDispatch = null;
 
-export default connect(mapState, mapDispatch)(pure(SoloReport));
+export default connect(mapState, mapDispatch)(pure(translate(phrases)(SoloReport)));

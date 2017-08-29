@@ -113,7 +113,7 @@ export default {
   // vehicle details
   manufacturer: 'ผู้ผลิต',
   model_name: 'รุ่น',
-  year: 'ปีที่ผลิต',
+  year_of_manufacture: 'ปีที่ผลิต',
   odometer_value: 'มาตรวัดระยะทาง (กิโลเมตร)',
   vehicle_kind_hint: 'ประเภทของยานพาหนะ',
   // -- end vehicle details
@@ -282,4 +282,21 @@ export default {
   total: 'ทั้งหมด',
   filter_by_type: 'กรองตามประเภท',
   // -- end alerts editor
+
+  // -- trips report
+  report_from: 'รายงานจาก',
+  trips: 'การเดินทาง',
+  trip_details: 'รายละเอียดการเดินทาง',
+  save_spreadsheet: 'บันทึกสเปรดชีต',
+  save_pdf: 'บันทึก pdf',
+  timeline: 'ไทม์ไลน์',
+  print: 'พิมพ์',
+  rest_duration: 'ระยะเวลาพัก',
+  start: 'เริ่ม',
+  end: 'จบ',
+  operation_duration: 'ระยะเวลาการดำเนินการ',
+  idle: 'ว่าง',
+  distance: 'ระยะทาง',
+  average_speed: 'ความเร็วเฉลี่ย',
+  // -- end trips report
 };

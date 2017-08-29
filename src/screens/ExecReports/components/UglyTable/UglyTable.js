@@ -1,14 +1,6 @@
-//
-// one vehicle report
-//
-import React from 'react';
+import React, { PropTypes } from 'react';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import { metersToKmString, speedToString, msToTimeIntervalString,
-  dateToHHMM, temperatureToString } from 'utils/convertors';
-
-import Layout from 'components/Layout';
-
 import {
   Table,
   TableBody,
@@ -17,9 +9,21 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
-
+import {
+  metersToKmString,
+  speedToString,
+  msToTimeIntervalString,
+  dateToHHMM,
+  temperatureToString,
+} from 'utils/convertors';
+import {
+  translate,
+  makePhrasesShape,
+} from 'utils/i18n';
+import Layout from 'components/Layout';
 import { getInstanceExecReportFrameById } from './../../services/reducer';
 import styles from './styles.css';
+import phrases from '../PropTypes';
 
 const btmColorStyle = { borderBottomColor: 'gray' };
 // const totalRowStyle = { WebkitPrintColorAdjust: 'exact', backgroundColor: 'beige', fontWeight: 'bold' };
@@ -31,6 +35,7 @@ const cellStyle = {
   paddingLeft: '4px',
   paddingRight: '4px',
   fontSize: '11px',
+  textTransform: 'capitalize',
 };
 const nameCellStyle = {
   width: '20%',
@@ -39,6 +44,7 @@ const nameCellStyle = {
   paddingLeft: '4px',
   paddingRight: '4px',
   fontSize: '11px',
+  textTransform: 'capitalize',
 };
 
 // const boldStyle = {
@@ -68,7 +74,7 @@ const TripRow = ({
   </TableRow>
 );
 TripRow.propTypes = {
-  aTrip: React.PropTypes.object.isRequired,
+  aTrip: PropTypes.object.isRequired,
 };
 
 // maybe we will need to add total row at the end of the table?
@@ -90,12 +96,13 @@ TripRow.propTypes = {
 // );
 
 // TotalRow.propTypes = {
-//   reportFrame: React.PropTypes.object.isRequired,
+//   reportFrame: PropTypes.object.isRequired,
 // };
 
 
 class UglyTable extends React.Component {
   render() {
+    const { translations } = this.props;
     const reportFrame = this.props.getSoloReportById(this.props.vehicleId);
     if (reportFrame === null
       || reportFrame.getValidTrips().length < 1) {
@@ -110,21 +117,21 @@ class UglyTable extends React.Component {
         <Table ref={(input) => { this.tableRef = input; }} selectable={false} style={noBgdStyle}>
           <TableHeader enableSelectAll={false} displaySelectAll={false} adjustForCheckbox={false} style={noBgdStyle}>
             <TableRow style={btmColorStyle}>
-              <TableHeaderColumn style={cellStyle}>Rest Duration</TableHeaderColumn>
-              <TableHeaderColumn style={cellStyle}>Start</TableHeaderColumn>
-              <TableHeaderColumn style={nameCellStyle}>From</TableHeaderColumn>
-              <TableHeaderColumn style={cellStyle}>End</TableHeaderColumn>
-              <TableHeaderColumn style={nameCellStyle}>To</TableHeaderColumn>
-              <TableHeaderColumn style={cellStyle}>Operation Duration</TableHeaderColumn>
-              <TableHeaderColumn style={cellStyle}>Idle</TableHeaderColumn>
-              <TableHeaderColumn style={cellStyle}>Dist</TableHeaderColumn>
-              <TableHeaderColumn style={cellStyle}>MaxV</TableHeaderColumn>
-              <TableHeaderColumn style={cellStyle}>AvgV</TableHeaderColumn>
+              <TableHeaderColumn style={cellStyle}>{ translations.rest_duration }</TableHeaderColumn>
+              <TableHeaderColumn style={cellStyle}>{ translations.start }</TableHeaderColumn>
+              <TableHeaderColumn style={nameCellStyle}>{ translations.from }</TableHeaderColumn>
+              <TableHeaderColumn style={cellStyle}>{ translations.end }</TableHeaderColumn>
+              <TableHeaderColumn style={nameCellStyle}>{ translations.to }</TableHeaderColumn>
+              <TableHeaderColumn style={cellStyle}>{ translations.operation_duration }</TableHeaderColumn>
+              <TableHeaderColumn style={cellStyle}>{ translations.idle }</TableHeaderColumn>
+              <TableHeaderColumn style={cellStyle}>{ translations.distance }</TableHeaderColumn>
+              <TableHeaderColumn style={cellStyle}>{ translations.max_speed }</TableHeaderColumn>
+              <TableHeaderColumn style={cellStyle}>{ translations.average_speed }</TableHeaderColumn>
               {hasT &&
-                <TableHeaderColumn style={cellStyle}>MaxT</TableHeaderColumn>
+                <TableHeaderColumn style={cellStyle}>{ translations.max_temp }</TableHeaderColumn>
               }
               {hasT &&
-                <TableHeaderColumn style={cellStyle}>MinT</TableHeaderColumn>
+                <TableHeaderColumn style={cellStyle}>{ translations.min_temp }</TableHeaderColumn>
               }
             </TableRow>
           </TableHeader>
@@ -138,8 +145,9 @@ class UglyTable extends React.Component {
 }
 
 UglyTable.propTypes = {
-  vehicleId: React.PropTypes.string.isRequired,
-  getSoloReportById: React.PropTypes.func.isRequired,
+  vehicleId: PropTypes.string.isRequired,
+  getSoloReportById: PropTypes.func.isRequired,
+  translations: makePhrasesShape(phrases).isRequired,
 };
 
 const mapState = state => ({
@@ -149,4 +157,4 @@ const mapState = state => ({
 const mapDispatch = {
 };
 
-export default connect(mapState, mapDispatch)(pure(UglyTable));
+export default connect(mapState, mapDispatch)(pure(translate(phrases)(UglyTable)));

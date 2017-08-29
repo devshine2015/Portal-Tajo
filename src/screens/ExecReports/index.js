@@ -75,7 +75,6 @@ class ExecReport extends React.Component {
               onChange={this.onTimeFrameChange}
               fromDate={dateFrom}
               toDate={dateTo}
-              withTime
             />
           </NoPrint>
           <SoloReport vehicleId={this.props.selectedVehicleId} />

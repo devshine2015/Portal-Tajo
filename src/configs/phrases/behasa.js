@@ -119,7 +119,7 @@ export default {
   // vehicle details
   manufacturer: 'pabrikan',
   model_name: 'nomor model',
-  year: 'tanggal pembuatan',
+  year_of_manufacture: 'tanggal pembuatan',
   odometer_value: 'odometer (km.)',
   vehicle_kind_hint: 'Jenis Kendaraan',
   disable: 'disable',
@@ -291,4 +291,21 @@ export default {
   total: 'total',
   filter_by_type: 'saring berdasarkan jenisnya',
   // -- end alerts editor
+
+  // -- trips report
+  report_from: 'laporan dari',
+  trips: 'perjalanan',
+  trip_details: 'rincian perjalanan',
+  save_spreadsheet: 'simpan spreadsheet',
+  save_pdf: 'simpan pdf',
+  timeline: 'waktu',
+  print: 'cetak',
+  rest_duration: 'durasi tersisa',
+  start: 'mulai',
+  end: 'akhir',
+  operation_duration: 'durasi operasi',
+  idle: 'idle',
+  distance: 'jarak',
+  average_speed: 'kecepatan rata-rata',
+  // -- end trips report
 };

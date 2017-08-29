@@ -119,8 +119,10 @@ export default {
 
   // vehicle details
   manufacturer: 'Manufacturer',
+  make: 'make',
   model_name: 'Model Name',
-  year: 'Year of Manufacture',
+  year: 'year',
+  year_of_manufacture: 'Year of Manufacture',
   odometer_value: 'Odometer (km.)',
   vehicle_kind_hint: 'Kind of the Vehicle',
   disable: 'disable',
@@ -296,4 +298,21 @@ export default {
   total: 'total',
   filter_by_type: 'filter by type',
   // -- end alerts editor
+
+  // -- trips report
+  report_from: 'report from',
+  trips: 'trips',
+  trip_details: 'trip details',
+  save_spreadsheet: 'save spreadsheet',
+  save_pdf: 'save pdf',
+  timeline: 'timeline',
+  print: 'print',
+  rest_duration: 'rest duration',
+  start: 'start',
+  end: 'end',
+  operation_duration: 'operation duration',
+  idle: 'idle',
+  distance: 'distance',
+  average_speed: 'average speed',
+  // -- end trips report
 };

@@ -213,7 +213,7 @@ class VehicleDetails extends React.Component {
               fullWidth
               name="year"
               onChange={this.onChange}
-              floatingLabelText={translations.year}
+              floatingLabelText={translations.year_of_manufacture}
               value={this.state.year}
               type="number"
             />
