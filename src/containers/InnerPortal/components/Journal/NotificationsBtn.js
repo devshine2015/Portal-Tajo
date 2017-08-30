@@ -42,14 +42,14 @@ class NotificationsBtn extends Component {
   state = {};
 
   render() {
-    const showBadge = true; //this.props.count !== 0;
+    const showBadge = this.props.count !== 0;
 
     return (
       <IconButton
         style={STYLES.button}
         onClick={this.props.onClick}
       >
-        { showBadge ? <WithBadge count={55} /> : <Icon /> }
+        { showBadge ? <WithBadge count={this.props.count} /> : <Icon /> }
       </IconButton>
     );
   }
