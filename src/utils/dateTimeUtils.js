@@ -87,15 +87,19 @@ function _formatDateForRequest(dateStr) {
 /**
  * Make date string compatible with browsers.
  * i.e. Cut off '+0000' suffix if string has it
+ * and append Z to indicate timezone
  * @param {String} dateStr - date to formate
  * @returns {String} formatted date string
  *
  * @example
  * input - "2017-08-29T04:00:47.000+0000"
- * output = "2017-08-29T04:00:47.000"
+ * output = "2017-08-29T04:00:47.000Z"
  */
 export function formatForBrowsers(dateStr = undefined) {
   if (!dateStr) return dateStr;
 
-  return dateStr.endsWith('+0000') ? dateStr.slice(0, -5) : dateStr;
+  const noZeroes = dateStr.endsWith('+0000') ? dateStr.slice(0, -5) : dateStr;
+  const withZ = !noZeroes.endsWith('Z') ? `${noZeroes}Z` : noZeroes;
+
+  return withZ;
 }
