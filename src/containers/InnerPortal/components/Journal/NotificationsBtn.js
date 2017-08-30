@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { css } from 'aphrodite/no-important';
 import BellInactiveIcon from 'material-ui/svg-icons/social/notifications';
 import {
@@ -34,7 +34,7 @@ const WithBadge = (props) => {
 };
 
 WithBadge.propTypes = {
-  count: React.PropTypes.number.isRequired,
+  count: PropTypes.number.isRequired,
 };
 
 class NotificationsBtn extends Component {
@@ -42,22 +42,22 @@ class NotificationsBtn extends Component {
   state = {};
 
   render() {
-    const showBadge = this.props.count !== 0;
+    const showBadge = true; //this.props.count !== 0;
 
     return (
       <IconButton
         style={STYLES.button}
         onClick={this.props.onClick}
       >
-        { showBadge ? <WithBadge count={this.props.count} /> : <Icon /> }
+        { showBadge ? <WithBadge count={55} /> : <Icon /> }
       </IconButton>
     );
   }
 }
 
 NotificationsBtn.propTypes = {
-  count: React.PropTypes.number,
-  onClick: React.PropTypes.func.isRequired,
+  count: PropTypes.number,
+  onClick: PropTypes.func.isRequired,
 };
 
 NotificationsBtn.defaultProps = {

@@ -175,7 +175,7 @@ class Journal extends React.Component {
 }
 
 Journal.propTypes = {
-  notifications: React.PropTypes.instanceOf(List).isRequired,
+  notifications: PropTypes.instanceOf(List).isRequired,
   translations: makePhrasesShape(notificationPhrases).isRequired,
 };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import moment from 'moment';
 import { css } from 'aphrodite/no-important';
 import DissmissIcon from 'material-ui/svg-icons/content/clear';
@@ -30,8 +30,8 @@ const DissmissBtn = (props) => {
 };
 
 DissmissBtn.propTypes = {
-  id: React.PropTypes.string.isRequired,
-  onClick: React.PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 const EventIcon = ({
@@ -45,7 +45,7 @@ const EventIcon = ({
 };
 
 EventIcon.propTypes = {
-  icon: React.PropTypes.element.isRequired,
+  icon: PropTypes.element.isRequired,
 };
 
 const EventDetails = ({
@@ -70,10 +70,10 @@ const EventDetails = ({
 };
 
 EventDetails.propTypes = {
-  time: React.PropTypes.number.isRequired,
-  eventName: React.PropTypes.string.isRequired,
-  ownerName: React.PropTypes.string.isRequired,
-  kindNiceName: React.PropTypes.string.isRequired,
+  time: PropTypes.number.isRequired,
+  eventName: PropTypes.string.isRequired,
+  ownerName: PropTypes.string.isRequired,
+  kindNiceName: PropTypes.string.isRequired,
 };
 
 const JournalEntry = ({
@@ -102,13 +102,13 @@ const JournalEntry = ({
 };
 
 JournalEntry.propTypes = {
-  id: React.PropTypes.string.isRequired,
-  eventTS: React.PropTypes.number.isRequired,
-  eventKind: React.PropTypes.string.isRequired,
-  eventName: React.PropTypes.string.isRequired,
-  ownerName: React.PropTypes.string.isRequired,
-  onDissmiss: React.PropTypes.func.isRequired,
-  isUnread: React.PropTypes.bool.isRequired,
+  id: PropTypes.string.isRequired,
+  eventTS: PropTypes.number.isRequired,
+  eventKind: PropTypes.string.isRequired,
+  eventName: PropTypes.string.isRequired,
+  ownerName: PropTypes.string.isRequired,
+  onDissmiss: PropTypes.func.isRequired,
+  isUnread: PropTypes.bool.isRequired,
 };
 
 export default JournalEntry;
