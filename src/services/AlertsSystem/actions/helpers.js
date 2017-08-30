@@ -1,7 +1,11 @@
+import R from 'ramda';
 import uuid from 'node-uuid';
 import endpoints from 'configs/endpoints';
 import { api } from 'utils/api';
-import { makeTimeRangeParams } from 'utils/dateTimeUtils';
+import {
+  makeTimeRangeParams,
+  formatForBrowsers,
+} from 'utils/dateTimeUtils';
 import { getVehicleById } from 'services/FleetModel/reducer';
 import { getAlertConditionById } from '../reducer';
 
@@ -53,15 +57,25 @@ export function createJournalEntries(entries = [], state) {
     .map(entry => _createJournalEntry(entry, state));
 }
 
+function getEventDate(alertEvent) {
+  const ts = R.path(['ev', 'ts']);
+  const crossTime = R.path(['ev', 'crossTime']);
+  const hasCrossTime = R.compose(R.not, R.isNil, crossTime);
+  const hasTimestamp = R.compose(R.not, R.isNil, ts);
+  const getCrossTime = R.ifElse(hasCrossTime, crossTime, R.always(0));
+  const getDate = R.compose(formatForBrowsers, R.ifElse(hasTimestamp, ts, getCrossTime));
+
+  return new Date(getDate(alertEvent));
+}
+
 function _createJournalEntry(alertEvent, state) {
-  const crossTime = alertEvent.ev.crossTime !== undefined ? alertEvent.ev.crossTime : 0;
-  const eventDate = new Date(alertEvent.ev.ts !== undefined ? alertEvent.ev.ts : crossTime);
   const imVehicle = getVehicleById(state, alertEvent.ev.vehicleId);
   const imCondition = getAlertConditionById(state, alertEvent.ev.conditionId);
+  const eventDate = getEventDate(alertEvent);
 
   return {
     id: uuid.v4(),
-    eventTS: eventDate.getTime(),
+    eventTS: eventDate.valueOf(),
     eventKind: alertEvent.ev.conditionKind,
     eventName: imCondition.get('name'),
     ownerName: imVehicle.getIn(['original', 'name']),
