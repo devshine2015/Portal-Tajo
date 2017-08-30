@@ -21,14 +21,14 @@ class Content extends React.Component {
     isDefaultRange: true,
   };
 
-  componentDidMount() {
-    if (this.props.isReady) {
+  componentWillMount() {
+    if (this.props.isConditionsReady && this.props.entries.size === 0) {
       this.getLogsForLastDay();
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.props.isReady && nextProps.isReady) {
+    if (!this.props.isConditionsReady && nextProps.isConditionsReady && nextProps.entries.size === 0) {
       this.getLogsForLastDay();
     }
   }
@@ -58,7 +58,7 @@ class Content extends React.Component {
   }
 
   canShowTimeline() {
-    return this.props.isReady;
+    return this.props.isConditionsReady;
   }
 
   render() {
@@ -92,7 +92,7 @@ class Content extends React.Component {
 Content.propTypes = {
   fetchLogs: PropTypes.func.isRequired,
   entries: PropTypes.instanceOf(List).isRequired,
-  isReady: PropTypes.bool.isRequired,
+  isConditionsReady: PropTypes.bool.isRequired,
   selectedVehicleId: PropTypes.string,
   selectedVehicleName: PropTypes.string,
   translations: makePhrasesShape(phrases).isRequired,

@@ -20,7 +20,7 @@ const makeMapStateToProps = () => {
 
     return {
       entries,
-      isReady: getIsConditionsReady(getConditionsSlice(state)),
+      isConditionsReady: getIsConditionsReady(getConditionsSlice(state)),
       selectedVehicleId,
       selectedVehicleName: getVehicleName(getPathToVehicles(state), selectedVehicleId),
     };

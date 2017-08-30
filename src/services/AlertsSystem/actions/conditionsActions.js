@@ -28,7 +28,7 @@ export const ALRT_CONDITONS_SET = 'AlertsSystem/ALERT_CONDITONS_SET';
 export const ALRT_VEHICLE_SET = 'AlertsSystem/vehAlertConditionsSet';
 export const ALRT_CONDITON_DEL = 'AlertsSystem/ALERT_CONDITION_DELETE';
 
-export const createAlertConditions = (newAlerts) => (dispatch, getState) =>
+export const createAlertConditions = newAlerts => (dispatch, getState) =>
   _createAlertConditionRequest(newAlerts, dispatch, getState);
 
 export const deleteAlertCondition = alertId => dispatch =>
@@ -49,6 +49,8 @@ function _fetchConditions(dispatch, getState) {
   const { url, method } = endpoints.getAlertConditions;
   const state = getState();
 
+  dispatch(_conditionsReadySet(false));
+
   return api[method](url)
     .then(toJson)
     .then((conditions) => {
@@ -56,6 +58,7 @@ function _fetchConditions(dispatch, getState) {
     })
     .catch((e) => {
       console.error(e);
+      dispatch(_conditionsReadySet(true));
     });
 }
 function _setConditions(dispatch, state, conditions) {
@@ -71,20 +74,12 @@ function _setConditions(dispatch, state, conditions) {
 function _fetchVehicleAlerConditions(vehicleId, dispatch) {
   const { url, method } = endpoints.getVehicleAlertConditions(vehicleId);
 
-  dispatch(_conditionsReadySet(false));
-
   return api[method](url)
     .then(toJson)
     .then((alerts) => {
-      _setVehicleAlertConditions(dispatch, vehicleId, alerts);
+      dispatch(_vehicleConditionsSet(vehicleId, alerts));
     })
-    .catch((e) => {
-      console.error(e);
-      dispatch(_conditionsReadySet(false));
-    });
-}
-function _setVehicleAlertConditions(dispatch, vehicleId, alertsList) {
-  dispatch(_vehicleConditionsSet(vehicleId, alertsList));
+    .catch(console.error);
 }
 
 function _postVehicleAlerConditions(vehicleId, alerts, dispatch) {
@@ -93,7 +88,7 @@ function _postVehicleAlerConditions(vehicleId, alerts, dispatch) {
   return api[method](url, {
     payload: alerts,
   }).then(() => {
-    _setVehicleAlertConditions(dispatch, vehicleId, alerts);
+    dispatch(_vehicleConditionsSet(vehicleId, alerts));
  // this.props.fetchVehicleAlertConditions(nextProps.vehicleId)
     return Promise.resolve();
   }, error => Promise.reject(error));
