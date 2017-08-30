@@ -1,11 +1,13 @@
 import { createSelector } from 'reselect';
-import { getJournalEntriesNewestFirst } from './reducers/journalReducer';
+import { getEntries } from './reducers/journalReducer';
 import { getLogEntriesNewestFirst } from './reducers/logReducer';
 import { getIsConditionsReady } from './reducers/conditionsReducer';
 
 export const getJournalEntries = () => {
-  return createSelector(getJournalEntriesNewestFirst, (entries) => {
-    return entries;
+  return createSelector(getEntries, (entries) => {
+    return entries.sort((a, b) => {
+      return b.get('eventTS') - a.get('eventTS');
+    });
   });
 };
 
