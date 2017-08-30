@@ -1,6 +1,6 @@
 {
   "name": "drvr.co",
-  "version": "1.3.185",
+  "version": "1.3.186",
   "description": "common code base for DRVR portals",
   "repository": {
     "type": "git",
@@ -11,8 +11,8 @@
     "clean": "rimraf ./build ./builds",
     "clean:escape": "rimraf ./builds/dev/tajo ./builds/prod/tajo",
     "clean:sunshine": "rimraf ./builds/dev/portal ./builds/prod/portal",
-    "precommit": "npm test",
-    "commit": "git-cz",
+    "precz": "npm test",
+    "cz": "git-cz",
     "build:escape": "cross-env NODE_ENV=production DRVR_PROJECT=tajo webpack --config webpack/webpack.prod.js --color",
     "build:sunshine": "cross-env NODE_ENV=production DRVR_PROJECT=portal webpack --config webpack/webpack.prod.js --color",
     "build:escape-dev": "cross-env DRVR_PROJECT=tajo webpack --config webpack/webpack.dev.js --color",
@@ -36,7 +36,7 @@
     }
   },
   "lint-staged": {
-    "*.js": "eslint src/** -c eslintPreCommitConfig.json --quiet --cache"
+    "*.js": "eslint -c eslintPreCommitConfig.json --quiet --cache"
   },
   "dependencies": {
     "aphrodite": "1.0.0",
