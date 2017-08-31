@@ -1,6 +1,6 @@
 {
   "name": "drvr.co",
-  "version": "1.4.66",
+  "version": "1.4.67",
   "description": "common code base for DRVR portals",
   "repository": {
     "type": "git",
@@ -28,7 +28,7 @@
     "pretest": "npm run lint",
     "lintFix": "eslint -c eslintPreCommitConfig.json --quiet --fix",
     "lint": "lint-staged",
-    "test": "NODE_PATH=src NODE_ENV=test mocha"
+    "test": "NODE_PATH=src NODE_ENV=test mocha src/**/specs/*.spec.js"
   },
   "author": "Maksim Orlov, Kirill Bulatsev",
   "license": "ISC",

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import R from 'ramda';
 import { css } from 'aphrodite/no-important';

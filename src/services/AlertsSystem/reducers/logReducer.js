@@ -25,9 +25,6 @@ export default function (state = initialState, action) {
     case SESSION_CLEAN:
       return initialState;
 
-    case cleanSession:
-      return initialState;
-
     default:
       return state;
   }
