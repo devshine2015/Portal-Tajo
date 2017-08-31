@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import * as fromFleetReducer from 'services/FleetModel/reducer';
@@ -75,12 +76,12 @@ class NearestFinder extends React.Component {
 }
 
 NearestFinder.propTypes = {
-  theMap: React.PropTypes.object.isRequired,
-  vehicles: React.PropTypes.array.isRequired,
-  mapStoreRouteObj: React.PropTypes.func.isRequired,
+  theMap: PropTypes.object.isRequired,
+  vehicles: PropTypes.array.isRequired,
+  mapStoreRouteObj: PropTypes.func.isRequired,
 };
 NearestFinder.contextTypes = {
-  translator: React.PropTypes.object.isRequired,
+  translator: PropTypes.object.isRequired,
 };
 
 const mapState = (state) => ({

@@ -1,5 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import R from 'ramda';
+import PropTypes from 'prop-types';
 import { bb } from 'billboard.js';
 import 'billboard.js/dist/billboard.css';
 import { css } from 'aphrodite/no-important';

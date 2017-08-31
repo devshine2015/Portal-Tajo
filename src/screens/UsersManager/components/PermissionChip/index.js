@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import Chip from 'material-ui/Chip';
 import SvgIconDone from 'material-ui/svg-icons/action/done';
@@ -111,10 +112,10 @@ class PermissionChip extends React.Component {
 }
 
 PermissionChip.propTypes = {
-  isActive: React.PropTypes.bool.isRequired,
-  onClick: React.PropTypes.func.isRequired,
-  id: React.PropTypes.string.isRequired,
-  name: React.PropTypes.string.isRequired,
+  isActive: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
 export default pure(PermissionChip);

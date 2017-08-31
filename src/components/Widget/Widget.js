@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import cs from 'classnames';
 import { css } from 'aphrodite/no-important';
 import classes from './classes';

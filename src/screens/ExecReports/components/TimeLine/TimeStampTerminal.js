@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { css } from 'aphrodite/no-important';
 // import { dateToHHMM } from 'utils/convertors';
@@ -20,7 +21,7 @@ const TimeStampTerminal = ({
 );
 
 TimeStampTerminal.propTypes = {
-  date: React.PropTypes.object.isRequired,
+  date: PropTypes.object.isRequired,
 };
 
 export default pure(TimeStampTerminal);

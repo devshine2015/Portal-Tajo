@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import cs from 'classnames';
 
@@ -41,12 +42,12 @@ const Submenu = (props) => (
 );
 
 Submenu.propTypes = {
-  activeIndex: React.PropTypes.number.isRequired,
-  changeSection: React.PropTypes.func.isRequired,
-  subsections: React.PropTypes.arrayOf(
-    React.PropTypes.shape({
-      label: React.PropTypes.string.isRequired,
-      value: React.PropTypes.string.isRequired,
+  activeIndex: PropTypes.number.isRequired,
+  changeSection: PropTypes.func.isRequired,
+  subsections: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
     })
   ).isRequired,
 };

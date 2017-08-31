@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
@@ -100,22 +101,22 @@ class SubPeriod extends React.Component {
 }
 
 SubPeriod.contextTypes = {
-  muiTheme: React.PropTypes.object.isRequired,
+  muiTheme: PropTypes.object.isRequired,
 };
 
 SubPeriod.propTypes = {
-  withTime: React.PropTypes.bool,
+  withTime: PropTypes.bool,
 
   timeHint: validateTimeProps,
 
   // callback for date formatter
-  formatDate: React.PropTypes.func.isRequired,
+  formatDate: PropTypes.func.isRequired,
 
-  dateHint: React.PropTypes.string,
+  dateHint: PropTypes.string,
 
-  date: React.PropTypes.instanceOf(Date).isRequired,
+  date: PropTypes.instanceOf(Date).isRequired,
 
-  onDateChange: React.PropTypes.func.isRequired,
+  onDateChange: PropTypes.func.isRequired,
 };
 
 SubPeriod.defaultProps = {

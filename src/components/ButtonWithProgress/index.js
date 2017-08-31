@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cs from 'classnames';
 import DefButton from 'material-ui/RaisedButton';
 import styles from './styles.css';
@@ -18,7 +19,7 @@ const DefProgress = ({ iconClassName }) => {
 };
 
 DefProgress.propTypes = {
-  iconClassName: React.PropTypes.string,
+  iconClassName: PropTypes.string,
 };
 
 DefProgress.defaultProps = {
@@ -48,16 +49,16 @@ const ButtonWithProgress = ({
 ButtonWithProgress.propTypes = {
   // display progress if tue.
   // false by default
-  isLoading: React.PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 
   // additional className fro the button overlay element
-  overlayStyle: React.PropTypes.object,
+  overlayStyle: PropTypes.object,
 
   // render custom icon instead of default
-  customIcon: React.PropTypes.element,
+  customIcon: PropTypes.element,
 
   // override className of default icon
-  iconClassName: React.PropTypes.string,
+  iconClassName: PropTypes.string,
 };
 
 ButtonWithProgress.defaultProps = {

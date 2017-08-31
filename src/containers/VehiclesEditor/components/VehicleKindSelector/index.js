@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import {
   SelectField,
@@ -65,8 +66,8 @@ class VehicleKindSelector extends React.PureComponent {
 }
 
 VehicleKindSelector.propTypes = {
-  kind: React.PropTypes.string.isRequired,
-  onChange: React.PropTypes.func.isRequired,
+  kind: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
   translations: phrasesShape.isRequired,
 };
 

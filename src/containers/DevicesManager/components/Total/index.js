@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import cs from 'classnames';
 import { connect } from 'react-redux';
@@ -47,11 +48,11 @@ class TotalLink extends React.Component {
 }
 
 TotalLink.propTypes = {
-  onFilter: React.PropTypes.func.isRequired,
-  text: React.PropTypes.number.isRequired,
-  title: React.PropTypes.string.isRequired,
-  currentFilter: React.PropTypes.string.isRequired,
-  filterType: React.PropTypes.oneOf([
+  onFilter: PropTypes.func.isRequired,
+  text: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  currentFilter: PropTypes.string.isRequired,
+  filterType: PropTypes.oneOf([
     'all', 'not-attached', 'fault-vehicle',
   ]).isRequired,
 };
@@ -89,11 +90,11 @@ const Total = ({
 );
 
 Total.propTypes = {
-  filterBy: React.PropTypes.func.isRequired,
-  totalDevices: React.PropTypes.number.isRequired,
-  currentFilter: React.PropTypes.string.isRequired,
-  totalNotAttached: React.PropTypes.number.isRequired,
-  totalFaultVehicles: React.PropTypes.number.isRequired,
+  filterBy: PropTypes.func.isRequired,
+  totalDevices: PropTypes.number.isRequired,
+  currentFilter: PropTypes.string.isRequired,
+  totalNotAttached: PropTypes.number.isRequired,
+  totalFaultVehicles: PropTypes.number.isRequired,
 };
 
 const mapState = state => ({

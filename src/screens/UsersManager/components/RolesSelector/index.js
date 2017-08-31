@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Map } from 'immutable';
 import {
   SelectField,
@@ -48,14 +49,14 @@ const RolesSelector = ({
 );
 
 RolesSelector.contextTypes = {
-  authorizeWithRole: React.PropTypes.func.isRequired,
+  authorizeWithRole: PropTypes.func.isRequired,
 };
 
 RolesSelector.propTypes = {
   translations: phrasesShape.isRequired,
-  allRoles: React.PropTypes.instanceOf(Map).isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  value: React.PropTypes.string,
+  allRoles: PropTypes.instanceOf(Map).isRequired,
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.string,
 };
 
 export default translate(phrases)(RolesSelector);

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 
 import Avatar from 'material-ui/Avatar';
@@ -11,9 +12,9 @@ const ActionWrapper = ({ children }) => (
 );
 
 ActionWrapper.propTypes = {
-  children: React.PropTypes.element.isRequired,
+  children: PropTypes.element.isRequired,
 };
-      // backgroundColor={context.muiTheme.palette.primary1Color}
+// backgroundColor={context.muiTheme.palette.primary1Color}
 
 const Header = ({
   icon,
@@ -39,11 +40,11 @@ const Header = ({
 );
 
 Header.propTypes = {
-  icon: React.PropTypes.element,
-  label: React.PropTypes.string,
-  action: React.PropTypes.node,
-  style: React.PropTypes.object,
-  labelStyle: React.PropTypes.object,
+  icon: PropTypes.element,
+  label: PropTypes.string,
+  action: PropTypes.node,
+  style: PropTypes.object,
+  labelStyle: PropTypes.object,
 };
 
 Header.defaultProps = {

@@ -1,9 +1,9 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 
-const shape = React.PropTypes.shape;
-const string = React.PropTypes.string;
-const number = React.PropTypes.number;
-const arrayOf = React.PropTypes.arrayOf;
+const shape = PropTypes.shape;
+const string = PropTypes.string;
+const number = PropTypes.number;
+const arrayOf = PropTypes.arrayOf;
 
 export default shape({
   name: string.isRequired,

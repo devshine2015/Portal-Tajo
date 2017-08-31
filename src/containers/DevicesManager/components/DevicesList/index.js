@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { Map } from 'immutable';
 import { connect } from 'react-redux';
@@ -44,9 +45,9 @@ function renderDevices({
 }
 
 renderDevices.propTypes = {
-  devices: React.PropTypes.instanceOf(Map).isRequired,
-  searchString: React.PropTypes.string,
-  currentFilter: React.PropTypes.oneOf([
+  devices: PropTypes.instanceOf(Map).isRequired,
+  searchString: PropTypes.string,
+  currentFilter: PropTypes.oneOf([
     'all', 'not-attached', 'fault-vehicle',
   ]).isRequired,
 };
@@ -98,17 +99,17 @@ class DevicesList extends React.Component {
 
 DevicesList.propTypes = {
   // fetch list of all devices for fleet
-  fetchDevices: React.PropTypes.func.isRequired,
+  fetchDevices: PropTypes.func.isRequired,
 
   // update devices with properties depends on vehicles
   // like vehicle name, vehicleIsFault
-  updateWithVehicles: React.PropTypes.func.isRequired,
+  updateWithVehicles: PropTypes.func.isRequired,
 
   // true if size of processedList > 0
   // hasVehicles: React.PropTypes.bool.isRequired,
 
   // sources for filtering
-  devices: React.PropTypes.instanceOf(Map).isRequired,
+  devices: PropTypes.instanceOf(Map).isRequired,
   // notAttached: React.PropTypes.instanceOf(List).isRequired,
   // faultVehicles: React.PropTypes.instanceOf(List).isRequired,
 };

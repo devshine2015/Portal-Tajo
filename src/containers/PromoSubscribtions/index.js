@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import {
@@ -92,8 +93,8 @@ class PromoTrackingScreen extends React.Component {
 }
 
 PromoTrackingScreen.propTypes = {
-  subscribeToData: React.PropTypes.func.isRequired,
-  data: React.PropTypes.object.isRequired,
+  subscribeToData: PropTypes.func.isRequired,
+  data: PropTypes.object.isRequired,
 };
 
 const PurePromoTrackingScreen = pure(PromoTrackingScreen);

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import Layout from 'components/Layout';
 import ProfileDetails from './components/ProfileDetails';
@@ -22,7 +23,7 @@ const ProfileScreen = (props, context) => (
 );
 
 ProfileScreen.contextTypes = {
-  authorizeWithPerms: React.PropTypes.func.isRequired,
+  authorizeWithPerms: PropTypes.func.isRequired,
 };
 
 export default ProfileScreen;

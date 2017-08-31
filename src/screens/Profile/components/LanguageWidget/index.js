@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import cs from 'classnames';
 import { css } from 'aphrodite/no-important';
@@ -32,9 +33,9 @@ const LangOption = ({
 };
 
 LangOption.propTypes = {
-  isSelected: React.PropTypes.bool.isRequired,
-  text: React.PropTypes.string.isRequired,
-  onClick: React.PropTypes.func.isRequired,
+  isSelected: PropTypes.bool.isRequired,
+  text: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 function _renderOptions(currentLocale, onClick) {
@@ -82,11 +83,11 @@ class LanguageWidget extends React.PureComponent {
 }
 
 LanguageWidget.contextTypes = {
-  translator: React.PropTypes.object.isRequired,
+  translator: PropTypes.object.isRequired,
 };
 
 LanguageWidget.propTypes = {
-  updateUserSettings: React.PropTypes.func.isRequired,
+  updateUserSettings: PropTypes.func.isRequired,
 
   translations: phrasesShape.isRequired,
 };

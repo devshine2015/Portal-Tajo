@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import SimpleSummary from './components/SimpleSummary';
 import FullSummary from './components/FullSummary';
 import amountsPropType from './PropTypes';

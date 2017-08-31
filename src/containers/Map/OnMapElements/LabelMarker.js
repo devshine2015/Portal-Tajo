@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { hideLayer } from 'utils/mapBoxMap';
 
@@ -143,12 +144,12 @@ class LabelMarker extends React.Component {
 }
 
 LabelMarker.propTypes = {
-  theMap: React.PropTypes.object.isRequired,
-  label: React.PropTypes.string.isRequired,
-  latLng: React.PropTypes.array.isRequired,
-  isSelected: React.PropTypes.bool.isRequired,
-  hideMe: React.PropTypes.bool.isRequired,
-  onClick: React.PropTypes.func.isRequired,
+  theMap: PropTypes.object.isRequired,
+  label: PropTypes.string.isRequired,
+  latLng: PropTypes.array.isRequired,
+  isSelected: PropTypes.bool.isRequired,
+  hideMe: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default pure(LabelMarker);

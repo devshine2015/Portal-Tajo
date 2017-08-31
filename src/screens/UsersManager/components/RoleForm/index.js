@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import FormComponents from 'components/User/FormComponents';
@@ -106,8 +107,8 @@ class RoleForm extends React.Component {
 }
 
 RoleForm.propTypes = {
-  closeForm: React.PropTypes.func.isRequired,
-  createRole: React.PropTypes.func.isRequired,
+  closeForm: PropTypes.func.isRequired,
+  createRole: PropTypes.func.isRequired,
 };
 
 const mapDispatch = {

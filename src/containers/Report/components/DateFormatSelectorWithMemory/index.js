@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import Checkbox from 'material-ui/Checkbox';
@@ -82,14 +83,14 @@ class DateFormatSelectorWithMemory extends React.Component {
 }
 
 DateFormatSelectorWithMemory.propTypes = {
-  userDateFormat: React.PropTypes.oneOf([
+  userDateFormat: PropTypes.oneOf([
     'yyyy-mm-dd', 'dd-mm-yyyy',
   ]),
-  tempDateFormat: React.PropTypes.oneOf([
+  tempDateFormat: PropTypes.oneOf([
     'yyyy-mm-dd', 'dd-mm-yyyy',
   ]).isRequired,
-  updateUserSettings: React.PropTypes.func.isRequired,
-  onFormatChange: React.PropTypes.func.isRequired,
+  updateUserSettings: PropTypes.func.isRequired,
+  onFormatChange: PropTypes.func.isRequired,
 
   translations: phrasesShape.isRequired,
 };

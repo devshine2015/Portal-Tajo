@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 
 import AlertForm from './AlertForm';
@@ -57,10 +58,10 @@ class SpeedForm extends React.Component {
 }
 
 SpeedForm.propTypes = {
-  alert: React.PropTypes.object,
-  closeForm: React.PropTypes.func.isRequired,
+  alert: PropTypes.object,
+  closeForm: PropTypes.func.isRequired,
   // isLoading: React.PropTypes.bool.isRequired,
-  isOpened: React.PropTypes.bool.isRequired,
+  isOpened: PropTypes.bool.isRequired,
 };
 
 export default pure(SpeedForm);

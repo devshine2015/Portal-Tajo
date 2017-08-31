@@ -1,7 +1,10 @@
+import React from 'react';
+
 // import PortalReports from 'containers/Report';
 
 // export default PortalReports;
-import React from 'react';
+import PropTypes from 'prop-types';
+
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -86,12 +89,12 @@ class ExecReport extends React.Component {
 }
 
 ExecReport.propTypes = {
-  vehicles: React.PropTypes.array.isRequired,
-  selectedVehicleId: React.PropTypes.string.isRequired,
+  vehicles: PropTypes.array.isRequired,
+  selectedVehicleId: PropTypes.string.isRequired,
 
-  filterFunc: React.PropTypes.func.isRequired,
-  setExecTimeFrame: React.PropTypes.func.isRequired,
-  execFrame: React.PropTypes.object.isRequired,
+  filterFunc: PropTypes.func.isRequired,
+  setExecTimeFrame: PropTypes.func.isRequired,
+  execFrame: PropTypes.object.isRequired,
 };
 
 const mapState = state => ({

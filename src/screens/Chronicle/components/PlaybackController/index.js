@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { setChronicleNormalizedT } from './../../actions';
@@ -171,9 +172,9 @@ class PlaybackCtr extends React.Component {
 }
 
 PlaybackCtr.propTypes = {
-  toggleEventsCallback: React.PropTypes.func.isRequired,
-  setChronicleNormalizedT: React.PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
-  normalized100T: React.PropTypes.number.isRequired, // eslint-disable-line react/no-unused-prop-types
+  toggleEventsCallback: PropTypes.func.isRequired,
+  setChronicleNormalizedT: PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
+  normalized100T: PropTypes.number.isRequired, // eslint-disable-line react/no-unused-prop-types
 
   translations: phrasesShape.isRequired,
 };

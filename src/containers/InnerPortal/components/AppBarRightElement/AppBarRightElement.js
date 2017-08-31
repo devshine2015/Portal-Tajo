@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import FlatButton from 'material-ui/FlatButton';
 import endpoints from 'configs/endpoints';
@@ -30,7 +31,7 @@ const AppBarRightElement = (props, context) => {
 };
 
 AppBarRightElement.contextTypes = {
-  logout: React.PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
 AppBarRightElement.propTypes = {

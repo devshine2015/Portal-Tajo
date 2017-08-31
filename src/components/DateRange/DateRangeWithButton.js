@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import { DateRange } from 'components/DateRange';
 import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';

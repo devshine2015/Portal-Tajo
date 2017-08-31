@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
 import ContentAddIcon from 'material-ui/svg-icons/content/add';
 import { css } from 'aphrodite/no-important';
@@ -11,7 +12,7 @@ const DEF_STYLES = {
     height: 17,
   },
 };
-    // ref={ref !== undefined ? (node) => ref(node) : undefined}
+// ref={ref !== undefined ? (node) => ref(node) : undefined}
 
 const MainActionButton = ({
   onClick,
@@ -29,9 +30,9 @@ const MainActionButton = ({
 );
 
 MainActionButton.propTypes = {
-  onClick: React.PropTypes.func.isRequired,
-  label: React.PropTypes.string.isRequired,
-  icon: React.PropTypes.node,
+  onClick: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
+  icon: PropTypes.node,
 };
 
 MainActionButton.defaultProps = {

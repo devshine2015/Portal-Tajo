@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -59,13 +60,13 @@ const DevicesManager = ({
 };
 
 DevicesManager.propTypes = {
-  userPermittedTo: React.PropTypes.object.isRequired,
+  userPermittedTo: PropTypes.object.isRequired,
 
   // callback on add button click
-  openEditor: React.PropTypes.func.isRequired,
+  openEditor: PropTypes.func.isRequired,
 
   // if true display creator
-  isEditing: React.PropTypes.bool.isRequired,
+  isEditing: PropTypes.bool.isRequired,
 };
 
 const mapState = state => ({

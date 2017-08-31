@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
@@ -55,8 +56,8 @@ class DeviceSearch extends React.Component {
 }
 
 DeviceSearch.propTypes = {
-  search: React.PropTypes.func.isRequired,
-  searchReset: React.PropTypes.func.isRequired,
+  search: PropTypes.func.isRequired,
+  searchReset: PropTypes.func.isRequired,
 };
 
 const mapState = null;

@@ -1,7 +1,10 @@
+import React from 'react';
+
 //
 // one vehicle report
 //
-import React from 'react';
+import PropTypes from 'prop-types';
+
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 // import { metersToKmString, speedToString, msToTimeIntervalString, dateToHHMM } from 'utils/convertors';
@@ -46,7 +49,7 @@ const EventRow = ({
 );
 
 EventRow.propTypes = {
-  aEvent: React.PropTypes.object.isRequired,
+  aEvent: PropTypes.object.isRequired,
 };
 
 
@@ -83,8 +86,8 @@ const EventsTable = ({
 };
 
 EventsTable.propTypes = {
-  vehicleId: React.PropTypes.string.isRequired,
-  getSoloReportById: React.PropTypes.func.isRequired,
+  vehicleId: PropTypes.string.isRequired,
+  getSoloReportById: PropTypes.func.isRequired,
 };
 
 const mapState = state => ({

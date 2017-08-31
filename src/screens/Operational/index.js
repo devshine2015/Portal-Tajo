@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
@@ -91,13 +92,13 @@ class Operational extends React.Component {
 }
 
 Operational.propTypes = {
-  vehicles: React.PropTypes.array.isRequired,
-  gfs: React.PropTypes.array.isRequired,
-  mwaJobs: React.PropTypes.array.isRequired,
-  isEditGF: React.PropTypes.bool.isRequired,
+  vehicles: PropTypes.array.isRequired,
+  gfs: PropTypes.array.isRequired,
+  mwaJobs: PropTypes.array.isRequired,
+  isEditGF: PropTypes.bool.isRequired,
 
-  openFleetSocket: React.PropTypes.func.isRequired,
-  startLocalTick: React.PropTypes.func.isRequired,
+  openFleetSocket: PropTypes.func.isRequired,
+  startLocalTick: PropTypes.func.isRequired,
 };
 
 const mapState = state => ({

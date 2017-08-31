@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import RaisedButton from 'material-ui/RaisedButton';
 import { translate } from 'utils/i18n';
@@ -28,7 +29,7 @@ const PasswordDetails = ({
 );
 
 PasswordDetails.propTypes = {
-  openPasswordForm: React.PropTypes.func.isRequired,
+  openPasswordForm: PropTypes.func.isRequired,
   translations: phrasesShape.isRequired,
 };
 

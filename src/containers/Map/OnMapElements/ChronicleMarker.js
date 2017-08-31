@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { hideLayer } from 'utils/mapBoxMap';
@@ -114,10 +115,10 @@ class ChronicleMarker extends React.Component {
 }
 
 ChronicleMarker.propTypes = {
-  theMap: React.PropTypes.object.isRequired,
-  chronicleFrame: React.PropTypes.object.isRequired,
-  isSelected: React.PropTypes.bool.isRequired,
-  normalized100T: React.PropTypes.number.isRequired,
+  theMap: PropTypes.object.isRequired,
+  chronicleFrame: PropTypes.object.isRequired,
+  isSelected: PropTypes.bool.isRequired,
+  normalized100T: PropTypes.number.isRequired,
 
   // translations: phrasesShape.isRequired,
 };

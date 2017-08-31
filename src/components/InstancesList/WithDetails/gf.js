@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { VelocityTransitionGroup } from 'velocity-react';
@@ -136,15 +137,15 @@ class LocationWithDetails extends React.Component {
 }
 
 LocationWithDetails.propTypes = {
-  selectGF: React.PropTypes.func.isRequired,
-  isExpanded: React.PropTypes.bool,
-  gf: React.PropTypes.object.isRequired,
+  selectGF: PropTypes.func.isRequired,
+  isExpanded: PropTypes.bool,
+  gf: PropTypes.object.isRequired,
 
-  deleteGF: React.PropTypes.func.isRequired,
-  showSnackbar: React.PropTypes.func.isRequired,
-  gfEditUpdate: React.PropTypes.func.isRequired,
-  gfById: React.PropTypes.func.isRequired,
-  mapStoreSetPan: React.PropTypes.func.isRequired,
+  deleteGF: PropTypes.func.isRequired,
+  showSnackbar: PropTypes.func.isRequired,
+  gfEditUpdate: PropTypes.func.isRequired,
+  gfById: PropTypes.func.isRequired,
+  mapStoreSetPan: PropTypes.func.isRequired,
 
   translations: gfDetailsShape.isRequired,
 };

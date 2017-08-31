@@ -1,6 +1,9 @@
-//
-//
 import React from 'react';
+
+//
+//
+import PropTypes from 'prop-types';
+
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { ifArraysEqual } from 'utils/arrays';
@@ -33,8 +36,8 @@ class MapPanController extends React.Component {
 }
 
 MapPanController.propTypes = {
-  theMap: React.PropTypes.object.isRequired,
-  mapStoredPan: React.PropTypes.array,
+  theMap: PropTypes.object.isRequired,
+  mapStoredPan: PropTypes.array,
 };
 
 MapPanController.defaultProps = {

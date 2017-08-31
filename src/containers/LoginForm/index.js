@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import Form from 'components/Form';
@@ -22,7 +23,7 @@ const FORM_NAME = 'login';
 const Header = ({ text }) => <h4 className={styles.header}>{ text }</h4>;
 
 Header.propTypes = {
-  text: React.PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
 };
 
 class LoginForm extends React.Component {
@@ -123,13 +124,13 @@ class LoginForm extends React.Component {
 }
 
 LoginForm.contextTypes = {
-  login: React.PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
 };
 
 LoginForm.propTypes = {
   // login: React.PropTypes.func.isRequired,
-  errorType: React.PropTypes.string,
-  resetError: React.PropTypes.func.isRequired,
+  errorType: PropTypes.string,
+  resetError: PropTypes.func.isRequired,
   // goToRoot: React.PropTypes.func.isRequired,
 
   translations: phrasesShape.isRequired,

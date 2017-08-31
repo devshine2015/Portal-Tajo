@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Polyglot from 'node-polyglot';
 import transformLocale from './lib/TransformLocale';
 
@@ -97,15 +98,15 @@ class TranslationProvider extends React.Component {
 }
 
 TranslationProvider.propTypes = {
-  phrases: React.PropTypes.object.isRequired, // eslint-disable-line react/no-unused-prop-types
-  locales: React.PropTypes.arrayOf( // eslint-disable-line react/no-unused-prop-types
-    React.PropTypes.string,
+  phrases: PropTypes.object.isRequired, // eslint-disable-line react/no-unused-prop-types
+  locales: PropTypes.arrayOf( // eslint-disable-line react/no-unused-prop-types
+    PropTypes.string,
   ).isRequired,
-  children: React.PropTypes.any.isRequired,
+  children: PropTypes.any.isRequired,
 };
 
 TranslationProvider.childContextTypes = {
-  translator: React.PropTypes.object,
+  translator: PropTypes.object,
 };
 
 export default TranslationProvider;

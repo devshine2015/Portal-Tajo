@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import {
   SelectField,
@@ -54,10 +55,10 @@ class DateFormatSelector extends React.Component {
 }
 
 DateFormatSelector.propTypes = {
-  defaultFormat: React.PropTypes.oneOf([
+  defaultFormat: PropTypes.oneOf([
     'yyyy-mm-dd', 'dd-mm-yyyy',
   ]).isRequired,
-  onChange: React.PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 
   translations: phrasesShape.isRequired,
 };

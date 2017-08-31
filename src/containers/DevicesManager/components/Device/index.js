@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import cs from 'classnames';
 import { connect } from 'react-redux';
@@ -49,7 +50,7 @@ const deviceNotAttached = 'Not attached to any vehicle';
 const ErrorText = ({ children }) => <div className={styles.error}>{children}</div>;
 
 ErrorText.propTypes = {
-  children: React.PropTypes.any.isRequired,
+  children: PropTypes.any.isRequired,
 };
 
 // show warning if device not attached
@@ -85,8 +86,8 @@ const Status = ({
 };
 
 Status.propTypes = {
-  notAttached: React.PropTypes.bool.isRequired,
-  vehicleIsFault: React.PropTypes.bool.isRequired,
+  notAttached: PropTypes.bool.isRequired,
+  vehicleIsFault: PropTypes.bool.isRequired,
 };
 
 // show vehicle name if device attached
@@ -117,10 +118,10 @@ const Text = ({
 };
 
 Text.propTypes = {
-  vehicleId: React.PropTypes.string,
-  vehicleName: React.PropTypes.string,
-  notAttached: React.PropTypes.bool.isRequired,
-  vehicleIsFault: React.PropTypes.bool.isRequired,
+  vehicleId: PropTypes.string,
+  vehicleName: PropTypes.string,
+  notAttached: PropTypes.bool.isRequired,
+  vehicleIsFault: PropTypes.bool.isRequired,
 };
 
 class Device extends React.Component {
@@ -164,41 +165,41 @@ class Device extends React.Component {
 
 Device.propTypes = {
   // device id
-  id: React.PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
 
   // true if don't has vehicleId
-  notAttached: React.PropTypes.bool.isRequired,
+  notAttached: PropTypes.bool.isRequired,
 
   // true, if no such vehicle in fleet
-  vehicleIsFault: React.PropTypes.bool.isRequired,
+  vehicleIsFault: PropTypes.bool.isRequired,
 
   // name of assotiated vehicle
   // vehicleName: React.PropTypes.string.isRequired,
 
   // original properties from backend
-  original: React.PropTypes.shape({
+  original: PropTypes.shape({
     // device id
-    id: React.PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
     // serial-number or imei.
     // Usually equal to id
-    sn: React.PropTypes.string.isRequired,
+    sn: PropTypes.string.isRequired,
 
     // device model
-    kind: React.PropTypes.string,
+    kind: PropTypes.string,
 
     // could be active or not
-    status: React.PropTypes.oneOf(['active']),
+    status: PropTypes.oneOf(['active']),
 
     // id of vehicle device attached to
     // could be undefined
-    vehicleId: React.PropTypes.string,
+    vehicleId: PropTypes.string,
   }).isRequired,
 
   // object with available permissions from permitted
-  userPermittedTo: React.PropTypes.object.isRequired,
+  userPermittedTo: PropTypes.object.isRequired,
 
   // callback on deactivate
-  deactivateDevice: React.PropTypes.func.isRequired,
+  deactivateDevice: PropTypes.func.isRequired,
 };
 
 const mapState = null;

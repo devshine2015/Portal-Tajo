@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import { VelocityTransitionGroup } from 'velocity-react';
 import SectionHeader from '../SectionHeader';
@@ -81,10 +82,10 @@ class Section extends React.Component {
 }
 
 Section.propTypes = {
-  renderForm: React.PropTypes.func.isRequired,
-  listComponent: React.PropTypes.any.isRequired,
-  headerLabel: React.PropTypes.string.isRequired,
-  actionButtonLabel: React.PropTypes.string.isRequired,
+  renderForm: PropTypes.func.isRequired,
+  listComponent: PropTypes.any.isRequired,
+  headerLabel: PropTypes.string.isRequired,
+  actionButtonLabel: PropTypes.string.isRequired,
 };
 
 export default Section;

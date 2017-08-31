@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import RunningLogo from './RunningLogo';
 
@@ -84,7 +85,7 @@ AnimatedLogo.defaultProps = {
 };
 
 export default {
-  AnimatedLogo: AnimatedLogo,
+  AnimatedLogo,
   LoadingLogo: AnimatedLoadingLogo,
   FullscreenLogo: FullscreenAnimatedLoadingLogo,
 };

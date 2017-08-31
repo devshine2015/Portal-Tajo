@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   FlatButton,
   RaisedButton,
@@ -16,8 +17,8 @@ const Header = ({ children, center }) => (
 );
 
 Header.propTypes = {
-  children: React.PropTypes.any.isRequired,
-  center: React.PropTypes.bool,
+  children: PropTypes.any.isRequired,
+  center: PropTypes.bool,
 };
 
 Header.defaultProps = {
@@ -52,11 +53,11 @@ const Buttons = ({
 );
 
 Buttons.propTypes = {
-  onSubmit: React.PropTypes.func.isRequired,
-  onCancel: React.PropTypes.func.isRequired,
-  disabled: React.PropTypes.bool.isRequired,
-  mainLabel: React.PropTypes.string.isRequired,
-  rootStyles: React.PropTypes.object,
+  onSubmit: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  mainLabel: PropTypes.string.isRequired,
+  rootStyles: PropTypes.object,
 
   translations: phrasesShape.isRequired,
 };

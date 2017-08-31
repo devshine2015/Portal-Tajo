@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import cs from 'classnames';
@@ -124,26 +125,26 @@ class RawDataButtons extends React.Component {
 
 RawDataButtons.propTypes = {
   // className for container
-  containerClassName: React.PropTypes.string,
+  containerClassName: PropTypes.string,
 
   // button className
-  buttonClassName: React.PropTypes.string,
+  buttonClassName: PropTypes.string,
 
   // callback on primary button click
-  generateEvents: React.PropTypes.func.isRequired,
+  generateEvents: PropTypes.func.isRequired,
 
   // true by default;
   // false if less than 3 vehicles are chosen
-  tooManyVehiclesSelected: React.PropTypes.bool.isRequired,
+  tooManyVehiclesSelected: PropTypes.bool.isRequired,
 
   // callback to allow pick more than X vehicles
-  allowPickMore: React.PropTypes.func.isRequired,
+  allowPickMore: PropTypes.func.isRequired,
 
   // allowed to choose and save events for more vehicles
-  forced: React.PropTypes.bool.isRequired,
+  forced: PropTypes.bool.isRequired,
 
   // display amount of selected vehicles in dialog
-  selectedVehiclesAmount: React.PropTypes.number.isRequired,
+  selectedVehiclesAmount: PropTypes.number.isRequired,
 
   translations: phrasesShape.isRequired,
 };

@@ -1,11 +1,11 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 
-const shape = React.PropTypes.shape;
-const string = React.PropTypes.string;
-const number = React.PropTypes.number;
-const bool = React.PropTypes.bool;
-const arrayOf = React.PropTypes.arrayOf;
-const oneOf = React.PropTypes.oneOf;
+const shape = PropTypes.shape;
+const string = PropTypes.string;
+const number = PropTypes.number;
+const bool = PropTypes.bool;
+const arrayOf = PropTypes.arrayOf;
+const oneOf = PropTypes.oneOf;
 
 const _original = {
   id: string.isRequired,

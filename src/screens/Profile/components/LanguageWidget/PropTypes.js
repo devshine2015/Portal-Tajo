@@ -1,7 +1,7 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 
-const shape = React.PropTypes.shape;
-const string = React.PropTypes.string;
+const shape = PropTypes.shape;
+const string = PropTypes.string;
 
 export default {
   language_settings_title: 'Language',

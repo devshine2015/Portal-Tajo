@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   FlatButton,
   RaisedButton,
@@ -38,17 +39,17 @@ const FormButtons = ({
 );
 
 FormButtons.contextTypes = {
-  translator: React.PropTypes.object.isRequired,
+  translator: PropTypes.object.isRequired,
 };
 
 FormButtons.propTypes = {
-  onSubmit: React.PropTypes.func.isRequired,
-  onCancel: React.PropTypes.func.isRequired,
-  submitLabel: React.PropTypes.string,
-  cancelLabel: React.PropTypes.string,
-  submitDisabled: React.PropTypes.bool,
-  isDisabled: React.PropTypes.bool,
-  rootStyles: React.PropTypes.object,
+  onSubmit: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  submitLabel: PropTypes.string,
+  cancelLabel: PropTypes.string,
+  submitDisabled: PropTypes.bool,
+  isDisabled: PropTypes.bool,
+  rootStyles: PropTypes.object,
 };
 
 FormButtons.defaultProps = {

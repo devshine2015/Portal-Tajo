@@ -1,7 +1,10 @@
+import React from 'react';
+
 //
 // TODO: animated marker in/out (groe with bounce?)
 //
-import React from 'react';
+import PropTypes from 'prop-types';
+
 import { connect } from 'react-redux';
 import { getVehicleByValue } from 'services/FleetModel/utils/vehiclesMap';
 import { hideLayer, latLngMoveTo } from 'utils/mapBoxMap';
@@ -216,11 +219,11 @@ class MapVehicle extends React.Component {
 }
 
 MapVehicle.propTypes = {
-  theMap: React.PropTypes.object,
-  theVehicle: React.PropTypes.object.isRequired,
-  selectedVehicleId: React.PropTypes.string.isRequired,
-  selectVehicle: React.PropTypes.func.isRequired,
-  hideMe: React.PropTypes.bool.isRequired,
+  theMap: PropTypes.object,
+  theVehicle: PropTypes.object.isRequired,
+  selectedVehicleId: PropTypes.string.isRequired,
+  selectVehicle: PropTypes.func.isRequired,
+  hideMe: PropTypes.bool.isRequired,
 };
 
 MapVehicle.defaultProps = {

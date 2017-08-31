@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { DateRange } from 'components/DateRange';
@@ -32,8 +33,8 @@ class TimeFrame extends React.Component {
 }
 
 TimeFrame.propTypes = {
-  setChronicleTimeFrame: React.PropTypes.func.isRequired,
-  chronicleTimeFrame: React.PropTypes.object.isRequired,
+  setChronicleTimeFrame: PropTypes.func.isRequired,
+  chronicleTimeFrame: PropTypes.object.isRequired,
 
   translations: phrasesShape.isRequired,
 };

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { setChronicleNormalizedT } from 'screens/Chronicle/actions';
@@ -147,10 +148,10 @@ class ChroniclePath extends React.Component {
 }
 
 ChroniclePath.propTypes = {
-  theMap: React.PropTypes.object.isRequired,
-  chronicleFrame: React.PropTypes.object.isRequired,
-  isSelected: React.PropTypes.bool.isRequired,
-  setChronicleNormalizedT: React.PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
+  theMap: PropTypes.object.isRequired,
+  chronicleFrame: PropTypes.object.isRequired,
+  isSelected: PropTypes.bool.isRequired,
+  setChronicleNormalizedT: PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
 };
 const mapState = null;
 const mapDispatch = {

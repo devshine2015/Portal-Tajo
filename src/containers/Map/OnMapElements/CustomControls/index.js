@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 
 import classes from './classes';
@@ -15,15 +16,15 @@ const Control = ({ children, sizes }) => (
 );
 
 Control.propTypes = {
-  children: React.PropTypes.any.isRequired,
-  sizes: React.PropTypes.shape({
-    width: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number,
+  children: PropTypes.any.isRequired,
+  sizes: PropTypes.shape({
+    width: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
     ]),
-    height: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number,
+    height: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
     ]),
   }),
 };
@@ -53,8 +54,8 @@ const CustomControls = ({
 );
 
 CustomControls.propTypes = {
-  theMap: React.PropTypes.object.isRequired,
-  overrideListType: React.PropTypes.string,
+  theMap: PropTypes.object.isRequired,
+  overrideListType: PropTypes.string,
 };
 
 CustomControls.defaultProps = {

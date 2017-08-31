@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import moment from 'moment';
 import cs from 'classnames';
@@ -33,11 +34,11 @@ const Warn = ({
 };
 
 Warn.propTypes = {
-  activityStatus: React.PropTypes.oneOf([
+  activityStatus: PropTypes.oneOf([
     'ok', 'dead', 'delayed',
   ]).isRequired,
-  isExpanded: React.PropTypes.bool,
-  updateDate: React.PropTypes.number.isRequired,
+  isExpanded: PropTypes.bool,
+  updateDate: PropTypes.number.isRequired,
 
   translations: phrasesShape.isRequired,
 };

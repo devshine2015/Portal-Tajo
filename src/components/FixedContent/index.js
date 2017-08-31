@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import classnames from 'classnames';
 
@@ -18,8 +19,8 @@ const FixedContent = ({
 };
 
 FixedContent.propTypes = {
-  children: React.PropTypes.any.isRequired,
-  containerClassName: React.PropTypes.string,
+  children: PropTypes.any.isRequired,
+  containerClassName: PropTypes.string,
 };
 
 FixedContent.defaultProps = {

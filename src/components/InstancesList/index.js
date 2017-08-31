@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import GenericListItem from './GenericListItem';
 import addCSSRule from 'utils/cssRule';
@@ -64,14 +65,14 @@ const InstancesList = ({
 };
 
 InstancesList.contextTypes = {
-  muiTheme: React.PropTypes.object.isRequired,
+  muiTheme: PropTypes.object.isRequired,
 };
 
 InstancesList.propTypes = {
   // Main data to display
-  data: React.PropTypes.array.isRequired,
-  onItemClick: React.PropTypes.func,
-  type: React.PropTypes.oneOf([
+  data: PropTypes.array.isRequired,
+  onItemClick: PropTypes.func,
+  type: PropTypes.oneOf([
     types.withCheckboxes,
     types.withVehicleDetails,
     types.withGFDetails,
@@ -83,17 +84,17 @@ InstancesList.propTypes = {
   ]),
 
   // Pass to CheckboxItem
-  uncheckOnUnmount: React.PropTypes.bool,
-  selectedItems: React.PropTypes.array,
+  uncheckOnUnmount: PropTypes.bool,
+  selectedItems: PropTypes.array,
 
   // For DetailedItem
-  currentExpandedItemId: React.PropTypes.string,
+  currentExpandedItemId: PropTypes.string,
 
   // scroll item into view if item are selected
   // somwhere else
-  scrollIntoView: React.PropTypes.bool,
+  scrollIntoView: PropTypes.bool,
 
-  dateFormat: React.PropTypes.string,
+  dateFormat: PropTypes.string,
 
   // translations for all types of lists
   translations: phrasesShape.isRequired,

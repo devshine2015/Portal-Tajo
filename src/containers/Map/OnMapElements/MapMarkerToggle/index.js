@@ -1,6 +1,9 @@
+import React from 'react';
+
 // TODO: make this element as proper MapBox controller
 //
-import React from 'react';
+import PropTypes from 'prop-types';
+
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
@@ -97,12 +100,12 @@ class MapMarkerToggle extends React.Component {
 }
 
 MapMarkerToggle.propTypes = {
-  listType: React.PropTypes.string.isRequired,
-  overrideListType: React.PropTypes.string,
-  doHideGF: React.PropTypes.func.isRequired,
-  doHideVehicles: React.PropTypes.func.isRequired,
-  isHideGF: React.PropTypes.bool.isRequired,
-  isHideVehicles: React.PropTypes.bool.isRequired,
+  listType: PropTypes.string.isRequired,
+  overrideListType: PropTypes.string,
+  doHideGF: PropTypes.func.isRequired,
+  doHideVehicles: PropTypes.func.isRequired,
+  isHideGF: PropTypes.bool.isRequired,
+  isHideVehicles: PropTypes.bool.isRequired,
 
   translations: phrasesShape.isRequired,
 };

@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import pure from 'recompose/pure';
 import R from 'ramda';
+import PropTypes from 'prop-types';
 import {
   TextField,
   Checkbox,

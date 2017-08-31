@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 
@@ -136,12 +137,12 @@ class MapContainer extends React.Component {
 }
 
 MapContainer.propTypes = {
-  noCustomControls: React.PropTypes.bool,
-  noLayersControl: React.PropTypes.bool,
-  mapStoreSetView: React.PropTypes.func.isRequired,
-  mapStoredView: React.PropTypes.object.isRequired,
-  mapStoredPan: React.PropTypes.array,
-  children: React.PropTypes.array,
+  noCustomControls: PropTypes.bool,
+  noLayersControl: PropTypes.bool,
+  mapStoreSetView: PropTypes.func.isRequired,
+  mapStoredView: PropTypes.object.isRequired,
+  mapStoredPan: PropTypes.array,
+  children: PropTypes.array,
 };
 
 MapContainer.defaultProps = {

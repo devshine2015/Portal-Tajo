@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import VehiclesList from 'components/InstancesList';
@@ -186,14 +187,14 @@ class VehiclesEditor extends React.Component {
 }
 
 VehiclesEditor.propTypes = {
-  isLoading: React.PropTypes.bool.isRequired,
-  showSnackbar: React.PropTypes.func.isRequired,
-  vehicles: React.PropTypes.array.isRequired,
-  updateDetails: React.PropTypes.func.isRequired,
-  filterFunc: React.PropTypes.func.isRequired,
-  globalSelectedVehicleId: React.PropTypes.string.isRequired,
-  vehicleFilterString: React.PropTypes.string,
-  disableVehicle: React.PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  showSnackbar: PropTypes.func.isRequired,
+  vehicles: PropTypes.array.isRequired,
+  updateDetails: PropTypes.func.isRequired,
+  filterFunc: PropTypes.func.isRequired,
+  globalSelectedVehicleId: PropTypes.string.isRequired,
+  vehicleFilterString: PropTypes.string,
+  disableVehicle: PropTypes.func.isRequired,
 
   translations: phrasesShape.isRequired,
 };

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import AnimatedLogo from 'components/animated';
 import SnackbarNotification from 'containers/Snackbar';
 import ApplicationBar from './components/ApplicationBar';
@@ -59,14 +60,14 @@ class InnerPortal extends React.Component {
 }
 
 InnerPortal.contextTypes = {
-  authenticated: React.PropTypes.func.isRequired,
+  authenticated: PropTypes.func.isRequired,
 };
 
 InnerPortal.propTypes = {
-  children: React.PropTypes.node.isRequired,
-  fleet: React.PropTypes.string,
-  fleetIsReady: React.PropTypes.bool.isRequired,
-  fetchPortalData: React.PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+  fleet: PropTypes.string,
+  fleetIsReady: PropTypes.bool.isRequired,
+  fetchPortalData: PropTypes.func.isRequired,
 };
 
 InnerPortal.defaultProps = {

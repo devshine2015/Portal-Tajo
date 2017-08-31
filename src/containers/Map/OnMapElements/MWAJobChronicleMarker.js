@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { hideLayer } from 'utils/mapBoxMap';
 import { textLable, dateToChronicleString } from 'screens/Chronicle/utils/strings';
@@ -136,11 +137,11 @@ class MWAJobChronicleMarker extends React.Component {
 }
 
 MWAJobChronicleMarker.contextTypes = {
-  translator: React.PropTypes.object.isRequired,
+  translator: PropTypes.object.isRequired,
 };
 MWAJobChronicleMarker.propTypes = {
-  theMap: React.PropTypes.object,
-  theMWAJobChronicle: React.PropTypes.object.isRequired,
+  theMap: PropTypes.object,
+  theMWAJobChronicle: PropTypes.object.isRequired,
 };
 
 MWAJobChronicleMarker.defaultProps = {

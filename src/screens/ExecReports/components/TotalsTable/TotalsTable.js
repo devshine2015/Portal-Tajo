@@ -1,7 +1,10 @@
+import React from 'react';
+
 //
 // one vehicle report
 //
-import React from 'react';
+import PropTypes from 'prop-types';
+
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { metersToKmString, msToTimeIntervalString } from 'utils/convertors';
@@ -47,7 +50,7 @@ const TotalRow = ({
 );
 
 TotalRow.propTypes = {
-  aTotal: React.PropTypes.object.isRequired,
+  aTotal: PropTypes.object.isRequired,
 };
 
 
@@ -85,8 +88,8 @@ const UglyTable = ({
 };
 
 UglyTable.propTypes = {
-  vehicleId: React.PropTypes.string.isRequired,
-  getSoloReportById: React.PropTypes.func.isRequired,
+  vehicleId: PropTypes.string.isRequired,
+  getSoloReportById: PropTypes.func.isRequired,
 };
 
 const mapState = state => ({

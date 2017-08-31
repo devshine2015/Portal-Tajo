@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import styles from './styles.css';
 
@@ -22,13 +23,13 @@ const DetailItemProperty = ({
 );
 
 DetailItemProperty.propTypes = {
-  title: React.PropTypes.oneOfType([
-    React.PropTypes.string,
-    React.PropTypes.number,
+  title: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
   ]).isRequired,
-  value: React.PropTypes.oneOfType([
-    React.PropTypes.string,
-    React.PropTypes.number,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
   ]).isRequired,
 };
 

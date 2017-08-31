@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { setChronicleNormalizedT } from './../../actions';
@@ -145,9 +146,9 @@ class ChartTimeBox extends React.Component {
 }
 
 ChartTimeBox.propTypes = {
-  chronicleFrame: React.PropTypes.object,
-  setChronicleNormalizedT: React.PropTypes.func.isRequired,
-  normalized100T: React.PropTypes.number.isRequired,
+  chronicleFrame: PropTypes.object,
+  setChronicleNormalizedT: PropTypes.func.isRequired,
+  normalized100T: PropTypes.number.isRequired,
 
   translations: phrasesShape.isRequired,
 };

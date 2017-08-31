@@ -1,4 +1,5 @@
 import R from 'ramda';
+import PropTypes from 'prop-types';
 import React from 'react';
 import pure from 'recompose/pure';
 
@@ -61,7 +62,7 @@ export default (phrases = {}) => Component => {
   }
 
   Translate.contextTypes = {
-    translator: React.PropTypes.object.isRequired,
+    translator: PropTypes.object.isRequired,
   };
 
   return pure(Translate);

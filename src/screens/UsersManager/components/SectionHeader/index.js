@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 
 import classes from './classes';
@@ -10,7 +11,7 @@ const ActionWrapper = ({ children }) => (
 );
 
 ActionWrapper.propTypes = {
-  children: React.PropTypes.any.isRequired,
+  children: PropTypes.any.isRequired,
 };
 
 const SectionHeader = ({
@@ -26,8 +27,8 @@ const SectionHeader = ({
 );
 
 SectionHeader.propTypes = {
-  label: React.PropTypes.string,
-  action: React.PropTypes.node,
+  label: PropTypes.string,
+  action: PropTypes.node,
 };
 
 SectionHeader.defaultProps = {

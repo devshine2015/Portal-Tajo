@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 
 import styles from './styles.css';
@@ -22,12 +23,12 @@ const Scrollable = ({
 };
 
 Scrollable.contextTypes = {
-  muiTheme: React.PropTypes.object.isRequired,
+  muiTheme: PropTypes.object.isRequired,
 };
 
 Scrollable.propTypes = {
-  children: React.PropTypes.node.isRequired,
-  offsetTop: React.PropTypes.number,
+  children: PropTypes.node.isRequired,
+  offsetTop: PropTypes.number,
 };
 
 Scrollable.defaultProps = {

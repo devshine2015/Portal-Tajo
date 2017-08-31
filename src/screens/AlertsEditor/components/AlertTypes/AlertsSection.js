@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
@@ -97,11 +98,11 @@ class AlertsSection extends React.Component {
 }
 
 AlertsSection.propTypes = {
-  renderForm: React.PropTypes.func.isRequired,
-  myAlertKind: React.PropTypes.string.isRequired,
-  alerts: React.PropTypes.array.isRequired,
-  headerLabel: React.PropTypes.string.isRequired,
-  actionButtonLabel: React.PropTypes.string.isRequired,
+  renderForm: PropTypes.func.isRequired,
+  myAlertKind: PropTypes.string.isRequired,
+  alerts: PropTypes.array.isRequired,
+  headerLabel: PropTypes.string.isRequired,
+  actionButtonLabel: PropTypes.string.isRequired,
 };
 
 const mapState = (state) => ({

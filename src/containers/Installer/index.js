@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import { Map } from 'immutable';
@@ -263,15 +264,15 @@ class Installer extends React.Component {
 }
 
 Installer.propTypes = {
-  checkStorage: React.PropTypes.func.isRequired,
-  cleanOfflineData: React.PropTypes.func.isRequired,
-  isLoading: React.PropTypes.bool.isRequired,
-  isOnline: React.PropTypes.bool.isRequired,
-  hasOfflineData: React.PropTypes.bool.isRequired, // eslint-disable-line
-  saveLocally: React.PropTypes.func.isRequired,
-  sendFromStorage: React.PropTypes.func.isRequired,
-  showSnackbar: React.PropTypes.func.isRequired,
-  submitForm: React.PropTypes.func.isRequired,
+  checkStorage: PropTypes.func.isRequired,
+  cleanOfflineData: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  isOnline: PropTypes.bool.isRequired,
+  hasOfflineData: PropTypes.bool.isRequired, // eslint-disable-line
+  saveLocally: PropTypes.func.isRequired,
+  sendFromStorage: PropTypes.func.isRequired,
+  showSnackbar: PropTypes.func.isRequired,
+  submitForm: PropTypes.func.isRequired,
 
   translations: phrasesShape.isRequired,
 };

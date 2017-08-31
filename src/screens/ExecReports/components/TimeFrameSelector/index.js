@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import DatePicker from 'material-ui/DatePicker';
 import ArrowIcon from 'material-ui/svg-icons/navigation/arrow-back';
@@ -48,8 +49,8 @@ class TimeFrame extends React.Component {
 }
 
 TimeFrame.propTypes = {
-  dateValue: React.PropTypes.object.isRequired,
-  onChange: React.PropTypes.func.isRequired,
+  dateValue: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
   // chronicleTimeFrame: React.PropTypes.object.isRequired,
 
   translations: phrasesShape.isRequired,

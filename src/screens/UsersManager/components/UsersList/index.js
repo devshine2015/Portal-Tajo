@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { List, Map } from 'immutable';
 import pure from 'recompose/pure';
@@ -52,9 +53,9 @@ function renderUsers({ users, usersToRolesMap, permissionsRenderer }) {
 }
 
 renderUsers.propTypes = {
-  users: React.PropTypes.instanceOf(List).isRequired,
-  permissionsRenderer: React.PropTypes.func.isRequired,
-  usersToRolesMap: React.PropTypes.instanceOf(Map).isRequired,
+  users: PropTypes.instanceOf(List).isRequired,
+  permissionsRenderer: PropTypes.func.isRequired,
+  usersToRolesMap: PropTypes.instanceOf(Map).isRequired,
 };
 
 class UsersList extends React.Component {
@@ -120,12 +121,12 @@ class UsersList extends React.Component {
 }
 
 UsersList.propTypes = {
-  fetchUsers: React.PropTypes.func.isRequired,
-  users: React.PropTypes.instanceOf(List).isRequired,
-  allPermissions: React.PropTypes.instanceOf(List),
-  assignPermission: React.PropTypes.func.isRequired,
+  fetchUsers: PropTypes.func.isRequired,
+  users: PropTypes.instanceOf(List).isRequired,
+  allPermissions: PropTypes.instanceOf(List),
+  assignPermission: PropTypes.func.isRequired,
   translations: phrasesShape.isRequired,
-  usersToRolesMap: React.PropTypes.instanceOf(Map).isRequired,
+  usersToRolesMap: PropTypes.instanceOf(Map).isRequired,
 };
 
 UsersList.defaultProps = {

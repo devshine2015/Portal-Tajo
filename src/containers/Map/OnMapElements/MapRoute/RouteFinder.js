@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import * as fromFleetReducer from 'services/FleetModel/reducer';
@@ -56,14 +57,14 @@ class RouteFinder extends React.Component {
 }
 
 RouteFinder.propTypes = {
-  theMap: React.PropTypes.object.isRequired,
-  vehicles: React.PropTypes.array.isRequired,
-  selectedVehicleId: React.PropTypes.string.isRequired,
-  mapStoreRouteObj: React.PropTypes.func.isRequired,
-  showSnackbar: React.PropTypes.func.isRequired,
+  theMap: PropTypes.object.isRequired,
+  vehicles: PropTypes.array.isRequired,
+  selectedVehicleId: PropTypes.string.isRequired,
+  mapStoreRouteObj: PropTypes.func.isRequired,
+  showSnackbar: PropTypes.func.isRequired,
 };
 RouteFinder.contextTypes = {
-  translator: React.PropTypes.object.isRequired,
+  translator: PropTypes.object.isRequired,
 };
 
 const mapState = (state) => ({

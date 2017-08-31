@@ -1,7 +1,10 @@
+import React from 'react';
+
 //
 // one vehicle report
 //
-import React from 'react';
+import PropTypes from 'prop-types';
+
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
@@ -37,8 +40,8 @@ class TripsReport extends React.Component {
 }
 
 TripsReport.propTypes = {
-  vehicleId: React.PropTypes.string.isRequired,
-  getSoloReportById: React.PropTypes.func.isRequired,
+  vehicleId: PropTypes.string.isRequired,
+  getSoloReportById: PropTypes.func.isRequired,
 };
 
 const mapState = state => ({

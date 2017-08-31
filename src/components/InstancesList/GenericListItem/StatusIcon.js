@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
 import AlertLagIcon from 'material-ui/svg-icons/action/watch-later';
@@ -29,10 +30,10 @@ const StatusIcon = ({
 };
 
 StatusIcon.propTypes = {
-  activityStatus: React.PropTypes.oneOf([
+  activityStatus: PropTypes.oneOf([
     'ok', 'dead', 'delayed',
   ]).isRequired,
-  isDelayedWithIgnitionOff: React.PropTypes.bool.isRequired,
+  isDelayedWithIgnitionOff: PropTypes.bool.isRequired,
 };
 
 export default StatusIcon;

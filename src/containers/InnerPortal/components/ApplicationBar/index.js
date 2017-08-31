@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { withRouter } from 'react-router';
 import AppBar from 'material-ui/AppBar';
@@ -53,8 +54,8 @@ const ApplicationBar = ({
 );
 
 ApplicationBar.propTypes = {
-  title: React.PropTypes.string.isRequired,
-  toggleSidebar: React.PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  toggleSidebar: PropTypes.func.isRequired,
 };
 
 const PureApplicationBar = pure(withRouter(ApplicationBar));

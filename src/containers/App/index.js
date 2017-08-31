@@ -1,5 +1,6 @@
 import 'font-awesome/css/font-awesome.css';
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -165,24 +166,24 @@ class App extends React.Component {
 }
 
 App.contextTypes = {
-  router: React.PropTypes.object,
+  router: PropTypes.object,
 };
 
 App.propTypes = {
-  locale: React.PropTypes.string,
-  changeOnlineState: React.PropTypes.func.isRequired,
-  saveSession: React.PropTypes.func.isRequired,
-  cleanSession: React.PropTypes.func.isRequired,
-  fetchFleet: React.PropTypes.func.isRequired,
-  children: React.PropTypes.node.isRequired,
-  routes: React.PropTypes.arrayOf(
-    React.PropTypes.shape({
-      protected: React.PropTypes.bool,
+  locale: PropTypes.string,
+  changeOnlineState: PropTypes.func.isRequired,
+  saveSession: PropTypes.func.isRequired,
+  cleanSession: PropTypes.func.isRequired,
+  fetchFleet: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+  routes: PropTypes.arrayOf(
+    PropTypes.shape({
+      protected: PropTypes.bool,
     }),
   ).isRequired,
-  fetchAccessTokens: React.PropTypes.func.isRequired,
-  fetchRolesAndPermissions: React.PropTypes.func.isRequired,
-  setReportsMWA: React.PropTypes.func.isRequired,
+  fetchAccessTokens: PropTypes.func.isRequired,
+  fetchRolesAndPermissions: PropTypes.func.isRequired,
+  setReportsMWA: PropTypes.func.isRequired,
 };
 
 App.defaultProps = {

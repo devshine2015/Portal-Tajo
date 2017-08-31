@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
@@ -93,12 +94,12 @@ class MWAJobWithDetails extends React.Component {
 }
 
 MWAJobWithDetails.propTypes = {
-  mwaJobObject: React.PropTypes.object.isRequired,
-  isExpanded: React.PropTypes.bool,
-  mwaSelectJob: React.PropTypes.func.isRequired,
-  selectVehicle: React.PropTypes.func.isRequired,
-  mapStoreSetPan: React.PropTypes.func.isRequired,
-  vehicles: React.PropTypes.array.isRequired,
+  mwaJobObject: PropTypes.object.isRequired,
+  isExpanded: PropTypes.bool,
+  mwaSelectJob: PropTypes.func.isRequired,
+  selectVehicle: PropTypes.func.isRequired,
+  mapStoreSetPan: PropTypes.func.isRequired,
+  vehicles: PropTypes.array.isRequired,
 
   translations: gfDetailsShape.isRequired,
 };

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import PermissionChip from '../PermissionChip';
 
@@ -44,10 +45,10 @@ class UserPermissionsList extends React.Component {
 }
 
 UserPermissionsList.propTypes = {
-  allPermissions: React.PropTypes.array.isRequired,
-  userPermissions: React.PropTypes.array.isRequired,
-  userIndex: React.PropTypes.number.isRequired,
-  onPermissionClick: React.PropTypes.func.isRequired,
+  allPermissions: PropTypes.array.isRequired,
+  userPermissions: PropTypes.array.isRequired,
+  userIndex: PropTypes.number.isRequired,
+  onPermissionClick: PropTypes.func.isRequired,
 };
 
 export default UserPermissionsList;

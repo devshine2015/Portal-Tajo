@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Map } from 'immutable';
 import { css } from 'aphrodite/no-important';
 import IconButton from 'material-ui/IconButton';
@@ -18,7 +19,7 @@ const DeleteButton = ({
 );
 
 DeleteButton.propTypes = {
-  onClick: React.PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 const PermissionsItem = ({
@@ -40,9 +41,9 @@ const PermissionsItem = ({
 );
 
 PermissionsItem.propTypes = {
-  data: React.PropTypes.instanceOf(Map).isRequired,
-  index: React.PropTypes.number.isRequired,
-  onDelete: React.PropTypes.func.isRequired,
+  data: PropTypes.instanceOf(Map).isRequired,
+  index: PropTypes.number.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default PermissionsItem;

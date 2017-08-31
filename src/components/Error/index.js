@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { translate } from 'utils/i18n';
 
 import styles from './styles.css';
@@ -14,7 +15,7 @@ const Error = ({
 );
 
 Error.propTypes = {
-  type: React.PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
 
   translations: phrasesShape.isRequired,
 };

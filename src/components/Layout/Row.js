@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cs from 'classnames';
 import { css } from 'aphrodite/no-important';
 
@@ -18,9 +19,9 @@ const Row = ({ children, className, style }) => {
 };
 
 Row.propTypes = {
-  children: React.PropTypes.any.isRequired,
-  className: React.PropTypes.string,
-  style: React.PropTypes.object,
+  children: PropTypes.any.isRequired,
+  className: PropTypes.string,
+  style: PropTypes.object,
 };
 
 Row.defaultProps = {

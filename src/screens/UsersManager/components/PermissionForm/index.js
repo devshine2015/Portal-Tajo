@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { css } from 'aphrodite/no-important';
 import TextField from 'material-ui/TextField';
@@ -124,8 +125,8 @@ class PermissionsForm extends React.Component {
 }
 
 PermissionsForm.propTypes = {
-  closeForm: React.PropTypes.func.isRequired,
-  createPermission: React.PropTypes.func.isRequired,
+  closeForm: PropTypes.func.isRequired,
+  createPermission: PropTypes.func.isRequired,
 };
 
 const mapDispatch = {

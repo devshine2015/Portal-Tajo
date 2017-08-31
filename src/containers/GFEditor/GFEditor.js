@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import TextField from 'material-ui/TextField';
@@ -92,11 +93,11 @@ class GFEditor extends React.Component {
 }
 
 GFEditor.propTypes = {
-  createGF: React.PropTypes.func.isRequired,
-  gfEditClose: React.PropTypes.func.isRequired,
-  gfEditUpdate: React.PropTypes.func.isRequired,
-  showSnackbar: React.PropTypes.func.isRequired,
-  subjectGF: React.PropTypes.object,
+  createGF: PropTypes.func.isRequired,
+  gfEditClose: PropTypes.func.isRequired,
+  gfEditUpdate: PropTypes.func.isRequired,
+  showSnackbar: PropTypes.func.isRequired,
+  subjectGF: PropTypes.object,
 
   translations: phrasesShape.isRequired,
 };

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import RoadLines from '../shared/RoadLines';
 // import Noise from 'noisejs';
@@ -100,12 +101,12 @@ class RunningLogo extends React.Component {
 }
 
 RunningLogo.propTypes = {
-  radius: React.PropTypes.number,
-  color: React.PropTypes.string,
-  colorIn: React.PropTypes.string,
-  turnRange: React.PropTypes.number,
-  swayRange: React.PropTypes.number,
-  is3D: React.PropTypes.bool,
+  radius: PropTypes.number,
+  color: PropTypes.string,
+  colorIn: PropTypes.string,
+  turnRange: PropTypes.number,
+  swayRange: PropTypes.number,
+  is3D: PropTypes.bool,
 };
 
 RunningLogo.defaultProps = {

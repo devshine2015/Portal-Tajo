@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import Snackbar from 'material-ui/Snackbar';
@@ -15,12 +16,12 @@ const SnackbarNotification = ({
 );
 
 SnackbarNotification.propTypes = {
-  action: React.PropTypes.string,
-  autoHideDuration: React.PropTypes.number,
-  message: React.PropTypes.string.isRequired,
-  onActionTouchTap: React.PropTypes.func,
-  onRequestClose: React.PropTypes.func,
-  show: React.PropTypes.bool.isRequired,
+  action: PropTypes.string,
+  autoHideDuration: PropTypes.number,
+  message: PropTypes.string.isRequired,
+  onActionTouchTap: PropTypes.func,
+  onRequestClose: PropTypes.func,
+  show: PropTypes.bool.isRequired,
 };
 
 const mapProps = (state) => ({

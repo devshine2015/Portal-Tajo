@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { css } from 'aphrodite/no-important';
 import { isEscape } from 'configs';
@@ -60,9 +61,9 @@ const Amount = ({
 };
 
 Amount.propTypes = {
-  amount: React.PropTypes.number.isRequired,
-  helpText: React.PropTypes.string.isRequired,
-  icon: React.PropTypes.node.isRequired,
+  amount: PropTypes.number.isRequired,
+  helpText: PropTypes.string.isRequired,
+  icon: PropTypes.node.isRequired,
 };
 
 const FullSummary = ({

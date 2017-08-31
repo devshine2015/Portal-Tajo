@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import FlatButton from 'material-ui/FlatButton';
 import InputFieldWrapper from 'components/InputFieldWrapper';
@@ -56,14 +57,14 @@ const InstallerOfflineData = ({
 };
 
 InstallerOfflineData.propTypes = {
-  cleanData: React.PropTypes.func.isRequired,
-  data: React.PropTypes.object.isRequired,
-  isOnline: React.PropTypes.bool.isRequired,
-  sendData: React.PropTypes.func.isRequired,
-  indexes: React.PropTypes.arrayOf(
-    React.PropTypes.number
+  cleanData: PropTypes.func.isRequired,
+  data: PropTypes.object.isRequired,
+  isOnline: PropTypes.bool.isRequired,
+  sendData: PropTypes.func.isRequired,
+  indexes: PropTypes.arrayOf(
+    PropTypes.number
   ).isRequired,
-  toggleSaving: React.PropTypes.func.isRequired,
+  toggleSaving: PropTypes.func.isRequired,
 };
 
 export default pure(InstallerOfflineData);

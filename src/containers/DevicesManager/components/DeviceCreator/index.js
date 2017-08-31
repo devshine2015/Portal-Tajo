@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import {
@@ -133,8 +134,8 @@ class DeviceCreator extends React.Component {
 }
 
 DeviceCreator.propTypes = {
-  submitDevice: React.PropTypes.func.isRequired,
-  closeEditor: React.PropTypes.func.isRequired,
+  submitDevice: PropTypes.func.isRequired,
+  closeEditor: PropTypes.func.isRequired,
 };
 
 const mapState = null;

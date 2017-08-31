@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
@@ -120,12 +121,12 @@ class AlertCard extends React.Component {
 }
 
 AlertCard.propTypes = {
-  alert: React.PropTypes.object.isRequired,
-  renderForm: React.PropTypes.func.isRequired,
-  deleteAlertCondition: React.PropTypes.func.isRequired,
+  alert: PropTypes.object.isRequired,
+  renderForm: PropTypes.func.isRequired,
+  deleteAlertCondition: PropTypes.func.isRequired,
 };
 AlertCard.contextTypes = {
-  muiTheme: React.PropTypes.object.isRequired,
+  muiTheme: PropTypes.object.isRequired,
 };
 const mapState = () => ({});
 const mapDispatch = {

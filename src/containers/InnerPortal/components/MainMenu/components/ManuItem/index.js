@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import pageShape from 'containers/InnerPortal/PropTypes';
 import styles from './styles.css';
@@ -14,9 +15,9 @@ const MenuItem = (props) =>
   </Link>;
 
 MenuItem.propTypes = {
-  closeSidebar: React.PropTypes.func.isRequired,
+  closeSidebar: PropTypes.func.isRequired,
   page: pageShape.isRequired,
-  niceName: React.PropTypes.string.isRequired,
+  niceName: PropTypes.string.isRequired,
 };
 
 export default MenuItem;

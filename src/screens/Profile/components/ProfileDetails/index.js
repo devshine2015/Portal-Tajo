@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { css } from 'aphrodite/no-important';
 import { VelocityComponent } from 'velocity-react';
@@ -92,12 +93,12 @@ class ProfileDetails extends React.PureComponent {
 }
 
 ProfileDetails.propTypes = {
-  profile: React.PropTypes.shape({
-    user_id: React.PropTypes.string.isRequired,
-    name: React.PropTypes.string.isRequired,
-    nickname: React.PropTypes.string.isRequired,
-    email: React.PropTypes.string.isRequired,
-    picture: React.PropTypes.string.isRequired,
+  profile: PropTypes.shape({
+    user_id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    nickname: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    picture: PropTypes.string.isRequired,
   }).isRequired,
 
   translations: phrasesShape.isRequired,

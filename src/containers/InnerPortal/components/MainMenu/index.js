@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { rolesEnum } from 'configs/roles';
 import MenuItem from './components/ManuItem';
@@ -47,13 +48,13 @@ const MainMenu = ({
 };
 
 MainMenu.contextTypes = {
-  permissions: React.PropTypes.array.isRequired,
+  permissions: PropTypes.array.isRequired,
 };
 
 MainMenu.propTypes = {
-  closeSidebar: React.PropTypes.func.isRequired,
-  pages: React.PropTypes.arrayOf(pageShape).isRequired,
-  role: React.PropTypes.oneOf(rolesEnum),
+  closeSidebar: PropTypes.func.isRequired,
+  pages: PropTypes.arrayOf(pageShape).isRequired,
+  role: PropTypes.oneOf(rolesEnum),
 
   translations: phrasesShape.isRequired,
 };

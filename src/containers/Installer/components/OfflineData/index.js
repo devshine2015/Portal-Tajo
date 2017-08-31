@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { List } from 'immutable';
 import pure from 'recompose/pure';
@@ -78,11 +79,11 @@ class OfflineData extends React.Component {
 }
 
 OfflineData.propTypes = {
-  cleanData: React.PropTypes.func.isRequired,
-  data: React.PropTypes.object.isRequired,
-  isOnline: React.PropTypes.bool.isRequired,
-  sendData: React.PropTypes.func.isRequired,
-  showSnackbar: React.PropTypes.func.isRequired,
+  cleanData: PropTypes.func.isRequired,
+  data: PropTypes.object.isRequired,
+  isOnline: PropTypes.bool.isRequired,
+  sendData: PropTypes.func.isRequired,
+  showSnackbar: PropTypes.func.isRequired,
 
   translations: phrasesShape.isRequired,
 };

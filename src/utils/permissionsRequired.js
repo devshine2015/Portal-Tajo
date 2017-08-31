@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { checkRolePermissions } from 'configs/roles';
 import { getUserRole } from 'services/Session/reducer';
@@ -33,7 +34,7 @@ export default (permissions = []) => (Component) => {
   }
 
   PermissionsRequired.propTypes = {
-    currentUserRole: React.PropTypes.string.isRequired,
+    currentUserRole: PropTypes.string.isRequired,
   };
 
   PermissionsRequired.defaultProps = {

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { hideLayer } from 'utils/mapBoxMap';
@@ -98,12 +99,12 @@ class MWAJobMarker extends React.Component {
 }
 
 MWAJobMarker.propTypes = {
-  theMap: React.PropTypes.object,
-  theMWAJob: React.PropTypes.object.isRequired,
+  theMap: PropTypes.object,
+  theMWAJob: PropTypes.object.isRequired,
   // mwaSelectJob: React.PropTypes.func.isRequired,
-  selectedJobId: React.PropTypes.string.isRequired,
-  selectedVehicleId: React.PropTypes.string.isRequired,
-  selectedTab: React.PropTypes.string.isRequired, 
+  selectedJobId: PropTypes.string.isRequired,
+  selectedVehicleId: PropTypes.string.isRequired,
+  selectedTab: PropTypes.string.isRequired, 
 };
 
 MWAJobMarker.defaultProps = {

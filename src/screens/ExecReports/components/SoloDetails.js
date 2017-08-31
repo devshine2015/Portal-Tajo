@@ -1,7 +1,10 @@
+import React from 'react';
+
 //
 // one vehicle report
 //
-import React from 'react';
+import PropTypes from 'prop-types';
+
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import Layout from 'components/Layout';
@@ -44,8 +47,8 @@ const DataRow = ({
 );
 
 DataRow.propTypes = {
-  title: React.PropTypes.string.isRequired,
-  value: React.PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
 };
 
 const SoloDetails = ({
@@ -130,10 +133,10 @@ const SoloDetails = ({
 };
 
 SoloDetails.propTypes = {
-  vehicleId: React.PropTypes.string.isRequired,
+  vehicleId: PropTypes.string.isRequired,
 
-  getSoloReportById: React.PropTypes.func.isRequired,
-  getVehicleById: React.PropTypes.func.isRequired,
+  getSoloReportById: PropTypes.func.isRequired,
+  getVehicleById: PropTypes.func.isRequired,
 };
 
 const mapState = state => ({

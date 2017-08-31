@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Layout from 'components/Layout';
 import TheMap from 'containers/Map/MapContainer';
 import ChroniclePath from 'containers/Map/OnMapElements/ChroniclePath';
@@ -33,7 +34,7 @@ class ReportMap extends React.Component {
 }
 
 ReportMap.propTypes = {
-  reportFrame: React.PropTypes.object,
+  reportFrame: PropTypes.object,
 };
 ReportMap.defaultProps = {
   reportFrame: null,

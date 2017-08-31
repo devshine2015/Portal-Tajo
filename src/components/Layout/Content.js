@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cs from 'classnames';
 import { css } from 'aphrodite/no-important';
 import classes from './classes';
@@ -30,11 +31,11 @@ Content.defaultProps = {
 };
 
 Content.propTypes = {
-  children: React.PropTypes.any.isRequired,
-  center: React.PropTypes.bool,
-  maxWidth: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
-  noPadding: React.PropTypes.bool,
-  style: React.PropTypes.object,
+  children: PropTypes.any.isRequired,
+  center: PropTypes.bool,
+  maxWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  noPadding: PropTypes.bool,
+  style: PropTypes.object,
 };
 
 export default Content;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import { List } from 'immutable';
 import { connect } from 'react-redux';
@@ -64,9 +65,9 @@ class PermissionsList extends React.Component {
 }
 
 PermissionsList.propTypes = {
-  allPermissions: React.PropTypes.instanceOf(List),
-  deletePermission: React.PropTypes.func.isRequired,
-  showForm: React.PropTypes.func,
+  allPermissions: PropTypes.instanceOf(List),
+  deletePermission: PropTypes.func.isRequired,
+  showForm: PropTypes.func,
 };
 
 const mapState = state => ({

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { css } from 'aphrodite/no-important';
 import {
@@ -54,9 +55,9 @@ const DeleteUserDialog = ({
 };
 
 DeleteUserDialog.propTypes = {
-  handleClose: React.PropTypes.func.isRequired,
-  handleConfirm: React.PropTypes.func.isRequired,
-  open: React.PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  handleConfirm: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
   translations: phrasesShape.isRequired,
 };
 
@@ -117,10 +118,10 @@ function Actions({
 }
 
 Actions.propTypes = {
-  expandToggle: React.PropTypes.func.isRequired,
-  deleteUser: React.PropTypes.func.isRequired,
-  lastActive: React.PropTypes.string,
-  isExpanded: React.PropTypes.bool.isRequired,
+  expandToggle: PropTypes.func.isRequired,
+  deleteUser: PropTypes.func.isRequired,
+  lastActive: PropTypes.string,
+  isExpanded: PropTypes.bool.isRequired,
   translations: phrasesShape,
 };
 
@@ -260,11 +261,11 @@ class UserItem extends React.Component {
 }
 
 UserItem.propTypes = {
-  profile: React.PropTypes.object.isRequired,
+  profile: PropTypes.object.isRequired,
   // renderPermissions: React.PropTypes.func.isRequired,
   // index: React.PropTypes.number.isRequired,
-  deleteUser: React.PropTypes.func.isRequired,
-  role: React.PropTypes.string,
+  deleteUser: PropTypes.func.isRequired,
+  role: PropTypes.string,
 
   translations: phrasesShape.isRequired,
 };

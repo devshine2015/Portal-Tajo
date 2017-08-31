@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { css } from 'aphrodite/no-important';
 
@@ -38,11 +39,11 @@ const DetailItemProperty = ({
 );
 
 DetailItemProperty.propTypes = {
-  icon: React.PropTypes.object,
-  title: React.PropTypes.string,
-  value: React.PropTypes.oneOfType([
-    React.PropTypes.string,
-    React.PropTypes.number,
+  icon: PropTypes.object,
+  title: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
   ]).isRequired,
 };
 DetailItemProperty.defaultProps = {
@@ -100,14 +101,14 @@ const Trip = ({
   </div>
 );
 
-        /* <ItemProperty
-          title={'Samples all/pos'}
-          value={`${aTripData.numberOfSamples}/${aTripData.numberOfPosSamples}`}
-        />*/
+/* <ItemProperty
+  title={'Samples all/pos'}
+  value={`${aTripData.numberOfSamples}/${aTripData.numberOfPosSamples}`}
+/>*/
 
 
 Trip.propTypes = {
-  aTripData: React.PropTypes.object.isRequired,
+  aTripData: PropTypes.object.isRequired,
 };
 
 export default pure(Trip);

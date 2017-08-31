@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import PasswordForm from './PasswordForm';
 import { usersActions } from 'services/Users/actions';
@@ -22,9 +23,9 @@ class PasswordFormConnected extends React.Component {
 }
 
 PasswordFormConnected.propTypes = {
-  closeForm: React.PropTypes.func.isRequired,
-  userId: React.PropTypes.string.isRequired,
-  changePassword: React.PropTypes.func.isRequired,
+  closeForm: PropTypes.func.isRequired,
+  userId: PropTypes.string.isRequired,
+  changePassword: PropTypes.func.isRequired,
 };
 
 const mapState = null;

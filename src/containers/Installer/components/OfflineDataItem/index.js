@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 
 import styles from './styles.css';
@@ -47,14 +48,14 @@ class InstallerOfflineDataItem extends React.Component {
 }
 
 InstallerOfflineDataItem.propTypes = {
-  data: React.PropTypes.shape({
-    imei: React.PropTypes.string.isRequired,
-    license: React.PropTypes.string.isRequired,
-    odometer: React.PropTypes.string.isRequired,
-    name: React.PropTypes.string.isRequired,
+  data: PropTypes.shape({
+    imei: PropTypes.string.isRequired,
+    license: PropTypes.string.isRequired,
+    odometer: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
   }).isRequired,
-  index: React.PropTypes.number.isRequired,
-  onChange: React.PropTypes.func.isRequired,
+  index: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default pure(InstallerOfflineDataItem);

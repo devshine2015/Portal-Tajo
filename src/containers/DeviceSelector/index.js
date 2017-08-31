@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import { Map } from 'immutable';
@@ -68,10 +69,10 @@ const RefreshButton = ({ onClick, isRefreshing }) => {
 };
 
 RefreshButton.propTypes = {
-  onClick: React.PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
 
   // rotate icon during refresh
-  isRefreshing: React.PropTypes.bool.isRequired,
+  isRefreshing: PropTypes.bool.isRequired,
 };
 
 class DeviceSelector extends React.Component {
@@ -204,44 +205,44 @@ class DeviceSelector extends React.Component {
 
 DeviceSelector.propTypes = {
   // component may take new
-  fetchDevices: React.PropTypes.func.isRequired,
+  fetchDevices: PropTypes.func.isRequired,
 
   // sometimes we need to reset search value of component
-  reset: React.PropTypes.bool,
+  reset: PropTypes.bool,
 
   // true if no device has been chosen
-  hasError: React.PropTypes.bool,
+  hasError: PropTypes.bool,
 
   // whether textField disabled or not
-  disabled: React.PropTypes.bool,
+  disabled: PropTypes.bool,
 
   // will render RefreshButton within actions layout if set to true
   // true by default
-  canRefresh: React.PropTypes.bool,
+  canRefresh: PropTypes.bool,
 
   // additional actions for DeviceSelector
-  actions: React.PropTypes.arrayOf(
-    React.PropTypes.node,
+  actions: PropTypes.arrayOf(
+    PropTypes.node,
   ),
 
   // Callback function that is fired when a list item is selected,
   // or enter is pressed in the TextField.
-  onSelect: React.PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired,
 
   // Callback function that is fired when
   // the user updates the TextField.
-  onChange: React.PropTypes.func,
+  onChange: PropTypes.func,
 
   // list of all devices
-  devices: React.PropTypes.instanceOf(Map).isRequired,
+  devices: PropTypes.instanceOf(Map).isRequired,
 
   // set velue by other component
-  value: React.PropTypes.string,
+  value: PropTypes.string,
 
   // list of devices ids not
   // attached to any vehicle
-  vacantDevices: React.PropTypes.arrayOf(
-    React.PropTypes.string,
+  vacantDevices: PropTypes.arrayOf(
+    PropTypes.string,
   ).isRequired,
 };
 

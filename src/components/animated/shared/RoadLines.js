@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 
 import styles from './styles.css';
@@ -124,9 +125,9 @@ class RoadLines extends React.Component {
 
 
 RoadLines.propTypes = {
-  color: React.PropTypes.string.isRequired,
-  leftRightSway: React.PropTypes.number,
-  is3D: React.PropTypes.bool,
+  color: PropTypes.string.isRequired,
+  leftRightSway: PropTypes.number,
+  is3D: PropTypes.bool,
 };
 
 RoadLines.defaultProps = {

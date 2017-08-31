@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import DetailPopupForm from 'components/User/DetailPopupForm';
@@ -65,9 +66,9 @@ class EmailForm extends React.Component {
 }
 
 EmailForm.propTypes = {
-  closeForm: React.PropTypes.func.isRequired,
-  changeEmail: React.PropTypes.func.isRequired,
-  userId: React.PropTypes.string.isRequired,
+  closeForm: PropTypes.func.isRequired,
+  changeEmail: PropTypes.func.isRequired,
+  userId: PropTypes.string.isRequired,
 
   translations: phrasesShape.isRequired,
 };

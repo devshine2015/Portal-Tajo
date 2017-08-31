@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { css } from 'aphrodite/no-important';
 import classes from './classes';
@@ -20,11 +21,11 @@ const DetailItemProperty = ({
 );
 
 DetailItemProperty.propTypes = {
-  icon: React.PropTypes.node,
-  title: React.PropTypes.string,
-  value: React.PropTypes.oneOfType([
-    React.PropTypes.string,
-    React.PropTypes.number,
+  icon: PropTypes.node,
+  title: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
   ]).isRequired,
 };
 DetailItemProperty.defaultProps = {

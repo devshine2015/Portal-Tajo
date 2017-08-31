@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { Avatar, Checkbox } from 'material-ui';
@@ -40,15 +41,15 @@ const AlertOfKindToggle = ({
 };
 
 AlertOfKindToggle.propTypes = {
-  myKind: React.PropTypes.string.isRequired,
-  onOfKindChange: React.PropTypes.func.isRequired,
+  myKind: PropTypes.string.isRequired,
+  onOfKindChange: PropTypes.func.isRequired,
 
-  alertConditions: React.PropTypes.array.isRequired,
-  vehicleAlerts: React.PropTypes.array.isRequired,
-  alertById: React.PropTypes.func.isRequired,
+  alertConditions: PropTypes.array.isRequired,
+  vehicleAlerts: PropTypes.array.isRequired,
+  alertById: PropTypes.func.isRequired,
 };
 AlertOfKindToggle.contextTypes = {
-  muiTheme: React.PropTypes.object.isRequired,
+  muiTheme: PropTypes.object.isRequired,
 };
 
 const mapState = state => ({

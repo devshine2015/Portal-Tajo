@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import classnames from 'classnames';
 
@@ -19,9 +20,9 @@ const InputFieldWrapper = ({
 };
 
 InputFieldWrapper.propTypes = {
-  children: React.PropTypes.node.isRequired,
-  inlineClass: React.PropTypes.string,
-  style: React.PropTypes.object,
+  children: PropTypes.node.isRequired,
+  inlineClass: PropTypes.string,
+  style: PropTypes.object,
 };
 
 InputFieldWrapper.defaultProps = {

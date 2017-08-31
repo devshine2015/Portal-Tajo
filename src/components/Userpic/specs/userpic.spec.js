@@ -1,6 +1,9 @@
+import React from 'react';
+
 /* eslint-disable func-names, prefer-arrow-callback, space-before-function-paren */
 
-import React from 'react';
+import PropTypes from 'prop-types';
+
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -11,7 +14,7 @@ describe('<Userpic />', function () {
   const shallowWithContext = (fn) => (node) => fn(node, {
     context: { muiTheme },
     childContextTypes: {
-      muiTheme: React.PropTypes.object.isRequired,
+      muiTheme: PropTypes.object.isRequired,
     },
   });
 

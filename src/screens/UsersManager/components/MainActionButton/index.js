@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import RaisedButton from 'material-ui/RaisedButton';
 import ContentAddIcon from 'material-ui/svg-icons/content/add';
@@ -27,9 +28,9 @@ const MainActionButton = ({
 );
 
 MainActionButton.propTypes = {
-  onClick: React.PropTypes.func.isRequired,
-  label: React.PropTypes.string.isRequired,
-  icon: React.PropTypes.node,
+  onClick: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
+  icon: PropTypes.node,
 };
 
 MainActionButton.defaultProps = {

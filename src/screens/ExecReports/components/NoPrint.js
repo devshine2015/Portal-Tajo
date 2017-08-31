@@ -1,7 +1,10 @@
+import React from 'react';
+
 //
 // one vehicle report
 //
-import React from 'react';
+import PropTypes from 'prop-types';
+
 import pure from 'recompose/pure';
 import { StyleSheet, css } from 'aphrodite/no-important';
 
@@ -25,8 +28,8 @@ const NoPrint = ({
 };
 
 NoPrint.propTypes = {
-  children: React.PropTypes.any,
-  style: React.PropTypes.object,
+  children: PropTypes.any,
+  style: PropTypes.object,
 };
 NoPrint.defaultProps = {
   children: null,

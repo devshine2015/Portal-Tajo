@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import Drawer from 'material-ui/Drawer';
@@ -37,10 +38,10 @@ const MainSidebar = ({
 };
 
 MainSidebar.propTypes = {
-  isOpened: React.PropTypes.bool.isRequired,
-  pages: React.PropTypes.array,
-  toggleSidebar: React.PropTypes.func.isRequired,
-  role: React.PropTypes.oneOf(rolesEnum),
+  isOpened: PropTypes.bool.isRequired,
+  pages: PropTypes.array,
+  toggleSidebar: PropTypes.func.isRequired,
+  role: PropTypes.oneOf(rolesEnum),
 };
 
 MainSidebar.defaultProps = {

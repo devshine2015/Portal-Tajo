@@ -1,8 +1,11 @@
+import React from 'react';
+
 //
 // This adds "open on google-maps option" to context menu of container map
 //
 //
-import React from 'react';
+import PropTypes from 'prop-types';
+
 import { addMapMenuItemEx } from 'utils/mapContextMenu';
 const iconGMaps16 = require('assets/images/context_menu_icons/gmap16.png');
 
@@ -31,7 +34,7 @@ class OpenGMap extends React.Component {
 }
 
 OpenGMap.propTypes = {
-  theMap: React.PropTypes.object,
+  theMap: PropTypes.object,
 };
 
 OpenGMap.defaultProps = {
@@ -39,6 +42,6 @@ OpenGMap.defaultProps = {
 };
 
 OpenGMap.contextTypes = {
-  translator: React.PropTypes.object.isRequired,
+  translator: PropTypes.object.isRequired,
 };
 export default OpenGMap;

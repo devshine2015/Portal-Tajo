@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import styles from './styles.css';
 // d3 -----
@@ -99,7 +100,7 @@ class ChartBox extends React.Component {
 }
 
 ChartBox.propTypes = {
-  chronicleFrame: React.PropTypes.object.isRequired,
+  chronicleFrame: PropTypes.object.isRequired,
 };
 
 export default pure(ChartBox);

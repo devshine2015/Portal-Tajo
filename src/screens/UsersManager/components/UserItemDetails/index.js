@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import { VelocityComponent } from 'velocity-react';
 import Overlay from 'components/User/Overlay';
@@ -106,10 +107,10 @@ class UserItemDetails extends React.Component {
 }
 
 UserItemDetails.propTypes = {
-  profile: React.PropTypes.shape({
-    email: React.PropTypes.string.isRequired,
-    email_verified: React.PropTypes.bool,
-    user_id: React.PropTypes.string.isRequired,
+  profile: PropTypes.shape({
+    email: PropTypes.string.isRequired,
+    email_verified: PropTypes.bool,
+    user_id: PropTypes.string.isRequired,
   }).isRequired,
 };
 

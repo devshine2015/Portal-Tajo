@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   SelectField,
   MenuItem,
@@ -46,13 +47,13 @@ const FleetSelector = ({
 };
 
 FleetSelector.contextTypes = {
-  authorizeWithRole: React.PropTypes.func.isRequired,
+  authorizeWithRole: PropTypes.func.isRequired,
 };
 
 FleetSelector.propTypes = {
   translations: phrasesShape.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  value: React.PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.string,
 };
 
 export default translate(phrases)(FleetSelector);

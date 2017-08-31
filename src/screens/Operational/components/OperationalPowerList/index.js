@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { Tabs, Tab } from 'material-ui/Tabs';
@@ -101,21 +102,21 @@ class OperationalPowerList extends React.Component {
 }
 
 OperationalPowerList.propTypes = {
-  selectedTab: React.PropTypes.string,
-  vehicles: React.PropTypes.array.isRequired,
-  gfs: React.PropTypes.array.isRequired,
+  selectedTab: PropTypes.string,
+  vehicles: PropTypes.array.isRequired,
+  gfs: PropTypes.array.isRequired,
 
-  selectedGfId: React.PropTypes.string.isRequired,
-  selectedVehicleId: React.PropTypes.string.isRequired,
+  selectedGfId: PropTypes.string.isRequired,
+  selectedVehicleId: PropTypes.string.isRequired,
 
-  filterVehiclesFunc: React.PropTypes.func.isRequired,
-  filterGFsFunc: React.PropTypes.func.isRequired,
+  filterVehiclesFunc: PropTypes.func.isRequired,
+  filterGFsFunc: PropTypes.func.isRequired,
 
-  setListTypeFunc: React.PropTypes.func.isRequired,
-  vehicleFilterString: React.PropTypes.string,
-  mwaJobs: React.PropTypes.array.isRequired,
-  getMWASelectedJobId: React.PropTypes.string,
-  mwaFilterJobs: React.PropTypes.func.isRequired,
+  setListTypeFunc: PropTypes.func.isRequired,
+  vehicleFilterString: PropTypes.string,
+  mwaJobs: PropTypes.array.isRequired,
+  getMWASelectedJobId: PropTypes.string,
+  mwaFilterJobs: PropTypes.func.isRequired,
 };
 OperationalPowerList.defaultProps = {};
 

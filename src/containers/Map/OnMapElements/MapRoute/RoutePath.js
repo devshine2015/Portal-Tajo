@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
@@ -112,8 +113,8 @@ class MapRoute extends React.Component {
 }
 
 MapRoute.propTypes = {
-  theMap: React.PropTypes.object.isRequired,
-  routeObj: React.PropTypes.object,
+  theMap: PropTypes.object.isRequired,
+  routeObj: PropTypes.object,
 };
 
 MapRoute.defaultProps = {

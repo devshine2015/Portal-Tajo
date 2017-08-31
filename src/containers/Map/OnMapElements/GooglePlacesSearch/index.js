@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { css } from 'aphrodite/no-important';
 import TextField from 'material-ui/TextField';
@@ -183,11 +184,11 @@ class GooglePlacesSearch extends React.Component {
 }
 
 GooglePlacesSearch.contextTypes = {
-  muiTheme: React.PropTypes.object.isRequired,
+  muiTheme: PropTypes.object.isRequired,
 };
 
 GooglePlacesSearch.propTypes = {
-  ownerMapObj: React.PropTypes.object.isRequired,
+  ownerMapObj: PropTypes.object.isRequired,
 };
 
 export default pure(GooglePlacesSearch);

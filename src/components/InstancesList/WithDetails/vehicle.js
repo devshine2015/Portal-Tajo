@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import cs from 'classnames';
 import { contextActions } from 'services/Global/actions';
@@ -155,11 +156,11 @@ class ListItemVehicle extends React.Component {
 }
 
 ListItemVehicle.propTypes = {
-  selectVehicle: React.PropTypes.func.isRequired,
-  isExpanded: React.PropTypes.bool,
+  selectVehicle: PropTypes.func.isRequired,
+  isExpanded: PropTypes.bool,
   vehicle: vehicleShape.isRequired,
-  mapStoreSetPan: React.PropTypes.func.isRequired,
-  driverById: React.PropTypes.func.isRequired,
+  mapStoreSetPan: PropTypes.func.isRequired,
+  driverById: PropTypes.func.isRequired,
 
   translations: vehicleDetailsShape.isRequired,
 };

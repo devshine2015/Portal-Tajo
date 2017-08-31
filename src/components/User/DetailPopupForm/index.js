@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import { VelocityComponent } from 'velocity-react';
 import AnimatedLogo from 'components/animated';
@@ -39,9 +40,9 @@ const DetailPopupForm = ({
 };
 
 DetailPopupForm.propTypes = {
-  headerText: React.PropTypes.string.isRequired,
-  children: React.PropTypes.any.isRequired,
-  isFetching: React.PropTypes.bool.isRequired,
+  headerText: PropTypes.string.isRequired,
+  children: PropTypes.any.isRequired,
+  isFetching: PropTypes.bool.isRequired,
 
   translations: phrasesShape.isRequired,
 };

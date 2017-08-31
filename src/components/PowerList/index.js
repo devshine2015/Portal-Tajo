@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import classnames from 'classnames';
 import FixedColumn from 'components/FixedColumn';
@@ -54,12 +55,12 @@ const PowerList = ({
 };
 
 PowerList.propTypes = {
-  children: React.PropTypes.element,
-  className: React.PropTypes.string,
-  content: React.PropTypes.element,
-  filter: React.PropTypes.element,
-  fixed: React.PropTypes.bool,
-  scrollable: React.PropTypes.bool,
+  children: PropTypes.element,
+  className: PropTypes.string,
+  content: PropTypes.element,
+  filter: PropTypes.element,
+  fixed: PropTypes.bool,
+  scrollable: PropTypes.bool,
 };
 
 PowerList.defaultProps = {

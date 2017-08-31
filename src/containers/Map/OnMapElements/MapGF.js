@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createPointerLine, showPointerLine } from './../utils/pointerLineHelpers';
 import { hideLayer } from 'utils/mapBoxMap';
@@ -139,14 +140,14 @@ class MapGF extends React.Component {
 }
 
 MapGF.contextTypes = {
-  muiTheme: React.PropTypes.object.isRequired,
+  muiTheme: PropTypes.object.isRequired,
 };
 MapGF.propTypes = {
-  theMap: React.PropTypes.object,
-  theGF: React.PropTypes.object.isRequired,
-  selectGF: React.PropTypes.func.isRequired,
-  selectedGfId: React.PropTypes.string.isRequired,
-  hideMe: React.PropTypes.bool.isRequired,
+  theMap: PropTypes.object,
+  theGF: PropTypes.object.isRequired,
+  selectGF: PropTypes.func.isRequired,
+  selectedGfId: PropTypes.string.isRequired,
+  hideMe: PropTypes.bool.isRequired,
 };
 
 MapGF.defaultProps = {

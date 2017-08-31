@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import FormComponents from 'components/User/FormComponents';
 import DetailPopupForm from 'components/User/DetailPopupForm';
@@ -80,8 +81,8 @@ class PasswordForm extends React.Component {
 }
 
 PasswordForm.propTypes = {
-  closeForm: React.PropTypes.func.isRequired,
-  onSubmit: React.PropTypes.func.isRequired,
+  closeForm: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 
   translations: phrasesShape.isRequired,
 };

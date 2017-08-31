@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import classnames from 'classnames';
 import dateFormats from 'configs/dateFormats';
@@ -179,15 +180,15 @@ class GenericListItem extends React.Component {
 }
 
 GenericListItem.propTypes = {
-  item: React.PropTypes.object.isRequired,
-  isExpanded: React.PropTypes.bool.isRequired,
-  onItemClick: React.PropTypes.func,
-  dateFormat: React.PropTypes.string,
-  selectedItems: React.PropTypes.array,
-  scrollIntoView: React.PropTypes.bool,
-  uncheckOnUnmount: React.PropTypes.bool,
+  item: PropTypes.object.isRequired,
+  isExpanded: PropTypes.bool.isRequired,
+  onItemClick: PropTypes.func,
+  dateFormat: PropTypes.string,
+  selectedItems: PropTypes.array,
+  scrollIntoView: PropTypes.bool,
+  uncheckOnUnmount: PropTypes.bool,
 
-  type: React.PropTypes.oneOf([
+  type: PropTypes.oneOf([
     types.withCheckboxes,
     types.withVehicleDetails,
     types.withGFDetails,

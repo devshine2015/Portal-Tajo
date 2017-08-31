@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
@@ -55,14 +56,14 @@ class ChronicleListItem extends React.Component {
 }
 
 ChronicleListItem.propTypes = {
-  id: React.PropTypes.string.isRequired,
-  isExpanded: React.PropTypes.bool,
+  id: PropTypes.string.isRequired,
+  isExpanded: PropTypes.bool,
   vehicle: vehicleShape.isRequired,
 
-  chronicleTimeFrame: React.PropTypes.object.isRequired,
-  getInstanceChronicleFrameById: React.PropTypes.func.isRequired,
-  selectVehicle: React.PropTypes.func.isRequired,
-  requestHistory: React.PropTypes.func.isRequired,
+  chronicleTimeFrame: PropTypes.object.isRequired,
+  getInstanceChronicleFrameById: PropTypes.func.isRequired,
+  selectVehicle: PropTypes.func.isRequired,
+  requestHistory: PropTypes.func.isRequired,
 
   translations: historyDetailsShape.isRequired,
 };

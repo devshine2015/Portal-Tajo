@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import Checkbox from 'material-ui/Checkbox';
 import IconButton from 'material-ui/IconButton';
@@ -36,7 +37,7 @@ const Help = ({ tooltip }) => (
 );
 
 Help.propTypes = {
-  tooltip: React.PropTypes.string.isRequired,
+  tooltip: PropTypes.string.isRequired,
 };
 
 class Field extends React.Component {
@@ -68,12 +69,12 @@ class Field extends React.Component {
 }
 
 Field.propTypes = {
-  index: React.PropTypes.number.isRequired,
-  isChecked: React.PropTypes.bool.isRequired,
-  name: React.PropTypes.string.isRequired,
-  disabled: React.PropTypes.bool,
-  onCheck: React.PropTypes.func.isRequired,
-  source: React.PropTypes.oneOf([
+  index: PropTypes.number.isRequired,
+  isChecked: PropTypes.bool.isRequired,
+  name: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
+  onCheck: PropTypes.func.isRequired,
+  source: PropTypes.oneOf([
     'events', 'reports',
   ]).isRequired,
 
@@ -121,13 +122,13 @@ const AvailableTypes = ({
 );
 
 AvailableTypes.propTypes = {
-  checkedFields: React.PropTypes.object.isRequired,
-  fields: React.PropTypes.object.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  source: React.PropTypes.oneOf([
+  checkedFields: PropTypes.object.isRequired,
+  fields: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
+  source: PropTypes.oneOf([
     'events', 'reports',
   ]).isRequired,
-  title: React.PropTypes.string,
+  title: PropTypes.string,
 };
 
 AvailableTypes.defaultProps = {

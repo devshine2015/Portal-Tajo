@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import cs from 'classnames';
 import { VelocityTransitionGroup } from 'velocity-react';
@@ -111,8 +112,8 @@ class ListItemMaritime extends React.Component {
 }
 
 ListItemMaritime.propTypes = {
-  onClick: React.PropTypes.func.isRequired,
-  isExpanded: React.PropTypes.bool,
+  onClick: PropTypes.func.isRequired,
+  isExpanded: PropTypes.bool,
   vehicle: maritimeShape.isRequired,
 };
 

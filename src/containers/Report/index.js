@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import cs from 'classnames';
@@ -59,19 +60,19 @@ const ReportsScreen = ({
 };
 
 ReportsScreen.contextTypes = {
-  translator: React.PropTypes.object.isRequired,
+  translator: PropTypes.object.isRequired,
 };
 
 ReportsScreen.propTypes = {
-  availableReports: React.PropTypes.array.isRequired,
-  vehiclesClassName: React.PropTypes.string,
-  contentClassName: React.PropTypes.string,
-  data: React.PropTypes.object.isRequired,
-  hasReport: React.PropTypes.bool.isRequired,
-  secondaryData: React.PropTypes.object.isRequired,
-  hasSecondaryReport: React.PropTypes.bool.isRequired,
-  saveGenerated: React.PropTypes.func.isRequired,
-  selectedFields: React.PropTypes.object.isRequired,
+  availableReports: PropTypes.array.isRequired,
+  vehiclesClassName: PropTypes.string,
+  contentClassName: PropTypes.string,
+  data: PropTypes.object.isRequired,
+  hasReport: PropTypes.bool.isRequired,
+  secondaryData: PropTypes.object.isRequired,
+  hasSecondaryReport: PropTypes.bool.isRequired,
+  saveGenerated: PropTypes.func.isRequired,
+  selectedFields: PropTypes.object.isRequired,
 };
 
 ReportsScreen.defaultProps = {

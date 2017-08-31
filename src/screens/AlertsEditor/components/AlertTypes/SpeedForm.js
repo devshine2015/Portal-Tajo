@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import {
   translate,
@@ -25,9 +26,9 @@ const SpeedForm = ({
 );
 
 SpeedForm.propTypes = {
-  alert: React.PropTypes.object,
-  closeForm: React.PropTypes.func.isRequired,
-  isOpened: React.PropTypes.bool.isRequired,
+  alert: PropTypes.object,
+  closeForm: PropTypes.func.isRequired,
+  isOpened: PropTypes.bool.isRequired,
   translations: makePhrasesShape(phrases).isRequired,
 };
 

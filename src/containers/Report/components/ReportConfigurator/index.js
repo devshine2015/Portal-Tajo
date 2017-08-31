@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import cs from 'classnames';
@@ -234,18 +235,18 @@ class Report extends React.Component {
 }
 
 Report.propTypes = {
-  availableReports: React.PropTypes.object.isRequired,
-  availableEvents: React.PropTypes.object.isRequired,
-  generateReport: React.PropTypes.func.isRequired,
-  isLoading: React.PropTypes.bool.isRequired,
-  hasReport: React.PropTypes.bool.isRequired,
-  saveReport: React.PropTypes.func.isRequired,
-  updateSelectedTypesFields: React.PropTypes.func.isRequired,
-  swipeGeneratedData: React.PropTypes.func.isRequired,
-  saveRawData: React.PropTypes.func.isRequired,
-  errorType: React.PropTypes.string,
-  userDateFormat: React.PropTypes.oneOf(dateTypes),
-  selectedFields: React.PropTypes.object.isRequired,
+  availableReports: PropTypes.object.isRequired,
+  availableEvents: PropTypes.object.isRequired,
+  generateReport: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  hasReport: PropTypes.bool.isRequired,
+  saveReport: PropTypes.func.isRequired,
+  updateSelectedTypesFields: PropTypes.func.isRequired,
+  swipeGeneratedData: PropTypes.func.isRequired,
+  saveRawData: PropTypes.func.isRequired,
+  errorType: PropTypes.string,
+  userDateFormat: PropTypes.oneOf(dateTypes),
+  selectedFields: PropTypes.object.isRequired,
   translations: phrasesShape.isRequired,
 };
 

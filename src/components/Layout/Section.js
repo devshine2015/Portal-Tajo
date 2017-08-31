@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import classes from './classes';
 
@@ -14,8 +15,8 @@ const Section = ({
 };
 
 Section.propTypes = {
-  children: React.PropTypes.any.isRequired,
-  style: React.PropTypes.object,
+  children: PropTypes.any.isRequired,
+  style: PropTypes.object,
 };
 
 Section.defaultProps = {

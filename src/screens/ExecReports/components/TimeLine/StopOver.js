@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { css } from 'aphrodite/no-important';
 
@@ -21,8 +22,8 @@ const StopOver = ({
 );
 
 StopOver.propTypes = {
-  address: React.PropTypes.string.isRequired,
-  durationMs: React.PropTypes.number.isRequired,
+  address: PropTypes.string.isRequired,
+  durationMs: PropTypes.number.isRequired,
 
 };
 

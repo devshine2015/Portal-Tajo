@@ -1,5 +1,6 @@
 import React from 'react';
 import R from 'ramda';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import Avatar from 'material-ui/Avatar';
 
@@ -46,13 +47,13 @@ Userpic.defaultProps = {
 };
 
 Userpic.propTypes = {
-  children: React.PropTypes.string,
-  src: React.PropTypes.string,
-  style: React.PropTypes.object,
+  children: PropTypes.string,
+  src: PropTypes.string,
+  style: PropTypes.object,
 
   // props for Avatar component
-  backgroundColor: React.PropTypes.string,
-  color: React.PropTypes.string,
+  backgroundColor: PropTypes.string,
+  color: PropTypes.string,
 };
 
 export default pure(Userpic);

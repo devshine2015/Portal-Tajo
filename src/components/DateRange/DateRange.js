@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import { css } from 'aphrodite/no-important';
 import dateFormats, { dateTypes } from 'configs/dateFormats';
@@ -61,11 +62,11 @@ class DateRange extends React.Component {
 }
 
 DateRange.propTypes = {
-  dateFormat: React.PropTypes.oneOf(dateTypes),
-  fromDate: React.PropTypes.instanceOf(Date).isRequired,
-  toDate: React.PropTypes.instanceOf(Date).isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  withTime: React.PropTypes.bool,
+  dateFormat: PropTypes.oneOf(dateTypes),
+  fromDate: PropTypes.instanceOf(Date).isRequired,
+  toDate: PropTypes.instanceOf(Date).isRequired,
+  onChange: PropTypes.func.isRequired,
+  withTime: PropTypes.bool,
 };
 
 DateRange.defaultProps = {

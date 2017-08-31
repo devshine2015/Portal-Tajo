@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import styles from './styles.css';
@@ -31,8 +32,8 @@ class MomentIndicator extends React.Component {
 }
 
 MomentIndicator.propTypes = {
-  normalized100T: React.PropTypes.number.isRequired,
-  chronicleFrame: React.PropTypes.object,
+  normalized100T: PropTypes.number.isRequired,
+  chronicleFrame: PropTypes.object,
 };
 const mapState = () => ({
 });

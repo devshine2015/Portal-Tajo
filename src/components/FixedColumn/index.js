@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import classnames from 'classnames';
 
@@ -30,13 +31,13 @@ const FixedColumn = ({
 };
 
 FixedColumn.contextTypes = {
-  muiTheme: React.PropTypes.object.isRequired,
+  muiTheme: PropTypes.object.isRequired,
 };
 
 FixedColumn.propTypes = {
-  children: React.PropTypes.any.isRequired,
-  containerClassName: React.PropTypes.string,
-  style: React.PropTypes.object,
+  children: PropTypes.any.isRequired,
+  containerClassName: PropTypes.string,
+  style: PropTypes.object,
 };
 
 FixedColumn.defaultProps = {

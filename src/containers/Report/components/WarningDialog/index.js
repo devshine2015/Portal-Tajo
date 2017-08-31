@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Dialog,
   FlatButton,
@@ -38,13 +39,13 @@ const WarningDialog = (props) => (
 WarningDialog.propTypes = {
   // fired by clicking on Cancel button or
   // outside of dialog
-  onCancel: React.PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
 
   // fired by clicking on OK button
-  onOk: React.PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
+  onOk: PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
 
   // Controls whether the Dialog is opened or not.
-  open: React.PropTypes.bool.isRequired,
+  open: PropTypes.bool.isRequired,
 
   translations: phrasesShape.isRequired,
 };

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import classnames from 'classnames';
 
@@ -26,10 +27,10 @@ const Form = ({
 };
 
 Form.propTypes = {
-  className: React.PropTypes.string,
-  children: React.PropTypes.node.isRequired,
-  name: React.PropTypes.string.isRequired,
-  onSubmit: React.PropTypes.func.isRequired,
+  className: PropTypes.string,
+  children: PropTypes.node.isRequired,
+  name: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 Form.defaultProps = {

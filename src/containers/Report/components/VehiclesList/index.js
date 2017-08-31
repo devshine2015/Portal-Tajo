@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import PowerList from 'components/PowerList';
@@ -52,14 +53,14 @@ class ReportsVehiclesList extends React.Component {
 }
 
 ReportsVehiclesList.propTypes = {
-  className: React.PropTypes.string,
-  filterFunc: React.PropTypes.func.isRequired,
-  setFiltering: React.PropTypes.func.isRequired,
-  chooseVehiclesForReport: React.PropTypes.func.isRequired,
-  vehicles: React.PropTypes.array.isRequired,
-  selectedVehicles: React.PropTypes.array.isRequired,
-  fixed: React.PropTypes.bool,
-  vehicleFilterString: React.PropTypes.string,
+  className: PropTypes.string,
+  filterFunc: PropTypes.func.isRequired,
+  setFiltering: PropTypes.func.isRequired,
+  chooseVehiclesForReport: PropTypes.func.isRequired,
+  vehicles: PropTypes.array.isRequired,
+  selectedVehicles: PropTypes.array.isRequired,
+  fixed: PropTypes.bool,
+  vehicleFilterString: PropTypes.string,
 };
 
 ReportsVehiclesList.defaultProps = {

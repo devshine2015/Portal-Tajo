@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
@@ -160,14 +161,14 @@ class EditGF extends React.Component {
 }
 
 EditGF.propTypes = {
-  theMap: React.PropTypes.object.isRequired,
-  gfEditMode: React.PropTypes.bool.isRequired,
-  subjectGF: React.PropTypes.object,
-  gfEditUpdate: React.PropTypes.func.isRequired,
-  gfEditClose: React.PropTypes.func.isRequired,
+  theMap: PropTypes.object.isRequired,
+  gfEditMode: PropTypes.bool.isRequired,
+  subjectGF: PropTypes.object,
+  gfEditUpdate: PropTypes.func.isRequired,
+  gfEditClose: PropTypes.func.isRequired,
 };
 EditGF.contextTypes = {
-  translator: React.PropTypes.object.isRequired,
+  translator: PropTypes.object.isRequired,
 };
 
 EditGF.defaultProps = {

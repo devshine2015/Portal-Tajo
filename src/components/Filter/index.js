@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import TextField from 'material-ui/TextField';
 import { translate } from 'utils/i18n';
@@ -52,9 +53,9 @@ class Filter extends React.Component {
 }
 
 Filter.propTypes = {
-  filterFunc: React.PropTypes.func.isRequired,
+  filterFunc: PropTypes.func.isRequired,
 
-  defaultValue: React.PropTypes.string,
+  defaultValue: PropTypes.string,
 
   translations: phrasesShape.isRequired,
 };

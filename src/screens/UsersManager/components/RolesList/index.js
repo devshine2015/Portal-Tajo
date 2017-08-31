@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import { connect } from 'react-redux';
 
@@ -21,7 +22,7 @@ const RolesList = () => (
 );
 
 RolesList.propTypes = {
-  showForm: React.PropTypes.func,
+  showForm: PropTypes.func,
 };
 
 const mapState = null;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import {
   Table,
@@ -54,8 +55,8 @@ const PreviewTable = ({
 };
 
 PreviewTable.propTypes = {
-  headers: React.PropTypes.array.isRequired,
-  data: React.PropTypes.object.isRequired,
+  headers: PropTypes.array.isRequired,
+  data: PropTypes.object.isRequired,
 };
 
 export default pure(PreviewTable);

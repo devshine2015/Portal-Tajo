@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { Chip, Popover } from 'material-ui';
@@ -73,14 +74,14 @@ class AlertsList extends React.Component {
 }
 
 AlertsList.propTypes = {
-  isOpen: React.PropTypes.bool.isRequired,
-  handleRequestClose: React.PropTypes.func.isRequired,
-  anchorEl: React.PropTypes.object,
-  alertFilter: React.PropTypes.func.isRequired,
-  vehicleAlerts: React.PropTypes.array.isRequired,
-  doAddAlert: React.PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  handleRequestClose: PropTypes.func.isRequired,
+  anchorEl: PropTypes.object,
+  alertFilter: PropTypes.func.isRequired,
+  vehicleAlerts: PropTypes.array.isRequired,
+  doAddAlert: PropTypes.func.isRequired,
   // getVehicleAlerts: React.PropTypes.func.isRequired,
-  alerts: React.PropTypes.array.isRequired,
+  alerts: PropTypes.array.isRequired,
 };
 
 AlertsList.defaultProps = {

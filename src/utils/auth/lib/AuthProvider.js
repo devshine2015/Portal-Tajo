@@ -1,5 +1,6 @@
 import React from 'react';
 import R from 'ramda';
+import PropTypes from 'prop-types';
 import { LOCAL_STORAGE_SESSION_KEY } from 'configs';
 import {
   readSessionFromLocalStorage,
@@ -221,9 +222,9 @@ class AuthProvider extends React.Component {
 }
 
 AuthProvider.propTypes = {
-  children: React.PropTypes.any.isRequired,
-  onLoginSuccess: React.PropTypes.func,
-  onLogoutSuccess: React.PropTypes.func,
+  children: PropTypes.any.isRequired,
+  onLoginSuccess: PropTypes.func,
+  onLogoutSuccess: PropTypes.func,
 };
 
 AuthProvider.childContextTypes = {
@@ -231,24 +232,24 @@ AuthProvider.childContextTypes = {
   // call it when u need to login
   // take a callback, send token as a parameter
   // callback will override onLoginSuccess if it provided
-  login: React.PropTypes.func,
+  login: PropTypes.func,
   // call it when u need to logout
   // callback will override onLogoutSuccess if it provided
-  logout: React.PropTypes.func,
+  logout: PropTypes.func,
 
-  authenticated: React.PropTypes.func,
+  authenticated: PropTypes.func,
 
   // get roles list for current session.
-  roles: React.PropTypes.array,
+  roles: PropTypes.array,
 
   // get permissions list for current session.
-  permissions: React.PropTypes.array,
+  permissions: PropTypes.array,
 
   // interface to authorization with role
-  authorizeWithRole: React.PropTypes.func,
+  authorizeWithRole: PropTypes.func,
 
   // interface to authorization with permission(s)
-  authorizeWithPerms: React.PropTypes.func,
+  authorizeWithPerms: PropTypes.func,
 };
 
 export default AuthProvider;

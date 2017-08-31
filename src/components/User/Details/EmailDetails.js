@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import RaisedButton from 'material-ui/RaisedButton';
 import { translate } from 'utils/i18n';
@@ -13,7 +14,7 @@ const EmailVerified = ({ text }) => (
 );
 
 EmailVerified.propTypes = {
-  text: React.PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
 };
 
 const EmailDetails = ({
@@ -41,9 +42,9 @@ const EmailDetails = ({
 );
 
 EmailDetails.propTypes = {
-  email: React.PropTypes.string.isRequired,
-  isVerified: React.PropTypes.bool.isRequired,
-  openEmailForm: React.PropTypes.func.isRequired,
+  email: PropTypes.string.isRequired,
+  isVerified: PropTypes.bool.isRequired,
+  openEmailForm: PropTypes.func.isRequired,
 
   translations: phrasesShape.isRequired,
 };

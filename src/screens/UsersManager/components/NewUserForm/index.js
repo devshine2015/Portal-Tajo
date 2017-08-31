@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Map } from 'immutable';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
@@ -134,15 +135,15 @@ class NewUserForm extends React.Component {
 }
 
 NewUserForm.propTypes = {
-  createUser: React.PropTypes.func.isRequired,
-  editMode: React.PropTypes.oneOf([
+  createUser: PropTypes.func.isRequired,
+  editMode: PropTypes.oneOf([
     'create', 'edit',
   ]),
-  closeForm: React.PropTypes.func.isRequired,
-  isLoading: React.PropTypes.bool.isRequired,
-  isOpened: React.PropTypes.bool.isRequired,
+  closeForm: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  isOpened: PropTypes.bool.isRequired,
   translations: phrasesShape.isRequired,
-  roles: React.PropTypes.instanceOf(Map).isRequired,
+  roles: PropTypes.instanceOf(Map).isRequired,
 };
 
 NewUserForm.defaultProps = {

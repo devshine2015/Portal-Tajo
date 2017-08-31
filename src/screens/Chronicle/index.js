@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { VelocityTransitionGroup } from 'velocity-react';
@@ -175,13 +176,13 @@ class Chronicle extends React.Component {
 }
 
 Chronicle.propTypes = {
-  vehicles: React.PropTypes.array.isRequired,
-  selectedVehicleId: React.PropTypes.string.isRequired,
+  vehicles: PropTypes.array.isRequired,
+  selectedVehicleId: PropTypes.string.isRequired,
 
-  filterFunc: React.PropTypes.func.isRequired,
-  getInstanceChronicleFrameById: React.PropTypes.func.isRequired,
-  hasChroniclePlayableFrames: React.PropTypes.bool.isRequired,
-  isEditGF: React.PropTypes.bool.isRequired,
+  filterFunc: PropTypes.func.isRequired,
+  getInstanceChronicleFrameById: PropTypes.func.isRequired,
+  hasChroniclePlayableFrames: PropTypes.bool.isRequired,
+  isEditGF: PropTypes.bool.isRequired,
 };
 
 const mapState = (state) => ({

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import IconButton from 'material-ui/IconButton';
 import RemoveIcon from 'material-ui/svg-icons/content/remove-circle-outline';
 import pure from 'recompose/pure';
@@ -30,16 +31,16 @@ const EditorButton = ({
 
 EditorButton.propTypes = {
   // false by default
-  disabled: React.PropTypes.bool,
+  disabled: PropTypes.bool,
 
   // callback fired on button click
-  onClick: React.PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
 
   // svg-material-ui icon
-  icon: React.PropTypes.node.isRequired,
+  icon: PropTypes.node.isRequired,
 
   // text to display on button hover
-  tooltip: React.PropTypes.string.isRequired,
+  tooltip: PropTypes.string.isRequired,
 };
 
 class DeviceEditor extends React.Component {
@@ -116,16 +117,16 @@ class DeviceEditor extends React.Component {
 DeviceEditor.propTypes = {
   // display deviceId if it presented
   // could be empty
-  deviceId: React.PropTypes.string,
+  deviceId: PropTypes.string,
 
   // id of vehicle
   // vehicleId: React.PropTypes.string.isRequired,
 
-  userPermittedTo: React.PropTypes.object,
+  userPermittedTo: PropTypes.object,
 
   // callback on attach/detach device
   // returns new deviceId
-  updateDeviceId: React.PropTypes.func.isRequired,
+  updateDeviceId: PropTypes.func.isRequired,
 };
 
 const PureDeviceEditor = pure(permitted(PERMISSIONS)(DeviceEditor));

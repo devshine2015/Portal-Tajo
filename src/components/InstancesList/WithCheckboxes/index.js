@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 
 import styles from '../styles.css';
@@ -46,11 +47,11 @@ class ListItemWithCheckbox extends React.Component {
 }
 
 ListItemWithCheckbox.propTypes = {
-  id: React.PropTypes.string.isRequired,
-  isChecked: React.PropTypes.bool.isRequired,
-  name: React.PropTypes.string.isRequired,
-  onClick: React.PropTypes.func.isRequired,
-  uncheckOnUnmount: React.PropTypes.bool,
+  id: PropTypes.string.isRequired,
+  isChecked: PropTypes.bool.isRequired,
+  name: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+  uncheckOnUnmount: PropTypes.bool,
 };
 
 ListItemWithCheckbox.defaultProps = {

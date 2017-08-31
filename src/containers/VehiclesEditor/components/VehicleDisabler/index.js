@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import ButtonWithProgress from 'components/ButtonWithProgress';
@@ -40,9 +41,9 @@ const DisableDialog = ({
 };
 
 DisableDialog.propTypes = {
-  handleClose: React.PropTypes.func.isRequired,
-  handleConfirm: React.PropTypes.func.isRequired,
-  open: React.PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  handleConfirm: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
   meta: metaShape.isRequired,
 };
 
@@ -99,11 +100,11 @@ class VehicleDisabler extends React.Component {
 }
 
 VehicleDisabler.propTypes = {
-  className: React.PropTypes.string,
-  disabled: React.PropTypes.bool.isRequired,
-  disableVehicle: React.PropTypes.func.isRequired,
-  isLoading: React.PropTypes.bool.isRequired,
-  label: React.PropTypes.string,
+  className: PropTypes.string,
+  disabled: PropTypes.bool.isRequired,
+  disableVehicle: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  label: PropTypes.string,
   meta: metaShape.isRequired,
 };
 
