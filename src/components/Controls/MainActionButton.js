@@ -20,7 +20,7 @@ const MainActionButton = ({
   icon,
 }) => (
   <RaisedButton
-    onTouchTap={onClick}
+    onClick={onClick}
     label={label}
     icon={icon}
     style={{ float: 'right' }}

@@ -33,12 +33,12 @@ const DeleteUserDialog = ({
     <FlatButton
       label={translations.cancel}
       primary
-      onTouchTap={handleClose}
+      onClick={handleClose}
     />,
     <FlatButton
       label={translations.confirm}
       primary
-      onTouchTap={handleConfirm}
+      onClick={handleConfirm}
     />,
   ];
 
@@ -94,13 +94,13 @@ function Actions({
     <FlatButton
       className={css(classes.button)}
       label={toggleButtonLabel}
-      onTouchTap={expandToggle}
+      onClick={expandToggle}
     />;
   let DeleteButton = () =>
     <FlatButton
       className={css(classes.button)}
       label={translations.delete}
-      onTouchTap={deleteUser}
+      onClick={deleteUser}
     />;
 
   return (

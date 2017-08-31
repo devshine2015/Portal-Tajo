@@ -13,12 +13,12 @@ function actions(props) {
     <FlatButton
       label={ props.translations.cancel }
       keyboardFocused
-      onTouchTap={props.onCancel}
+      onClick={props.onCancel}
     />,
     <FlatButton
       primary
       label={ props.translations.ok }
-      onTouchTap={props.onOk}
+      onClick={props.onOk}
     />,
   ];
 }

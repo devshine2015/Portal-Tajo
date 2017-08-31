@@ -16,12 +16,12 @@ const DisableDialog = ({
     <FlatButton
       label="Cancel"
       primary
-      onTouchTap={handleClose}
+      onClick={handleClose}
     />,
     <FlatButton
       label="Confirm"
       primary
-      onTouchTap={handleConfirm}
+      onClick={handleConfirm}
     />,
   ];
   const hasDevice = !!meta.deviceId;

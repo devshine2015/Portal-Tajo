@@ -84,7 +84,7 @@ class PermissionChip extends React.Component {
       >
         <Chip
           className={classes.chip}
-          onTouchTap={this.onClick}
+          onClick={this.onClick}
           backgroundColor={isActive ? theme.palette.PLItemBackgroundColor : ''}
           labelColor={labelColor}
           labelStyle={STYLES.label}

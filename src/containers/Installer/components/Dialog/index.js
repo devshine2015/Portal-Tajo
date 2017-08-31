@@ -13,12 +13,12 @@ const InstallerDialog = ({
     <FlatButton
       label="Cancel"
       primary
-      onTouchTap={handleClose}
+      onClick={handleClose}
     />,
     <FlatButton
       label="Send"
       primary
-      onTouchTap={handleSend}
+      onClick={handleSend}
     />,
   ];
 

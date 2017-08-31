@@ -46,7 +46,7 @@ class AlertsList extends React.Component {
         })
         .map(item => <Chip
           key={item.id}
-          onTouchTap={() => this.onItemClick(item.id)}
+          onClick={() => this.onItemClick(item.id)}
           style={stylesChip}
         >
           {item.gfName !== '' ? item.gfName : item.name}

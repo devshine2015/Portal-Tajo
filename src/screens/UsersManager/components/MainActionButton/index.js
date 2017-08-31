@@ -19,7 +19,7 @@ const MainActionButton = ({
   icon,
 }) => (
   <RaisedButton
-    onTouchTap={onClick}
+    onClick={onClick}
     label={label}
     className={css(classes.button)}
     icon={icon}
