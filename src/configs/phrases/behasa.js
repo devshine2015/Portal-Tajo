@@ -39,12 +39,12 @@ export default {
   devices_manager: 'devices manager',
   review: 'ulasan',
   history: 'riwayat',
-  alerts_editor: 'editor peringatan',
+  alerts_editor: 'editor waspada',
   alerts_logs: 'alerts logs',
   // -- end main menu
 
   // dashboard screen
-  fleet_summary_title: 'implementasi pertanian',
+  fleet_summary_title: 'Ringkasan armada',
   // -- end dashboard screen
 
   // fleet summary
@@ -61,8 +61,8 @@ export default {
   sending: 'mengirim',
   send: 'kirim',
   send_success: 'Berhasil dikirim ✓',
-  save_locally: 'Implementasi pertanian',
-  saved_locally: 'Implementasi pertanian ✓',
+  save_locally: 'Disimpan lokal',
+  saved_locally: 'Disimpan lokal ✓',
   cannot_save_locally: 'Tidak dapat menyimpan ke perangkat anda',
   send_fail: 'Terjadi kesalahan. Coba lagi nanti.',
   clean_success: 'Berhasil dibersihkan ✓',
@@ -86,7 +86,7 @@ export default {
   moving: 'mulai/berhenti bergerak',
   ignition: 'pengapian on/off',
   'vehicle-1wire-temperature': 'Temperatur',
-  geofences: 'geofence crossing (segera hadir)',
+  geofences: 'melintasi geofence (segera hadir)',
   // -- end report available types
 
   // report date selector with memory
@@ -105,7 +105,7 @@ export default {
   customise_report: 'sesuaikan laporan',
   generate_report: 'hasilkan laporan',
   save_report: 'simpan hasil',
-  customise_raw_events: 'Customise Raw Events',
+  customise_raw_events: 'kegiatan data mentah',
   // -- end report configurator
 
   // report warning dialog
@@ -118,7 +118,7 @@ export default {
   // vehicle details
   manufacturer: 'pabrikan',
   model_name: 'nomor model',
-  year_of_manufacture: 'tanggal pembuatan',
+  year_of_manufacture: 'tahun pembuatan',
   odometer_value: 'odometer (km.)',
   vehicle_kind_hint: 'Jenis Kendaraan',
   disable: 'disable',
@@ -138,7 +138,7 @@ export default {
   // vehicle kinds
   undefined: 'Undefined',
   boat: 'Vessel',
-  farm: 'Implementasi pertanian',
+  farm: 'Kendaraan pertanian',
   forklift: 'Forklift',
   hgv: 'Heavy Goods Vehicle',
   hgv_chilled: 'Heavy Goods Vehicle Chilled',
@@ -148,7 +148,7 @@ export default {
   mgv_frozen: 'Medium Goods Vehicle Frozen',
   mini_bus: 'Minibus',
   motorcycle: 'Motor',
-  passenger_car: 'Implementasi pertanian',
+  passenger_car: 'Mobil Penumpang',
   pick_up: 'Pick-up',
   sgv: 'Small Goods Vehicle',
   sgv_chilled: 'Small Goods Vehicle Chilled',
@@ -177,12 +177,12 @@ export default {
   // -- end instancesList
 
   // GFEditor
-  home_depot: 'Is home depot',
+  home_depot: 'Apakah pangkalan pusat',
   location_name: 'Nama Lokasi',
   // -- end GFEditor
 
   // errors
-  'Failed to fetch': 'Server turun sementara. Silahkan coba lagi nanti',
+  'Failed to fetch': 'Server off sementara. Silahkan coba lagi nanti',
   'Not Found': 'Sumber daya tidak ditemukan. Silahkan hubungi admin',
   Unauthorized: 'Kombinasi pengguna/kata sandi salah.',
   something_went_wrong: 'Terjadi kesalahan.',
@@ -286,10 +286,10 @@ export default {
   idling: 'diam',
   speeding: 'ngebut',
   drive_time: 'waktu mengemudi',
-  add_alert: 'tambah peringatan',
-  alert_name: 'alert name',
+  add_alert: 'tambah waspada',
+  alert_name: 'nama waspada',
   speed_limit: 'batas kecepatan',
-  new_alert_condition: 'kondisi peringatan baru',
+  new_alert_condition: 'kondisi waspada baru',
   distance_limit: 'batas jarak',
   // -- end alerts editor
 
@@ -310,7 +310,7 @@ export default {
   save_pdf: 'simpan pdf',
   timeline: 'waktu',
   print: 'cetak',
-  rest_duration: 'durasi tersisa',
+  rest_duration: 'durasi istirahat',
   start: 'mulai',
   end: 'akhir',
   operation_duration: 'durasi operasi',
