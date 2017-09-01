@@ -13,6 +13,7 @@ import phrases, { phrasesShape } from './PropTypes';
 
 const LangOption = ({
   text,
+  value,
   onClick,
   isSelected,
 }) => {
@@ -20,7 +21,7 @@ const LangOption = ({
     [css(classes.option_selected)]: isSelected,
   });
 
-  const _onClick = () => onClick(text);
+  const _onClick = () => onClick(value);
 
   return (
     <span
@@ -34,24 +35,25 @@ const LangOption = ({
 
 LangOption.propTypes = {
   isSelected: PropTypes.bool.isRequired,
-  text: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
+  text: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
 };
 
 function _renderOptions(currentLocale, onClick) {
   return locales.map(lang => (
     <LangOption
-      text={lang}
-      key={lang}
+      {...lang}
+      key={lang.value}
       onClick={onClick}
-      isSelected={ currentLocale === lang }
+      isSelected={currentLocale === lang.value}
     />
   ));
 }
 
 class LanguageWidget extends React.PureComponent {
 
-  onLanguaegeChange = nextLang => {
+  onLanguaegeChange = (nextLang) => {
     this.props.updateUserSettings(true, {
       lang: nextLang,
     });

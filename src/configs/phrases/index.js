@@ -8,4 +8,13 @@ export default {
   id: behasa,
 };
 
-export const locales = ['en', 'th', 'id'];
+export const locales = [{
+  text: 'en',
+  value: 'en',
+}, {
+  text: 'th',
+  value: 'th',
+}, {
+  text: 'id',
+  value: 'id',
+}];

@@ -4,7 +4,7 @@ import Polyglot from 'node-polyglot';
 import transformLocale from './lib/TransformLocale';
 
 function _isLocaleSupported(nextLocale = '', supportedLocalesList = []) {
-  return supportedLocalesList.indexOf(nextLocale) !== -1;
+  return supportedLocalesList.filter(({ value }) => value === nextLocale).length === 1;
 }
 
 const DEFAULT_LOCALE = 'en';
@@ -16,7 +16,7 @@ class Translator {
       phrases,
       locale: transformLocale(locale || window.navigator.language || DEFAULT_LOCALE),
       allowMissing: true,
-      onMissingKey: key => {
+      onMissingKey: (key) => {
         const splitted = key.split('.');
         let phrase;
         let phraseLocale;
@@ -44,11 +44,11 @@ class Translator {
     this.subscribtions = {};
   }
 
-  getTranslation = (stringKey) => this.p.t(`${this.getLocale()}.${stringKey}`)
+  getTranslation = stringKey => this.p.t(`${this.getLocale()}.${stringKey}`)
 
   getLocale = () => this.p.locale()
 
-  setLocale = nextLocale => {
+  setLocale = (nextLocale) => {
     const nextNormalisedLocale = transformLocale(nextLocale);
     let resultLocale = DEFAULT_LOCALE;
 
@@ -65,11 +65,11 @@ class Translator {
     Object.values(this.subscribtions).forEach(f => f());
   }
 
-  subscribe = s => {
+  subscribe = (s) => {
     Object.assign(this.subscribtions, s);
   }
 
-  unsubscribe = component => {
+  unsubscribe = (component) => {
     delete this.subscribtions[component];
   }
 
@@ -98,11 +98,14 @@ class TranslationProvider extends React.Component {
 }
 
 TranslationProvider.propTypes = {
-  phrases: PropTypes.object.isRequired, // eslint-disable-line react/no-unused-prop-types
-  locales: PropTypes.arrayOf( // eslint-disable-line react/no-unused-prop-types
-    PropTypes.string,
+  phrases: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  locales: PropTypes.arrayOf(
+    PropTypes.shape({
+      text: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+    }),
   ).isRequired,
-  children: PropTypes.any.isRequired,
+  children: PropTypes.element.isRequired,
 };
 
 TranslationProvider.childContextTypes = {
