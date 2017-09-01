@@ -54,7 +54,6 @@ export default {
 
   // installer
   vehicle_name: 'Vehicle Name',
-  license: 'License Plate',
   imei: 'IMEI',
   odo_value: 'Current Odometer value',
   odo_in_miles: 'ODO value in miles',
@@ -141,7 +140,7 @@ export default {
 
   // vehicle kinds
   undefined: 'Undefined',
-  boat: 'Vessel',
+  vessel: 'Vessel',
   farm: 'Farm implementation',
   forklift: 'Forklift',
   hgv: 'Heavy Goods Vehicle',
@@ -269,7 +268,7 @@ export default {
 
   // -- mwa reports
   mwa_jobs_nbr: 'No. of Jobs',
-  mwa_jobs_t: ' Jobs Summary',
+  mwa_jobs_t: 'Jobs Summary',
   mwa_jobs_pipe_count: 'Jobs No. per PipeSize',
   job_name: 'Job Name',
   from: 'from',
@@ -301,16 +300,18 @@ export default {
   failed_to_change_alert_alert_condition: 'Failed to change alert alert condition',
   // -- end alerts editor
 
-  // -- alerts editor
+  // -- alerts lo
   apply: 'apply',
   historical_timeline: 'historical timeline',
   events: 'events',
   for_last_24_hours: 'for last 24 hours',
   total: 'total',
   filter_by_type: 'filter by type',
-  // -- end alerts editor
+  no_events_for_specified_period: 'No events for specified period',
+  // -- end alerts log
 
   // -- trips report
+  kind: 'kind',
   report_from: 'report from',
   trips: 'trips',
   trip_details: 'trip details',

@@ -5,7 +5,7 @@ const string = PropTypes.string;
 
 const phrases = {
   undefined: 'Undefined',
-  boat: 'Vessel',
+  vessel: 'Vessel',
   farm: 'Farm implementation',
   forklift: 'Forklift',
   hgv: 'Heavy Goods Vehicle',
@@ -28,7 +28,7 @@ const phrases = {
 
 export const phrasesShape = shape({
   undefined: string.isRequired,
-  boat: string.isRequired,
+  vessel: string.isRequired,
   farm: string.isRequired,
   forklift: string.isRequired,
   hgv: string.isRequired,

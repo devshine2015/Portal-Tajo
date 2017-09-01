@@ -5,7 +5,7 @@ const string = PropTypes.string;
 
 const phrases = {
   vehicle_name: 'Vehicle Name',
-  license: 'License Plate Number',
+  license_plate: 'License Plate Number',
   imei: 'IMEI',
   odo_value: 'Current Odometer value',
   odo_in_miles: 'ODO value in miles',

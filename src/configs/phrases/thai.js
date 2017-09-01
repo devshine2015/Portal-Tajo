@@ -28,7 +28,7 @@ export default {
 
   // main menu
   reports: 'รายงาน',
-  exec_report: 'รายงานทริป',
+  exec_report: 'รายงานการเดินทาง',
   vehicles_editor: 'จัดการยานพาหนะ',
   operational: 'ปฏิบัติการ',
   review: 'ภาพรวม',
@@ -36,7 +36,7 @@ export default {
   users: 'ผู้ใช้',
   profile: 'โปรไฟล์',
   alerts_editor: 'จัดการการเตือน',
-  alerts_logs: 'รายงานการแจ้งเตือน',
+  alerts_logs: 'บันทึกการแจ้งเตือน',
   // -- end main menu
 
   // dashboard screen
@@ -50,7 +50,6 @@ export default {
 
   // installer
   vehicle_name: 'ชื่อยานพาหนะ',
-  license: 'เลขทะเบียน',
   odo_value: 'เลขมาตรระยะทางปัจจุบัน',
   odo_in_miles: 'มาตรวัดระยะทางในหน่วยไมล์',
   sending: 'กำลังส่ง',
@@ -111,27 +110,30 @@ export default {
 
   // vehicle details
   manufacturer: 'ผู้ผลิต',
+  make: 'ทำ',
   model_name: 'รุ่น',
+  year: 'ปี',
   year_of_manufacture: 'ปีที่ผลิต',
   odometer_value: 'มาตรวัดระยะทาง (กิโลเมตร)',
   vehicle_kind_hint: 'ประเภทของยานพาหนะ',
-  disable: 'disable',
+  disable: 'ปิดการใช้งาน',
   parameters: 'พารามิเตอร์',
   driver: 'คนขับรถ',
   select_driver: 'เลือกคนขับรถ',
   map_marker: 'เครื่องหมายแผนที่',
   icon: 'ไอคอน',
-  alerts: 'alerts',
+  alerts: 'การแจ้งเตือน',
   no_alerts: 'ไม่มีการแจ้งเตือน',
   maintenance: 'ซ่อมบำรุง',
   name: 'ชื่อ',
   on_enter_location: 'เข้าสู่ตำแหน่งที่ตั้ง',
   on_exit_location: 'ทางออกตำแหน่งที่ตั้ง ',
+  add: 'เพิ่ม',
   // -- end vehicle details
 
   // vehicle kinds
   undefined: 'ไม่กำหนด',
-  boat: 'เรือ',
+  vessel: 'เรือ',
   farm: 'รถฟาร์ม',
   forklift: 'โฟล์คลิฟท์',
   hgv: 'รถบรรทุกขนาดใหญ่',
@@ -230,6 +232,7 @@ export default {
   new_password: 'รหัสผ่านใหม่',
   repeat_password: 'ใส่รหัสผ่านอีกครั้ง',
   changing: 'กำลังเปลี่ยนแปลง',
+  choose_fleet: 'เลือกกองยานพาหนะ',
   // --end users manager
 
   // 404 page
@@ -241,7 +244,7 @@ export default {
   mwa_n_jobs: 'จำนวนงาน',
   license_plate: 'ทะเบียน',
   driver_name: 'ชื่อคนขับ',
-  door_open_close: 'สถานะประตู',
+  door_open_close: 'ประตู เปิด/ปิด',
   door_open_close_opened: 'เปิด',
   door_open_close_closed: 'ปิด',
   engine_status: 'สถานะเครื่องยนต์',
@@ -285,16 +288,18 @@ export default {
   distance_limit: 'ระยะทาง',
   // -- end alerts editor
 
-  // -- alerts editor
+  // -- alerts log
   apply: 'ใช้',
   historical_timeline: 'ประวัติไทม์ไลน์',
   events: 'เหตุการณ์',
   for_last_24_hours: 'สำหรับ 24 ชั่วโมงที่ผ่านมา',
   total: 'ทั้งหมด',
   filter_by_type: 'กรองตามประเภท',
-  // -- end alerts editor
+  no_events_for_specified_period: 'ไม่มีกิจกรรมสำหรับช่วงเวลาที่ระบุ',
+  // -- end alerts log
 
   // -- trips report
+  kind: 'ชนิด',
   report_from: 'รายงานจาก',
   trips: 'การเดินทาง',
   trip_details: 'รายละเอียดการเดินทาง',

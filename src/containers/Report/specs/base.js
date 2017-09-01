@@ -42,12 +42,12 @@ const fields = [{
   order: 0,
 }, {
   ...commonProps,
-  name: 'name',
+  name: 'vehicle_name',
   reportType: 'name',
   order: 1,
 }, {
   ...commonProps,
-  name: 'license',
+  name: 'license_plate',
   reportType: 'license',
   checkedByDefault: false,
   order: 2,

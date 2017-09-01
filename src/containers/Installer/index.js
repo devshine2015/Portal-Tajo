@@ -209,7 +209,7 @@ class Installer extends React.Component {
               fullWidth
               name="license"
               onChange={this.onChange}
-              floatingLabelText={ translations.license }
+              floatingLabelText={ translations.license_plate }
               required
             />
             <DeviceSelector

@@ -74,7 +74,7 @@ const SoloHeader = ({
         <Value text={kindLabel} />
       </div>
       <div style={propDivStyle}>
-        <Title text={translations.license} />
+        <Title text={translations.license_plate} />
         <Value text={theVehicle.original.licensePlate} />
       </div>
       <div style={propDivStyle}>

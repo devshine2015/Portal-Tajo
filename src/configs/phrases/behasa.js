@@ -54,7 +54,6 @@ export default {
 
   // installer
   vehicle_name: 'nama kendaraan',
-  license: 'plat nomor',
   imei: 'IMEI',
   odo_value: 'Current Odometer value',
   odo_in_miles: 'nilai ODO dalam mil',
@@ -137,7 +136,7 @@ export default {
 
   // vehicle kinds
   undefined: 'Undefined',
-  boat: 'Vessel',
+  vessel: 'Vessel',
   farm: 'Kendaraan pertanian',
   forklift: 'Forklift',
   hgv: 'Heavy Goods Vehicle',
@@ -293,16 +292,17 @@ export default {
   distance_limit: 'batas jarak',
   // -- end alerts editor
 
-  // -- alerts editor
+  // -- alerts log
   apply: 'terapkan',
   historical_timeline: 'riwayat waktu',
   events: 'kejadian',
   for_last_24_hours: '24 jam terakhir',
   total: 'total',
   filter_by_type: 'saring berdasarkan jenisnya',
-  // -- end alerts editor
+  // -- end alerts log
 
   // -- trips report
+  kind: 'jenis',
   report_from: 'laporan dari',
   trips: 'perjalanan',
   trip_details: 'rincian perjalanan',

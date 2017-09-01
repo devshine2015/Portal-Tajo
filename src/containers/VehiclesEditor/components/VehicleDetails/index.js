@@ -183,7 +183,7 @@ class VehicleDetails extends React.Component {
               fullWidth
               name="licensePlate"
               onChange={this.onChange}
-              floatingLabelText={translations.license}
+              floatingLabelText={translations.license_plate}
               value={this.state.licensePlate}
             />
 

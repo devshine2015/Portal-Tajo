@@ -7,4 +7,5 @@ export default [
   'from',
   'to',
   'filter_by_type',
+  'no_events_for_specified_period',
 ];

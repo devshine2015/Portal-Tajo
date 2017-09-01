@@ -5,8 +5,8 @@ const string = PropTypes.string;
 
 const phrases = {
   date: 'date',
-  name: 'vehicle name',
-  license: 'license plate',
+  vehicle_name: 'vehicle name',
+  license_plate: 'license plate',
   mileage: 'driving distance (km.)',
   minTemp: 'min. temperature',
   maxTemp: 'max. temperature',
@@ -25,8 +25,8 @@ const phrases = {
 
 export const phrasesShape = shape({
   date: string.isRequired,
-  name: string.isRequired,
-  license: string.isRequired,
+  vehicle_name: string.isRequired,
+  license_plate: string.isRequired,
   mileage: string.isRequired,
   minTemp: string.isRequired,
   maxTemp: string.isRequired,

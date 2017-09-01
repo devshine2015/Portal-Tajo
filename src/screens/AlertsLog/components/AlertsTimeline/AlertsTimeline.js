@@ -3,17 +3,28 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { List } from 'immutable';
 import { css } from 'aphrodite/no-important';
+import {
+  translate,
+  makePhrasesShape,
+} from 'utils/i18n';
 import { ALERT_KINDS } from 'services/AlertsSystem/alertKinds';
 import LogsFilter from '../KindsFilter';
+import phrases from '../../PropTYpes';
 import TimelineHeader from './TimelineHeader';
 import TimelineEvent from './TimelineEvent';
 import classes from './AlertsTimeline.classes';
 
-const EmptyTimeline = () => (
+const EmptyTimeline = ({ translations }) => (
   <div className={css([classes.listWrapper, classes.listWrapper_empty])}>
-    No events for specified period
+    { translations.no_events_for_specified_period }
   </div>
 );
+
+EmptyTimeline.propTypes = {
+  translations: makePhrasesShape(phrases).isRequired,
+};
+
+const TEmptyTimeline = translate(phrases)(EmptyTimeline);
 
 function _makeHeaderTimeRange(range = {}) {
   const format = 'DD-MM-YYYY HH:mm';
@@ -97,7 +108,7 @@ class AlertsTimeline extends React.Component {
           />
         )}
 
-        { this.props.entries.size === 0 ? <EmptyTimeline /> : (
+        { this.props.entries.size === 0 ? <TEmptyTimeline /> : (
           <div className={css(classes.listWrapper)}>
             { entries }
           </div>

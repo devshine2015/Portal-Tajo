@@ -1,6 +1,6 @@
 export default [
   'kind',
-  'license',
+  'license_plate',
   'make',
   'model_name',
   'year',
