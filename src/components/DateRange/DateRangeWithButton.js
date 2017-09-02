@@ -9,9 +9,10 @@ class DateRangeWithButton extends Component {
   constructor(props) {
     super(props);
 
-    const { fromDate, toDate } = makePeriodForLast24Hours();
-
-    this.state = { fromDate, toDate };
+    this.state = {
+      fromDate: props.fromDate,
+      toDate: props.toDate,
+    };
   }
 
   onDateTimeChange = (newFromDate, newToDate) => {
@@ -49,6 +50,12 @@ class DateRangeWithButton extends Component {
 DateRangeWithButton.propTypes = {
   onApply: PropTypes.func.isRequired,
   button: PropTypes.element.isRequired,
+  fromDate: PropTypes.instanceOf(Date),
+  toDate: PropTypes.instanceOf(Date),
+};
+
+DateRangeWithButton.defaultProps = {
+  ...makePeriodForLast24Hours(),
 };
 
 export default DateRangeWithButton;
