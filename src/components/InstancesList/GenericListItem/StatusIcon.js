@@ -5,8 +5,14 @@ import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
 import AlertLagIcon from 'material-ui/svg-icons/action/watch-later';
 import { yellow700, blueGrey200 } from 'material-ui/styles/colors';
 import { isEscape } from 'configs';
-
 import classes from './StatusIcon.classes';
+
+const STYLES = {
+  icon: {
+    width: 21,
+    height: 21,
+  },
+};
 
 const StatusIcon = ({
   activityStatus,
@@ -15,11 +21,11 @@ const StatusIcon = ({
   let icon = null;
 
   if (activityStatus === 'dead') {
-    icon = <AlertIcon color={yellow700} />;
+    icon = <AlertIcon color={yellow700} style={STYLES.icon} />;
   } else if (isEscape && isDelayedWithIgnitionOff) {
-    icon = <AlertLagIcon color={blueGrey200} />;
+    icon = <AlertLagIcon color={blueGrey200} style={STYLES.icon} />;
   } else if (activityStatus === 'delayed') {
-    icon = <AlertLagIcon color={yellow700} />;
+    icon = <AlertLagIcon color={yellow700} style={STYLES.icon} />;
   }
 
   return (
