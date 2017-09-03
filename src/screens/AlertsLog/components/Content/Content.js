@@ -44,11 +44,11 @@ class Content extends React.Component {
    * @param {Object} range - time range for notifications
    * @param {Date} range.fromDate - start of the range
    * @param {Date} range.toDate - end of the range
-   * @param {Boolean} isDefault = mark range as a default range for last 24 hours
+   * @param {Boolean} isDefaultRange = mark range as a default range for last 24 hours
    */
-  getLogs = (range, isDefault = false) => {
+  getLogs = (range, isDefaultRange = false) => {
     this.props.fetchLogs(range)
-      .then(() => this.setState({ isDefault }));
+      .then(() => this.setState({ isDefaultRange }));
   }
 
   canShowTimeline() {
