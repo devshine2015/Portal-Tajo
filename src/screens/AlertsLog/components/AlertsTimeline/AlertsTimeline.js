@@ -99,7 +99,7 @@ class AlertsTimeline extends React.Component {
           selectedVehicleName={this.props.selectedVehicleName}
         />
 
-        { this.props.entries.size === 0 && (
+        { this.props.entries.size !== 0 && (
           <LogsFilter
             onKindsChange={this.onFilterKindsChange}
             activeFilters={this.state.activeKinds}
