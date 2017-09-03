@@ -1,4 +1,5 @@
 import { Map, fromJS } from 'immutable';
+import { SESSION_CLEAN } from 'services/Session/actions';
 import { conditionsActions } from '../actions';
 
 const initialState = fromJS({
@@ -24,6 +25,9 @@ function alertsReducer(state = initialState, action) {
 
     case conditionsActions.ALRT_CONDITON_DEL:
       return state.deleteIn(['conditions', action.alertId]);
+
+    case SESSION_CLEAN:
+      return initialState;
 
     default:
       return state;
