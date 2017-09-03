@@ -127,7 +127,7 @@ export default {
   select_driver: '选择司机',
   map_marker: '地图标记',
   icon: '图标',
-  alerts: '警告',
+  alerts: '警报',
   no_alerts: '没有警报',
   maintenance: '保养',
   name: '名称',
@@ -150,7 +150,7 @@ export default {
   mini_bus: '小型巴士',
   motorcycle: '摩托车',
   passenger_car: '私家车',
-  pick_up: '货斗车',
+  pick_up: '皮卡',
   sgv: '小型货车',
   sgv_chilled: '小型冷藏车',
   sgv_frozen: '小型冷冻车',
@@ -183,7 +183,7 @@ export default {
   // -- end GFEditor
 
   // errors
-  'Failed to fetch': '伺服器出错，请稍后再试',
+  'Failed to fetch': '服务器出错，请稍后再试',
   'Not Found': '资源文件不存在，请联系管理员',
   Unauthorized: '用户名或密码错误',
   something_went_wrong: '有异常',
@@ -192,9 +192,9 @@ export default {
   // login form
   username: '用户名',
   password: '密码',
-  login: '登入',
-  signin: '登入',
-  signing: '登入中',
+  login: '登录',
+  signin: '登录',
+  signing: '登录中',
   // -- end login form
 
   // filter
@@ -225,7 +225,7 @@ export default {
   role: '角色',
   close: '关闭',
   details: '详细',
-  last_login: '上次登入',
+  last_login: '登录',
   never: '从不',
   confirm_delete_str1: '你将删除用户',
   confirm_delete_str2: '请确认这个操作',
@@ -292,10 +292,10 @@ export default {
   speed_limit: '速度极限',
   new_alert_condition: '新的警报状况',
   distance_limit: '距离限制',
-  new_alert_condition_created_successfully: '成功设置新警告条件',
+  new_alert_condition_created_successfully: '成功设置新警报条件',
   failed_to_create_new_alert_condition: '无法设置新警告条件',
-  alert_condition_updated_successfuly: '警告条件更新成功',
-  failed_to_change_alert_alert_condition: '无法改变警告条件',
+  alert_condition_updated_successfuly: '警报条件更新成功',
+  failed_to_change_alert_alert_condition: '无法改变警报条件',
   // -- end alerts editor
 
   // -- alerts log

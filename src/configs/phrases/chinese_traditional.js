@@ -40,7 +40,7 @@ export default {
   review: '概況',
   history: '歷史記錄',
   alerts_editor: '警報編輯',
-  alerts_logs: '驚爆日誌',
+  alerts_logs: '警報日誌',
   // -- end main menu
 
   // dashboard screen
@@ -127,7 +127,7 @@ export default {
   select_driver: '選擇司機',
   map_marker: '地圖標記',
   icon: '圖標',
-  alerts: '警告',
+  alerts: '警報',
   no_alerts: '沒有警報',
   maintenance: '保養',
   name: '名稱',
@@ -292,10 +292,10 @@ export default {
   speed_limit: '速度極限',
   new_alert_condition: '新的警報狀況',
   distance_limit: '距離限制',
-  new_alert_condition_created_successfully: '成功設置新警告條件',
-  failed_to_create_new_alert_condition: '無法設置新警告條件',
-  alert_condition_updated_successfuly: '警告條件設置成功',
-  failed_to_change_alert_alert_condition: '無法改變警告條件',
+  new_alert_condition_created_successfully: '成功設置新警報條件',
+  failed_to_create_new_alert_condition: '無法設置新警報條件',
+  alert_condition_updated_successfuly: '警報條件設置成功',
+  failed_to_change_alert_alert_condition: '無法改變警報條件',
   // -- end alerts editor
 
   // -- alerts log
