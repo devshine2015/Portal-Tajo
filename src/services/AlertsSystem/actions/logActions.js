@@ -22,6 +22,7 @@ export const fetchLogs = range => async (dispatch, getState) => {
     dispatch({
       type: LOGS_SET,
       entries: logEntries,
+      period: range,
     });
   } else {
     dispatch({
