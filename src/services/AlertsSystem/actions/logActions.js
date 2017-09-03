@@ -4,6 +4,7 @@ import {
 } from './helpers';
 
 export const LOGS_SET = 'alrtSys/LOGS_SET';
+export const LOGS_PERIOD_SET = 'alertSystem/LOGS_PERIOD_SET';
 
 export const fetchLogs = range => async (dispatch, getState) => {
   const state = getState();
@@ -21,6 +22,11 @@ export const fetchLogs = range => async (dispatch, getState) => {
     dispatch({
       type: LOGS_SET,
       entries: logEntries,
+    });
+  } else {
+    dispatch({
+      type: LOGS_PERIOD_SET,
+      period: range,
     });
   }
 
