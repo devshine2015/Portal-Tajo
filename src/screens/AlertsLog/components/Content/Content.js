@@ -18,7 +18,6 @@ import classes from './classes';
 class Content extends React.Component {
 
   state = {
-    range: undefined,
     isDefaultRange: true,
   };
 
@@ -45,17 +44,11 @@ class Content extends React.Component {
    * @param {Object} range - time range for notifications
    * @param {Date} range.fromDate - start of the range
    * @param {Date} range.toDate - end of the range
+   * @param {Boolean} isDefault = mark range as a default range for last 24 hours
    */
-  getLogs = (range, isDefault) => {
+  getLogs = (range, isDefault = false) => {
     this.props.fetchLogs(range)
-      .then(() => this.saveRange(range, isDefault));
-  }
-
-  saveRange = (range, isDefaultRange = false) => {
-    this.setState({
-      range,
-      isDefaultRange,
-    });
+      .then(() => this.setState({ isDefault }));
   }
 
   canShowTimeline() {
@@ -63,11 +56,15 @@ class Content extends React.Component {
   }
 
   render() {
+    const { fromDate, toDate } = this.props;
+
     return (
       <FixedContent containerClassName={css(classes.contentWrapper)}>
         <DateRangeWithButton
           withTime={false}
           onApply={this.getLogs}
+          fromDate={fromDate}
+          toDate={toDate}
           button={(
             <FlatButton
               primary
@@ -79,7 +76,7 @@ class Content extends React.Component {
         { !this.canShowTimeline() ? <AnimatedLogo.FullscreenLogo /> : (
           <AlertsTimeline
             entries={this.props.entries}
-            dateRange={this.state.range}
+            dateRange={{ fromDate, toDate }}
             displayDefaultRange={this.state.isDefaultRange}
             selectedVehicleName={this.props.selectedVehicleName}
           />
@@ -97,11 +94,14 @@ Content.propTypes = {
   selectedVehicleId: PropTypes.string,
   selectedVehicleName: PropTypes.string,
   translations: makePhrasesShape(phrases).isRequired,
+  fromDate: PropTypes.instanceOf(Date),
+  toDate: PropTypes.instanceOf(Date),
 };
 
 Content.defaultProps = {
   selectedVehicleId: undefined,
   selectedVehicleName: undefined,
+  ...makePeriodForLast24Hours(),
 };
 
 export default translate(phrases)(Content);

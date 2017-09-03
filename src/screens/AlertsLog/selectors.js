@@ -7,9 +7,13 @@ import {
   getVehicleFilterString,
   getSelectedVehicleId,
 } from 'services/Global/reducers/contextReducer';
-import { selectLogEntries } from 'services/AlertsSystem/selectors';
+import {
+  selectLogEntries,
+  selectLogPeriod,
+} from 'services/AlertsSystem/selectors';
 
 const logEntries = logsState => selectLogEntries(logsState);
+const logPeriod = logsState => selectLogPeriod(logsState);
 const selectVehicleId = (_, contextState) => getSelectedVehicleId(contextState);
 
 export const makeGetSelectedVehicleId = () => {
@@ -18,11 +22,12 @@ export const makeGetSelectedVehicleId = () => {
   });
 };
 
-export const makeGetLogEntries = () => {
-  return createSelector([logEntries, selectVehicleId], (entries, selectedVehicleId) => {
+export const makeGetLastLogResult = () => {
+  return createSelector([logEntries, selectVehicleId, logPeriod], (entries, selectedVehicleId, period) => {
     return {
-      entries: selectedVehicleId !== '' ? entries.filter(entry => entry.get('ownerId') === selectedVehicleId) : entries,
+      ...period,
       selectedVehicleId,
+      entries: selectedVehicleId !== '' ? entries.filter(entry => entry.get('ownerId') === selectedVehicleId) : entries,
     };
   });
 };

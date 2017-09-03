@@ -1,6 +1,9 @@
 import { createSelector } from 'reselect';
 import { getEntries } from './reducers/journalReducer';
-import { getLogEntriesNewestFirst } from './reducers/logReducer';
+import {
+  getLogEntriesNewestFirst,
+  getLogPeriod,
+} from './reducers/logReducer';
 import { getIsConditionsReady } from './reducers/conditionsReducer';
 
 export const getJournalEntries = () => {
@@ -14,6 +17,8 @@ export const getJournalEntries = () => {
 export const selectLogEntries = createSelector(getLogEntriesNewestFirst, (entries) => {
   return entries;
 });
+
+export const selectLogPeriod = createSelector(getLogPeriod, period => period);
 
 export const makeGetIsConditionsReady = () => {
   return createSelector(getIsConditionsReady, (isReady) => {
