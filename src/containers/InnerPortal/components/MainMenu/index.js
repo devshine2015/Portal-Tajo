@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
-import { rolesEnum } from 'configs/roles';
-import MenuItem from './components/ManuItem';
-import pageShape from 'containers/InnerPortal/PropTypes';
-import { translate } from 'utils/i18n';
 import { isAlerts } from 'configs';
-
+import { rolesEnum } from 'configs/roles';
+import pageShape from 'containers/InnerPortal/PropTypes';
+import {
+  translate,
+  makePhrasesShape,
+} from 'utils/i18n';
+import MenuItem from './components/ManuItem';
 import styles from './styles.css';
-import phrases, { phrasesShape } from './PropTypes';
+import phrases from './PropTypes';
 
 const EMPTY_ARRAY = [];
 
@@ -51,19 +53,17 @@ MainMenu.contextTypes = {
   permissions: PropTypes.array.isRequired,
 };
 
+MainMenu.displayName = 'MainMenu';
+
 MainMenu.propTypes = {
   closeSidebar: PropTypes.func.isRequired,
   pages: PropTypes.arrayOf(pageShape).isRequired,
   role: PropTypes.oneOf(rolesEnum),
-
-  translations: phrasesShape.isRequired,
+  translations: makePhrasesShape(phrases).isRequired,
 };
 
 MainMenu.defaultProps = {
-  translations: phrases,
   role: 'admin',
 };
 
-const Pure = pure(MainMenu);
-
-export default translate(phrases)(Pure);
+export default pure(translate(phrases)(MainMenu));
