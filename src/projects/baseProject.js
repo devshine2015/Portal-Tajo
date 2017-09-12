@@ -17,7 +17,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
-import configureStore from 'redux/store';
+import configureStore from 'configs/store';
 
 require('velocity-animate');
 require('velocity-animate/velocity.ui');
@@ -35,7 +35,7 @@ const renderProject = ({
 
   ReactDOM.render(
     <Provider store={store}>
-      {createRoutes(store)}
+      {createRoutes(store, createReducer)}
     </Provider>,
     document.getElementById(anchorId),
   );

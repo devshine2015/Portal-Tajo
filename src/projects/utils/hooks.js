@@ -1,9 +1,7 @@
-import createReducer from '../redux/reducers';
-
 /**
  * Inject an asynchronously loaded reducer
  */
-export function injectAsyncReducer(store) {
+function injectAsyncReducer(store, createReducer) {
   return (name, asyncReducer) => {
     store.asyncReducers[name] = asyncReducer;
     store.replaceReducer(createReducer(store.asyncReducers));
@@ -13,8 +11,8 @@ export function injectAsyncReducer(store) {
 /**
  * Helper for creating injectors
  */
-export function getHooks(store) {
+export default function getHooks(store, createReducer) {
   return {
-    injectReducer: injectAsyncReducer(store),
+    injectReducer: injectAsyncReducer(store, createReducer),
   };
 }

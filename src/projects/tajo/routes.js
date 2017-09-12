@@ -1,5 +1,4 @@
 import React from 'react';
-import { getHooks } from 'utils/hooks';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { ROOT_ROUTE } from 'configs';
@@ -25,9 +24,10 @@ import profileScreen from 'screens/Profile/route';
 import alertsEditorScreen from 'screens/AlertsEditor/route';
 import alertLogsScreen from 'screens/AlertsLog/route';
 import notFoundScreen from 'screens/NotFound/route';
+import getHooks from '../utils/hooks';
 
-export default function createRoutes(store) {
-  const { injectReducer } = getHooks(store);
+export default function createRoutes(store, createReducer) {
+  const { injectReducer } = getHooks(store, createReducer);
 
   const history = syncHistoryWithStore(browserHistory, store, {
     selectLocationState: selectLocationState(),

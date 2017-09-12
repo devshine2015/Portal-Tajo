@@ -7,6 +7,7 @@ import { fromJS } from 'immutable';
 import thunk from 'redux-thunk';
 import { routerMiddleware } from 'react-router-redux';
 import { api, auth0Api } from 'utils/api';
+import { portal } from './index';
 
 const devtools = window.devToolsExtension || (() => noop => noop);
 const isDev = process.env.NODE_ENV !== 'production';
@@ -22,7 +23,7 @@ export default function configureStore(initialState = {}, history, createReducer
   ];
 
   if (isDev) {
-    const createLogger = require('redux-logger');
+    const createLogger = require('redux-logger'); // eslint-disable-line import/no-extraneous-dependencies
     const logger = createLogger({
       predicate: isDev,
       collapsed: true,
@@ -35,7 +36,7 @@ export default function configureStore(initialState = {}, history, createReducer
   const store = createAppStore(
     createReducer(),
     fromJS(initialState),
-    compose(...enhancers)
+    compose(...enhancers),
   );
 
   // Extensions
@@ -46,8 +47,8 @@ export default function configureStore(initialState = {}, history, createReducer
 
   // Make reducers hot reloadable, see http://mxs.is/googmo
   if (module.hot) {
-    module.hot.accept('./reducers', () => {
-      System.import('./reducers').then((reducerModule) => {
+    module.hot.accept(`../projects/${portal}/reducers`, () => {
+      System.import(`../projects/${portal}/reducers`).then((reducerModule) => {
         const createReducers = reducerModule.default;
         const nextReducers = createReducers(store.asyncReducers);
 
