@@ -8,7 +8,6 @@ import { combineReducers } from 'redux-immutable';
 import snackbarReducer from 'containers/Snackbar/reducer';
 import innerPortalReducer from 'containers/InnerPortal/reducer';
 import fleetReducer from 'services/FleetModel/reducer';
-import reportReducer from 'containers/Report/reducer';
 import chronicleReducer from 'screens/Chronicle/reducer';
 import gfEditorReducer from 'containers/GFEditor/reducer';
 import mapStateReducer from 'containers/Map/reducerAction';
@@ -60,12 +59,3 @@ export default function createReducer(asyncReducers) {
     ...asyncReducers,
   });
 }
-
-export const createSelfServiceReducer = (asyncReducers) =>
-  combineReducers({
-    session: sessionReducer,
-    global: globalReducer,
-    fleet: fleetReducer,
-    reports: reportReducer,
-    ...asyncReducers,
-  });

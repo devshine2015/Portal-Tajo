@@ -17,43 +17,28 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
+import configureStore from 'redux/store';
 
 require('velocity-animate');
 require('velocity-animate/velocity.ui');
 require('sanitize.css/sanitize.css');
 
-export const renderProject = ({
-  anchor,
+const DEF_ANCHOR_ID = 'app';
+
+const renderProject = ({
+  anchorId = DEF_ANCHOR_ID,
   createRoutes,
-  configureStore,
   createReducer,
 }) => {
-  // Create redux store with history
-  // this uses the singleton
   const initialState = {};
   const store = configureStore(initialState, browserHistory, createReducer);
 
   ReactDOM.render(
     <Provider store={store}>
       {createRoutes(store)}
-    </Provider>, anchor
+    </Provider>,
+    document.getElementById(anchorId),
   );
 };
 
-export const renderProjectWithoutRoutes = ({
-  anchor,
-  rootNode,
-  configureStore,
-  createReducer,
-}) => {
-  // Create redux store with history
-  // this uses the singleton
-  const initialState = {};
-  const store = configureStore(initialState, browserHistory, createReducer);
-
-  ReactDOM.render(
-    <Provider store={store}>
-      {rootNode}
-    </Provider>, anchor
-  );
-};
+export default renderProject;
