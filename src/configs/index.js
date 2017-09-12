@@ -88,6 +88,9 @@ export function checkSetNoIcons(fleetName) {
 // probably need something like limitPer24hvrs
 export const requestSamplesLimit = 40000;
 
-console.log(`Current version is ${version}`);
-console.log(`Server env is ${serverEnv}, and project is ${portal}`);
-console.log(`Root toute is ${ROOT_ROUTE}`);
+const bold = 'font-weight: 700';
+const boldGreen = 'font-weight: 700; color: green;';
+
+console.log(`%cCurrent version: %c${version}`, bold, boldGreen);
+console.log(`%cServer env: %c${serverEnv}`, bold, boldGreen);
+console.log(`%cProject: %c${portal}`, bold, boldGreen);
