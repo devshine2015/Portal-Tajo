@@ -11,10 +11,9 @@ import 'file-loader?name=[name].[ext]!../.htaccess';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { browserHistory } from 'react-router';
 import configureStore from 'configs/store';
 import getHooks from './utils/hooks';
-import { getHistory } from './utils/routerHelpers';
+import { synHistory as getHistory } from './utils/routerHelpers';
 import createRoutes from './utils/createRoutes';
 import {
   init as initConfigs,
@@ -58,7 +57,7 @@ const renderProject = async ({
   );
 
   const { injectReducer } = getHooks(store, createReducer);
-  const routes = createRoutes(store.dispatch, getHistory(store, browserHistory), injectReducer, auth, routesConfig);
+  const routes = createRoutes(store.dispatch, getHistory(store, history), injectReducer, auth, routesConfig);
 
   ReactDOM.render(
     <Provider store={store}>

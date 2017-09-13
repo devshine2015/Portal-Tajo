@@ -1,6 +1,6 @@
 import React from 'react';
 import { Router } from 'react-router';
-import { ROOT_ROUTE } from 'configs';
+// import { ROOT_ROUTE } from 'configs';
 import createRootScreen from 'screens/Root/route';
 import {
   errorHandler,
@@ -10,7 +10,7 @@ import {
 const createRootRoute = (screenCreator, menu) => screenCreator({
   create: createRootScreen,
   options: {
-    path: ROOT_ROUTE,
+    path: '/',
     mainMenu: menu,
   },
 });

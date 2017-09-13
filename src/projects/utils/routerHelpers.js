@@ -37,7 +37,7 @@ const selectLocationState = () => {
   };
 };
 
-export function getHistory(store, history) {
+export function synHistory(store, history) {
   return syncHistoryWithStore(history, store, {
     selectLocationState: selectLocationState(),
   });
