@@ -1,28 +1,23 @@
 import React from 'react';
 import { Router } from 'react-router';
-import { ROOT_ROUTE } from 'configs';
-import mainMenu from 'configs/mainMenu';
-import rootScreen from 'screens/Root/route';
-import loginScreen from 'screens/LoginScreen/route';
+import InitialScreen from 'screens/Dashboard';
+import screens, { createRootRoute } from './screensConfig';
 import {
   errorHandler,
-  // loadModule,
+  makeScreenCreator,
 } from '../utils/routerHelpers';
 
-export default function createRoutes(dispatch, history/* , injectReducer */) {
-  const loginRoute = loginScreen({
-    path: 'login',
-  });
+export default function createRoutes(dispatch, history, injectReducer) {
+  const screenCreator = makeScreenCreator(dispatch, injectReducer);
+  const rootRoute = createRootRoute(screenCreator);
+  const rootChildRoutes = screens.map(screenCreator);
 
-  const rootRoute = rootScreen({
-    dispatch,
-    path: ROOT_ROUTE,
-    mainMenu: mainMenu.escape,
-  });
+  rootRoute.indexRoute = {
+    component: InitialScreen,
+    protected: true,
+  };
 
-  rootRoute.childRoutes.push(
-    loginRoute,
-  );
+  rootRoute.childRoutes = rootChildRoutes;
 
   return (
     <Router
