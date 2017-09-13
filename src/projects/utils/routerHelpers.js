@@ -1,3 +1,5 @@
+import { syncHistoryWithStore } from 'react-router-redux';
+
 // load module only if it is necessary
 // see https://blog.mxstbr.com/2016/01/react-apps-with-pages/
 // for details
@@ -33,3 +35,9 @@ export const selectLocationState = () => {
     return prevRoutingStateJS;
   };
 };
+
+export function getHistory(store, history) {
+  return syncHistoryWithStore(history, store, {
+    selectLocationState: selectLocationState(),
+  });
+}

@@ -1,8 +1,5 @@
 /**
- * escape.js
- *
- * This is the entry file for the application, only setup and boilerplate
- * code.
+ * boilerplate to bundle up running project
  */
 
 import 'babel-polyfill';
@@ -18,6 +15,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
 import configureStore from 'configs/store';
+import getHooks from './utils/hooks';
+import { getHistory } from './utils/routerHelpers';
 
 require('velocity-animate');
 require('velocity-animate/velocity.ui');
@@ -32,10 +31,12 @@ const renderProject = ({
 }) => {
   const initialState = {};
   const store = configureStore(initialState, browserHistory, createReducer);
+  const { injectReducer } = getHooks(store, createReducer);
+  const routes = createRoutes(store.dispatch, getHistory(store, browserHistory), injectReducer);
 
   ReactDOM.render(
     <Provider store={store}>
-      {createRoutes(store, createReducer)}
+      { routes }
     </Provider>,
     document.getElementById(anchorId),
   );

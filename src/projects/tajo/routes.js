@@ -1,14 +1,7 @@
 import React from 'react';
-import { Router, browserHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
+import { Router } from 'react-router';
 import { ROOT_ROUTE } from 'configs';
 import mainMenu from 'configs/mainMenu';
-import {
-  errorHandler,
-  loadModule,
-  selectLocationState,
-} from 'utils/routerHelpers';
-
 import rootScreen from 'screens/Root/route';
 import operationalScreen from 'screens/Operational/route';
 import reportsScreen from 'screens/ReportsScreen/route';
@@ -24,15 +17,12 @@ import profileScreen from 'screens/Profile/route';
 import alertsEditorScreen from 'screens/AlertsEditor/route';
 import alertLogsScreen from 'screens/AlertsLog/route';
 import notFoundScreen from 'screens/NotFound/route';
-import getHooks from '../utils/hooks';
+import {
+  errorHandler,
+  loadModule,
+} from '../utils/routerHelpers';
 
-export default function createRoutes(store, createReducer) {
-  const { injectReducer } = getHooks(store, createReducer);
-
-  const history = syncHistoryWithStore(browserHistory, store, {
-    selectLocationState: selectLocationState(),
-  });
-
+export default function createRoutes(dispatch, history, injectReducer) {
   const operationalRoute = operationalScreen({
     ...mainMenu.escape.operational,
   });
@@ -100,8 +90,8 @@ export default function createRoutes(store, createReducer) {
   });
 
   const rootRoute = rootScreen({
+    dispatch,
     path: ROOT_ROUTE,
-    dispatch: store.dispatch,
     mainMenu: mainMenu.escape,
   });
 
