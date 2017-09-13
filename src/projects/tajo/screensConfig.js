@@ -1,6 +1,4 @@
 import mainMenu from 'configs/mainMenu';
-import { ROOT_ROUTE } from 'configs';
-import createRootScreen from 'screens/Root/route';
 import createDashboardScreen from 'screens/Dashboard/route';
 import createNotFoundScreen from 'screens/NotFound/route';
 import createLoginScreen from 'screens/LoginScreen/route';
@@ -44,11 +42,3 @@ export default [{
   create: createProfileScreen,
   options: mainMenu.escape.profile,
 }];
-
-export const createRootRoute = screenCreator => screenCreator({
-  create: createRootScreen,
-  options: {
-    path: ROOT_ROUTE,
-    mainMenu: mainMenu.escape,
-  },
-});

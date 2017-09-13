@@ -1,9 +1,5 @@
 import mainMenu from 'configs/mainMenu';
-import {
-  isAlerts,
-  ROOT_ROUTE,
-} from 'configs';
-import createRootScreen from 'screens/Root/route';
+import { isAlerts } from 'configs';
 import createOperationalScreen from 'screens/Operational/route';
 import createReportsScreen from 'screens/ReportsScreen/route';
 import createExecReportsScreen from 'screens/ExecReports/route';
@@ -64,11 +60,3 @@ export default [{
   create: createProfileScreen,
   options: mainMenu.sunshine.profile,
 }];
-
-export const createRootRoute = screenCreator => screenCreator({
-  create: createRootScreen,
-  options: {
-    path: ROOT_ROUTE,
-    mainMenu: mainMenu.sunshine,
-  },
-});

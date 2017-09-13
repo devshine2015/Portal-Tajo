@@ -17,6 +17,7 @@ import { browserHistory } from 'react-router';
 import configureStore from 'configs/store';
 import getHooks from './utils/hooks';
 import { getHistory } from './utils/routerHelpers';
+import createRoutes from './utils/createRoutes';
 
 require('velocity-animate');
 require('velocity-animate/velocity.ui');
@@ -26,13 +27,13 @@ const DEF_ANCHOR_ID = 'app';
 
 const renderProject = ({
   anchorId = DEF_ANCHOR_ID,
-  createRoutes,
+  routesConfig,
   createReducer,
 }) => {
   const initialState = {};
   const store = configureStore(initialState, browserHistory, createReducer);
   const { injectReducer } = getHooks(store, createReducer);
-  const routes = createRoutes(store.dispatch, getHistory(store, browserHistory), injectReducer);
+  const routes = createRoutes(store.dispatch, getHistory(store, browserHistory), injectReducer, routesConfig);
 
   ReactDOM.render(
     <Provider store={store}>

@@ -1,9 +1,18 @@
 /* internal portal root */
 import renderProject from 'projects/baseProject';
-import createRoutes from './routes';
+import mainMenu from 'configs/mainMenu';
+import Dashboard from 'screens/Dashboard';
+import screens from './screensConfig';
 import createReducer from './reducers';
 
 renderProject({
   createReducer,
-  createRoutes,
+  routesConfig: {
+    screens,
+    initialScreenConfig: {
+      component: Dashboard,
+      protected: true,
+    },
+    menu: mainMenu.escape,
+  },
 });
