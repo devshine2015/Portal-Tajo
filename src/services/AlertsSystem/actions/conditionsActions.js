@@ -34,8 +34,8 @@ export const createAlertConditions = newAlerts => (dispatch, getState) =>
 export const deleteAlertCondition = alertId => dispatch =>
   _deleteAlertRequest(alertId, dispatch);
 
-export const updateAlertCondition = newAlerts => dispatch =>
-  _updateAlertRequest(newAlerts, dispatch);
+export const updateAlertCondition = newAlerts => (dispatch, getState) =>
+  _updateAlertRequest(newAlerts, dispatch, getState);
 
 export const fetchAlertConditions = () => _fetchConditions;
 
@@ -115,13 +115,13 @@ function _createAlertConditionRequest(alertObject, dispatch, getState) {
 /**
  * PUT - update existing Alert
  **/
-function _updateAlertRequest(alertObject, dispatch) {
+function _updateAlertRequest(alertObject, dispatch, getState) {
   const { url, method } = endpoints.updateAlertConditions(alertObject.id);
 
   return api[method](url, {
     payload: alertObject,
   }).then(() => {
-    _fetchConditions(dispatch);
+    _fetchConditions(dispatch, getState);
     return Promise.resolve();
   }, error => Promise.reject(error));
 }
