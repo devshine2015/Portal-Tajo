@@ -13,12 +13,11 @@ import { TimePicker } from 'material-ui';
 
 function setAlertState(props) {
   return {
-    driveTimeSec: 2.5,
-    ...props.details,
+    driveTimeSec: props.alert !== undefined ? props.alert.driveTimeSec : 6000,
   };
 }
 
-class SpeedForm extends React.Component {
+class TimeForm extends React.Component {
 
   constructor(props) {
     super(props);
@@ -45,6 +44,9 @@ class SpeedForm extends React.Component {
       alert={this.props.alert}
       closeForm={this.props.closeForm}
       isOpened={this.props.isOpened}
+      extraParams={{
+        driveTimeSec: this.state.driveTimeSec,
+      }}
     >
       <TimePicker
         format="24hr"
@@ -57,11 +59,11 @@ class SpeedForm extends React.Component {
   }
 }
 
-SpeedForm.propTypes = {
+TimeForm.propTypes = {
   alert: PropTypes.object,
   closeForm: PropTypes.func.isRequired,
   // isLoading: React.PropTypes.bool.isRequired,
   isOpened: PropTypes.bool.isRequired,
 };
 
-export default pure(SpeedForm);
+export default pure(TimeForm);

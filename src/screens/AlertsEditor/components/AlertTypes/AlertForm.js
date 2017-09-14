@@ -27,7 +27,7 @@ function setAlertState(props) {
   };
 }
 
-class SpeedForm extends React.Component {
+class AlertForm extends React.Component {
 
   constructor(props) {
     super(props);
@@ -48,12 +48,13 @@ class SpeedForm extends React.Component {
     });
   }
 
-  onSubmit = e => {
+  onSubmit = (e) => {
     e.preventDefault();
+    const alertData = { ...this.state, ...this.props.extraParams };
     if (this.newAlert) {
-      this.postNew(makeAlertConditionBackEndObject(this.state));
+      this.postNew(makeAlertConditionBackEndObject(alertData));
     } else {
-      this.putExisting(makeAlertConditionBackEndObject(this.state));
+      this.putExisting(makeAlertConditionBackEndObject(alertData));
     }
     // this.props.createUser(this.state)
     //   .then(() => this.props.closeForm());
@@ -128,20 +129,30 @@ class SpeedForm extends React.Component {
   }
 }
 
-SpeedForm.propTypes = {
+AlertForm.propTypes = {
   alert: PropTypes.object,
   closeForm: PropTypes.func.isRequired,
   controlledFields: PropTypes.arrayOf(
     PropTypes.shape({
       fieldName: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
-    })
-  ).isRequired,
+    }),
+  ),
+  extraParams: PropTypes.shape({
+    fieldName: PropTypes.string.isRequired,
+    value: PropTypes.number.isRequired,
+  }),
   children: PropTypes.array,
   createAlertConditions: PropTypes.func.isRequired,
   updateAlertCondition: PropTypes.func.isRequired,
   showSnackbar: PropTypes.func.isRequired,
   translations: makePhrasesShape(phrases).isRequired,
+};
+
+AlertForm.defaultProps = {
+  alert: undefined,
+  controlledFields: undefined,
+  extraParams: undefined,
 };
 
 const mapState = null;
@@ -152,6 +163,6 @@ const mapDispatch = {
   showSnackbar,
 };
 
-export default connect(mapState, mapDispatch)(pure(translate(phrases)(SpeedForm)));
+export default connect(mapState, mapDispatch)(pure(translate(phrases)(AlertForm)));
 
 // export default pure(SpeedForm);
