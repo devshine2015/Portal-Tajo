@@ -1,3 +1,4 @@
-import _Authentication from './lib/Authentication';
+import _WebAuthentication from './lib/AuthenticationWeb';
 
-export default _Authentication;
+// eslint-disable-next-line import/prefer-default-export
+export const WebAuthentication = _WebAuthentication;

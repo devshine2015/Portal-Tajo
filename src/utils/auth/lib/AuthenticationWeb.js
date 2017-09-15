@@ -47,7 +47,7 @@ function cleanupProfile(profile = {}, idToken) {
 }
 
 
-class Authentication {
+class AuthenticationWeb {
   auth0 = new auth0.WebAuth({
     domain: AUTH_CONFIG.domain,
     clientID: AUTH_CONFIG.clientId,
@@ -61,7 +61,7 @@ class Authentication {
   accessToken = null;
   storageKey = 'drvrAuth';
 
-  async initialAuthentication(accessToken, idToken, onSuccess, onFailure) {
+  async initialAuthenticationWeb(accessToken, idToken, onSuccess, onFailure) {
     const isAuthenticating = await socialHelpers.isAuthenticating(this.storageKey);
 
     if (isAuthenticating) return;
@@ -99,7 +99,7 @@ class Authentication {
     this.auth0.authorize({ connection: provider });
   }
 
-  handleAuthentication = (onSuccess, onFailure) => {
+  handleAuthenticationWeb = (onSuccess, onFailure) => {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this._authenticate(authResult.accessToken, authResult.idToken);
@@ -154,4 +154,4 @@ class Authentication {
   }
 }
 
-export default Authentication;
+export default AuthenticationWeb;
