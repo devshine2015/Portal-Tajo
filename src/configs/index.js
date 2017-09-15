@@ -79,7 +79,6 @@ export const requestSamplesLimit = 40000;
 
 const features = {
   auth0Full: false,
-  auth0Half: false,
   extraPath: false,
 };
 export function isFeatureSupported(feature) {
@@ -112,7 +111,6 @@ export const init = () => {
 
   setFeature('auth0Full', onStage);
   if (isAuth0EnabledPath(window.location)) {
-    setFeature('auth0Half', true);
     setFeature('extraPath', getExtraPathname(window.location));
   }
 };

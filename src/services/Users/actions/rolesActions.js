@@ -1,4 +1,5 @@
 import R from 'ramda';
+import { isFeatureSupported } from 'configs';
 import {
   api,
   auth0Api,
@@ -14,27 +15,46 @@ export const ROLE_DELETE = 'services/UsersManager/ROLE_DELETE';
 export const ROLE_ASSIGN = 'services/UsersManager/ROLE_ASSIGN';
 export const ROLE_UNASSIGN = 'services/UsersManager/ROLE_UNASSIGN';
 
-export const fetchRoles = accessToken => (dispatch) => {
+const _fetchRoles = async (accessToken) => {
   const { url, method, apiVersion, extName } = endpoints.getRoles;
 
-  return api[method](url, {
-    apiVersion,
+  const optionalHeaders = {
     optionalHeaders: getExtentionAuthorizationHeader(extName, {
       authExtAccessToken: accessToken,
     }),
-  })
+  };
+
+  return api[method](url, { apiVersion, optionalHeaders });
+};
+
+const _fetchRolesOld = async (accessToken) => {
+  const { url, method, apiVersion } = endpoints.getRoles;
+  const options = {
+    apiVersion,
+    payload: {
+      access_token: accessToken,
+    },
+  };
+
+  return api[method](url, options);
+};
+
+export const fetchRoles = accessToken => (dispatch) => {
+  const fetchMethod = isFeatureSupported('auth0Full') ? _fetchRoles : _fetchRolesOld;
+
+  return fetchMethod(accessToken)
     .then(res => res.json())
-    .then(res => {
+    .then((res) => {
       const rolesMap = {};
       const rolesList = [];
       const usersToRolesMap = {};
 
-      res.roles.forEach(role => {
+      res.roles.forEach((role) => {
         rolesMap[role._id] = role;
         rolesList.push(role._id);
 
         if (role.users) {
-          role.users.forEach(user => {
+          role.users.forEach((user) => {
             usersToRolesMap[user] = {
               _id: role._id,
               name: role.name,
@@ -51,7 +71,7 @@ export const fetchRoles = accessToken => (dispatch) => {
     });
 };
 
-export const assignRole = (userId, role) => dispatch => {
+export const assignRole = (userId, role) => (dispatch) => {
   const { url, method, extName } = endpoints.assignRoleToUser(userId);
   const payload = [role];
 

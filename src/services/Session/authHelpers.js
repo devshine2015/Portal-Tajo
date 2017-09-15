@@ -7,11 +7,15 @@ import {
   setMwa,
 } from 'configs';
 import getHistory from 'utils/history';
-import { api } from 'utils/api';
+import {
+  api,
+  auth0Api,
+} from 'utils/api';
 import { setAuthorization } from 'utils/authz';
 import { profileUtils } from 'utils/auth';
 import { setReportsMWA } from 'containers/Report/actions/reportActions';
 import { commonFleetActions } from 'services/FleetModel/actions';
+import { fetchRolesAndPermissions } from 'services/Users/actions';
 import {
   setSession,
   cleanSession,
@@ -79,6 +83,14 @@ function __sideEffects(profile = {}, dispatch) {
 
   dispatch(setSession(profile))
     .then(() => dispatch(fetchAccessTokens()))
+    .then((tokens) => {
+      auth0Api.setAccessTokens(tokens);
+
+      if (isFeatureSupported('auth0Full') === false) {
+        return dispatch(fetchRolesAndPermissions(tokens));
+      }
+      return Promise.resolve();
+    })
     .then(() => dispatch(commonFleetActions.fetchFleet()));
 }
 
