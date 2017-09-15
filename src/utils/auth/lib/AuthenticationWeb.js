@@ -1,11 +1,18 @@
 import auth0 from 'auth0-js';
-import R from 'ramda';
 import AUTH_CONFIG from './variables';
-import isTokenExpired from './tokenHelpers';
+import verifyToken from './tokenHelpers';
 import {
   login,
   logout,
 } from './apiCalls';
+import {
+  cleanupProfile,
+  getIdToken,
+  getAccessToken,
+  getSessionId,
+  extractTokens,
+  isLegacyProfile,
+} from './profileUtils';
 import * as socialHelpers from './socialAuthHelpers';
 
 /**
@@ -19,34 +26,6 @@ import * as socialHelpers from './socialAuthHelpers';
  * 3. should be reusable for both mobile and web apps
  */
 
-const getIdToken = R.ifElse(R.has('id_token'), R.prop('id_token'), R.prop('idToken'));
-const getAccessToken = R.ifElse(R.has('access_token'), R.prop('access_token'), R.prop('accessToken'));
-
-function cleanupProfile(profile = {}, idToken) {
-  const PREFIX = 'https://drvrapp.net/';
-
-  const cleaned = Object.assign({}, profile, {
-    idToken,
-    user_id: profile.sub,
-    roles: profile[`${PREFIX}roles`],
-    permissions: profile[`${PREFIX}permissions`],
-    app_metadata: profile[`${PREFIX}app_metadata`],
-    user_metadata: profile[`${PREFIX}user_metadata`],
-  });
-
-  // all this properties already mirrored above
-  // so we can clean object from them
-  delete cleaned.sub;
-  delete cleaned.id_token;
-  delete cleaned[`${PREFIX}roles`];
-  delete cleaned[`${PREFIX}permissions`];
-  delete cleaned[`${PREFIX}app_metadata`];
-  delete cleaned[`${PREFIX}user_metadata`];
-
-  return cleaned;
-}
-
-
 class AuthenticationWeb {
   auth0 = new auth0.WebAuth({
     domain: AUTH_CONFIG.domain,
@@ -59,15 +38,18 @@ class AuthenticationWeb {
 
   idToken = null;
   accessToken = null;
-  storageKey = 'drvrAuth';
+  sessionId = null;
+  storageKey = 'drvr:auth';
 
-  async initialAuthenticationWeb(accessToken, idToken, onSuccess, onFailure) {
+  async initialAuthentication(profile, onSuccess, onFailure) {
     const isAuthenticating = await socialHelpers.isAuthenticating(this.storageKey);
-
+    // if app rendered on a callback from social provider
     if (isAuthenticating) return;
 
-    if (!isTokenExpired(idToken)) {
-      this._authenticate(accessToken, idToken);
+    const token = isLegacyProfile(profile) ? getSessionId(profile) : getIdToken(profile);
+
+    if (this.isAuthenticated(token)) {
+      this._authenticate(extractTokens(profile));
       onSuccess(false);
     } else {
       this._unauthenticate();
@@ -84,12 +66,15 @@ class AuthenticationWeb {
   traditionalLogin = (username, password, onSuccess, onFailure) => {
     login(username, password)
       .then((loginResult) => {
-        this._authenticate(loginResult.access_token, loginResult.id_token);
-
-        this._getUserInfo(loginResult, (error, profile) => {
-          if (error) onFailure();
-          else onSuccess(profile);
-        });
+        if (isLegacyProfile(loginResult)) {
+          this._authenticate(extractTokens(loginResult));
+          onSuccess(cleanupProfile(loginResult));
+        } else {
+          this._getUserInfo(loginResult, (error, profile) => {
+            if (error) onFailure();
+            else onSuccess(profile);
+          });
+        }
       }, onFailure);
   }
 
@@ -99,10 +84,10 @@ class AuthenticationWeb {
     this.auth0.authorize({ connection: provider });
   }
 
-  handleAuthenticationWeb = (onSuccess, onFailure) => {
+  handleAuthentication = (onSuccess, onFailure) => {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
-        this._authenticate(authResult.accessToken, authResult.idToken);
+        this._authenticate(extractTokens(authResult));
 
         this._getUserInfo(authResult, (error, profile) => {
           if (error) onFailure();
@@ -131,26 +116,36 @@ class AuthenticationWeb {
   _getUserInfo = (authResult = {}, cb) => {
     this.auth0.client.userInfo(getAccessToken(authResult), (err, user) => {
       // format profile to convenient structure
-      const cleaned = cleanupProfile(user, getIdToken(authResult));
+      const cleaned = cleanupProfile({
+        ...user,
+        idToken: getIdToken(authResult),
+      });
 
       cb(err, cleaned);
     });
   }
 
-  _authenticate = (accessToken, idToken) => {
+  _authenticate = ({ accessToken = null, idToken = null, sessionId = null }) => {
     this.accessToken = accessToken;
     this.idToken = idToken;
+    this.sessionId = sessionId;
   }
 
   _unauthenticate = () => {
     this.accessToken = null;
     this.idToken = null;
+    this.sessionId = null;
   }
 
-  isAuthenticated = (idToken = undefined) => {
-    const tokenToVerify = idToken || this.idToken;
+  /**
+   * verifies if app has legitimate token or sessionId
+   * @param {String} token - optional string to verify
+   * @returns {Boolean} result of verification
+   */
+  isAuthenticated = (token = undefined) => {
+    const tokenToVerify = token || this.idToken || this.sessionId;
 
-    return !isTokenExpired(tokenToVerify);
+    return verifyToken(tokenToVerify);
   }
 }
 
