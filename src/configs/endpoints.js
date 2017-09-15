@@ -2,6 +2,10 @@ import qs from 'query-string';
 import { onDev } from './index';
 
 const apis = {
+  auth0Api: {
+    name: 'auth0',
+    url: onDev ? 'https://thomas-drvr.eu.auth0.com' : 'https://drvr.auth0.com',
+  },
   managmentAPI: {
     name: 'mgmtApi',
     url: onDev ? 'https://thomas-drvr.eu.auth0.com/api/v2' : 'https://drvr.auth0.com/api/v2',
@@ -29,6 +33,12 @@ const endpoints = {
     url: 'login/auth0',
     method: 'post',
     apiVersion: 1.1,
+  },
+
+  // profile
+  getUserInfo: {
+    url: `${apis.auth0Api.url}/tokeninfo`,
+    method: 'post',
   },
 
   // locations
@@ -229,7 +239,7 @@ const endpoints = {
     method: 'post',
   }),
   // MWA
-  getMWAJobs: (params) => ({
+  getMWAJobs: params => ({
     url: `mwa/jobs/01?${qs.stringify(params)}`,
     urlStatic: 'mwa/jobs/01?',
     method: 'get',

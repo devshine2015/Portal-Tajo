@@ -1,11 +1,17 @@
-import { api } from 'utils/api';
+import {
+  api,
+  auth0Api,
+} from 'utils/api';
 import {
   isFeatureSupported,
   serverEnv,
 } from 'configs';
 import endpoints from 'configs/endpoints';
 import verifyToken from './tokenHelpers';
-import { getAuthenticationString } from './profileUtils';
+import {
+  getAuthenticationString,
+  getIdToken,
+} from './profileUtils';
 
 const getExtraPassword = (fleet) => {
   switch (fleet) {
@@ -50,19 +56,31 @@ const normalLogin = async (payload) => {
     .then(res => res.json());
 };
 
+const fetchProfile = async (idToken) => {
+  const { url, method } = endpoints.getUserInfo;
+  const options = {
+    payload: { id_token: idToken },
+  };
+
+  return auth0Api[method](url, options)
+    .then(res => res.json());
+};
+
 export const login = async (username, password) => {
   try {
-    let extra = {};
+    let session = {};
     let profile = {};
+    let idToken = {};
 
     if (needSeveralLoginCalls()) {
-      extra = await normalLogin(buildExtraPayload());
-      profile = await deprecatedAuth0Login(username, password);
+      session = await normalLogin(buildExtraPayload());
+      idToken = await deprecatedAuth0Login(username, password);
+      profile = await fetchProfile(getIdToken(idToken));
     } else {
-      profile = await normalLogin({ username, password });
+      session = await normalLogin({ username, password });
     }
 
-    const result = Object.assign({}, profile, extra);
+    const result = Object.assign({}, profile, idToken, session);
     const token = getAuthenticationString(result, isFeatureSupported('auth0Full'));
 
     if (!verifyToken(token)) throw new Error('Token is invalid');
