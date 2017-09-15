@@ -14,15 +14,27 @@ export const extractTokens = profile => ({
   sessionId: getSessionId(profile),
 });
 
-export function cleanupProfile(profile = {}) {
-  const PREFIX = 'https://drvrapp.net/';
-  const appMetadata = profile[`${PREFIX}app_metadata`] || {};
-  const userMetadata = profile[`${PREFIX}user_metadata`] || {};
+const buildPrefix = symbol => `https://drvrapp${symbol}net/`;
+function makeWithPrefix(profile, onProd) {
+  const prefix = buildPrefix(onProd ? ';' : '.');
+  return function (data, returnKey = false) {
+    if (returnKey) {
+      return `${prefix}${data}`;
+    }
+
+    return profile[`${prefix}${data}`];
+  };
+}
+
+export function cleanupProfile(profile = {}, onProd) {
+  const withPrefix = makeWithPrefix(profile, onProd);
+  const appMetadata = withPrefix('app_metadata') || {};
+  const userMetadata = withPrefix('user_metadata') || {};
 
   const cleaned = Object.assign({}, profile, {
-    user_id: profile.sub || null,
-    roles: profile[`${PREFIX}roles`] || [profile.role],
-    permissions: profile[`${PREFIX}permissions`] || [],
+    user_id: profile.user_id || profile.sub || null,
+    roles: withPrefix('roles') || [profile.role],
+    permissions: withPrefix('permissions') || [],
     app_metadata: Object.assign({}, appMetadata, {
       fleet: R.ifElse(R.has('fleet'), R.prop('fleet'), R.always(appMetadata.fleet))(profile),
     }),
@@ -34,10 +46,12 @@ export function cleanupProfile(profile = {}) {
   delete cleaned.sub;
   delete cleaned.role;
   delete cleaned.fleet;
-  delete cleaned[`${PREFIX}roles`];
-  delete cleaned[`${PREFIX}permissions`];
-  delete cleaned[`${PREFIX}app_metadata`];
-  delete cleaned[`${PREFIX}user_metadata`];
+  delete cleaned.clientID;
+  delete cleaned.global_client_id;
+  delete cleaned[withPrefix('roles', true)];
+  delete cleaned[withPrefix('permissions', true)];
+  delete cleaned[withPrefix('app_metadata', true)];
+  delete cleaned[withPrefix('user_metadata', true)];
 
   return cleaned;
 }
