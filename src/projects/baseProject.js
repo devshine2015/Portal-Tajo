@@ -12,19 +12,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import configureStore from 'configs/store';
-import getHooks from './utils/hooks';
-import { synHistory as getHistory } from './utils/routerHelpers';
-import createRoutes from './utils/createRoutes';
 import {
   init as initConfigs,
   project,
 } from 'configs';
-import Authentication from 'utils/auth';
+import { WebAuthentication } from 'utils/auth';
 import { create as createHistory } from 'utils/history';
 import {
   onSuccess,
   onFailure,
 } from 'services/Session/authHelpers';
+import getHooks from './utils/hooks';
+import { syncHistory as getHistory } from './utils/routerHelpers';
+import createRoutes from './utils/createRoutes';
 import getInitialState from './helpers';
 
 require('velocity-animate');
@@ -47,11 +47,10 @@ const renderProject = async ({
   // Create redux store with history
   const store = configureStore(initialState, history, createReducer);
   // instantiate auth with read token
-  const auth = new Authentication();
+  const auth = new WebAuthentication();
 
   await auth.initialAuthentication(
-    profile.accessToken,
-    profile.idToken,
+    profile,
     overwrite => onSuccess(profile, store.dispatch, { overwrite }),
     () => onFailure(store.dispatch),
   );
