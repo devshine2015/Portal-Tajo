@@ -16,6 +16,7 @@ import {
   init as initConfigs,
   project,
   isFeatureSupported,
+  onProduction,
 } from 'configs';
 import { WebAuthentication } from 'utils/auth';
 import { create as createHistory } from 'utils/history';
@@ -50,6 +51,7 @@ const renderProject = async ({
   // instantiate auth with read token
   const auth = new WebAuthentication({
     auth0SupportLevel: isFeatureSupported('auth0Full') ? 'full' : 'none',
+    onProd: onProduction,
   });
 
   await auth.initialAuthentication(

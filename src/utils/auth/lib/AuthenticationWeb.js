@@ -1,5 +1,5 @@
 import auth0 from 'auth0-js';
-import AUTH_CONFIG from './variables';
+import getClientConfig from './variables';
 import verifyToken from './tokenHelpers';
 import {
   login,
@@ -27,7 +27,9 @@ import * as socialHelpers from './socialAuthHelpers';
  */
 
 class AuthenticationWeb {
-  constructor({ auth0SupportLevel }) {
+  constructor({ auth0SupportLevel, onProd }) {
+    const AUTH_CONFIG = getClientConfig(onProd);
+
     this.auth0 = new auth0.WebAuth({
       domain: AUTH_CONFIG.domain,
       clientID: AUTH_CONFIG.clientId,
@@ -41,6 +43,7 @@ class AuthenticationWeb {
     this.accessToken = null;
     this.sessionId = null;
     this.auth0SupportLevel = auth0SupportLevel;
+    this.onProd = onProd;
     this.storageKey = 'drvr:auth';
   }
 
@@ -79,7 +82,7 @@ class AuthenticationWeb {
             else onSuccess(profile);
           });
         } else {
-          onSuccess(cleanupProfile(loginResult));
+          onSuccess(cleanupProfile(loginResult, this.onProd));
         }
       }, onFailure);
   }
@@ -102,7 +105,7 @@ class AuthenticationWeb {
       } else if (err) {
         this._unauthenticate();
         onFailure();
-        
+
         console.warn(err);
       }
       socialHelpers.cleanIsAuthenticating(this.storageKey);
@@ -123,7 +126,7 @@ class AuthenticationWeb {
       const cleaned = cleanupProfile({
         ...user,
         idToken: getIdToken(authResult),
-      });
+      }, this.onProd);
 
       cb(err, cleaned);
     });
