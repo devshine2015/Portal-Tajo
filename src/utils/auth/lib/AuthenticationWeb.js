@@ -27,19 +27,22 @@ import * as socialHelpers from './socialAuthHelpers';
  */
 
 class AuthenticationWeb {
-  auth0 = new auth0.WebAuth({
-    domain: AUTH_CONFIG.domain,
-    clientID: AUTH_CONFIG.clientId,
-    redirectUri: AUTH_CONFIG.callbackUrl,
-    audience: `https://${AUTH_CONFIG.domain}/userinfo`,
-    responseType: 'token id_token',
-    scope: 'openid profile email',
-  });
+  constructor({ auth0SupportLevel }) {
+    this.auth0 = new auth0.WebAuth({
+      domain: AUTH_CONFIG.domain,
+      clientID: AUTH_CONFIG.clientId,
+      redirectUri: AUTH_CONFIG.callbackUrl,
+      audience: `https://${AUTH_CONFIG.domain}/userinfo`,
+      responseType: 'token id_token',
+      scope: 'openid profile email',
+    });
 
-  idToken = null;
-  accessToken = null;
-  sessionId = null;
-  storageKey = 'drvr:auth';
+    this.idToken = null;
+    this.accessToken = null;
+    this.sessionId = null;
+    this.auth0SupportLevel = auth0SupportLevel;
+    this.storageKey = 'drvr:auth';
+  }
 
   async initialAuthentication(profile, onSuccess, onFailure) {
     const isAuthenticating = await socialHelpers.isAuthenticating(this.storageKey);
@@ -68,13 +71,15 @@ class AuthenticationWeb {
       .then((loginResult) => {
         this._authenticate(extractTokens(loginResult));
 
-        if (isLegacyProfile(loginResult)) {
-          onSuccess(cleanupProfile(loginResult));
-        } else {
+        // fetch user info only if auth0 fully supported by backend
+        // ie. sent accessToken in login result
+        if (this.auth0SupportLevel === 'full') {
           this._getUserInfo(loginResult, (error, profile) => {
             if (error) onFailure();
             else onSuccess(profile);
           });
+        } else {
+          onSuccess(cleanupProfile(loginResult));
         }
       }, onFailure);
   }
@@ -94,15 +99,13 @@ class AuthenticationWeb {
           if (error) onFailure();
           else onSuccess(profile);
         });
-
-        socialHelpers.cleanIsAuthenticating(this.storageKey);
       } else if (err) {
         this._unauthenticate();
         onFailure();
-        socialHelpers.cleanIsAuthenticating(this.storageKey);
-
-        console.log(err);
+        
+        console.warn(err);
       }
+      socialHelpers.cleanIsAuthenticating(this.storageKey);
     });
   }
 

@@ -15,6 +15,7 @@ import configureStore from 'configs/store';
 import {
   init as initConfigs,
   project,
+  isFeatureSupported,
 } from 'configs';
 import { WebAuthentication } from 'utils/auth';
 import { create as createHistory } from 'utils/history';
@@ -47,7 +48,9 @@ const renderProject = async ({
   // Create redux store with history
   const store = configureStore(initialState, history, createReducer);
   // instantiate auth with read token
-  const auth = new WebAuthentication();
+  const auth = new WebAuthentication({
+    auth0SupportLevel: isFeatureSupported('auth0Full') ? 'full' : 'none',
+  });
 
   await auth.initialAuthentication(
     profile,
