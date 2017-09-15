@@ -1,16 +1,13 @@
 import drvrStorage from 'utils/drvrStorage';
 import * as _configHelpers from './_helpers';
 
-const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080'; // for dev testing
-// const DEV_ENGINE_BASE = 'drvrstage.cloudapp.net:8080'; // for stage testing
+// const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080'; // for dev testing
+const DEV_ENGINE_BASE = 'drvrstage.cloudapp.net:8080'; // for stage testing
 // const DEV_ENGINE_BASE = 'drvrapp.net'; // for prod testing
 const REMOTE_HOST_BASE = window.location.host;
 
 export const version = process.env.DRVR_VERSION;
 export const project = process.env.DRVR_PROJECT;
-export const protocol = window.location.protocol;
-export const isSecure = protocol.search('https') !== -1;
-export const socketProtocol = isSecure ? 'wss:' : 'ws:';
 // TODO: we are in the middle of renaming tajo->escape; update here when done
 export const isEscape = project === 'tajo';
 // export const isSunshine = !isEscape;
@@ -31,6 +28,10 @@ export const serverEnv = _configHelpers.chooseServerEnv(ENGINE_BASE);
 export const onProduction = serverEnv === 'production';
 export const onStage = serverEnv === 'stage';
 export const onDev = serverEnv === 'dev';
+
+export const protocol = onProduction ? 'https:' : window.location.protocol;
+export const isSecure = protocol.search('https') !== -1;
+export const socketProtocol = isSecure ? 'wss:' : 'ws:';
 
 export const DRVR_PROFILE_KEY = 'drvr:profile';
 export const DRVR_PROFILE_LAST_KEY = 'drvr:profile:last';
@@ -76,13 +77,17 @@ export function checkSetNoIcons(fleetName) {
 // probably need something like limitPer24hvrs
 export const requestSamplesLimit = 40000;
 
-let auth0Supported = false;
+const features = {
+  auth0Full: false,
+  auth0Half: false,
+  extraPath: false,
+};
 export function isFeatureSupported(feature) {
-  switch (feature) {
-    case 'auth0': return auth0Supported;
+  return features[feature] || false;
+}
 
-    default: return false;
-  }
+export function setFeature(name, value) {
+  features[name] = value;
 }
 
 const bold = 'font-weight: 700';
@@ -92,8 +97,22 @@ console.log(`%cCurrent version: %c${version}`, bold, boldGreen);
 console.log(`%cServer env: %c${serverEnv}`, bold, boldGreen);
 console.log(`%cProject: %c${project}`, bold, boldGreen);
 
+const getExtraPathname = (location) => {
+  const splitted = location.pathname.split('/');
+  return splitted[splitted.length - 1];
+};
+export const isAuth0EnabledPath = (location) => {
+  const pathname = getExtraPathname(location);
+
+  return ['mwa', 'cc'].filter(fleet => fleet === pathname).length !== 0;
+};
+
 export const init = () => {
   window.drvrStorage = drvrStorage.init(window.localStorage);
 
-  auth0Supported = onStage;
+  setFeature('auth0Full', onStage);
+  if (isAuth0EnabledPath(window.location)) {
+    setFeature('auth0Half', true);
+    setFeature('extraPath', getExtraPathname(window.location));
+  }
 };

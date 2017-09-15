@@ -18,15 +18,14 @@ import {
   fetchAccessTokens,
 } from './actions';
 
-const fleet = R.path(['app_metadata', 'fleet']);
-const isItMwaProfile = R.propEq(fleet, 'mwa');
-const needRedirect = R.test(/\/login/);
-const getHeaderKey = () => isFeatureSupported('auth0') ? 'DRVR-TOKEN' : 'DRVR-SESSION';
+const isItMwaProfile = R.compose(R.equals('mwa'), profileUtils.getFleetName);
+const needRedirect = location => R.test(/\/login/, location) || isFeatureSupported('extraPath');
+const getHeaderKey = () => isFeatureSupported('auth0Full') ? 'DRVR-TOKEN' : 'DRVR-SESSION';
 
 export const onSuccess = (profile = {}, dispatch, {
   overwrite = true,
 } = {}) => {
-  if (needRedirect(window.location.pathname)) {
+  if (needRedirect(window.location)) {
     getHistory().push('/');
   }
 
@@ -36,14 +35,16 @@ export const onSuccess = (profile = {}, dispatch, {
   }
 
   setAuthorization(profile);
-  api.setDrvrHeader(getHeaderKey(), profileUtils.getAuthenticationString(profile));
-  api.setFleet(fleet(profile));
+  api.setDrvrHeader(getHeaderKey(), profileUtils.getAuthenticationString(profile, isFeatureSupported('auth0Full')));
+  api.setFleet(profileUtils.getFleetName(profile));
 
   __sideEffects(profile, dispatch);
 };
 
 export const onFailure = (dispatch) => {
-  getHistory().replace('/login');
+  const path = isFeatureSupported('extraPath') || 'login';
+
+  getHistory().replace(path);
   dispatch(cleanSession());
   drvrStorage.remove(DRVR_PROFILE_KEY);
 };
@@ -59,7 +60,9 @@ export const onLogoutSuccess = async (dispatch) => {
   await drvrStorage.save(DRVR_PROFILE_LAST_KEY, toSave);
   await drvrStorage.remove(DRVR_PROFILE_KEY);
 
-  getHistory().replace('/login');
+  const path = isFeatureSupported('extraPath') || 'login';
+
+  getHistory().replace(path);
 };
 
 /**
@@ -67,9 +70,7 @@ export const onLogoutSuccess = async (dispatch) => {
  * @param {Object} profile
  */
 function __sideEffects(profile = {}, dispatch) {
-  const isMwaProfile = isItMwaProfile(profile);
-
-  if (isMwaProfile) {
+  if (isItMwaProfile(profile)) {
     setMwa(true);
     dispatch(setReportsMWA());
   }

@@ -1,4 +1,4 @@
-const mwaRoute = state => /mwa/.test(state.location.pathname);
+import { isAuth0EnabledPath } from 'configs';
 
 const createRoute = options => ({
   name: 'login',
@@ -7,8 +7,13 @@ const createRoute = options => ({
       cb(null, require('./index').default);
     }, 'login');
   },
-  onEnter: (nextState, replace) => {
-    if (mwaRoute(nextState)) replace('login');
+  onEnter: (nextState) => {
+    // here we setting up extraneous global feature for cases like mwa and cc
+    if (isAuth0EnabledPath(nextState.location)) {
+      // setFeature('auth0Half', true);
+      // setFeature('extraPath', options.path);
+      // replace('login');
+    }
   },
   ...options,
 });

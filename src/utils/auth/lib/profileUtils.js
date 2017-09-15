@@ -4,7 +4,10 @@ export const getIdToken = R.ifElse(R.has('id_token'), R.prop('id_token'), R.prop
 export const getAccessToken = R.ifElse(R.has('access_token'), R.prop('access_token'), R.prop('accessToken'));
 export const getSessionId = R.prop('sessionId');
 export const isLegacyProfile = R.has('sessionId');
-export const getAuthenticationString = R.ifElse(isLegacyProfile, getSessionId, getIdToken);
+export const getAuthenticationString = (profile, isAuth0Enabled) => {
+  return isAuth0Enabled ? getIdToken(profile) : getSessionId(profile);
+};
+export const getFleetName = R.path(['app_metadata', 'fleet']);
 export const extractTokens = profile => ({
   idToken: getIdToken(profile),
   accessToken: getAccessToken(profile),
@@ -30,7 +33,6 @@ export function cleanupProfile(profile = {}) {
   // so we can clean object from them
   delete cleaned.sub;
   delete cleaned.role;
-  delete cleaned.id_token;
   delete cleaned.fleet;
   delete cleaned[`${PREFIX}roles`];
   delete cleaned[`${PREFIX}permissions`];
@@ -41,6 +43,7 @@ export function cleanupProfile(profile = {}) {
 }
 
 export default {
+  getFleetName,
   cleanupProfile,
   getIdToken,
   getAccessToken,
