@@ -1,12 +1,15 @@
 import R from 'ramda';
 import drvrStorage from 'utils/drvrStorage';
 import {
+  isFeatureSupported,
   DRVR_PROFILE_KEY,
   DRVR_PROFILE_LAST_KEY,
   setMwa,
 } from 'configs';
 import getHistory from 'utils/history';
+import { api } from 'utils/api';
 import { setAuthorization } from 'utils/authz';
+import { profileUtils } from 'utils/auth';
 import { setReportsMWA } from 'containers/Report/actions/reportActions';
 import { commonFleetActions } from 'services/FleetModel/actions';
 import {
@@ -15,8 +18,10 @@ import {
   fetchAccessTokens,
 } from './actions';
 
-const isItMwaProfile = R.propEq('fleet', 'mwa');
+const fleet = R.path(['app_metadata', 'fleet']);
+const isItMwaProfile = R.propEq(fleet, 'mwa');
 const needRedirect = R.test(/\/login/);
+const getHeaderKey = () => isFeatureSupported('auth0') ? 'DRVR-TOKEN' : 'DRVR-SESSION';
 
 export const onSuccess = (profile = {}, dispatch, {
   overwrite = true,
@@ -31,6 +36,8 @@ export const onSuccess = (profile = {}, dispatch, {
   }
 
   setAuthorization(profile);
+  api.setDrvrHeader(getHeaderKey(), profileUtils.getAuthenticationString(profile));
+  api.setFleet(fleet(profile));
 
   __sideEffects(profile, dispatch);
 };

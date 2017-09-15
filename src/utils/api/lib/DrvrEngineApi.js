@@ -4,10 +4,6 @@ import {
   socketProtocol,
   ENGINE_BASE,
 } from 'configs';
-import {
-  getIdToken,
-  getFleetName,
-} from 'services/Session/reducer';
 import { getErrorType } from 'services/Global/reducer';
 import { errorsActions } from 'services/Global/actions';
 import BaseAPIClass from './BaseAPIClass';
@@ -35,20 +31,19 @@ function makeUrl(apiVersion, url, fleet, host = undefined) {
   return result;
 }
 
-/**
- * get authorisation header for request
- * to Engine.
- * @param {ImmutableMap} state - app state
- *
- * @returns {Object} auth header
- */
-function getAuthHeader(state) {
-  return {
-    'DRVR-TOKEN': getIdToken(state),
-  };
-}
-
 class DrvrEngineApi extends BaseAPIClass {
+  drvrHeader = null;
+  fleet = null;
+
+  setDrvrHeader(key, value) {
+    this.drvrHeader = {
+      [key]: value,
+    };
+  }
+
+  setFleet(fleetName) {
+    this.fleet = fleetName;
+  }
 
   _invoke(method, url, {
     payload,
@@ -65,19 +60,17 @@ class DrvrEngineApi extends BaseAPIClass {
       this.dispatch(errorsActions.resetError());
     }
 
-    const fleet = optionalFleet || getFleetName(state);
+    const fleet = optionalFleet || this.fleet;
     const urlToInvoke = makeUrl(apiVersion, url, fleet, host);
-    const headers = Object.assign({}, HEADERS, getAuthHeader(state), optionalHeaders);
+    const headers = Object.assign({}, HEADERS, this.drvrHeader, optionalHeaders);
 
     return this._prepareRequest(method, urlToInvoke, headers, payload);
   }
 
   invokeWebSocket(url, options) {
-    const state = this.getState();
-    const fleet = getFleetName(state);
-    const params = Object.assign({}, getAuthHeader(state), options);
+    const params = Object.assign({}, this.drvrHeader, options);
     const query = params ? `?${qs.stringify(params)}` : '';
-    const socketURL = `${SOCKET_URL}/${fleet}/${url}${query}`;
+    const socketURL = `${SOCKET_URL}/${this.fleet}/${url}${query}`;
 
     return new WebSocket(socketURL);
   }

@@ -76,6 +76,15 @@ export function checkSetNoIcons(fleetName) {
 // probably need something like limitPer24hvrs
 export const requestSamplesLimit = 40000;
 
+let auth0Supported = false;
+export function isFeatureSupported(feature) {
+  switch (feature) {
+    case 'auth0': return auth0Supported;
+
+    default: return false;
+  }
+}
+
 const bold = 'font-weight: 700';
 const boldGreen = 'font-weight: 700; color: green;';
 
@@ -85,4 +94,6 @@ console.log(`%cProject: %c${project}`, bold, boldGreen);
 
 export const init = () => {
   window.drvrStorage = drvrStorage.init(window.localStorage);
+
+  auth0Supported = onStage;
 };
