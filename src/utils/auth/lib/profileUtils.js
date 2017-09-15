@@ -4,6 +4,7 @@ export const getIdToken = R.ifElse(R.has('id_token'), R.prop('id_token'), R.prop
 export const getAccessToken = R.ifElse(R.has('access_token'), R.prop('access_token'), R.prop('accessToken'));
 export const getSessionId = R.prop('sessionId');
 export const isLegacyProfile = R.has('sessionId');
+export const getAuthenticationString = R.ifElse(isLegacyProfile, getSessionId, getIdToken);
 export const extractTokens = profile => ({
   idToken: getIdToken(profile),
   accessToken: getAccessToken(profile),
@@ -46,4 +47,5 @@ export default {
   getSessionId,
   extractTokens,
   isLegacyProfile,
+  getAuthenticationString,
 };
