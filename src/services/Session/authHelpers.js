@@ -19,13 +19,13 @@ import {
 } from './actions';
 
 const isItMwaProfile = R.compose(R.equals('mwa'), profileUtils.getFleetName);
-const needRedirect = location => R.test(/\/login/, location) || isFeatureSupported('extraPath');
+const needRedirect = pathname => R.test(/\/login/, pathname) || isFeatureSupported('extraPath');
 const getHeaderKey = () => isFeatureSupported('auth0Full') ? 'DRVR-TOKEN' : 'DRVR-SESSION';
 
 export const onSuccess = (profile = {}, dispatch, {
   overwrite = true,
 } = {}) => {
-  if (needRedirect(window.location)) {
+  if (needRedirect(window.location.pathname)) {
     getHistory().push('/');
   }
 

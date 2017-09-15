@@ -66,8 +66,9 @@ class AuthenticationWeb {
   traditionalLogin = (username, password, onSuccess, onFailure) => {
     login(username, password)
       .then((loginResult) => {
+        this._authenticate(extractTokens(loginResult));
+
         if (isLegacyProfile(loginResult)) {
-          this._authenticate(extractTokens(loginResult));
           onSuccess(cleanupProfile(loginResult));
         } else {
           this._getUserInfo(loginResult, (error, profile) => {
