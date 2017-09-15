@@ -25,6 +25,11 @@ const endpoints = {
     method: 'get',
     apiVersion: 1.1,
   }),
+  extraLogin: {
+    url: 'login/auth0',
+    method: 'post',
+    apiVersion: 1.1,
+  },
 
   // locations
   getGFs: {
