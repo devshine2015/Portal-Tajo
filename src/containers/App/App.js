@@ -3,12 +3,13 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import drvrDevTheme from 'configs/theme';
 import phrases, { locales } from 'configs/phrases';
 import { TranslationProvider } from 'utils/i18n';
-import InnerPortal from 'containers/InnerPortal';
+import createInnerPortal from 'containers/InnerPortal';
 
 import 'font-awesome/css/font-awesome.css';
 import './styles.css';
 
 const DEF_LOCALE = 'en';
+const InnerPortal = props => createInnerPortal(props);
 
 const CommonWrappers = ({ children }) => (
   <TranslationProvider

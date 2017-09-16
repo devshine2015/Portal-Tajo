@@ -8,7 +8,7 @@ import {
   journalActions,
 } from 'services/AlertsSystem/actions';
 import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
-import InnerPortal from './InnerPortal';
+import Main from './CustomerPortal';
 
 const makeMapStateToProps = () => {
   const getIsReady = makeGetFleetIsReady();
@@ -16,7 +16,7 @@ const makeMapStateToProps = () => {
   const mapState = (state) => {
     return {
       fleet: getFleetName(state),
-      fleetIsReady: getIsReady(getVehiclesStaticSlice(state)),
+      projectIsReady: getIsReady(getVehiclesStaticSlice(state)),
     };
   };
 
@@ -25,7 +25,7 @@ const makeMapStateToProps = () => {
 
 const mapDispatch = (dispatch) => {
   return {
-    fetchPortalData: () => {
+    fetchSpecificData: () => {
       dispatch(conditionsActions.fetchAlertConditions())
         .then(() => dispatch(journalActions.fetchNotifications(makePeriodForLast24Hours())))
         .then(() => dispatch(fetchDevices()));
@@ -33,4 +33,4 @@ const mapDispatch = (dispatch) => {
   };
 };
 
-export default connect(makeMapStateToProps, mapDispatch)(InnerPortal);
+export default connect(makeMapStateToProps, mapDispatch)(Main);

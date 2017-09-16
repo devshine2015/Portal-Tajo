@@ -2,36 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AnimatedLogo from 'components/animated';
 import SnackbarNotification from 'containers/Snackbar';
-import ApplicationBar from './components/ApplicationBar';
-import MainSidebar from './components/MainSidebar';
+import ApplicationBar from '../ApplicationBar';
+import MainSidebar from '../MainSidebar';
+import Main from './Main';
 import styles from './styles.css';
 
-class InnerPortal extends React.Component {
-
-  state = {
-    isSidebarOpen: false,
-  };
-
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.fleetIsReady && nextProps.fleetIsReady) {
-      this.props.fetchPortalData();
-    }
-  }
-
-  toggleSidebar = () => {
-    this.setState({
-      isSidebarOpen: !this.state.isSidebarOpen,
-    });
-  }
-
-  canShowContent() {
-    return this.props.fleetIsReady;
-  }
-
-  onLogout = () => {
-    this.props.auth.logout();
-  }
-
+class CustomerPortal extends Main {
   render() {
     // hide InnerPortal from unauthenticated users
     if (this.canShowContent()) {
@@ -64,18 +40,18 @@ class InnerPortal extends React.Component {
   }
 }
 
-InnerPortal.propTypes = {
+CustomerPortal.propTypes = {
   children: PropTypes.node.isRequired,
   fleet: PropTypes.string,
-  fleetIsReady: PropTypes.bool.isRequired,
-  fetchPortalData: PropTypes.func.isRequired,
-  auth: PropTypes.shape({
-    logout: PropTypes.func.isRequired,
-  }).isRequired,
+  // projectIsReady: PropTypes.bool.isRequired,
+  // fetchSpecificData: PropTypes.func.isRequired,
+  // auth: PropTypes.shape({
+  //   logout: PropTypes.func.isRequired,
+  // }).isRequired,
 };
 
-InnerPortal.defaultProps = {
+CustomerPortal.defaultProps = {
   fleet: '',
 };
 
-export default InnerPortal;
+export default CustomerPortal;
