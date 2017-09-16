@@ -27,7 +27,13 @@ import * as socialHelpers from './socialAuthHelpers';
  */
 
 class AuthenticationWeb {
-  constructor({ auth0SupportLevel, onProd }) {
+  constructor({
+    auth0SupportLevel,
+    onProd,
+    onAuthSuccess,
+    onAuthFailure,
+    onLogoutSuccess,
+  }) {
     const AUTH_CONFIG = getClientConfig(onProd);
 
     this.auth0 = new auth0.WebAuth({
@@ -44,10 +50,13 @@ class AuthenticationWeb {
     this.sessionId = null;
     this.auth0SupportLevel = auth0SupportLevel;
     this.onProd = onProd;
+    this.onAuthFailure = onAuthFailure;
+    this.onAuthSuccess = onAuthSuccess;
+    this.onLogoutSuccess = onLogoutSuccess;
     this.storageKey = 'drvr:auth';
   }
 
-  async initialAuthentication(profile, onSuccess, onFailure) {
+  async initialAuthentication(profile) {
     const isAuthenticating = await socialHelpers.isAuthenticating(this.storageKey);
     // if app rendered on a callback from social provider
     if (isAuthenticating) return;
@@ -56,10 +65,13 @@ class AuthenticationWeb {
 
     if (this.isAuthenticated(token)) {
       this._authenticate(extractTokens(profile));
-      onSuccess(false);
+      this.onAuthSuccess({
+        profile,
+        overwrite: false,
+      });
     } else {
       this._unauthenticate();
-      onFailure();
+      this.onAuthFailure();
     }
   }
 
@@ -69,22 +81,28 @@ class AuthenticationWeb {
    * @param {String} password
    * @param {Function} cb - callback which has (err, profile) signature
    */
-  traditionalLogin = (username, password, onSuccess, onFailure) => {
-    login(username, password)
+  traditionalLogin = (username, password) => {
+    return login(username, password)
       .then((loginResult) => {
         this._authenticate(extractTokens(loginResult));
-
+        let cleanedProfile;
         // fetch user info only if auth0 fully supported by backend
         // ie. sent accessToken in login result
         if (this.auth0SupportLevel === 'full') {
           this._getUserInfo(loginResult, (error, profile) => {
-            if (error) onFailure();
-            else onSuccess(profile);
+            if (error) this.onAuthFailure();
+            else cleanedProfile = profile;
           });
-        } else {
-          onSuccess(cleanupProfile(loginResult, this.onProd));
-        }
-      }, onFailure);
+        } else cleanedProfile = cleanupProfile(loginResult, this.onProd);
+
+        this.onAuthSuccess({
+          profile: cleanedProfile,
+          overwrite: true,
+        });
+      }, (err) => {
+        this.onAuthFailure();
+        throw new Error(err);
+      });
   }
 
   authorize = (provider) => {
@@ -93,18 +111,18 @@ class AuthenticationWeb {
     this.auth0.authorize({ connection: provider });
   }
 
-  handleAuthentication = (onSuccess, onFailure) => {
+  handleAuthentication = () => {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this._authenticate(extractTokens(authResult));
 
         this._getUserInfo(authResult, (error, profile) => {
-          if (error) onFailure();
-          else onSuccess(profile);
+          if (error) this.onAuthFailure();
+          else this.onAuthSuccess({ profile, overwrite: true });
         });
       } else if (err) {
         this._unauthenticate();
-        onFailure();
+        this.onAuthFailure();
 
         console.warn(err);
       }
@@ -112,11 +130,11 @@ class AuthenticationWeb {
     });
   }
 
-  logout = (successCallback) => {
+  logout = () => {
     logout(this.accessToken)
       .then(() => {
         this._unauthenticate();
-        successCallback();
+        this.onLogoutSuccess();
       });
   }
 

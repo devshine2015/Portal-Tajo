@@ -14,7 +14,6 @@ import {
 import { setAuthorization } from 'utils/authz';
 import { profileUtils } from 'utils/auth';
 import { setReportsMWA } from 'containers/Report/actions/reportActions';
-import { commonFleetActions } from 'services/FleetModel/actions';
 import { fetchRolesAndPermissions } from 'services/Users/actions';
 import {
   setSession,
@@ -26,14 +25,12 @@ const isItMwaProfile = R.compose(R.equals('mwa'), profileUtils.getFleetName);
 const needRedirect = pathname => R.test(/\/login/, pathname) || isFeatureSupported('extraPath');
 const getHeaderKey = () => isFeatureSupported('auth0Full') ? 'DRVR-TOKEN' : 'DRVR-SESSION';
 
-export const onSuccess = (profile = {}, dispatch, {
-  overwrite = true,
-} = {}) => {
+export const onSuccess = async (profile, dispatch, bootstrapProject, options = {}) => {
   if (needRedirect(window.location.pathname)) {
     getHistory().push('/');
   }
 
-  if (overwrite) {
+  if (options.overwrite) {
     drvrStorage.remove(DRVR_PROFILE_LAST_KEY);
     drvrStorage.save(DRVR_PROFILE_KEY, profile, true);
   }
@@ -42,7 +39,9 @@ export const onSuccess = (profile = {}, dispatch, {
   api.setDrvrHeader(getHeaderKey(), profileUtils.getAuthenticationString(profile, isFeatureSupported('auth0Full')));
   api.setFleet(profileUtils.getFleetName(profile));
 
-  __sideEffects(profile, dispatch);
+  await __sideEffects(profile, dispatch);
+
+  bootstrapProject(dispatch);
 };
 
 export const onFailure = (dispatch) => {
@@ -76,8 +75,9 @@ export const onLogoutSuccess = async (dispatch) => {
 /**
  * Stuff which sets some global vars, API calls etc..
  * @param {Object} profile
+ * @param {Function} dispatch
  */
-function __sideEffects(profile = {}, dispatch) {
+async function __sideEffects(profile = {}, dispatch) {
   if (isItMwaProfile(profile)) {
     setMwa(true);
     dispatch(setReportsMWA());
@@ -94,8 +94,7 @@ function __sideEffects(profile = {}, dispatch) {
         return dispatch(fetchRolesAndPermissions(tokens));
       }
       return Promise.resolve();
-    })
-    .then(() => dispatch(commonFleetActions.fetchFleet()));
+    });
 }
 
 /**

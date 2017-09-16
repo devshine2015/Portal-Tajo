@@ -67,13 +67,10 @@ class LoginForm extends Component {
 
     this.changeLoadingState(true);
 
-    this.props.route.auth.traditionalLogin(this.state.email, this.state.password, (profile) => {
-      this.changeLoadingState(false);
-      this.props.onLoginSuccess(profile);
-    }, () => {
-      this.changeLoadingState(false);
-      this.props.onLoginFailure();
-    });
+    this.props.route.auth.traditionalLogin(this.state.email, this.state.password)
+      .then(() => ({}), () => {
+        this.changeLoadingState(false);
+      });
   }
 
   onType = (e) => {
@@ -213,8 +210,6 @@ LoginForm.propTypes = {
       authorize: PropTypes.func.isRequired,
     }).isRequired,
   }).isRequired,
-  onLoginFailure: PropTypes.func.isRequired,
-  onLoginSuccess: PropTypes.func.isRequired,
 };
 
 LoginForm.defaultProps = {

@@ -29,7 +29,7 @@ class InnerPortal extends React.Component {
   }
 
   onLogout = () => {
-    this.props.auth.logout(this.props.onLogoutSuccess);
+    this.props.auth.logout();
   }
 
   render() {
@@ -72,7 +72,6 @@ InnerPortal.propTypes = {
   auth: PropTypes.shape({
     logout: PropTypes.func.isRequired,
   }).isRequired,
-  onLogoutSuccess: PropTypes.func.isRequired,
 };
 
 InnerPortal.defaultProps = {
