@@ -1,12 +1,5 @@
-import React from 'react';
-import { css } from 'aphrodite/no-important';
-import LoginForm from './components/LoginForm';
-import classes from './classes';
+import _TajoLoginScreen from './components/TajoLogin';
+import _DealerLogin from './components/DealerLogin';
 
-const LoginPage = props => (
-  <div className={css(classes.page)}>
-    <LoginForm {...props} />
-  </div>
-);
-
-export default LoginPage;
+export default _TajoLoginScreen;
+export const DealerLogin = _DealerLogin;
