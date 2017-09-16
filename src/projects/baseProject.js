@@ -23,9 +23,10 @@ import { create as createHistory } from 'utils/history';
 import {
   onSuccess,
   onFailure,
+  onLogoutSuccess,
 } from 'services/Session/authHelpers';
 import getHooks from './utils/hooks';
-import { syncHistory as getHistory } from './utils/routerHelpers';
+import { syncHistory } from './utils/routerHelpers';
 import createRoutes from './utils/createRoutes';
 import getInitialState from './helpers';
 
@@ -40,6 +41,7 @@ const renderProject = async ({
   anchorId = DEF_ANCHOR_ID,
   routesConfig,
   createReducer,
+  bootstrapProject,
 }) => {
   const { initialState, profile } = await getInitialState();
   // create history which allow to use it everywhere
@@ -52,16 +54,22 @@ const renderProject = async ({
   const auth = new WebAuthentication({
     auth0SupportLevel: isFeatureSupported('auth0Full') ? 'full' : 'none',
     onProd: onProduction,
+    // eslint-disable-next-line no-shadow
+    onAuthSuccess: ({ profile, overwrite }) => {
+      onSuccess(profile, store.dispatch, bootstrapProject, { overwrite });
+    },
+    onAuthFailure: () => {
+      onFailure(store.dispatch);
+    },
+    onLogoutSuccess: () => {
+      onLogoutSuccess(store.dispatch);
+    },
   });
 
-  await auth.initialAuthentication(
-    profile,
-    overwrite => onSuccess(profile, store.dispatch, { overwrite }),
-    () => onFailure(store.dispatch),
-  );
+  await auth.initialAuthentication(profile);
 
   const { injectReducer } = getHooks(store, createReducer);
-  const routes = createRoutes(store.dispatch, getHistory(store, history), injectReducer, auth, routesConfig);
+  const routes = createRoutes(store.dispatch, syncHistory(store, history), injectReducer, auth, routesConfig);
 
   ReactDOM.render(
     <Provider store={store}>
