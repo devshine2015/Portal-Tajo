@@ -26,10 +26,6 @@ const needRedirect = pathname => R.test(/\/login/, pathname) || isFeatureSupport
 const getHeaderKey = () => isFeatureSupported('auth0Full') ? 'DRVR-TOKEN' : 'DRVR-SESSION';
 
 export const onSuccess = async (profile, dispatch, bootstrapProject, options = {}) => {
-  if (needRedirect(window.location.pathname)) {
-    getHistory().push('/');
-  }
-
   if (options.overwrite) {
     drvrStorage.remove(DRVR_PROFILE_LAST_KEY);
     drvrStorage.save(DRVR_PROFILE_KEY, profile, true);
@@ -40,6 +36,10 @@ export const onSuccess = async (profile, dispatch, bootstrapProject, options = {
   api.setFleet(profileUtils.getFleetName(profile));
 
   await __sideEffects(profile, dispatch);
+
+  if (needRedirect(window.location.pathname)) {
+    getHistory().push('/');
+  }
 
   bootstrapProject(dispatch);
 };
