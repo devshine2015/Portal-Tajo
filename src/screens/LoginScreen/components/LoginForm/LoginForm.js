@@ -8,7 +8,10 @@ import {
   TextField,
 } from 'material-ui';
 import drvrStorage from 'utils/drvrStorage';
-import { DRVR_PROFILE_LAST_KEY } from 'configs';
+import {
+  DRVR_PROFILE_LAST_KEY,
+  isFeatureSupported,
+} from 'configs';
 import SimpleError from 'components/Error';
 import Avatar from './Avatar';
 import HelperLink from './HelperLink';
@@ -152,6 +155,7 @@ class LoginForm extends Component {
 
   render() {
     const showProfile = notNil(this.state.profile);
+    const canRestorePassword = isFeatureSupported('restorePassword');
     const innClassName = cs(css(classes.inn), {
       [css(classes.inn_short)]: !showProfile,
     });
@@ -185,7 +189,7 @@ class LoginForm extends Component {
               onChange={this.onType}
             />
             <div className={css(classes.links)}>
-              <HelperLink onClick={() => ({})} text="Forgot password?" />
+              { canRestorePassword && <HelperLink onClick={() => ({})} text="Forgot password?" /> }
               { showProfile && <HelperLink onClick={this.hideProfile} text="Not me" /> }
             </div>
             <LoginButton
