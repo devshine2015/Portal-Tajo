@@ -57,11 +57,15 @@ export const onLogoutSuccess = async (dispatch) => {
   dispatch(cleanSession());
 
   const saved = await drvrStorage.load(DRVR_PROFILE_KEY);
-  const toSave = {
-    email: R.path(['profile', 'email'], saved),
-    picture: R.path(['profile', 'picture'], saved),
-  };
-  await drvrStorage.save(DRVR_PROFILE_LAST_KEY, toSave);
+
+  if (!profileUtils.isLegacyProfile(saved.profile)) {
+    const toSave = {
+      email: R.path(['profile', 'email'], saved),
+      picture: R.path(['profile', 'picture'], saved),
+    };
+    await drvrStorage.save(DRVR_PROFILE_LAST_KEY, toSave);
+  }
+
   await drvrStorage.remove(DRVR_PROFILE_KEY);
 
   const path = isFeatureSupported('extraPath') || 'login';
