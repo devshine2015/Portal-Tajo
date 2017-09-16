@@ -80,6 +80,7 @@ export const requestSamplesLimit = 40000;
 const features = {
   auth0Full: false,
   extraPath: false,
+  restorePassword: false,
 };
 export function isFeatureSupported(feature) {
   return features[feature] || false;
@@ -87,6 +88,10 @@ export function isFeatureSupported(feature) {
 
 export function setFeature(name, value) {
   features[name] = value;
+}
+
+export function setFeatures(feats = {}) {
+  Object.assign(features, feats);
 }
 
 const bold = 'font-weight: 700';
@@ -109,8 +114,9 @@ export const isAuth0EnabledPath = (location) => {
 export const init = () => {
   window.drvrStorage = drvrStorage.init(window.localStorage);
 
-  setFeature('auth0Full', onStage);
-  if (isAuth0EnabledPath(window.location)) {
-    setFeature('extraPath', getExtraPathname(window.location));
-  }
+  setFeatures({
+    auth0Full: onStage,
+    restorePassword: false,
+    extraPath: isAuth0EnabledPath(window.location) && getExtraPathname(window.location),
+  });
 };
