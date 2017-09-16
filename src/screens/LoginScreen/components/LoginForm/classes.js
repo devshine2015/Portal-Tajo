@@ -65,6 +65,7 @@ export default StyleSheet.create({
     backgroundColor: '#fefefe',
     transition: 'background-color .25s, color .25s',
     cursor: 'pointer',
+    display: 'flex',
 
     ':hover, :focus': {
       backgroundColor: '#f1f1f1',
