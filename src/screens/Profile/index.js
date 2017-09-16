@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import { authorizeWithPermissions } from 'utils/authz';
 import Layout from 'components/Layout';
@@ -12,7 +11,7 @@ const userCanSeeProfile = () => authorizeWithPermissions('view:profile');
 
 const ProfileScreen = () => (
   <Layout.Content>
-    { !userCanSeeProfile() && (
+    { userCanSeeProfile() && (
       <div className={css(classes.widget)}>
         <ProfileDetails />
       </div>
