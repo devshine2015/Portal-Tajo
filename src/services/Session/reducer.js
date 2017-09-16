@@ -20,9 +20,9 @@ const initialState = fromJS({
    */
   accessTokens: {
     // to manage users
-    mgmtApi: undefined,
+    managmentAPI: undefined,
     // to manage roles and permissions
-    authExtApi: undefined,
+    authorizationExtAPI: undefined,
   },
 
   /**

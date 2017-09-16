@@ -98,12 +98,12 @@ export const fetchAccessTokens = () => (dispatch) => {
 
   return _fetchAuthExtentionAccessToken()
     .then((token) => {
-      cacheToken(token, 'authExtApi');
+      cacheToken(token, 'authorizationExtAPI');
 
       return _fetchMgmtExtentionAccessToken();
     })
     .then((token) => {
-      cacheToken(token, 'mgmtApi');
+      cacheToken(token, 'managmentAPI');
     })
     .then(() => {
       dispatch(_accessTokensSet(tokens));

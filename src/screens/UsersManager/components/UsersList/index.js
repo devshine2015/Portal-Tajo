@@ -77,16 +77,20 @@ class UsersList extends React.Component {
       error: false,
     }, () => {
       this.props.fetchUsers()
-        .then(() => {
-          this.setState({
-            isFetching: false,
-          });
-        }, () => {
-          this.setState({
-            error: `${this.props.translations.something_went_wrong}.`,
-            isFetching: false,
-          });
-        });
+        .then(this.onFetchSuccess, this.onFetchError);
+    });
+  }
+
+  onFetchSuccess = () => {
+    this.setState({
+      isFetching: false,
+    });
+  }
+
+  onFetchError = () => {
+    this.setState({
+      error: `${this.props.translations.something_went_wrong}.`,
+      isFetching: false,
     });
   }
 

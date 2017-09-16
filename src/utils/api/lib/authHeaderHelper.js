@@ -1,25 +1,26 @@
 export default function getExtentionAuthorizationHeader(extName, {
   mgmtAccessToken,
   authExtAccessToken,
-  idToken,
 }) {
-  let token = 'Bearer ';
+  let token;
 
   switch (extName) {
-    case 'mgmtApi': {
-      token += mgmtAccessToken;
+    case 'managmentAPI': {
+      token = mgmtAccessToken;
       break;
     }
 
-    case 'authExtApi': {
-      token += authExtAccessToken;
+    case 'authorizationExtAPI': {
+      token = authExtAccessToken;
       break;
     }
 
-    default: token += idToken;
+    default: token = undefined;
   }
 
+  if (token === undefined) return {};
+
   return {
-    Authorization: token,
+    Authorization: `Bearer ${token}`,
   };
 }

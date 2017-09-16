@@ -1,20 +1,9 @@
 import qs from 'query-string';
-import { onDev } from './index';
 
 const apis = {
-  auth0Api: {
-    name: 'auth0',
-    url: onDev ? 'https://thomas-drvr.eu.auth0.com' : 'https://drvr.auth0.com',
-  },
-  managmentAPI: {
-    name: 'mgmtApi',
-    url: onDev ? 'https://thomas-drvr.eu.auth0.com/api/v2' : 'https://drvr.auth0.com/api/v2',
-  },
-  authorizationExtAPI: {
-    name: 'authExtApi',
-    url: onDev ? 'https://thomas-drvr.eu.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api' :
-                 'https://drvr.us.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api',
-  },
+  auth0Api: 'auth0Api',
+  managmentAPI: 'managmentAPI',
+  authorizationExtAPI: 'authorizationExtAPI',
 };
 
 const endpoints = {
@@ -37,8 +26,9 @@ const endpoints = {
 
   // profile
   getUserInfo: {
-    url: `${apis.auth0Api.url}/tokeninfo`,
+    url: 'tokeninfo',
     method: 'post',
+    extName: apis.auth0Api,
   },
 
   // locations
@@ -145,24 +135,24 @@ const endpoints = {
 
   // users managment
   getAllUsers: {
-    url: `${apis.managmentAPI.url}/users`,
+    url: 'users',
     method: 'get',
-    extName: apis.managmentAPI.name,
+    extName: apis.managmentAPI,
   },
   updateUser: id => ({
-    url: `${apis.managmentAPI.url}/users/${id}`,
+    url: `users/${id}`,
     method: 'patch',
-    extName: apis.managmentAPI.name,
+    extName: apis.managmentAPI,
   }),
   createUser: {
-    url: `${apis.managmentAPI.url}/users`,
+    url: 'users',
     method: 'post',
-    extName: apis.managmentAPI.name,
+    extName: apis.managmentAPI,
   },
   deleteUser: id => ({
-    url: `${apis.managmentAPI.url}/users/${id}`,
+    url: `users/${id}`,
     method: 'delete',
-    extName: apis.managmentAPI.name,
+    extName: apis.managmentAPI,
   }),
   getAuthExtentionAccessToken: {
     url: 'auth0/token/auth',
@@ -178,23 +168,23 @@ const endpoints = {
     url: 'auth0/permissions',
     method: 'post',
     apiVersion: 1.1,
-    extName: apis.authorizationExtAPI.name,
+    extName: apis.authorizationExtAPI,
   },
   getRoles: {
     url: 'auth0/roles',
     method: 'post',
     apiVersion: 1.1,
-    extName: apis.authorizationExtAPI.name,
+    extName: apis.authorizationExtAPI,
   },
   assignRoleToUser: id => ({
-    url: `${apis.authorizationExtAPI.url}/users/${id}/roles`,
+    url: `users/${id}/roles`,
     method: 'patch',
-    extName: apis.authorizationExtAPI.name,
+    extName: apis.authorizationExtAPI,
   }),
   unassignRoleToUser: id => ({
-    url: `${apis.authorizationExtAPI.url}/users/${id}/roles`,
+    url: `users/${id}/roles`,
     method: 'delete',
-    extName: apis.authorizationExtAPI.name,
+    extName: apis.authorizationExtAPI,
   }),
 
   // events
@@ -247,6 +237,4 @@ const endpoints = {
   }),
 };
 
-export default {
-  ...endpoints,
-};
+export default endpoints;

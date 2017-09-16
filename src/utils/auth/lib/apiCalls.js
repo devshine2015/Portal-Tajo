@@ -57,8 +57,9 @@ const normalLogin = async (payload) => {
 };
 
 const fetchProfile = async (idToken) => {
-  const { url, method } = endpoints.getUserInfo;
+  const { url, method, extName } = endpoints.getUserInfo;
   const options = {
+    extName,
     payload: { id_token: idToken },
   };
 
