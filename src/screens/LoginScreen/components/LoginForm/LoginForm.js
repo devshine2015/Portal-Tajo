@@ -47,7 +47,6 @@ class LoginForm extends Component {
       email: '',
       isLoading: false,
       profile: null,
-      showProfile: true,
     };
   }
 
@@ -57,6 +56,7 @@ class LoginForm extends Component {
 
       this.setState({
         profile: prevProfile,
+        showProfile: notEmpty(prevProfile),
         email: getEmail(prevProfile),
       });
       this.focusOn(this.passRef);
@@ -101,6 +101,7 @@ class LoginForm extends Component {
 
   hideProfile = () => {
     this.setState({
+      showProfile: false,
       profile: null,
       email: '',
     });
