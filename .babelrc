@@ -18,11 +18,10 @@
         "node_modules/react-native-storage"
       ],
       "plugins": [
-        "transform-react-remove-prop-types", {
-          "remove": true,
+        ["transform-react-remove-prop-types", {
           "removeImport": true,
           "additionalLibraries": ["react-style-proptype"]
-        },
+        }],
         "transform-react-constant-elements",
         "transform-react-inline-elements"
       ]
