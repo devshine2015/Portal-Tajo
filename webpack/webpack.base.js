@@ -15,8 +15,7 @@ console.log(NODE_ENV);
 const devCssLoaders = 'style-loader!css-loader?localIdentName=[local]__[path][name]__[hash:base64:5]&modules&importLoaders=1&sourceMap!postcss-loader';
 
 function getPublicPath() {
-  // return PROJECT === 'tajo' ? '/tajo/' : '/';
-  return '/';
+  return PROJECT === 'tajo' ? '/tajo/' : '';
 }
 
 module.exports.getPublicPath = getPublicPath;
