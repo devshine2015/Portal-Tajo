@@ -1,43 +1,40 @@
 import { StyleSheet } from 'aphrodite/no-important';
 import theme from 'configs/theme';
 
-export const AVATAR_SIZE = 100;
 export const LOGIN_BUTTON_SIZE = 80;
 
 const classes = ({ wrapperWidth }) => StyleSheet.create({
   loginFormWrapper: {
     width: wrapperWidth, // default width of wrapper
     position: 'relative', // so we can position some elements like error without visual impact to main layout
+    marginTop: 45, // default margin to fit avatar
   },
 
   inn: {
     position: 'relative',
-    padding: '100px 40px 70px',
+    padding: '60px 40px 40px',
     transition: 'padding-top .25s',
   },
   inn_short: {
     paddingTop: 40,
   },
 
-  avatar: {
-    position: 'absolute',
-    width: AVATAR_SIZE,
-    height: AVATAR_SIZE,
-    borderRadius: '50%',
-    padding: 5,
-    backgroundColor: '#fff',
-    marginTop: -AVATAR_SIZE / 2,
-    marginLeft: -AVATAR_SIZE / 2,
-    left: '50%',
-    top: 0,
-  },
-
   links: {
-    marginTop: 5,
+    marginTop: 8,
     display: 'flex',
     justifyContent: 'space-between',
+    flexDirection: 'row-reverse',
   },
 
+  error: {
+    width: '100%',
+    marginTop: 50,
+  },
+});
+
+export default classes;
+
+export const linksClasses = StyleSheet.create({
   helper__link: {
     fontSize: 12,
     color: theme.palette.accent1Color,
@@ -48,14 +45,7 @@ const classes = ({ wrapperWidth }) => StyleSheet.create({
       cursor: 'pointer',
     },
   },
-
-  error: {
-    width: '100%',
-    marginTop: 50,
-  },
 });
-
-export default classes;
 
 export const loginButtonClasses = StyleSheet.create({
   loginButton__wrapper: {
@@ -87,5 +77,21 @@ export const loginButtonClasses = StyleSheet.create({
     ':hover': {
       cursor: 'not-allowed',
     },
+  },
+});
+
+export const AVATAR_SIZE = 100;
+export const avatarClasses = StyleSheet.create({
+  avatar: {
+    position: 'absolute',
+    width: AVATAR_SIZE,
+    height: AVATAR_SIZE,
+    borderRadius: '50%',
+    padding: 5,
+    backgroundColor: '#fff',
+    marginTop: -AVATAR_SIZE / 2,
+    marginLeft: -AVATAR_SIZE / 2,
+    left: '50%',
+    top: 0,
   },
 });

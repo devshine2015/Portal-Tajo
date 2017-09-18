@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { css } from 'aphrodite/no-important';
-import classes from './classes';
+import { linksClasses } from './classes';
 
 const HelperLink = ({
   onClick,
@@ -10,7 +10,7 @@ const HelperLink = ({
     <button
       type="button"
       role="link"
-      className={css(classes.helper__link)}
+      className={css(linksClasses.helper__link)}
       onClick={onClick}
     >
       { text }

@@ -2,8 +2,10 @@ import React, { PropTypes } from 'react';
 import { css } from 'aphrodite/no-important';
 import { VelocityComponent } from 'velocity-react';
 import Userpic from 'components/Userpic';
-import classes, { AVATAR_SIZE } from './classes';
-
+import {
+  avatarClasses,
+  AVATAR_SIZE,
+} from './classes';
 
 const Avatar = ({
   src,
@@ -16,7 +18,7 @@ const Avatar = ({
       animation={animation}
       duration={300}
     >
-      <div className={css(classes.avatar)}>
+      <div className={css(avatarClasses.avatar)}>
         <Userpic
           src={src}
           size={AVATAR_SIZE}

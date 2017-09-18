@@ -119,14 +119,14 @@ class LoginForm extends Component {
   }
 
   renderError() {
-    const { errorType } = this.props;
+    const { errorType, errorStyles } = this.props;
 
     if (notNil(errorType)) {
       return (
         <div className={css(classes.error)}>
           <SimpleError
             type={this.props.errorType}
-            color="#fff"
+            color={errorStyles.color || '#fff'}
           />
         </div>
       );
@@ -190,8 +190,8 @@ class LoginForm extends Component {
               onChange={this.onType}
             />
             <div className={css(classes.links)}>
-              { canRestorePassword && <HelperLink onClick={() => ({})} text="Forgot password?" /> }
               { showProfile && <HelperLink onClick={this.hideProfile} text="Not me" /> }
+              { canRestorePassword && <HelperLink onClick={() => ({})} text="Forgot password?" /> }
             </div>
             <LoginButton
               onClick={this.onSubmit}
@@ -217,6 +217,7 @@ LoginForm.propTypes = {
   }).isRequired,
   containerStyles: stylePropTypes,
   innerStyles: stylePropTypes,
+  errorStyles: stylePropTypes,
 };
 
 LoginForm.defaultProps = {
@@ -224,6 +225,7 @@ LoginForm.defaultProps = {
   children: null,
   containerStyles: undefined,
   innerStyles: undefined,
+  errorStyles: {},
 };
 
 LoginForm.defaultWidth = DEFAULT_WIDTH;
