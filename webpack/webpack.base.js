@@ -70,7 +70,11 @@ module.exports.default = options => ({
       ],
     }, {
       test: /\.jpe?g$|\.gif$|\.png$/i,
-      loader: 'url-loader?limit=10000',
+      loader: 'url-loader',
+      options: {
+        limit: 10000,
+        name: 'images/[hash].[ext]',
+      },
     }, {
       test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
       loader: 'file-loader?name=fonts/[name].[hash].[ext]&mimetype=application/font-woff',
