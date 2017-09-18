@@ -85,20 +85,25 @@ class AuthenticationWeb {
     return login(username, password)
       .then((loginResult) => {
         this._authenticate(extractTokens(loginResult));
-        let cleanedProfile;
+
         // fetch user info only if auth0 fully supported by backend
         // ie. sent accessToken in login result
         if (this.auth0SupportLevel === 'full') {
           this._getUserInfo(loginResult, (error, profile) => {
             if (error) this.onAuthFailure();
-            else cleanedProfile = profile;
+            else {
+              this.onAuthSuccess({
+                profile: profile,
+                overwrite: true,
+              });
+            }
           });
-        } else cleanedProfile = cleanupProfile(loginResult, this.onProd);
-
-        this.onAuthSuccess({
-          profile: cleanedProfile,
-          overwrite: true,
-        });
+        } else {
+          this.onAuthSuccess({
+            profile: cleanupProfile(loginResult, this.onProd),
+            overwrite: true,
+          });
+        }
       }, (err) => {
         this.onAuthFailure();
         throw new Error(err);
