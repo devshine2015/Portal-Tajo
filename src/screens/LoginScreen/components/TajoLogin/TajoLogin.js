@@ -6,7 +6,7 @@ import classes from './classes';
 
 const STYLES = {
   loginForm: {
-    marginTop: 30,
+    marginTop: 100,
   },
 };
 

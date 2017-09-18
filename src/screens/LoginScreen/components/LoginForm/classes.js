@@ -16,7 +16,7 @@ const classes = ({ wrapperWidth }) => StyleSheet.create({
     transition: 'padding-top .25s',
   },
   inn_short: {
-    paddingTop: 40,
+    paddingTop: 20,
   },
 
   links: {
