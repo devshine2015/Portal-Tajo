@@ -4,11 +4,9 @@ import theme from 'configs/theme';
 export const AVATAR_SIZE = 100;
 export const LOGIN_BUTTON_SIZE = 80;
 
-export default StyleSheet.create({
-  wrapper: {
-    width: 400,
-    marginTop: 150,
-    height: '100%', // make sure wrapper has height of the childrens
+const classes = ({ wrapperWidth }) => StyleSheet.create({
+  loginFormWrapper: {
+    width: wrapperWidth, // default width of wrapper
     position: 'relative', // so we can position some elements like error without visual impact to main layout
   },
 
@@ -51,6 +49,15 @@ export default StyleSheet.create({
     },
   },
 
+  error: {
+    width: '100%',
+    marginTop: 50,
+  },
+});
+
+export default classes;
+
+export const loginButtonClasses = StyleSheet.create({
   loginButton__wrapper: {
     position: 'absolute',
     bottom: 0,
@@ -80,11 +87,5 @@ export default StyleSheet.create({
     ':hover': {
       cursor: 'not-allowed',
     },
-  },
-
-  error: {
-    position: 'absolute',
-    width: '100%',
-    marginTop: -50,
   },
 });

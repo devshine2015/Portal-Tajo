@@ -3,7 +3,10 @@ import { css } from 'aphrodite/no-important';
 import IconButton from 'material-ui/IconButton';
 import SendIcon from 'material-ui/svg-icons/content/send';
 import AnimatedLogo from 'components/animated';
-import classes, { LOGIN_BUTTON_SIZE } from './classes';
+import {
+  loginButtonClasses,
+  LOGIN_BUTTON_SIZE,
+} from './classes';
 
 const STYLES = {
   button: {
@@ -25,7 +28,7 @@ const Btn = (props) => (
     onClick={props.onClick}
     style={STYLES.button}
     iconStyle={STYLES.icon}
-    className={css(classes.loginButton)}
+    className={css(loginButtonClasses.loginButton)}
   >
     <SendIcon />
   </IconButton>
@@ -38,8 +41,8 @@ Btn.propTypes = {
 
 const LoginButton = (props) => {
   const wrapperClassName = css(
-    classes.loginButton__wrapper,
-    props.isLoading && classes.loginButton__wrapper_disabled,
+    loginButtonClasses.loginButton__wrapper,
+    props.isLoading && loginButtonClasses.loginButton__wrapper_disabled,
   );
 
   const icon = props.isLoading ? (

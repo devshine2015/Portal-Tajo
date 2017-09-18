@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import stylePropTypes from 'react-style-proptype'; // eslint-disable-line import/no-extraneous-dependencies
 import R from 'ramda';
 import { css } from 'aphrodite/no-important';
 import cs from 'classnames';
@@ -16,7 +17,7 @@ import SimpleError from 'components/Error';
 import Avatar from './Avatar';
 import HelperLink from './HelperLink';
 import LoginButton from './LoginButton';
-import classes from './classes';
+import makeClasses from './classes';
 
 const STYLES = {
   paper: {
@@ -24,11 +25,12 @@ const STYLES = {
   },
 };
 
-
+const DEFAULT_WIDTH = 400;
 const getPicture = R.ifElse(R.isNil, R.always(null), R.ifElse(R.has('picture'), R.prop('picture'), R.always(null)));
 const getEmail = R.ifElse(R.isNil, R.always(''), R.ifElse(R.has('email'), R.prop('email'), R.always('')));
 const notNil = R.compose(R.not, R.isNil);
 const notEmpty = R.compose(R.not, R.isEmpty);
+const classes = makeClasses({ wrapperWidth: DEFAULT_WIDTH });
 
 class LoginForm extends Component {
   constructor(props) {
@@ -158,8 +160,10 @@ class LoginForm extends Component {
     });
 
     return (
-      <div className={css(classes.wrapper)}>
-        { this.renderError() }
+      <div
+        className={css(classes.loginFormWrapper)}
+        style={this.props.containerStyles}
+      >
         <Paper
           zDepth={2}
           style={STYLES.paper}
@@ -195,6 +199,7 @@ class LoginForm extends Component {
             />
           </form>
         </Paper>
+        { this.renderError() }
       </div>
     );
   }
@@ -210,11 +215,17 @@ LoginForm.propTypes = {
       authorize: PropTypes.func.isRequired,
     }).isRequired,
   }).isRequired,
+  containerStyles: stylePropTypes,
+  innerStyles: stylePropTypes,
 };
 
 LoginForm.defaultProps = {
   errorType: undefined,
   children: null,
+  containerStyles: undefined,
+  innerStyles: undefined,
 };
+
+LoginForm.defaultWidth = DEFAULT_WIDTH;
 
 export default LoginForm;

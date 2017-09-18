@@ -1,11 +1,24 @@
 import React from 'react';
+import { css } from 'aphrodite/no-important';
+import LoginForm from '../LoginForm';
+import Logos from './Logos';
+import classes from './classes';
 
-const DealerLogin = (/* props */) => {
-  return (
-    <div>
-      dealer login
+const CustomerLogin = props => (
+  <div className={css(classes.page)}>
+    <div className={css(classes.fakeBar)} />
+    <div className={css(classes.page__inn)}>
+      <div
+        className={css(classes.page__content)}
+        style={{
+          width: LoginForm.defaultWidth,
+        }}
+      >
+        <Logos />
+        <LoginForm {...props} />
+      </div>
     </div>
-  );
-};
+  </div>
+);
 
-export default DealerLogin;
+export default CustomerLogin;
