@@ -23,6 +23,9 @@ const STYLES = {
   paper: {
     borderRadius: 10,
   },
+  wrapper: {
+    marginTop: 50,
+  },
 };
 
 const DEFAULT_WIDTH = 400;
@@ -30,6 +33,7 @@ const getPicture = R.ifElse(R.isNil, R.always(null), R.ifElse(R.has('picture'), 
 const getEmail = R.ifElse(R.isNil, R.always(''), R.ifElse(R.has('email'), R.prop('email'), R.always('')));
 const notNil = R.compose(R.not, R.isNil);
 const notEmpty = R.compose(R.not, R.isEmpty);
+const canRestorePassword = isFeatureSupported('restorePassword');
 const classes = makeClasses({ wrapperWidth: DEFAULT_WIDTH });
 
 class LoginForm extends Component {
@@ -43,6 +47,7 @@ class LoginForm extends Component {
       email: '',
       isLoading: false,
       profile: null,
+      showProfile: true,
     };
   }
 
@@ -136,8 +141,7 @@ class LoginForm extends Component {
   }
 
   renderAvatar() {
-    const { profile } = this.state;
-    const showProfile = notNil(profile);
+    const { profile, showProfile } = this.state;
     const picture = getPicture(profile);
 
     if (notNil(picture)) {
@@ -153,16 +157,18 @@ class LoginForm extends Component {
   }
 
   render() {
-    const showProfile = notNil(this.state.profile);
-    const canRestorePassword = isFeatureSupported('restorePassword');
+    const showProfile = this.state.showProfile; // notNil(this.state.profile);
     const innClassName = cs(css(classes.inn), {
       [css(classes.inn_short)]: !showProfile,
+    });
+    const containerStyles = Object.assign({}, this.props.containerStyles, {
+      marginTop: showProfile ? STYLES.wrapper.marginTop + this.props.containerStyles.marginTop : this.props.containerStyles.marginTop,
     });
 
     return (
       <div
         className={css(classes.loginFormWrapper)}
-        style={this.props.containerStyles}
+        style={containerStyles}
       >
         <Paper
           zDepth={2}

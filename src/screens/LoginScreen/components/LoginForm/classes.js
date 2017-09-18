@@ -7,7 +7,7 @@ const classes = ({ wrapperWidth }) => StyleSheet.create({
   loginFormWrapper: {
     width: wrapperWidth, // default width of wrapper
     position: 'relative', // so we can position some elements like error without visual impact to main layout
-    marginTop: 45, // default margin to fit avatar
+    transition: 'margin-top .25s',
   },
 
   inn: {

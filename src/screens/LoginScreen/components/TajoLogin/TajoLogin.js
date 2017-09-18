@@ -1,11 +1,12 @@
 import React from 'react';
 import { css } from 'aphrodite/no-important';
 import LoginForm from '../LoginForm';
+import DrvrFooter from '../DrvrFooter';
 import classes from './classes';
 
 const STYLES = {
   loginForm: {
-    marginTop: 130,
+    marginTop: 30,
   },
 };
 
@@ -15,6 +16,7 @@ const CustomerLogin = props => (
       containerStyles={STYLES.loginForm}
       {...props}
     />
+    <DrvrFooter />
   </div>
 );
 
