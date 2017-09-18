@@ -8,6 +8,9 @@ const STYLES = {
   content: {
     width: LoginForm.defaultWidth,
   },
+  formWrapper: {
+    marginTop: 60,
+  },
   formError: {
     color: 'red',
   },
@@ -23,8 +26,9 @@ const CustomerLogin = props => (
       >
         <Logos />
         <LoginForm
-          {...props}
+          containerStyles={STYLES.formWrapper}
           errorStyles={STYLES.formError}
+          {...props}
         />
       </div>
     </div>
