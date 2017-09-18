@@ -25,7 +25,6 @@ deployment:
     commands:
       - ./ci/deployToDev.sh
 
-  # use it to test features before pushing to candidate
   stage:
     branch: stage
     commands:
