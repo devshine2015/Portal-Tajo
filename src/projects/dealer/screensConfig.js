@@ -7,7 +7,7 @@ export default [{
   create: createLoginScreen,
   options: {
     theme: 'fuso',
-    path: 'cc',
+    path: 'login',
   },
 }, {
   create: createNotFoundScreen,
