@@ -103,12 +103,9 @@ console.log(`%cProject: %c${project}`, bold, boldGreen);
 
 const getExtraPathname = (location) => {
   const splitted = location.pathname.split('/');
-  return splitted[splitted.length - 1];
-};
-export const isAuth0EnabledPath = (location) => {
-  const pathname = getExtraPathname(location);
+  const result = splitted.filter(path => ['mwa', 'cc'].indexOf(path) !== -1);
 
-  return ['mwa', 'cc'].filter(fleet => fleet === pathname).length !== 0;
+  return result.length !== 0 ? result[0] : false;
 };
 
 export const init = () => {
@@ -117,6 +114,6 @@ export const init = () => {
   setFeatures({
     auth0Full: onStage,
     restorePassword: false,
-    extraPath: isAuth0EnabledPath(window.location) && getExtraPathname(window.location),
+    extraPath: getExtraPathname(window.location),
   });
 };
