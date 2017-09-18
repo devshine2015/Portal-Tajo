@@ -82,5 +82,14 @@ const renderProject = async ({
 export default renderProject;
 
 function getBase() {
-  return project === 'tajo' ? '/tajo' : '';
+  switch (project) {
+    case 'tajo':
+      return '/tajo';
+    case 'dealer': {
+      return isFeatureSupported('extraPath') ? `/${isFeatureSupported('extraPath')}` : '';
+    }
+
+    default:
+      return '';
+  }
 }
