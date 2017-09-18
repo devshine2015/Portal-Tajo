@@ -8,7 +8,7 @@ import {
   journalActions,
 } from 'services/AlertsSystem/actions';
 import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
-import Main from './CustomerPortal';
+import CustomerPortal from './CustomerPortal';
 
 const makeMapStateToProps = () => {
   const getIsReady = makeGetFleetIsReady();
@@ -33,4 +33,4 @@ const mapDispatch = (dispatch) => {
   };
 };
 
-export default connect(makeMapStateToProps, mapDispatch)(Main);
+export default connect(makeMapStateToProps, mapDispatch)(CustomerPortal);

@@ -1,6 +1,7 @@
 import React from 'react';
+import makeInnerPortal from './Main';
 
-const DealerPOrtal = () => {
+const DealerPortal = () => {
   return (
     <div>
       Dealer
@@ -8,4 +9,4 @@ const DealerPOrtal = () => {
   );
 };
 
-export default DealerPOrtal;
+export default makeInnerPortal()(DealerPortal);
