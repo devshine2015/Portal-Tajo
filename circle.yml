@@ -8,7 +8,6 @@ general:
   branches:
     ignore:
       - master
-      - verified_candidate
 
 dependencies:
   override:
@@ -26,43 +25,11 @@ deployment:
     commands:
       - ./ci/deployToDev.sh
 
-  # Maksim's personal branch
-  dev_max:
-    branch: dev@max
-    owner: orelmax
-    commands:
-      - ./ci/deployToDev.sh max
-
-  # Kirill's personal branch
-  dev_kirill:
-    branch: dev@karl
-    owner: kirill07
-    commands:
-      - ./ci/deployToDev.sh karl
-  
   # use it to test features before pushing to candidate
   stage:
     branch: stage
     commands:
       - ./ci/deployToStage.sh
-
-  # codebase of previous release
-  stage_prev_release:
-    branch: stage@prev_release
-    commands:
-      - ./ci/deployToStage.sh prev
-  
-  # here current sprint code lives
-  stage_candidate:  
-    branch: stage@candidate
-    commands:
-      - ./ci/deployToStage.sh candidate
-  
-  # push here to try something on stage
-  stage_sandbox:
-    branch: stage@sandbox
-    commands:
-      - ./ci/deployToStage.sh sandbox
 
   production:
     branch: production
