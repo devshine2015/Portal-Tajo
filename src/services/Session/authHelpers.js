@@ -22,7 +22,7 @@ import {
 } from './actions';
 
 const isItMwaProfile = R.compose(R.equals('mwa'), profileUtils.getFleetName);
-const needRedirect = pathname => R.test(/\/login/, pathname) || isFeatureSupported('extraPath');
+const needRedirect = pathname => R.test(/\/login/, pathname);
 const getHeaderKey = () => isFeatureSupported('auth0Full') ? 'DRVR-TOKEN' : 'DRVR-SESSION';
 
 export const onSuccess = async (profile, dispatch, bootstrapProject, options = {}) => {
@@ -45,9 +45,7 @@ export const onSuccess = async (profile, dispatch, bootstrapProject, options = {
 };
 
 export const onFailure = (dispatch) => {
-  const path = isFeatureSupported('extraPath') || 'login';
-
-  getHistory().replace(path);
+  getHistory().replace('login');
   dispatch(cleanSession());
   drvrStorage.remove(DRVR_PROFILE_KEY);
 };
@@ -67,9 +65,7 @@ export const onLogoutSuccess = async (dispatch) => {
 
   await drvrStorage.remove(DRVR_PROFILE_KEY);
 
-  const path = isFeatureSupported('extraPath') || 'login';
-
-  getHistory().replace(path);
+  getHistory().replace('login');
 };
 
 /**
