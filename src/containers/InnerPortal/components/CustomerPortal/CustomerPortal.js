@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { isMwa } from 'configs';
+import AppBar from 'components/AppBar';
 import CodebaseVersion from 'components/CodebaseVersion';
 import makeInnerPortal from '../Main';
-import AppBar from '../AppBar';
 import MainSidebar from '../MainSidebar';
+import RightElement from './AppBarRightElement';
 // import classes from './classes';
 
 function renderTitle(title) {
@@ -31,6 +32,7 @@ const CustomerPortal = (props) => {
         title={renderTitle(props.fleet)}
         toggleSidebar={props.toggleSidebar}
         logout={props.logout}
+        rightElement={<RightElement />}
       />
 
       <MainSidebar
