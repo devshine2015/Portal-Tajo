@@ -85,11 +85,8 @@ function getBase() {
   switch (project) {
     case 'tajo':
       return '/tajo';
-    case 'dealer': {
+    default: {
       return isFeatureSupported('extraPath') ? `/${isFeatureSupported('extraPath')}` : '';
     }
-
-    default:
-      return '';
   }
 }
