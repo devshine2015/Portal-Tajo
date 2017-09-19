@@ -1,11 +1,9 @@
 import React from 'react';
-import Journal from '../Journal';
+import Profile from '../MiniProfile';
 
 const AppBarRightElement = () => {
   return (
-    <div>
-      <Journal />
-    </div>
+    <Profile />
   );
 };
 

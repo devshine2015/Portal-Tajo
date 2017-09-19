@@ -54,6 +54,7 @@ export const fusoTheme = {
     logoutBackgroundColor: '#c4c3b1',
     logoutTextColor: '#000',
     paddingRight: 16,
+    borderColor: '#e3142e',
   },
   spacing: tajoTheme.spacing,
 };

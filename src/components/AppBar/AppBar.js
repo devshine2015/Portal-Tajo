@@ -25,14 +25,21 @@ const LogoutButton = ({
   text,
   onClick,
 }, { muiTheme }) => (
-  <FlatButton
-    label={text}
-    onClick={onClick}
-    hoverColor="transparent"
-    labelStyle={{
-      color: muiTheme.appBar.logoutTextColor,
+  <div
+    className={css(classes.logoutWrapper)}
+    style={{
+      backgroundColor: muiTheme.appBar.logoutBackgroundColor,
     }}
-  />
+  >
+    <FlatButton
+      label={text}
+      onClick={onClick}
+      hoverColor="transparent"
+      labelStyle={{
+        color: muiTheme.appBar.logoutTextColor,
+      }}
+    />
+  </div>
 );
 
 LogoutButton.contextTypes = {
@@ -55,12 +62,7 @@ const AppBar = ({
     <MUIAppBar
       title={title}
       iconElementRight={(
-        <div
-          className={css(classes.rightContainer)}
-          style={{
-            backgroundColor: muiTheme.appBar.logoutBackgroundColor,
-          }}
-        >
+        <div className={css(classes.rightContainer)}>
           { rightElement }
           <LogoutButton
             text={translations.logout}
@@ -70,9 +72,10 @@ const AppBar = ({
       )}
       iconStyleRight={STYLES.right}
       titleStyle={STYLES.title}
-      zDepth={0}
+      zDepth={2}
       style={{
         paddingRight: muiTheme.appBar.paddingRight !== undefined ? muiTheme.appBar.paddingRight : muiTheme.appBar.padding,
+        borderBottom: muiTheme.appBar.borderColor ? `1px solid ${muiTheme.appBar.borderColor}` : undefined,
       }}
       onLeftIconButtonTouchTap={toggleSidebar}
     />

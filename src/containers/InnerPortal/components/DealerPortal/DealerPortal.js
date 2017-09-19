@@ -5,6 +5,7 @@ import ccLogo from 'assets/images/logos/cc/cc_logo.png';
 import fusoLogo from 'assets/images/logos/cc/fuso_logo.png';
 import AppBar from 'components/AppBar';
 import makeInnerPortal from '../Main';
+import RightElement from './AppBarRightElement';
 // import MainSidebar from '../MainSidebar';
 import classes from './classes';
 
@@ -33,6 +34,7 @@ const DealerPortal = (props) => {
         title={renderTitle()}
         toggleSidebar={props.toggleSidebar}
         logout={props.logout}
+        rightElement={<RightElement />}
       />
 
       {/* <MainSidebar
