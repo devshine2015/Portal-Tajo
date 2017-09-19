@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import theme from 'configs/theme';
+import { theme } from 'configs';
 import phrases, { locales } from 'configs/phrases';
 import { TranslationProvider } from 'utils/i18n';
 import createInnerPortal from 'containers/InnerPortal';

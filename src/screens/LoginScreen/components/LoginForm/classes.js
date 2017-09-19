@@ -1,5 +1,5 @@
 import { StyleSheet } from 'aphrodite/no-important';
-import theme from 'configs/theme';
+import { theme } from 'configs';
 
 export const LOGIN_BUTTON_SIZE = 80;
 

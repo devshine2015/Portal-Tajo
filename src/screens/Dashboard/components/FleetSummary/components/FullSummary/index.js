@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { css } from 'aphrodite/no-important';
-import { isEscape } from 'configs';
-import theme from 'configs/theme';
+import {
+  isEscape,
+  theme,
+} from 'configs';
 import { translate } from 'utils/i18n';
 import Widget, { WidgetPaper } from 'components/Widget';
 import Icon from '../Icons';

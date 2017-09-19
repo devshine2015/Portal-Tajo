@@ -14,7 +14,7 @@ import {
   getDevices,
   getVacantDevices,
 } from 'services/Devices/reducer';
-import theme from 'configs/theme';
+import { theme } from 'configs';
 
 import styles from './styles.css';
 

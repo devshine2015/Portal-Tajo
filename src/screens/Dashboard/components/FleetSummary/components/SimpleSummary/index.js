@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
-import { isEscape } from 'configs';
-import theme from 'configs/theme';
+import {
+  isEscape,
+  theme,
+} from 'configs';
 import Icon from '../Icons';
 import amountsPropType from '../../PropTypes';
 import styles from './styles.css';

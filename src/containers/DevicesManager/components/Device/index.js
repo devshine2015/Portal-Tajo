@@ -11,7 +11,7 @@ import {
 } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import WarningIcon from 'material-ui/svg-icons/alert/warning';
-import theme from 'configs/theme';
+import { theme } from 'configs';
 import { authorizeWithPermissions } from 'utils/authz';
 import { deactivateDevice } from 'services/Devices/actions';
 

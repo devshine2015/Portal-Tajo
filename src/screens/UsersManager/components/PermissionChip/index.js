@@ -4,7 +4,7 @@ import pure from 'recompose/pure';
 import Chip from 'material-ui/Chip';
 import SvgIconDone from 'material-ui/svg-icons/action/done';
 import { VelocityComponent } from 'velocity-react';
-import theme from 'configs/theme';
+import { theme } from 'configs';
 
 import classes from './classes';
 
