@@ -1,47 +1,58 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AnimatedLogo from 'components/animated';
+import { isMwa } from 'configs';
+import CodebaseVersion from 'components/CodebaseVersion';
 import SnackbarNotification from 'containers/Snackbar';
-import ApplicationBar from '../ApplicationBar';
+import AppBar from '../AppBar';
 import MainSidebar from '../MainSidebar';
 import makeInnerPortal from './Main';
 import styles from './styles.css';
 
-const CustomerPortal = (props) => {
-  // hide InnerPortal from unauthenticated users
-  if (props.canShowContent()) {
+function renderTitle(title) {
+  if (isMwa) {
     return (
-      <div className={styles.innerPortal}>
-
-        <ApplicationBar
-          title={props.fleet}
-          toggleSidebar={props.toggleSidebar}
-          logout={props.logout}
-        />
-
-        <MainSidebar
-          isOpened={props.isSidebarOpen}
-          toggleSidebar={props.toggleSidebar}
-        />
-
-        <div className={styles.content}>
-          {props.children}
-        </div>
-
-        {/* absolutely positioned stuff */}
-        <SnackbarNotification />
-
+      <div className={styles.title}>
+        <img src={require('assets/images/logos/mwa/mwa.png')} alt="mwa logo" height="60" width="76" />
       </div>
     );
   }
+  return (
+    <div className={styles.title}>
+      { title }
+      <CodebaseVersion />
+    </div>
+  );
+}
 
-  return <AnimatedLogo.FullscreenLogo />;
+const CustomerPortal = (props) => {
+  return (
+    <div className={styles.innerPortal}>
+
+      <AppBar
+        title={renderTitle(props.fleet)}
+        toggleSidebar={props.toggleSidebar}
+        logout={props.logout}
+      />
+
+      <MainSidebar
+        isOpened={props.isSidebarOpen}
+        toggleSidebar={props.toggleSidebar}
+      />
+
+      <div className={styles.content}>
+        {props.children}
+      </div>
+
+      {/* absolutely positioned stuff */}
+      <SnackbarNotification />
+
+    </div>
+  );
 };
 
 CustomerPortal.propTypes = {
   children: PropTypes.node.isRequired,
   fleet: PropTypes.string,
-  canShowContent: PropTypes.func.isRequired,
   toggleSidebar: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
   isSidebarOpen: PropTypes.bool.isRequired,

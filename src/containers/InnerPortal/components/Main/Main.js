@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import AnimatedLogo from 'components/animated';
 
 const makeInnerPortal = () => (Component) => {
   class InnerPortal extends React.Component {
@@ -29,15 +30,20 @@ const makeInnerPortal = () => (Component) => {
     }
 
     render() {
-      return (
-        <Component
-          canShowContent={this.canShowContent}
-          toggleSidebar={this.toggleSidebar}
-          logout={this.onLogout}
-          isSidebarOpen={this.state.isSidebarOpen}
-          {...this.props}
-        />
-      );
+      // hide InnerPortal from unauthenticated users
+      if (this.canShowContent()) {
+        return (
+          <Component
+            canShowContent={this.canShowContent}
+            toggleSidebar={this.toggleSidebar}
+            logout={this.onLogout}
+            isSidebarOpen={this.state.isSidebarOpen}
+            {...this.props}
+          />
+        );
+      }
+
+      return <AnimatedLogo.FullscreenLogo />;
     }
 
   }
