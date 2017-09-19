@@ -3,7 +3,7 @@ import R from 'ramda';
 export const getIdToken = R.ifElse(R.has('id_token'), R.prop('id_token'), R.prop('idToken'));
 export const getAccessToken = R.ifElse(R.has('access_token'), R.prop('access_token'), R.prop('accessToken'));
 export const getSessionId = R.prop('sessionId');
-export const isLegacyProfile = R.has('sessionId');
+export const isLegacyProfile = R.compose(R.isNil, getIdToken);
 export const getAuthenticationString = (profile, isAuth0Enabled) => {
   return isAuth0Enabled ? getIdToken(profile) : getSessionId(profile);
 };
