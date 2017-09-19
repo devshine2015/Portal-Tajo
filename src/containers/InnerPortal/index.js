@@ -1,18 +1,26 @@
 import React from 'react';
 import { project } from 'configs';
-import CustomerPortal from './components/Main/ConnectedCustomer';
-import DealerPortal from './components/Main/DealerPortal';
 
+/**
+ * Lazy load portal for project
+ * @param {*} props injected into componnet
+ */
 export default function createInnerPortal(props) {
+  let Portal;
+
   switch (project) {
     case 'portal':
     case 'tajo':
-      return <CustomerPortal {...props} />;
+      Portal = require('./components/Main/ConnectedCustomer').default;
+      break;
 
     case 'dealer':
-      return <DealerPortal {...props} />;
+      Portal = require('./components/Main/DealerPortal').default;
+      break;
 
     default:
-      return null;
+      Portal = null;
   }
+
+  return <Portal {...props} />;
 }
