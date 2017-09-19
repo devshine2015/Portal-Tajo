@@ -26,6 +26,10 @@ export const tajoTheme = {
     PLItemGFBackgroundColorExpanded: blue600,
     PLItemGFBackgroundColorExpandedHover: tinycolor(blue600).setAlpha(0.85).toRgbString(),
   },
+  appBar: {
+    logoutBackgroundColor: 'transparent',
+    logoutTextColor: '#fff',
+  },
   spacing: {
     appBarHeigth: 64,
     powerlistFilterHeight: 50,
@@ -45,7 +49,11 @@ export const fusoTheme = {
     PLItemGFBackgroundColorExpandedHover: tinycolor(blue600).setAlpha(0.85).toRgbString(),
   },
   appBar: {
-    color: '#000',
+    color: '#fff',
+    textColor: '#e3142e',
+    logoutBackgroundColor: '#c4c3b1',
+    logoutTextColor: '#000',
+    paddingRight: 16,
   },
   spacing: tajoTheme.spacing,
 };
