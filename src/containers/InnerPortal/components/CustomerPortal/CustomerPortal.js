@@ -1,23 +1,22 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { isMwa } from 'configs';
 import CodebaseVersion from 'components/CodebaseVersion';
-import SnackbarNotification from 'containers/Snackbar';
+import makeInnerPortal from '../Main';
 import AppBar from '../AppBar';
 import MainSidebar from '../MainSidebar';
-import makeInnerPortal from './Main';
-import styles from './styles.css';
+// import classes from './classes';
 
 function renderTitle(title) {
   if (isMwa) {
     return (
-      <div className={styles.title}>
+      <div>
         <img src={require('assets/images/logos/mwa/mwa.png')} alt="mwa logo" height="60" width="76" />
       </div>
     );
   }
   return (
-    <div className={styles.title}>
+    <div>
       { title }
       <CodebaseVersion />
     </div>
@@ -26,7 +25,7 @@ function renderTitle(title) {
 
 const CustomerPortal = (props) => {
   return (
-    <div className={styles.innerPortal}>
+    <div style={{ height: '100%' }}>
 
       <AppBar
         title={renderTitle(props.fleet)}
@@ -39,12 +38,7 @@ const CustomerPortal = (props) => {
         toggleSidebar={props.toggleSidebar}
       />
 
-      <div className={styles.content}>
-        {props.children}
-      </div>
-
-      {/* absolutely positioned stuff */}
-      <SnackbarNotification />
+      { props.children }
 
     </div>
   );

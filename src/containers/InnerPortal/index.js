@@ -11,11 +11,11 @@ export default function createInnerPortal(props) {
   switch (project) {
     case 'portal':
     case 'tajo':
-      Portal = require('./components/Main/ConnectedCustomer').default;
+      Portal = require('./components/CustomerPortal').default;
       break;
 
     case 'dealer':
-      Portal = require('./components/Main/DealerPortal').default;
+      Portal = require('./components/DealerPortal').default;
       break;
 
     default:

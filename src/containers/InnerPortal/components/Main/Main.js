@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import AnimatedLogo from 'components/animated';
+import SnackbarNotification from 'containers/Snackbar';
+import styles from './styles.css';
 
 const makeInnerPortal = () => (Component) => {
   class InnerPortal extends React.Component {
@@ -32,14 +34,23 @@ const makeInnerPortal = () => (Component) => {
     render() {
       // hide InnerPortal from unauthenticated users
       if (this.canShowContent()) {
+        const { children, ...rest } = this.props;
+
         return (
           <Component
             canShowContent={this.canShowContent}
             toggleSidebar={this.toggleSidebar}
             logout={this.onLogout}
             isSidebarOpen={this.state.isSidebarOpen}
-            {...this.props}
-          />
+            {...rest}
+          >
+
+            <div className={styles.content}>
+              {children}
+            </div>
+
+            <SnackbarNotification />
+          </Component>
         );
       }
 
@@ -49,6 +60,7 @@ const makeInnerPortal = () => (Component) => {
   }
 
   InnerPortal.propTypes = {
+    children: PropTypes.element.isRequired,
     projectIsReady: PropTypes.bool.isRequired,
     fetchSpecificData: PropTypes.func.isRequired,
     auth: PropTypes.shape({
