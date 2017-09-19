@@ -1,23 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { css } from 'aphrodite/no-important';
+import { css } from 'aphrodite/no-important';
 import ccLogo from 'assets/images/logos/cc/cc_logo.png';
 import fusoLogo from 'assets/images/logos/cc/fuso_logo.png';
+import AppBar from 'components/AppBar';
 import makeInnerPortal from '../Main';
-import AppBar from '../AppBar';
 // import MainSidebar from '../MainSidebar';
-// import classes from './classes';
+import classes from './classes';
 
 function renderTitle() {
   return (
-    <div>
-      <img
-        src={ccLogo}
-        alt="cycle&carriage"
-      />
+    <div className={css(classes.logos)}>
       <img
         src={fusoLogo}
         alt=""
+        className={css(classes.logo)}
+      />
+      <img
+        src={ccLogo}
+        alt="cycle&carriage"
+        className={css(classes.logo)}
       />
     </div>
   );
@@ -31,7 +33,6 @@ const DealerPortal = (props) => {
         title={renderTitle()}
         toggleSidebar={props.toggleSidebar}
         logout={props.logout}
-        withJournal={false}
       />
 
       {/* <MainSidebar
