@@ -1,4 +1,5 @@
 import drvrStorage from 'utils/drvrStorage';
+import { createTheme } from './theme';
 import * as _configHelpers from './_helpers';
 
 // const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080'; // for dev testing
@@ -116,4 +117,8 @@ export const init = () => {
     restorePassword: false,
     extraPath: getExtraPathname(window.location),
   });
+
+  // as soon as theme property will be supported
+  // in user profile move it to `authHelpers.onSuccess`
+  createTheme(project);
 };

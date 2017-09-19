@@ -6,7 +6,6 @@ import createNotFoundScreen from 'screens/NotFound/route';
 export default [{
   create: createLoginScreen,
   options: {
-    theme: 'fuso',
     path: 'login',
   },
 }, {

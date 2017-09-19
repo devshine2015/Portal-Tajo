@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import drvrDevTheme from 'configs/theme';
+import theme from 'configs/theme';
 import phrases, { locales } from 'configs/phrases';
 import { TranslationProvider } from 'utils/i18n';
 import createInnerPortal from 'containers/InnerPortal';
@@ -17,7 +17,7 @@ const CommonWrappers = ({ children }) => (
     locales={locales}
     locale={DEF_LOCALE}
   >
-    <MuiThemeProvider muiTheme={drvrDevTheme}>
+    <MuiThemeProvider muiTheme={theme}>
       {children}
     </MuiThemeProvider>
   </TranslationProvider>
