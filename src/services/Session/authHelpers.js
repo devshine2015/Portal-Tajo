@@ -51,8 +51,6 @@ export const onFailure = (dispatch) => {
 };
 
 export const onLogoutSuccess = async (dispatch) => {
-  dispatch(cleanSession());
-
   const saved = await drvrStorage.load(DRVR_PROFILE_KEY);
 
   if (!profileUtils.isLegacyProfile(saved.profile)) {
@@ -66,6 +64,7 @@ export const onLogoutSuccess = async (dispatch) => {
   await drvrStorage.remove(DRVR_PROFILE_KEY);
 
   getHistory().replace('login');
+  dispatch(cleanSession());
 };
 
 /**
