@@ -1,27 +1,3 @@
-// the MUI default theme:
-// {
-//   spacing: spacing,
-//   fontFamily: 'Roboto, sans-serif',
-//   palette: {
-//     primary1Color: cyan500,
-//     primary2Color: cyan700,
-//     primary3Color: grey400,
-//     accent1Color: pinkA200,
-//     accent2Color: grey100,
-//     accent3Color: grey500,
-//     textColor: darkBlack,
-//     alternateTextColor: white,
-//     canvasColor: white,
-//     borderColor: grey300,
-//     disabledColor: fade(darkBlack, 0.3),
-//     pickerHeaderColor: cyan500,
-//     clockCircleColor: fade(darkBlack, 0.07),
-//     shadowColor: fullBlack,
-//   },
-// };
-
-// For dark text on light backgrounds, apply the following opacity levels:
-//
 // The most important text has an opacity of 87%.
 // Secondary text, which is lower in the visual hierarchy, has an opacity of 54%.
 // Text hints (like those in text fields and labels) and disabled text have even
@@ -34,31 +10,21 @@ import { white, blue600, cyan700,
   deepOrange700, yellow700,
 } from 'material-ui/styles/colors';
 
-const drvrDevTheme = {
+const drvrTheme = {
   palette: {
-    primary1Color: teal500, // '#FFB300'
+    primary1Color: teal500,
     primary2Color: teal700,
     primary3Color: teal900,
     primary4Color: teal300,
     accent1Color: deepOrange700,
     accent2Color: yellow700,
-    // accent3Color: grey500,
     PLItemBackgroundColor: cyan700,
     PLItemBackgroundColorHover: tinycolor(cyan700).setAlpha(0.85).toRgbString(),
-    // PLItemBackgroundColor: '#D0C590',  //Yuma
-    // PLItemBackgroundColorHover: tinycolor('#D0C590').setAlpha(0.85).toRgbString(),
-
     PLItemColor: white,
-//    PLItemColor: tinycolor(darkBlack).setAlpha(0.87).toRgbString(),
     PLItemBackgroundColorExpanded: deepOrange700, // '#fd9e83',
     PLItemBackgroundColorExpandedHover: tinycolor(deepOrange700).setAlpha(0.85).toRgbString(),
-
     PLItemGFBackgroundColorExpanded: blue600,
     PLItemGFBackgroundColorExpandedHover: tinycolor(blue600).setAlpha(0.85).toRgbString(),
-
-
-//    PLItemBackgroundColorExpanded: cyan500,
-//    PLItemBackgroundColorExpandedHover: tinycolor(cyan500).setAlpha(0.85).toRgbString(),
   },
   spacing: {
     appBarHeigth: 64,
@@ -66,4 +32,44 @@ const drvrDevTheme = {
   },
 };
 
-export default getMuiTheme(drvrDevTheme);
+const fusoTheme = {
+  palette: {
+    primary1Color: teal500,
+    primary2Color: teal700,
+    primary3Color: teal900,
+    primary4Color: teal300,
+    accent1Color: deepOrange700,
+    accent2Color: yellow700,
+    PLItemBackgroundColor: cyan700,
+    PLItemBackgroundColorHover: tinycolor(cyan700).setAlpha(0.85).toRgbString(),
+    PLItemColor: white,
+    PLItemBackgroundColorExpanded: deepOrange700, // '#fd9e83',
+    PLItemBackgroundColorExpandedHover: tinycolor(deepOrange700).setAlpha(0.85).toRgbString(),
+    PLItemGFBackgroundColorExpanded: blue600,
+    PLItemGFBackgroundColorExpandedHover: tinycolor(blue600).setAlpha(0.85).toRgbString(),
+  },
+  spacing: drvrTheme.spacing,
+};
+
+// eslint-disable-next-line import/no-mutable-exports
+let theme = getMuiTheme(drvrTheme);
+
+/**
+ * Singleton
+ * Return theme based on runned project.
+ * Idally must depend on theme
+ * @param {String} project - running project
+ * @returns {MaterialUITheme}
+ */
+export function createTheme(project) {
+  switch (project) {
+    case 'dealer':
+      theme = getMuiTheme(fusoTheme);
+      break;
+    default:
+      theme = getMuiTheme(drvrTheme);
+      break;
+  }
+}
+
+export default theme;
