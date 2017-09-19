@@ -4,13 +4,13 @@
 // lower visual prominence with an opacity of 38%.
 
 import tinycolor from 'tinycolor2';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
 import { white, blue600, cyan700,
   teal300, teal500, teal700, teal900,
   deepOrange700, yellow700,
 } from 'material-ui/styles/colors';
 
-const drvrTheme = {
+export const tajoTheme = {
   palette: {
     primary1Color: teal500,
     primary2Color: teal700,
@@ -32,14 +32,10 @@ const drvrTheme = {
   },
 };
 
-const fusoTheme = {
+export const fusoTheme = {
   palette: {
-    primary1Color: teal500,
-    primary2Color: teal700,
-    primary3Color: teal900,
-    primary4Color: teal300,
-    accent1Color: deepOrange700,
-    accent2Color: yellow700,
+    primary1Color: '#e3142e',
+    accent1Color: '#c4c3b1',
     PLItemBackgroundColor: cyan700,
     PLItemBackgroundColorHover: tinycolor(cyan700).setAlpha(0.85).toRgbString(),
     PLItemColor: white,
@@ -48,11 +44,14 @@ const fusoTheme = {
     PLItemGFBackgroundColorExpanded: blue600,
     PLItemGFBackgroundColorExpandedHover: tinycolor(blue600).setAlpha(0.85).toRgbString(),
   },
-  spacing: drvrTheme.spacing,
+  appBar: {
+    color: '#000',
+  },
+  spacing: tajoTheme.spacing,
 };
 
 // eslint-disable-next-line import/no-mutable-exports
-let theme = getMuiTheme(drvrTheme);
+// let theme;
 
 /**
  * Singleton
@@ -61,15 +60,15 @@ let theme = getMuiTheme(drvrTheme);
  * @param {String} project - running project
  * @returns {MaterialUITheme}
  */
-export function createTheme(project) {
-  switch (project) {
-    case 'dealer':
-      theme = getMuiTheme(fusoTheme);
-      break;
-    default:
-      theme = getMuiTheme(drvrTheme);
-      break;
-  }
-}
+// export function createTheme(project) {
+//   switch (project) {
+//     case 'dealer':
+//       theme = getMuiTheme(fusoTheme);
+//       break;
+//     default:
+//       theme = getMuiTheme(tajoTheme);
+//       break;
+//   }
+// }
 
-export default theme;
+// export default theme;

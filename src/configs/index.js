@@ -1,10 +1,11 @@
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import drvrStorage from 'utils/drvrStorage';
-import { createTheme } from './theme';
+import { tajoTheme, fusoTheme } from './theme';
 import * as _configHelpers from './_helpers';
 
 // const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080'; // for dev testing
-const DEV_ENGINE_BASE = 'drvrstage.cloudapp.net:8080'; // for stage testing
-// const DEV_ENGINE_BASE = 'drvrapp.net'; // for prod testing
+// const DEV_ENGINE_BASE = 'drvrstage.cloudapp.net:8080'; // for stage testing
+const DEV_ENGINE_BASE = 'drvrapp.net'; // for prod testing
 const REMOTE_HOST_BASE = window.location.host;
 
 export const version = process.env.DRVR_VERSION;
@@ -72,6 +73,7 @@ export function checkSetNoIcons(fleetName) {
   isNoIcons = fleetName.indexOf('cipta') !== -1;
 }
 
+export const theme = project === 'dealer' ? getMuiTheme(fusoTheme) : getMuiTheme(tajoTheme);
 
 // TODO: quick fix - just doubled prev limit - need some proven number
 // TODO: currently using same for hisotry (24hvr) and reports (arbitrary time range)
@@ -120,5 +122,5 @@ export const init = () => {
 
   // as soon as theme property will be supported
   // in user profile move it to `authHelpers.onSuccess`
-  createTheme(project);
+  // createTheme(project);
 };
