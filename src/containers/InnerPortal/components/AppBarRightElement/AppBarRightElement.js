@@ -16,10 +16,11 @@ const STYLES = {
 const AppBarRightElement = ({
   translations,
   onClick,
+  withJournal,
 }) => {
   return (
     <div className={css(classes.rightElement)}>
-      <Journal />
+      { withJournal && <Journal /> }
       <FlatButton
         label={translations.logout}
         onClick={onClick}
@@ -33,6 +34,7 @@ const AppBarRightElement = ({
 AppBarRightElement.propTypes = {
   onClick: PropTypes.func.isRequired,
   translations: phrasesShape.isRequired,
+  withJournal: PropTypes.bool.isRequired,
 };
 
 AppBarRightElement.defaultProps = {
