@@ -6,7 +6,7 @@ import fusoLogo from 'assets/images/logos/cc/fuso_logo.png';
 import AppBar from 'components/AppBar';
 import makeInnerPortal from '../Main';
 import RightElement from './AppBarRightElement';
-// import MainSidebar from '../MainSidebar';
+import MainSidebar from '../MainSidebar';
 import classes from './classes';
 
 function renderTitle() {
@@ -37,10 +37,10 @@ const DealerPortal = (props) => {
         rightElement={<RightElement />}
       />
 
-      {/* <MainSidebar
+      <MainSidebar
         isOpened={props.isSidebarOpen}
         toggleSidebar={props.toggleSidebar}
-      /> */}
+      />
 
       { /* props.children */ }
 

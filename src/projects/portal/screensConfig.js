@@ -1,4 +1,3 @@
-import mainMenu from 'configs/mainMenu';
 import { isAlerts } from 'configs';
 import createOperationalScreen from 'screens/Operational/route';
 import createReportsScreen from 'screens/ReportsScreen/route';
@@ -12,6 +11,7 @@ import createAlersEditorScreen from 'screens/AlertsEditor/route';
 import createNotFoundScreen from 'screens/NotFound/route';
 import createUsersManagerScreen from 'screens/UsersManager/route';
 import createAlertLogsScreen from 'screens/AlertsLog/route';
+import menu from './menu';
 
 export default [{
   create: createLoginScreen,
@@ -30,33 +30,33 @@ export default [{
   },
 }, {
   create: createDashboardScreen,
-  options: mainMenu.sunshine.review,
+  options: menu.review,
 }, {
   create: createOperationalScreen,
-  options: mainMenu.sunshine.operational,
+  options: menu.operational,
 }, {
   create: createChronicleScreen,
-  options: mainMenu.sunshine.history,
+  options: menu.history,
 }, {
   create: createReportsScreen,
-  options: mainMenu.sunshine.reports,
+  options: menu.reports,
 }, {
   create: createExecReportsScreen,
-  options: mainMenu.sunshine.execReport,
+  options: menu.execReport,
 }, {
   create: createVehiclesManagerScreen,
-  options: mainMenu.sunshine.vehicles,
+  options: menu.vehicles,
 }, {
   create: createAlertLogsScreen,
-  options: mainMenu.sunshine.alertsLogs,
+  options: menu.alertsLogs,
 }, {
   create: createAlersEditorScreen,
-  options: mainMenu.sunshine.alerts,
+  options: menu.alerts,
   rule: () => isAlerts, // TODO: remove rule when removing isAlert dev flag
 }, {
   create: createUsersManagerScreen,
-  options: mainMenu.sunshine.users,
+  options: menu.users,
 }, {
   create: createProfileScreen,
-  options: mainMenu.sunshine.profile,
+  options: menu.profile,
 }];

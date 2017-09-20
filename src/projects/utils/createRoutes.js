@@ -11,7 +11,7 @@ const createRootRoute = (screenCreator, menu) => screenCreator({
   create: createRootScreen,
   options: {
     path: '/',
-    mainMenu: menu,
+    menu,
   },
 });
 

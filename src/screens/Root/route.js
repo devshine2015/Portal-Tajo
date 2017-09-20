@@ -26,7 +26,7 @@ const createRoute = ({
   path,
   name = NAME,
   dispatch,
-  mainMenu = [],
+  menu = [],
   auth,
 }) => ({
   path,
@@ -36,9 +36,9 @@ const createRoute = ({
   indexRoute: {},
   childRoutes: [],
   onEnter: (location) => {
-    if (mainMenu.length === 0) return;
+    if (menu.length === 0) return;
 
-    const patchedMenu = patchMenuPaths(mainMenu, location.routes[0]);
+    const patchedMenu = patchMenuPaths(menu, location.routes[0]);
 
     dispatch(setInnerPortalPages(patchedMenu));
   },

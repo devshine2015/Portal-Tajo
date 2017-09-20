@@ -1,7 +1,7 @@
-import mainMenu from 'configs/mainMenu';
 import createLoginScreen from 'screens/LoginScreen/route';
 import createDashboardScreen from 'screens/Dashboard/route';
 import createNotFoundScreen from 'screens/NotFound/route';
+import menu from './menu';
 
 export default [{
   create: createLoginScreen,
@@ -15,5 +15,5 @@ export default [{
   },
 }, {
   create: createDashboardScreen,
-  options: mainMenu.escape.review,
+  options: menu.dashboard,
 }];

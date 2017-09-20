@@ -1,4 +1,3 @@
-import mainMenu from 'configs/mainMenu';
 import createDashboardScreen from 'screens/Dashboard/route';
 import createNotFoundScreen from 'screens/NotFound/route';
 import createLoginScreen from 'screens/LoginScreen/route';
@@ -7,6 +6,7 @@ import createPromoScreen from 'screens/PromoTrackingScreen/route';
 import createDevicesManagerScreen from 'screens/DevicesManager/route';
 import createProfileScreen from 'screens/Profile/route';
 import createUsersManagerScreen from 'screens/UsersManager/route';
+import menu from './menu';
 
 export default [{
   create: createLoginScreen,
@@ -25,20 +25,20 @@ export default [{
   },
 }, {
   create: createDashboardScreen,
-  options: mainMenu.escape.dashboard,
+  options: menu.dashboard,
 }, {
   create: createInstallerScreen,
-  options: mainMenu.escape.installer,
+  options: menu.installer,
 }, {
   create: createPromoScreen,
-  options: mainMenu.escape.promos,
+  options: menu.promos,
 }, {
   create: createDevicesManagerScreen,
-  options: mainMenu.escape.devices,
+  options: menu.devices,
 }, {
   create: createUsersManagerScreen,
-  options: mainMenu.escape.users,
+  options: menu.users,
 }, {
   create: createProfileScreen,
-  options: mainMenu.escape.profile,
+  options: menu.profile,
 }];
