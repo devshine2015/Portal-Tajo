@@ -1,6 +1,9 @@
+import createNotFoundScreen from 'screens/NotFound/route';
 import createLoginScreen from 'screens/LoginScreen/route';
 import createDashboardScreen from 'screens/Dashboard/route';
-import createNotFoundScreen from 'screens/NotFound/route';
+import createVehiclesScreen from 'screens/VehiclesDealer/route';
+import createDriverPerfScreen from 'screens/DriverPerformance/route';
+import createUsersManagerScreen from 'screens/UsersManager/route';
 import menu from './menu';
 
 export default [{
@@ -16,4 +19,13 @@ export default [{
 }, {
   create: createDashboardScreen,
   options: menu.dashboard,
+}, {
+  create: createVehiclesScreen,
+  options: menu.vehicles,
+}, {
+  create: createDriverPerfScreen,
+  options: menu.drivers,
+}, {
+  create: createUsersManagerScreen,
+  options: menu.users,
 }];
