@@ -41,6 +41,8 @@ export default {
   history: 'history',
   alerts_editor: 'alerts editor',
   alerts_logs: 'alerts logs',
+  overview: 'overview',
+  driver_performance: 'driver performance',
   // -- end main menu
 
   // dashboard screen

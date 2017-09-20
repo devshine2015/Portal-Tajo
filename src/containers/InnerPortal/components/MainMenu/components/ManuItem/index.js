@@ -11,7 +11,9 @@ const MenuItem = (props) =>
     to={props.page.path}
     onClick={props.closeSidebar}
   >
-    { props.niceName }
+    <span className={styles.item__text}>
+      { props.niceName || props.page.name }
+    </span>
   </Link>;
 
 MenuItem.propTypes = {

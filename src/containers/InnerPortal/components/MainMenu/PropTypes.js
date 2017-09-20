@@ -13,4 +13,7 @@ export default [
   'history',
   'alerts_editor',
   'alerts_logs',
+  'overview',
+  'driver_performance',
+  'vehicles',
 ];
