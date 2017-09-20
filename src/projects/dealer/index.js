@@ -1,12 +1,13 @@
 /* customer portal root */
-import renderProject from 'projects/baseProject';
 import Dashboard from 'screens/Dashboard';
+import { fetchVehicles } from 'services/DealerFleet/actions';
+import renderProject from '../baseProject';
 import screens from './screensConfig';
 import createReducer from './reducers';
 import menu from './menu';
 
-function bootstrapProject(/* dispatch */) {
-  console.log('Now you can do project-specific stuff');
+function bootstrapProject(dispatch) {
+  dispatch(fetchVehicles());
 }
 
 renderProject({

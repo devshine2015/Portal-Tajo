@@ -42,7 +42,7 @@ const DealerPortal = (props) => {
         toggleSidebar={props.toggleSidebar}
       />
 
-      { /* props.children */ }
+      {props.children}
 
     </div>
   );

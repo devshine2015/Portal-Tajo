@@ -10,7 +10,7 @@ const Scrollable = ({
 }, {
   muiTheme,
 }) => {
-  const st = { top: offsetTop || muiTheme.spacing.powerlistFilterHeight };
+  const st = { top: offsetTop !== undefined ? offsetTop : muiTheme.spacing.powerlistFilterHeight };
 
   return (
     <div

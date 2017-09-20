@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
+import dealerFleetSelectors from 'services/DealerFleet/selectors';
 import DealerPortal from './DealerPortal';
 
 const makeMapStateToProps = () => {
-  const mapState = (/* state */) => {
+  const mapState = (state) => {
     return {
-      projectIsReady: true,
+      projectIsReady: dealerFleetSelectors.getReadyState(state), // eslint-disable-line import/no-named-as-default-member
     };
   };
 
@@ -12,7 +13,7 @@ const makeMapStateToProps = () => {
 };
 
 const actions = {
-  fetchSpecificData: () => console.log('LOL Start fetch data here'),
+  fetchSpecificData: () => ({}),
 };
 
 export default connect(makeMapStateToProps, actions)(DealerPortal);

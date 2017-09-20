@@ -7,7 +7,7 @@ import Scrollable from 'components/Scrollable';
 
 import styles from './styles.css';
 
-function renderChildrens(scrollable, filter, content) {
+function renderChildrens(scrollable, filter, content, options = {}) {
   const result = [];
 
   if (filter) {
@@ -18,7 +18,10 @@ function renderChildrens(scrollable, filter, content) {
 
   if (scrollable && content) {
     result.push(
-      <Scrollable key="scrollable">
+      <Scrollable
+        key="scrollable"
+        offsetTop={options.offsetTop}
+      >
         {content}
       </Scrollable>
     );
@@ -38,12 +41,15 @@ const PowerList = ({
   filter,
   fixed,
   scrollable,
+  offsetTop,
 }) => {
   const columnClassName = classnames(styles.columnContainer, className, {
     [styles.likeStatic]: !fixed,
   });
   // display children as is on apply options
-  const toDisplay = children || renderChildrens(scrollable, filter, content);
+  const toDisplay = children || renderChildrens(scrollable, filter, content, {
+    offsetTop,
+  });
 
   return (
     <FixedColumn containerClassName={columnClassName}>
@@ -61,6 +67,7 @@ PowerList.propTypes = {
   filter: PropTypes.element,
   fixed: PropTypes.bool,
   scrollable: PropTypes.bool,
+  offsetTop: PropTypes.number,
 };
 
 PowerList.defaultProps = {
@@ -70,6 +77,7 @@ PowerList.defaultProps = {
   filter: null,
   fixed: true,
   scrollable: true,
+  offsetTop: undefined,
 };
 
 export default pure(PowerList);
