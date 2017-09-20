@@ -5,8 +5,7 @@ const classes = StyleSheet.create({
     position: 'fixed',
     top: 0,
     width: '100%',
-    // zIndex: 1100,
-    // boxShadow: '0px 1px 5px 1px rgba(0, 0, 0, .5)',
+    zIndex: 1100,
 
     '@media print': {
       display: 'none',
