@@ -14,6 +14,6 @@ export default [
   'alerts_editor',
   'alerts_logs',
   'overview',
-  'driver_performance',
-  'vehicles',
+  'vehicle_performance',
+  'vehicle_diagnostics',
 ];

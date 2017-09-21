@@ -42,7 +42,8 @@ export default {
   alerts_editor: 'alerts editor',
   alerts_logs: 'alerts logs',
   overview: 'overview',
-  driver_performance: 'driver performance',
+  vehicle_performance: 'vehicle performance',
+  vehicle_diagnostics: 'vehicle diagnostics',
   // -- end main menu
 
   // dashboard screen
