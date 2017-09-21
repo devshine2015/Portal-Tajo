@@ -1,4 +1,4 @@
-import createDashboardScreen from 'screens/Dashboard/route';
+import createDashboardScreen from 'screens/CustomerDashboard/route';
 import createNotFoundScreen from 'screens/NotFound/route';
 import createLoginScreen from 'screens/LoginScreen/route';
 import createInstallerScreen from 'screens/InstallerScreen/route';

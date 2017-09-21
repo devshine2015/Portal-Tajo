@@ -1,5 +1,5 @@
 /* customer portal root */
-import Dashboard from 'screens/Dashboard';
+import DealerDashboard from 'screens/DealerDashboard';
 import { fetchVehicles } from 'services/DealerFleet/actions';
 import renderProject from '../baseProject';
 import screens from './screensConfig';
@@ -17,7 +17,7 @@ renderProject({
     menu,
     screens,
     initialScreenConfig: {
-      component: Dashboard,
+      component: DealerDashboard,
       protected: true,
     },
   },

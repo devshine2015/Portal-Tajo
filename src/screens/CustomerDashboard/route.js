@@ -1,16 +1,10 @@
-const createRoute = ({
-  path,
-  name,
-  niceName,
-}) => ({
-  path,
-  name,
-  niceName,
+const createRoute = options => ({
+  ...options,
   component: require('./index').default,
   getComponent: (location, cb) => {
-    require.ensure([], require => {
+    require.ensure([], (require) => {
       cb(null, require('./index').default);
-    }, 'dashboard');
+    }, 'customerDashboard');
   },
   childRoutes: [],
 });

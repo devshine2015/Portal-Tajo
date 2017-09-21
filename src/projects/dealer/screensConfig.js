@@ -1,6 +1,6 @@
 import createNotFoundScreen from 'screens/NotFound/route';
 import createLoginScreen from 'screens/LoginScreen/route';
-import createDashboardScreen from 'screens/Dashboard/route';
+import createDealerDashboardScreen from 'screens/DealerDashboard/route';
 import createVehiclePerformanceScreen from 'screens/VehiclesPerformance/route';
 import createVehicleDiagnosticsScreen from 'screens/VehicleDiagnostics/route';
 import createUsersManagerScreen from 'screens/UsersManager/route';
@@ -17,7 +17,7 @@ export default [{
     path: 'not-found',
   },
 }, {
-  create: createDashboardScreen,
+  create: createDealerDashboardScreen,
   options: menu.dashboard,
 }, {
   create: createVehiclePerformanceScreen,

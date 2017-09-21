@@ -1,7 +1,7 @@
 /* internal portal root */
 import renderProject from 'projects/baseProject';
 import { commonFleetActions } from 'services/FleetModel/actions';
-import Dashboard from 'screens/Dashboard';
+import CustomerDashboard from 'screens/CustomerDashboard';
 import screens from './screensConfig';
 import createReducer from './reducers';
 import menu from './menu';
@@ -17,7 +17,7 @@ renderProject({
     menu,
     screens,
     initialScreenConfig: {
-      component: Dashboard,
+      component: CustomerDashboard,
       protected: true,
     },
   },

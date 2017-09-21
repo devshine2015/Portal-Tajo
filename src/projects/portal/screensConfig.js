@@ -4,7 +4,7 @@ import createReportsScreen from 'screens/ReportsScreen/route';
 import createExecReportsScreen from 'screens/ExecReports/route';
 import createVehiclesManagerScreen from 'screens/VehiclesManagerScreen/route';
 import createLoginScreen from 'screens/LoginScreen/route';
-import createDashboardScreen from 'screens/Dashboard/route';
+import createDashboardScreen from 'screens/CustomerDashboard/route';
 import createChronicleScreen from 'screens/Chronicle/route';
 import createProfileScreen from 'screens/Profile/route';
 import createAlersEditorScreen from 'screens/AlertsEditor/route';
