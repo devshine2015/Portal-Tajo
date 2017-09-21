@@ -3,7 +3,6 @@ import createLoginScreen from 'screens/LoginScreen/route';
 import createDealerDashboardScreen from 'screens/DealerDashboard/route';
 import createVehiclePerformanceScreen from 'screens/VehiclesPerformance/route';
 import createVehicleDiagnosticsScreen from 'screens/VehicleDiagnostics/route';
-import createUsersManagerScreen from 'screens/UsersManager/route';
 import menu from './menu';
 
 export default [{
@@ -25,7 +24,4 @@ export default [{
 }, {
   create: createVehicleDiagnosticsScreen,
   options: menu.diagnostic,
-}, {
-  create: createUsersManagerScreen,
-  options: menu.users,
 }];
