@@ -30,6 +30,11 @@ export const tajoTheme = {
     logoutBackgroundColor: 'transparent',
     logoutTextColor: '#fff',
   },
+  powerList: {
+    backgroundColor: teal500,
+    itemColor: cyan700,
+    itemTextColor: '#fff',
+  },
   spacing: {
     appBarHeigth: 64,
     powerlistFilterHeight: 50,
@@ -55,6 +60,11 @@ export const fusoTheme = {
     logoutTextColor: '#000',
     paddingRight: 16,
     borderColor: '#e3142e',
+  },
+  powerList: {
+    backgroundColor: '#c4c3b1',
+    itemColor: '#c4c3b1',
+    itemTextColor: '#000',
   },
   spacing: tajoTheme.spacing,
 };

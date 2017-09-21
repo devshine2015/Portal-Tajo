@@ -42,7 +42,7 @@ const PowerList = ({
   fixed,
   scrollable,
   offsetTop,
-}) => {
+}, { muiTheme }) => {
   const columnClassName = classnames(styles.columnContainer, className, {
     [styles.likeStatic]: !fixed,
   });
@@ -53,11 +53,20 @@ const PowerList = ({
 
   return (
     <FixedColumn containerClassName={columnClassName}>
-      <div className={styles.powerlist}>
+      <div
+        className={styles.powerlist}
+        style={{
+          backgroundColor: muiTheme.powerList.backgroundColor,
+        }}
+      >
         { toDisplay }
       </div>
     </FixedColumn>
   );
+};
+
+PowerList.contextTypes = {
+  muiTheme: PropTypes.object.isRequired,
 };
 
 PowerList.propTypes = {

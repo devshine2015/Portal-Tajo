@@ -116,13 +116,6 @@ function chooseItem(type, {
 }
 
 class GenericListItem extends React.Component {
-
-  // constructor(props) {
-  //   super(props);
-  //   const { isExpanded, ...rest } = this.props;
-  //   this.element = chooseItem(this.props.type, { ...rest, isExpanded });
-  // }
-
   componentWillReceiveProps(nextProps) {
     if (!this.props.isExpanded && nextProps.isExpanded) {
       this.scrollIntoView();
@@ -130,10 +123,6 @@ class GenericListItem extends React.Component {
   }
 
   node = null;
-
-  // shouldComponentUpdate(nextProps) {
-  //   return this.props.isExpanded !== nextProps.isExpanded;
-  // }
 
   scrollIntoView() {
     if (!this.props.scrollIntoView) return;
@@ -158,7 +147,7 @@ class GenericListItem extends React.Component {
   render() {
     const { isExpanded, ...rest } = this.props;
     const className = classnames(styles.list__item, 'listItemDynamic', {
-      ['listItemDynamicExpanded']: isExpanded,
+      listItemDynamicExpanded: isExpanded,
       [styles.list__item_expanded]: isExpanded,
     });
     const element = chooseItem(this.props.type, { ...rest, isExpanded });
@@ -166,6 +155,10 @@ class GenericListItem extends React.Component {
       <li
         className={className}
         ref={this.saveNode}
+        style={{
+          backgroundColor: this.context.muiTheme.powerList.itemColor,
+          color: this.context.muiTheme.powerList.itemTextColor,
+        }}
       >
         { _needIndicator(rest.item) && (
           <StatusIcon
@@ -178,6 +171,10 @@ class GenericListItem extends React.Component {
     );
   }
 }
+
+GenericListItem.contextTypes = {
+  muiTheme: PropTypes.object.isRequired,
+};
 
 GenericListItem.propTypes = {
   item: PropTypes.object.isRequired,
