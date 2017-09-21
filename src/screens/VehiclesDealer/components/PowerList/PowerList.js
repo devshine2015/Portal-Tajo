@@ -1,35 +1,29 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PowerList from 'components/PowerList';
 // import Filter from 'components/Filter';
 import VehiclesList from 'components/InstancesList';
 import PropTypes from 'prop-types';
 
-class DealerPowerList extends Component {
-
-  onChooseVehicle = (e) => {
-    console.log(e);
-  }
-
-  render() {
-    return (
-      <PowerList
-        scrollable
-        offsetTop={5}
-        content={
-          <VehiclesList
-            onItemClick={this.onChooseVehicle}
-            data={this.props.vehicles}
-          />
-        }
-      />
-    );
-  }
-}
+const DealerPowerList = (props) => {
+  return (
+    <PowerList
+      scrollable
+      offsetTop={5}
+      content={
+        <VehiclesList
+          onItemClick={props.onVehicleSelect}
+          data={props.vehicles}
+        />
+      }
+    />
+  );
+};
 
 DealerPowerList.propTypes = {
   vehicles: PropTypes.arrayOf(
     PropTypes.object,
   ).isRequired,
+  onVehicleSelect: PropTypes.func.isRequired,
 };
 
 export default DealerPowerList;
