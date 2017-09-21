@@ -14,12 +14,34 @@ console.log(NODE_ENV);
 
 const devCssLoaders = 'style-loader!css-loader?localIdentName=[local]__[path][name]__[hash:base64:5]&modules&importLoaders=1&sourceMap!postcss-loader';
 
+/**
+ * he we're trying to imitate how static files server would work:
+ * manually define routes per project at buid time, so
+ * all projects related to same bundle would be served
+ * from different routes, but by equally same bundles.
+ * @example
+ * drvrstage.cloudapp.net:8080/cc - it is a client-specific route, but it's a `dealer` project, just with unique uri,
+ * so, since our backend(s) don't know how to serve right bundle per url we including this logic in bundle.
+ * That means static resources should be taken from directory where index.html file lives
+ * @example
+ * ~/engine/static-root/public/cc - contain all cc resources, which are kinda copy of common dealer bundle
+ *
+ * We have 3 possible real urls and 1 virtual at the moment
+ * DON'T FORGET TO UPDATE THIS DESCRIPTION IF ABOVEMENTIONED WILL BE CHANGED
+ * - portal - serves files from `public/index.html`, includes virtual `mwa`
+ * - tajo - serves files from `public/tajo/index.html`.
+ * - dealer - at this moment of having just one dealer.
+ *    - cc - serves files from `public/cc/index.html`
+ */
 function getPublicPath() {
-  if (NODE_ENV === 'production') {
-    return PROJECT === 'tajo' ? '/tajo/' : '';
+  switch (PROJECT) {
+    case 'tajo':
+      return '/tajo/';
+    case 'dealer':
+      return '/cc/';
+    default:
+      return '';
   }
-
-  return '/';
 }
 
 module.exports.getPublicPath = getPublicPath;
