@@ -12,8 +12,4 @@ const makeMapStateToProps = () => {
   return mapState;
 };
 
-const actions = {
-  fetchSpecificData: () => ({}),
-};
-
-export default connect(makeMapStateToProps, actions)(DealerPortal);
+export default connect(makeMapStateToProps)(DealerPortal);

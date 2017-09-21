@@ -13,7 +13,9 @@ const makeInnerPortal = () => (Component) => {
 
     componentWillReceiveProps(nextProps) {
       if (!this.props.projectIsReady && nextProps.projectIsReady) {
-        this.props.fetchSpecificData();
+        if (this.props.fetchSpecificData !== undefined && typeof this.props.fetchSpecificData === 'function') {
+          this.props.fetchSpecificData();
+        }
       }
     }
 
@@ -62,10 +64,14 @@ const makeInnerPortal = () => (Component) => {
   InnerPortal.propTypes = {
     children: PropTypes.element.isRequired,
     projectIsReady: PropTypes.bool.isRequired,
-    fetchSpecificData: PropTypes.func.isRequired,
+    fetchSpecificData: PropTypes.func,
     auth: PropTypes.shape({
       logout: PropTypes.func.isRequired,
     }).isRequired,
+  };
+
+  InnerPortal.defaultProps = {
+    fetchSpecificData: undefined,
   };
 
   return InnerPortal;
