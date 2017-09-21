@@ -7,13 +7,13 @@ const menu = {
     name: 'users',
     path: 'users',
   },
-  drivers: {
-    name: 'driver_performance',
-    path: 'driver',
+  performance: {
+    name: 'vehicle_performance',
+    path: 'performance',
   },
-  vehicles: {
-    name: 'vehicles',
-    path: 'vehicles',
+  diagnostic: {
+    name: 'vehicle_diagnostics',
+    path: 'diagnostic',
   },
 };
 
