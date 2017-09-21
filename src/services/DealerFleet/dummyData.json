@@ -1,5 +1,5 @@
 [{
-  "id": "7a4429a9-6770-423e-a307-882b88d23492",
+  "id": "1",
   "name": "Fuso Vehicle 1",
   "licensePlate": "YGN ABC",
   "make": "Mitsubishi",
@@ -19,7 +19,7 @@
   },
   "filteredOut": false
 }, {
-  "id": "53047377-84bc-4ecb-a30c-21e7e7fc150d",
+  "id": "2",
   "name": "Fuso Vehicle 2",
   "licensePlate": "YGN DEF",
   "make": "Mitsubishi",
@@ -39,7 +39,7 @@
   },
   "filteredOut": false
 }, {
-  "id": "915610d8-f627-4cac-b31e-d9cfb8dd1416",
+  "id": "3",
   "name": "Fuso Vehicle 3",
   "licensePlate": "YGN GHI",
   "make": "Mitsubishi",
@@ -56,46 +56,6 @@
   },
   "meta": {
       "marker": "name"
-  },
-  "filteredOut": false
-}, {
-  "id": "144a3666-3163-4cec-8512-9816e34b675f",
-  "name": "Fuso Vehicle 4",
-  "licensePlate": "YGN KLM",
-  "make": "Mitsubishi",
-  "model": "Fuso",
-  "year": "2013",
-  "kind": "MGV",
-  "created": "2016-11-29T06:45:19.672+0000",
-  "updated": "2017-06-02T09:57:45.249+0000",
-  "deviceId": "863286023151716",
-  "status": "active",
-  "odometer": {
-      "value": 31275000,
-      "updated": "2017-06-02T09:57:45.249+0000"
-  },
-  "meta": {
-      "marker": "icon"
-  },
-  "filteredOut": false
-}, {
-  "id": "45e83eee-db96-4558-952a-c099feea4b4c",
-  "name": "Fuso Vehicle 5",
-  "licensePlate": "YGN NOP",
-  "make": "Mitsubishi",
-  "model": "Fuso",
-  "year": "2010",
-  "kind": "MGV_FROZEN",
-  "created": "2016-11-13T05:45:30.319+0000",
-  "updated": "2017-06-03T01:41:14.297+0000",
-  "deviceId": "863286023164883",
-  "status": "active",
-  "odometer": {
-      "value": 202926000,
-      "updated": "2017-06-03T01:41:14.297+0000"
-  },
-  "meta": {
-      "marker": "icon"
   },
   "filteredOut": false
 }]
