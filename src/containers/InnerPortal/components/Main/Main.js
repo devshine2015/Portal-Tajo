@@ -4,7 +4,7 @@ import AnimatedLogo from 'components/animated';
 import SnackbarNotification from 'containers/Snackbar';
 import styles from './styles.css';
 
-const makeInnerPortal = () => (Component) => {
+const makeInnerPortal = (config = {}) => (Component) => {
   class InnerPortal extends React.Component {
 
     state = {
@@ -26,7 +26,7 @@ const makeInnerPortal = () => (Component) => {
     }
 
     canShowContent = () => {
-      return this.props.projectIsReady;
+      return config.isReady || this.props.projectIsReady;
     }
 
     onLogout = () => {
