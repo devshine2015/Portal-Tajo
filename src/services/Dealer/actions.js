@@ -1,32 +1,6 @@
-// export const FETCH_DEALER_VEHICLES_SUCCESS = 'fetch dealer\'s vehicles success';
-// export const FETCH_DEALER_VEHICLES_FAILURE = 'fetch dealer\'s vehicles failure';
+export const DEALER_PORTAL_READY_SET = 'dealer portal set ready state';
 
-// export const fetchVehicles = () => async (dispatch) => {
-//   try {
-//     const result = [];
-//     const vehiclesMap = {};
-//     const vehiclesList = [];
-
-//     result.forEach((el) => {
-//       vehiclesMap[el.id] = el;
-//       vehiclesList.push(el.id);
-//     });
-
-//     dispatch({
-//       type: FETCH_DEALER_VEHICLES_SUCCESS,
-//       map: vehiclesMap,
-//       list: vehiclesList,
-//     });
-
-//     return result;
-//   } catch (e) {
-//     dispatch({
-//       type: FETCH_DEALER_VEHICLES_FAILURE,
-//     });
-
-//     console.error(e);
-
-//     throw new Error(e);
-//   }
-// };
-
+export const changeDealerReadyState = isReady => ({
+  type: DEALER_PORTAL_READY_SET,
+  isReady,
+});

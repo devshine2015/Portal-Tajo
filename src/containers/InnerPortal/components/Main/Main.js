@@ -13,7 +13,7 @@ const makeInnerPortal = () => (Component) => {
     };
 
     componentWillReceiveProps(nextProps) {
-      if (!this.props.projectIsReady && nextProps.projectIsReady) {
+      if (!this.props.readyToShowPortal && nextProps.readyToShowPortal) {
         if (this.props.fetchSpecificData !== undefined && typeof this.props.fetchSpecificData === 'function') {
           this.props.fetchSpecificData();
         }
@@ -27,7 +27,7 @@ const makeInnerPortal = () => (Component) => {
     }
 
     canShowContent = () => {
-      return this.props.projectIsReady;
+      return this.props.readyToShowPortal;
     }
 
     onLogout = () => {
@@ -64,7 +64,7 @@ const makeInnerPortal = () => (Component) => {
 
   InnerPortal.propTypes = {
     children: PropTypes.element.isRequired,
-    projectIsReady: PropTypes.bool,
+    readyToShowPortal: PropTypes.bool,
     fetchSpecificData: PropTypes.func,
     auth: PropTypes.shape({
       logout: PropTypes.func.isRequired,
@@ -73,7 +73,7 @@ const makeInnerPortal = () => (Component) => {
 
   InnerPortal.defaultProps = {
     fetchSpecificData: undefined,
-    projectIsReady: false,
+    readyToShowPortal: false,
   };
 
   return InnerPortal;

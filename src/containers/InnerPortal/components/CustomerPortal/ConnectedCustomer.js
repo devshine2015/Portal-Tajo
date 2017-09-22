@@ -16,7 +16,7 @@ const makeMapStateToProps = () => {
   const mapState = (state) => {
     return {
       fleet: getFleetName(state),
-      projectIsReady: getIsReady(getVehiclesStaticSlice(state)),
+      readyToShowPortal: getIsReady(getVehiclesStaticSlice(state)),
     };
   };
 
