@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { css } from 'aphrodite/no-important';
 import AnimatedLogo from 'components/animated';
 import SnackbarNotification from 'containers/Snackbar';
-import styles from './styles.css';
+import classes from './classes';
 
-const makeInnerPortal = (config = {}) => (Component) => {
+const makeInnerPortal = () => (Component) => {
   class InnerPortal extends React.Component {
 
     state = {
@@ -26,7 +27,7 @@ const makeInnerPortal = (config = {}) => (Component) => {
     }
 
     canShowContent = () => {
-      return config.isReady || this.props.projectIsReady;
+      return this.props.projectIsReady;
     }
 
     onLogout = () => {
@@ -47,7 +48,7 @@ const makeInnerPortal = (config = {}) => (Component) => {
             {...rest}
           >
 
-            <div className={styles.content}>
+            <div className={css(classes.innerPortal)}>
               {children}
             </div>
 
@@ -63,7 +64,7 @@ const makeInnerPortal = (config = {}) => (Component) => {
 
   InnerPortal.propTypes = {
     children: PropTypes.element.isRequired,
-    projectIsReady: PropTypes.bool.isRequired,
+    projectIsReady: PropTypes.bool,
     fetchSpecificData: PropTypes.func,
     auth: PropTypes.shape({
       logout: PropTypes.func.isRequired,
@@ -72,6 +73,7 @@ const makeInnerPortal = (config = {}) => (Component) => {
 
   InnerPortal.defaultProps = {
     fetchSpecificData: undefined,
+    projectIsReady: false,
   };
 
   return InnerPortal;
