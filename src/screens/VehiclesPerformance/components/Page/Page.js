@@ -16,21 +16,10 @@ class Page extends Component {
 
   render() {
     return (
-      <div
-        style={{
-          height: 800,
-        }}
-      >
+      <div>
         <PowerList onVehicleSelect={this.switchVehicle} />
         <FixedContent>
-          { this.state.vehicleId !== undefined &&
-            <iframe
-              src={`http://office.datavis.sg:30001/v1/driver/${this.state.vehicleId}`}
-              style={{
-                height: 800,
-              }}
-            />
-          }
+          Here gonna be awesome graphs LOL
         </FixedContent>
       </div>
     );
