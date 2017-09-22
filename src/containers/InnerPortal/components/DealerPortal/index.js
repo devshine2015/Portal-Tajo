@@ -1,3 +1,3 @@
-import _DealerPortal from './ConnectedDealerPortal';
+import _DealerPortal from './DealerPortal';
 
 export default _DealerPortal;

@@ -5,11 +5,10 @@ const localState = state => state.get(reducerKey);
 
 // local selector
 export const getReadyState = state => state.get('isReady');
-export const getVehicles = state => state.get('vehiclesMap');
+// export const getVehicles = state => state.get('vehiclesMap');
 
 // global selectors - use it in mapStateToProps, or in action creators (getState())
 export default globalizeSelectors(localState, {
   getReadyState,
-  getVehicles,
-  // getAccessToken,
+  // getVehicles,
 });

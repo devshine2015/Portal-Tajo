@@ -55,4 +55,6 @@ DealerPortal.propTypes = {
   isSidebarOpen: PropTypes.bool.isRequired,
 };
 
-export default makeInnerPortal()(DealerPortal);
+export default makeInnerPortal({
+  isReady: true,
+})(DealerPortal);
