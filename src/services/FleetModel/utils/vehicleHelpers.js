@@ -233,6 +233,18 @@ export function imMakeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
     // eslint-disable-next-line no-param-reassign
     backEndObject.kind = 'UNDEFINED';
   }
+
+  // those are newely added props, some vehicles dont have them
+  // TODO: handle this situation somehow smarter
+  if (!backEndObject.hasOwnProperty('chassisNumber')) {
+    // eslint-disable-next-line no-param-reassign
+    backEndObject.chassisNumber = '';
+  }
+  if (!backEndObject.hasOwnProperty('fuelCapacity')) {
+    // eslint-disable-next-line no-param-reassign
+    backEndObject.fuelCapacity = 0;
+  }
+
   const marker = backEndObject.hasOwnProperty('meta') && backEndObject.meta.hasOwnProperty('marker') ?
         backEndObject.meta.marker : markerTypes.Icon;
   const driverId = backEndObject.hasOwnProperty('meta') && backEndObject.meta.hasOwnProperty('driverId') ?
@@ -344,7 +356,7 @@ export function cleanVehicle(vehicle) {
   const requiredBackEndProps = [
     'id', 'name', 'licensePlate', 'make', 'model', 'kind',
     'odometer', 'year', 'created', 'updated', 'deviceId',
-    'status', 'meta',
+    'status', 'meta', 'chassisNumber', 'fuelCapacity',
   ];
 
   const result = {};
