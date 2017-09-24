@@ -49,13 +49,23 @@ class ListItemVehicle extends React.Component {
     );
   }
 
+  makeFuelString() {
+    if (!this.props.vehicle.fuelNormalized) {
+      return false;
+    }
+    const fuelPerc = `${(this.props.vehicle.fuelNormalized * 100).toFixed(0)}%`;
+    if (this.props.vehicle.original.fuelCapacity > 0) {
+      return `${(this.props.vehicle.fuelNormalized * this.props.vehicle.original.fuelCapacity).toFixed(0)}ltr (${fuelPerc})`;
+    }
+    return fuelPerc;
+  }
+
   renderDetails() {
     if (!this.props.isExpanded) return null;
 
     const N_A = 'N/A';
     const speed = `${this.props.vehicle.speed.toFixed(1)} ${this.props.translations.speed_km_h}`;
-    const fuel = `${this.props.vehicle.fuelNormalized
-              ? `${(this.props.vehicle.fuelNormalized * 100).toFixed(0)}%` : N_A}`;
+    const fuel = this.makeFuelString() || N_A;
     const igintion = `${this.props.vehicle.ignOn !== undefined
               ? `${this.props.vehicle.ignOn ? 'on' : 'off'}` : N_A}`;
     const jobsCount = this.props.vehicle.mwa === undefined ? 0 :
