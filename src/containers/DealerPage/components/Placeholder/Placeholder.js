@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import WarningIcon from 'material-ui/svg-icons/alert/warning';
-import Content from './Content';
-import { placeholderClasses } from './classes';
+import Layout from 'components/Layout';
+import classes from './classes';
 
 const DefaultPlaceholderText = () => (
-  <div className={css(placeholderClasses.defaultText)}>
+  <div className={css(classes.defaultText)}>
     <WarningIcon
       color="#ccc"
       style={{
@@ -19,24 +19,24 @@ const DefaultPlaceholderText = () => (
   </div>
 );
 
-const ContentPlaceholder = ({
+const Placeholder = ({
   children,
 }) => {
   return (
-    <Content center>
-      <div className={css(placeholderClasses.placeholder)}>
+    <Layout.Content center>
+      <div className={css(classes.placeholder)}>
         {children || <DefaultPlaceholderText />}
       </div>
-    </Content>
+    </Layout.Content>
   );
 };
 
-ContentPlaceholder.propTypes = {
+Placeholder.propTypes = {
   children: PropTypes.node,
 };
 
-ContentPlaceholder.defaultProps = {
+Placeholder.defaultProps = {
   children: null,
 };
 
-export default ContentPlaceholder;
+export default Placeholder;

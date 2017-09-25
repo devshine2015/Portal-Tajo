@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Layout from 'components/Layout';
+import Placeholder from './components/Placeholder';
 
 const DealerPage = ({
   children,
@@ -8,7 +8,7 @@ const DealerPage = ({
 }) => {
   switch (fleetReadyState) {
     case 'not ready':
-      return <Layout.Placeholder />;
+      return <Placeholder />;
 
     case 'error':
       return <div>error happened</div>;

@@ -78,13 +78,3 @@ const classes = StyleSheet.create({
 });
 
 export default classes;
-
-export const placeholderClasses = StyleSheet.create({
-  placeholder: {},
-  defaultText: {
-    textAlign: 'center',
-    color: '#aaa',
-    fontWeight: 700,
-    fontSize: 25,
-  },
-});
