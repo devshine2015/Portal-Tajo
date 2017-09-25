@@ -64,7 +64,7 @@ class ChronicleMarker extends React.Component {
     this.props.chronicleFrame.player.gotoTime100(this.props.normalized100T);
     const momentData = this.props.chronicleFrame.player.getCurrentMomentData();
     this.setPosition(momentData.pos);
-    this.popUp.setContent(generateInnerHTMLForHistoryMoment(momentData));
+    this.popUp.setContent(generateInnerHTMLForHistoryMoment(momentData, this.props.chronicleFrame.theVehicle));
   }
 
   removeMarker() {

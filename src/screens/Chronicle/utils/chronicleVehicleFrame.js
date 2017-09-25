@@ -10,7 +10,7 @@ const CHRONICLE_LOCAL_INCTANCE_STATE_OK_EMPTY = 'chronLocStateOk';
 const CHRONICLE_LOCAL_INCTANCE_STATE_OK_DATA = 'chronLocStateData';
 
 
-function ChronicleVehicleFrame(dateFrom, dateTo, events, inState) {
+function ChronicleVehicleFrame(dateFrom, dateTo, theVehicle, events, inState) {
   if (dateFrom === undefined) {
     this.state = CHRONICLE_LOCAL_INCTANCE_STATE_NONE;
     return;
@@ -18,6 +18,9 @@ function ChronicleVehicleFrame(dateFrom, dateTo, events, inState) {
   this.dateFrom = dateFrom;
   this.dateTo = dateTo;
   this.timeRangeMs = dateTo.getTime() - dateFrom.getTime(); // 24*60*60*1000
+
+  this.theVehicle = theVehicle;
+
   this.posData = [];
 
   this.temperatureData = [];
@@ -325,8 +328,8 @@ ChronicleVehicleFrame.prototype.findSampleForPos = function (refPos) {
 //
 //-----------------------------------------------------------------------
 
-export default function createHistoryFrame(dateFrom, dateTo,
+export default function createHistoryFrame(dateFrom, dateTo, theVehicle,
   events = null, isLoading = false) {
-  return new ChronicleVehicleFrame(dateFrom, dateTo, events,
+  return new ChronicleVehicleFrame(dateFrom, dateTo, theVehicle, events,
       isLoading ? CHRONICLE_LOCAL_INCTANCE_STATE_LOADING : CHRONICLE_LOCAL_INCTANCE_STATE_NONE);
 }

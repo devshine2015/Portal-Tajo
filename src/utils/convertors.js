@@ -64,3 +64,14 @@ export function dateToHHMM(date) {
 export function temperatureToString(temp) {
   return `${temp.toFixed(1)}${String.fromCharCode(176)}C`;
 }
+
+export function fuelToString(fuelNormalized, fuelCapacity) {
+  if (!fuelNormalized) {
+    return false;
+  }
+  const fuelPerc = `${(fuelNormalized * 100).toFixed(0)}%`;
+  if (fuelCapacity > 0) {
+    return `${(fuelNormalized * fuelCapacity).toFixed(0)}ltr (${fuelPerc})`;
+  }
+  return fuelPerc;
+}

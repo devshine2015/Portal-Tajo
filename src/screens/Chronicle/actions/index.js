@@ -3,6 +3,7 @@ import { api } from 'utils/api';
 import endpoints from 'configs/endpoints';
 import { requestSamplesLimit, isMwa } from 'configs';
 // import { setLoader } from './loaderActions';
+import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
 import createHistoryFrame from './../utils/chronicleVehicleFrame';
 import { getChronicleTimeFrame } from './../reducer';
 
@@ -15,8 +16,8 @@ export const CHRONICLE_VALIDATE_TIMEFRAME = 'chronicle/validateTimeFrame';
 
 export const CHRONICLE_MWA_JOBS = 'chronicle/mwaJobs';
 
-export const requestHistory = (vehicleId, dateFrom, dateTo) => dispatch =>
-  _requestHistory(vehicleId, dateFrom, dateTo, dispatch);
+export const requestHistory = (vehicleId, dateFrom, dateTo) => (dispatch, getState) =>
+  _requestHistory(vehicleId, dateFrom, dateTo, dispatch, getState);
 
 export const setChronicleNormalizedT = normalized100T => ({
   type: CHRONICLE_SET_T,
@@ -34,7 +35,8 @@ export const setChronicleTimeFrame = (dateFrom, dateTo) => (dispatch, getState) 
   dispatch(setChronicleNormalizedT(0));
 };
 
-function _requestHistory(vehicleId, dateFrom, dateTo, dispatch) {
+function _requestHistory(vehicleId, dateFrom, dateTo, dispatch, getState) {
+
 //  dispatch(setLoader(true));
 // TODO: properly generate from and to
 //  const fromString = '2016-08-21T04:38:32.000+0000';// date.toString();
@@ -42,6 +44,8 @@ function _requestHistory(vehicleId, dateFrom, dateTo, dispatch) {
   fromString = `${fromString.slice(0, -1)}+0000`;
   let toString = dateTo.toISOString();
   toString = `${toString.slice(0, -1)}+0000`;
+
+  const theVehicle = getVehicleByIdFunc(getState())(vehicleId);
 
   const { url, method } = endpoints.getEventsInTimeRange(vehicleId, {
     from: fromString,
@@ -52,7 +56,7 @@ function _requestHistory(vehicleId, dateFrom, dateTo, dispatch) {
   });
   // setting loading state for local frame
   dispatch(_newVehicleChronicleFrame(vehicleId,
-    createHistoryFrame(dateFrom, dateTo, null, true)));
+    createHistoryFrame(dateFrom, dateTo, theVehicle, null, true)));
   // const fromString = moment(date).format();
   // const toString = moment(date).add(1, 'days').format();
 //  const toString = '2016-08-22T04:38:32.000+0000';// date.toString();
@@ -61,7 +65,7 @@ function _requestHistory(vehicleId, dateFrom, dateTo, dispatch) {
     .then(toJson)
     .then(events =>
       dispatch(_newVehicleChronicleFrame(vehicleId,
-              createHistoryFrame(dateFrom, dateTo, events))),
+              createHistoryFrame(dateFrom, dateTo, theVehicle, events))),
     )
     .then(() => {
       if (isMwa) {

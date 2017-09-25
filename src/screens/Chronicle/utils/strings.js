@@ -1,11 +1,11 @@
 import { isNoIcons } from 'configs';
-import { metersToKmString, msToTimeIntervalString } from 'utils/convertors';
+import { metersToKmString, msToTimeIntervalString, fuelToString } from 'utils/convertors';
 import { makeStaticLableSVG, deviceAccessTime, localGasStation,
   notificationTimeToLeave, imageTimelapse, placesAcUnit } from './staticIcons';
-
+  
 //
 // need this for setting content of mapBox popUp
-export function generateInnerHTMLForHistoryMoment(momentData/* , phrases = {}*/) {
+export function generateInnerHTMLForHistoryMoment(momentData, theVehicle/* , phrases = {}*/) {
   let content = `${dateToChronicleLable(momentData.date)}<br>
                  ${speedToChronicleLable(momentData.speed)}`;
 
@@ -13,7 +13,7 @@ export function generateInnerHTMLForHistoryMoment(momentData/* , phrases = {}*/)
     content += `<br> ${temperatureToChronicleLable(momentData.temperature)}`;
   }
   if (momentData.fuel !== null) {
-    content += `<br> ${fuelToChronicleLable(momentData.fuel)}`;
+    content += `<br> ${fuelToChronicleLable(momentData.fuel, theVehicle.original.fuelCapacity)}`;
   }
   // content += `<hr>${phrases.lat || 'lat'}:<span style="float:right">${momentData.pos.lat.toFixed(6)}</span>
   //             <br>
@@ -64,11 +64,12 @@ export function temperatureToChronicleLable(temp) {
   return `${makeStaticLableSVG(placesAcUnit)}<span style="float:right">${temp.toFixed(1)} &deg;C</span>`;
 }
 
-export function fuelToChronicleLable(fuelNormalized) {
+function fuelToChronicleLable(fuelNormalized, fuelCapacity) {
+  const fuelStr = fuelToString(fuelNormalized, fuelCapacity);
   if (isNoIcons) {
-    return `Fuel: <span style="float:right">${(fuelNormalized * 100).toFixed(0)}%</span>`;
+    return `Fuel: <span style="float:right">${fuelStr}</span>`;
   }
-  return `${makeStaticLableSVG(localGasStation)}<span style="float:right">${(fuelNormalized * 100).toFixed(0)}%</span>`;
+  return `${makeStaticLableSVG(localGasStation)}<span style="float:right">${fuelStr}</span>`;
 }
 
 function dateToChronicleStringTime(inDate) {

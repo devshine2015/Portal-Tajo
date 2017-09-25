@@ -11,7 +11,7 @@ class MomentIndicator extends React.Component {
     const infoBox = this.infoBoxRef;
     const momentData = this.props.chronicleFrame.player.getMomentDataAtNormalized(
         this.props.normalized100T);
-    infoBox.innerHTML = generateInnerHTMLForHistoryMoment(momentData);
+    infoBox.innerHTML = generateInnerHTMLForHistoryMoment(momentData, this.props.chronicleFrame.theVehicle);
   }
 
   infoBoxRef = null;
