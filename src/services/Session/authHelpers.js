@@ -6,6 +6,7 @@ import {
   DRVR_PROFILE_LAST_KEY,
   setMwa,
 } from 'configs';
+import { isRunningOnLocalhost } from 'configs/_helpers';
 import getHistory from 'utils/history';
 import {
   api,
@@ -78,7 +79,9 @@ async function __sideEffects(profile = {}, dispatch) {
     dispatch(setReportsMWA());
   }
 
-  initOneSignal();
+  if (!isRunningOnLocalhost()) {
+    initOneSignal();
+  }
 
   dispatch(setSession(profile))
     .then(() => dispatch(fetchAccessTokens()))
