@@ -3,7 +3,6 @@ import {
   SESSION_SET,
   SESSION_CLEAN,
   SESSION_SETTINGS_UPDATE,
-  SESSION_ACCESS_TOKENS_SAVE,
 } from './actions';
 
 const initialState = fromJS({
@@ -11,18 +10,6 @@ const initialState = fromJS({
   settings: {
     dateFormat: undefined,
     lang: undefined,
-  },
-
-  /**
-   *
-   * tokents to external auth0 API`s
-   *
-   */
-  accessTokens: {
-    // to manage users
-    managmentAPI: undefined,
-    // to manage roles and permissions
-    authorizationExtAPI: undefined,
   },
 
   /**
@@ -53,9 +40,6 @@ function reducer(state = initialState, action) {
 
     case SESSION_SETTINGS_UPDATE:
       return state.mergeIn(['settings'], action.settings);
-
-    case SESSION_ACCESS_TOKENS_SAVE:
-      return state.set('accessTokens', action.tokens);
 
     default:
       return state;

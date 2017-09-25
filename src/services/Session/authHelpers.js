@@ -12,14 +12,13 @@ import {
   api,
   auth0Api,
 } from 'utils/api';
+import endpoints from 'configs/endpoints';
 import { setAuthorization } from 'utils/authz';
 import { profileUtils } from 'utils/auth';
 import { setReportsMWA } from 'containers/Report/actions/reportActions';
-import { fetchRolesAndPermissions } from 'services/Users/actions';
 import {
   setSession,
   cleanSession,
-  fetchAccessTokens,
 } from './actions';
 
 const isItMwaProfile = R.compose(R.equals('mwa'), profileUtils.getFleetName);
@@ -83,16 +82,14 @@ async function __sideEffects(profile = {}, dispatch) {
     initOneSignal();
   }
 
-  dispatch(setSession(profile))
-    .then(() => dispatch(fetchAccessTokens()))
-    .then((tokens) => {
-      auth0Api.setAccessTokens(tokens);
+  // backend can fetch access tokens even if
+  // user doesn't legitimate auth0 user
+  fetchAccessTokens();
 
-      if (isFeatureSupported('auth0Full') === false) {
-        return dispatch(fetchRolesAndPermissions(tokens));
-      }
-      return Promise.resolve();
-    });
+  // final step - saving profile to global state
+  // just make sure it has been done before
+  // bootstraping fleet data
+  return dispatch(setSession(profile));
 }
 
 /**
@@ -113,3 +110,32 @@ function initOneSignal() {
     },
   }]);
 }
+
+const _fetchToken = (endpoint) => {
+  const { url, method, apiVersion } = endpoint;
+
+  return api[method](url, { apiVersion })
+    .then(res => res.json());
+};
+
+const fetchAccessTokens = () => {
+  const tokens = {};
+  const cacheToken = (token, name) => {
+    if (token.access_token) {
+      tokens[name] = token.access_token;
+    }
+  };
+
+  return _fetchToken(endpoints.getAuthExtentionAccessToken)
+    .then((token) => {
+      cacheToken(token, 'authorizationExtAPI');
+
+      return _fetchToken(endpoints.getMgmtExtentionAccessToken);
+    })
+    .then((token) => {
+      cacheToken(token, 'managmentAPI');
+    })
+    .then(() => {
+      auth0Api.setAccessTokens(tokens);
+    });
+};
