@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import DealerPage from 'containers/DealerPage';
 import FixedContent from 'components/FixedContent';
 // import PropTypes from 'prop-types';
 import PowerList from '../PowerList';
@@ -16,12 +17,12 @@ class Page extends Component {
 
   render() {
     return (
-      <div>
+      <DealerPage>
         <PowerList onVehicleSelect={this.switchVehicle} />
         <FixedContent>
           Here gonna be awesome graphs LOL
         </FixedContent>
-      </div>
+      </DealerPage>
     );
   }
 }

@@ -1,10 +1,11 @@
 import React from 'react';
+import DealerPage from 'containers/DealerPage';
 
 const DealerDashboard = () => {
   return (
-    <div>
-      Dealer Dashboard
-    </div>
+    <DealerPage>
+      here will be widgets
+    </DealerPage>
   );
 };
 
