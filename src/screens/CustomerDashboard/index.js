@@ -6,7 +6,7 @@ import JobsWidget from './components/JobsWidget';
 import classes from './classes';
 
 const DashboardScreen = () => (
-  <Layout.Content center>
+  <Layout.Content>
     <FleetSummaryWidget containerClass={classes.dashboard__summaryGroup} />
     { isMwa && <JobsWidget /> }
   </Layout.Content>
