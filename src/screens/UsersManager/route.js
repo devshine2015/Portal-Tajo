@@ -1,13 +1,7 @@
-const createRoute = ({
-  path,
-  name,
-  niceName,
-}) => ({
-  path,
-  name,
-  niceName,
+const createRoute = options => ({
+  ...options,
   getComponent: (location, cb) => {
-    require.ensure([], require => {
+    require.ensure([], (require) => {
       cb(null, require('./index').default);
     }, 'usersManager');
   },
