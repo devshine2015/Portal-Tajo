@@ -6,6 +6,11 @@ const classes = StyleSheet.create({
     alignItems: 'center',
     height: '100%',
   },
+});
+
+export default classes;
+
+export const logoClasses = StyleSheet.create({
   logos: {
     display: 'flex',
     alignItems: 'center',
@@ -18,5 +23,3 @@ const classes = StyleSheet.create({
     height: 'auto',
   },
 });
-
-export default classes;
