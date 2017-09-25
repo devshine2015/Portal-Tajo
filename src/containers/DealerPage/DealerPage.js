@@ -19,7 +19,11 @@ const DealerPage = ({
 
     case 'ready':
     default:
-      return children;
+      return (
+        <div>
+          {children}
+        </div>
+      );
   }
 };
 
