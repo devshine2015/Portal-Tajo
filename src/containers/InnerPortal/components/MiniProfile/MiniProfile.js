@@ -12,11 +12,13 @@ const MiniProfile = ({
 }) => {
   return (
     <div className={css(classes.profile)}>
-      <Userpic src={picture} className={css(classes.userpic)} size={50} />
-      <span className={css(classes.text_welcome)}>welcome</span><br />
-      <span className={css(classes.text_name)}>
-        { nickname || name || email }
-      </span>
+      <div className={css(classes.profile__inn)}>
+        <Userpic src={picture} className={css(classes.userpic)} size={50} />
+        <span className={css(classes.text_welcome)}>welcome</span><br />
+        <span className={css(classes.text_name)}>
+          { nickname || name || email }
+        </span>
+      </div>
     </div>
   );
 };

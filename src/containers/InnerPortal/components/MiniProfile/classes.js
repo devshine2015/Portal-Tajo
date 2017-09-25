@@ -4,10 +4,15 @@ import { theme } from 'configs';
 const classes = StyleSheet.create({
   profile: {
     backgroundColor: theme.palette.primary1Color,
-    color: '#fff',
     position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
     height: '100%',
-    padding: '10px 40px 10px 35px',
+  },
+
+  profile__inn: {
+    color: '#fff',
+    padding: '0 40px 0 35px',
   },
 
   text_welcome: {
