@@ -9,19 +9,30 @@ import RightElement from './AppBarRightElement';
 import MainSidebar from '../MainSidebar';
 import classes from './classes';
 
+const Logo = ({ img, alt }) => (
+  <div className={css(classes.logo)}>
+    <img
+      src={img}
+      alt={alt}
+      className={css(classes.logo__img)}
+    />
+  </div>
+);
+Logo.propTypes = {
+  img: PropTypes.node.isRequired,
+  alt: PropTypes.string,
+};
+Logo.defaultProps = {
+  alt: '',
+};
+
 function renderTitle() {
   return (
-    <div className={css(classes.logos)}>
-      <img
-        src={fusoLogo}
-        alt=""
-        className={css(classes.logo)}
-      />
-      <img
-        src={ccLogo}
-        alt="cycle&carriage"
-        className={css(classes.logo)}
-      />
+    <div className={css(classes.titleElement)}>
+      <div className={css(classes.logos)}>
+        <Logo img={fusoLogo} alt="" />
+        <Logo img={ccLogo} alt="cycle&carriage" />
+      </div>
     </div>
   );
 }
