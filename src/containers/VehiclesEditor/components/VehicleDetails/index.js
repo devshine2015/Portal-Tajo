@@ -74,6 +74,7 @@ class VehicleDetails extends React.Component {
     const nextOdo = R.compose(toMiles(this.state.isMiles), toMeters)(this.state.odometer);
 
     const toSave = Object.assign({}, this.state, {
+      fuelCapacity: parseInt(this.state.fuelCapacity, 10),
       odometer: {
         value: nextOdo,
       },
@@ -174,6 +175,14 @@ class VehicleDetails extends React.Component {
 
             <TextField
               fullWidth
+              name="chassisNumber"
+              onChange={this.onChange}
+              floatingLabelText={translations.chassis_number}
+              value={this.state.chassisNumber}
+            />
+
+            <TextField
+              fullWidth
               name="licensePlate"
               onChange={this.onChange}
               floatingLabelText={translations.license_plate}
@@ -221,6 +230,14 @@ class VehicleDetails extends React.Component {
               name="isMiles"
               checked={this.state.isMiles}
               onCheck={this.onIsMilesChange}
+            />
+            <TextField
+              fullWidth
+              name="fuelCapacity"
+              onChange={this.onChange}
+              floatingLabelText={translations.fuel_capacity}
+              value={this.state.fuelCapacity}
+              type="number"
             />
             <DriverSelector driverId={this.state.driverId} onChange={this.onDriverChange} />
             <MarkerSelector kind={this.state.marker} onChange={this.onMarkerChange} />

@@ -124,6 +124,8 @@ export default {
   model_name: 'Model Name',
   year: 'year',
   year_of_manufacture: 'Year of Manufacture',
+  chassis_number: 'Chassis Number',
+  fuel_capacity: 'Fuel Capacity (ltr.)',
   odometer_value: 'Odometer (km.)',
   vehicle_kind_hint: 'Kind of the Vehicle',
   disable: 'disable',

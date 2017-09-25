@@ -7,7 +7,10 @@ const oneOfType = PropTypes.oneOfType;
 
 const phrases = [
   'vehicle_name',
+  'chassis_number',
+  'fuel_capacity',
   'license_plate',
+  'year_of_manufacture',
   'imei',
   'manufacturer',
   'odo_in_miles',
