@@ -6,12 +6,14 @@ import makeInnerPortal from '../Main';
 import RightElement from './AppBarRightElement';
 import MainSidebar from '../MainSidebar';
 import Logos from './Logos';
+import FleetSelector from './ConnectedFleetSelector';
 import classes from './classes';
 
 function renderTitle() {
   return (
     <div className={css(classes.titleElement)}>
       <Logos />
+      <FleetSelector />
     </div>
   );
 }

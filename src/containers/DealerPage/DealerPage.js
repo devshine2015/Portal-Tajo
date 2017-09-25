@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Loader from 'components/animated';
 import Placeholder from './components/Placeholder';
 
 const DealerPage = ({
@@ -12,6 +13,9 @@ const DealerPage = ({
 
     case 'error':
       return <div>error happened</div>;
+
+    case 'loading':
+      return <Loader.FullscreenLogo />;
 
     case 'ready':
     default:
