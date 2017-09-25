@@ -84,7 +84,7 @@ export default {
   avgTemp: 'avg. temperature',
   odometer: 'odometer',
   'vehicle-position': 'Position',
-  'vehicle-fuel': 'Fuel (coming soon)',
+  'vehicle-fuel': 'Fuel',
   moving: 'Start/Stop Moving',
   ignition: 'Ignition On/Off',
   'vehicle-1wire-temperature': 'Temperature',

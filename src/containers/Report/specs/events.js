@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { fuelToString } from 'utils/convertors';
 
 const TYPES = {
   POSITION: {
@@ -7,7 +8,7 @@ const TYPES = {
   },
   FUEL: {
     type: 'vehicle-fuel',
-    disabled: true,
+    disabled: false,
   },
   IGNITION_OFF: {
     type: 'vehicle-ign-off',
@@ -69,10 +70,12 @@ function prettifyAdditionalInfo(type, {
   stoppedPeriod,
   movingPeriod,
   gf,
-}) {
+},
+  theVehicle) {
   switch (type) {
     case TYPES.FUEL.type: {
-      return `Fuel used: ${fuelInfo.totalFuelUsed}, Fuel level: ${fuelInfo.fuelLevelPerc}`;
+      return fuelToString(fuelInfo.fuelLevelPerc / 100, theVehicle.original.fuelCapacity);
+      // return `Fuel used: ${fuelInfo.totalFuelUsed}, Fuel level: ${fuelInfo.fuelLevelPerc}`;
     }
     case TYPES.IGNITION_OFF.type: {
       return `Ignition on period: ${ignitionOnPeriod}`;
@@ -107,6 +110,7 @@ function calcCommonEvents({ ev, type } = {}, {
   dateFormat,
   name,
   licensePlate,
+  theVehicle,
 }) {
   const prettyType = prettifiedTypes[type] || type;
   const { pos, ts, vehicleId, ...rest } = ev;
@@ -118,7 +122,7 @@ function calcCommonEvents({ ev, type } = {}, {
     moment(pos.posTime).format(dateFormat), // event time
     `${pos.latlon.lat}, ${pos.latlon.lng}`,   // event position
     pos.speed.toFixed(2, 10),   // speed
-    prettifyAdditionalInfo(type, rest),  // additional info
+    prettifyAdditionalInfo(type, rest, theVehicle),  // additional info
   ];
 }
 
@@ -215,11 +219,11 @@ export const fields = [{
   name: 'moving',
   disabled: false,
 }, {
-  label: `${prettifiedTypes[TYPES.FUEL.type]} (coming soon)`,
+  label: `${prettifiedTypes[TYPES.FUEL.type]}`,
   order: 4,
   eventTypes: [TYPES.FUEL.type],
   name: TYPES.FUEL.type,
-  disabled: true,
+  disabled: false,
 }, {
   label: 'Geofence crossing (coming soon)',
   order: 5,

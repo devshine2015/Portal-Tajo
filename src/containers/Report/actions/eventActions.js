@@ -61,6 +61,7 @@ function _generateRawReport({ timePeriod, frequency, dateFormat }, dispatch, get
           dateFormat: dateFormatWithTime,
           name: v.original.name,
           licensePlate: v.original.licensePlate,
+          theVehicle: v,
           selectedEvents,
         }));
     })
