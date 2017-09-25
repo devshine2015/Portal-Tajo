@@ -6,6 +6,7 @@ import FleetSelector from './FleetSelector';
 const makeMapState = () => {
   const mapState = (state) => {
     return {
+      // eslint-disable-next-line import/no-named-as-default-member
       fleets: dealerSelectors.getSubfleets(state),
       // eslint-disable-next-line import/no-named-as-default-member
       fleetReadyState: dealerSelectors.getFleetReadyState(state),
