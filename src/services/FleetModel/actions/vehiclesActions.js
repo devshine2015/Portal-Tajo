@@ -54,10 +54,14 @@ export const fetchVehicles = () => (dispatch) => {
     if (isMwa) {
       dispatch(mwaFetchJobs());
     }
+
+    return Promise.resolve({ ready: true });
   })
   .catch((e) => {
-    dispatch(_fleetIsReady(true));
     console.error(e);
+    dispatch(_fleetIsReady(true));
+
+    return Promise.reject({ ready: false });
   });
 };
 
