@@ -1,17 +1,17 @@
 import { connect } from 'react-redux';
-// import dealerFleetService from 'services/DealerFleet/selectors';
+import { getVehiclesExSorted, reducerKey } from 'services/FleetModel/reducers/vehiclesReducer';
 import PowerList from './PowerList';
 
-// const makeMapState = () => {
-//   const mapState = (state) => {
-//     const vehicles = dealerFleetService.getVehicles(state); // eslint-disable-line import/no-named-as-default-member
+const makeMapState = () => {
+  const mapState = (state) => {
+    const vehicles = getVehiclesExSorted(state.get(reducerKey));
 
-//     return {
-//       vehicles: Object.values(vehicles.toJS()),
-//     };
-//   };
+    return {
+      vehicles,
+    };
+  };
 
-//   return mapState;
-// };
+  return mapState;
+};
 
-export default connect(/* makeMapState */)(PowerList);
+export default connect(makeMapState)(PowerList);
