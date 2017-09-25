@@ -1,3 +1,4 @@
+import Placeholder from './ContentPlaceholder';
 import ScreenWithList from './ScreenWithList';
 import FixedContent from './FixedContent';
 import Content from './Content';
@@ -7,6 +8,7 @@ import Row from './Row';
 
 const Layout = {};
 
+Layout.Placeholder = Placeholder;
 Layout.ScreenWithList = ScreenWithList;
 Layout.FixedContent = FixedContent;
 Layout.Content = Content;
