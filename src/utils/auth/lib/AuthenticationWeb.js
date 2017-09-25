@@ -136,11 +136,9 @@ class AuthenticationWeb {
   }
 
   logout = () => {
-    logout(this.accessToken)
-      .then(() => {
-        this._unauthenticate();
-        this.onLogoutSuccess();
-      });
+    this._unauthenticate();
+    this.onLogoutSuccess();
+    logout();
   }
 
   _getUserInfo = (authResult = {}, cb) => {
