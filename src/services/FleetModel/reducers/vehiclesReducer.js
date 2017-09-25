@@ -186,3 +186,5 @@ export const getIsReady = (state) => {
 
 export const getSelectedVehicleId = state =>
   getStaticSlice(state).get('selectedVehicleId');
+
+export const reducerKey = 'Vehicles';
