@@ -7,9 +7,9 @@ import { TextField } from 'material-ui';
 import FormComponents from 'components/User/FormComponents';
 import { usersActions } from 'services/Users/actions';
 import {
-  getIsLoading,
-  getRoles,
-} from 'services/Users/reducer';
+  // getIsLoading,
+  rolesSelectors,
+} from 'services/Users/selectors';
 import {
   getFleetName,
   getUserRole,
@@ -94,7 +94,7 @@ class NewUserForm extends React.Component {
   render() {
     const { translations } = this.props;
     const { username, password, role, fleet } = this.state;
-    const disabled = !!username && !!password && !!role && !!fleet;
+    const disabled = !username && !password && !role && !fleet;
     const submitButtonText = this.props.editMode === 'create' ?
       translations.create : translations.update;
 
@@ -135,7 +135,7 @@ class NewUserForm extends React.Component {
           <FormComponents.Buttons
             onSubmit={this.onSubmit}
             onCancel={this.onCancel}
-            disabled={this.props.isLoading || !disabled}
+            disabled={disabled}
             mainLabel={submitButtonText}
           />
 
@@ -151,7 +151,7 @@ NewUserForm.propTypes = {
     'create', 'edit',
   ]),
   closeForm: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool.isRequired,
+  // isLoading: PropTypes.bool.isRequired,
   isOpened: PropTypes.bool.isRequired,
   translations: phrasesShape.isRequired,
   roles: PropTypes.instanceOf(Map).isRequired,
@@ -164,8 +164,8 @@ NewUserForm.defaultProps = {
 };
 
 const mapState = state => ({
-  isLoading: getIsLoading(state),
-  roles: getRoles(state),
+  // isLoading: getIsLoading(state),
+  roles: rolesSelectors.getRoles(state),
   currentUserFleet: getFleetName(state),
   currentUserRole: getUserRole(state),
 });

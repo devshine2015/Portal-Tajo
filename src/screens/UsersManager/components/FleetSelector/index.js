@@ -4,6 +4,7 @@ import {
   SelectField,
   MenuItem,
 } from 'material-ui';
+import { authorizeWithRole } from 'utils/authz';
 import { translate } from 'utils/i18n';
 
 import phrases, { phrasesShape } from './PropTypes';
@@ -23,8 +24,6 @@ const FleetSelector = ({
   onChange,
   value,
   availableFleets,
-}, {
-  authorizeWithRole,
 }) => {
   // only uber may assign fleet for user
   if (!authorizeWithRole('uber')) {
@@ -43,10 +42,6 @@ const FleetSelector = ({
       { _renderFleets(availableFleets) }
     </SelectField>
   );
-};
-
-FleetSelector.contextTypes = {
-  authorizeWithRole: PropTypes.func.isRequired,
 };
 
 FleetSelector.propTypes = {

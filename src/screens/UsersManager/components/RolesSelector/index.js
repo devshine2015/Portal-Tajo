@@ -5,11 +5,12 @@ import {
   SelectField,
   MenuItem,
 } from 'material-ui';
+import { authorizeWithRole } from 'utils/authz';
 import { translate } from 'utils/i18n';
 
 import phrases, { phrasesShape } from './PropTypes';
 
-function _renderRoles(roles, authorizeWithRole) {
+function _renderRoles(roles) {
   return roles.toArray().map(r => {
     const role = r.toJS();
 
@@ -33,8 +34,6 @@ const RolesSelector = ({
   translations,
   onChange,
   value,
-}, {
-  authorizeWithRole,
 }) => (
   <SelectField
     fullWidth
@@ -44,13 +43,9 @@ const RolesSelector = ({
     value={value}
     onChange={onChange}
   >
-    { _renderRoles(allRoles, authorizeWithRole) }
+    { _renderRoles(allRoles) }
   </SelectField>
 );
-
-RolesSelector.contextTypes = {
-  authorizeWithRole: PropTypes.func.isRequired,
-};
 
 RolesSelector.propTypes = {
   translations: phrasesShape.isRequired,
