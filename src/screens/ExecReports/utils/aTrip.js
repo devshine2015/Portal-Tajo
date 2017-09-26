@@ -126,6 +126,11 @@ export function makeTripsParcer() {
   let tripStartSampleIdx = 0; // this should take care of a trip which started before the hisotry first sample
 
   const processSample = (theSample, idx) => {
+    // handle _open_start_ case
+    if (tripStartSampleIdx === 0 && isTripStart(theSample)) {
+      tripStartSampleIdx = idx;
+      return;
+    }
     if (tripStartSampleIdx !== -1) {
       if (isTripEnd(theSample)) {
         trips.push(new HistoryTrip(tripStartSampleIdx, idx));
