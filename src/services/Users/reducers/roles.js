@@ -1,4 +1,5 @@
 import { fromJS, List } from 'immutable';
+import { SESSION_CLEAN } from 'services/Session/actions';
 import {
   ROLES_FETCH_SUCCESS,
   ROLE_CREATE,
@@ -6,12 +7,10 @@ import {
   ROLE_ASSIGN,
   ROLE_UNASSIGN,
 } from '../actions/rolesActions';
-import { SESSION_CLEAN } from 'services/Session/actions';
 
 const initialState = fromJS({
   list: [],
   map: {},
-  isLoading: false,
 });
 
 function reducer(state = initialState, action) {
@@ -45,9 +44,16 @@ function reducer(state = initialState, action) {
       ));
 
     case ROLE_UNASSIGN: {
-      const userIdIndex = state.getIn(['map', action.roleId, 'users']).indexOf(action.userId);
+      let nextState;
 
-      return state.deleteIn(['map', action.roleId, 'users', userIdIndex]);
+      // remove user from each role he has been unassigned from
+      action.rolesIds.forEach((roleId) => {
+        nextState = state.updateIn(['map', roleId, 'users'], (usersList) => {
+          return usersList.delete(usersList.indexOf(action.userId));
+        });
+      });
+
+      return nextState;
     }
 
     default:
@@ -56,32 +62,5 @@ function reducer(state = initialState, action) {
 }
 
 export default reducer;
-
-function findEntries(state, userId) {
-  const roles = state.get('map').toArray();
-
-  return roles.filter(role => {
-    const users = role.get('users');
-    if (users !== undefined) {
-      return users.indexOf(userId) !== -1;
-    }
-
-    return false;
-  });
-}
-
-// export const getRoles = state =>
-//   state.get('map');
-export const getRolesList = state =>
-  state.get('list');
-export const getRoleIdByUserId = (state, userId) => {
-  const entries = findEntries(state, userId);
-
-  if (entries.length !== 0) {
-    return entries[0].get('_id');
-  }
-
-  return null;
-};
 
 export const reducerKey = 'roles';

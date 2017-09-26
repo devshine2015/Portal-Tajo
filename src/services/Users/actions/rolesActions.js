@@ -1,3 +1,4 @@
+import R from 'ramda';
 import { isFeatureSupported } from 'configs';
 import {
   api,
@@ -5,8 +6,7 @@ import {
   getExtAccessToken,
 } from 'utils/api';
 import endpoints from 'configs/endpoints';
-import { getRoleIdByUserId } from '../reducer';
-// import { userToRolesSet } from './usersActions';
+import { rolesSelectors } from '../selectors';
 
 export const ROLES_FETCH_SUCCESS = 'services/usersManager/ROLES_FETCH_SUCCESS';
 export const ROLE_CREATE = 'services/UsersManager/ROLE_CREATE';
@@ -51,27 +51,13 @@ export const fetchRoles = () => (dispatch) => {
     .then((res) => {
       const rolesMap = {};
       const rolesList = [];
-      // const usersToRolesMap = {};
 
       res.roles.forEach((role) => {
         rolesMap[role._id] = role;
         rolesList.push(role._id);
-
-        // if (role.users) {
-        //   role.users.forEach((user) => {
-        //     usersToRolesMap[user] = {
-        //       _id: role._id,
-        //       name: role.name,
-        //     };
-        //   });
-        // }
       });
 
       dispatch(_rolesFetchSuccess(rolesMap, rolesList));
-
-      // if (!R.isNil(usersToRolesMap)) {
-      //   dispatch(userToRolesSet(usersToRolesMap));
-      // }
     });
 };
 
@@ -83,18 +69,37 @@ export const assignRole = (userId, role) => (dispatch) => {
     .then(() => dispatch(_assignRoleToUser(userId, role)));
 };
 
-export const unassignRole = userId => (dispatch, getState) => {
-  const roleId = getRoleIdByUserId(getState(), userId);
+function findEntries(roles, userId) {
+  return roles.filter((role) => {
+    if (role.has('users')) {
+      return role.get('users').includes(userId);
+    }
+    return false;
+  });
+}
 
-  if (!roleId) return Promise.resolve();
+const getRolesIdByUserId = (roles, userId) => {
+  const entries = findEntries(roles, userId);
+
+  if (entries.size === 0) return [];
+
+  return entries.map(role => role.get('_id')).toArray();
+};
+
+export const unassignRole = userId => (dispatch, getState) => {
+  const roles = rolesSelectors.getRoles(getState());
+  const ids = getRolesIdByUserId(roles, userId);
+
+  // user hasn't roles assigned to him - nothing to do
+  if (R.isEmpty(ids)) return Promise.resolve();
 
   const { url, method, extName } = endpoints.unassignRoleToUser(userId);
-  const payload = [roleId];
+  const payload = ids;
 
   return auth0Api[method](url, { payload, extName })
-    .then(() => (
-      dispatch(_unassignRoleToUser(userId, roleId))
-    ));
+    .then(() => 
+      dispatch(_unassignRoleToUser(userId, ids))
+    );
 };
 
 const _rolesFetchSuccess = (rolesMap, rolesList) => ({
@@ -123,8 +128,8 @@ const _assignRoleToUser = (userId, roleId) => ({
   roleId,
 });
 
-const _unassignRoleToUser = (userId, roleId) => ({
+const _unassignRoleToUser = (userId, rolesIds) => ({
   type: ROLE_UNASSIGN,
   userId,
-  roleId,
+  rolesIds,
 });
