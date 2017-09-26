@@ -11,12 +11,11 @@ import {
 
 const initialState = fromJS({
   usersList: [],
-  isLoading: false,
 });
 
 function findUserIndex(state, userId) {
   return state.get('usersList').findIndex(user =>
-    user.get('user_id') === userId
+    user.get('user_id') === userId,
   );
 }
 
@@ -44,9 +43,6 @@ function reducer(state = initialState, action) {
       return state.mergeIn(['usersList', index], fromJS(action.user));
     }
 
-    // case USERS_MANAGER_ROLES_SET:
-    //   return state.set('usersToRoles', fromJS(action.map));
-
     case USERS_MANAGER_PERMISSION_ASSIGN: {
       const nextState = state.updateIn(['usersList', action.index], user => {
         let nextUser = user;
@@ -62,7 +58,7 @@ function reducer(state = initialState, action) {
     }
     case USERS_MANAGER_PERMISSION_UNASSIGN:
       return state.updateIn(['usersList', action.index, 'permissions'], perms =>
-        perms.delete(perms.indexOf(action.permissionId))
+        perms.delete(perms.indexOf(action.permissionId)),
       );
 
     default:
@@ -71,18 +67,5 @@ function reducer(state = initialState, action) {
 }
 
 export default reducer;
-
-// export const getUsers = state =>
-//   state.get('usersList');
-// export const getUsersToRolesMap = state =>
-//   state.get('usersToRoles');
-
-export const getGroupBy = state =>
-  state.get('groupBy');
-export const getGrouping = state =>
-  state.get('grouped');
-
-export const getIsLoading = state =>
-  state.get('isLoading');
 
 export const reducerKey = 'users';
