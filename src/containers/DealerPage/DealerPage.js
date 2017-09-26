@@ -20,7 +20,13 @@ const DealerPage = ({
     case 'ready':
     default:
       return (
-        <div>
+        <div
+          style={{
+            height: '100%',
+            minHeight: '100%',
+            backgroundColor: '#fafafa',
+          }}
+        >
           {children}
         </div>
       );

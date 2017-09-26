@@ -1,10 +1,21 @@
 import React from 'react';
-import DealerPage from 'containers/DealerPage';
-// import PropTypes from 'prop-types';
+import DealerPage, {
+  DatavizFrame,
+  PowerList,
+} from 'containers/DealerPage';
+import FixedContent from 'components/FixedContent';
 
 const Page = () => {
   return (
-    <DealerPage />
+    <DealerPage>
+      <PowerList />
+      <FixedContent>
+        <DatavizFrame
+          title="Vehicle Diagnostics"
+          src="http://office.datavis.sg:30001/v1/5"
+        />
+      </FixedContent>
+    </DealerPage>
   );
 };
 

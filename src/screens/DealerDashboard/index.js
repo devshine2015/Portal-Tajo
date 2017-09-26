@@ -1,10 +1,13 @@
 import React from 'react';
-import DealerPage from 'containers/DealerPage';
+import DealerPage, { DatavizFrame } from 'containers/DealerPage';
 
 const DealerDashboard = () => {
   return (
     <DealerPage>
-      here will be widgets
+      <DatavizFrame
+        title="Overview Fleet Dashboard"
+        src="http://office.datavis.sg:30001/"
+      />
     </DealerPage>
   );
 };
