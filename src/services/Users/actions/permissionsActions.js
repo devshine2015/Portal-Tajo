@@ -1,5 +1,9 @@
 import uuid from 'node-uuid';
-import { api, getExtentionAuthorizationHeader } from 'utils/api';
+import {
+  api,
+  auth0Api,
+  getExtAccessToken,
+} from 'utils/api';
 import { isFeatureSupported } from 'configs';
 import endpoints from 'configs/endpoints';
 
@@ -7,19 +11,22 @@ export const PERMISSIONS_FETCH_SUCCESS = 'services/usersManager/PERMISSIONS_FETC
 export const PERMISSION_CREATE = 'services/UsersManager/PERMISSION_CREATE';
 export const PERMISSION_DELETE = 'services/UsersManager/PERMISSION_DELETE';
 
-const _fetchPermissions = async (accessToken) => {
-  const { url, method, apiVersion, extName } = endpoints.getPermissions;
-
-  const optionalHeaders = {
-    optionalHeaders: getExtentionAuthorizationHeader(extName, {
-      authExtAccessToken: accessToken,
-    }),
+const _fetchPermissionsNext = async (accessToken) => {
+  const { url, method, apiVersion } = endpoints.getPermissionsNext;
+  const options = {
+    apiVersion,
+    optionalHeaders: {
+      Authorization: `Bearer ${accessToken}`,
+    },
   };
 
-  return api[method](url, { apiVersion, optionalHeaders });
+  return api[method](url, options);
 };
 
-const _fetchPermissionsOld = async (accessToken) => {
+/**
+ * @desc for auth0-enabled users in environment not fully supports auth0
+ */
+const _fetchPermissions = async (accessToken) => {
   const { url, method, apiVersion } = endpoints.getPermissions;
   const options = {
     apiVersion,
@@ -31,8 +38,10 @@ const _fetchPermissionsOld = async (accessToken) => {
   return api[method](url, options);
 };
 
-export const fetchPermissions = accessToken => (dispatch) => {
-  const fetchMethod = isFeatureSupported('auth0Full') ? _fetchPermissions : _fetchPermissionsOld;
+export const fetchPermissions = () => (dispatch) => {
+  const { extName } = endpoints.getPermissions;
+  const accessToken = getExtAccessToken(extName, auth0Api);
+  const fetchMethod = isFeatureSupported('auth0Full') ? _fetchPermissionsNext : _fetchPermissions;
 
   return fetchMethod(accessToken)
     .then(res => res.json())

@@ -170,9 +170,21 @@ const endpoints = {
     apiVersion: 1.1,
     extName: apis.authorizationExtAPI,
   },
+  getPermissionsNext: {
+    url: 'auth0/permissions',
+    method: 'get',
+    apiVersion: 1.1,
+    extName: apis.authorizationExtAPI,
+  },
   getRoles: {
     url: 'auth0/roles',
     method: 'post',
+    apiVersion: 1.1,
+    extName: apis.authorizationExtAPI,
+  },
+  getRolesNext: {
+    url: 'auth0/roles',
+    method: 'get',
     apiVersion: 1.1,
     extName: apis.authorizationExtAPI,
   },

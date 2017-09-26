@@ -1,13 +1,12 @@
-import R from 'ramda';
 import { isFeatureSupported } from 'configs';
 import {
   api,
   auth0Api,
-  getExtentionAuthorizationHeader,
+  getExtAccessToken,
 } from 'utils/api';
 import endpoints from 'configs/endpoints';
 import { getRoleIdByUserId } from '../reducer';
-import { userToRolesSet } from './usersActions';
+// import { userToRolesSet } from './usersActions';
 
 export const ROLES_FETCH_SUCCESS = 'services/usersManager/ROLES_FETCH_SUCCESS';
 export const ROLE_CREATE = 'services/UsersManager/ROLE_CREATE';
@@ -15,19 +14,22 @@ export const ROLE_DELETE = 'services/UsersManager/ROLE_DELETE';
 export const ROLE_ASSIGN = 'services/UsersManager/ROLE_ASSIGN';
 export const ROLE_UNASSIGN = 'services/UsersManager/ROLE_UNASSIGN';
 
-const _fetchRoles = async (accessToken) => {
-  const { url, method, apiVersion, extName } = endpoints.getRoles;
-
-  const optionalHeaders = {
-    optionalHeaders: getExtentionAuthorizationHeader(extName, {
-      authExtAccessToken: accessToken,
-    }),
+const _fetchRolesNext = async (accessToken) => {
+  const { url, method, apiVersion } = endpoints.getRolesNext;
+  const options = {
+    apiVersion,
+    optionalHeaders: {
+      Authorization: `Bearer ${accessToken}`,
+    },
   };
 
-  return api[method](url, { apiVersion, optionalHeaders });
+  return api[method](url, options);
 };
 
-const _fetchRolesOld = async (accessToken) => {
+/**
+ * @desc for auth0-enabled users in environment not fully supports auth0
+ */
+const _fetchRoles = async (accessToken) => {
   const { url, method, apiVersion } = endpoints.getRoles;
   const options = {
     apiVersion,
@@ -39,35 +41,37 @@ const _fetchRolesOld = async (accessToken) => {
   return api[method](url, options);
 };
 
-export const fetchRoles = accessToken => (dispatch) => {
-  const fetchMethod = isFeatureSupported('auth0Full') ? _fetchRoles : _fetchRolesOld;
+export const fetchRoles = () => (dispatch) => {
+  const { extName } = endpoints.getPermissions;
+  const accessToken = getExtAccessToken(extName, auth0Api);
+  const fetchMethod = isFeatureSupported('auth0Full') ? _fetchRolesNext : _fetchRoles;
 
   return fetchMethod(accessToken)
     .then(res => res.json())
     .then((res) => {
       const rolesMap = {};
       const rolesList = [];
-      const usersToRolesMap = {};
+      // const usersToRolesMap = {};
 
       res.roles.forEach((role) => {
         rolesMap[role._id] = role;
         rolesList.push(role._id);
 
-        if (role.users) {
-          role.users.forEach((user) => {
-            usersToRolesMap[user] = {
-              _id: role._id,
-              name: role.name,
-            };
-          });
-        }
+        // if (role.users) {
+        //   role.users.forEach((user) => {
+        //     usersToRolesMap[user] = {
+        //       _id: role._id,
+        //       name: role.name,
+        //     };
+        //   });
+        // }
       });
 
       dispatch(_rolesFetchSuccess(rolesMap, rolesList));
 
-      if (!R.isNil(usersToRolesMap)) {
-        dispatch(userToRolesSet(usersToRolesMap));
-      }
+      // if (!R.isNil(usersToRolesMap)) {
+      //   dispatch(userToRolesSet(usersToRolesMap));
+      // }
     });
 };
 

@@ -6,10 +6,7 @@ export const usersActions = usrsActions;
 export const rolesActions = rlsActions;
 export const permissionsActions = prmsnsActions;
 
-export const fetchRolesAndPermissions = ({ authorizationExtAPI }) => (dispatch) => {
-  // if no access token for authorization extention
-  if (!authorizationExtAPI) return Promise.resolve();
-
-  return dispatch(prmsnsActions.fetchPermissions(authorizationExtAPI))
-    .then(() => dispatch(rlsActions.fetchRoles(authorizationExtAPI)));
+export const fetchRolesAndPermissions = () => (dispatch) => {
+  return dispatch(prmsnsActions.fetchPermissions())
+    .then(() => dispatch(rlsActions.fetchRoles()));
 };
