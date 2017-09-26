@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import { List } from 'immutable';
 import { connect } from 'react-redux';
-import PermissionsItem from '../PermissionsItem';
-import { getPermissions } from 'services/Users/reducer';
+import { permissionsSelectors } from 'services/Users/selectors';
 import { permissionsActions } from 'services/Users/actions';
+import PermissionsItem from '../PermissionsItem';
 
 import classes from './classes';
 
@@ -71,7 +71,7 @@ PermissionsList.propTypes = {
 };
 
 const mapState = state => ({
-  allPermissions: getPermissions(state),
+  allPermissions: permissionsSelectors.getPermissionsList(state),
 });
 const mapDispatch = {
   deletePermission: permissionsActions.deletePermission,

@@ -1,15 +1,14 @@
 import { fromJS, List } from 'immutable';
+import { SESSION_CLEAN } from 'services/Session/actions';
 import {
   PERMISSIONS_FETCH_SUCCESS,
   PERMISSION_CREATE,
   PERMISSION_DELETE,
 } from '../actions/permissionsActions';
-import { SESSION_CLEAN } from 'services/Session/actions';
 
 const initialState = fromJS({
   list: undefined,
   map: undefined,
-  isLoading: false,
 });
 
 function permissionsReducer(state = initialState, action) {
@@ -43,10 +42,5 @@ function permissionsReducer(state = initialState, action) {
 }
 
 export default permissionsReducer;
-
-export const getPermissions = state =>
-  state.get('map');
-export const getPermissionsList = state =>
-  state.get('list');
 
 export const reducerKey = 'permissions';
