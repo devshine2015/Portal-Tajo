@@ -9,6 +9,7 @@ import globalReducer from 'services/Global/reducer';
 import snackbarReducer from 'containers/Snackbar/reducer';
 import dealerReducer, { reducerKey as dealerReducerKey } from 'services/Dealer/reducer';
 import fleetReducer, { reducerKey as fleetReducerKey } from 'services/FleetModel/reducers/vehiclesReducer';
+import usersManagerReducer, { reducerKey as usersManagerReducerKey } from 'services/Users/reducer';
 import routerReducer from '../utils/routerReducer';
 /**
  * Creates the main reducer with the asynchronously loaded ones
@@ -22,6 +23,7 @@ export default function createReducer(asyncReducers) {
     snackbar: snackbarReducer,
     [fleetReducerKey]: fleetReducer,
     [dealerReducerKey]: dealerReducer,
+    [usersManagerReducerKey]: usersManagerReducer,
     ...asyncReducers,
   });
 }
