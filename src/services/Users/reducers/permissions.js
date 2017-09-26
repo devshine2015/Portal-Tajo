@@ -48,3 +48,5 @@ export const getPermissions = state =>
   state.get('map');
 export const getPermissionsList = state =>
   state.get('list');
+
+export const reducerKey = 'permissions';

@@ -9,8 +9,8 @@ import {
 import { SESSION_CLEAN } from 'services/Session/actions';
 
 const initialState = fromJS({
-  list: undefined,
-  map: undefined,
+  list: [],
+  map: {},
   isLoading: false,
 });
 
@@ -70,8 +70,8 @@ function findEntries(state, userId) {
   });
 }
 
-export const getRoles = state =>
-  state.get('map');
+// export const getRoles = state =>
+//   state.get('map');
 export const getRolesList = state =>
   state.get('list');
 export const getRoleIdByUserId = (state, userId) => {
@@ -83,3 +83,5 @@ export const getRoleIdByUserId = (state, userId) => {
 
   return null;
 };
+
+export const reducerKey = 'roles';
