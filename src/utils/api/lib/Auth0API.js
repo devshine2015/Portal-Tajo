@@ -1,6 +1,6 @@
 import { onProduction } from 'configs';
 import BaseAPIClass from './BaseAPIClass';
-import getExtentionAuthorizationHeader from './authHeaderHelper';
+import getExtAccessToken from './authHeaderHelper';
 
 const HEADERS = {
   'content-type': 'application/json',
@@ -49,10 +49,10 @@ class Auth0API extends BaseAPIClass {
     extName,
   } = {}) => {
     const urlToInvoke = `${this.apis[extName]}/${url}`;
-    const headers = Object.assign({}, HEADERS, getExtentionAuthorizationHeader(extName, {
-      mgmtAccessToken: this.mgmtAccessToken,
-      authExtAccessToken: this.authExtAccessToken,
-    }));
+    const accessToken = getExtAccessToken(extName, this);
+    const headers = Object.assign({}, HEADERS, {
+      Authorization: `Bearer ${accessToken}`,
+    });
 
     return this._prepareRequest(method, urlToInvoke, headers, payload);
   }

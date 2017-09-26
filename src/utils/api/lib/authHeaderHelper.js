@@ -1,4 +1,4 @@
-export default function getExtentionAuthorizationHeader(extName, {
+export default function (extName, {
   mgmtAccessToken,
   authExtAccessToken,
 }) {
@@ -18,9 +18,5 @@ export default function getExtentionAuthorizationHeader(extName, {
     default: token = undefined;
   }
 
-  if (token === undefined) return {};
-
-  return {
-    Authorization: `Bearer ${token}`,
-  };
+  return token;
 }
