@@ -30,7 +30,13 @@ class UsersManagerPage extends React.Component {
   }
 
   componentWillMount() {
-    if (this.props.screenIsReady === 'not ready' || this.props.screenIsReady === 'error') {
+    if (this.props.screenIsReady) {
+      this.props.fetchRolesAndPerms();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.screenIsReady && nextProps.screenIsReady) {
       this.props.fetchRolesAndPerms();
     }
   }
@@ -44,7 +50,7 @@ class UsersManagerPage extends React.Component {
   render() {
     const activeSubsection = SUBSECTIONS[this.state.activeSectionIndex];
 
-    if (this.props.screenIsReady === 'not ready') return null;
+    if (!this.props.screenIsReady) return null;
 
     return (
       <Layout.Content>
@@ -71,7 +77,7 @@ class UsersManagerPage extends React.Component {
 }
 
 UsersManagerPage.propTypes = {
-  screenIsReady: PropTypes.oneOf(['not ready', 'loading', 'error', 'ready']).isRequired,
+  screenIsReady: PropTypes.bool.isRequired,
   fetchRolesAndPerms: PropTypes.func.isRequired,
 };
 

@@ -40,7 +40,7 @@ function getPublicPath() {
     case 'dealer':
       return '/cc/';
     default:
-      return '';
+      return '/';
   }
 }
 

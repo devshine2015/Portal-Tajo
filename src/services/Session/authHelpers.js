@@ -16,6 +16,7 @@ import endpoints from 'configs/endpoints';
 import { setAuthorization } from 'utils/authz';
 import { profileUtils } from 'utils/auth';
 import { setReportsMWA } from 'containers/Report/actions/reportActions';
+import { USERS_MANAGER_TOKENS_READY_STATE_CHANGE } from 'services/Users/actions';
 import {
   setSession,
   cleanSession,
@@ -84,7 +85,7 @@ async function __sideEffects(profile = {}, dispatch) {
 
   // backend can fetch access tokens even if
   // user doesn't legitimate auth0 user
-  fetchAccessTokens();
+  fetchAccessTokens(dispatch);
 
   // final step - saving profile to global state
   // just make sure it has been done before
@@ -118,7 +119,7 @@ const _fetchToken = (endpoint) => {
     .then(res => res.json());
 };
 
-const fetchAccessTokens = () => {
+const fetchAccessTokens = (dispatch) => {
   const tokens = {};
   const cacheToken = (token, name) => {
     if (token.access_token) {
@@ -134,8 +135,14 @@ const fetchAccessTokens = () => {
     })
     .then((token) => {
       cacheToken(token, 'managmentAPI');
+      auth0Api.setAccessTokens(tokens);
+
+      return Promise.resolve();
     })
     .then(() => {
-      auth0Api.setAccessTokens(tokens);
+      dispatch({
+        type: USERS_MANAGER_TOKENS_READY_STATE_CHANGE,
+        nextState: true,
+      });
     });
 };

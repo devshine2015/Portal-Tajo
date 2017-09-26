@@ -6,7 +6,7 @@ import Page from './Page';
 function makeProps() {
   return function mapProps(state) {
     return {
-      screenIsReady: readyStateSelectors.getReadyState(state),
+      screenIsReady: readyStateSelectors.getHasTokensReadyState(state),
     };
   };
 }

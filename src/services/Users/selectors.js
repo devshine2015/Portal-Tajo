@@ -13,7 +13,8 @@ const readyStateLocalState = state => state.getIn([reducerKey, readyStateReducer
 // local selectors
 export const getUsers = state => state.get('usersList');
 export const getRoles = state => state.get('map');
-export const getReadyState = state => state.get('isReady');
+export const getHasPermsReadyState = state => state.get('hasPermissionsAndRoles');
+export const getHasTokensReadyState = state => state.get('hasTokens');
 export const getPermissions = state => state.get('map');
 export const getPermissionsList = state => state.get('list');
 
@@ -28,5 +29,6 @@ export const permissionsSelectors = globalizeSelectors(permissionsLocalState, {
   getPermissionsList,
 });
 export const readyStateSelectors = globalizeSelectors(readyStateLocalState, {
-  getReadyState,
+  getHasPermsReadyState,
+  getHasTokensReadyState,
 });
