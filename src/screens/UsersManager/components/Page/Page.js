@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import Layout from 'components/Layout';
 import Submenu from '../Submenu';
@@ -29,7 +30,9 @@ class UsersManagerPage extends React.Component {
   }
 
   componentWillMount() {
-    // this.props.fetchRolesAndPermissions();
+    if (this.props.screenIsReady === 'not ready' || this.props.screenIsReady === 'error') {
+      this.props.fetchRolesAndPerms();
+    }
   }
 
   onSubsectionChange = (index) => {
@@ -40,6 +43,8 @@ class UsersManagerPage extends React.Component {
 
   render() {
     const activeSubsection = SUBSECTIONS[this.state.activeSectionIndex];
+
+    if (this.props.screenIsReady === 'not ready') return null;
 
     return (
       <Layout.Content>
@@ -64,5 +69,10 @@ class UsersManagerPage extends React.Component {
     );
   }
 }
+
+UsersManagerPage.propTypes = {
+  screenIsReady: PropTypes.oneOf(['not ready', 'loading', 'error', 'ready']).isRequired,
+  fetchRolesAndPerms: PropTypes.func.isRequired,
+};
 
 export default UsersManagerPage;
