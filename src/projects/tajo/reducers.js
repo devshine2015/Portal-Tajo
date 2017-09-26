@@ -10,7 +10,7 @@ import fleetReducer from 'services/FleetModel/reducer';
 import mapStateReducer from 'containers/Map/reducerAction';
 import sessionReducer from 'services/Session/reducer';
 import globalReducer from 'services/Global/reducer';
-import usersReducer from 'services/Users/reducer';
+import usersManagerReducer, { reducerKey as usersManagerReducerKey } from 'services/Users/reducer';
 import devicesReducer from 'services/Devices/reducer';
 import alertsSystemReducer from 'services/AlertsSystem/reducer';
 import routerReducer from '../utils/routerReducer';
@@ -26,7 +26,7 @@ export default function createReducer(asyncReducers) {
     inner: innerPortalReducer,
     snackbar: snackbarReducer,
     fleet: fleetReducer,
-    usersManager: usersReducer,
+    [usersManagerReducerKey]: usersManagerReducer,
     mapState: mapStateReducer,
     devices: devicesReducer,
     alerts: alertsSystemReducer,

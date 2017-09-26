@@ -12,7 +12,7 @@ import gfEditorReducer from 'containers/GFEditor/reducer';
 import mapStateReducer from 'containers/Map/reducerAction';
 import sessionReducer from 'services/Session/reducer';
 import globalReducer from 'services/Global/reducer';
-import usersReducer from 'services/Users/reducer';
+import usersManagerReducer, { reducerKey as usersManagerReducerKey } from 'services/Users/reducer';
 import devicesReducer from 'services/Devices/reducer';
 import alertsSystemReducer from 'services/AlertsSystem/reducer';
 import execReportsReducer from 'screens/ExecReports/services/reducer';
@@ -31,7 +31,7 @@ export default function createReducer(asyncReducers) {
     snackbar: snackbarReducer,
     fleet: fleetReducer,
     chronicle: chronicleReducer,
-    usersManager: usersReducer,
+    [usersManagerReducerKey]: usersManagerReducer,
     gfEditor: gfEditorReducer,
     mapState: mapStateReducer,
     devices: devicesReducer,
