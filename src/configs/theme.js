@@ -33,6 +33,7 @@ export const tajoTheme = {
   powerList: {
     backgroundColor: teal500,
     itemColor: cyan700,
+    activeItemColor: deepOrange700,
     itemTextColor: '#fff',
   },
   spacing: {
@@ -64,6 +65,7 @@ export const fusoTheme = {
   powerList: {
     backgroundColor: '#c4c3b1',
     itemColor: '#c4c3b1',
+    activeItemColor: '#e3142e',
     itemTextColor: '#000',
   },
   spacing: tajoTheme.spacing,

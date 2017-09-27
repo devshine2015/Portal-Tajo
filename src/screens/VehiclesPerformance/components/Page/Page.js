@@ -8,20 +8,10 @@ import FixedContent from 'components/FixedContent';
 // import PropTypes from 'prop-types';
 
 class Page extends Component {
-  state = {
-    vehicleId: undefined,
-  };
-
-  switchVehicle = (id) => {
-    this.setState({
-      vehicleId: id,
-    });
-  }
-
   render() {
     return (
       <DealerPage>
-        <PowerList onVehicleSelect={this.switchVehicle} />
+        <PowerList onVehicleSelect={() => this.forceUpdate()} />
         <FixedContent>
           <PageHeader text="Vehicle Performance" onApply={() => this.forceUpdate()} />
           <DatavizFrame

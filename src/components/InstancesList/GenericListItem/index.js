@@ -146,18 +146,20 @@ class GenericListItem extends React.Component {
 
   render() {
     const { isExpanded, ...rest } = this.props;
+    const { muiTheme } = this.context;
     const className = classnames(styles.list__item, 'listItemDynamic', {
       listItemDynamicExpanded: isExpanded,
-      [styles.list__item_expanded]: isExpanded,
+      // [styles.list__item_expanded]: isExpanded,
     });
+
     const element = chooseItem(this.props.type, { ...rest, isExpanded });
     return (
       <li
         className={className}
         ref={this.saveNode}
         style={{
-          backgroundColor: this.context.muiTheme.powerList.itemColor,
-          color: this.context.muiTheme.powerList.itemTextColor,
+          backgroundColor: isExpanded ? muiTheme.powerList.activeItemColor : muiTheme.powerList.itemColor,
+          color: muiTheme.powerList.itemTextColor,
         }}
       >
         { _needIndicator(rest.item) && (

@@ -10,7 +10,7 @@ class Page extends React.Component {
   render() {
     return (
       <DealerPage>
-        <PowerList />
+        <PowerList onVehicleSelect={() => this.forceUpdate()} />
         <FixedContent
           style={{
             height: '100%',
