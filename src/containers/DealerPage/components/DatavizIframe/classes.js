@@ -10,10 +10,10 @@ export default StyleSheet.create({
   title: {
     backgroundColor: '#fff',
     border: '1px solid rgba(0, 0, 0, 0.07)',
-    padding: 20,
+    padding: '10px 20px',
     fontFamily: '"Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif',
     fontWeight: 300,
-    fontSize: 26,
+    fontSize: 22,
     '-webkit-font-smoothing': 'antialiased',
   },
   title_collapsible: {

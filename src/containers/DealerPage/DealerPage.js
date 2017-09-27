@@ -2,10 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Loader from 'components/animated';
 import Placeholder from './components/Placeholder';
+import PageHeader from './components/PageHeader';
 
 const DealerPage = ({
   children,
   fleetReadyState,
+  title,
 }) => {
   switch (fleetReadyState) {
     case 'not ready':
@@ -26,6 +28,7 @@ const DealerPage = ({
             backgroundColor: '#fafafa',
           }}
         >
+          { title && <PageHeader text={title} /> }
           {children}
         </div>
       );
@@ -33,8 +36,13 @@ const DealerPage = ({
 };
 
 DealerPage.propTypes = {
+  title: PropTypes.string,
   children: PropTypes.node.isRequired,
   fleetReadyState: PropTypes.oneOf(['ready', 'not ready', 'loading', 'error']).isRequired,
+};
+
+DealerPage.defaultProps = {
+  title: undefined,
 };
 
 export default DealerPage;
