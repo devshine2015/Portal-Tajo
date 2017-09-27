@@ -42,6 +42,13 @@ class Page extends Component {
             src="http://office.datavis.sg:30001/v1/4"
             title="High RPM relating to gear shifting use"
           />
+          <DatavizFrame
+            collapsible
+            collapsed
+            maxHeight={2730}
+            src="http://office.datavis.sg:30001/v1/6"
+            title="Hill Climbing"
+          />
         </FixedContent>
       </DealerPage>
     );
