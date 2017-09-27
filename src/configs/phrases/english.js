@@ -294,6 +294,8 @@ export default {
   idling: 'idling',
   speeding: 'speeding',
   drive_time: 'drive time',
+  fuel_alert: 'fuel',
+  fuel_diff: 'fuel diff',
   add_alert: 'add alert',
   alert_name: 'alert name',
   speed_limit: 'speed limit',

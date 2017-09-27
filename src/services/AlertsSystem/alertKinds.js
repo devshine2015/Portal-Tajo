@@ -9,6 +9,7 @@ import IconOverSpeed from 'material-ui/svg-icons/maps/directions-run';
 import IconOdo from 'material-ui/svg-icons/notification/network-check';
 import IconIdle from 'material-ui/svg-icons/av/snooze';
 import IconTime from 'material-ui/svg-icons/action/watch-later';
+import IconFuel from 'material-ui/svg-icons/maps/local-gas-station';
 
 export const _ALERT_KIND_UNDEFINED = 'undefined-alert';
 export const _ALERT_KIND_TEMPERATURE = 'temperature-alert';
@@ -17,6 +18,7 @@ export const _ALERT_KIND_SPEEDING = 'speeding-alert';
 export const _ALERT_KIND_ODO = 'odometer-alert';
 export const _ALERT_KIND_IDLE = 'idling-alert';
 export const _ALERT_KIND_DRIVE_TIME = 'drive-time-alert';
+export const _ALERT_KIND_FUEL_DIFF = 'fuel-diff-alert';
 
 
 const undefinedType = {
@@ -83,6 +85,15 @@ export const ALERT_KINDS = [
     makeBEObject: (inState) => (
       {
         driveTimeSec: inState.driveTimeSec,
+      }
+    ),
+  }, {
+    value: _ALERT_KIND_FUEL_DIFF,
+    niceName: 'Fuel',
+    icon: <IconFuel />,
+    makeBEObject: (inState) => (
+      {
+        percentDiff: Math.round(inState.fuelDiff),
       }
     ),
   },

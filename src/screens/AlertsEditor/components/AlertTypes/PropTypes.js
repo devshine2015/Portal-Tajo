@@ -9,6 +9,8 @@ export default [
   'new_alert_condition',
   'maxTemp',
   'distance_limit',
+  'fuel_alert',
+  'fuel_diff',
   'new_alert_condition_created_successfully',
   'failed_to_create_new_alert_condition',
   'alert_condition_updated_successfuly',

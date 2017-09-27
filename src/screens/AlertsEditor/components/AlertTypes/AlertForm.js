@@ -21,6 +21,7 @@ function setAlertState(props) {
     maxTemp: 1,
     maxSpeed: 45,
     odoValue: 10000,
+    fuelDiff: 10,
     // gfId: props.gfs.length > 0 ? props.gfs[0].id : '',
     driveTimeSec: 2.5,
     ...props.alert,
