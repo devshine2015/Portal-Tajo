@@ -8,23 +8,26 @@ import styles from './styles.css';
 const FixedContent = ({
   children,
   containerClassName,
+  style,
 }) => {
   const newClassName = classnames(styles.fixedContent, containerClassName);
 
   return (
-    <div className={newClassName}>
+    <div className={newClassName} style={style}>
       {children}
     </div>
   );
 };
 
 FixedContent.propTypes = {
-  children: PropTypes.any.isRequired,
+  children: PropTypes.node.isRequired,
   containerClassName: PropTypes.string,
+  style: PropTypes.object,
 };
 
 FixedContent.defaultProps = {
   containerClassName: '',
+  style: undefined,
 };
 
 export default pure(FixedContent);

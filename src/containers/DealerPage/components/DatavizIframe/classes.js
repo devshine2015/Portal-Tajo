@@ -1,7 +1,12 @@
 import { StyleSheet } from 'aphrodite/no-important';
 
 export default StyleSheet.create({
-  wrap: {},
+  datavis_frame_wrap: {
+    height: '100%',
+  },
+  datavis_frame_wrap_coll: {
+    height: 'auto',
+  },
   title: {
     backgroundColor: '#fff',
     border: '1px solid rgba(0, 0, 0, 0.07)',
@@ -16,7 +21,6 @@ export default StyleSheet.create({
   },
   body: {
     transition: 'all .3s',
-    height: 200,
   },
   body_collapsed: {
     height: 0,

@@ -56,7 +56,7 @@ class DatavizFrame extends React.Component {
     };
 
     return (
-      <div className={css(classes.wrap)}>
+      <div className={css(classes.datavis_frame_wrap, collapsible && classes.datavis_frame_wrap_coll)}>
         { title && (
           <FrameTitle
             onClick={this.toggleCollapse}

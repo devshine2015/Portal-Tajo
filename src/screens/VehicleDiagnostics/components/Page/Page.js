@@ -9,7 +9,11 @@ const Page = () => {
   return (
     <DealerPage>
       <PowerList />
-      <FixedContent>
+      <FixedContent
+        style={{
+          height: '100%',
+        }}
+      >
         <DatavizFrame
           title="Vehicle Diagnostics"
           src="http://office.datavis.sg:30001/v1/5"

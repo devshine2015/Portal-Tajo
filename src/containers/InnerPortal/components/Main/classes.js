@@ -5,7 +5,6 @@ const classes = StyleSheet.create({
   innerPortal: {
     paddingTop: theme.appBar.height,
     height: '100%',
-    minHeight: '100%',
   },
 });
 
