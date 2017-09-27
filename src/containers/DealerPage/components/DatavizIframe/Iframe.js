@@ -3,15 +3,19 @@ import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import classes from './classes';
 
-const Frame = ({ src }) => (
-  <iframe
-    src={src}
-    style={{
-      height: '100%',
-      width: '100%',
-    }}
-  />
-);
+const Frame = ({ src }) => {
+  const rnd = Math.random();
+
+  return (
+    <iframe
+      src={`${src}?rnd=${rnd}`}
+      style={{
+        height: '100%',
+        width: '100%',
+      }}
+    />
+  );
+};
 
 Frame.propTypes = {
   src: PropTypes.string.isRequired,

@@ -23,7 +23,7 @@ class Page extends Component {
       <DealerPage>
         <PowerList onVehicleSelect={this.switchVehicle} />
         <FixedContent>
-          <PageHeader text="Vehicle Performance" />
+          <PageHeader text="Vehicle Performance" onApply={() => this.forceUpdate()} />
           <DatavizFrame
             collapsible
             collapsed
