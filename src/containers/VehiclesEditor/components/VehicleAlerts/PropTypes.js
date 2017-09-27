@@ -8,4 +8,5 @@ export default [
   'on_exit_location',
   'reset',
   'add',
+  'fuel_alert',
 ];

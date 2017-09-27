@@ -130,6 +130,14 @@ class VehicleAlerts extends React.Component {
             vehicleAlerts={this.state.alerts}
           />
           <AlertOfKindMultiSelector
+            title={translations.fuel_alert}
+            vehicleAlerts={this.state.alerts}
+            vehicleId={this.props.vehicleId}
+            doAddAlert={this.doAddAlert}
+            onRemoveClick={this.onRemoveClick}
+            alertFilter={a => (a.kind === alertKinds._ALERT_KIND_FUEL_DIFF)}
+          />
+          <AlertOfKindMultiSelector
             title={translations.maintenance}
             vehicleAlerts={this.state.alerts}
             vehicleId={this.props.vehicleId}
