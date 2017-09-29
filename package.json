@@ -1,6 +1,6 @@
 {
   "name": "drvr.co",
-  "version": "1.4.208",
+  "version": "1.4.209",
   "description": "common code base for DRVR portals",
   "repository": {
     "type": "git",
@@ -76,7 +76,7 @@
     "react": "16.0.0",
     "react-dom": "16.0.0",
     "react-native-storage": "0.2.2",
-    "react-redux": "4.4.5",
+    "react-redux": "5.0.6",
     "react-router": "3.0.5",
     "react-router-redux": "4.0.5",
     "react-tap-event-plugin": "2.0.1",
