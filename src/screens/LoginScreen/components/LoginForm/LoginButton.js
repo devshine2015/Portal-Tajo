@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import IconButton from 'material-ui/IconButton';
 import SendIcon from 'material-ui/svg-icons/content/send';

@@ -84,11 +84,10 @@ class RunningLogo extends React.Component {
   }
 
   render() {
-    // const leftRight = 10 * this.noiseGen.simplex2(this.state.aniT, 3);
     const offsetValue = this.noiseGen.getVal(this.state.aniT - 0.05);
     const turnValue = -this.noiseGen.getVal(this.state.aniT);
     const leftRight = this.props.swayRange * offsetValue;
-    this.mainStyle.transform = `rotate(${turnValue * this.props.turnRange}deg)`;
+
     return (
       <div className={styles.roundFrame} style={this.mainStyle}>
         <div className={styles.clipCircle} style={this.clipCircleStyle}>

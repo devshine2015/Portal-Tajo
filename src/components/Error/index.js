@@ -16,8 +16,8 @@ const Err = ({
 );
 
 Err.propTypes = {
-  type: React.PropTypes.string.isRequired,
-  color: React.PropTypes.string,
+  type: PropTypes.string.isRequired,
+  color: PropTypes.string,
 
   translations: phrasesShape.isRequired,
 };

@@ -155,8 +155,8 @@ NewUserForm.propTypes = {
   isOpened: PropTypes.bool.isRequired,
   translations: phrasesShape.isRequired,
   roles: PropTypes.instanceOf(Map).isRequired,
-  currentUserFleet: React.PropTypes.string.isRequired,
-  currentUserRole: React.PropTypes.string.isRequired,
+  currentUserFleet: PropTypes.string.isRequired,
+  currentUserRole: PropTypes.string.isRequired,
 };
 
 NewUserForm.defaultProps = {

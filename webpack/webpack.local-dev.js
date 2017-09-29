@@ -38,7 +38,7 @@ module.exports = baseConfig({
 
   // Tell babel that we want to hot-reload
   babelQuery: {
-    presets: ['react-hmre'],
+    // presets: ['react-hot'],
   },
 
   externals: {

@@ -23,7 +23,7 @@ export default function configureStore(initialState = {}, history, createReducer
   ];
 
   if (isDev) {
-    const createLogger = require('redux-logger'); // eslint-disable-line import/no-extraneous-dependencies
+    const createLogger = require('redux-logger').createLogger; // eslint-disable-line import/no-extraneous-dependencies
     const logger = createLogger({
       predicate: isDev,
       collapsed: true,

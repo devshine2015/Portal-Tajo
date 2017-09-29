@@ -48,8 +48,8 @@ FleetSelector.propTypes = {
   translations: phrasesShape.isRequired,
   onChange: PropTypes.func.isRequired,
   value: PropTypes.string,
-  availableFleets: React.PropTypes.arrayOf(
-    React.PropTypes.string,
+  availableFleets: PropTypes.arrayOf(
+    PropTypes.string,
   ).isRequired,
 };
 
