@@ -27,8 +27,8 @@ module.exports = baseConfig({
   // We use ExtractTextPlugin so we get a seperate CSS file instead
   // of the CSS being in the JS and injected as a style tag
   cssLoaders: ExtractTextPlugin.extract({
-    fallbackLoader: 'style-loader',
-    loader: 'css-loader?modules&importLoaders=1',
+    fallback: 'style-loader',
+    use: 'css-loader?modules&importLoaders=1',
   }),
 
   plugins: [
@@ -37,8 +37,8 @@ module.exports = baseConfig({
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false, // hide uglifier errors in the terminal
-        sourceMap: true, // source maps for minimized code or want correct line numbers for uglifyjs warnings
       },
+      sourceMap: true, // source maps for minimized code or want correct line numbers for uglifyjs warnings
     }),
 
     // Minify and optimize the index.html
