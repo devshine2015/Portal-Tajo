@@ -33,17 +33,11 @@ module.exports = baseConfig({
 
   plugins: [
 
-    // OccurrenceOrderPlugin is needed for long-term caching to work properly.
-    // See http://mxs.is/googmv
-    // new webpack.optimize.OccurrenceOrderPlugin(true),
-
-    // Merge all duplicate modules
-    // new webpack.optimize.DedupePlugin(),
-
-    // Minify and optimize the JavaScript
+    // Minify and optimize for production
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false, // hide uglifier errors in the terminal
+        sourceMap: true, // source maps for minimized code or want correct line numbers for uglifyjs warnings
       },
     }),
 

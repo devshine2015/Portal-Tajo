@@ -30,7 +30,6 @@ module.exports = baseConfig({
   // Add hot reloading
   plugins: [
     new webpack.HotModuleReplacementPlugin(), // Tell webpack we want hot reloading
-    new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin(Object.assign({}, commonConfigs.htmlPlugin, {
       base: getPublicPath(),
     })),
