@@ -12,7 +12,7 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 console.log(JSON.stringify(PACKAGE.version));
 console.log(NODE_ENV);
 
-const devCssLoaders = 'style-loader!css-loader?localIdentName=[local]__[path][name]__[hash:base64:5]&modules&importLoaders=1&sourceMap!postcss-loader';
+const devCssLoaders = 'style-loader!css-loader?localIdentName=[local]__[path][name]__[hash:base64:5]&modules&importLoaders=1&sourceMap';
 
 /**
  * he we're trying to imitate how static files server would work:
