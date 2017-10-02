@@ -38,7 +38,7 @@ class FullscreenContainer extends React.Component {
   render() {
     return (
       <div
-        className={css(fullscreenContainerClasses.container)}
+        className={css(fullscreenContainerClasses.fullscreenContainer)}
         ref={this.saveRef}
       >
         { this.state.hasFullscreenElement && this.props.children }

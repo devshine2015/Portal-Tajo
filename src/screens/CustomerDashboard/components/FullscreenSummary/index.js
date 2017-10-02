@@ -1,3 +1,3 @@
-import FullscreenSummary from './FullscreenSummary';
+import FullscreenSummary from './ConnectedSummary';
 
 export default FullscreenSummary;
