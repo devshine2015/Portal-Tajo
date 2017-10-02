@@ -4,8 +4,8 @@ import { getGFByIdFunc } from 'services/FleetModel/reducer';
 export const _NEW_LOCAL_ALERT_ID_ = 'newAlert';
 
 const safeGetFromMeta = (originObject, propName, defValue) => (
-    originObject.meta === undefined || originObject.meta[propName] === undefined ?
-                defValue : originObject.meta[propName]
+  originObject.meta === undefined || originObject.meta[propName] === undefined ?
+    defValue : originObject.meta[propName]
 );
 
 const safeGetGFData = (originObject, state) => {
@@ -27,6 +27,7 @@ export const makeLocalAlertCondition = (originObject, state) => (
     maxTemp: originObject.aboveTemp || 0,
     maxSpeed: originObject.maxSpeed || 0,
     odoValue: originObject.odoValue || 0,
+    fuelDiff: originObject.percentDiff || 0,
     // safely extracting those for GF alerts:
     // gfId:
     // gfName:
@@ -47,7 +48,7 @@ export const makeNewAlertConditionTemplate = () => (
 );
 
 export const makeAlertConditionBackEndObject = inState => (
-   Object.assign({},
+  Object.assign({},
     makeGenericAlrt(inState),
     alertKinds.getAlertByKind(inState.kind).makeBEObject(inState))
 );
@@ -56,7 +57,7 @@ export const makeAlertConditionBackEndObject = inState => (
 // on BeckEnd automatically
 // remove this when implemented on BE side
 export const makeGFAlertConditionBackEndObject = (gfObj, onEnter) => (
-   Object.assign({},
+  Object.assign({},
     makeGenericAlrt({
       kind: alertKinds._ALERT_KIND_GF,
       // name: `${gfObj.name} ${onEnter ? ' enter' : ' exit'}`,
@@ -69,13 +70,12 @@ export const makeGFAlertConditionBackEndObject = (gfObj, onEnter) => (
     }))
 );
 
-
 const makeGenericAlrt = inState => (
   {
     id: inState.id,
     kind: inState.kind,
-// "2017-03-06T17:51:59.298+01:00"
-//    created: moment().format('YYYY-MM-DD[T]HH:mm:ss.SSSZ'),
+    // "2017-03-06T17:51:59.298+01:00"
+    // created: moment().format('YYYY-MM-DD[T]HH:mm:ss.SSSZ'),
     created: '2017-03-06T18:29:50.950+1100',
     status: '',
     meta: {
