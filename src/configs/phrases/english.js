@@ -55,6 +55,7 @@ export default {
   // fleet summary
   vehicles_amount: 'vehicles in fleet',
   never_reported: 'vehicles never reported',
+  fullscreen_mode: 'fullscreen mode',
   // -- end fleet summary
 
   // installer

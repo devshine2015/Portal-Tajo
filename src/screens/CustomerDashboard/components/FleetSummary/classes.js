@@ -1,20 +1,30 @@
 import { StyleSheet } from 'aphrodite/no-important';
 import { theme } from 'configs';
 
-const classes = StyleSheet.create({
+export const summaryClasses = StyleSheet.create({
   fullSummary: {
-    display: 'flex',
-    width: '100%',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
+    margin: '0 auto',
+  },
+  action: {
+    fontSize: 13,
+    fontStyle: 'italic',
+    textDecoration: 'underline',
+    transition: 'color .25s',
+    textTransform: 'capitalize',
 
-    '@media (max-width: 600px)': {
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
-      flexWrap: 'nowrap',
+    ':hover': {
+      cursor: 'pointer',
+      textDecoration: 'none',
+      color: '#666',
+    },
+
+    ':focus': {
+      outline: 'none',
     },
   },
+});
 
+export const amountClasses = StyleSheet.create({
   amount: {
     width: '49%',
     minWidth: 190,
@@ -63,5 +73,3 @@ const classes = StyleSheet.create({
     color: '#aaa',
   },
 });
-
-export default classes;

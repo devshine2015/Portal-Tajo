@@ -7,20 +7,11 @@ import {
   translate,
   makePhrasesShape,
 } from 'utils/i18n';
-import Widget, { WidgetPaper } from 'components/Widget';
+import Widget from 'components/Widget';
 import Icon from './Icons';
-import classes from './classes';
+import Amount from './Amount';
+import { summaryClasses } from './classes';
 import amountsPropType, { phrases } from './PropTypes';
-
-const STYLES = {
-  icon: {
-    width: 40,
-    height: 40,
-  },
-  widgetPaper: {
-    width: '49%',
-  },
-};
 
 const AMOUNT_TYPES_AVAILABILITY = {
   vehicles: true,
@@ -29,36 +20,17 @@ const AMOUNT_TYPES_AVAILABILITY = {
   delayed: true,
 };
 
-const Amount = ({
-  amount,
-  helpText,
-  icon,
-}) => {
-  return (
-    <WidgetPaper style={STYLES.widgetPaper}>
-      <div className={css(classes.amount__inn)}>
-        <div className={css(classes.amount__icon)}>
-          { React.cloneElement(icon, {
-            style: STYLES.icon,
-          }) }
-        </div>
-        <div className={css(classes.amount__col)}>
-          <div className={css(classes.amount__title)}>
-            { amount }
-          </div>
-          <div className={css(classes.amount__help)}>
-            { helpText }
-          </div>
-        </div>
-      </div>
-    </WidgetPaper>
-  );
-};
-
-Amount.propTypes = {
-  amount: PropTypes.number.isRequired,
-  helpText: PropTypes.string.isRequired,
-  icon: PropTypes.node.isRequired,
+const FullscreenModeAction = ({ onClick, text }) => (
+  <button
+    onClick={onClick}
+    className={css(summaryClasses.action)}
+  >
+    { text }
+  </button>
+);
+FullscreenModeAction.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  text: PropTypes.node.isRequired,
 };
 
 const FullSummary = ({
@@ -67,7 +39,16 @@ const FullSummary = ({
 }, {
   muiTheme,
 }) => (
-  <Widget title={translations.fleet_summary_title}>
+  <Widget
+    containerClassName={css(summaryClasses.fullSummary)}
+    title={translations.fleet_summary_title}
+    rightElement={
+      <FullscreenModeAction
+        text={translations.fullscreen_mode}
+        onClick={() => null}
+      />
+    }
+  >
     <Amount
       icon={<Icon.CarIcon color={muiTheme.palette.primary3Color} />}
       amount={amounts.vehiclesAmount}

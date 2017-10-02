@@ -11,4 +11,5 @@ export const phrases = [
   'vehicles_amount',
   'never_reported',
   'fleet_summary_title',
+  'fullscreen_mode',
 ];
