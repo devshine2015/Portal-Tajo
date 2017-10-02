@@ -2,14 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { css } from 'aphrodite/no-important';
-import { project } from 'configs';
+import {
+  project,
+  isFeatureSupported,
+} from 'configs';
 import {
   translate,
   makePhrasesShape,
 } from 'utils/i18n';
+import takeVendorPrefixedProp from 'utils/vendors';
 import Widget from 'components/Widget';
 import Icon from './Icons';
 import Amount from './Amount';
+import FullscreenSummary from '../FullscreenSummary';
 import { summaryClasses } from './classes';
 import amountsPropType, { phrases } from './PropTypes';
 
@@ -19,6 +24,13 @@ const AMOUNT_TYPES_AVAILABILITY = {
   dead: true,
   delayed: true,
 };
+
+const fullscreenElement = takeVendorPrefixedProp(document, isFeatureSupported('prefix'), 'fullscreenElement');
+
+function getEventName(prefix) {
+  const standartEvent = 'fullscreenchange';
+  return prefix ? `${prefix.lowercase}${standartEvent}` : standartEvent;
+}
 
 const FullscreenModeAction = ({ onClick, text }) => (
   <button
@@ -33,41 +45,70 @@ FullscreenModeAction.propTypes = {
   text: PropTypes.node.isRequired,
 };
 
-const FullSummary = ({
-  amounts,
-  translations,
-}, {
-  muiTheme,
-}) => (
-  <Widget
-    containerClassName={css(summaryClasses.fullSummary)}
-    title={translations.fleet_summary_title}
-    rightElement={
-      <FullscreenModeAction
-        text={translations.fullscreen_mode}
-        onClick={() => null}
-      />
-    }
-  >
-    <Amount
-      icon={<Icon.CarIcon color={muiTheme.palette.primary3Color} />}
-      amount={amounts.vehiclesAmount}
-      helpText={translations.vehicles_amount}
-    />
-    { AMOUNT_TYPES_AVAILABILITY.devices && (
-      <Amount
-        icon={<Icon.DeviceIcon color={muiTheme.palette.primary3Color} />}
-        amount={amounts.devicesAmount}
-        helpText="devices in fleet"
-      />
-    )}
-    <Amount
-      icon={<Icon.NotReportedIcon color={muiTheme.palette.accent2Color} />}
-      amount={amounts.deadAmount}
-      helpText={translations.never_reported}
-    />
-  </Widget>
-);
+class FullSummary extends React.Component {
+  state = {
+    fullscreen: false,
+  };
+  prefix = isFeatureSupported('prefix') || null;
+
+  toggleFullscreenMode = () => {
+    this.setState(prevState => ({
+      fullscreen: !prevState.fullscreen,
+    }));
+  }
+
+  componentDidMount() {
+    document.addEventListener(getEventName(this.prefix), this.onFullscreenChange);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener(getEventName(this.prefix), this.onFullscreenChange);
+  }
+
+  onFullscreenChange = () => {
+    this.setState(() => ({
+      fullscreen: !!document[fullscreenElement],
+    }));
+  }
+
+  render() {
+    if (this.state.fullscreen) return <FullscreenSummary />;
+
+    const { amounts, translations } = this.props;
+    const { muiTheme } = this.context;
+
+    return (
+      <Widget
+        containerClassName={css(summaryClasses.fullSummary)}
+        title={translations.fleet_summary_title}
+        rightElement={
+          <FullscreenModeAction
+            text={translations.fullscreen_mode}
+            onClick={this.toggleFullscreenMode}
+          />
+        }
+      >
+        <Amount
+          icon={<Icon.CarIcon color={muiTheme.palette.primary3Color} />}
+          amount={amounts.vehiclesAmount}
+          helpText={translations.vehicles_amount}
+        />
+        { AMOUNT_TYPES_AVAILABILITY.devices && (
+          <Amount
+            icon={<Icon.DeviceIcon color={muiTheme.palette.primary3Color} />}
+            amount={amounts.devicesAmount}
+            helpText="devices in fleet"
+          />
+        )}
+        <Amount
+          icon={<Icon.NotReportedIcon color={muiTheme.palette.accent2Color} />}
+          amount={amounts.deadAmount}
+          helpText={translations.never_reported}
+        />
+      </Widget>
+    );
+  }
+}
 
 FullSummary.contextTypes = {
   muiTheme: PropTypes.object.isRequired,
