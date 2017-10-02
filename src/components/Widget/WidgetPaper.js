@@ -10,8 +10,8 @@ const WidgetPaper = ({
   innerClassName,
   style,
 }) => {
-  const paperClassName = css(classes.widget__paper);
-  const innClassName = cs(css(classes.widget__inn), innerClassName);
+  const paperClassName = css(classes.widgetPaper);
+  const innClassName = cs(css(classes.widgetPaper__inn), innerClassName);
 
   return (
     <Paper

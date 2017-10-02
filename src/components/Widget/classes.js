@@ -13,24 +13,28 @@ const classes = StyleSheet.create({
       width: '100%',
     },
   },
-  widget__title: {
+  title: {
     fontSize: 18,
     color: '#999',
     fontWeight: 200,
     marginBottom: 10,
     textTransform: 'capitalize',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
   },
-  widget__body: {
+  title__right: {},
+  body: {
     display: 'flex',
     flex: 1,
     justifyContent: 'space-between',
   },
-  widget__inn: {
+  widgetPaper__inn: {
     display: 'flex',
     flex: 1,
     height: '100%',
   },
-  widget__paper: {
+  widgetPaper: {
     width: '100%',
   },
 });
