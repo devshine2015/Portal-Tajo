@@ -87,6 +87,7 @@ const features = {
   auth0Full: false,
   extraPath: false,
   restorePassword: false,
+  prefix: false,
 };
 export function isFeatureSupported(feature) {
   return features[feature] || false;
@@ -121,6 +122,19 @@ export const init = () => {
     auth0Full: true,
     restorePassword: false,
     extraPath: getExtraPathname(window.location),
+    prefix: ((window) => {
+      const styles = window.getComputedStyle(document.documentElement, '');
+      const pre = (Array.prototype.slice
+        .call(styles)
+        .join('')
+        .match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
+      )[1];
+
+      return {
+        lowercase: pre,
+        js: pre[0].toUpperCase() + pre.substr(1)
+      };
+    })(window),
   });
 
   // as soon as theme property will be supported
