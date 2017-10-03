@@ -1,5 +1,15 @@
 import { StyleSheet } from 'aphrodite/no-important';
 
+const opacityKeyframes = {
+  from: {
+    opacity: 0,
+  },
+
+  to: {
+    opacity: 1,
+  },
+};
+
 export const fullscreenContainerClasses = StyleSheet.create({
   fullscreenContainer: {
     width: '100%',
@@ -13,6 +23,9 @@ export const fullscreenSummaryClasses = StyleSheet.create({
     padding: 20,
     width: '100%',
     height: '100%',
+    animationName: opacityKeyframes,
+    animationDuration: '3000ms',
+    animationIterationCount: 1,
   },
 });
 
@@ -22,10 +35,9 @@ export const summaryGridClasses = StyleSheet.create({
     display: 'flex',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
+    height: '100%',
   },
   gridItem: {
-    minWidth: 171,
-    minHeight: 100,
     padding: 5,
     flex: 1,
   },
@@ -35,8 +47,7 @@ export const summaryItemClasses = StyleSheet.create({
   item: {
     padding: 6,
     backgroundColor: '#fff',
-    font: '200 condensed 14px "Helvetica Neue", Arial, sans-serif',
-    lineHeight: '100%',
+    font: '200 condensed 10px "Helvetica Neue", Arial, sans-serif',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -45,13 +56,15 @@ export const summaryItemClasses = StyleSheet.create({
     minWidth: 170,
     minHeight: 100,
   },
-  name: {
-    fontSize: 18,
-    fontWeight: 400,
+  head: {
     marginBottom: 3,
   },
+  name: {
+    fontSize: '220%',
+    fontWeight: 400,
+  },
   pos: {
-    fontSize: 12,
+    fontSize: '120%',
     color: '#787878',
   },
   scores: {
@@ -65,7 +78,7 @@ export const summaryItemClasses = StyleSheet.create({
     alignItems: 'center',
   },
   scores__title: {
-    font: '200 condensed 12px "Helvetica Neue", Arial, sans-serif',
+    fontSize: '120%',
     whiteSpace: 'nowrap',
     display: 'inline-block',
     color: '#494949',
@@ -74,12 +87,11 @@ export const summaryItemClasses = StyleSheet.create({
   scores__val: {
     whiteSpace: 'nowrap',
     display: 'inline-block',
-    fontSize: 22,
+    fontSize: '220%',
     fontWeight: 400,
-    lineHeight: '110%',
   },
   time: {
-    fontSize: 10,
+    fontSize: '100%',
     color: '#000',
   },
 });
