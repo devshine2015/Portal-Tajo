@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import { isFeatureSupported } from 'configs';
 import takeVendorPrefixedProp from 'utils/vendors';
-import { fullscreenContainerClasses } from './classes';
+import { fullscreenContainerClasses as classes } from './classes';
 
 class FullscreenContainer extends React.Component {
   ref = null;
@@ -19,12 +19,11 @@ class FullscreenContainer extends React.Component {
     if (this.ref) {
       const requestFullscreen = takeVendorPrefixedProp(this.ref, isFeatureSupported('prefix'), 'requestFullscreen');
 
+      this.ref[requestFullscreen]();
       if (requestFullscreen !== undefined) {
         this.setState(() => ({
           hasFullscreenElement: true,
-        }), () => {
-          this.ref[requestFullscreen]();
-        });
+        }));
       }
     }
   }
@@ -38,7 +37,7 @@ class FullscreenContainer extends React.Component {
   render() {
     return (
       <div
-        className={css(fullscreenContainerClasses.fullscreenContainer)}
+        className={css(classes.fullscreenContainer)}
         ref={this.saveRef}
       >
         { this.state.hasFullscreenElement && this.props.children }
