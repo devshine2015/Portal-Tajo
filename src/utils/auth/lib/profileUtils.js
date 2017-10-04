@@ -14,10 +14,10 @@ export const extractTokens = profile => ({
   sessionId: getSessionId(profile),
 });
 
-const buildPrefix = symbol => `https://drvrapp${symbol}net/`;
-function makeWithPrefix(profile, onProd) {
-  const prefix = buildPrefix(onProd ? ';' : '.');
-  return function (data, returnKey = false) {
+function makeWithPrefix(profile) {
+  const prefix = 'https://drvrapp.net/';
+
+  return function withPrefix(data, returnKey = false) {
     if (returnKey) {
       return `${prefix}${data}`;
     }
@@ -26,8 +26,8 @@ function makeWithPrefix(profile, onProd) {
   };
 }
 
-export function cleanupProfile(profile = {}, onProd) {
-  const withPrefix = makeWithPrefix(profile, onProd);
+export function cleanupProfile(profile = {}) {
+  const withPrefix = makeWithPrefix(profile);
   const appMetadata = withPrefix('app_metadata') || {};
   const userMetadata = withPrefix('user_metadata') || {};
 
