@@ -7,28 +7,28 @@ const HEADERS = {
   accept: 'application/json',
 };
 
-const THOMAS_CLIENT = {
-  auth0Api: 'https://thomas-drvr.eu.auth0.com',
-  managmentAPI: 'https://thomas-drvr.eu.auth0.com/api/v2',
-  authorizationExtAPI: 'https://thomas-drvr.eu.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api',
-};
-
-const PROD_CLIENT = {
-  auth0Api: 'https://drvr.auth0.com',
-  managmentAPI: 'https://drvr.auth0.com/api/v2',
-  authorizationExtAPI: 'https://drvr.us.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api',
+const CLIENT = {
+  thomas: {
+    auth0Api: 'https://thomas-drvr.eu.auth0.com',
+    managmentAPI: 'https://thomas-drvr.eu.auth0.com/api/v2',
+    authorizationExtAPI: 'https://thomas-drvr.eu.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api',
+  },
+  drvr: {
+    auth0Api: 'https://drvr.auth0.com',
+    managmentAPI: 'https://drvr.auth0.com/api/v2',
+    authorizationExtAPI: 'https://drvr.us.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api',
+  },
 };
 
 
 class Auth0API extends BaseAPIClass {
-  constructor({ onProd }) {
+  constructor({ clientConfig }) {
     super();
 
     this.idToken = undefined;
     this.mgmtAccessToken = undefined;
     this.authExtAccessToken = undefined;
-    this.onProd = onProd;
-    this.apis = onProd ? PROD_CLIENT : THOMAS_CLIENT;
+    this.apis = clientConfig;
   }
 
   setIdToken = (idToken = undefined) => {
@@ -64,6 +64,11 @@ class Auth0API extends BaseAPIClass {
   }
 }
 
-const auth0Api = new Auth0API({ onProd: onProduction });
+const auth0Api = new Auth0API({
+  // it's awful, but inevitable evil until we organize auth0 usage
+  // check out baseProject.js on how authentication util initialised with clientName property
+  // same idea is here
+  clientConfig: onProduction ? CLIENT.drvr : CLIENT.drvr,
+});
 
 export default auth0Api;
