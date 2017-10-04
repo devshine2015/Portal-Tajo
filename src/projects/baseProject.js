@@ -53,7 +53,7 @@ const renderProject = async ({
   // instantiate auth with read token
   const auth = new WebAuthentication({
     auth0SupportLevel: isFeatureSupported('auth0Full') ? 'full' : 'none',
-    onProd: onProduction,
+    clientName: onProduction ? 'drvr' : 'drvr', // if on prod always use 'drvr' client, in other case it might vary to 'thomas'
     // eslint-disable-next-line no-shadow
     onAuthSuccess: ({ profile, overwrite }) => {
       onSuccess(profile, store.dispatch, bootstrapProject, { overwrite });
