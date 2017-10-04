@@ -29,12 +29,15 @@ import * as socialHelpers from './socialAuthHelpers';
 class AuthenticationWeb {
   constructor({
     auth0SupportLevel,
-    onProd,
+    // since there is no way on frontend to check which auth0 client is used on backend
+    // we can configure it by clientName, which is 'pseudo' name for it.
+    // Value should be one of: 'thomas', 'drvr', where thomas is for the client used for development
+    clientName,
     onAuthSuccess,
     onAuthFailure,
     onLogoutSuccess,
   }) {
-    const AUTH_CONFIG = getClientConfig(onProd);
+    const AUTH_CONFIG = getClientConfig(clientName);
 
     this.auth0 = new auth0.WebAuth({
       domain: AUTH_CONFIG.domain,
@@ -49,7 +52,7 @@ class AuthenticationWeb {
     this.accessToken = null;
     this.sessionId = null;
     this.auth0SupportLevel = auth0SupportLevel;
-    this.onProd = onProd;
+    this.clientName = clientName;
     this.onAuthFailure = onAuthFailure;
     this.onAuthSuccess = onAuthSuccess;
     this.onLogoutSuccess = onLogoutSuccess;
@@ -100,7 +103,7 @@ class AuthenticationWeb {
           });
         } else {
           this.onAuthSuccess({
-            profile: cleanupProfile(loginResult, this.onProd),
+            profile: cleanupProfile(loginResult, this.clientName),
             overwrite: true,
           });
         }
@@ -147,7 +150,7 @@ class AuthenticationWeb {
       const cleaned = cleanupProfile({
         ...user,
         idToken: getIdToken(authResult),
-      }, this.onProd);
+      }, this.clientName);
 
       cb(err, cleaned);
     });
