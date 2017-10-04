@@ -1,5 +1,6 @@
 import { auth0Api } from 'utils/api';
 import { authorizeWithRole } from 'utils/authz';
+import { profileUtils } from 'utils/auth';
 import endpoints from 'configs/endpoints';
 import { getFleetName } from 'services/Session/reducer';
 import {
@@ -20,9 +21,7 @@ const filterUsers = currentFleet => (users) => {
 
   if (allowedToSeeAllUsers) return users;
 
-  return users.filter(user => (
-    user.user_metadata && (user.user_metadata.fleet === currentFleet)
-  ));
+  return users.filter(user => profileUtils.getFleetName(user) === currentFleet);
 };
 
 export const fetchUsers = () => (dispatch, getState) => {
@@ -75,8 +74,8 @@ export const deleteUser = userId => (dispatch) => {
 
 export const assignPermission = (permissionId, userIndex, isAssigned) => {
   const type = isAssigned ?
-                USERS_MANAGER_PERMISSION_UNASSIGN :
-                USERS_MANAGER_PERMISSION_ASSIGN;
+    USERS_MANAGER_PERMISSION_UNASSIGN :
+    USERS_MANAGER_PERMISSION_ASSIGN;
 
   return ({
     index: userIndex,
