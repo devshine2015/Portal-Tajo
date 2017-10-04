@@ -115,7 +115,7 @@ export const init = () => {
   window.drvrStorage = drvrStorage.init(window.localStorage);
 
   setFeatures({
-    auth0Full: false,
+    auth0Full: onStage,
     restorePassword: false,
     extraPath: getExtraPathname(window.location),
   });
