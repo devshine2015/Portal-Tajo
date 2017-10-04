@@ -5,8 +5,8 @@ let roles = [];
 
 const isString = R.compose(R.equals('string'), R.toLower, R.type);
 const hasInArray = (what, where) => R.compose(R.not, R.equals(-1), R.indexOf(what))(where);
-const checkPermission = (permission = '') => hasInArray(permission, permissions);
-const checkRole = (role = '') => hasInArray(role, roles);
+const checkPermission = permission => hasInArray(permission, permissions);
+const checkRole = role => hasInArray(role, roles);
 
 /**
  * Answers to question if user has given permission
@@ -33,10 +33,10 @@ export function authorizeWithPermissions(permissionsAsked) {
  * @returns {Boolean}
  */
 export function authorizeWithRole(roleAsked = '') {
-  return checkRole(roleAsked);
+  return checkRole(R.toLower(roleAsked));
 }
 
 export function setAuthorization(profile = {}) {
-  permissions = R.prop('permissions', profile);
-  roles = R.prop('roles', profile);
+  permissions = R.map(R.toLower, R.prop('permissions', profile));
+  roles = R.map(R.toLower, R.prop('roles', profile));
 }
