@@ -34,12 +34,12 @@ export const summaryGridClasses = StyleSheet.create({
     listStyle: 'none',
     display: 'flex',
     justifyContent: 'space-between',
-    flexWrap: 'wrap',
+    flexFlow: 'wrap column',
     height: '100%',
   },
   gridItem: {
     padding: 5,
-    flex: 1,
+    flex: '1 0 200px',
   },
 });
 
