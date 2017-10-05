@@ -48,13 +48,13 @@ export const updateUserSettings = (saveToStorage = true, settings) => (dispatch)
     newValue: settings,
     field: 'settings',
   })
-  .then((result) => {
-    if (result) {
-      dispatch(_userSettingsUpdate(settings));
-    }
+    .then((result) => {
+      if (result) {
+        dispatch(_userSettingsUpdate(settings));
+      }
 
-    return Promise.resolve();
-  });
+      return Promise.resolve();
+    });
 };
 
 export const updateLanguage = nextLang => (dispatch) => {
