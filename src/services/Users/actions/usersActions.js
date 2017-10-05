@@ -45,7 +45,7 @@ export const createUser = ({
   });
 
   if (fleet) {
-    enrichedPayload.user_metadata = { fleet };
+    enrichedPayload.app_metadata = { fleet };
   }
 
   return auth0Api[method](url, { payload: enrichedPayload, extName })
