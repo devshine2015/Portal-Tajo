@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import CssProps from 'react-style-proptype'; // eslint-disable-line import/no-extraneous-dependencies
 import { css } from 'aphrodite/no-important';
 
 import classes from './classes';
@@ -13,8 +14,8 @@ const Overlay = ({ children, style }) => (
 );
 
 Overlay.propTypes = {
-  children: PropTypes.any,
-  style: PropTypes.object,
+  children: PropTypes.node,
+  style: CssProps,
 };
 
 Overlay.defaultProps = {
