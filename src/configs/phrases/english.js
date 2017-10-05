@@ -246,6 +246,7 @@ export default {
   repeat_password: 'Repeat password',
   changing: 'changing',
   choose_fleet: 'choose fleet',
+  change_default_password: 'Change default password',
   // --end users manager
 
   // 404 page

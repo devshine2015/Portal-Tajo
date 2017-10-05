@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import { css } from 'aphrodite/no-important';
+import {
+  makePhrasesShape,
+  translate,
+} from 'utils/i18n';
 import Overlay from 'components/User/Overlay';
-import PasswordForm from 'containers/User/PasswordFormConnected';
+import PasswordForm from 'containers/User/PasswordForm';
 // import classes from './classes';
+
+const phrases = [
+  'change_default_password',
+];
 
 const STYLES = {
   overlay: {
@@ -32,6 +39,7 @@ class ProfileChecker extends Component {
       return (
         <Overlay style={STYLES.overlay}>
           <PasswordForm
+            headerText={this.props.translations.change_default_password}
             closeForm={this.closeForm}
             userId={this.props.userId}
           />
@@ -46,6 +54,7 @@ class ProfileChecker extends Component {
 ProfileChecker.propTypes = {
   isDefaultPassword: PropTypes.bool.isRequired,
   userId: PropTypes.string.isRequired,
+  translations: makePhrasesShape(phrases).isRequired,
 };
 
-export default ProfileChecker;
+export default translate(phrases)(ProfileChecker);

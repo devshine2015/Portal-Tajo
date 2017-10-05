@@ -6,7 +6,6 @@ const classes = StyleSheet.create({
     fontWeight: 400,
     fontSize: 18,
     color: 'rgba(0, 0, 0, 0.541176)',
-    textTransform: 'capitalize',
   },
 
   header_center: {
