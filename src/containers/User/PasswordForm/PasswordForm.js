@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
+import {
+  makePhrasesShape,
+  translate,
+} from 'utils/i18n';
 import FormComponents from 'components/User/FormComponents';
 import DetailPopupForm from 'components/User/DetailPopupForm';
-import { translate } from 'utils/i18n';
-
-import phrases, { phrasesShape } from './PropTypes';
+import phrases from './PropTypes';
 
 class PasswordForm extends React.Component {
   state = {
@@ -83,8 +85,7 @@ class PasswordForm extends React.Component {
 PasswordForm.propTypes = {
   closeForm: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-
-  translations: phrasesShape.isRequired,
+  translations: makePhrasesShape(phrases).isRequired,
 };
 
 export default translate(phrases)(PasswordForm);

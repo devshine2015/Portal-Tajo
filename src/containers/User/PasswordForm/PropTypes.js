@@ -1,20 +1,6 @@
-import PropTypes from 'prop-types';
-
-const shape = PropTypes.shape;
-const string = PropTypes.string;
-
-const phrases = [
+export default [
   'change_password',
   'new_password',
   'repeat_password',
   'submit',
 ];
-
-export const phrasesShape = shape({
-  change_password: string.isRequired,
-  new_password: string.isRequired,
-  repeat_password: string.isRequired,
-  submit: string.isRequired,
-});
-
-export default phrases;
