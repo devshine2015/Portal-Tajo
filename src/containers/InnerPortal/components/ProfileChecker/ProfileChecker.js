@@ -53,8 +53,12 @@ class ProfileChecker extends Component {
 
 ProfileChecker.propTypes = {
   isDefaultPassword: PropTypes.bool.isRequired,
-  userId: PropTypes.string.isRequired,
+  userId: PropTypes.string,
   translations: makePhrasesShape(phrases).isRequired,
+};
+
+ProfileChecker.defaultProps = {
+  userId: undefined,
 };
 
 export default translate(phrases)(ProfileChecker);
