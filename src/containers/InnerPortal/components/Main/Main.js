@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import AnimatedLogo from 'components/animated';
 import SnackbarNotification from 'containers/Snackbar';
+import ProfileChecker from '../ProfileChecker';
 import classes from './classes';
 
 const makeInnerPortal = () => (Component) => {
@@ -53,13 +54,14 @@ const makeInnerPortal = () => (Component) => {
             </div>
 
             <SnackbarNotification />
+
+            <ProfileChecker />
           </Component>
         );
       }
 
       return <AnimatedLogo.FullscreenLogo />;
     }
-
   }
 
   InnerPortal.propTypes = {
