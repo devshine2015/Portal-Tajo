@@ -10,7 +10,7 @@ import {
 } from 'material-ui';
 import Userpic from 'components/Userpic';
 import Widget from 'components/Widget';
-import PasswordForm from 'containers/User/PasswordFormConnected';
+import PasswordForm from 'containers/User/PasswordForm';
 import Overlay from 'components/User/Overlay';
 import Details from 'components/User/Details';
 import { translate } from 'utils/i18n';

@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import PasswordForm from './PasswordForm';
 import { usersActions } from 'services/Users/actions';
+import PasswordForm from './PasswordForm';
 
 class PasswordFormConnected extends React.Component {
   onSubmit = (newPass) => {
     this.props.changePassword(this.props.userId, {
       password: newPass,
     })
-    .then(() => this.props.closeForm());
+      .then(() => this.props.closeForm());
   }
 
   render() {
