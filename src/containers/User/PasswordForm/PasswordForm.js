@@ -54,7 +54,7 @@ class PasswordForm extends React.Component {
   render() {
     return (
       <DetailPopupForm
-        headerText={this.props.translations.change_password}
+        headerText={this.props.headerText || this.props.translations.change_password}
         isFetching={this.state.isFetching}
       >
         <TextField
@@ -86,6 +86,11 @@ PasswordForm.propTypes = {
   closeForm: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   translations: makePhrasesShape(phrases).isRequired,
+  headerText: PropTypes.string,
+};
+
+PasswordForm.defaultProps = {
+  headerText: undefined,
 };
 
 export default translate(phrases)(PasswordForm);

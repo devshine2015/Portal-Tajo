@@ -13,10 +13,13 @@ class PasswordFormConnected extends React.Component {
   }
 
   render() {
+    const { closeForm, changePassword, ...props } = this.props;
+
     return (
       <PasswordForm
         closeForm={this.props.closeForm}
         onSubmit={this.onSubmit}
+        {...props}
       />
     );
   }
