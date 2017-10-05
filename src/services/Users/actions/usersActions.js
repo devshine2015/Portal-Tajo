@@ -105,12 +105,16 @@ export const changeEmail = (userId, payload) => (dispatch) => {
     });
 };
 
-export const changePassword = (userId, payload) => (dispatch) => {
-  const enrichedPayload = Object.assign({}, payload, {
+export const changePassword = (userId, password) => (dispatch) => {
+  const payload = {
+    password,
     connection: 'Username-Password-Authentication',
-  });
+    user_metadata: {
+      isDefaultPassword: false,
+    },
+  };
 
-  return _updateUserCall(userId, enrichedPayload)
+  return _updateUserCall(userId, payload)
     .then((user) => {
       dispatch(_userUpdated(user, userId));
 

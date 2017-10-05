@@ -6,9 +6,7 @@ import PasswordForm from './PasswordForm';
 
 class PasswordFormConnected extends React.Component {
   onSubmit = (newPass) => {
-    this.props.changePassword(this.props.userId, {
-      password: newPass,
-    })
+    this.props.changePassword(this.props.userId, newPass)
       .then(() => this.props.closeForm());
   }
 
