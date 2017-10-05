@@ -13,6 +13,7 @@ export const extractTokens = profile => ({
   accessToken: getAccessToken(profile),
   sessionId: getSessionId(profile),
 });
+export const useDefaultPassword = R.pathOr(false, ['user_metadata', 'isDefaultPassword']);
 
 function makeWithPrefix(profile) {
   const prefix = 'https://drvrapp.net/';
@@ -65,4 +66,5 @@ export default {
   extractTokens,
   isLegacyProfile,
   getAuthenticationString,
+  useDefaultPassword,
 };

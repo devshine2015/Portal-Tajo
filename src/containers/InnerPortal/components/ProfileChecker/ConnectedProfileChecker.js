@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
+import makeGetProfileData from './selectors';
 import ProfileChecker from './ProfileChecker';
 
 function makeMapToProps() {
-  return function mapProps() {
-    return {
-      isDefaultPassword: true,
-      userId: '12ad',
-    };
+  const getProfileData = makeGetProfileData();
+
+  return function mapProps(state) {
+    return getProfileData(state);
   };
 }
 

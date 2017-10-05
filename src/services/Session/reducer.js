@@ -48,6 +48,9 @@ function reducer(state = initialState, action) {
 
 export default reducer;
 
+export const getProfile = state =>
+  state.get('session');
+
 export const getProfileData = state => ({
   name: state.getIn(['session', 'name']),
   email: state.getIn(['session', 'email']),
