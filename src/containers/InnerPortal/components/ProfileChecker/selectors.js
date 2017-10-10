@@ -7,7 +7,7 @@ export default function makeGetProfileData() {
     const profile = imProfile.toJS();
 
     return {
-      isDefaultPassword: profileUtils.useDefaultPassword(profile),
+      isDefaultPassword: profileUtils.hasDefaultPassword(profile),
       userId: profile.user_id,
     };
   });
