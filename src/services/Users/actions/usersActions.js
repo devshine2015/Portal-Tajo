@@ -3,6 +3,7 @@ import { authorizeWithRole } from 'utils/authz';
 import { profileUtils } from 'utils/auth';
 import endpoints from 'configs/endpoints';
 import { getFleetName } from 'services/Session/reducer';
+import { updateSessionMetadata } from 'services/Session/actions';
 import {
   assignRole,
   unassignRole,
@@ -105,20 +106,30 @@ export const changeEmail = (userId, payload) => (dispatch) => {
     });
 };
 
-export const changePassword = (userId, password) => (dispatch) => {
+/**
+ * Generic place to change password
+ * @param {String} userId 
+ * @param {String} password 
+ * @param {Boolean} forCurrentUser optional - if we updating current session
+ */
+export const changePassword = (userId, password, forCurrentUser = false) => (dispatch) => {
+  const newVal = {
+    isDefaultPassword: false,
+  };
+
   const payload = {
     password,
     connection: 'Username-Password-Authentication',
-    user_metadata: {
-      isDefaultPassword: false,
-    },
+    user_metadata: newVal,
   };
 
   return _updateUserCall(userId, payload)
     .then((user) => {
-      dispatch(_userUpdated(user, userId));
+      if (forCurrentUser) {
+        return updateSessionMetadata(newVal, dispatch);
+      }
 
-      return Promise.resolve();
+      return dispatch(_userUpdated(user, userId));
     });
 };
 

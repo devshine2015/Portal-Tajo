@@ -12,6 +12,7 @@ import {
 export const SESSION_SET = 'services/Session/SESSION_SET';
 export const SESSION_CLEAN = 'services/Session/SESSION_CLEAN';
 export const SESSION_SETTINGS_UPDATE = 'services/Session/SESSION_SETTINGS_UPDATE';
+export const SESSION_METADATA_UPDATE = 'Update session metadata';
 
 const takeFleetName = R.propOr('', 'fleet');
 
@@ -61,6 +62,24 @@ export const updateLanguage = nextLang => (dispatch) => {
   dispatch(updateUserSettings(true, {
     lang: nextLang,
   }));
+};
+
+/**
+ * updates session with provided values and saves it to storage
+ * it MUST has same schema as session in state
+ * @param {Object} props - key-value pair(s)
+ */
+export const updateSessionMetadata = async (metadata = {}, dispatch) => {
+  dispatch({
+    type: SESSION_METADATA_UPDATE,
+    userMetadata: metadata,
+  });
+
+  return updateProfileInLocalStorage({
+    key: DRVR_PROFILE_KEY,
+    newValue: metadata,
+    field: 'user_metadata',
+  });
 };
 
 const _userSettingsUpdate = settings => ({

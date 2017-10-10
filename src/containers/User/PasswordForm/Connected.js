@@ -6,8 +6,10 @@ import PasswordForm from './PasswordForm';
 
 class PasswordFormConnected extends React.Component {
   onSubmit = (newPass) => {
-    this.props.changePassword(this.props.userId, newPass)
-      .then(() => this.props.closeForm());
+    const { closeForm, forCurrentUser, userId, changePassword } = this.props;
+
+    changePassword(userId, newPass, forCurrentUser)
+      .then(closeForm);
   }
 
   render() {
@@ -27,6 +29,11 @@ PasswordFormConnected.propTypes = {
   closeForm: PropTypes.func.isRequired,
   userId: PropTypes.string.isRequired,
   changePassword: PropTypes.func.isRequired,
+  forCurrentUser: PropTypes.bool,
+};
+
+PasswordFormConnected.defaultProps = {
+  forCurrentUser: false,
 };
 
 const mapState = null;

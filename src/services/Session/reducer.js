@@ -3,6 +3,7 @@ import {
   SESSION_SET,
   SESSION_CLEAN,
   SESSION_SETTINGS_UPDATE,
+  SESSION_METADATA_UPDATE,
 } from './actions';
 
 const initialState = fromJS({
@@ -40,6 +41,9 @@ function reducer(state = initialState, action) {
 
     case SESSION_SETTINGS_UPDATE:
       return state.mergeIn(['settings'], action.settings);
+
+    case SESSION_METADATA_UPDATE:
+      return state.mergeIn(['user_metadata'], action.userMetadata);
 
     default:
       return state;

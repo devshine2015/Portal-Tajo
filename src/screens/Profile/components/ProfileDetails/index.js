@@ -47,6 +47,7 @@ class ProfileDetails extends React.PureComponent {
   renderForm() {
     return (
       <PasswordForm
+        forCurrentUser
         closeForm={this.closeForm}
         userId={this.props.profile.user_id}
       />

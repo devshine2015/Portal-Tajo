@@ -39,6 +39,7 @@ class ProfileChecker extends Component {
       return (
         <Overlay style={STYLES.overlay}>
           <PasswordForm
+            forCurrentUser
             headerText={this.props.translations.change_default_password}
             closeForm={this.closeForm}
             userId={this.props.userId}
