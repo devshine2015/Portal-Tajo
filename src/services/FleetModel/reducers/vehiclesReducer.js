@@ -13,16 +13,16 @@ const vehiclesInitialState = fromJS({
 function vehiclesReducer(state = vehiclesInitialState, action) {
   switch (action.type) {
     case vehiclesActions.FLEET_MODEL_VEHICLES_SET:
-      return state.withMutations((s) => {
-        s.set('processedList', new Map(action.localVehicles))
+      return state.withMutations((st) => {
+        st.set('processedList', new Map(action.localVehicles))
           .set('deadList', new List(action.deadList))
           .set('delayedList', new List(action.delayedList))
           .set('orderedList', new List(action.orderedVehicles));
       });
 
     case vehiclesActions.FLEET_MODEL_VEHICLE_ADD:
-      return state.withMutations((s) => {
-        s.setIn(['processedList', action.id], action.localVehicle)
+      return state.withMutations((st) => {
+        st.setIn(['processedList', action.id], action.localVehicle)
           .set('orderedList', new List(action.orderedList));
       });
 
@@ -39,8 +39,8 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
       return state.set('processedList', new Map(action.vehicles));
 
     case socketActions.FLEET_MODEL_SOCKET_SET_BATCH: {
-      return state.withMutations((s) => {
-        s.mergeIn(['processedList'], action.updates)
+      return state.withMutations((st) => {
+        st.mergeIn(['processedList'], action.updates)
           .set('deadList', action.deadList)
           .set('delayedList', action.delayedList);
       });
@@ -58,8 +58,8 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
       const deadListIndex = state.get('deadList').indexOf(action.id);
       const delayedListIndex = state.get('delayedList').indexOf(action.id);
 
-      return state.withMutations((s) => {
-        s.deleteIn(['processedList', action.id])
+      return state.withMutations((st) => {
+        st.deleteIn(['processedList', action.id])
           .deleteIn(['orderedList', orderedListIndex])
           .deleteIn(['deadList', deadListIndex])
           .deleteIn(['delayedList', delayedListIndex]);
@@ -155,9 +155,6 @@ export const getProcessedVehicles = state =>
 
 export const getVehiclesAmount = state =>
   getSizeSafe(getDynamicSlice(state).get('processedList'));
-
-export const hasProcessedVehicles = state =>
-  getSizeSafe(getDynamicSlice(state).get('processedList')) > 0;
 
 export const getDeadList = state =>
   getValuesSafe(getDynamicSlice(state).get('deadList'));

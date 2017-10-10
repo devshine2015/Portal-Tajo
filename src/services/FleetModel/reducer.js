@@ -55,8 +55,6 @@ export const getVehicleByIdFunc = state =>
   getByIdFunc(getVehiclesDynamicSlice(state));
 export const getProcessedVehicles = state =>
   fromVehiclesReducer.getProcessedVehicles(getPathToVehicles(state));
-export const hasProcessedVehicles = state =>
-  fromVehiclesReducer.hasProcessedVehicles(getPathToVehicles(state));
 export const getSelectedVehicleId = state =>
   fromVehiclesReducer.getSelectedVehicleId(getPathToVehicles(state));
 export const getDeadList = state =>

@@ -3,17 +3,16 @@ import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { Map } from 'immutable';
 import { connect } from 'react-redux';
+import { getDevices } from 'services/Devices/reducer';
+import {
+  fetchDevices,
+  updateWithVehicles,
+} from 'services/Devices/actions';
 import Device from '../Device';
 import {
   getCurrentFilter,
   getSearchString,
 } from '../../reducer';
-import { getDevices } from 'services/Devices/reducer';
-// import { hasProcessedVehicles } from 'services/FleetModel/reducer';
-import {
-  fetchDevices,
-  updateWithVehicles,
-} from 'services/Devices/actions';
 
 import styles from './styles.css';
 
@@ -23,7 +22,7 @@ function searchById(id, searchString) {
   return r.test(id);
 }
 
-const ListItem = (props) => (
+const ListItem = props => (
   <li className={styles.list__item}>
     <Device {...props} />
   </li>
@@ -34,7 +33,7 @@ function renderDevices({
   devices,
   searchString,
 }) {
-  return devices.toList().map(d => {
+  return devices.toList().map((d) => {
     if (currentFilter === 'not-attached' && !d.notAttached) return null;
     if (currentFilter === 'fault-vehicle' && !d.vehicleIsFault) return null;
 
@@ -53,15 +52,6 @@ renderDevices.propTypes = {
 };
 
 class DevicesList extends React.Component {
-
-  // constructor(props) {
-  //   super(props);
-
-  //   this.state = {
-      // setupFinished: props.hasVehicles && props.devices.size > 0,
-  //   };
-  // }
-
   componentWillMount() {
     if (this.props.devices.size === 0) {
       this.props.fetchDevices();
@@ -69,20 +59,6 @@ class DevicesList extends React.Component {
       this.props.updateWithVehicles();
     }
   }
-
-  // componentWillReceiveProps(nextProps) {
-    // be sure vehicles and devices loaded and setup is finished
-    // if (!this.state.setupFinished &&
-    //     (this.props.devices.size > 0 ||
-    //       (!this.props.devices.size && nextProps.devices.size > 0)) &&
-    //     (this.props.hasVehicles ||
-    //     (!this.props.hasVehicles && nextProps.hasVehicles))) {
-    //   this.setState({
-    //     setupFinished: true,
-    //   }, () => {
-    //   });
-    // }
-  // }
 
   render() {
     if (this.props.devices.size === 0) {
@@ -105,9 +81,6 @@ DevicesList.propTypes = {
   // like vehicle name, vehicleIsFault
   updateWithVehicles: PropTypes.func.isRequired,
 
-  // true if size of processedList > 0
-  // hasVehicles: React.PropTypes.bool.isRequired,
-
   // sources for filtering
   devices: PropTypes.instanceOf(Map).isRequired,
   // notAttached: React.PropTypes.instanceOf(List).isRequired,
@@ -118,7 +91,6 @@ DevicesList.defaultProps = {};
 
 const mapState = state => ({
   devices: getDevices(state),
-  // hasVehicles: hasProcessedVehicles(state),
   currentFilter: getCurrentFilter(state),
   searchString: getSearchString(state),
 });
