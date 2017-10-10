@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { api } from 'utils/api';
 import { getFleetName } from 'services/Session/reducer';
 import { getVehiclesStaticSlice } from 'services/FleetModel/reducer';
-import { makeGetFleetIsReady } from 'services/FleetModel/selectors';
+import makeGetFleetIsReady from 'services/FleetModel/selectors';
 import { fetchDevices } from 'services/Devices/actions';
 import { commonFleetActions } from 'services/FleetModel/actions';
 import {

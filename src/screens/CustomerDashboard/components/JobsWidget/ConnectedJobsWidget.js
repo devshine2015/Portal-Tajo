@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
-import { makeGetVehiclesNames } from 'services/FleetModel/selectors';
 import { getPathToVehicles } from 'services/FleetModel/reducer';
+import makeGetVehiclesNames from './selectors';
 import JobsWidget from './JobsWidget';
 
 const makeMapProps = () => {
   const getVehiclesNames = makeGetVehiclesNames();
 
-  return function (state) {
+  return function mapProps(state) {
     return {
       vehicles: getVehiclesNames(getPathToVehicles(state)),
     };
