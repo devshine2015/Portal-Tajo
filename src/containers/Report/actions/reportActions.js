@@ -54,7 +54,7 @@ function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getSta
   const fieldsToCall = {};
 
   Object.values(selectedReports)
-    .filter(sr => sr.hasOwnProperty('endpoint'))
+    .filter(sr => Object.hasOwnProperty.call(sr, 'endpoint'))
     .forEach((ff) => {
       if (!fieldsToCall[ff.endpoint]) {
         fieldsToCall[ff.endpoint] = ff;
@@ -73,7 +73,8 @@ function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getSta
           queryString: `${qs.stringify(periodParams)}&${qs.stringify(query)}`,
         })
       )),
-    ).then((reports = []) => {
+  )
+    .then((reports = []) => {
       const result = {};
 
       /**
@@ -86,7 +87,7 @@ function _generateReport({ timePeriod, frequency, dateFormat }, dispatch, getSta
        * but _reportRequest was called only for firstOne,
        * then create maxTemp: [data] from its result
        *
-       **/
+       */
       Object.values(selectedReports).forEach(({ domain }) => {
         if (domain === 'base' && !result[domain]) {
           result[domain] = vehicles;
@@ -167,7 +168,7 @@ function _reportRequest(vehicles = [], {
   } else {
     requestsToResolve = vehicles.map((v) => {
       const url = `${endpoints.getVehicle(v.id).url}/${endpoint}?${queryString}`;
-      return api.get(url).then(toJson);
+      return withTimeout(10000, api.get(url)).then(toJson);
     });
   }
   return Promise.all(
@@ -181,7 +182,7 @@ function _reportRequest(vehicles = [], {
 }
 
 function toJson(response) {
-  return response.json();
+  return response.json && typeof response.json === 'function' ? response.json() : response;
 }
 
 function getSelectedReportsTypes(state) {
@@ -198,7 +199,7 @@ function getSelectedReportsTypes(state) {
 
 function _getHeaders(translator, state, useSecondary) {
   return getHeaders(translator, getSelectedReports(state).toArray(),
-      getAvailableReports(state).toArray(), useSecondary);
+    getAvailableReports(state).toArray(), useSecondary);
 }
 
 export function getHeaders(translator, selectedReports, availableFields, useSecondary) {
@@ -207,10 +208,9 @@ export function getHeaders(translator, selectedReports, availableFields, useSeco
   selectedReports.forEach((index) => {
     const isSecondary = availableFields[index].isSecondary === true;
     if (isSecondary === useSecondary) {
-  //    result.push(availableFields[index].label);
       if (availableFields[index].multiLabel !== undefined) {
         result.push(...(availableFields[index].multiLabel.map(
-            lbl => translator.getTranslation(lbl))));
+          lbl => translator.getTranslation(lbl))));
       } else {
         result.push(translator.getTranslation(availableFields[index].name));
       }
@@ -220,3 +220,15 @@ export function getHeaders(translator, selectedReports, availableFields, useSeco
   return result;
 }
 
+function withTimeout(ms, promise) {
+  return new Promise((resolve) => {
+    const timeoutId = setTimeout(() => {
+      resolve('error while fetching data');
+    }, ms);
+
+    promise.then((res) => {
+      clearTimeout(timeoutId);
+      resolve(res);
+    });
+  });
+}
