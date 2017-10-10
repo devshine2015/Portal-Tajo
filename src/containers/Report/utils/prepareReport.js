@@ -195,12 +195,12 @@ function _calculateColumn({
   calculate,
   frequency,
   period,
-  record,
+  record = {},
   dateFormat,
 }) {
   let recordsToCalc = record;
 
-  if (record.hasOwnProperty('reportRecords')) {
+  if (Object.hasOwnProperty.call(record, 'reportRecords')) {
     recordsToCalc = record.reportRecords;
   }
 

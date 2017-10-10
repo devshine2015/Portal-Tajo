@@ -5,9 +5,9 @@ import specsUtils from '../utils/specsUtils';
  * Calculate mileage for the whole period.
  * NOT USED FREQUENCY CONCEPTION.
  */
-const _calc = (record, { selectedTypes }) =>
+const _calc = (record = {}, { selectedTypes }) =>
   specsUtils.calcToReturn({
-    mileage: record.distance !== undefined ? record.distance.toFixed(3, 10) : 0,
+    mileage: record.distance !== undefined ? record.distance.toFixed(3, 10) : 'N/A',
   }, selectedTypes);
 
 function _filterSimilar(allSelectedReportTypes) {

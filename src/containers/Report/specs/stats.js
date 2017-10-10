@@ -1,7 +1,7 @@
 import endpoints from 'configs/endpoints';
 import specsUtils from '../utils/specsUtils';
 
-function _calc(record, { selectedTypes }) {
+function _calc(record = {}, { selectedTypes }) {
   return specsUtils.calcToReturn({
     odometer: record.dist && parseInt((record.dist.total / 1000), 10) || 'N/A',
   }, selectedTypes);

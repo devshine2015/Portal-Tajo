@@ -13,7 +13,7 @@ function formatValue(v) {
   return `${h}h ${m}m ${s}s`;
 }
 
-function _calc(record, { selectedTypes }) {
+function _calc(record = {}, { selectedTypes }) {
   return specsUtils.calcToReturn({
     // stoppedTime: formatValue(record.stoppedTime),
     idlingTime: formatValue(record.ignOnWhileStopped + record.ignOffWhileStopped),

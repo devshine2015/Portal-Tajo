@@ -168,17 +168,21 @@ function _reportRequest(vehicles = [], {
   } else {
     requestsToResolve = vehicles.map((v) => {
       const url = `${endpoints.getVehicle(v.id).url}/${endpoint}?${queryString}`;
-      return withTimeout(10000, api.get(url)).then(toJson);
+      return withTimeout(60000, v, api.get(url)).then(toJson);
     });
   }
   return Promise.all(
-    requestsToResolve,
-  ).then(res => ({
-    domain,
-    customReportKind,
-    customReportGenerator,
-    report: res,
-  }));
+    // https://davidwalsh.name/promises-results
+    requestsToResolve.map(p => p.catch(() => undefined)),
+  ).then((res) => {
+    console.log('FINE');
+    return ({
+      domain,
+      customReportKind,
+      customReportGenerator,
+      report: res,
+    });
+  });
 }
 
 function toJson(response) {
@@ -220,15 +224,16 @@ export function getHeaders(translator, selectedReports, availableFields, useSeco
   return result;
 }
 
-function withTimeout(ms, promise) {
-  return new Promise((resolve) => {
+function withTimeout(ms, v, promise) {
+  return new Promise((resolve, reject) => {
     const timeoutId = setTimeout(() => {
-      resolve('error while fetching data');
+      console.log('error', v);
+      reject('error while fetching data');
     }, ms);
 
     promise.then((res) => {
       clearTimeout(timeoutId);
       resolve(res);
-    });
+    }, reject);
   });
 }
