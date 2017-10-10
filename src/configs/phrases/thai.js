@@ -233,6 +233,7 @@ export default {
   repeat_password: 'ใส่รหัสผ่านอีกครั้ง',
   changing: 'กำลังเปลี่ยนแปลง',
   choose_fleet: 'เลือกกองยานพาหนะ',
+  change_default_password: 'เปลี่ยนรหัสผ่าน',
   // --end users manager
 
   // 404 page
