@@ -37,10 +37,11 @@ const SummaryGridItem = ({
 );
 
 SummaryGridItem.propTypes = {
+  id: PropTypes.string.isRequired,
   temp: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
-  ]).isRequired,
+  ]),
   name: PropTypes.string.isRequired,
   speed: PropTypes.oneOfType([
     PropTypes.string,
@@ -49,12 +50,17 @@ SummaryGridItem.propTypes = {
   fuel: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
-  ]).isRequired,
+  ]),
   pos: PropTypes.shape({
     lat: PropTypes.number.isRequired,
     lng: PropTypes.number.isRequired,
   }).isRequired,
   updatedAt: PropTypes.number.isRequired,
+};
+
+SummaryGridItem.defaultProps = {
+  temp: '?',
+  fuel: '?',
 };
 
 export default SummaryGridItem;
