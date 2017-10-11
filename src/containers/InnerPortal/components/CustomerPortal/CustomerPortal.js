@@ -5,6 +5,7 @@ import React from 'react';
 import { css } from 'aphrodite/no-important';
 import { List } from 'immutable';
 import { isMwa } from 'configs';
+import { authorizeWithRole } from 'utils/authz';
 import AppBar from 'components/AppBar';
 import FleetSelector from 'components/FleetSelector';
 import CodebaseVersion from 'components/CodebaseVersion';
@@ -13,14 +14,18 @@ import MainSidebar from '../MainSidebar';
 import RightElement from './AppBarRightElement';
 import classes from './classes';
 
+const canChangeFleet = () => authorizeWithRole('uber');
+
 const Title = props => (
   <div className={css(classes.titleElement)}>
     { props.children }
-    <FleetSelector
-      fleetReadyState="ready"
-      fleets={new List(['demo', 'psl'])}
-      onSelect={props.onFleetChange}
-    />
+    { canChangeFleet() && (
+      <FleetSelector
+        fleetReadyState="ready"
+        fleets={new List(['demo', 'psl'])}
+        onSelect={props.onFleetChange}
+      />
+    )}
   </div>
 );
 
