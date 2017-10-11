@@ -8,7 +8,6 @@ import classes from './classes';
 
 const makeInnerPortal = () => (Component) => {
   class InnerPortal extends React.Component {
-
     state = {
       isSidebarOpen: false,
     };

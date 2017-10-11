@@ -40,7 +40,7 @@ export const fetchVehicles = () => (dispatch) => {
     ...endpoints.getStats,
   }];
 
-  dispatch(_fleetIsReady(false));
+  dispatch(fleetIsReady(false));
 
   return Promise.all(
     urls.map(({ url, method }) =>
@@ -57,12 +57,12 @@ export const fetchVehicles = () => (dispatch) => {
 
     return Promise.resolve({ ready: true });
   })
-  .catch((e) => {
-    console.error(e);
-    dispatch(_fleetIsReady(true));
+    .catch((e) => {
+      console.error(e);
+      dispatch(fleetIsReady(true));
 
-    return Promise.reject({ ready: false });
-  });
+      return Promise.reject({ ready: false });
+    });
 };
 
 
@@ -98,7 +98,7 @@ function _addVehicle(vehicle, dispatch, getState) {
 
 /**
  * PUT new updated details to the server
- **/
+ * */
 export function makeUpdateVehicleRequest(details, dispatch) {
   const { url, method } = endpoints.updateVehicle(details.id);
 
@@ -135,7 +135,7 @@ export const disableVehicle = vehicleId => (dispatch) => {
  * delay/nonErporting states, estimated travel dist since last update, etc...
  *
  * commented out since not used anywhere
-**/
+* */
 // export function localUpdateVehicle(details, dispatch) {
 //   dispatch(_vehicleUpdate({
 //     original: details,
@@ -181,7 +181,7 @@ const _vehicleDisable = id => ({
   id,
 });
 
-const _fleetIsReady = isReady => ({
+export const fleetIsReady = isReady => ({
   type: FLEET_MODEL_READY_SET,
   isReady,
 });

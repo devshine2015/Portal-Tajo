@@ -1,8 +1,10 @@
 import { connect } from 'react-redux';
+import { api } from 'utils/api';
 import { getFleetName } from 'services/Session/reducer';
 import { getVehiclesStaticSlice } from 'services/FleetModel/reducer';
 import { makeGetFleetIsReady } from 'services/FleetModel/selectors';
 import { fetchDevices } from 'services/Devices/actions';
+import { commonFleetActions } from 'services/FleetModel/actions';
 import {
   conditionsActions,
   journalActions,
@@ -29,6 +31,11 @@ const mapDispatch = (dispatch) => {
       dispatch(conditionsActions.fetchAlertConditions())
         .then(() => dispatch(journalActions.fetchNotifications(makePeriodForLast24Hours())))
         .then(() => dispatch(fetchDevices()));
+    },
+    changeFleet: (nextFleetName) => {
+      api.setFleet(nextFleetName);
+
+      dispatch(commonFleetActions.fetchFleet());
     },
   };
 };
