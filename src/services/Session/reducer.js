@@ -4,10 +4,13 @@ import {
   SESSION_CLEAN,
   SESSION_SETTINGS_UPDATE,
   SESSION_METADATA_UPDATE,
+  SESSION_CURRENT_FLEET_CHANGE,
 } from './actions';
 
 const initialState = fromJS({
-  fleet: undefined,
+  // uber users are able to change current fleet
+  currentFleet: undefined,
+
   settings: {
     dateFormat: undefined,
     lang: undefined,
@@ -26,7 +29,7 @@ const initialState = fromJS({
    * for displaying it ...later... in user profile...
    * don't rely on it for checking permissions
    *
-   **/
+   * */
   roles: undefined,
   permissions: undefined,
 });
@@ -44,6 +47,9 @@ function reducer(state = initialState, action) {
 
     case SESSION_METADATA_UPDATE:
       return state.mergeIn(['user_metadata'], action.userMetadata);
+
+    case SESSION_CURRENT_FLEET_CHANGE:
+      return state.set('currentFleet', action.nextFleetName);
 
     default:
       return state;
@@ -73,11 +79,11 @@ export const getUserRole = state =>
   state.getIn(['session', 'roles', 0]);
 
 export const getFleetName = (state) => {
-  if (state.getIn(['session', 'app_metadata', 'fleet']) !== undefined) {
-    return state.getIn(['session', 'app_metadata', 'fleet']);
+  if (state.getIn(['session', 'currentFleet']) !== undefined) {
+    return state.getIn(['session', 'currentFleet']);
   }
 
-  return state.getIn(['session', 'fleet']);
+  return state.getIn(['session', 'app_metadata', 'fleet']);
 };
 export const getUserSettings = state =>
   state.getIn(['session', 'settings']);

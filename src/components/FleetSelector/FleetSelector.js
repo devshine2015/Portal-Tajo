@@ -26,8 +26,12 @@ function renderOptions(fleets) {
 }
 
 class FleetSelector extends React.Component {
-  state = {
-    selectedFleet: null,
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedFleet: props.selectedFleet,
+    };
   }
 
   onChange = (e, index, value) => {
@@ -66,6 +70,11 @@ FleetSelector.propTypes = {
   onSelect: PropTypes.func.isRequired,
   fleets: PropTypes.instanceOf(List).isRequired,
   fleetReadyState: PropTypes.oneOf(['ready', 'not ready', 'loading', 'error']).isRequired,
+  selectedFleet: PropTypes.string,
+};
+
+FleetSelector.defaultProps = {
+  selectedFleet: null,
 };
 
 export default FleetSelector;

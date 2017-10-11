@@ -9,6 +9,7 @@ import {
   conditionsActions,
   journalActions,
 } from 'services/AlertsSystem/actions';
+import { updateFleetName } from 'services/Session/actions';
 import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
 import CustomerPortal from './CustomerPortal';
 
@@ -35,7 +36,8 @@ const mapDispatch = (dispatch) => {
     changeFleet: (nextFleetName) => {
       api.setFleet(nextFleetName);
 
-      dispatch(commonFleetActions.fetchFleet());
+      dispatch(updateFleetName(nextFleetName))
+        .then(() => dispatch(commonFleetActions.fetchFleet()));
     },
   };
 };

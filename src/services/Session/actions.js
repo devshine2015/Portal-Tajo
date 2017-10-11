@@ -13,6 +13,7 @@ export const SESSION_SET = 'services/Session/SESSION_SET';
 export const SESSION_CLEAN = 'services/Session/SESSION_CLEAN';
 export const SESSION_SETTINGS_UPDATE = 'services/Session/SESSION_SETTINGS_UPDATE';
 export const SESSION_METADATA_UPDATE = 'Update session metadata';
+export const SESSION_CURRENT_FLEET_CHANGE = 'change current fleet';
 
 const takeFleetName = R.propOr('', 'fleet');
 
@@ -81,6 +82,11 @@ export const updateSessionMetadata = async (metadata = {}, dispatch) => {
     field: 'user_metadata',
   });
 };
+
+export const updateFleetName = nextName => async dispatch => dispatch({
+  type: SESSION_CURRENT_FLEET_CHANGE,
+  nextFleetName: nextName,
+});
 
 const _userSettingsUpdate = settings => ({
   type: SESSION_SETTINGS_UPDATE,
