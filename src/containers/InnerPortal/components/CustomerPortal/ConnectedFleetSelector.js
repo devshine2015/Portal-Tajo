@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import dealerSelectors from 'services/Dealer/selectors';
 import { changeFleet } from 'services/Dealer/actions';
-import FleetSelector from './FleetSelector';
+import FleetSelector from 'components/FleetSelector';
 
 const makeMapState = () => {
   const mapState = (state) => {

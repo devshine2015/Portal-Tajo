@@ -5,7 +5,7 @@ import AppBar from 'components/AppBar';
 import makeInnerPortal from '../Main';
 import RightElement from './AppBarRightElement';
 import MainSidebar from '../MainSidebar';
-import FleetSelector from '../FleetSelector';
+import FleetSelector from './ConnectedFleetSelector';
 import Logos from './Logos';
 import classes from './classes';
 

@@ -1,26 +1,43 @@
+/* eslint-disable global-require */
+
 import PropTypes from 'prop-types';
 import React from 'react';
+import { css } from 'aphrodite/no-important';
 import { isMwa } from 'configs';
 import AppBar from 'components/AppBar';
+import FleetSelector from 'components/FleetSelector';
 import CodebaseVersion from 'components/CodebaseVersion';
 import makeInnerPortal from '../Main';
 import MainSidebar from '../MainSidebar';
 import RightElement from './AppBarRightElement';
-// import classes from './classes';
+import classes from './classes';
+
+const Title = props => (
+  <div className={css(classes.titleElement)}>
+    { props.children }
+    <FleetSelector />
+  </div>
+);
+
+Title.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 function renderTitle(title) {
   if (isMwa) {
     return (
-      <div>
+      <Title>
         <img src={require('assets/images/logos/mwa/mwa.png')} alt="mwa logo" height="60" width="76" />
-      </div>
+      </Title>
     );
   }
   return (
-    <div>
-      { title }
-      <CodebaseVersion />
-    </div>
+    <Title>
+      <div className={css(classes.withCodename)}>
+        { title }
+        <CodebaseVersion />
+      </div>
+    </Title>
   );
 }
 
