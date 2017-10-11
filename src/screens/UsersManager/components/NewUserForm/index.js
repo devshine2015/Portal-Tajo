@@ -54,14 +54,14 @@ class NewUserForm extends React.Component {
     }
   }
 
-  onSubmit = e => {
+  onSubmit = (e) => {
     e.preventDefault();
 
     this.props.createUser(this.state)
       .then(() => this.props.closeForm());
   }
 
-  onType = e => {
+  onType = (e) => {
     const { name, value } = e.target;
 
     this.updateState(name, value);
@@ -85,7 +85,7 @@ class NewUserForm extends React.Component {
     });
   }
 
-  saveInput = ref => {
+  saveInput = (ref) => {
     if (!ref) return;
 
     this.input = ref;
@@ -93,8 +93,8 @@ class NewUserForm extends React.Component {
 
   render() {
     const { translations } = this.props;
-    const { username, password, role, fleet } = this.state;
-    const disabled = !username && !password && !role && !fleet;
+    const { email, password, role, fleet } = this.state;
+    const enabled = !!email && !!password && !!role && !!fleet;
     const submitButtonText = this.props.editMode === 'create' ?
       translations.create : translations.update;
 
@@ -135,7 +135,7 @@ class NewUserForm extends React.Component {
           <FormComponents.Buttons
             onSubmit={this.onSubmit}
             onCancel={this.onCancel}
-            disabled={disabled}
+            disabled={enabled}
             mainLabel={submitButtonText}
           />
 
