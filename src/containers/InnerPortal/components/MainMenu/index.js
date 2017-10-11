@@ -23,7 +23,7 @@ const MainMenu = ({
   const menuItems = pages.map((page) => {
     if (page.name === 'users' && !canShowUsersManager()) return null;
     if (page.name === 'alerts_editor' && !isAlerts) return null;
-    if (page.name === 'devices_manager' && canShowDevicesManager()) return null;
+    if (page.name === 'devices_manager' && !canShowDevicesManager()) return null;
 
     return (
       <MenuItem

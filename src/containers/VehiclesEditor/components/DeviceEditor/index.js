@@ -8,7 +8,7 @@ import DeviceSelector from 'containers/DeviceSelector';
 
 import styles from './styles.css';
 
-const canEdit = () => authorizeWithPermissions('view:vehicle_device');
+const canEdit = () => authorizeWithPermissions('edit:vehicle_device');
 
 const EditorButton = ({
   onClick,
