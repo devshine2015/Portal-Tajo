@@ -5,8 +5,8 @@ import AppBar from 'components/AppBar';
 import makeInnerPortal from '../Main';
 import RightElement from './AppBarRightElement';
 import MainSidebar from '../MainSidebar';
+import FleetSelector from '../FleetSelector';
 import Logos from './Logos';
-import FleetSelector from './ConnectedFleetSelector';
 import classes from './classes';
 
 function renderTitle() {

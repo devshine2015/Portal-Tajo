@@ -23,11 +23,3 @@ export const logoClasses = StyleSheet.create({
     height: 'auto',
   },
 });
-
-export const selectorClasses = StyleSheet.create({
-  selector: {
-    display: 'flex',
-    padding: '0 30px',
-    minWidth: 350,
-  },
-});

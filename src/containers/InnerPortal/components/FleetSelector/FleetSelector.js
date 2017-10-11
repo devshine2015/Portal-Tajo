@@ -4,7 +4,7 @@ import { List } from 'immutable';
 import { css } from 'aphrodite/no-important';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import { selectorClasses } from './classes';
+import classes from './classes';
 
 const STYLES = {
   selector: {
@@ -44,7 +44,7 @@ class FleetSelector extends React.Component {
     const { fleets, fleetReadyState } = this.props;
 
     return (
-      <div className={css(selectorClasses.selector)}>
+      <div className={css(classes.selector)}>
         <SelectField
           fullWidth
           disabled={fleetReadyState === 'loading'}
