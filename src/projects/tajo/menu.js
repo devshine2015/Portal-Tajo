@@ -8,7 +8,7 @@ const menu = {
     path: 'installer',
   },
   promos: {
-    name: 'promos',
+    name: 'promos (depricated)',
     path: 'promos',
   },
   devices: {
@@ -22,6 +22,10 @@ const menu = {
   profile: {
     name: 'profile',
     path: 'profile',
+  },
+  vehicles: {
+    name: 'vehicles_editor',
+    path: 'vehicles',
   },
 };
 

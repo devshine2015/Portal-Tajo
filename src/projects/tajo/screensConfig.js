@@ -6,6 +6,7 @@ import createPromoScreen from 'screens/PromoTrackingScreen/route';
 import createDevicesManagerScreen from 'screens/DevicesManager/route';
 import createProfileScreen from 'screens/Profile/route';
 import createUsersManagerScreen from 'screens/UsersManager/route';
+import createVehiclesManagerScreen from 'screens/VehiclesManagerScreen/route';
 import menu from './menu';
 
 export default [{
@@ -29,6 +30,9 @@ export default [{
 }, {
   create: createInstallerScreen,
   options: menu.installer,
+}, {
+  create: createVehiclesManagerScreen,
+  options: menu.vehicles,
 }, {
   create: createPromoScreen,
   options: menu.promos,
