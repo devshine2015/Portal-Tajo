@@ -4,6 +4,10 @@ import createDealerDashboardScreen from 'screens/DealerDashboard/route';
 import createVehiclePerformanceScreen from 'screens/VehiclesPerformance/route';
 import createVehicleDiagnosticsScreen from 'screens/VehicleDiagnostics/route';
 import createUsersManagerScreen from 'screens/UsersManager/route';
+import createAlersEditorScreen from 'screens/AlertsEditor/route';
+import createMaintenanceScreen from 'screens/Maintenance/route';
+
+
 import menu from './menu';
 
 export default [{
@@ -28,4 +32,10 @@ export default [{
 }, {
   create: createUsersManagerScreen,
   options: menu.users,
+}, {
+  create: createAlersEditorScreen,
+  options: menu.alerts,
+}, {
+  create: createMaintenanceScreen,
+  options: menu.maintenance,
 }];

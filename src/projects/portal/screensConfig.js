@@ -14,6 +14,7 @@ import createAlertLogsScreen from 'screens/AlertsLog/route';
 import createInstallerScreen from 'screens/InstallerScreen/route';
 import createDevicesManagerScreen from 'screens/DevicesManager/route';
 
+import createExpensesScreen from 'screens/Expenses/route';
 import menu from './menu';
 
 export default [{
@@ -68,4 +69,7 @@ export default [{
 }, {
   create: createProfileScreen,
   options: menu.profile,
+}, {
+  create: createExpensesScreen,
+  options: menu.expenses,
 }];

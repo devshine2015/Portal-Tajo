@@ -16,4 +16,5 @@ export default [
   'overview',
   'vehicle_performance',
   'vehicle_diagnostics',
+  'vehicle_maintenance',
 ];

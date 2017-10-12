@@ -46,6 +46,9 @@ const menu = {
   devices: {
     name: 'devices_manager',
     path: 'devices',
+  expenses: {
+    name: 'expsnese',
+    path: 'expenses',
   },
 };
 

@@ -15,6 +15,14 @@ const menu = {
     name: 'vehicle_diagnostics',
     path: 'diagnostic',
   },
+  alerts: {
+    name: 'alerts_editor',
+    path: 'alerts',
+  },
+  maintenance: {
+    name: 'vehicle_maintenance',
+    path: 'maintenance',
+  },
 };
 
 export default menu;

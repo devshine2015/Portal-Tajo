@@ -44,6 +44,9 @@ export default {
   overview: 'overview',
   vehicle_performance: 'vehicle performance',
   vehicle_diagnostics: 'vehicle diagnostics',
+  vehicle_maintenance: 'vehicle mainenance',
+  exspenses: 'expenses',
+  
   // -- end main menu
 
   // dashboard screen
