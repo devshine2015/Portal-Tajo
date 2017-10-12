@@ -26,8 +26,11 @@ const filterUsers = currentFleet => (users) => {
 };
 
 export const fetchUsers = () => (dispatch, getState) => {
-  const { url, method, extName } = endpoints.getAllUsers;
   const currentFleet = getFleetName(getState());
+  const { url, method, extName } = endpoints.getUsers({
+    q: `app_metadata.fleet:"${currentFleet}"`,
+    updated_at: 1,
+  });
 
   return auth0Api[method](url, { extName })
     .then(toJson)

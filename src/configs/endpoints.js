@@ -134,11 +134,11 @@ const endpoints = {
   },
 
   // users managment
-  getAllUsers: {
-    url: 'users',
+  getUsers: params => ({
+    url: `users?${qs.stringify(params)}`,
     method: 'get',
     extName: apis.managmentAPI,
-  },
+  }),
   updateUser: id => ({
     url: `users/${id}`,
     method: 'patch',
