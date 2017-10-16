@@ -31,7 +31,6 @@ import { vehiclesActions } from 'services/FleetModel/actions';
 import listTypes from 'components/InstancesList/types';
 
 class ExecReport extends React.Component {
-
   onTimeFrameChange = (fromDateTime, toDateTime) => {
     this.props.setExecTimeFrame(fromDateTime, toDateTime);
   }
@@ -52,17 +51,17 @@ class ExecReport extends React.Component {
           scrollable
           filter={
             <Filter filterFunc={this.props.filterFunc} />
-            }
+          }
           content={
             <VehiclesList
               data={this.props.vehicles}
               currentExpandedItemId={this.props.selectedVehicleId}
               type={listTypes.vehicleExecReport}
             />
-            }
+          }
         />
         <Layout.FixedContent>
-          {/* <TimeFrameController dateValue={dateFrom} onChange={this.setStartDate} />*/}
+          {/* <TimeFrameController dateValue={dateFrom} onChange={this.setStartDate} /> */}
           <NoPrint
             style={{
               position: 'absolute',

@@ -20,6 +20,7 @@ const classes = StyleSheet.create({
     backgroundColor: '#e64a19',
     // borderRight: '1px solid rgba(0, 0, 0, 0.5)',
     boxShadow: '1px 0px 3px rgba(0,0,0,0.4)',
+    transition: 'all 0.25s',
   },
   title: {
     border: 'solid 1px',
