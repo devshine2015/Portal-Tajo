@@ -70,6 +70,6 @@ export default [{
   create: createProfileScreen,
   options: menu.profile,
 }, {
-  create: createExpensesScreen,
-  options: menu.expenses,
+  create: createMaintenanceScreen,
+  options: menu.maintenance,
 }];

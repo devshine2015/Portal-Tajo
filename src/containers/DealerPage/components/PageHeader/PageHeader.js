@@ -26,12 +26,12 @@ const classes = StyleSheet.create({
   },
 });
 
-const PageHeader = ({ text, onApply }) => (
+const PageHeader = ({ text, onApply, hasDateSelector }) => (
   <div className={css(classes.header)}>
     <div className={css(classes.text)}>
       { text }
     </div>
-    <div className={css(classes.actions)}>
+    {hasDateSelector && <div className={css(classes.actions)}>
       <DateRangeWithButton
         withTime={false}
         onApply={onApply}
@@ -42,13 +42,19 @@ const PageHeader = ({ text, onApply }) => (
           />
         )}
       />
-    </div>
+    </div>}
   </div>
 );
 
 PageHeader.propTypes = {
   text: PropTypes.string.isRequired,
   onApply: PropTypes.func.isRequired,
+  hasDateSelector: PropTypes.bool,
 };
+
+PageHeader.defaultProps = {
+  hasDateSelector: true,
+};
+
 
 export default PageHeader;
