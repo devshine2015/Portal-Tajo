@@ -9,6 +9,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
+import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
 import { DateRange } from 'components/DateRange';
 // import TimeFrameController from './components/TimeFrameSelector';
 import BetaLabel from 'components/BetaLabel';
@@ -35,6 +36,13 @@ import { vehiclesActions } from 'services/FleetModel/actions';
 import listTypes from 'components/InstancesList/types';
 
 class VehicleMaintenance extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedVehicleId: '',
+    };
+  }
   onTimeFrameChange = (fromDateTime, toDateTime) => {
     // this.props.setExecTimeFrame(fromDateTime, toDateTime);
   }
@@ -43,61 +51,75 @@ class VehicleMaintenance extends React.Component {
     // this.props.setExecTimeFrame(date, moment(date).add(1, 'days').toDate());
   }
 
+  vehicleSelected = (id) => {
+    this.setState({selectedVehicleId: id});
+  }
+
   render() {
+    // const theVehicle = this.props.getVehicleByIdFunc(this.props.selectedVehicleId);
+    // {/* label={theVehicle.original.name} */}
+    const headLbl = this.state.selectedVehicleId;
+    // '6K1577 pajero sport';
     return (
       <DealerPage>
-        <PowerList onVehicleSelect={() => this.forceUpdate()} />
+        <PowerList onVehicleSelect={(id) => this.vehicleSelected(id)} />
         <FixedContent
           style={{
             height: '100%',
+            padding: 0,
           }}
         >
           <PageHeader text="Vehicle Maintenance" hasDateSelector={false} />
           <BetaLabel />
-          <BarIndicator
-            title={'Next Service in 12720km'}
-            zeroValue={25000}
-            endValue={50000}
-            currentValue={37000}
-          />
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Layout.Section style={{ padding: '32px' }}>
+            <Layout.Header
+              label={headLbl}
+              style={{ textAlign: 'center', paddingLeft: 0 }}
+            />
+          </Layout.Section>
+          <Layout.Section style={{ padding: '32px' }}>
             <BarIndicator
-              style={{ flex: '1', paddingRight: '6px' }}
-              title={'Breake Wear'}
-              currentValue={27}
+              title={'Next Service in 12720km'}
+              currentValue={Math.random()*100}
             />
-            <BarIndicator
-              style={{ flex: '1', paddingLeft: '6px' }}
-              title={'Exhaust Brake'}
-              currentValue={75}
-            />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <BarIndicator
-              style={{ width: '50%', paddingRight: '6px' }}
-              title={'Clutch Wear'}
-              currentValue={60}
-            />
-          </div>
-          <div style={{ display: 'flex' }}>
-            <LightIndicator
-              title={'Engine Trouble'}
-              status={0}
-            />
-            <LightIndicator
-              title={'Break Warning'}
-              status={1}
-            />
-            <LightIndicator
-              title={'Engine Temp'}
-              status={0}
-            />
-            <LightIndicator
-              title={'Oil Preasure'}
-              status={0}
-            />
-          </div>
-
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <BarIndicator
+                style={{ flex: '1', paddingRight: '6px' }}
+                title={'Breake Wear'}
+                currentValue={Math.random()*100}
+              />
+              <BarIndicator
+                style={{ flex: '1', paddingLeft: '6px' }}
+                title={'Exhaust Brake'}
+                currentValue={Math.random()*100}
+              />
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <BarIndicator
+                style={{ width: '50%', paddingRight: '6px' }}
+                title={'Clutch Wear'}
+                currentValue={Math.random()*100}
+              />
+            </div>
+            <div style={{ display: 'flex' }}>
+              <LightIndicator
+                title={'Engine Trouble'}
+                status={0}
+              />
+              <LightIndicator
+                title={'Break Warning'}
+                status={1}
+              />
+              <LightIndicator
+                title={'Engine Temp'}
+                status={0}
+              />
+              <LightIndicator
+                title={'Oil Preasure'}
+                status={0}
+              />
+            </div>
+          </Layout.Section>
         </FixedContent>
       </DealerPage>
     );
@@ -105,7 +127,7 @@ class VehicleMaintenance extends React.Component {
 }
 
 VehicleMaintenance.propTypes = {
-  // vehicles: PropTypes.array.isRequired,
+  vehicles: PropTypes.array.isRequired,
   // selectedVehicleId: PropTypes.string.isRequired,
 
   // filterFunc: PropTypes.func.isRequired,
@@ -114,6 +136,7 @@ VehicleMaintenance.propTypes = {
 const mapState = state => ({
   // vehicles: fromFleetReducer.getVehiclesExSorted(state),
   // selectedVehicleId: ctxGetSelectedVehicleId(state),
+  // getVehicleById: getVehicleByIdFunc(state),  
 });
 const mapDispatch = {
   filterFunc: vehiclesActions.filterVehicles,
