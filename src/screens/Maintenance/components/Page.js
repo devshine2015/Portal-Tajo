@@ -80,25 +80,25 @@ class VehicleMaintenance extends React.Component {
           <Layout.Section style={{ padding: '32px' }}>
             <BarIndicator
               title={'Next Service in 12720km'}
-              currentValue={Math.random()*100}
+              currentValue={Math.random() * 100}
             />
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <BarIndicator
                 style={{ flex: '1', paddingRight: '6px' }}
-                title={'Breake Wear'}
-                currentValue={Math.random()*100}
+                title={'Brake Wear'}
+                currentValue={Math.random() * 100}
               />
               <BarIndicator
                 style={{ flex: '1', paddingLeft: '6px' }}
                 title={'Exhaust Brake'}
-                currentValue={Math.random()*100}
+                currentValue={Math.random() * 100}
               />
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <BarIndicator
                 style={{ width: '50%', paddingRight: '6px' }}
                 title={'Clutch Wear'}
-                currentValue={Math.random()*100}
+                currentValue={Math.random() * 100}
               />
             </div>
             <div style={{ display: 'flex' }}>
