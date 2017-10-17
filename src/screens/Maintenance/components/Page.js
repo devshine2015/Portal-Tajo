@@ -10,6 +10,11 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 
 import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
+// import { getVehiclesExSorted, reducerKey } from 'services/FleetModel/reducers/vehiclesReducer';
+import * as fromFleetReducer from 'services/FleetModel/reducer';
+import { vehiclesActions } from 'services/FleetModel/actions';
+import listTypes from 'components/InstancesList/types';
+
 import { DateRange } from 'components/DateRange';
 // import TimeFrameController from './components/TimeFrameSelector';
 import BetaLabel from 'components/BetaLabel';
@@ -31,12 +36,7 @@ import FixedContent from 'components/FixedContent';
 // import { makeDefaultDatePeriod } from 'utils/dateTimeUtils';
 import { ctxGetSelectedVehicleId } from 'services/Global/reducers/contextReducer';
 
-import * as fromFleetReducer from 'services/FleetModel/reducer';
-import { vehiclesActions } from 'services/FleetModel/actions';
-import listTypes from 'components/InstancesList/types';
-
 class VehicleMaintenance extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -52,17 +52,17 @@ class VehicleMaintenance extends React.Component {
   }
 
   vehicleSelected = (id) => {
-    this.setState({selectedVehicleId: id});
+    this.setState({ selectedVehicleId: id });
   }
 
   render() {
-    // const theVehicle = this.props.getVehicleByIdFunc(this.props.selectedVehicleId);
-    // {/* label={theVehicle.original.name} */}
-    const headLbl = this.state.selectedVehicleId;
+    const theVehicle = this.props.getVehicleById(this.state.selectedVehicleId);
+    const headLbl = theVehicle !== null ? theVehicle.original.name : 'SELECT VEHICLE';
+    // const headLbl = this.state.selectedVehicleId;
     // '6K1577 pajero sport';
     return (
       <DealerPage>
-        <PowerList onVehicleSelect={(id) => this.vehicleSelected(id)} />
+        <PowerList onVehicleSelect={id => this.vehicleSelected(id)} />
         <FixedContent
           style={{
             height: '100%',
@@ -134,9 +134,9 @@ VehicleMaintenance.propTypes = {
 };
 
 const mapState = state => ({
-  // vehicles: fromFleetReducer.getVehiclesExSorted(state),
+  vehicles: fromFleetReducer.getVehiclesExSorted(state),
   // selectedVehicleId: ctxGetSelectedVehicleId(state),
-  // getVehicleById: getVehicleByIdFunc(state),  
+  getVehicleById: getVehicleByIdFunc(state),
 });
 const mapDispatch = {
   filterFunc: vehiclesActions.filterVehicles,

@@ -8,7 +8,8 @@ import sessionReducer from 'services/Session/reducer';
 import globalReducer from 'services/Global/reducer';
 import snackbarReducer from 'containers/Snackbar/reducer';
 import dealerReducer, { reducerKey as dealerReducerKey } from 'services/Dealer/reducer';
-import fleetReducer, { reducerKey as fleetReducerKey } from 'services/FleetModel/reducers/vehiclesReducer';
+import fleetReducer from 'services/FleetModel/reducer';
+// import fleetReducer, { reducerKey as fleetReducerKey } from 'services/FleetModel/reducers/vehiclesReducer';
 import usersManagerReducer, { reducerKey as usersManagerReducerKey } from 'services/Users/reducer';
 import routerReducer from '../utils/routerReducer';
 import alertsSystemReducer from 'services/AlertsSystem/reducer';
@@ -22,7 +23,8 @@ export default function createReducer(asyncReducers) {
     route: routerReducer,
     inner: innerPortalReducer,
     snackbar: snackbarReducer,
-    [fleetReducerKey]: fleetReducer,
+    fleet: fleetReducer,
+    // [fleetReducerKey]: fleetReducer,
     [dealerReducerKey]: dealerReducer,
     [usersManagerReducerKey]: usersManagerReducer,
     alerts: alertsSystemReducer,
