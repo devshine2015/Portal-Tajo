@@ -24,6 +24,7 @@ export default function createReducer(asyncReducers) {
     inner: innerPortalReducer,
     snackbar: snackbarReducer,
     fleet: fleetReducer,
+    // not using the reducerKey for fleet now - maybe adopt it later
     // [fleetReducerKey]: fleetReducer,
     [dealerReducerKey]: dealerReducer,
     [usersManagerReducerKey]: usersManagerReducer,
