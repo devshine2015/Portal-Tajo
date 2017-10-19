@@ -65,7 +65,6 @@ class VehicleMaintenance extends React.Component {
         <PowerList onVehicleSelect={id => this.vehicleSelected(id)} />
         <FixedContent
           style={{
-            height: '100%',
             padding: 0,
           }}
         >
