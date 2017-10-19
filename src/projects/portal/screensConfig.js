@@ -60,11 +60,11 @@ export default [{
   create: createUsersManagerScreen,
   options: menu.users,
 }, {
-  create: createInstallerScreen,
-  options: menu.installer,
-}, {
   create: createDevicesManagerScreen,
   options: menu.devices,
+}, {
+  create: createInstallerScreen,
+  options: menu.installer,
 }, {
   create: createProfileScreen,
   options: menu.profile,
