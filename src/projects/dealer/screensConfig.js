@@ -6,6 +6,7 @@ import createVehicleDiagnosticsScreen from 'screens/VehicleDiagnostics/route';
 import createUsersManagerScreen from 'screens/UsersManager/route';
 import createAlersEditorScreen from 'screens/AlertsEditor/route';
 import createMaintenanceScreen from 'screens/Maintenance/route';
+import createVehiclesManagerScreen from 'screens/VehiclesManagerScreen/route';
 
 
 import menu from './menu';
@@ -29,6 +30,9 @@ export default [{
 }, {
   create: createVehicleDiagnosticsScreen,
   options: menu.diagnostic,
+}, {
+  create: createVehiclesManagerScreen,
+  options: menu.vehicles,
 }, {
   create: createUsersManagerScreen,
   options: menu.users,

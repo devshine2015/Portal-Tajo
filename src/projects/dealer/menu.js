@@ -7,6 +7,10 @@ const menu = {
     name: 'users',
     path: 'users',
   },
+  vehicles: {
+    name: 'vehicles_editor',
+    path: 'vehicles',
+  },
   performance: {
     name: 'vehicle_performance',
     path: 'performance',

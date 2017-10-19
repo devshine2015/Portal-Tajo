@@ -14,6 +14,9 @@ export const project = process.env.DRVR_PROJECT;
 export const isEscape = project === 'tajo';
 // export const isSunshine = !isEscape;
 
+export const isDealer = project === 'dealer';
+
+
 /**
  * the url of remote server. In case of running locally
  * it could be any server.
