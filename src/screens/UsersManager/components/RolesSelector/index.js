@@ -11,7 +11,7 @@ import { translate } from 'utils/i18n';
 import phrases, { phrasesShape } from './PropTypes';
 
 function _renderRoles(roles) {
-  return roles.toArray().map(r => {
+  return roles.toArray().map((r) => {
     const role = r.toJS();
 
     // only uber can create other ubers
