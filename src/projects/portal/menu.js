@@ -39,6 +39,14 @@ const menu = {
     name: 'alerts_logs',
     path: 'alertslogs',
   },
+  installer: {
+    name: 'installer',
+    path: 'installer',
+  },
+  devices: {
+    name: 'devices_manager',
+    path: 'devices',
+  },
 };
 
 export default menu;

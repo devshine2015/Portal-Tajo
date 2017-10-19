@@ -57,14 +57,14 @@ class UsersManagerPage extends React.Component {
         <Layout.Row>
 
           { SHOW_SUBMENU && (
-          <div className={css(classes.sidebar)}>
-            <Submenu
-              subsections={SUBSECTIONS}
-              changeSection={this.onSubsectionChange}
-              activeIndex={this.state.activeSectionIndex}
-            />
-          </div>
-        )}
+            <div className={css(classes.sidebar)}>
+              <Submenu
+                subsections={SUBSECTIONS}
+                changeSection={this.onSubsectionChange}
+                activeIndex={this.state.activeSectionIndex}
+              />
+            </div>
+          )}
 
           <div className={css(classes.content)}>
             { activeSubsection.component() }

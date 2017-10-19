@@ -11,6 +11,9 @@ import createAlersEditorScreen from 'screens/AlertsEditor/route';
 import createNotFoundScreen from 'screens/NotFound/route';
 import createUsersManagerScreen from 'screens/UsersManager/route';
 import createAlertLogsScreen from 'screens/AlertsLog/route';
+import createInstallerScreen from 'screens/InstallerScreen/route';
+import createDevicesManagerScreen from 'screens/DevicesManager/route';
+
 import menu from './menu';
 
 export default [{
@@ -56,6 +59,12 @@ export default [{
 }, {
   create: createUsersManagerScreen,
   options: menu.users,
+}, {
+  create: createInstallerScreen,
+  options: menu.installer,
+}, {
+  create: createDevicesManagerScreen,
+  options: menu.devices,
 }, {
   create: createProfileScreen,
   options: menu.profile,

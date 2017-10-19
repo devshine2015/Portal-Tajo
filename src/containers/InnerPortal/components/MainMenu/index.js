@@ -14,6 +14,7 @@ import phrases from './PropTypes';
 
 const canShowUsersManager = () => authorizeWithPermissions('view:users_manager');
 const canShowDevicesManager = () => authorizeWithPermissions('view:devices_manager');
+const canShowInstallerManager = () => authorizeWithPermissions('edit:vehicle_device');
 
 const MainMenu = ({
   pages,
@@ -24,7 +25,8 @@ const MainMenu = ({
     if (page.name === 'users' && !canShowUsersManager()) return null;
     if (page.name === 'alerts_editor' && !isAlerts) return null;
     if (page.name === 'devices_manager' && !canShowDevicesManager()) return null;
-
+    if (page.name === 'installer' && !canShowInstallerManager()) return null;
+    
     return (
       <MenuItem
         key={page.path}
