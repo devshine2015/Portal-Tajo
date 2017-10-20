@@ -57,7 +57,7 @@ class AlertsSection extends React.Component {
     };
 
     const alertsList = this.props.alerts.filter(alrt => alrt.kind === this.props.myAlertKind)
-          .map(alrt => <AlertCard key={alrt.id} alert={alrt} renderForm={this.props.renderForm} />);
+      .map(alrt => <AlertCard key={alrt.id} alert={alrt} renderForm={this.props.renderForm} />);
 
     return (
       <Layout.Section>
@@ -82,11 +82,11 @@ class AlertsSection extends React.Component {
           >
             { this.state.showForm && (
               <div className={css(classes.formWrapper)}>
-                  { this.props.renderForm({
-                    isOpened: this.state.showForm,
-                    closeForm: this.closeForm,
-                    alert: { kind: this.props.myAlertKind },
-                  })}
+                { this.props.renderForm({
+                  isOpened: this.state.showForm,
+                  closeForm: this.closeForm,
+                  alert: { kind: this.props.myAlertKind },
+                })}
               </div>
             )}
           </VelocityTransitionGroup>
@@ -105,7 +105,7 @@ AlertsSection.propTypes = {
   actionButtonLabel: PropTypes.string.isRequired,
 };
 
-const mapState = (state) => ({
+const mapState = state => ({
   alerts: getAlertConditions(state),
 });
 const mapDispatch = {

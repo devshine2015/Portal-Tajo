@@ -1,4 +1,5 @@
 import { StyleSheet } from 'aphrodite/no-important';
+import { theme } from 'configs';
 
 // const contentPadding = 20;
 // export const HORIZONTAL = 20;
@@ -11,7 +12,7 @@ const classes = StyleSheet.create({
     // padding: '8px 24px',
     // height: '64px',
     // backgroundColor: '#c4c2b1',
-    backgroundColor: '#439e47',
+    backgroundColor: theme.palette.dachboardElementColor,
     border: '1px solid rgba(0,0,0,0.15)',
     borderRadius: '2px',
     boxShadow: '0 1px 5px rgba(0,0,0,0.4)',
@@ -25,8 +26,8 @@ const classes = StyleSheet.create({
   dataItemTitleDark: {
     margin: '4px',
     textAlign: 'center',
-    color: '#439e47',
-  },  
+    color: theme.palette.dachboardElementColor,
+  },
   dataItemValueContainer: {
     margin: '8px 32px',
     fontSize: 'xx-large',

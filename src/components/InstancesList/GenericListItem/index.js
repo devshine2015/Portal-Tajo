@@ -159,7 +159,7 @@ class GenericListItem extends React.Component {
         ref={this.saveNode}
         style={{
           backgroundColor: isExpanded ? muiTheme.powerList.activeItemColor : muiTheme.powerList.itemColor,
-          color: muiTheme.powerList.itemTextColor,
+          color: (isExpanded && muiTheme.powerList.activeItemTextColor) ? muiTheme.powerList.activeItemTextColor : muiTheme.powerList.itemTextColor,
         }}
       >
         { _needIndicator(rest.item) && (

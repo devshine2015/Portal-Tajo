@@ -1,6 +1,5 @@
 import { StyleSheet } from 'aphrodite/no-important';
-
-const contentPadding = 20;
+import { theme } from 'configs';
 
 const classes = StyleSheet.create({
 // ---- top level container
@@ -17,7 +16,7 @@ const classes = StyleSheet.create({
   },
   progBarProg: {
     height: '100%',
-    backgroundColor: '#e64a19',
+    backgroundColor: theme.palette.alertColor, // '#e64a19',
     // borderRight: '1px solid rgba(0, 0, 0, 0.5)',
     boxShadow: '1px 0px 3px rgba(0,0,0,0.4)',
     transition: 'all 0.25s',

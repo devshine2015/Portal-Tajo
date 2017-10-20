@@ -4,6 +4,7 @@ import React from 'react';
 //
 import PropTypes from 'prop-types';
 
+import { theme } from 'configs';
 import pure from 'recompose/pure';
 
 import { css } from 'aphrodite/no-important';
@@ -17,7 +18,7 @@ const LightIndicator = ({
   style,
 }) => {
   // const className = cs(css(classes.progBarBody));
-  const lightStyle = status > 0 ? { backgroundColor: '#F44336' } : {};
+  const lightStyle = status > 0 ? { backgroundColor: theme.palette.alertColor } : {};
   return (
     <div className={css(classes.lightContainer)} style={style}>
       <div className={css(classes.lightBody)} style={lightStyle} />

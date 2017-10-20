@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import AlertIcon from 'material-ui/svg-icons/alert/error-outline';
 import AlertLagIcon from 'material-ui/svg-icons/action/watch-later';
-import { yellow700, blueGrey200 } from 'material-ui/styles/colors';
-import { isEscape } from 'configs';
+import { isEscape, theme } from 'configs';
 import classes from './StatusIcon.classes';
 
 const STYLES = {
@@ -21,11 +20,12 @@ const StatusIcon = ({
   let icon = null;
 
   if (activityStatus === 'dead') {
-    icon = <AlertIcon color={yellow700} style={STYLES.icon} />;
+    icon = <AlertIcon color={theme.palette.alertColor} style={STYLES.icon} />;
   } else if (isEscape && isDelayedWithIgnitionOff) {
-    icon = <AlertLagIcon color={blueGrey200} style={STYLES.icon} />;
+    // blueGrey200
+    icon = <AlertLagIcon color={theme.palette.alertColor} style={STYLES.icon} />;
   } else if (activityStatus === 'delayed') {
-    icon = <AlertLagIcon color={yellow700} style={STYLES.icon} />;
+    icon = <AlertLagIcon color={theme.palette.alertColor} style={STYLES.icon} />;
   }
 
   return (

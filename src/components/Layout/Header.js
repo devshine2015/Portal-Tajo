@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 
 import Avatar from 'material-ui/Avatar';
+import tinycolor from 'tinycolor2';
+import { theme } from 'configs';
 import classes from './classes';
 
 const ActionWrapper = ({ children }) => (
@@ -28,7 +30,7 @@ const Header = ({
       { icon !== undefined &&
         <Avatar
           color="#fff"
-          backgroundColor="rgba(0, 150, 136, 0.60)"
+          backgroundColor={tinycolor(theme.layout.headerColor).setAlpha(0.6)}
           icon={icon}
           className={css(classes.header__icon)} 
         />

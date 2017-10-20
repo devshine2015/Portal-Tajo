@@ -18,6 +18,10 @@ export const tajoTheme = {
     primary4Color: teal300,
     accent1Color: deepOrange700,
     accent2Color: yellow700,
+
+    alertColor: yellow700, // blueGrey200
+    dachboardElementColor: '#c4c3b1',    
+
     PLItemBackgroundColor: cyan700,
     PLItemBackgroundColorHover: tinycolor(cyan700).setAlpha(0.85).toRgbString(),
     PLItemColor: white,
@@ -36,16 +40,25 @@ export const tajoTheme = {
     activeItemColor: deepOrange700,
     itemTextColor: '#fff',
   },
+  layout: {
+    headerColor: '#009688',
+  },
   spacing: {
     appBarHeigth: 64,
     powerlistFilterHeight: 50,
   },
 };
 
+const ccMainBrandColor = '#00619E';
+
 export const fusoTheme = {
   palette: {
-    primary1Color: '#e3142e',
-    accent1Color: '#c4c3b1',
+    primary1Color: ccMainBrandColor, // '#e3142e',
+    accent1Color: '#e3142e', // '#c4c3b1',
+
+    alertColor: yellow700, //'#e64a19'
+    dachboardElementColor: '#2196F3',
+    
     PLItemBackgroundColor: cyan700,
     PLItemBackgroundColorHover: tinycolor(cyan700).setAlpha(0.85).toRgbString(),
     PLItemColor: white,
@@ -56,17 +69,21 @@ export const fusoTheme = {
   },
   appBar: {
     color: '#fff',
-    textColor: '#e3142e',
-    logoutBackgroundColor: '#c4c3b1',
+    textColor: ccMainBrandColor,
+    logoutBackgroundColor: '#dee3ef',
     logoutTextColor: '#000',
     paddingRight: 16,
-    borderColor: '#e3142e',
+    borderColor: ccMainBrandColor,
   },
   powerList: {
     backgroundColor: '#c4c3b1',
-    itemColor: '#c4c3b1',
-    activeItemColor: '#e3142e',
+    itemColor: '#dee3ef',
+    activeItemColor: ccMainBrandColor,
     itemTextColor: '#000',
+    activeItemTextColor: white,
+  },
+  layout: {
+    headerColor: ccMainBrandColor,
   },
   spacing: tajoTheme.spacing,
 };

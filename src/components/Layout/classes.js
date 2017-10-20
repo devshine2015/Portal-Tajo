@@ -1,4 +1,6 @@
 import { StyleSheet } from 'aphrodite/no-important';
+import tinycolor from 'tinycolor2';
+import { theme } from 'configs';
 
 const contentPadding = 20;
 
@@ -13,7 +15,7 @@ const classes = StyleSheet.create({
     // backgroundColor: '#ccc',
     backgroundColor: 'white',
   },
-// ---- screen "info" content - what we have on right from the PowerList
+  // ---- screen "info" content - what we have on right from the PowerList
   fixedContent: {
     minWidth: '1px',
     display: 'flex',
@@ -28,7 +30,7 @@ const classes = StyleSheet.create({
       marginLeft: 0,
     },
   },
-// ---- content
+  // ---- content
   content: {
     maxWidth: 1000,
     width: '100%',
@@ -42,7 +44,7 @@ const classes = StyleSheet.create({
   content__center: {
     alignItems: 'center',
   },
-// ---- section
+  // ---- section
   sectionContainer: {
     borderBottom: '1px solid rgba(0, 0, 0, 0.2);',
     backgroundColor: '#ddd',
@@ -50,7 +52,7 @@ const classes = StyleSheet.create({
       backgroundColor: '#f4f4f4',
     },
   },
-// ---- header
+  // ---- header
   header: {
     display: 'flex',
     // marginBottom: 20,
@@ -66,10 +68,10 @@ const classes = StyleSheet.create({
     fontWeight: 'bolder',
     fontSize: 32,
     textTransform: 'capitalize',
-    color: 'rgba(0, 150, 136, 0.3)',
+    color: tinycolor(theme.layout.headerColor).setAlpha(0.3).toString(),
   },
   header__actionWrapper: {},
-// ---- row
+  // ---- row
   row: {
     display: 'flex',
     flex: 1,

@@ -1,6 +1,7 @@
 import { StyleSheet } from 'aphrodite/no-important';
 
-const FUSO_PRIMARY = '#cf0721';
+// const FUSO_PRIMARY = '#cf0721';
+const ccMainBrandColor = '#00619E';
 const gray = '#aaa';
 const lightGray = '#eee';
 
@@ -10,7 +11,7 @@ const classes = StyleSheet.create({
     background: `linear-gradient(60deg, ${lightGray}, ${gray})`,
   },
   fakeBar: {
-    backgroundColor: FUSO_PRIMARY,
+    backgroundColor: ccMainBrandColor,
     height: 64,
   },
   page__inn: {

@@ -76,7 +76,7 @@ export function checkSetNoIcons(fleetName) {
   isNoIcons = fleetName.indexOf('cipta') !== -1;
 }
 
-export const theme = project === 'dealer' ? getMuiTheme(fusoTheme) : getMuiTheme(tajoTheme);
+export const theme = isDealer ? getMuiTheme(fusoTheme) : getMuiTheme(tajoTheme);
 
 // TODO: quick fix - just doubled prev limit - need some proven number
 // TODO: currently using same for hisotry (24hvr) and reports (arbitrary time range)

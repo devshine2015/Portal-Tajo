@@ -3,7 +3,7 @@ import { StyleSheet } from 'aphrodite/no-important';
 const classes = StyleSheet.create({
   logos: {
     width: '100%',
-    padding: '10px 60px 0',
+    padding: '50px 60px 30px',
   },
   logos__logo: {
     maxWidth: '100%',

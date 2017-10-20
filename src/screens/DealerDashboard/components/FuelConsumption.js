@@ -1,36 +1,34 @@
 import React from 'react';
-import { StyleSheet } from 'aphrodite/no-important';
+import { StyleSheet, css } from 'aphrodite/no-important';
 
 //
 //
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 import pure from 'recompose/pure';
 
 import cs from 'classnames';
-import { css } from 'aphrodite/no-important';
+import { theme } from 'configs';
+
 import classes from 'components/DashboardElements/classes';
 
 // import classes from './classes';
 
-const tableCellDescr = {
-  padding: '4px 16px',
-};
 const tableCellCard = {
 };
 
 const tableCellCardTheft = {
-  backgroundColor: '#f44336',
+  backgroundColor: theme.palette.alertColor,
 };
 const tableCellCardRefuel = {
-  backgroundColor: '#3f51b5',
+  backgroundColor: theme.palette.dachboardElementColor,
 };
 
 const inClasses = StyleSheet.create({
   tableCellCard: {
     height: '64px',
     lineHeight: '64px',
-    backgroundColor: '#439e47',
+    backgroundColor: theme.palette.dachboardElementColor,
     color: 'white',
     padding: '4px 16px',
     margin: '4px',
@@ -41,14 +39,15 @@ const inClasses = StyleSheet.create({
   tableCellDescr: {
     padding: '4px 16px',
     textAlign: 'right',
+    fontWeight: 'bold',
+    color: theme.palette.dachboardElementColor,
   },
   container: {
     marginTop: '32px',
   },
 });
 
-const FuelConsumption = ({
-}) => {
+const FuelConsumption = () => {
   const className = cs(css(inClasses.tableCellCard), css(classes.dataItemContainer));
   // const containerStyle = Object.assign({}, maxWidth !== undefined ? { maxWidth } : {}, style);
   // style={{ width: witdhPerc }} 

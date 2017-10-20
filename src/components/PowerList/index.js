@@ -23,7 +23,7 @@ function renderChildrens(scrollable, filter, content, options = {}) {
         offsetTop={options.offsetTop}
       >
         {content}
-      </Scrollable>
+      </Scrollable>,
     );
   } else if (content) {
     result.push(React.cloneElement(content, {
@@ -52,7 +52,10 @@ const PowerList = ({
   });
 
   return (
-    <FixedColumn containerClassName={columnClassName}>
+    <FixedColumn
+      containerClassName={columnClassName}
+      style={{ borderRightColor: muiTheme.powerList.activeItemColor }}
+    >
       <div
         className={styles.powerlist}
         style={{

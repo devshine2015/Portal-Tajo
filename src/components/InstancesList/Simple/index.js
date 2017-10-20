@@ -5,7 +5,6 @@ import pure from 'recompose/pure';
 import styles from '../styles.css';
 
 class SimpleListItem extends React.Component {
-
   onClick = () => {
     this.props.onClick(this.props.id);
   }
@@ -14,6 +13,7 @@ class SimpleListItem extends React.Component {
     return (
       <div
         className={styles.listItemInn}
+        style={{ lineHeight: '78px' }}
         onClick={this.onClick}
       >
         {this.props.name}

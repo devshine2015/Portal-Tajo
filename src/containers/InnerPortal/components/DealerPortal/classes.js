@@ -18,6 +18,10 @@ export const logoClasses = StyleSheet.create({
   logo: {
     width: 160,
   },
+  logo_secondary: {
+    width: 80,
+    maxHeight: 36,
+  },
   logo__img: {
     maxWidth: '100%',
     height: 'auto',
