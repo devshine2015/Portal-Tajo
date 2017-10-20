@@ -75,7 +75,7 @@ export const updateDetails = ({
 
       return Promise.resolve();
     })
-    .then(() => Promise.resolve(newIndex), err => {
+    .then(() => Promise.resolve(newIndex), (err) => {
       console.error(err);
 
       dispatch({

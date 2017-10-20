@@ -138,6 +138,7 @@ class VehiclesEditor extends React.Component {
       // Here we convert it back to kilometers just for UI.
       // Ie. users don't need high precision here.'
       odometer: (vehicle.dist.total / 1000).toFixed(0),
+      lastServiceOdo: vehicle.lastServiceOdo,
     };
 
     return (

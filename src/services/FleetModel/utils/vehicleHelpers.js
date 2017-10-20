@@ -36,13 +36,13 @@ export function getActivityStatus(isDead, isDelayed) {
 
 export function extractFuelNormalized(fuelInfo) {
   if (fuelInfo.hasOwnProperty('fuelLevelAbs')) {
-      // in: range 0-12000, inversed
-      // make it [0-1]
+    // in: range 0-12000, inversed
+    // make it [0-1]
     return Math.min(Math.max(12000 - fuelInfo.fuelLevelAbs, 0) / 12000, 1);
   }
   if (fuelInfo.hasOwnProperty('fuelLevelPerc')) {
-      // in: percentage, 0-100
-      // make it [0-1]
+    // in: percentage, 0-100
+    // make it [0-1]
     return Math.min(1, fuelInfo.fuelLevelPerc / 100);
   }
   return undefined;
@@ -53,7 +53,7 @@ export function extractFuelNormalized(fuelInfo) {
  * will update given imVehicle in other case.
  *
  * returns immutable map
-**/
+* */
 function _makeImmutableVehicle({
   vehicleStats,
   now = Date.now(),
@@ -83,9 +83,9 @@ function _makeImmutableVehicle({
 
   const imNextVehicle = imVehicle.withMutations((s) => {
     s.set('activityStatus', activityStatus)
-     .set('lastUpdateSinceEpoch', sinceEpoch)
-     .set('ignitionOn', ignitionOn)
-     .set('isDelayedWithIgnitionOff', localTimings.isDelayedWithIgnitionOff);
+      .set('lastUpdateSinceEpoch', sinceEpoch)
+      .set('ignitionOn', ignitionOn)
+      .set('isDelayedWithIgnitionOff', localTimings.isDelayedWithIgnitionOff);
 
     s.set('fuelNormalized', hasFuel ? extractFuelNormalized(vehicleStats.fuel) : undefined);
 
@@ -105,15 +105,15 @@ function _makeImmutableVehicle({
       s.set('dist', vehicleStats.dist);
     } else {
       s.setIn(['dist', 'total'], 0)
-       .setIn(['dist', 'lastTrip'], 0);
+        .setIn(['dist', 'lastTrip'], 0);
     }
 
     if (hasPosition) {
       s.set('pos', [vehicleStats.pos.latlon.lat, vehicleStats.pos.latlon.lng])
-       .set('speed', vehicleStats.pos.speed);
+        .set('speed', vehicleStats.pos.speed);
     } else {
       s.set('pos', [0, 0])
-       .set('speed', 0);
+        .set('speed', 0);
     }
   });
 
@@ -246,15 +246,16 @@ export function imMakeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
   }
 
   const marker = backEndObject.hasOwnProperty('meta') && backEndObject.meta.hasOwnProperty('marker') ?
-        backEndObject.meta.marker : markerTypes.Icon;
+    backEndObject.meta.marker : markerTypes.Icon;
   const driverId = backEndObject.hasOwnProperty('meta') && backEndObject.meta.hasOwnProperty('driverId') ?
-        backEndObject.meta.driverId : '';
+    backEndObject.meta.driverId : '';
   return initilalValues.withMutations((s) => {
     s.merge(_makeImmutableVehicle({ vehicleStats }))
-     .set('original', fromJS(backEndObject))
-     .set('id', backEndObject.id)
-     .set('marker', marker)
-     .set('driverId', driverId);
+      .set('original', fromJS(backEndObject))
+      .set('id', backEndObject.id)
+      .set('marker', marker)
+      .set('driverId', driverId)
+      .set('lastServiceOdo', backEndObject.hasOwnProperty('lastServiceOdo') ? backEndObject.lastServiceOdo.value : 0);
   });
 }
 
@@ -308,7 +309,7 @@ export function makeLocalVehicles(backEndVehiclesList = [], statsList = []) {
  * each element MUST HAVE 'name' or 'original.name' property.
  *
  * returns array of ids of sorted elements
-**/
+* */
 export function sortVehicles(vehicles = []) {
   return vehicles
     .sort((a, b) => {
@@ -333,7 +334,7 @@ export function sortVehicles(vehicles = []) {
 /**
  * return properties required by backend
  * in order to modify vehicle
- **/
+ * */
 export function mockRequiredBackendProps(data) {
   const odo = data.isMiles ? data.odometer * 1.60934 : data.odometer;
 
@@ -355,7 +356,7 @@ export function mockRequiredBackendProps(data) {
 export function cleanVehicle(vehicle) {
   const requiredBackEndProps = [
     'id', 'name', 'licensePlate', 'make', 'model', 'kind',
-    'odometer', 'year', 'created', 'updated', 'deviceId',
+    'odometer', 'lastServiceOdo', 'year', 'created', 'updated', 'deviceId',
     'status', 'meta', 'chassisNumber', 'fuelCapacity',
   ];
 
@@ -370,7 +371,7 @@ export function cleanVehicle(vehicle) {
 
 /**
  * Find vehicle by id and return its instance and index
- **/
+ * */
 export function getVehicleById(id, array = []) {
   let vehicleIndex;
   let vehicle;

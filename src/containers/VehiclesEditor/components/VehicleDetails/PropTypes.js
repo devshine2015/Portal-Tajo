@@ -17,6 +17,7 @@ const phrases = [
   'model_name',
   'year',
   'odometer_value',
+  'last_service_odo',
   'vehicle_kind_hint',
   'save',
   'cancel',

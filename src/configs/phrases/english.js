@@ -129,6 +129,7 @@ export default {
   chassis_number: 'Chassis Number',
   fuel_capacity: 'Fuel Capacity (ltr.)',
   odometer_value: 'Odometer (km.)',
+  last_service_odo: 'Last Service Odometer (km.)',
   vehicle_kind_hint: 'Kind of the Vehicle',
   disable: 'disable',
   parameters: 'parameters',

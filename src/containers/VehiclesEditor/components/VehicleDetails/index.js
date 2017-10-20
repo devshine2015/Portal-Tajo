@@ -47,7 +47,7 @@ class VehicleDetails extends React.Component {
 
     /**
      * Initial values for controlled inputs
-     **/
+     * */
     this.state = setVehicleState(props);
   }
 
@@ -59,7 +59,7 @@ class VehicleDetails extends React.Component {
 
   /**
    * Just send state as data
-   **/
+   * */
   onSubmit = (e) => {
     e.preventDefault();
     const nameChanged = this.state.name !== this.props.details.name;
@@ -77,6 +77,9 @@ class VehicleDetails extends React.Component {
       fuelCapacity: parseInt(this.state.fuelCapacity, 10),
       odometer: {
         value: nextOdo,
+      },
+      lastServiceOdo: {
+        value: parseInt(this.state.lastServiceOdo, 10),
       },
       meta: {
         marker: this.state.marker,
@@ -99,7 +102,7 @@ class VehicleDetails extends React.Component {
 
   /**
    * Update state[field] with value
-   **/
+   * */
   onChange = (e, value) => {
     const field = e.target.name;
 
@@ -132,7 +135,7 @@ class VehicleDetails extends React.Component {
 
   /**
    * Update state if another vehicle has been chosen
-   **/
+   * */
   setNewVehicleDetails = (nextProps) => {
     this.setState(setVehicleState(nextProps));
   }
@@ -215,6 +218,14 @@ class VehicleDetails extends React.Component {
               onChange={this.onChange}
               floatingLabelText={translations.year_of_manufacture}
               value={this.state.year}
+              type="number"
+            />
+            <TextField
+              fullWidth
+              name="lastServiceOdo"
+              onChange={this.onChange}
+              floatingLabelText={translations.last_service_odo}
+              value={this.state.lastServiceOdo}
               type="number"
             />
             <TextField
