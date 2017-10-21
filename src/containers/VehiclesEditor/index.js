@@ -20,7 +20,6 @@ import { translate } from 'utils/i18n';
 import phrases, { phrasesShape } from './PropTypes';
 
 class VehiclesEditor extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -47,7 +46,7 @@ class VehiclesEditor extends React.Component {
    * since server requiring all details to be sent
    * needResort if name has been changed
    * device {needDetach, needAttach}
-   **/
+   * */
   onDetailsSave = (data, needResort, device) => {
     const { selectedVehicleId } = this.state;
 
@@ -57,17 +56,17 @@ class VehiclesEditor extends React.Component {
       needResort,
       device,
     })
-    .then(() => {
-    }, () => {
-      this.props.showSnackbar(this.props.translations.send_fail, 5000);
-    });
+      .then(() => {
+      }, () => {
+        this.props.showSnackbar(this.props.translations.send_fail, 5000);
+      });
   }
 
   onDetailsCancel = () => {
     // this.closeEditor();
   }
 
-  onChooseVehicle = id => {
+  onChooseVehicle = (id) => {
     this.setState({
       ...this.getSelectedState({
         id,
@@ -112,7 +111,7 @@ class VehiclesEditor extends React.Component {
 
   /**
    * Close editor
-   **/
+   * */
   closeEditor = () => {
     this.setState({
       selectedVehicleOriginalIndex: undefined,
@@ -128,7 +127,7 @@ class VehiclesEditor extends React.Component {
 
     /**
      * Provide data required by component
-     **/
+     * */
     const vehicle = this.props.vehicles[selectedVehicleOriginalIndex];
     const data = {
       ...vehicle.original,
@@ -180,7 +179,7 @@ class VehiclesEditor extends React.Component {
         />
 
         {this.renderDetails()}
-        </Layout.ScreenWithList>
+      </Layout.ScreenWithList>
     );
   }
 }
@@ -198,7 +197,7 @@ VehiclesEditor.propTypes = {
   translations: phrasesShape.isRequired,
 };
 
-const mapState = (state) => ({
+const mapState = state => ({
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
   isLoading: getLoaderState(state),
   globalSelectedVehicleId: fromFleetReducer.getSelectedVehicleId(state),
