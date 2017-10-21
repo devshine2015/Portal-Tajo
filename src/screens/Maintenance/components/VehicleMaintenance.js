@@ -7,8 +7,6 @@ import PropTypes from 'prop-types';
 
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import { css } from 'aphrodite/no-important';
-import { VelocityComponent } from 'velocity-react';
 
 // import TimeFrameController from './components/TimeFrameSelector';
 import BetaLabel from 'components/BetaLabel';
@@ -23,10 +21,6 @@ import { getVehicleAlertConditions,
 import AnimatedLogo from 'components/animated';
 import BarIndicator from './MaintenaceProgressBar';
 import LightIndicator from './LightIndicator';
-import classes from './classes';
-
-// import { makeDefaultDatePeriod } from 'utils/dateTimeUtils';
-import { ctxGetSelectedVehicleId } from 'services/Global/reducers/contextReducer';
 
 function devRndLightStatus() {
   return (Math.random() < 0.7) ? 0 : 1;
@@ -43,17 +37,7 @@ class VehicleMaintenance extends React.Component {
       this.fetchAlerts(props.theVehicle.id);
     }
   }
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.theVehicle === null
-      || this.state.isLoading !== nextState.isLoading) {
-      return true;
-    }
-    if (this.props.theVehicle.id === nextProps.theVehicle.id) {
-      return false;
-    }
-    return true;
-  }
-
+ 
   componentWillReceiveProps(nextProps) {
     if (nextProps.theVehicle === null) {
       return;
@@ -72,7 +56,7 @@ class VehicleMaintenance extends React.Component {
   fetchAlerts = (vehicleId) => {
     this.props.fetchVehicleAlertConditions(vehicleId)
       .then(() => {
-        this.setVehicleAlerts(this.props.getVehicleAlerts(this.props.vehicleId));
+        this.setVehicleAlerts(this.props.getVehicleAlerts(vehicleId));
       });
   }
 

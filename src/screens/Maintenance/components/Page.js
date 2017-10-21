@@ -1,9 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 // import PortalReports from 'containers/Report';
-
-// export default PortalReports;
-import PropTypes from 'prop-types';
 
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
@@ -18,9 +16,6 @@ import DealerPage, {
   PowerList,
 } from 'containers/DealerPage';
 
-// import { makeDefaultDatePeriod } from 'utils/dateTimeUtils';
-import { ctxGetSelectedVehicleId } from 'services/Global/reducers/contextReducer';
-
 class VehicleMaintenancePage extends React.Component {
   constructor(props) {
     super(props);
@@ -30,14 +25,16 @@ class VehicleMaintenancePage extends React.Component {
   }
 
   vehicleSelected = (id) => {
-    this.setState({ selectedVehicleId: id });
+    if (id !== this.state.selectedVehicleId) {
+      this.setState({ selectedVehicleId: id });
+    }
   }
 
   render() {
     return (
       <DealerPage>
         <PowerList onVehicleSelect={id => this.vehicleSelected(id)} />
-        <VehicleMaintenance theVehicle={this.props.getVehicleById(this.state.selectedVehicleId)}/>
+        <VehicleMaintenance theVehicle={this.props.getVehicleById(this.state.selectedVehicleId)} />
       </DealerPage>
     );
   }
@@ -47,7 +44,7 @@ VehicleMaintenancePage.propTypes = {
   // vehicles: PropTypes.array.isRequired,
   // selectedVehicleId: PropTypes.string.isRequired,
 
-  // filterFunc: PropTypes.func.isRequired,
+  getVehicleById: PropTypes.func.isRequired,
 };
 
 const mapState = state => ({
