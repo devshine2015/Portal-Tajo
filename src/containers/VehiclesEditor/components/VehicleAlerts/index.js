@@ -11,7 +11,7 @@ import { ifArraysEqual } from 'utils/arrays';
 import { conditionsActions } from 'services/AlertsSystem/actions';
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import { getVehicleAlertConditions,
-    getAlertConditionByIdFunc, getAlertConditions } from 'services/AlertsSystem/reducer';
+  getAlertConditionByIdFunc, getAlertConditions } from 'services/AlertsSystem/reducer';
 import Layout from 'components/Layout';
 import FormButtons from 'components/Controls/FormButtons';
 import AlertOfKindMultiSelector from './AlertOfKindMultiSelector';
@@ -44,7 +44,7 @@ class VehicleAlerts extends React.Component {
   }
   onOfKindChange = (value, theKind) => {
     const idx = this.state.alerts.map(alertId =>
-        (this.props.alertById(alertId))).findIndex(alrt => alrt.kind === theKind);
+      (this.props.alertById(alertId))).findIndex(alrt => alrt.kind === theKind);
     const nextAlerts = this.state.alerts.slice(0);
     if (idx >= 0) {
       nextAlerts.splice(idx, 1);
@@ -58,7 +58,7 @@ class VehicleAlerts extends React.Component {
   }
   onOfKindToggle = (isOn, theKind) => {
     const idx = this.state.alerts.map(alertId =>
-        (this.props.alertById(alertId))).findIndex(alrt => alrt.kind === theKind);
+      (this.props.alertById(alertId))).findIndex(alrt => alrt.kind === theKind);
     const nextAlerts = this.state.alerts.slice(0);
     // if exists - remove
     if (idx >= 0) {
@@ -101,7 +101,7 @@ class VehicleAlerts extends React.Component {
       });
   }
 
-// Temp -15&#8451;..-8&#8451;
+  // Temp -15&#8451;..-8&#8451;
   render() {
     if (!isAlerts) return null;
     const haveAlertConditions = this.props.alertConditions.length > 0;
@@ -150,7 +150,7 @@ class VehicleAlerts extends React.Component {
             onRemoveClick={this.onRemoveClick}
             alertFilter={a => (a.kind === alertKinds._ALERT_KIND_ODO)}
           /> */}
-          {/* put all the GF alerts with chips here?*/}
+          {/* put all the GF alerts with chips here? */}
           <AlertOfKindMultiSelector
             title={translations.on_enter_location}
             vehicleAlerts={this.state.alerts}

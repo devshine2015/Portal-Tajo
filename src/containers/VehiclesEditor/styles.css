@@ -1,11 +1,4 @@
 @media screen and (min-width: 100px) {
-  .editor {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    width: 100%;
-  }
-
   .listContainer {
     width: 10%;
     min-width: 250px;

@@ -11,12 +11,12 @@ import { getVehicleById } from 'services/FleetModel/utils/vehicleHelpers';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { getVehicleFilterString } from 'services/Global/reducer';
+
 import VehicleDetails from './components/VehicleDetails';
 import { getLoaderState } from './reducer';
 import { detailsActions } from './actions';
 import { translate } from 'utils/i18n';
 
-import styles from './styles.css';
 import phrases, { phrasesShape } from './PropTypes';
 
 class VehiclesEditor extends React.Component {
@@ -161,8 +161,7 @@ class VehiclesEditor extends React.Component {
     }
 
     return (
-      <div className={styles.editor}>
-
+      <Layout.ScreenWithList>
         <PowerList
           scrollable
           filter={
@@ -181,8 +180,7 @@ class VehiclesEditor extends React.Component {
         />
 
         {this.renderDetails()}
-
-      </div>
+        </Layout.ScreenWithList>
     );
   }
 }
