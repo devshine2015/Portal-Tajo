@@ -7,7 +7,6 @@ import { css } from 'aphrodite/no-important';
 
 import pure from 'recompose/pure';
 
-import cs from 'classnames';
 import { theme } from 'configs';
 
 import DashboardElements from 'components/DashboardElements';
@@ -24,7 +23,7 @@ const SoonCard = {
 };
 
 const ServiceOverview = () => {
-  const classNameParent = cs(css(classes.itemBody), css(classes.subCardsContainer));
+  const classNameParent = css(classes.itemBody, classes.subCardsContainer);
 
   return (
     <div className={css(classes.itemBox)}>

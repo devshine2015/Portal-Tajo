@@ -12,7 +12,6 @@ const alertColorAnimation = {
 };
 
 const classes = StyleSheet.create({
-  
 // ---- top level container
   progContainer: {
     marginTop: '48px',

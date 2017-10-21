@@ -65,11 +65,11 @@ const classes = StyleSheet.create({
     fontSize: 'initial',
     lineHeight: 'initial',
     fontWeight: 'initial',
-    margin: '0 12px',
+    margin: '0 12px 8px',
   },
   subCardValue: {
     lineHeight: 'initial',
-    margin: '0',
+    margin: '4px 0 0 0',
   },
 
 });
