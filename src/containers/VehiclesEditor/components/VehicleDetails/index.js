@@ -12,6 +12,8 @@ import {
 } from 'utils/i18n';
 import Layout from 'components/Layout';
 import FormButtons from 'components/Controls/FormButtons';
+import { isDealer } from 'configs';
+
 import DeviceEditor from '../DeviceEditor';
 import VehicleAlerts from '../VehicleAlerts';
 import VehicleKindSelector from '../VehicleKindSelector';
@@ -19,6 +21,10 @@ import MarkerSelector from '../MarkerSelector/MarkerSelector';
 import DriverSelector from '../DriverSelector/DriverSelector';
 import styles from './styles.css';
 import phrases, { detailsShape } from './PropTypes';
+
+// TODO: use permissions for ODO editing
+// const canShowDevicesManager = () => authorizeWithPermissions('view:devices_manager');
+
 
 function setVehicleState(props) {
   return Object.assign({}, props.details, {
@@ -220,14 +226,16 @@ class VehicleDetails extends React.Component {
               value={this.state.year}
               type="number"
             />
-            <TextField
-              fullWidth
-              name="lastServiceOdo"
-              onChange={this.onChange}
-              floatingLabelText={translations.last_service_odo}
-              value={this.state.lastServiceOdo}
-              type="number"
-            />
+            {isDealer
+              && <TextField
+                fullWidth
+                name="lastServiceOdo"
+                onChange={this.onChange}
+                floatingLabelText={translations.last_service_odo}
+                value={this.state.lastServiceOdo}
+                type="number"
+              />
+            }
             <TextField
               fullWidth
               name="odometer"

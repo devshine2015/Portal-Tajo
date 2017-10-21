@@ -14,9 +14,6 @@ import FuelConsumption from './FuelConsumption';
 class DealerDashboard extends React.Component {
 
   render() {
-    if(this.props.vehicles.length < 1 )
-      return false;
-
     return (
       <DealerPage>
         <PageHeader text="Fleet Overview" onApply={() => this.forceUpdate()} />

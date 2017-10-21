@@ -124,6 +124,11 @@ class VehicleAlerts extends React.Component {
             onOfKindChange={this.onOfKindChange}
             vehicleAlerts={this.state.alerts}
           />
+          <AlertOfKindSelector
+            myKind={alertKinds._ALERT_KIND_ODO}
+            onOfKindChange={this.onOfKindChange}
+            vehicleAlerts={this.state.alerts}
+          />
           <AlertOfKindToggle
             myKind={alertKinds._ALERT_KIND_IDLE}
             onOfKindChange={this.onOfKindToggle}
@@ -137,14 +142,14 @@ class VehicleAlerts extends React.Component {
             onRemoveClick={this.onRemoveClick}
             alertFilter={a => (a.kind === alertKinds._ALERT_KIND_FUEL_DIFF)}
           />
-          <AlertOfKindMultiSelector
+          {/* <AlertOfKindMultiSelector
             title={translations.maintenance}
             vehicleAlerts={this.state.alerts}
             vehicleId={this.props.vehicleId}
             doAddAlert={this.doAddAlert}
             onRemoveClick={this.onRemoveClick}
             alertFilter={a => (a.kind === alertKinds._ALERT_KIND_ODO)}
-          />
+          /> */}
           {/* put all the GF alerts with chips here?*/}
           <AlertOfKindMultiSelector
             title={translations.on_enter_location}

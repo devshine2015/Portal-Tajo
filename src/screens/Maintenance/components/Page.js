@@ -12,8 +12,6 @@ import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
 // import { getVehiclesExSorted, reducerKey } from 'services/FleetModel/reducers/vehiclesReducer';
 import { vehiclesActions } from 'services/FleetModel/actions';
 
-import BetaLabel from 'components/BetaLabel';
-
 import VehicleMaintenance from './VehicleMaintenance';
 
 import DealerPage, {
@@ -29,13 +27,6 @@ class VehicleMaintenancePage extends React.Component {
     this.state = {
       selectedVehicleId: '',
     };
-  }
-  onTimeFrameChange = (fromDateTime, toDateTime) => {
-    // this.props.setExecTimeFrame(fromDateTime, toDateTime);
-  }
-
-  setStartDate = (date) => {
-    // this.props.setExecTimeFrame(date, moment(date).add(1, 'days').toDate());
   }
 
   vehicleSelected = (id) => {

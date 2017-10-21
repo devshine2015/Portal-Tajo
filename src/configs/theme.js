@@ -8,6 +8,7 @@ import tinycolor from 'tinycolor2';
 import { white, blue600, cyan700,
   teal300, teal500, teal700, teal900,
   deepOrange700, yellow700,
+  blueGrey200,
 } from 'material-ui/styles/colors';
 
 export const tajoTheme = {
@@ -19,6 +20,7 @@ export const tajoTheme = {
     accent1Color: deepOrange700,
     accent2Color: yellow700,
 
+    warningColor: blueGrey200,
     alertColor: yellow700, // blueGrey200
     dachboardElementColor: '#c4c3b1',    
 
@@ -56,7 +58,8 @@ export const fusoTheme = {
     primary1Color: ccMainBrandColor, // '#e3142e',
     accent1Color: '#e3142e', // '#c4c3b1',
 
-    alertColor: yellow700, //'#e64a19'
+    warningColor: yellow700,
+    alertColor: deepOrange700,
     dachboardElementColor: '#2196F3',
     
     PLItemBackgroundColor: cyan700,
