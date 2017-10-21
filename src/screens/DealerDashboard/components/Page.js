@@ -9,6 +9,8 @@ import * as fromFleetReducer from 'services/FleetModel/reducer';
 import Layout from 'components/Layout';
 import DashboardElements from 'components/DashboardElements';
 
+import ServiceOverview from './ServiceOverview';
+import IdleOverview from './IdleOverview';
 import FuelConsumption from './FuelConsumption';
 
 class DealerDashboard extends React.Component {
@@ -21,7 +23,7 @@ class DealerDashboard extends React.Component {
         <Layout.Content style={{ flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
           <DashboardElements.DataCard
             title={'Number of Vehicles'}
-            dataString={this.props.vehicles.length}
+            dataString={this.props.vehicles.length.toString()}
           />
           <DashboardElements.DataCard
             title={'Toal Distance Traveled'}
@@ -36,10 +38,6 @@ class DealerDashboard extends React.Component {
             dataString={'2538 hrs'}
           />
           <DashboardElements.DataCard
-            title={'Toal Running Time'}
-            dataString={'2538 hrs'}
-          />
-          <DashboardElements.DataCard
             title={'Toal Driving Time'}
             dataString={'1452 hrs'}
           />
@@ -47,6 +45,8 @@ class DealerDashboard extends React.Component {
             title={'Toal Idle Time'}
             dataString={'195 hrs'}
           />
+          <ServiceOverview />
+          <IdleOverview />
           <FuelConsumption />
           <DashboardElements.PieChart
             key="alerts"

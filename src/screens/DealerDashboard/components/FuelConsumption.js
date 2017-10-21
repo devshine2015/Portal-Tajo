@@ -29,12 +29,8 @@ const inClasses = StyleSheet.create({
     height: '64px',
     lineHeight: '64px',
     backgroundColor: theme.palette.dachboardElementColor,
-    color: 'white',
     padding: '4px 16px',
     margin: '4px',
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: 'xx-large',
   },
   tableCellDescr: {
     padding: '4px 16px',
@@ -48,7 +44,7 @@ const inClasses = StyleSheet.create({
 });
 
 const FuelConsumption = () => {
-  const className = cs(css(inClasses.tableCellCard), css(classes.dataItemContainer));
+  const className = cs(css(classes.dataItemContainer), css(classes.dataItemValueContainer), css(inClasses.tableCellCard));
   // const containerStyle = Object.assign({}, maxWidth !== undefined ? { maxWidth } : {}, style);
   // style={{ width: witdhPerc }} 
   return (
