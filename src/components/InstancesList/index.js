@@ -15,32 +15,32 @@ let isStyleSheetRuleAdded = false;
 const InstancesList = ({
   data,
   currentExpandedItemId,
-  ...rest,
+  ...rest
 }, context) => {
   // temporary solution.
   // TODO -- use LESS/SASS for such things
   if (!isStyleSheetRuleAdded) {
     isStyleSheetRuleAdded = true;
     addCSSRule('.listItemDynamicExpanded',
-      'background-color: ' + context.muiTheme.palette.PLItemBackgroundColorExpanded, 0);
+      `background-color: ${  context.muiTheme.palette.PLItemBackgroundColorExpanded}`, 0);
     addCSSRule('.listItemDynamicExpanded:hover',
-      'background-color: ' + context.muiTheme.palette.PLItemBackgroundColorExpanded, 0);
+      `background-color: ${  context.muiTheme.palette.PLItemBackgroundColorExpanded}`, 0);
     addCSSRule('.listItemGFDynamicExpanded',
-      'background-color: ' + context.muiTheme.palette.PLItemGFBackgroundColorExpanded, 0);
+      `background-color: ${  context.muiTheme.palette.PLItemGFBackgroundColorExpanded}`, 0);
     addCSSRule('.listItemGFDynamicExpanded:hover',
-      'background-color: ' + context.muiTheme.palette.PLItemGFBackgroundColorExpanded, 0);
+      `background-color: ${  context.muiTheme.palette.PLItemGFBackgroundColorExpanded}`, 0);
     addCSSRule('.listItemDynamic',
-      'background-color: ' + context.muiTheme.palette.PLItemBackgroundColor + ';' +
-      'color: ' + context.muiTheme.palette.PLItemColor, 0 );
-//      'border-right: 3px solid ' + context.muiTheme.palette.PLItemBackgroundColorExpanded, 0 );
-      // + ';' +
-      // 'border-left: 3px solid ' + context.muiTheme.palette.PLItemBackgroundColor, 0);
+      `background-color: ${  context.muiTheme.palette.PLItemBackgroundColor  };` +
+      `color: ${  context.muiTheme.palette.PLItemColor}`, 0);
+    //      'border-right: 3px solid ' + context.muiTheme.palette.PLItemBackgroundColorExpanded, 0 );
+    // + ';' +
+    // 'border-left: 3px solid ' + context.muiTheme.palette.PLItemBackgroundColor, 0);
     addCSSRule('.listItemDynamic:hover',
-      'background-color: ' + context.muiTheme.palette.PLItemBackgroundColorHover, 0);
+      `background-color: ${  context.muiTheme.palette.PLItemBackgroundColorHover}`, 0);
   //    'background-color: ${context.muiTheme.palette.PLItemBackgroundColorHover}', 0);
   }
 
-  const items = data.map(item => {
+  const items = data.map((item) => {
     if (item.filteredOut) {
       return null;
     }

@@ -16,7 +16,9 @@ import types from '../types';
 
 import styles from './styles.css';
 
-function _needIndicator(item) {
+function _needIndicator(noIndicator, item) {
+  if (noIndicator) return false;
+
   const itIsTransport = item.hasOwnProperty('activityStatus');
 
   if (!itIsTransport) return false;
@@ -162,7 +164,7 @@ class GenericListItem extends React.Component {
           color: (isExpanded && muiTheme.powerList.activeItemTextColor) ? muiTheme.powerList.activeItemTextColor : muiTheme.powerList.itemTextColor,
         }}
       >
-        { _needIndicator(rest.item) && (
+        { _needIndicator(rest.noDefaultActivityIndicator, rest.item) && (
           <StatusIcon
             activityStatus={rest.item.activityStatus}
             isDelayedWithIgnitionOff={rest.item.isDelayedWithIgnitionOff}
@@ -186,6 +188,8 @@ GenericListItem.propTypes = {
   selectedItems: PropTypes.array,
   scrollIntoView: PropTypes.bool,
   uncheckOnUnmount: PropTypes.bool,
+  noDefaultActivityIndicator: PropTypes.bool,
+  customIndicatorRender: PropTypes.func,
 
   type: PropTypes.oneOf([
     types.withCheckboxes,
@@ -201,6 +205,8 @@ GenericListItem.propTypes = {
 GenericListItem.defaultProps = {
   dateFormat: dateFormats.default.value,
   type: types.simple,
+  noDefaultActivityIndicator: false,
+  customIndicatorRender: null,
 };
 
 export default pure(GenericListItem);

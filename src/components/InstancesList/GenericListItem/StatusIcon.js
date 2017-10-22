@@ -20,12 +20,12 @@ const StatusIcon = ({
   let icon = null;
 
   if (activityStatus === 'dead') {
-    icon = <AlertIcon color={theme.palette.alertColor} style={STYLES.icon} />;
+    icon = <AlertIcon color={theme.palette.warningColor} style={STYLES.icon} />;
   } else if (isEscape && isDelayedWithIgnitionOff) {
     // blueGrey200
-    icon = <AlertLagIcon color={theme.palette.alertColor} style={STYLES.icon} />;
+    icon = <AlertLagIcon color={theme.palette.warningColor} style={STYLES.icon} />;
   } else if (activityStatus === 'delayed') {
-    icon = <AlertLagIcon color={theme.palette.alertColor} style={STYLES.icon} />;
+    icon = <AlertLagIcon color={theme.palette.warningColor} style={STYLES.icon} />;
   }
 
   return (
