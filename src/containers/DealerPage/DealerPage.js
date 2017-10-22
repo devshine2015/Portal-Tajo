@@ -22,7 +22,7 @@ const DealerPage = ({
       return (
         <div
           style={{
-            height: '100%',
+            // height: '100%',
             backgroundColor: '#fafafa',
           }}
         >
