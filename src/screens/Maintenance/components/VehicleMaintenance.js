@@ -23,8 +23,8 @@ import AnimatedLogo from 'components/animated';
 import BarIndicator from './MaintenaceProgressBar';
 import LightIndicator from './LightIndicator';
 
-import { makeMaintenanceData,
-  MaintenanceStatus } from './../utils/maintenanceHelper';
+// import { makeMaintenanceData,
+//   MaintenanceStatus } from './../utils/maintenanceHelper';
 
 function devRndLightStatus() {
   return (Math.random() < 0.7) ? 0 : 1;
@@ -61,9 +61,6 @@ class VehicleMaintenance extends React.Component {
     this.props.fetchVehicleAlertConditions(vehicleId)
       .then(() => {
         this.setVehicleAlerts(this.props.getVehicleAlerts(vehicleId));
-        this.setState({
-          isLoading: false,
-        });
       });
   }
 
@@ -71,6 +68,10 @@ class VehicleMaintenance extends React.Component {
     this.maintenanceAlert = alertsSrc.map(alertId => (this.props.alertById(alertId)))
     // check for null - the alert condition might be not loaded yet
       .find(alrt => alrt !== null && alrt.kind === alertKinds._ALERT_KIND_ODO);
+
+    this.setState({
+      isLoading: false,
+    });
 
     // this.props.updateLocalVehicleDetails(this.props.theVehicle.id, makeMaintenanceData());
   }
@@ -86,6 +87,8 @@ class VehicleMaintenance extends React.Component {
         <FixedContent
           style={{
             padding: 0,
+            height: '400px',
+            backgroundColor: 'white',
           }}
         >
           <AnimatedLogo.FullscreenLogo />
