@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
+import { vehiclesActions } from 'services/FleetModel/actions';
 
 // import TimeFrameController from './components/TimeFrameSelector';
 import BetaLabel from 'components/BetaLabel';
@@ -21,6 +22,9 @@ import { getVehicleAlertConditions,
 import AnimatedLogo from 'components/animated';
 import BarIndicator from './MaintenaceProgressBar';
 import LightIndicator from './LightIndicator';
+
+import { makeMaintenanceData,
+  MaintenanceStatus } from './../utils/maintenanceHelper';
 
 function devRndLightStatus() {
   return (Math.random() < 0.7) ? 0 : 1;
@@ -37,12 +41,11 @@ class VehicleMaintenance extends React.Component {
       this.fetchAlerts(props.theVehicle.id);
     }
   }
- 
+
   componentWillReceiveProps(nextProps) {
-    if (nextProps.theVehicle === null) {
-      return;
-    }
-    if (this.props.theVehicle !== nextProps.theVehicle) {
+    if (nextProps.theVehicle === null) return;
+    if (this.props.theVehicle === null
+      || this.props.theVehicle.id !== nextProps.theVehicle.id) {
       const vehAlertIds = nextProps.getVehicleAlerts(nextProps.theVehicle.id);
       if (vehAlertIds === null) {
         this.setState({ isLoading: true });
@@ -54,9 +57,13 @@ class VehicleMaintenance extends React.Component {
   }
 
   fetchAlerts = (vehicleId) => {
+    // this.props.updateLocalVehicleDetails(vehicleId, makeMaintenanceData());
     this.props.fetchVehicleAlertConditions(vehicleId)
       .then(() => {
         this.setVehicleAlerts(this.props.getVehicleAlerts(vehicleId));
+        this.setState({
+          isLoading: false,
+        });
       });
   }
 
@@ -65,9 +72,7 @@ class VehicleMaintenance extends React.Component {
     // check for null - the alert condition might be not loaded yet
       .find(alrt => alrt !== null && alrt.kind === alertKinds._ALERT_KIND_ODO);
 
-    this.setState({
-      isLoading: false,
-    });
+    // this.props.updateLocalVehicleDetails(this.props.theVehicle.id, makeMaintenanceData());
   }
 
   render() {
@@ -170,6 +175,7 @@ VehicleMaintenance.propTypes = {
   theVehicle: PropTypes.object,
   getVehicleAlerts: PropTypes.func.isRequired,
   fetchVehicleAlertConditions: PropTypes.func.isRequired,
+  updateLocalVehicleDetails: PropTypes.func.isRequired,
   alertById: PropTypes.func.isRequired,
   alertConditions: PropTypes.array.isRequired,
 };
@@ -181,6 +187,7 @@ const mapState = state => ({
 });
 const mapDispatch = {
   fetchVehicleAlertConditions: conditionsActions.fetchVehicleAlertConditions,
+  updateLocalVehicleDetails: vehiclesActions.updateLocalDetails,
 };
 
 
