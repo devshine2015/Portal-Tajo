@@ -25,32 +25,32 @@ class AlertsList extends React.Component {
 
   vehicleHasAlert = alertId => (
     this.props.vehicleAlerts
-          .find(el => el === alertId) !== undefined
+      .find(el => el === alertId) !== undefined
   )
 
   render() {
-              // <Avatar color="#156671" icon={alertKinds.getAlertByKind(item.kind).icon} />
+    // <Avatar color="#156671" icon={alertKinds.getAlertByKind(item.kind).icon} />
     const alertsToPick = this.props.alerts
-        .filter(item => item.gfInvalid === undefined)
-        .filter(item => !this.vehicleHasAlert(item.id)
+      .filter(item => item.gfInvalid === undefined)
+      .filter(item => !this.vehicleHasAlert(item.id)
             && this.props.alertFilter(item))
-        // // doing this so we have original GFs names
-        // .map((item) => {
-        //   const gfObject = this.props.gfById(item.gfId);
-        //   return { name: gfObject.name, id: item.id };
-        // })
-        .sort((a, b) => {
-          const nameA = a.gfName.toUpperCase();
-          const nameB = b.gfName.toUpperCase();
-          return (nameA < nameB) ? -1 : (nameA > nameB) ? 1 : 0;
-        })
-        .map(item => <Chip
-          key={item.id}
-          onClick={() => this.onItemClick(item.id)}
-          style={stylesChip}
-        >
-          {item.gfName !== '' ? item.gfName : item.name}
-        </Chip>);
+      // // doing this so we have original GFs names
+      // .map((item) => {
+      //   const gfObject = this.props.gfById(item.gfId);
+      //   return { name: gfObject.name, id: item.id };
+      // })
+      .sort((a, b) => {
+        const nameA = a.gfName.toUpperCase();
+        const nameB = b.gfName.toUpperCase();
+        return (nameA < nameB) ? -1 : (nameA > nameB) ? 1 : 0;
+      })
+      .map(item => (<Chip
+        key={item.id}
+        onClick={() => this.onItemClick(item.id)}
+        style={stylesChip}
+      >
+        {item.gfName !== '' ? item.gfName : item.name}
+      </Chip>));
 
     return (
       <Popover
