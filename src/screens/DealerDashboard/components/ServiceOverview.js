@@ -31,7 +31,7 @@ const ServiceOverview = () => {
         {'Next Service Overview'}
       </div>
       <div className={classNameParent}>
-        <DashboardElements.SubCard title={'comming soon'} dataString={'7'} style={SoonCard} />
+        <DashboardElements.SubCard title={'coming soon'} dataString={'7'} style={SoonCard} />
         <DashboardElements.SubCard title={'overdue'} dataString={'2'} style={OverdueCard} />
       </div>
     </div>
