@@ -69,7 +69,4 @@ export default [{
 }, {
   create: createProfileScreen,
   options: menu.profile,
-}, {
-  create: createMaintenanceScreen,
-  options: menu.maintenance,
 }];
