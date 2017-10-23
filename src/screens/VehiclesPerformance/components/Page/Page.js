@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import DealerPage, {
-  DatavizFrame,
   PowerList,
   PageHeader,
 } from 'containers/DealerPage';
 import FixedContent from 'components/FixedContent';
+import ComingSoon from 'components/ComingSoon/ComingSoon';
 // import PropTypes from 'prop-types';
 
 class Page extends Component {
@@ -14,6 +14,8 @@ class Page extends Component {
         <PowerList onVehicleSelect={() => this.forceUpdate()} />
         <FixedContent>
           <PageHeader text="Vehicle Performance" onApply={() => this.forceUpdate()} />
+          <ComingSoon />
+          {/* 
           <DatavizFrame
             collapsible
             collapsed
@@ -48,7 +50,7 @@ class Page extends Component {
             maxHeight={2730}
             src="http://office.datavis.sg:30001/v1/6"
             title="Hill Climbing"
-          />
+          /> */}
         </FixedContent>
       </DealerPage>
     );
