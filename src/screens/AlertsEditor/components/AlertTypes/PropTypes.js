@@ -2,6 +2,7 @@ export default [
   'speeding',
   'temperature',
   'odometer',
+  'service_frequency',
   'drive_time',
   'add_alert',
   'alert_name',

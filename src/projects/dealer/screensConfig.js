@@ -1,8 +1,9 @@
 import createNotFoundScreen from 'screens/NotFound/route';
 import createLoginScreen from 'screens/LoginScreen/route';
 import createDealerDashboardScreen from 'screens/DealerDashboard/route';
-import createVehiclePerformanceScreen from 'screens/VehiclesPerformance/route';
-import createVehicleDiagnosticsScreen from 'screens/VehicleDiagnostics/route';
+import createFuelUsageScreen from 'screens/FuelUsage/route';
+import createDriveComaprisonScreen from 'screens/DriveComparison/route';
+
 import createUsersManagerScreen from 'screens/UsersManager/route';
 import createAlersEditorScreen from 'screens/AlertsEditor/route';
 import createMaintenanceScreen from 'screens/Maintenance/route';
@@ -25,21 +26,21 @@ export default [{
   create: createDealerDashboardScreen,
   options: menu.dashboard,
 }, {
-  create: createVehiclePerformanceScreen,
-  options: menu.performance,
+  create: createMaintenanceScreen,
+  options: menu.maintenance,
 }, {
-  create: createVehicleDiagnosticsScreen,
-  options: menu.diagnostic,
+  create: createFuelUsageScreen,
+  options: menu.fuelUsage,
+}, {
+  create: createDriveComaprisonScreen,
+  options: menu.driveComparison,
 }, {
   create: createVehiclesManagerScreen,
   options: menu.vehicles,
 }, {
-  create: createUsersManagerScreen,
-  options: menu.users,
-}, {
   create: createAlersEditorScreen,
   options: menu.alerts,
 }, {
-  create: createMaintenanceScreen,
-  options: menu.maintenance,
+  create: createUsersManagerScreen,
+  options: menu.users,
 }];

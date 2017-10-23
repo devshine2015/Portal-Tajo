@@ -4,7 +4,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { Avatar, SelectField, MenuItem } from 'material-ui';
 import { getVehicleAlertConditions,
-    getAlertConditionByIdFunc, getAlertConditions } from 'services/AlertsSystem/reducer';
+  getAlertConditionByIdFunc, getAlertConditions } from 'services/AlertsSystem/reducer';
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
 
 import styles from './styles.css';
@@ -15,6 +15,7 @@ const AlertOfKindSelector = ({
   onOfKindChange,
   vehicleAlerts,
   alertById,
+  title,
 }, context) => {
   const myAlertOfKind = vehicleAlerts.map(alertId => (alertById(alertId)))
     // check for null - the alert condition might be not loaded yet
@@ -37,7 +38,7 @@ const AlertOfKindSelector = ({
           icon={theKindData.icon}
           style={{ position: 'relative', top: '6px' }}
         />
-        <span className={styles.kindOfName}> {theKindData.niceName} </span>
+        <span className={styles.kindOfName}> {title != null ? title : theKindData.niceName} </span>
       </div>
       <SelectField
         autoWidth
@@ -54,11 +55,15 @@ const AlertOfKindSelector = ({
 
 AlertOfKindSelector.propTypes = {
   myKind: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
   onOfKindChange: PropTypes.func.isRequired,
-
   alertConditions: PropTypes.array.isRequired,
   vehicleAlerts: PropTypes.array.isRequired,
   alertById: PropTypes.func.isRequired,
+};
+
+AlertOfKindSelector.defaultProps = {
+  title: null,
 };
 AlertOfKindSelector.contextTypes = {
   muiTheme: PropTypes.object.isRequired,

@@ -16,7 +16,7 @@ const AlertsOdo = ({
     renderForm={(options) => (<OdoForm {...options} />)}
     myAlertKind={alertKinds._ALERT_KIND_ODO}
     actionButtonLabel={translations.add_alert}
-    headerLabel={translations.odometer.toUpperCase()}
+    headerLabel={translations.service_frequency.toUpperCase()}
   />
 );
 

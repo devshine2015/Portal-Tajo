@@ -33,7 +33,7 @@ const ProgressBar = ({
   //   : (currentValue100 > 50 ?
   //     theme.palette.warningColor : '');
   const progColor = currentValue100 > 75 ?
-    theme.palette.alertColor : theme.palette.warningColor;
+    theme.palette.alertColor : theme.palette.okColor;
 
   const barClass = cs(css(classes.progBarProg), {
     [css(classes.animatedAlertColor)]: isOverflow });

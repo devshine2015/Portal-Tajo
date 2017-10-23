@@ -16,7 +16,7 @@ class Page extends React.Component {
             height: '100%',
           }}
         >
-          <PageHeader text="Vehicle Diagnostic" onApply={() => this.forceUpdate()} />
+          <PageHeader text="Fuel Usage" onApply={() => this.forceUpdate()} />
           <ComingSoon />
         </FixedContent>
       </DealerPage>

@@ -2,7 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import FlatButton from 'material-ui/FlatButton';
+import tinycolor from 'tinycolor2';
+
 import { DateRangeWithButton } from 'components/DateRange';
+import { theme } from 'configs';
 
 
 const classes = StyleSheet.create({
@@ -18,8 +21,9 @@ const classes = StyleSheet.create({
   },
   text: {
     fontSize: 26,
-    fontWeight: 400,
+    fontWeight: 'bold',
     lineHeight: '100%',
+    color: tinycolor(theme.layout.headerColor).setAlpha(0.45).toString(),
   },
   actions: {
 

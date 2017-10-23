@@ -42,9 +42,9 @@ export default {
   alerts_editor: 'alerts editor',
   alerts_logs: 'alerts logs',
   overview: 'overview',
-  vehicle_performance: 'vehicle performance',
-  vehicle_diagnostics: 'vehicle diagnostics',
-  vehicle_maintenance: 'vehicle mainenance',
+  drive_comparison: 'drive comparison',
+  fuel_usage: 'fuel usage',
+  vehicle_maintenance: 'vehicle diagnostics',
   
   // -- end main menu
 
@@ -140,6 +140,7 @@ export default {
   alerts: 'alerts',
   no_alerts: 'no alerts',
   maintenance: 'maintenance',
+  service_frequency: 'Service Frequency',
   name: 'name',
   on_enter_location: 'on enter location',
   on_exit_location: 'on exit location',

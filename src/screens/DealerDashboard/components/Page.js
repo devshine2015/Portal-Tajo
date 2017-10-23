@@ -26,7 +26,7 @@ class DealerDashboard extends React.Component {
             dataString={this.props.vehicles.length.toString()}
           />
           <DashboardElements.DataCard
-            title={'Toal Distance Traveled'}
+            title={'Total Distance Travelled'}
             dataString={'22373 km'}
           />
           <DashboardElements.DataCard
@@ -34,15 +34,15 @@ class DealerDashboard extends React.Component {
             dataString={'67 km/h'}
           />
           <DashboardElements.DataCard
-            title={'Toal Running Time'}
+            title={'Total Running Time'}
             dataString={'2538 hrs'}
           />
           <DashboardElements.DataCard
-            title={'Toal Driving Time'}
+            title={'Total Driving Time'}
             dataString={'1452 hrs'}
           />
           <DashboardElements.DataCard
-            title={'Toal Idle Time'}
+            title={'Total Idle Time'}
             dataString={'195 hrs'}
           />
           <ServiceOverview />

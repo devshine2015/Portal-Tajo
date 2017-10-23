@@ -126,6 +126,7 @@ class VehicleAlerts extends React.Component {
           />
           <AlertOfKindSelector
             myKind={alertKinds._ALERT_KIND_ODO}
+            title={translations.service_frequency}         
             onOfKindChange={this.onOfKindChange}
             vehicleAlerts={this.state.alerts}
           />

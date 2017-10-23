@@ -11,13 +11,13 @@ const menu = {
     name: 'vehicles_editor',
     path: 'vehicles',
   },
-  performance: {
-    name: 'vehicle_performance',
-    path: 'performance',
+  fuelUsage: {
+    name: 'fuel_usage',
+    path: 'fuelusage',
   },
-  diagnostic: {
-    name: 'vehicle_diagnostics',
-    path: 'diagnostic',
+  driveComparison: {
+    name: 'drive_comparison',
+    path: 'comparison',
   },
   alerts: {
     name: 'alerts_editor',
