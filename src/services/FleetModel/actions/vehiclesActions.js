@@ -24,6 +24,8 @@ export const FLEET_MODEL_ATTACH_DEVICE = 'portal/services/FLEET_MODEL_ATTACH_DEV
 
 export const updateDetails = (details = {}) => dispatch =>
   makeUpdateVehicleRequest(details, dispatch);
+export const updateLocalDetails = (vehicleId, newDetails) => dispatch =>
+  _updateLocalVehicleModel(vehicleId, newDetails, dispatch);
 export const filterVehicles = searchString => (dispatch, getState) =>
   _filterVehicles({ searchString }, dispatch, getState);
 export const addVehicle = vehicle => (dispatch, getState) =>
@@ -94,6 +96,13 @@ function _addVehicle(vehicle, dispatch, getState) {
     orderedList,
     id: vehicle.id,
   });
+}
+
+/**
+ * update local client-calculated values for a vehicle
+ * */
+export function _updateLocalVehicleModel(vehicleId, newDetails, dispatch) {
+  dispatch(_vehicleUpdate(newDetails, vehicleId));
 }
 
 /**

@@ -22,7 +22,7 @@ export const tajoTheme = {
 
     warningColor: blueGrey200,
     alertColor: yellow700, // blueGrey200
-    dachboardElementColor: '#c4c3b1',    
+    dachboardElementColor: '#c4c3b1',
 
     PLItemBackgroundColor: cyan700,
     PLItemBackgroundColorHover: tinycolor(cyan700).setAlpha(0.85).toRgbString(),
@@ -60,8 +60,8 @@ export const fusoTheme = {
 
     warningColor: yellow700,
     alertColor: deepOrange700,
-    dachboardElementColor: '#2196F3',
-    
+    dachboardElementColor: ccMainBrandColor, // '#2196F3',
+
     PLItemBackgroundColor: cyan700,
     PLItemBackgroundColorHover: tinycolor(cyan700).setAlpha(0.85).toRgbString(),
     PLItemColor: white,

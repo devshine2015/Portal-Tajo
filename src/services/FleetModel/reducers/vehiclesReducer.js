@@ -15,15 +15,15 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
     case vehiclesActions.FLEET_MODEL_VEHICLES_SET:
       return state.withMutations((s) => {
         s.set('processedList', new Map(action.localVehicles))
-         .set('deadList', new List(action.deadList))
-         .set('delayedList', new List(action.delayedList))
-         .set('orderedList', new List(action.orderedVehicles));
+          .set('deadList', new List(action.deadList))
+          .set('delayedList', new List(action.delayedList))
+          .set('orderedList', new List(action.orderedVehicles));
       });
 
     case vehiclesActions.FLEET_MODEL_VEHICLE_ADD:
       return state.withMutations((s) => {
         s.setIn(['processedList', action.id], action.localVehicle)
-         .set('orderedList', new List(action.orderedList));
+          .set('orderedList', new List(action.orderedList));
       });
 
     case vehiclesActions.FLEET_MODEL_ORDER_UPDATE:
@@ -41,8 +41,8 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
     case socketActions.FLEET_MODEL_SOCKET_SET_BATCH: {
       return state.withMutations((s) => {
         s.mergeIn(['processedList'], action.updates)
-         .set('deadList', action.deadList)
-         .set('delayedList', action.delayedList);
+          .set('deadList', action.deadList)
+          .set('delayedList', action.delayedList);
       });
     }
 
@@ -60,9 +60,9 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
 
       return state.withMutations((s) => {
         s.deleteIn(['processedList', action.id])
-         .deleteIn(['orderedList', orderedListIndex])
-         .deleteIn(['deadList', deadListIndex])
-         .deleteIn(['delayedList', delayedListIndex]);
+          .deleteIn(['orderedList', orderedListIndex])
+          .deleteIn(['deadList', deadListIndex])
+          .deleteIn(['delayedList', delayedListIndex]);
       });
     }
 
@@ -180,9 +180,7 @@ export const getAmounts = state => ({
 export const getVehicleById = (state, id) =>
   getDynamicSlice(state).getIn(['processedList', id]);
 
-export const getIsReady = (state) => {
-  return state.get('isReady');
-};
+export const getIsReady = (state) => state.get('isReady');
 
 export const getSelectedVehicleId = state =>
   getStaticSlice(state).get('selectedVehicleId');
