@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { createSelector } from 'reselect';
 import { getProcessedVehicles } from 'services/FleetModel/reducer';
 
@@ -13,7 +14,7 @@ export default function makeGetVehicles() {
           lat: v.get('pos')[0],
           lng: v.get('pos')[1],
         },
-        updatedAt: v.get('lastUpdateSinceEpoch'),
+        updatedAt: moment(v.get('lastUpdateSinceEpoch')).format('DD/MM/YYYY HH:mm:ss'),
       });
     });
   });

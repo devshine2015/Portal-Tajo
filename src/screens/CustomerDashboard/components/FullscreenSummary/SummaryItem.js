@@ -55,7 +55,7 @@ SummaryGridItem.propTypes = {
     lat: PropTypes.number.isRequired,
     lng: PropTypes.number.isRequired,
   }).isRequired,
-  updatedAt: PropTypes.number.isRequired,
+  updatedAt: PropTypes.string.isRequired,
 };
 
 SummaryGridItem.defaultProps = {

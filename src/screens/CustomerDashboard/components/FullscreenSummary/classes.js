@@ -33,13 +33,13 @@ export const summaryGridClasses = StyleSheet.create({
   grid: {
     listStyle: 'none',
     display: 'flex',
-    justifyContent: 'space-between',
     flexFlow: 'wrap column',
     height: '100%',
   },
   gridItem: {
     padding: 5,
-    flex: '1 0 200px',
+    flex: 0,
+    flexBasis: 130,
   },
 });
 
@@ -53,19 +53,25 @@ export const summaryItemClasses = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     height: '100%',
-    minWidth: 170,
-    minHeight: 100,
   },
   head: {
     marginBottom: 3,
+    maxWidth: 170,
+    whiteSpace: 'nowrap',
   },
   name: {
-    fontSize: '220%',
-    fontWeight: 400,
+    fontSize: 17,
+    fontWeight: 500,
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    lineHeight: '110%',
+    marginBottom: 3,
   },
   pos: {
-    fontSize: '120%',
+    fontSize: 10,
     color: '#787878',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
   },
   scores: {
     marginBottom: 3,
@@ -78,7 +84,7 @@ export const summaryItemClasses = StyleSheet.create({
     alignItems: 'center',
   },
   scores__title: {
-    fontSize: '120%',
+    fontSize: 12,
     whiteSpace: 'nowrap',
     display: 'inline-block',
     color: '#494949',
@@ -87,11 +93,10 @@ export const summaryItemClasses = StyleSheet.create({
   scores__val: {
     whiteSpace: 'nowrap',
     display: 'inline-block',
-    fontSize: '220%',
+    fontSize: 22,
     fontWeight: 400,
   },
   time: {
-    fontSize: '100%',
     color: '#000',
   },
 });
