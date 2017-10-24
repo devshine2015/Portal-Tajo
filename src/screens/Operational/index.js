@@ -49,12 +49,6 @@ class Operational extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    socketActions.closeFleetSocket();
-    // TODO: keep local tick alife all the time - actual in any screen
-    localTickActions.stopLocalTick();
-  }
-
   render() {
     const mapGFs = this.props.gfs.map(mapGFMarkerMaker);
     const mapVehiclesIcons = this.props.vehicles.filter(v => v.marker === markerTypes.Icon).map(mapVehicleMarkerMaker);
