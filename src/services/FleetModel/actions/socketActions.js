@@ -5,26 +5,22 @@ import { updateLocalVehicles } from '../utils/vehicleHelpers';
 export const FLEET_MODEL_SOCKET_SET = 'portal/services/FLEET_MODEL_SOCKET_SET';
 export const FLEET_MODEL_SOCKET_SET_BATCH = 'portal/services/FLEET_MODEL_SOCKET_SET_BATCH';
 
-export const openFleetSocket = () => _openFleetSocket;
-export const closeFleetSocket = _closeSocket;
-export const isSocketOpened = () => socketIsOpened;
-
 let fleetSocket;
-let socketIsOpened = false;
-
 let batchQueue;
 const BATCHING_TIME_MS = 2000;
 
+export const openFleetSocket = () => _openFleetSocket;
+export const closeFleetSocket = _closeSocket;
+export const isSocketOpened = () => fleetSocket && fleetSocket.readyState === fleetSocket.OPEN;
+
 function _openFleetSocket(dispatch, getState) {
-  if (socketIsOpened) {
+  if (isSocketOpened()) {
     return;
   }
 
   const { url } = endpoints.monitor;
 
   fleetSocket = api.invokeWebSocket(url);
-
-  socketIsOpened = true;
 
   batchQueue = [];
 
@@ -52,9 +48,8 @@ function onMessageBatchingWithTimer(inEvent, dispatch, getState) {
 }
 
 function _closeSocket() {
-  if (socketIsOpened) {
+  if (isSocketOpened()) {
     fleetSocket.close();
-    socketIsOpened = false;
   }
 }
 
