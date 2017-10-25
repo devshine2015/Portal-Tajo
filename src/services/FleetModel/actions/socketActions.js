@@ -47,6 +47,11 @@ function onMessageBatchingWithTimer(inEvent, dispatch, getState) {
   batchQueue = batchQueue.concat(data.status);
 }
 
+export const reopenFleetSocket = () => (dispatch, getState) => {
+  _closeSocket();
+  _openFleetSocket(dispatch, getState);
+};
+
 function _closeSocket() {
   if (isSocketOpened()) {
     fleetSocket.close();

@@ -4,7 +4,7 @@ import { getFleetName } from 'services/Session/reducer';
 import { getVehiclesStaticSlice } from 'services/FleetModel/reducer';
 import makeGetFleetIsReady from 'services/FleetModel/selectors';
 import { fetchDevices } from 'services/Devices/actions';
-import { commonFleetActions } from 'services/FleetModel/actions';
+import { commonFleetActions, socketActions } from 'services/FleetModel/actions';
 import {
   conditionsActions,
   journalActions,
@@ -35,6 +35,7 @@ const mapDispatch = (dispatch) => {
     },
     changeFleet: (nextFleetName) => {
       api.setFleet(nextFleetName);
+      dispatch(socketActions.reopenFleetSocket());
 
       dispatch(updateFleetName(nextFleetName))
         .then(() => dispatch(commonFleetActions.fetchFleet()));
