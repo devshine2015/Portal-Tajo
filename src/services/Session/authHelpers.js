@@ -18,6 +18,10 @@ import { profileUtils } from 'utils/auth';
 import { setReportsMWA } from 'containers/Report/actions/reportActions';
 import { USERS_MANAGER_TOKENS_READY_STATE_CHANGE } from 'services/Users/actions';
 import {
+  reopenFleetSocket,
+  closeSocket,
+} from 'services/FleetModel/actions/socketActions';
+import {
   setSession,
   cleanSession,
 } from './actions';
@@ -49,11 +53,12 @@ export const onFailure = (dispatch) => {
   getHistory().replace('login');
   dispatch(cleanSession());
   drvrStorage.remove(DRVR_PROFILE_KEY);
+  closeSocket();
 };
 
 export const onLogoutSuccess = async (dispatch) => {
   const saved = await drvrStorage.load(DRVR_PROFILE_KEY);
-
+  
   if (!profileUtils.isLegacyProfile(saved.profile)) {
     const toSave = {
       email: R.path(['profile', 'email'], saved),
@@ -64,6 +69,7 @@ export const onLogoutSuccess = async (dispatch) => {
 
   await drvrStorage.remove(DRVR_PROFILE_KEY);
 
+  closeSocket();
   getHistory().replace('login');
   dispatch(cleanSession());
 };
@@ -82,6 +88,8 @@ async function __sideEffects(profile = {}, dispatch) {
   if (!isRunningOnLocalhost()) {
     initOneSignal();
   }
+
+  await dispatch(reopenFleetSocket());
 
   // backend can fetch access tokens even if
   // user doesn't legitimate auth0 user
