@@ -37,22 +37,27 @@ export const summaryGridClasses = StyleSheet.create({
     height: '100%',
   },
   gridItem: {
-    padding: 5,
+    margin: 5,
     flex: 0,
     flexBasis: 130,
+    backgroundColor: '#fff',
   },
 });
 
 export const summaryItemClasses = StyleSheet.create({
   item: {
     padding: 6,
-    backgroundColor: '#fff',
     font: '200 condensed 10px "Helvetica Neue", Arial, sans-serif',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
     width: '100%',
     height: '100%',
+    transition: 'background-color .25s ease-in',
+    backgroundColor: 'rgba(0, 255, 0, .4)',
+  },
+  item_white: {
+    backgroundColor: '#fff',
   },
   head: {
     marginBottom: 3,
