@@ -73,10 +73,18 @@ export const summaryItemClasses = StyleSheet.create({
     marginBottom: 3,
   },
   pos: {
-    fontSize: 10,
+    fontSize: 12,
     color: '#787878',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
+    textDecoration: 'underline',
+
+    ':hover': {
+      textDecoration: 'none',
+      cursor: 'pointer',
+    },
+  },
+  pos_copied: {
+    pointerEvent: 'none',
+    textDecoration: 'none',
   },
   scores: {
     marginBottom: 3,

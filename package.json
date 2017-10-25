@@ -1,6 +1,6 @@
 {
   "name": "drvr.co",
-  "version": "1.4.265",
+  "version": "1.4.266",
   "description": "common code base for DRVR portals",
   "repository": {
     "type": "git",
@@ -46,6 +46,7 @@
     "babel-polyfill": "6.26.0",
     "billboard.js": "1.1.1",
     "classnames": "2.2.5",
+    "clipboard": "1.7.1",
     "compression": "1.7.1",
     "d3": "4.10.2",
     "d3-scale": "1.0.6",

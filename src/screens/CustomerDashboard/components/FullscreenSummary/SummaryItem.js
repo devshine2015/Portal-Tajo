@@ -1,15 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import Clipboard from 'clipboard/dist/clipboard';
 import { css } from 'aphrodite/no-important';
 import { summaryItemClasses } from './classes';
 
 class SummaryGridItem extends React.Component {
+  copyBtn = null;
+  clipbrd = null;
   timer = null;
   timerIsOn = false;
   state = {
     old: true,
+    coplied: false,
   };
+
+  componentDidMount() {
+    this.clipbrd = new Clipboard(this.copyBtn, {
+      text: () => `${this.props.pos.lat}, ${this.props.pos.lng}`,
+    });
+
+    this.clipbrd.on('success', (e) => {
+      this.setState(() => ({
+        copied: true,
+      }), () => {
+        window.setTimeout(() => {
+          this.setState(() => ({
+            copied: false,
+          }));
+        }, 4000);
+      });
+
+      e.clearSelection();
+    });
+  }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.lastUpdate !== nextProps.lastUpdate) {
@@ -40,9 +64,20 @@ class SummaryGridItem extends React.Component {
   }
   shouldComponentUpdate(nextProps, nextState) {
     if (this.props.lastUpdate !== nextProps.lastUpdate ||
-        this.state.old !== nextState.old) return true;
+        this.state.old !== nextState.old ||
+        this.state.copied !== nextState.copied) return true;
 
     return false;
+  }
+
+  componentWillUnmount() {
+    window.clearTimeout(this.timer);
+  }
+
+  saveRef = (node) => {
+    if (!node) return;
+
+    this.copyBtn = node;
   }
 
   render() {
@@ -51,17 +86,28 @@ class SummaryGridItem extends React.Component {
       name,
       speed,
       fuel,
-      pos,
       lastUpdate,
     } = this.props;
 
-    console.log(`I has been updated ${name}`);
+    console.log(`copied ${this.state.copied}`);
 
     return (
       <div className={css(summaryItemClasses.item, this.state.old && summaryItemClasses.item_white)}>
         <div className={css(summaryItemClasses.head)}>
           <div className={css(summaryItemClasses.name)}>{name}</div>
-          <div className={css(summaryItemClasses.pos)}>{`${pos.lat}, ${pos.lng}`}</div>
+          { this.state.copied ?
+            <div className={css(summaryItemClasses.pos, summaryItemClasses.pos_copied)}>
+              Copied!
+            </div> : (
+              <div
+                ref={this.saveRef}
+                role="button"
+                tabIndex={0}
+                className={css(summaryItemClasses.pos)}
+              >
+                Copy coordinates
+              </div>
+            )}
         </div>
         <div className={css(summaryItemClasses.scores)}>
           <div className={css(summaryItemClasses.scores__col)}>
