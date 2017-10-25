@@ -11,7 +11,9 @@ const BATCHING_TIME_MS = 2000;
 
 export const openFleetSocket = () => _openFleetSocket;
 export const closeFleetSocket = _closeSocket;
-export const isSocketOpened = () => fleetSocket && fleetSocket.readyState === fleetSocket.OPEN;
+export const isSocketOpened = () => {
+  return fleetSocket && fleetSocket.readyState !== window.WebSocket.CLOSED;
+};
 
 function _openFleetSocket(dispatch, getState) {
   if (isSocketOpened()) {
@@ -23,7 +25,6 @@ function _openFleetSocket(dispatch, getState) {
   fleetSocket = api.invokeWebSocket(url);
 
   batchQueue = [];
-
   fleetSocket.onmessage = inEvent => onMessageBatchingWithTimer(inEvent, dispatch, getState);
 }
 

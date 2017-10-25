@@ -19,7 +19,7 @@ import { setReportsMWA } from 'containers/Report/actions/reportActions';
 import { USERS_MANAGER_TOKENS_READY_STATE_CHANGE } from 'services/Users/actions';
 import {
   reopenFleetSocket,
-  closeSocket,
+  closeFleetSocket,
 } from 'services/FleetModel/actions/socketActions';
 import {
   setSession,
@@ -53,7 +53,7 @@ export const onFailure = (dispatch) => {
   getHistory().replace('login');
   dispatch(cleanSession());
   drvrStorage.remove(DRVR_PROFILE_KEY);
-  closeSocket();
+  closeFleetSocket();
 };
 
 export const onLogoutSuccess = async (dispatch) => {
@@ -69,7 +69,7 @@ export const onLogoutSuccess = async (dispatch) => {
 
   await drvrStorage.remove(DRVR_PROFILE_KEY);
 
-  closeSocket();
+  closeFleetSocket();
   getHistory().replace('login');
   dispatch(cleanSession());
 };
