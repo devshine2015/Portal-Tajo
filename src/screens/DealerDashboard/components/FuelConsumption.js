@@ -54,7 +54,7 @@ const FuelConsumption = () => {
       </div>
       <table >
         <tr>
-          <td className={css(inClasses.tableCellDescr)}>Total Fuel Consumtion</td>
+          <td className={css(inClasses.tableCellDescr)}>Total Fuel Consumption</td>
           <td><div className={className} style={tableCellCard}>350 Ltr</div></td>
           <td><div className={className} style={tableCellCard}>2.8 Ltr/Km</div></td>
         </tr>

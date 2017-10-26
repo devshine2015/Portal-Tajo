@@ -156,7 +156,7 @@ class VehicleMaintenance extends React.Component {
               status={devRndLightStatus()}
             />
             <LightIndicator
-              title={'Break Warning'}
+              title={'Brake Warning'}
               status={devRndLightStatus()}
             />
             <LightIndicator
@@ -164,7 +164,7 @@ class VehicleMaintenance extends React.Component {
               status={devRndLightStatus()}
             />
             <LightIndicator
-              title={'Oil Preasure'}
+              title={'Oil Pressure'}
               status={devRndLightStatus()}
             />
           </div>

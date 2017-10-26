@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 // import R from 'ramda';
-import PropTypes from 'prop-types';
 import { bb } from 'billboard.js';
 import 'billboard.js/dist/billboard.css';
 import { css } from 'aphrodite/no-important';
-import classes, { HORIZONTAL } from './classes';
+import classes from './classes';
 
 const buildChart = (node) => {
   const {
-    width,
+    // width,
     height,
   } = node.getBoundingClientRect();
 
@@ -16,7 +15,7 @@ const buildChart = (node) => {
     data: {
       columns: [
         ['Refuel', 30],
-        ['Engime Temp', 120],
+        ['Engine Temp', 120],
         ['Fuel Theft', 73],
       ],
       type: 'pie',
@@ -45,12 +44,12 @@ class JobsChart extends Component {
     this.chartInit();
   }
 
-  componentWillReceiveProps(nextProps) {
-    // it's better to validate by ts
-    // if (nextProps.lastUpdate !== this.props.lastUpdate) {
-    //   this.chart.load(formatJobs(nextProps.jobs, this.props.vehicles));
-    // }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   // it's better to validate by ts
+  //   // if (nextProps.lastUpdate !== this.props.lastUpdate) {
+  //   //   this.chart.load(formatJobs(nextProps.jobs, this.props.vehicles));
+  //   // }
+  // }
 
   chartInit() {
     this.chart = buildChart(this.chartRef);
