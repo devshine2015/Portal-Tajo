@@ -1,26 +1,31 @@
-  // {
-  //   "aboveTemp": -1,
-  //   "created": "2017-03-06T18:29:50.950+1100",
-  //   "status": "",
-  //   "meta": {
-  //     "key1": "val1",
-  //     "key2": "val2"
-  //   },
-  //   "kind": "temperature-alert"
-  // },
-  // {
-  //   "gfId": "123456",
-  //   "created": "2017-03-06T18:29:50.952+1100",
-  //   "status": "",
-  //   "meta": {
-  //     "key1": "val1",
-  //     "key2": "val2"
-  //   },
-  //   "kind": "geofence-alert"
-  // }
+// {
+//   "aboveTemp": -1,
+//   "created": "2017-03-06T18:29:50.950+1100",
+//   "status": "",
+//   "meta": {
+//     "key1": "val1",
+//     "key2": "val2"
+//   },
+//   "kind": "temperature-alert"
+// },
+// {
+//   "gfId": "123456",
+//   "created": "2017-03-06T18:29:50.952+1100",
+//   "status": "",
+//   "meta": {
+//     "key1": "val1",
+//     "key2": "val2"
+//   },
+//   "kind": "geofence-alert"
+// }
 
 import endpoints from 'configs/endpoints';
 import { api } from 'utils/api';
+import { getVehiclesExSorted } from 'services/FleetModel/reducer';
+import { vehiclesActions } from 'services/FleetModel/actions';
+import { getAlertConditionByIdFunc } from 'services/AlertsSystem/reducer';
+import * as alertKinds from 'services/AlertsSystem/alertKinds';
+
 import { makeLocalAlertCondition } from '../alertConditionHelper';
 
 export const ALRT_CONDITIONS_READY_SET = 'alrtSys/ALRT_CONDITIONS_READY_SET';
@@ -44,6 +49,37 @@ export const fetchVehicleAlertConditions = vehicleId => dispatch =>
 
 export const postVehicleAlertConditions = (vehicleId, alerts) => dispatch =>
   _postVehicleAlerConditions(vehicleId, alerts, dispatch);
+
+export const fetchAllVehicleAlerts = getStore => (dispatch) => {
+  const vehiclesList = getVehiclesExSorted(getStore());
+
+  return Promise.all(
+    vehiclesList.map(vehicle => _fetchVehicleAlerConditions(vehicle.id, dispatch)),
+  ).then(() => Promise.resolve({ ready: true }));
+};
+
+export const validateAllVehiclesAlertStatus = getState => (dispatch) => {
+  const vehiclesList = getVehiclesExSorted(getState());
+  vehiclesList.forEach((vehicle) => {
+    const vehicleAlerts = vehicle.alerts;
+    if (vehicleAlerts === undefined) {
+      return;
+    }
+    const myTempAlert = { maxTemp: 600 };    
+    const alertsList = vehicleAlerts;
+    alertsList.forEach((alertId) => {
+      const alertCondition = getAlertConditionByIdFunc(getState())(alertId);
+      if (alertCondition !== null && alertCondition.kind === alertKinds._ALERT_KIND_TEMPERATURE) {
+        myTempAlert.maxTemp = alertCondition.maxTemp;
+      }
+    });
+    if (vehicle.temp !== undefined) {
+      const alertStatus = vehicle.temp >= myTempAlert.maxTemp;
+      dispatch(vehiclesActions.updateLocalDetails(vehicle.id, { tempAlert: alertStatus }));
+    }
+  });
+};
+
 
 function _fetchConditions(dispatch, getState) {
   const { url, method } = endpoints.getAlertConditions;
@@ -78,6 +114,7 @@ function _fetchVehicleAlerConditions(vehicleId, dispatch) {
     .then(toJson)
     .then((alerts) => {
       dispatch(_vehicleConditionsSet(vehicleId, alerts));
+      dispatch(vehiclesActions.updateLocalDetails(vehicleId, { alerts }));
     })
     .catch(console.error);
 }
@@ -89,7 +126,7 @@ function _postVehicleAlerConditions(vehicleId, alerts, dispatch) {
     payload: alerts,
   }).then(() => {
     dispatch(_vehicleConditionsSet(vehicleId, alerts));
- // this.props.fetchVehicleAlertConditions(nextProps.vehicleId)
+    // this.props.fetchVehicleAlertConditions(nextProps.vehicleId)
     return Promise.resolve();
   }, error => Promise.reject(error));
 }
@@ -100,7 +137,7 @@ function toJson(response) {
 
 /**
  * POST - new Alerts details to the server
- **/
+ * */
 function _createAlertConditionRequest(alertObject, dispatch, getState) {
   const { url, method } = endpoints.createAlertConditions;
 
@@ -114,7 +151,7 @@ function _createAlertConditionRequest(alertObject, dispatch, getState) {
 
 /**
  * PUT - update existing Alert
- **/
+ * */
 function _updateAlertRequest(alertObject, dispatch, getState) {
   const { url, method } = endpoints.updateAlertConditions(alertObject.id);
 
@@ -128,7 +165,7 @@ function _updateAlertRequest(alertObject, dispatch, getState) {
 
 /**
  * DELETE - remove existing Alert
- **/
+ * */
 function _deleteAlertRequest(alertId, dispatch) {
   const { url, method } = endpoints.deleteAlertConditions(alertId);
 

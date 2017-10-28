@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import Clipboard from 'clipboard/dist/clipboard';
 import { css } from 'aphrodite/no-important';
+import cs from 'classnames';
 import { summaryItemClasses } from './classes';
 
 class SummaryGridItem extends React.Component {
@@ -91,6 +92,10 @@ class SummaryGridItem extends React.Component {
 
     console.log(`copied ${this.state.copied}`);
 
+    const tempClass = cs(css(summaryItemClasses.scores__val), {
+      [css(summaryItemClasses.scores__val_tempAlert)]: this.props.tempAlert,
+    });
+
     return (
       <div className={css(summaryItemClasses.item, this.state.old && summaryItemClasses.item_white)}>
         <div className={css(summaryItemClasses.head)}>
@@ -112,7 +117,7 @@ class SummaryGridItem extends React.Component {
         <div className={css(summaryItemClasses.scores)}>
           <div className={css(summaryItemClasses.scores__col)}>
             <span className={css(summaryItemClasses.scores__title)}>Temp</span>
-            <span className={css(summaryItemClasses.scores__val)}>{temp}</span>
+            <span className={tempClass}>{temp}</span>
           </div>
           <div className={css(summaryItemClasses.scores__col)}>
             <span className={css(summaryItemClasses.scores__title)}>Speed</span>
@@ -151,11 +156,13 @@ SummaryGridItem.propTypes = {
     lng: PropTypes.number.isRequired,
   }).isRequired,
   lastUpdate: PropTypes.number.isRequired,
+  tempAlert: PropTypes.bool, 
 };
 
 SummaryGridItem.defaultProps = {
   temp: '?',
   fuel: '?',
+  tempAlert: false,
 };
 
 export default SummaryGridItem;

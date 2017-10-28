@@ -9,6 +9,7 @@ import {
   conditionsActions,
   journalActions,
 } from 'services/AlertsSystem/actions';
+
 import { updateFleetName } from 'services/Session/actions';
 import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
 import CustomerPortal from './CustomerPortal';
@@ -16,31 +17,41 @@ import CustomerPortal from './CustomerPortal';
 const makeMapStateToProps = () => {
   const getIsReady = makeGetFleetIsReady();
 
-  const mapState = (state) => {
-    return {
-      fleet: getFleetName(state),
-      readyToShowPortal: getIsReady(getVehiclesStaticSlice(state)),
-    };
-  };
+  const mapState = state => ({
+    fleet: getFleetName(state),
+    readyToShowPortal: getIsReady(getVehiclesStaticSlice(state)),
+  });
 
   return mapState;
 };
 
-const mapDispatch = (dispatch) => {
-  return {
-    fetchSpecificData: () => {
-      dispatch(conditionsActions.fetchAlertConditions())
-        .then(() => dispatch(journalActions.fetchNotifications(makePeriodForLast24Hours())))
-        .then(() => dispatch(fetchDevices()));
-    },
-    changeFleet: (nextFleetName) => {
-      api.setFleet(nextFleetName);
-      dispatch(socketActions.reopenFleetSocket());
+function updateFleet(nextFleetName) {
+  return (dispatch, getState) => {
+    api.setFleet(nextFleetName);
+    dispatch(socketActions.reopenFleetSocket());
 
-      dispatch(updateFleetName(nextFleetName))
-        .then(() => dispatch(commonFleetActions.fetchFleet()));
-    },
+    dispatch(updateFleetName(nextFleetName))
+      .then(() => dispatch(commonFleetActions.fetchFleet()))
+      .then(() => dispatch(conditionsActions.fetchAllVehicleAlerts(getState)))
+      .then(() => dispatch(conditionsActions.validateAllVehiclesAlertStatus(getState)));
   };
-};
+}
+
+const mapDispatch = dispatch => ({
+  fetchSpecificData: () => {
+    dispatch(conditionsActions.fetchAlertConditions())
+      .then(() => dispatch(journalActions.fetchNotifications(makePeriodForLast24Hours())))
+      .then(() => dispatch(fetchDevices()));
+  },
+  changeFleet: (nextFleetName) => {
+    dispatch(updateFleet(nextFleetName));
+    // api.setFleet(nextFleetName);
+    // dispatch(socketActions.reopenFleetSocket());
+
+    // dispatch(updateFleetName(nextFleetName))
+    //   .then(() => dispatch(commonFleetActions.fetchFleet()));
+    // // .then(() => dispatch(conditionsActions.fetchAllVehicleAlerts(getStore)));
+  },
+});
 
 export default connect(makeMapStateToProps, mapDispatch)(CustomerPortal);

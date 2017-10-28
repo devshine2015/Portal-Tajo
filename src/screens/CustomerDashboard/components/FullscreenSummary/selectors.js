@@ -17,6 +17,7 @@ export default function makeGetVehicles() {
             lng: v.get('pos')[1],
           },
           lastUpdate: v.get('lastUpdateSinceEpoch'),
+          tempAlert: v.get('tempAlert'),
         });
       });
   });

@@ -48,7 +48,7 @@ function _generateRawReport({ timePeriod, frequency, dateFormat }, dispatch, get
   });
 
   return Promise.all(
-    vehiclesForRequest.map(v => {
+    vehiclesForRequest.map((v) => {
       const {
         url,
         method,
@@ -64,36 +64,36 @@ function _generateRawReport({ timePeriod, frequency, dateFormat }, dispatch, get
           theVehicle: v,
           selectedEvents,
         }));
-    })
+    }),
   )
-  .then((events = []) => {
-    const headers = [
-      'License Plate',
-      'Vehicle Name',
-      'Type',
-      'Time',
-      'Position',
-      'Speed',
-      'Additional Info',
-    ];
-    let rows = [];
-    const startTime = moment(periodParamsWithOptions.from).format(dateFormatWithTime);
-    const endTime = moment(periodParamsWithOptions.to).format(dateFormatWithTime);
-    const fileName = `events for period [${startTime} - ${endTime}]`;
+    .then((events = []) => {
+      const headers = [
+        'License Plate',
+        'Vehicle Name',
+        'Type',
+        'Time',
+        'Position',
+        'Speed',
+        'Additional Info',
+      ];
+      let rows = [];
+      const startTime = moment(periodParamsWithOptions.from).format(dateFormatWithTime);
+      const endTime = moment(periodParamsWithOptions.to).format(dateFormatWithTime);
+      const fileName = `events for period [${startTime} - ${endTime}]`;
 
-    events.forEach(event => {
-      if (!event) return;
+      events.forEach((event) => {
+        if (!event) return;
 
-      rows = rows.concat(event);
+        rows = rows.concat(event);
+      });
+
+      dispatch(setLoader(false));
+
+      return reporter(rows, headers, { fileName });
+    }, (error) => {
+      console.warn(error);
+      dispatch(setLoader(false));
     });
-
-    dispatch(setLoader(false));
-
-    return reporter(rows, headers, { fileName });
-  }, error => {
-    console.warn(error);
-    dispatch(setLoader(false));
-  });
 }
 
 function _getEvents(getState) {

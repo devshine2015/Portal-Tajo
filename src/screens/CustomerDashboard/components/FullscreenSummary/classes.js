@@ -108,6 +108,11 @@ export const summaryItemClasses = StyleSheet.create({
     display: 'inline-block',
     fontSize: 22,
     fontWeight: 400,
+    padding: '0 2px',
+  },
+  scores__val_tempAlert: {
+    backgroundColor: 'red',
+    color: 'white',
   },
   time: {
     color: '#000',

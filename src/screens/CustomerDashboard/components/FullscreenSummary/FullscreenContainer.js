@@ -12,7 +12,7 @@ class FullscreenContainer extends React.Component {
   };
 
   componentDidMount() {
-    this.toFullscreenMode();
+   this.toFullscreenMode();
   }
 
   toFullscreenMode() {

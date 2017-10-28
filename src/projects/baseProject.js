@@ -56,7 +56,7 @@ const renderProject = async ({
     clientName: onProduction ? 'drvr' : 'drvr', // if on prod always use 'drvr' client, in other case it might vary to 'thomas'
     // eslint-disable-next-line no-shadow
     onAuthSuccess: ({ profile, overwrite }) => {
-      onSuccess(profile, store.dispatch, bootstrapProject, { overwrite });
+      onSuccess(profile, store.dispatch, store.getState, bootstrapProject, { overwrite });
     },
     onAuthFailure: () => {
       onFailure(store.dispatch);
