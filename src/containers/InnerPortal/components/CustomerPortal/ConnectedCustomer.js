@@ -9,6 +9,11 @@ import {
   conditionsActions,
   journalActions,
 } from 'services/AlertsSystem/actions';
+import {
+  checkSetMaritime,
+  checkSetNoIcons,
+  checkSetFullScreen,
+} from 'configs';
 
 import { updateFleetName } from 'services/Session/actions';
 import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
@@ -29,6 +34,10 @@ function updateFleet(nextFleetName) {
   return (dispatch, getState) => {
     api.setFleet(nextFleetName);
     dispatch(socketActions.reopenFleetSocket());
+
+    checkSetMaritime(nextFleetName);
+    checkSetNoIcons(nextFleetName);
+    checkSetFullScreen(nextFleetName);
 
     dispatch(updateFleetName(nextFleetName))
       .then(() => dispatch(commonFleetActions.fetchFleet()))

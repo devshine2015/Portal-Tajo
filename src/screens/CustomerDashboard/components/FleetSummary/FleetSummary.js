@@ -5,6 +5,7 @@ import { css } from 'aphrodite/no-important';
 import {
   project,
   isFeatureSupported,
+  hasFullScreenBoard,
 } from 'configs';
 import {
   translate,
@@ -32,14 +33,17 @@ function getEventName(prefix) {
   return prefix ? `${prefix.lowercase}${standartEvent}` : standartEvent;
 }
 
-const FullscreenModeAction = ({ onClick, text }) => (
-  <button
-    onClick={onClick}
-    className={css(summaryClasses.action)}
-  >
-    { text }
-  </button>
-);
+const FullscreenModeAction = ({ onClick, text }) => {   
+  return !hasFullScreenBoard ? false
+    : (<button
+      onClick={onClick}
+      className={css(summaryClasses.action)}
+    >
+      { text }
+    </button>
+    );
+};
+
 FullscreenModeAction.propTypes = {
   onClick: PropTypes.func.isRequired,
   text: PropTypes.node.isRequired,

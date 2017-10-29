@@ -69,6 +69,11 @@ export function checkSetMaritime(fleetName) {
   isMaritime = fleetName.indexOf('maritime') !== -1;
 }
 
+export let hasFullScreenBoard = false;
+export function checkSetFullScreen(fleetName) {
+  hasFullScreenBoard = fleetName.indexOf('psl') !== -1;
+}
+
 //
 // TODO: this shoulc be set in configs/profile, saved locally
 // for now - always enabling for CIPTA

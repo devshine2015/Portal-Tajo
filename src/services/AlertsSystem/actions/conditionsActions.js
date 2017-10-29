@@ -25,6 +25,7 @@ import { getVehiclesExSorted } from 'services/FleetModel/reducer';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import { getAlertConditionByIdFunc } from 'services/AlertsSystem/reducer';
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
+import { hasFullScreenBoard } from 'configs';
 
 import { makeLocalAlertCondition } from '../alertConditionHelper';
 
@@ -51,6 +52,9 @@ export const postVehicleAlertConditions = (vehicleId, alerts) => dispatch =>
   _postVehicleAlerConditions(vehicleId, alerts, dispatch);
 
 export const fetchAllVehicleAlerts = getStore => (dispatch) => {
+  if (!hasFullScreenBoard) {
+    return Promise.reject();
+  }
   const vehiclesList = getVehiclesExSorted(getStore());
 
   return Promise.all(
@@ -65,7 +69,7 @@ export const validateAllVehiclesAlertStatus = getState => (dispatch) => {
     if (vehicleAlerts === undefined) {
       return;
     }
-    const myTempAlert = { maxTemp: 600 };    
+    const myTempAlert = { maxTemp: 600 };
     const alertsList = vehicleAlerts;
     alertsList.forEach((alertId) => {
       const alertCondition = getAlertConditionByIdFunc(getState())(alertId);
