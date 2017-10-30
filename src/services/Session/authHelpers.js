@@ -5,7 +5,11 @@ import {
   DRVR_PROFILE_KEY,
   DRVR_PROFILE_LAST_KEY,
   setMwa,
+  checkSetMaritime,
+  checkSetNoIcons,
+  checkSetFullScreen,
 } from 'configs';
+
 import { isRunningOnLocalhost } from 'configs/_helpers';
 import getHistory from 'utils/history';
 import {
@@ -36,9 +40,14 @@ export const onSuccess = async (profile, dispatch, getStore, bootstrapProject, o
     drvrStorage.save(DRVR_PROFILE_KEY, profile, true);
   }
 
+  const fleetName = profileUtils.getFleetName(profile);
   setAuthorization(profile);
   api.setDrvrHeader(getHeaderKey(), profileUtils.getAuthenticationString(profile, isFeatureSupported('auth0Full')));
-  api.setFleet(profileUtils.getFleetName(profile));
+  api.setFleet(fleetName);
+
+  checkSetMaritime(fleetName);
+  checkSetNoIcons(fleetName);
+  checkSetFullScreen(fleetName);
 
   await __sideEffects(profile, dispatch);
 

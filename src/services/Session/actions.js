@@ -1,9 +1,6 @@
-import R from 'ramda';
+// import R from 'ramda';
 import {
   DRVR_PROFILE_KEY,
-  checkSetMaritime,
-  checkSetNoIcons,
-  checkSetFullScreen,
 } from 'configs';
 import {
   removeProfilePropsInLocalStorage,
@@ -16,13 +13,9 @@ export const SESSION_SETTINGS_UPDATE = 'services/Session/SESSION_SETTINGS_UPDATE
 export const SESSION_METADATA_UPDATE = 'Update session metadata';
 export const SESSION_CURRENT_FLEET_CHANGE = 'change current fleet';
 
-const takeFleetName = R.propOr('', 'fleet');
+// const takeFleetName = R.propOr('', 'fleet');
 
 export const setSession = session => (dispatch) => {
-  checkSetMaritime(takeFleetName(session));
-  checkSetNoIcons(takeFleetName(session));
-  checkSetFullScreen(takeFleetName(session));
-
   dispatch({
     type: SESSION_SET,
     session,
