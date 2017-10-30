@@ -1,6 +1,15 @@
 import { StyleSheet } from 'aphrodite/no-important';
 import { theme } from 'configs';
 
+export const fabClasses = StyleSheet.create({
+  fab: {
+    position: 'fixed',
+    top: '80px',
+    right: '16px',
+    zIndex: 25,
+  },
+});
+
 export const summaryClasses = StyleSheet.create({
   fullSummary: {
     margin: '0 auto',
