@@ -1,5 +1,22 @@
 import { StyleSheet } from 'aphrodite/no-important';
 
+
+// #E53935
+// #e91e63
+// #ff5722
+const alertColorAnimation = {
+  '0%': {
+    backgroundColor: '#E53935',
+  },
+  '60%': {
+    backgroundColor: '#E53935',
+  },
+  '100%': {
+    backgroundColor: 'lightgray',
+  },
+};
+
+
 const opacityKeyframes = {
   from: {
     opacity: 0,
@@ -49,7 +66,8 @@ export const summaryGridClasses = StyleSheet.create({
     flexBasis: 210,
     flexGrow: '2',
     backgroundColor: '#fff',
-    borderRaduis: '5px',
+    borderRadius: '3px',
+    overflow: 'hidden',
   },
 });
 
@@ -65,8 +83,11 @@ export const summaryItemClasses = StyleSheet.create({
     transition: 'background-color .25s ease-in',
     backgroundColor: 'rgba(0, 255, 0, .4)',
   },
-  item_white: {
+  item_no_move: {
     backgroundColor: '#fff',
+  },
+  item_alerted: {
+    backgroundColor: 'lightgray',
   },
   head: {
     marginBottom: 3,
@@ -117,11 +138,15 @@ export const summaryItemClasses = StyleSheet.create({
     display: 'inline-block',
     fontSize: 22,
     fontWeight: 400,
-    padding: '0 2px',
+    padding: '0 4px',
+    borderRadius: '3px',
   },
   scores__val_tempAlert: {
-    backgroundColor: 'red',
     color: 'white',
+    animationName: alertColorAnimation,
+    animationDuration: '0.5s',
+    animationIterationCount: 'infinite',
+    animationDirection: 'alternate',
   },
   time: {
     color: '#000',

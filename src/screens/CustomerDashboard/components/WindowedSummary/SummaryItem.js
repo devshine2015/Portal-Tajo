@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import Clipboard from 'clipboard/dist/clipboard';
 import { css } from 'aphrodite/no-important';
-import cs from 'classnames';
 import { summaryItemClasses } from './classes';
 
 class SummaryGridItem extends React.Component {
@@ -88,16 +87,18 @@ class SummaryGridItem extends React.Component {
       speed,
       fuel,
       lastUpdate,
+      tempAlert,
     } = this.props;
-
+    // const tempAlert = parseInt(temp, 10) > 0;
     console.log(`copied ${this.state.copied}`);
 
-    const tempClass = cs(css(summaryItemClasses.scores__val), {
-      [css(summaryItemClasses.scores__val_tempAlert)]: this.props.tempAlert,
-    });
+    const tempClass = css(summaryItemClasses.scores__val, tempAlert && summaryItemClasses.scores__val_tempAlert);
 
+    const contrinerClass = css(summaryItemClasses.item,
+      (speed === 0 || speed === '0') && summaryItemClasses.item_no_move,
+      tempAlert && summaryItemClasses.item_alerted);
     return (
-      <div className={css(summaryItemClasses.item, this.state.old && summaryItemClasses.item_white)}>
+      <div className={contrinerClass}>
         <div className={css(summaryItemClasses.head)}>
           <div className={css(summaryItemClasses.name)}>{name}</div>
           { this.state.copied ?
@@ -156,7 +157,7 @@ SummaryGridItem.propTypes = {
     lng: PropTypes.number.isRequired,
   }).isRequired,
   lastUpdate: PropTypes.number.isRequired,
-  tempAlert: PropTypes.bool, 
+  tempAlert: PropTypes.bool,
 };
 
 SummaryGridItem.defaultProps = {
