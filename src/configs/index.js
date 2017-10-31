@@ -1,5 +1,6 @@
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import drvrStorage from 'utils/drvrStorage';
+import { authorizeWithRole } from 'utils/authz';
 import { tajoTheme, fusoTheme } from './theme';
 import * as _configHelpers from './_helpers';
 
@@ -71,7 +72,7 @@ export function checkSetMaritime(fleetName) {
 
 export let hasFullScreenBoard = false;
 export function checkSetFullScreen(fleetName) {
-  hasFullScreenBoard = fleetName.indexOf('psl') !== -1;
+  hasFullScreenBoard = authorizeWithRole('uber') || fleetName.indexOf('psl') !== -1;
 }
 
 //
