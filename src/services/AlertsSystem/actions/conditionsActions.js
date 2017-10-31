@@ -51,11 +51,11 @@ export const fetchVehicleAlertConditions = vehicleId => dispatch =>
 export const postVehicleAlertConditions = (vehicleId, alerts) => dispatch =>
   _postVehicleAlerConditions(vehicleId, alerts, dispatch);
 
-export const fetchAllVehicleAlerts = getStore => (dispatch) => {
+export const fetchAllVehicleAlerts = getState => (dispatch) => {
   if (!hasFullScreenBoard) {
     return Promise.reject();
   }
-  const vehiclesList = getVehiclesExSorted(getStore());
+  const vehiclesList = getVehiclesExSorted(getState());
 
   return Promise.all(
     vehiclesList.map(vehicle => _fetchVehicleAlerConditions(vehicle.id, dispatch)),

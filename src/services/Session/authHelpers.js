@@ -34,7 +34,7 @@ const isItMwaProfile = R.compose(R.equals('mwa'), profileUtils.getFleetName);
 const needRedirect = pathname => R.test(/\/login/, pathname);
 const getHeaderKey = () => isFeatureSupported('auth0Full') ? 'DRVR-TOKEN' : 'DRVR-SESSION';
 
-export const onSuccess = async (profile, dispatch, getStore, bootstrapProject, options = {}) => {
+export const onSuccess = async (profile, dispatch, getState, bootstrapProject, options = {}) => {
   if (options.overwrite) {
     drvrStorage.remove(DRVR_PROFILE_LAST_KEY);
     drvrStorage.save(DRVR_PROFILE_KEY, profile, true);
@@ -55,7 +55,7 @@ export const onSuccess = async (profile, dispatch, getStore, bootstrapProject, o
     getHistory().push('/');
   }
 
-  bootstrapProject(dispatch, getStore);
+  bootstrapProject(dispatch, getState);
 };
 
 export const onFailure = (dispatch) => {
