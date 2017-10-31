@@ -101,12 +101,14 @@ class FullSummary extends React.Component {
 
     return (
       <div>
-        <FloatingActionButton
-          onClick={this.toggleFullscreenMode}
-          className={css(fabClasses.fab)}
-        >
-          <FullScreenIn />
-        </FloatingActionButton>
+        {hasFullScreenBoard &&
+          <FloatingActionButton
+            onClick={this.toggleFullscreenMode}
+            className={css(fabClasses.fab)}
+          >
+            <FullScreenIn />
+          </FloatingActionButton>
+        }
         <Layout.Content>
           <Widget
             containerClassName={css(summaryClasses.fullSummary)}
