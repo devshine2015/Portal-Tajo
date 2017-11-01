@@ -4,8 +4,6 @@
 import { Map, fromJS } from 'immutable';
 import { LAG_INDICAION_TRH_MIN, LAG_INDICAION_TRH_NOIGN_MIN } from 'utils/constants';
 import { sortByName } from 'utils/sorting';
-import { getAlertConditionByIdFunc } from 'services/AlertsSystem/reducer';
-import * as alertKinds from 'services/AlertsSystem/alertKinds';
 
 import {
   getProcessedVehicles,
@@ -61,7 +59,6 @@ function _makeImmutableVehicle({
   vehicleStats,
   now = Date.now(),
   imVehicle = new Map({}),
-  tempAlertData = { maxTemp: 600 },
 }) {
   // for maritime demoing
   // remove next string when maritime demo will be finished
@@ -101,12 +98,8 @@ function _makeImmutableVehicle({
 
     if (hasTemp) {
       s.set('temp', vehicleStats.temp.temperature);
-      // s.set('tempAlert', true);
-      s.set('tempAlert', vehicleStats.temp.temperature !== undefined
-        ? vehicleStats.temp.temperature >= tempAlertData.maxTemp : false);
     } else {
       s.set('temp', undefined);
-      s.set('tempAlert', false);
     }
 
     if (hasDist) {
@@ -133,25 +126,8 @@ function _makeImmutableVehicle({
   // return imNextVehicle;
 }
 
-const _updateLocalVehicleTempAlert = (imVehicle, vehicleStats, getState) => {
-  const vehicleAlerts = imVehicle.get('alerts');
-  const myTempAlert = { maxTemp: 600 };
-
-  if (vehicleAlerts !== undefined) {
-    const alertsList = vehicleAlerts.toJS();
-    alertsList.forEach((alertId) => {
-      const alertCondition = getAlertConditionByIdFunc(getState())(alertId);
-      if (alertCondition !== null && alertCondition.kind === alertKinds._ALERT_KIND_TEMPERATURE) {
-        myTempAlert.maxTemp = alertCondition.maxTemp;
-      }
-    });
-    // console.log(`myAlerts  ${vehicleAlerts}`);
-  }
-  return myTempAlert;
-};
-
-const _updateLocalVehicle = (imVehicle, vehicleStats, now, tempAlertData) => {
-  const imNextVehicle = _makeImmutableVehicle({ imVehicle, vehicleStats, now, tempAlertData });
+const _updateLocalVehicle = (imVehicle, vehicleStats, now) => {
+  const imNextVehicle = _makeImmutableVehicle({ imVehicle, vehicleStats, now });
 
   const prevActivityStatus = imVehicle.get('activityStatus');
   const nextActivityStatus = imNextVehicle.get('activityStatus');
@@ -225,12 +201,11 @@ export function updateLocalVehicles(wsStatuses, getState) {
 
   wsStatuses.forEach((newStatus) => {
     const imLocalVehicle = processedList.get(newStatus.id);
-    const tempAlertLimits = _updateLocalVehicleTempAlert(imLocalVehicle, newStatus, getState);
     const {
       imNextVehicle,
       prevActivityStatus,
       nextActivityStatus,
-    } = _updateLocalVehicle(imLocalVehicle, newStatus, now, tempAlertLimits);
+    } = _updateLocalVehicle(imLocalVehicle, newStatus, now);
 
     nextLocalVehicles[newStatus.id] = imNextVehicle;
 

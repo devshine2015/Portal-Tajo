@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import Clipboard from 'clipboard/dist/clipboard';
 import { css } from 'aphrodite/no-important';
+import * as alertKinds from 'services/AlertsSystem/alertKinds';
+import localAlertsProcessor from 'services/AlertsSystem/utils/localAlertsProcessor';
 import { summaryItemClasses } from './classes';
 
 class SummaryGridItem extends React.Component {
@@ -87,12 +89,13 @@ class SummaryGridItem extends React.Component {
       speed,
       fuel,
       lastUpdate,
-      tempAlert,
+      alertsState,    
     } = this.props;
     // const tempAlert = parseInt(temp, 10) > 0;
     console.log(`copied ${this.state.copied}`);
 
-    const tempClass = css(summaryItemClasses.scores__val, tempAlert && summaryItemClasses.scores__val_tempAlert);
+    const tempAlert = localAlertsProcessor.isAlertStateHasAlert(alertsState, alertKinds._ALERT_KIND_TEMPERATURE);
+    const tempBoxClass = css(summaryItemClasses.scores__val, tempAlert && summaryItemClasses.scores__val_tempAlert);
 
     const contrinerClass = css(summaryItemClasses.item,
       (speed === 0 || speed === '0') && summaryItemClasses.item_no_move,
@@ -118,7 +121,7 @@ class SummaryGridItem extends React.Component {
         <div className={css(summaryItemClasses.scores)}>
           <div className={css(summaryItemClasses.scores__col)}>
             <span className={css(summaryItemClasses.scores__title)}>Temp</span>
-            <span className={tempClass}>{temp}</span>
+            <span className={tempBoxClass}>{temp}</span>
           </div>
           <div className={css(summaryItemClasses.scores__col)}>
             <span className={css(summaryItemClasses.scores__title)}>Speed</span>
@@ -157,7 +160,7 @@ SummaryGridItem.propTypes = {
     lng: PropTypes.number.isRequired,
   }).isRequired,
   lastUpdate: PropTypes.number.isRequired,
-  tempAlert: PropTypes.bool,
+  alertsState: PropTypes.object.isRequired,
 };
 
 SummaryGridItem.defaultProps = {

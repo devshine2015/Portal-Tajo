@@ -1,6 +1,7 @@
 import R from 'ramda';
 import { createSelector } from 'reselect';
 import { getProcessedVehicles } from 'services/FleetModel/reducer';
+import localAlertsProcessor from 'services/AlertsSystem/utils/localAlertsProcessor';
 
 export default function makeGetVehicles() {
   return createSelector(getProcessedVehicles, (vehicles) => {
@@ -17,7 +18,7 @@ export default function makeGetVehicles() {
             lng: v.get('pos')[1],
           },
           lastUpdate: v.get('lastUpdateSinceEpoch'),
-          tempAlert: v.get('tempAlert'),
+          alertsState: localAlertsProcessor.getVehicleAlertStatus(v.toJS()),
         });
       });
   });
