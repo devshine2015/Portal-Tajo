@@ -4,10 +4,10 @@ import { fetchDrivers } from './driversActions';
 // import { fetchVehicleAlerts } from './vehiclesActions';
 
 
-export const fetchFleet = getStore => (dispatch) => {
+export const fetchFleet = getState => (dispatch) => {
   dispatch(fetchDrivers());
   dispatch(fetchGFs());
   return dispatch(fetchVehicles());
-    // .then(() => fetchVehicleAlerts(dispatch, getStore));
+    // .then(() => fetchVehicleAlerts(dispatch, getState));
 };
 

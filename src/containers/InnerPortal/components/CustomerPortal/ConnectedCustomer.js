@@ -41,8 +41,7 @@ function updateFleet(nextFleetName) {
 
     dispatch(updateFleetName(nextFleetName))
       .then(() => dispatch(commonFleetActions.fetchFleet()))
-      .then(() => dispatch(conditionsActions.fetchAllVehicleAlerts(getState)))
-      .then(() => dispatch(conditionsActions.validateAllVehiclesAlertStatus(getState)));
+      .then(() => dispatch(conditionsActions.fetchAllVehicleAlerts(getState)));
   };
 }
 

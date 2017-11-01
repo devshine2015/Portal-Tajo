@@ -23,10 +23,9 @@ import endpoints from 'configs/endpoints';
 import { api } from 'utils/api';
 import { getVehiclesExSorted } from 'services/FleetModel/reducer';
 import { vehiclesActions } from 'services/FleetModel/actions';
-import { getAlertConditionByIdFunc } from 'services/AlertsSystem/reducer';
-import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import { hasFullScreenBoard } from 'configs';
 
+import localAlertsProcessor from 'services/AlertsSystem/utils/localAlertsProcessor';
 import { makeLocalAlertCondition } from '../alertConditionHelper';
 
 export const ALRT_CONDITIONS_READY_SET = 'alrtSys/ALRT_CONDITIONS_READY_SET';
@@ -51,39 +50,16 @@ export const fetchVehicleAlertConditions = vehicleId => dispatch =>
 export const postVehicleAlertConditions = (vehicleId, alerts) => dispatch =>
   _postVehicleAlerConditions(vehicleId, alerts, dispatch);
 
-export const fetchAllVehicleAlerts = getStore => (dispatch) => {
+export const fetchAllVehicleAlerts = getState => (dispatch) => {
   if (!hasFullScreenBoard) {
     return Promise.reject();
   }
-  const vehiclesList = getVehiclesExSorted(getStore());
+  const vehiclesList = getVehiclesExSorted(getState());
 
   return Promise.all(
     vehiclesList.map(vehicle => _fetchVehicleAlerConditions(vehicle.id, dispatch)),
   ).then(() => Promise.resolve({ ready: true }));
 };
-
-export const validateAllVehiclesAlertStatus = getState => (dispatch) => {
-  const vehiclesList = getVehiclesExSorted(getState());
-  vehiclesList.forEach((vehicle) => {
-    const vehicleAlerts = vehicle.alerts;
-    if (vehicleAlerts === undefined) {
-      return;
-    }
-    const myTempAlert = { maxTemp: 600 };
-    const alertsList = vehicleAlerts;
-    alertsList.forEach((alertId) => {
-      const alertCondition = getAlertConditionByIdFunc(getState())(alertId);
-      if (alertCondition !== null && alertCondition.kind === alertKinds._ALERT_KIND_TEMPERATURE) {
-        myTempAlert.maxTemp = alertCondition.maxTemp;
-      }
-    });
-    if (vehicle.temp !== undefined) {
-      const alertStatus = vehicle.temp >= myTempAlert.maxTemp;
-      dispatch(vehiclesActions.updateLocalDetails(vehicle.id, { tempAlert: alertStatus }));
-    }
-  });
-};
-
 
 function _fetchConditions(dispatch, getState) {
   const { url, method } = endpoints.getAlertConditions;
@@ -106,6 +82,7 @@ function _setConditions(dispatch, state, conditions) {
 
   conditions.forEach((aElement) => {
     result[aElement.id] = makeLocalAlertCondition(aElement, state);
+    localAlertsProcessor.addLocalAlertCondition(result[aElement.id]);
   });
 
   dispatch(_conditionSet(result));
