@@ -85,7 +85,7 @@ class FullSummary extends React.Component {
 
   render() {
     if (this.state.fullscreen) {
-      return (<div>
+      return (<div style={{ height: '100%'}}>
         <FloatingActionButton
           onClick={this.toggleFullscreenMode}
           className={css(fabClasses.fab)}
