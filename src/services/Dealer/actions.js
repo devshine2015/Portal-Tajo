@@ -21,7 +21,7 @@ export const initDealerPortal = isReady => (dispatch, getState) => {
   });
 };
 
-export const changeFleet = nextFleetName => (dispatch) => {
+export const changeFleet = nextFleetName => (dispatch, getState) => {
   api.setFleet(nextFleetName);
 
   dispatch(fleetReadyStateChange('loading'));
@@ -32,9 +32,10 @@ export const changeFleet = nextFleetName => (dispatch) => {
     }, () => {
       dispatch(fleetReadyStateChange('error'));
     })
-    .then(() => dispatch(conditionsActions.fetchAlertConditions()));
-    // .then(() => dispatch(journalActions.fetchNotifications(makePeriodForLast24Hours())))
-    // .then(() => dispatch(fetchDevices()));
+    .then(() => dispatch(conditionsActions.fetchAlertConditions()))
+    .then(() => dispatch(conditionsActions.fetchAllVehicleAlerts(getState)));
+  // .then(() => dispatch(journalActions.fetchNotifications(makePeriodForLast24Hours())))
+  // .then(() => dispatch(fetchDevices()));
 };
 
 const fleetReadyStateChange = nextState => ({
