@@ -201,6 +201,13 @@ export function updateLocalVehicles(wsStatuses, getState) {
 
   wsStatuses.forEach((newStatus) => {
     const imLocalVehicle = processedList.get(newStatus.id);
+
+    if (imLocalVehicle === undefined) {
+    // TODO: we recieved status for a vehicle we do not have
+    // - is it a valid situation?    
+      return;
+    }
+
     const {
       imNextVehicle,
       prevActivityStatus,
