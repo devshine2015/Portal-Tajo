@@ -70,7 +70,7 @@ export function fuelToString(fuelNormalized, fuelCapacity) {
     return false;
   }
   const fuelPerc = `${(fuelNormalized * 100).toFixed(0)}%`;
-  if (fuelCapacity > 0) {
+  if (fuelCapacity !== null && fuelCapacity > 0) {
     return `${(fuelNormalized * fuelCapacity).toFixed(0)}ltr (${fuelPerc})`;
   }
   return fuelPerc;
