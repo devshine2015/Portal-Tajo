@@ -34,6 +34,10 @@ export const getLogEntriesNewestFirst = (state) => {
   return state.get('entries').sort(newestFirst);
 };
 
+export const getLogEntries = (state) => {
+  return state.get('alerts').get('logs').get('entries');
+};
+
 export const getLogPeriod = (state) => {
   return state.get('period');
 };

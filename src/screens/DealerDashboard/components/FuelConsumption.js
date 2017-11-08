@@ -59,6 +59,11 @@ const FuelConsumption = () => {
           <td><div className={className} style={tableCellCard}>2.8 Ltr/Km</div></td>
         </tr>
         <tr>
+          <td />
+          <td className={css(inClasses.tableCellDescr)} style={{ fontWeight: 'normal', padding: '12px 0 0', textAlign: 'center' }}>Total Litres</td>
+          <td className={css(inClasses.tableCellDescr)} style={{ fontWeight: 'normal', padding: '12px 0 0', textAlign: 'center' }}>% of Fuel Consumption</td>
+        </tr>
+        <tr>
           <td className={css(inClasses.tableCellDescr)}>Estimated Fuel Theft</td>
           <td><div className={className} style={tableCellCardTheft}>20 Ltr</div></td>
           <td><div className={className} style={tableCellCardTheft}>5.7%</div></td>

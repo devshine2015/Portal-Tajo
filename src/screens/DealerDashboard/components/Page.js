@@ -8,17 +8,28 @@ import * as fromFleetReducer from 'services/FleetModel/reducer';
 
 import Layout from 'components/Layout';
 import DashboardElements from 'components/DashboardElements';
+import { logActions } from 'services/AlertsSystem/actions';
+import * as alertKinds from 'services/AlertsSystem/alertKinds';
 
 import ServiceOverview from './ServiceOverview';
 import IdleOverview from './IdleOverview';
 import FuelConsumption from './FuelConsumption';
+import AlertsChart from './AlertsPieChart';
+import AlertSummaryTable from './AlertSummaryTable';
 
 class DealerDashboard extends React.Component {
+  // state = {
+  //   isDefaultRange: true,
+  // };  
+  applyTimeRange = (timeRange) => {
+    this.props.fetchLogs(timeRange)
+      .then();
+  }
 
   render() {
     return (
       <DealerPage>
-        <PageHeader text="Fleet Overview" onApply={() => this.forceUpdate()} />
+        <PageHeader text="Fleet Overview" onApply={tr => this.applyTimeRange(tr)} />
         {/* containerClass={classes.widgetContainer} */}
         <Layout.Content style={{ flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
           <DashboardElements.DataCard
@@ -48,21 +59,26 @@ class DealerDashboard extends React.Component {
           <ServiceOverview />
           <IdleOverview />
           <FuelConsumption />
-          <DashboardElements.PieChart
+        </Layout.Content>
+        <Layout.Content style={{ flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+          <AlertsChart
             key="alerts"
           />
+          <AlertSummaryTable myKind={alertKinds._ALERT_KIND_TEMPERATURE} />
+          <AlertSummaryTable myKind={alertKinds._ALERT_KIND_SPEEDING} />
+          <AlertSummaryTable myKind={alertKinds._ALERT_KIND_GF} />
+          <AlertSummaryTable myKind={alertKinds._ALERT_KIND_FUEL_DIFF} />
         </Layout.Content>
       </DealerPage>
     );
   }
 }
 
-
 DealerDashboard.propTypes = {
   vehicles: PropTypes.array.isRequired,
   // selectedVehicleId: PropTypes.string.isRequired,
 
-  // filterFunc: PropTypes.func.isRequired,
+  fetchLogs: PropTypes.func.isRequired,
 };
 
 const mapState = state => ({
@@ -71,7 +87,7 @@ const mapState = state => ({
   // getVehicleById: getVehicleByIdFunc(state),
 });
 const mapDispatch = {
-  // filterFunc: vehiclesActions.filterVehicles,
+  fetchLogs: logActions.fetchLogs,
 };
 
 export default connect(mapState, mapDispatch)(pure(DealerDashboard));
