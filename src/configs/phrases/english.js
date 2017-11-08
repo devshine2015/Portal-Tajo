@@ -146,6 +146,18 @@ export default {
   on_enter_location: 'on enter location',
   on_exit_location: 'on exit location',
   add: 'add',
+  brand: 'brand',
+  model: 'Model',
+  max_power_hp: 'Max Power (hp)',
+  torque_nm: 'Torque (Nm)',
+  rpm_max: '@rpm Max',
+  rpm: '@rpm',
+  tank_size_litres: 'Tank Size Litres',
+  power_tran: 'Power Train',
+  gearbox: 'Gearbox(auto/manual/semi-auto)',
+  can_odometer: 'CAN Odometer',
+
+
   // -- end vehicle details
 
   // vehicle kinds

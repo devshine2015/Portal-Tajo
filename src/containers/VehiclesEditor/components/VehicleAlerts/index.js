@@ -113,7 +113,7 @@ class VehicleAlerts extends React.Component {
     return (
       <Layout.Section>
         <Layout.Header label={`${translations.alerts}${this.state.isLoading ? ` ${translations.loading}` : ''}`} />
-        <Layout.Content>
+        <Layout.Content style={{display: 'inherit'}}>
           <AlertOfKindSelector
             myKind={alertKinds._ALERT_KIND_SPEEDING}
             onOfKindChange={this.onOfKindChange}
@@ -203,4 +203,3 @@ const mapDispatch = {
 const PureVehicleAlerts = pure(VehicleAlerts);
 
 export default connect(mapState, mapDispatch)(translate(phrases)(PureVehicleAlerts));
-
