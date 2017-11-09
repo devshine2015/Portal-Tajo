@@ -43,16 +43,16 @@ function setVehicleState(props) {
     marker: props.details.marker,
     driverId: props.details.driverId,
     isTouched: false,
-    manufacturerValue: "2017",
+    manufacturerValue: 2017,
     brandValue: "Mercedes-Benz",
-    modelValue: "",
-    maxPower: "",
-    maxrpm: "",
-    maxTorque: "",
-    rpm: "",
-    tankSize: "",
-    PowerTrain: "",
-    gearbox: ""
+    modelValue: 3340,
+    maxPower: "400",
+    maxrpm: "1,800 rpm",
+    maxTorque: "1,850 rpm",
+    rpm: "1,850 rpm",
+    tankSize: "550 liters",
+    PowerTrain: "6x4",
+    gearbox: "S"
   });
 }
 
@@ -67,12 +67,18 @@ const toMiles = needConvertToMiles => kms => {
 };
 const toMeters = val => val * 1000;
 
-const yearmanufacure = [
-  '2017',
-  '2016',
-  '2015'
-]
+var yearmanufacture = [];
 
+function feedYearManufacture() {
+  var d = new Date();
+  var curYear = d.getFullYear();
+  for (var i = 0; i < 3; i++) {
+    yearmanufacture.push(curYear - i);    
+  }
+}
+
+feedYearManufacture();
+  
 class VehicleDetails extends React.Component {
   constructor(props) {
     super(props);
@@ -85,7 +91,10 @@ class VehicleDetails extends React.Component {
     this.modelChange = this.modelChange.bind(this);
     this.manufacuterchange = this.manufacuterchange.bind(this);
     this.calculateOtherFields = this.calculateOtherFields.bind(this);
+
+    this.calculateOtherFields();
   }
+
   manufacuterchange(event, index, value) {
     this.setState(
       {
@@ -93,15 +102,26 @@ class VehicleDetails extends React.Component {
       }
     );
   }
-  brandChange(event, index, value) {
+  brandChange(event, index, value) {        
+    
+    if(this.state.brandValue != value) {
+      console.log(value);
+      if(value === 'Fuso') {
+        this.state.modelValue = 'FJ1823';
+      }      
+      if(value === 'Mercedes-Benz') {
+        this.state.modelValue = 3340;
+      }
+    }
+
     this.setState(
       {
-        brandValue: value
+        brandValue: value                
       },
       function() {
         this.calculateOtherFields();
       }
-    );
+    );    
   }
   modelChange(event, index, value) {
     this.setState(
@@ -248,7 +268,7 @@ class VehicleDetails extends React.Component {
     });
   };
   
-  render() {    
+  render() {        
     const { translations } = this.props;
     var brand = [];
     var model = [];
@@ -258,6 +278,16 @@ class VehicleDetails extends React.Component {
     }
     var brand_unique = brand.filter(onlyUnique);
     var model_unique = model.filter(onlyUnique);
+    var cur_model_unique = [];    
+
+    if(this.state.brandValue === 'Mercedes-Benz') {
+      cur_model_unique = model_unique.slice(0, 2);      
+    } 
+    
+    if(this.state.brandValue === 'Fuso') {
+      cur_model_unique = model_unique.slice(2, model_unique.length);            
+    }    
+
     var divStyle = {
       width: "100%",
       overflowY: "auto"
@@ -345,7 +375,7 @@ class VehicleDetails extends React.Component {
                 floatingLabelText="Year of Manufacturer"
               >
                 {
-                  yearmanufacure.map((value,i) => {
+                  yearmanufacture.map((value,i) => {
                     return <MenuItem value={value} key={i} primaryText={value} />;
                   })
                 }                
@@ -372,7 +402,7 @@ class VehicleDetails extends React.Component {
                   width: 170
                 }}
               >
-                {model_unique.map(i => {
+                {cur_model_unique.map(i => {
                   return <MenuItem value={i} key={i} primaryText={i} />;
                 })}
               </SelectField><br/>
