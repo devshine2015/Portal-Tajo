@@ -51,9 +51,10 @@ class VehicleKindSelector extends React.PureComponent {
         <SelectField
           autoWidth
           hintText={ this.props.translations.vehicle_kind_hint }
-          name="kind"
+          name="kind"          
           value={this.props.kind}
           onChange={this.props.onChange}
+          floatingLabelText="Vehicle Kind"
         >
           {this.renderKindMenuItems()}
         </SelectField>

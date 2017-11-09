@@ -37,7 +37,7 @@ class DriverSelector extends React.PureComponent {
     const { translations } = this.props;
 
     return (
-      <div className={css(classes.kindOfSelector)}>
+      <div className={css(classes.kindOfSelector2)}>
         <div className={css(classes.kindOfLabel)}>
           <span className={css(classes.kindOfName)}>
             { translations.driver }

@@ -92,7 +92,7 @@ class VehicleDetails extends React.Component {
     this.manufacuterchange = this.manufacuterchange.bind(this);
     this.calculateOtherFields = this.calculateOtherFields.bind(this);
 
-    this.calculateOtherFields();
+    //this.calculateOtherFields();
   }
 
   manufacuterchange(event, index, value) {
@@ -321,6 +321,7 @@ class VehicleDetails extends React.Component {
                 onChange={this.onChange}
                 floatingLabelText={translations.chassis_number}
                 value={this.state.chassisNumber}
+                style={{height:80}}
               />
 
               <TextField
@@ -329,12 +330,14 @@ class VehicleDetails extends React.Component {
                 onChange={this.onChange}
                 floatingLabelText={translations.license_plate}
                 value={this.state.licensePlate}
+                style={{height:80}}
               />
 
               <DeviceEditor
                 // vehicleId={this.props.details.id}
                 deviceId={this.state.deviceId}
                 updateDeviceId={this.updateDeviceId}
+                style={{height:80}}
               />
 
               <TextField
@@ -345,12 +348,14 @@ class VehicleDetails extends React.Component {
                 value={this.state.odometer}
                 type="number"
               />
+
               <Checkbox
                 label={translations.odo_in_miles}
                 name="isMiles"
                 checked={this.state.isMiles}
                 onCheck={this.onIsMilesChange}
               />
+
               <TextField
                 fullWidth
                 name="fuelCapacity"
@@ -359,10 +364,12 @@ class VehicleDetails extends React.Component {
                 value={this.state.fuelCapacity}
                 type="number"
               />
+
               <DriverSelector
                 driverId={this.state.driverId}
                 onChange={this.onDriverChange}
               />
+              
               <MarkerSelector
                 kind={this.state.marker}
                 onChange={this.onMarkerChange}
@@ -384,10 +391,7 @@ class VehicleDetails extends React.Component {
                 value={this.state.brandValue}
                 onChange={this.brandChange}
                 floatingLabelText="Brand"
-                style={{
-                  top: -12,
-                  width: 170
-                }}
+                style={{width: 170}}
               >
                 {brand_unique.map(i => {
                   return <MenuItem value={i} key={i} primaryText={i} />;
@@ -397,15 +401,13 @@ class VehicleDetails extends React.Component {
                 value={this.state.modelValue}
                 onChange={this.modelChange}
                 floatingLabelText="Modal"
-                style={{
-                  top: -12,
-                  width: 170
-                }}
+                style={{width: 170}}
               >
                 {cur_model_unique.map(i => {
                   return <MenuItem value={i} key={i} primaryText={i} />;
                 })}
-              </SelectField><br/>
+              </SelectField>
+              <div></div>
               <TextField
                 fullWidth
                 name="max_power_hp"
@@ -439,14 +441,14 @@ class VehicleDetails extends React.Component {
                 name="tank_size_litres"
                 floatingLabelText={translations.tank_size_litres}
                 value={this.state.tankSize}
-                style={{ width: "250px" }}
+                style={{ width: "50%" }}
               />
               <TextField
                 fullWidth
                 name="power_tran"
                 floatingLabelText={translations.power_tran}
                 value={this.state.PowerTrain}
-                style={{ width: "250px" }}
+                style={{ width: "50%" }}
               />
               <TextField
                 fullWidth

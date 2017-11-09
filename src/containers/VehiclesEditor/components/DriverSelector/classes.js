@@ -16,7 +16,7 @@ const classes = StyleSheet.create({
     marginLeft: 15,
     display: 'inline-block',
   },
-  kindOfSelector: {
+  kindOfSelector2: {    
     display: 'flex',
     margin: '16px 0 0 0',
     /*justify-content: space-between;*/

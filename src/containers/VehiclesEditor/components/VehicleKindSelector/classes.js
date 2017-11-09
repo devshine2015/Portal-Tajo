@@ -14,6 +14,7 @@ const classes = StyleSheet.create({
 
   selectedKindIcon: {
     marginLeft: 15,
+    marginTop: 15,
     display: 'inline-block',
   },
 });
