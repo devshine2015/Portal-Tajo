@@ -163,19 +163,20 @@ class VehicleDetails extends React.Component {
   //         isTouched: true };
   //     }
   //     if (i === 8) {
-  //       this.setState({ maxPower: '' });
-  //       this.setState({ maxRpm: '' });
-  //       this.setState({ maxTorque: '' });
-  //       this.setState({ rpm: '' });
-  //       this.setState({ fuelCapacity: '' });
-  //       this.setState({ powertrain: '' });
-  //       this.setState({ gearbox: '' });
+  //       return {
+  //       maxPower: '',
+  //       maxRpm: '',
+  //       maxTorque: '',
+  //       rpm: '',
+  //       fuelCapacity: '',
+  //       powertrain: '',
+  //       gearbox: '',
+  //       };
   //     }
   //   }
   // }
 
-
-  calculateOtherFields() {
+  calculateOtherFields(isTouched=true) {
     // TODO: no hardcoded limits
     for (let i = 1; i < 10; i++) {
       if (
@@ -191,7 +192,7 @@ class VehicleDetails extends React.Component {
         this.setState({ fuelCapacity: workbook[0].data[i][6] });
         this.setState({ powertrain: workbook[0].data[i][7] });
         this.setState({ gearbox: workbook[0].data[i][8] });
-        this.setState({ isTouched: true });
+        this.setState({ isTouched });
         break;
       }
       if (i === 8) {
@@ -304,7 +305,8 @@ class VehicleDetails extends React.Component {
    * Update state if another vehicle has been chosen
    * */
   setNewVehicleDetails = (nextProps) => {
-    this.setState(setVehicleState(nextProps));
+    this.setState(setVehicleState(nextProps),
+      () => this.calculateOtherFields(false));
   };
 
   resetChanges = () => {
