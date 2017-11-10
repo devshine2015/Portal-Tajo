@@ -366,11 +366,20 @@ export function cleanVehicle(vehicle) {
     'odometer', 'lastServiceOdo', 'year', 'created', 'updated', 'deviceId',
     'status', 'meta', 'chassisNumber', 'fuelCapacity',
   ];
+  const optionalBackEndProps = [
+    'gearbox', 'powertrain', 'maxPower', 'maxTorque',
+  ];
 
   const result = {};
 
   requiredBackEndProps.forEach((reqProp) => {
     result[reqProp] = vehicle[reqProp];
+  });
+
+  optionalBackEndProps.forEach((optProp) => {
+    if (vehicle[optProp] !== undefined) {
+      result[optProp] = vehicle[optProp];
+    }
   });
 
   return result;

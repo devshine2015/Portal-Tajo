@@ -13,4 +13,13 @@
   .buttons__button {
     margin: 0 5px;
   }
+  .contentLeft {
+    width: 45%;
+    margin-right: 5%;   
+  }
+  
+  .contentRight {
+    width: 45%;
+    margin-left: 5%;    
+  }
 }

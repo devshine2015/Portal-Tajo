@@ -12,10 +12,12 @@ import { vehiclesActions } from 'services/FleetModel/actions';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { getVehicleFilterString } from 'services/Global/reducer';
 
+import VehicleDetailsTmpl from './components/VehicleDetailsTemplated';
 import VehicleDetails from './components/VehicleDetails';
 import { getLoaderState } from './reducer';
 import { detailsActions } from './actions';
 import { translate } from 'utils/i18n';
+import { isDealer } from 'configs';
 
 import phrases, { phrasesShape } from './PropTypes';
 
@@ -142,14 +144,25 @@ class VehiclesEditor extends React.Component {
 
     return (
       <Layout.FixedContent >
-        <VehicleDetails
-          isLoading={this.props.isLoading}
-          details={data}
-          onSave={this.onDetailsSave}
-          onCancel={this.onDetailsCancel}
-          onDisable={this.onVehicleDisable}
-          disabled={this.props.isLoading}
-        />
+        {isDealer ?
+          <VehicleDetailsTmpl
+            isLoading={this.props.isLoading}
+            details={data}
+            onSave={this.onDetailsSave}
+            onCancel={this.onDetailsCancel}
+            onDisable={this.onVehicleDisable}
+            disabled={this.props.isLoading}
+          />
+          :
+          <VehicleDetails
+            isLoading={this.props.isLoading}
+            details={data}
+            onSave={this.onDetailsSave}
+            onCancel={this.onDetailsCancel}
+            onDisable={this.onVehicleDisable}
+            disabled={this.props.isLoading}
+          />
+        }
       </Layout.FixedContent>
     );
   }

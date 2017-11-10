@@ -24,6 +24,16 @@ const phrases = [
   'disable',
   'parameters',
   'reset',
+  'brand',
+  'model',
+  'max_power_hp',
+  'torque_nm',
+  'rpm_max',
+  'rpm',
+  'tank_size_litres',
+  'power_tran',
+  'gearbox',
+  'can_odometer'
 ];
 
 export const detailsShape = shape({
