@@ -97,19 +97,11 @@ class VehicleDetails extends React.Component {
     this.state = setVehicleState(props);
     this.brandChange = this.brandChange.bind(this);
     this.modelChange = this.modelChange.bind(this);
-    this.manufacuterchange = this.manufacuterchange.bind(this);
     this.calculateOtherFields = this.calculateOtherFields.bind(this);
 
     // this.calculateOtherFields();
   }
 
-  manufacuterchange(event, index, value) {
-    this.setState(
-      {
-        year: value,
-      },
-    );
-  }
   brandChange(event, index, value) {
     let model = 'FJ1823';
     if (this.state.make !== value) {
@@ -233,7 +225,7 @@ class VehicleDetails extends React.Component {
 
     const toSave = Object.assign({}, this.state, {
       fuelCapacity: parseInt(this.state.fuelCapacity, 10),
-      year: this.state.toString(),
+      year: this.state.year.toString(),
       odometer: {
         value: nextOdo,
       },
@@ -245,11 +237,11 @@ class VehicleDetails extends React.Component {
         driverId: this.state.driverId,
       },
       maxPower: {
-        max: this.state.maxPower,
-        rpm: this.state.maxRpm,
+        max: parseInt(this.state.maxPower, 10),
+        rpm: parseInt(this.state.maxRpm, 10),
       },
       maxTorque: {
-        max: this.state.maxTorque,
+        max: parseInt(this.state.maxTorque, 10),
         minRpm: extractMinNumber(this.state.rpm),
         maxRpm: extractMaxNumber(this.state.rpm),
       },
@@ -260,6 +252,15 @@ class VehicleDetails extends React.Component {
       isTouched: false,
     });
   };
+
+  onYearChange = (event, index, value) => {
+    this.setState(
+      {
+        year: value,
+        isTouched: true,
+      },
+    );
+  }
 
   onIsMilesChange = (e, isCheked) => {
     this.setState({
@@ -348,7 +349,7 @@ class VehicleDetails extends React.Component {
       <div className={styles.details}>
         <Layout.Section>
           <Layout.Header label={translations.parameters} />
-          <Layout.Content>
+          <Layout.Content style={{flexDirection: 'row'}}>
             <div className={styles.contentLeft}>
               <TextField
                 fullWidth
@@ -426,8 +427,8 @@ class VehicleDetails extends React.Component {
             <div className={styles.contentRight}>
               <SelectField
                 value={this.state.year}
-                onChange={this.manufacuterchange}
-                floatingLabelText="Year of Manufacturer"
+                onChange={this.onYearChange}
+                floatingLabelText={translations.year_of_manufacture}
               >
                 {
                   yearmanufacture.map((value, i) => <MenuItem value={value} key={i} primaryText={value} />)
