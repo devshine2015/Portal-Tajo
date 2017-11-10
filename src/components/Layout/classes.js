@@ -32,8 +32,11 @@ const classes = StyleSheet.create({
   },
   // ---- content
   content: {    
-    width: '100%',    
-    display: 'flex'    
+    maxWidth: 1000,
+    width: '100%',
+    margin: '0 auto',
+    display: 'flex',
+    flexDirection: 'column',
   },
   content__padding: {
     padding: 20,
