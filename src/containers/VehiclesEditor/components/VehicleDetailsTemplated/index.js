@@ -95,14 +95,14 @@ class VehicleDetails extends React.Component {
      * Initial values for controlled inputs
      * */
     this.state = setVehicleState(props);
-    this.brandChange = this.brandChange.bind(this);
-    this.modelChange = this.modelChange.bind(this);
-    this.calculateOtherFields = this.calculateOtherFields.bind(this);
+    // this.brandChange = this.brandChange.bind(this);
+    // this.modelChange = this.modelChange.bind(this);
+    // this.calculateOtherFields = this.calculateOtherFields.bind(this);
 
     // this.calculateOtherFields();
   }
 
-  brandChange(event, index, value) {
+  brandChange = (event, index, value) => {
     let model = 'FJ1823';
     if (this.state.make !== value) {
       console.log(value);
@@ -125,7 +125,7 @@ class VehicleDetails extends React.Component {
       },
     );
   }
-  modelChange(event, index, value) {
+  modelChange = (event, index, value) => {
     this.setState(
       {
         model: value.toString(),
@@ -136,39 +136,7 @@ class VehicleDetails extends React.Component {
     );
   }
 
-  // calculateOtherFieldsEx(make, model) {
-  //   // TODO: no hardcoded limits
-  //   for (let i = 1; i < 10; i++) {
-  //     if (
-  //       containsAll(
-  //         [make, model],
-  //         workbook[0].data[i],
-  //       )
-  //     ) {
-  //       return { maxPower: workbook[0].data[i][2],
-  //         maxRpm: workbook[0].data[i][3],
-  //         maxTorque: workbook[0].data[i][4],
-  //         rpm: workbook[0].data[i][5],
-  //         fuelCapacity: workbook[0].data[i][6],
-  //         powertrain: workbook[0].data[i][7],
-  //         gearbox: workbook[0].data[i][8],
-  //         isTouched: true };
-  //     }
-  //     if (i === 8) {
-  //       return {
-  //       maxPower: '',
-  //       maxRpm: '',
-  //       maxTorque: '',
-  //       rpm: '',
-  //       fuelCapacity: '',
-  //       powertrain: '',
-  //       gearbox: '',
-  //       };
-  //     }
-  //   }
-  // }
-
-  calculateOtherFields(isTouched=true) {
+  calculateOtherFields = (isTouched = true) => {
     // TODO: no hardcoded limits
     for (let i = 1; i < 10; i++) {
       if (
@@ -177,24 +145,24 @@ class VehicleDetails extends React.Component {
           workbook[0].data[i],
         )
       ) {
-        this.setState({ maxPower: workbook[0].data[i][2] });
-        this.setState({ maxRpm: workbook[0].data[i][3] });
-        this.setState({ maxTorque: workbook[0].data[i][4] });
-        this.setState({ rpm: workbook[0].data[i][5] });
-        this.setState({ fuelCapacity: workbook[0].data[i][6] });
-        this.setState({ powertrain: workbook[0].data[i][7] });
-        this.setState({ gearbox: workbook[0].data[i][8] });
-        this.setState({ isTouched });
+        this.setState({ maxPower: workbook[0].data[i][2],
+          maxRpm: workbook[0].data[i][3],
+          maxTorque: workbook[0].data[i][4],
+          rpm: workbook[0].data[i][5],
+          fuelCapacity: workbook[0].data[i][6],
+          powertrain: workbook[0].data[i][7],
+          gearbox: workbook[0].data[i][8],
+          isTouched });
         break;
       }
       if (i === 8) {
-        this.setState({ maxPower: '' });
-        this.setState({ maxRpm: '' });
-        this.setState({ maxTorque: '' });
-        this.setState({ rpm: '' });
-        this.setState({ fuelCapacity: '' });
-        this.setState({ powertrain: '' });
-        this.setState({ gearbox: '' });
+        this.setState({ maxPower: '',
+          maxRpm: '',
+          maxTorque: '',
+          rpm: '',
+          fuelCapacity: '',
+          powertrain: '',
+          gearbox: '' });
       }
     }
   }
@@ -349,7 +317,7 @@ class VehicleDetails extends React.Component {
       <div className={styles.details}>
         <Layout.Section>
           <Layout.Header label={translations.parameters} />
-          <Layout.Content style={{flexDirection: 'row'}}>
+          <Layout.Content style={{ flexDirection: 'row' }}>
             <div className={styles.contentLeft}>
               <TextField
                 fullWidth
