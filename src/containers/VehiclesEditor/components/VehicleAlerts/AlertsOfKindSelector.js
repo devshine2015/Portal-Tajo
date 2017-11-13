@@ -55,7 +55,7 @@ const AlertOfKindSelector = ({
 
 AlertOfKindSelector.propTypes = {
   myKind: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   onOfKindChange: PropTypes.func.isRequired,
   alertConditions: PropTypes.array.isRequired,
   vehicleAlerts: PropTypes.array.isRequired,
