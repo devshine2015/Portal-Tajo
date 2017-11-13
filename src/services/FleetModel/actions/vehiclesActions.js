@@ -14,6 +14,7 @@ export const FLEET_MODEL_READY_SET = 'portal/services/FLEET_MODEL_READY_SET';
 export const FLEET_MODEL_VEHICLES_SET = 'portal/services/FLEET_MODEL_VEHICLES_SET';
 export const FLEET_MODEL_VEHICLES_FILTER = 'portal/services/FLEET_MODEL_VEHICLES_FILTER';
 export const FLEET_MODEL_VEHICLE_UPDATE = 'portal/services/FLEET_MODEL_VEHICLE_UPDATE';
+export const FLEET_MODEL_VEHICLE_BATCH_UPDATE = 'vehBatchUpdate';
 export const FLEET_MODEL_VEHICLES_UPDATE_LIST = 'portal/services/FLEET_MODEL_VEHICLES_UPDATE_LIST';
 export const FLEET_MODEL_VEHICLE_SELECT = 'portal/services/FLEET_MODEL_VEHICLE_SELECT';
 export const FLEET_MODEL_VEHICLE_ADD = 'portal/services/FLEET_MODEL_VEHICLE_ADD';
@@ -26,6 +27,9 @@ export const updateDetails = (details = {}) => dispatch =>
   makeUpdateVehicleRequest(details, dispatch);
 export const updateLocalDetails = (vehicleId, newDetails) => dispatch =>
   _updateLocalVehicleModel(vehicleId, newDetails, dispatch);
+export const updateLocalDetailsBatch = updates => dispatch =>
+  dispatch(_vehicleBatchUpdate(updates));
+
 export const filterVehicles = searchString => (dispatch, getState) =>
   _filterVehicles({ searchString }, dispatch, getState);
 export const addVehicle = vehicle => (dispatch, getState) =>
@@ -177,6 +181,11 @@ export const _vehicleUpdate = (details, id) => ({
   type: FLEET_MODEL_VEHICLE_UPDATE,
   details,
   id,
+});
+
+const _vehicleBatchUpdate = updates => ({
+  type: FLEET_MODEL_VEHICLE_BATCH_UPDATE,
+  updates,
 });
 
 const _vehiclesFilterUpdate = (vehicles, searchString) => ({

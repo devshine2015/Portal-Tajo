@@ -18,10 +18,11 @@
 //   },
 //   "kind": "geofence-alert"
 // }
+import { Map } from 'immutable';
 
 import endpoints from 'configs/endpoints';
 import { api } from 'utils/api';
-import { getVehiclesExSorted } from 'services/FleetModel/reducer';
+import { getVehiclesExSorted, getProcessedVehicles } from 'services/FleetModel/reducer';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import { hasFullScreenBoard } from 'configs';
 
@@ -55,10 +56,30 @@ export const fetchAllVehicleAlerts = getState => (dispatch) => {
     return Promise.reject();
   }
   const vehiclesList = getVehiclesExSorted(getState());
+  const processedList = getProcessedVehicles(getState());
+  // const startT = performance.now();
 
   return Promise.all(
-    vehiclesList.map(vehicle => _fetchVehicleAlerConditions(vehicle.id, dispatch)),
-  ).then(() => Promise.resolve({ ready: true }));
+    vehiclesList.map(vehicle => _fetchVehicleAlerConditionsLocalUpdate(vehicle.id)),
+  )
+    .then((vehiclesAlerts) => {
+      // const startT0 = performance.now();      
+      const nextLocalVehicles = {};
+      vehiclesAlerts.forEach((alrt) => {
+        const imLocalVehicle = processedList.get(alrt.vehicleId);
+        if (imLocalVehicle === undefined) {
+        // TODO: we recieved status for a vehicle we do not have
+        // - is it a valid situation?    
+          return;
+        }
+        nextLocalVehicles[alrt.vehicleId] = imLocalVehicle.set('alerts', alrt.alerts);
+      });
+
+      dispatch(vehiclesActions.updateLocalDetailsBatch(new Map(nextLocalVehicles)));
+      // console.log(`   ---->>> VehicleState batch took ${((performance.now() - startT0) / 1000.0).toFixed(2)} seconds.`);
+    })
+    .then(() => {
+    });
 };
 
 function _fetchConditions(dispatch, getState) {
@@ -95,7 +116,18 @@ function _fetchVehicleAlerConditions(vehicleId, dispatch) {
     .then(toJson)
     .then((alerts) => {
       dispatch(_vehicleConditionsSet(vehicleId, alerts));
-      dispatch(vehiclesActions.updateLocalDetails(vehicleId, { alerts }));
+      // dispatch(vehiclesActions.updateLocalDetails(vehicleId, { alerts }));
+    })
+    .catch(console.error);
+}
+
+function _fetchVehicleAlerConditionsLocalUpdate(vehicleId) {
+  const { url, method } = endpoints.getVehicleAlertConditions(vehicleId);
+
+  return api[method](url)
+    .then(toJson)
+    .then((alerts) => {
+      return Promise.resolve({ vehicleId, alerts });
     })
     .catch(console.error);
 }
@@ -107,6 +139,7 @@ function _postVehicleAlerConditions(vehicleId, alerts, dispatch) {
     payload: alerts,
   }).then(() => {
     dispatch(_vehicleConditionsSet(vehicleId, alerts));
+    dispatch(vehiclesActions.updateLocalDetails(vehicleId, { alerts }));
     // this.props.fetchVehicleAlertConditions(nextProps.vehicleId)
     return Promise.resolve();
   }, error => Promise.reject(error));
