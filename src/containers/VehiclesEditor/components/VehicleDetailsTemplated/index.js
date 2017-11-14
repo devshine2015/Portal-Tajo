@@ -14,6 +14,8 @@ import MarkerSelector from '../MarkerSelector/MarkerSelector';
 import DriverSelector from '../DriverSelector/DriverSelector';
 import styles from './styles.css';
 import phrases, { detailsShape } from './PropTypes';
+
+// TODO: remove "excel-loader", keep the static data in .json
 import workbook from './Truck.xls';
 
 // TODO: use permissions for ODO editing
