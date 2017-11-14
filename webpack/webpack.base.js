@@ -115,9 +115,9 @@ module.exports.default = options => ({
     }, {
       test: /\.html$/,
       loader: 'html-loader',
-    },  {
+    }, {
       test: /\.xls.?$/,
-      loader: 'excel-loader'
+      loader: 'excel-loader',
     }, {
       test: /\.svg$/,
       loader: 'svg-react-loader',
