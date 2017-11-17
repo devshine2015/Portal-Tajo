@@ -7,18 +7,18 @@ import Checkbox from 'material-ui/Checkbox';
 import Layout from 'components/Layout';
 import FormButtons from 'components/Controls/FormButtons';
 
-import { makeBackendGF,
-    toggleDepotForGF } from 'services/FleetModel/utils/gfHelpers';
-import { gfEditGetSubject } from './reducer';
-import { gfEditClose, gfEditUpdate } from './actions';
 import { createGF } from 'services/FleetModel/actions/gfActions';
 import { showSnackbar } from 'containers/Snackbar/actions';
 import { translate } from 'utils/i18n';
 
+import { makeBackendGF,
+  toggleDepotForGF } from 'services/FleetModel/utils/gfHelpers';
+import { gfEditGetSubject } from './reducer';
+import { gfEditClose, gfEditUpdate } from './actions';
+
 import phrases, { phrasesShape } from './PropTypes';
 
 class GFEditor extends React.Component {
-
   onSubmit = (e) => {
     e.preventDefault();
 
@@ -38,7 +38,7 @@ class GFEditor extends React.Component {
     this.props.gfEditClose();
   }
   /**
-   **/
+   * */
   onChange = (e, value) => {
     const field = e.target.name;
     this.props.subjectGF[field] = value;
@@ -76,13 +76,13 @@ class GFEditor extends React.Component {
           floatingLabelText={this.props.translations.radius}
           value={this.props.subjectGF.radius}
         />
-          }
+        }
         { true ? null : (
           <Checkbox
             label={this.props.translations.home_depot}
             onCheck={this.onCheckDepot}
           />
-          )}
+        )}
         <FormButtons
           onSubmit={this.onSubmit}
           onCancel={this.onCancel}
