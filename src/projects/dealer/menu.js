@@ -27,6 +27,14 @@ const menu = {
     name: 'vehicle_maintenance',
     path: 'maintenance',
   },
+  installer: {
+    name: 'installer',
+    path: 'installer',
+  },
+  devices: {
+    name: 'devices_manager',
+    path: 'devices',
+  },
 };
 
 export default menu;

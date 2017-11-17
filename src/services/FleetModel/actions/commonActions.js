@@ -7,7 +7,7 @@ import { fetchDrivers } from './driversActions';
 export const fetchFleet = getState => (dispatch) => {
   dispatch(fetchDrivers());
   dispatch(fetchGFs());
-  return dispatch(fetchVehicles());
-    // .then(() => fetchVehicleAlerts(dispatch, getState));
+  return dispatch(fetchVehicles(getState));
+  // .then(() => fetchVehicleAlerts(dispatch, getState));
 };
 

@@ -2,6 +2,8 @@ import { api } from 'utils/api';
 import { isMwa } from 'configs';
 import endpoints from 'configs/endpoints';
 import { mwaFetchJobs } from 'services/MWA/actions';
+import subFleetFilter from 'services/Dealer/subFleetFiltering';
+import dealerSelectors from 'services/Dealer/selectors';
 import filterProcessedList from '../utils/filtering';
 import { getProcessedVehicles } from '../reducer';
 import {
@@ -39,7 +41,7 @@ export const setSelectedVehicleId = id => ({
   id,
 });
 
-export const fetchVehicles = () => (dispatch) => {
+export const fetchVehicles = getState => (dispatch) => {
   const urls = [{
     ...endpoints.getVehicles,
   }, {
@@ -53,7 +55,8 @@ export const fetchVehicles = () => (dispatch) => {
       api[method](url).then(toJson),
     ),
   ).then(([vehicles = [], { status = [] } = {}]) => {
-    const localObjects = makeLocalVehicles(vehicles, status);
+    const localObjects = makeLocalVehicles(
+      subFleetFilter(vehicles, dealerSelectors.getSelectedSubFleet(getState())), status);
 
     dispatch(_vehiclesSet(localObjects));
   }).then(() => {

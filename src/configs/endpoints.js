@@ -240,6 +240,15 @@ const endpoints = {
     url: `vehicles/${id}/alert-conditions`,
     method: 'post',
   }),
+  // subFleets
+  createSubFleet: {
+    url: 'subfleets',
+    method: 'post',
+  },
+  getSubFleets: {
+    url: 'subfleets',
+    method: 'get',
+  },
   // MWA
   getMWAJobs: params => ({
     url: `mwa/jobs/01?${qs.stringify(params)}`,

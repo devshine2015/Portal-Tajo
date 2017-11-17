@@ -5,8 +5,8 @@ import { tajoTheme, fusoTheme } from './theme';
 import * as _configHelpers from './_helpers';
 
 // const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080'; // for dev testing
-// const DEV_ENGINE_BASE = 'drvrstage.cloudapp.net:8080'; // for stage testing
-const DEV_ENGINE_BASE = 'drvrapp.net'; // for prod testing
+const DEV_ENGINE_BASE = 'drvrstage.cloudapp.net:8080'; // for stage testing
+// const DEV_ENGINE_BASE = 'drvrapp.net'; // for prod testing
 const REMOTE_HOST_BASE = window.location.host;
 
 export const version = process.env.DRVR_VERSION;

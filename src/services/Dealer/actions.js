@@ -1,32 +1,46 @@
 import { api } from 'utils/api';
-import { getSessionData } from 'services/Session/reducer';
+// import { getSessionData } from 'services/Session/reducer';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import {
   conditionsActions,
 } from 'services/AlertsSystem/actions';
-
+import { isDealer } from 'configs';
 
 export const DEALER_PORTAL_READY = 'dealer portal set ready state';
 export const DEALER_PORTAL_FLEET_READY_STATE_SET = 'change dealer portal fleet data ready state';
-export const DEALER_PORTAL_FLEET_SET = 'dealer portal set current fleet';
+export const DEALER_PORTAL_SELECT_FLEET = 'dlrSelectSubFleet';
 
-export const initDealerPortal = isReady => (dispatch, getState) => {
-  const profile = getSessionData(getState());
-  const fleets = profile.getIn(['app_metadata', 'subfleets']);
+// export const initDealerPortal = isReady => (dispatch, getState) => {
+//   const profile = getSessionData(getState());
+//   const fleets = profile.getIn(['app_metadata', 'subfleets']);
 
+//   dispatch({
+//     type: DEALER_PORTAL_READY,
+//     isReady,
+//     fleets,
+//   });
+// };
+
+export const initDealerPortal = (isReady, subFleets) => (dispatch) => {
   dispatch({
     type: DEALER_PORTAL_READY,
     isReady,
-    fleets,
+    fleets: subFleets,
+    selectedFleet: '',
   });
 };
 
 export const changeFleet = nextFleetName => (dispatch, getState) => {
-  api.setFleet(nextFleetName);
+  if (isDealer) {
+    // setSubFleet 
+    dispatch(setSubFleet(nextFleetName));
+  } else {
+    api.setFleet(nextFleetName);
+  }
 
   dispatch(fleetReadyStateChange('loading'));
 
-  dispatch(vehiclesActions.fetchVehicles())
+  dispatch(vehiclesActions.fetchVehicles(getState))
     .then(() => {
       dispatch(fleetReadyStateChange('ready'));
     }, () => {
@@ -41,4 +55,9 @@ export const changeFleet = nextFleetName => (dispatch, getState) => {
 const fleetReadyStateChange = nextState => ({
   type: DEALER_PORTAL_FLEET_READY_STATE_SET,
   readyState: nextState,
+});
+
+const setSubFleet = nextFleetName => ({
+  type: DEALER_PORTAL_SELECT_FLEET,
+  selectedFleet: nextFleetName,
 });

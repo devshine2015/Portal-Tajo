@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import WarningIcon from 'material-ui/svg-icons/alert/warning';
 import Layout from 'components/Layout';
+import FleetForm from 'screens/DealerDashboard/components/FleetForm';
 import classes from './classes';
 
 const DefaultPlaceholderText = () => (
@@ -15,7 +16,9 @@ const DefaultPlaceholderText = () => (
       }}
     /><br />
     There is nothing to show yet.<br />
-    Select fleet you want to monitor to start work.
+    Select fleet you want to monitor to start work.<br />
+    Or create a new fleet.<br />
+    <FleetForm />
   </div>
 );
 
