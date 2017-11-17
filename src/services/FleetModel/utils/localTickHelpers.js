@@ -8,7 +8,7 @@ import {
   getActivityStatus,
 } from './vehicleHelpers';
 
-const _vehUpdater = tickUpdated => vh => {
+const _vehUpdater = tickUpdated => (vh) => {
   vh.set('estimatedTravelKm', tickUpdated.deltaDistKm)
     .set('timeSinceUpdateMin', tickUpdated.deltaTimeMin)
     .set('isDelayedWithIgnitionOff', tickUpdated.isDelayedWithIgnitionOff);
@@ -78,20 +78,4 @@ export function localTick(getState) {
 
   return imUpdatedProcessedList;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

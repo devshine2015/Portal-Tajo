@@ -3,7 +3,7 @@ import { StyleSheet } from 'aphrodite/no-important';
 const classes = StyleSheet.create({
   form_buttons: {
     textAlign: 'center',
-    margin: '10px 0'    
+    margin: '10px 0',
   },
 
   no_print: {
