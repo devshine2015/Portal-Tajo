@@ -46,6 +46,9 @@ class FleetSelector extends React.Component {
 
   render() {
     const { fleets, fleetReadyState } = this.props;
+    if (fleets === undefined) {
+      return false;
+    }
 
     return (
       <div className={css(classes.selector)}>
