@@ -32,7 +32,7 @@ const classes = StyleSheet.create({
   },
   // ---- content
   content: {    
-    maxWidth: 1000,
+    //maxWidth: 1000,
     width: '100%',
     margin: '0 auto',
     display: 'flex',
