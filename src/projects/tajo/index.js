@@ -8,7 +8,7 @@ import createReducer from './reducers';
 import menu from './menu';
 
 function bootstrapProject(dispatch, getState) {
-  dispatch(commonFleetActions.fetchFleet())
+  dispatch(commonFleetActions.fetchFleet(getState))
     .then(() => dispatch(fetchAllVehicleAlerts(getState)));
 }
 

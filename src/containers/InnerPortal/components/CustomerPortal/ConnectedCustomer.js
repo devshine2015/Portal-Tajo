@@ -40,7 +40,7 @@ function updateFleet(nextFleetName) {
     checkSetFullScreen(nextFleetName);
 
     dispatch(updateFleetName(nextFleetName))
-      .then(() => dispatch(commonFleetActions.fetchFleet()))
+      .then(() => dispatch(commonFleetActions.fetchFleet(getState)))
       .then(() => dispatch(conditionsActions.fetchAllVehicleAlerts(getState)));
   };
 }
