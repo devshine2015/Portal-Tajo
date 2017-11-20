@@ -9,6 +9,7 @@ import {
   getVehiclesEx,
 } from 'services/FleetModel/reducer';
 import {
+  preserveOriginalDetails,
   cleanVehicle,
   sortVehicles,
 } from 'services/FleetModel/utils/vehicleHelpers';
@@ -32,7 +33,7 @@ export const updateDetails = ({
     ...data,
   };
 
-  const details = cleanVehicle(updatedDetails);
+  const details = cleanVehicle(preserveOriginalDetails(updatedDetails, selectedVehicle.original));
 
   let newIndex;
   let deviceId;

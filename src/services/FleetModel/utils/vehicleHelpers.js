@@ -342,12 +342,12 @@ export function sortVehicles(vehicles = []) {
  * return properties required by backend
  * in order to modify vehicle
  * */
-export function mockRequiredBackendProps(data) {
+export function mockRequiredBackendProps(data, subFleet) {
   const odo = data.isMiles ? data.odometer * 1.60934 : data.odometer;
-
-  return {
+  const backEndVehicle = {
     created: Date.now(),
     licensePlate: data.license,
+    chassisNumber: data.chassisNumber,
     make: '',
     model: '',
     name: data.name,
@@ -358,6 +358,18 @@ export function mockRequiredBackendProps(data) {
       value: parseInt(odo, 10),
     },
   };
+  backEndVehicle.meta = { subfleet: subFleet };
+  return backEndVehicle;
+}
+
+export function preserveOriginalDetails(updateVehicle, originalVehicle) {
+  if (originalVehicle.meta !== undefined
+     && originalVehicle.meta.subfleet !== undefined) {
+    if (updateVehicle.meta === undefined) { updateVehicle.meta = {}; }
+
+    updateVehicle.meta.subfleet = originalVehicle.meta.subfleet;
+  }
+  return updateVehicle;
 }
 
 export function cleanVehicle(vehicle) {
