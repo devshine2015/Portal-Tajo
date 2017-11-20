@@ -1,21 +1,26 @@
+import { isDealer } from 'configs';
 import { api } from 'utils/api';
 import endpoints from 'configs/endpoints';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import { attachDevice } from 'services/Devices/actions';
+import dealerSelectors from 'services/Dealer/selectors';
 import { mockRequiredBackendProps } from 'services/FleetModel/utils/vehicleHelpers';
 import { setLoaderState } from './loaderActions';
 
 export const INSTALLER_SUBMIT_SUCCESS = 'portal/Installer/INSTALLER_SUBMIT_SUCCESS';
 export const INSTALLER_SUBMIT_FAILURE = 'portal/Installer/INSTALLER_SUBMIT_FAILURE';
 
-export const submitForm = data => dispatch =>
-  sendData(data, dispatch);
+export const submitForm = data => (dispatch, getState) =>
+  sendData(data, dispatch, getState);
 
-export const sendData = (formData, dispatch) => {
+export const sendData = (formData, dispatch, getState) => {
   dispatch(setLoaderState(true));
+
+  const subFleet = isDealer ? dealerSelectors.getSelectedSubFleet(getState()) : '';
+
   const { method, url } = endpoints.createVehicle;
   const vehiclePayload = {
-    payload: mockRequiredBackendProps(formData),
+    payload: mockRequiredBackendProps(formData, subFleet),
   };
 
   return api[method](url, vehiclePayload)

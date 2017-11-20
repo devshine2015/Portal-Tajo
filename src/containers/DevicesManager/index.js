@@ -7,7 +7,8 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import { authorizeWithPermissions } from 'utils/authz';
 import { creatorActions } from 'containers/DevicesManager/actions';
 import { getIsEditing } from 'containers/DevicesManager/reducer';
-import Layout from 'components/Layout';
+// import Layout from 'components/Layout';
+import DealerOrCustomerPage from 'containers/DealerPage/DealerOrCustomer';
 import DevicesList from './components/DevicesList';
 import Toolbox from './components/Toolbox';
 import DeviceCreator from './components/DeviceCreator';
@@ -36,7 +37,7 @@ const DevicesManager = ({
   openEditor,
 }) => {
   return (
-    <Layout.Content>
+    <DealerOrCustomerPage>
       <div className={styles.managerContainer}>
         <Toolbox />
 
@@ -46,7 +47,7 @@ const DevicesManager = ({
 
         { !isEditing && renderAddButton(openEditor) }
       </div>
-    </Layout.Content>
+    </DealerOrCustomerPage>
   );
 };
 

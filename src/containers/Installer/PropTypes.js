@@ -6,6 +6,7 @@ const string = PropTypes.string;
 const phrases = {
   vehicle_name: 'Vehicle Name',
   license_plate: 'License Plate Number',
+  chassis_number: 'Chassis Number',
   imei: 'IMEI',
   odo_value: 'Current Odometer value',
   odo_in_miles: 'ODO value in miles',
@@ -20,6 +21,7 @@ const phrases = {
 
 export const phrasesShape = shape({
   vehicle_name: string.isRequired,
+  chassis_number: string.isRequired,
   license: string.isRequired,
   imei: string.isRequired,
   odo_value: string.isRequired,

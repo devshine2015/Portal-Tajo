@@ -7,7 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
-import Layout from 'components/Layout';
+import DealerOrCustomerPage from 'containers/DealerPage/DealerOrCustomer';
 import Form from 'components/Form';
 import DeviceSelector from 'containers/DeviceSelector';
 import { validateForm } from 'utils/forms';
@@ -24,10 +24,10 @@ const initialFields = new Map({
   imei: null,
   license: null,
   odometer: null,
+  chassisNumber: null,
 });
 
 class Installer extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -39,7 +39,7 @@ class Installer extends React.Component {
       haveToReset: false,
     };
 
-    this.onSubmit = this.onSubmit.bind(this);
+    // this.onSubmit = this.onSubmit.bind(this);
   }
 
   onChange = (e) => {
@@ -127,7 +127,7 @@ class Installer extends React.Component {
     }
 
     return (
-      <Layout.Content>
+      <DealerOrCustomerPage>
         <div className={styles.installer}>
           <Form
             name="bounder"
@@ -143,9 +143,17 @@ class Installer extends React.Component {
             />
             <TextField
               fullWidth
+              name="chassisNumber"
+              onChange={this.onChange}
+              floatingLabelText={translations.chassis_number}
+              value={this.state.chassisNumber}
+              required
+            />
+            <TextField
+              fullWidth
               name="license"
               onChange={this.onChange}
-              floatingLabelText={ translations.license_plate }
+              floatingLabelText={translations.license_plate}
               required
             />
             <DeviceSelector
@@ -184,7 +192,7 @@ class Installer extends React.Component {
             </div>
           </Form>
         </div>
-      </Layout.Content>
+      </DealerOrCustomerPage>
     );
   }
 }
