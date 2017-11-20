@@ -22,11 +22,10 @@ import classes from 'components/DashboardElements/classes';
 // import classes from './classes';
 
 const OverdueCard = {
-  backgroundColor: '#ea2224',
-
+  backgroundColor: theme.palette.alertColor,
 };
 const SoonCard = {
-  backgroundColor: '#cacaca',
+  backgroundColor: theme.palette.warningColor,
 };
 
 const ServiceOverview = (vehicles) => {
@@ -43,23 +42,11 @@ const ServiceOverview = (vehicles) => {
   return (
     <div className={css(classes.itemBox)}>
       <div className={css(classes.dataItemTitleDark)}>
-        {'Next Service Status'}
+        {'Next Service Overview'}
       </div>
-      <div className="row">
-        <div className="col-md-4" style={{marginLeft: 15, paddingRight: 0, backgroundColor: '#cacaca', textAlign: 'center', color: 'white'}}>
-          <label style={{fontSize: 64}}>{soonCounter.toString()}</label>
-        </div>
-        <div className="col-md-4" style={{paddingLeft: 0, backgroundColor: '#ea2224', textAlign: 'center', color: 'white'}}>
-          <label style={{fontSize: 64}}>{overdueCounter.toString()}</label>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-md-4" style={{paddingRight: 0, textAlign: 'center', color: '#878787'}}>
-          <label style={{fontSize: 20, fontWeight: 400}}>{'1000 KM Until Next Service'}</label>
-        </div>
-        <div className="col-md-4" style={{paddingLeft: 0, textAlign: 'center', color: '#878787'}}>
-          <label style={{fontSize: 20, fontWeight: 400}}>{'Due'}</label>
-        </div>
+      <div className={classNameParent}>
+        <DashboardElements.SubCard title={'coming soon'} dataString={soonCounter.toString()} style={SoonCard} />
+        <DashboardElements.SubCard title={'overdue'} dataString={overdueCounter.toString()} style={OverdueCard} />
       </div>
     </div>
   );

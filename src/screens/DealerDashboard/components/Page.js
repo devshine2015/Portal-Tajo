@@ -17,11 +17,6 @@ import FuelConsumption from './FuelConsumption';
 import AlertsChart from './AlertsPieChart';
 import AlertSummaryTable from './AlertSummaryTable';
 
-const noPadding = {
-  paddingLeft: 0,
-  paddingRight: 0
-}
-
 class DealerDashboard extends React.Component {
   // state = {
   //   isDefaultRange: true,
@@ -36,74 +31,44 @@ class DealerDashboard extends React.Component {
       <DealerPage>
         <PageHeader text="Fleet Overview" onApply={tr => this.applyTimeRange(tr)} />
         {/* containerClass={classes.widgetContainer} */}
-        <Layout.Content>
-          <div className="row">
-            <div className="col-md-2" style={noPadding}>
-              <DashboardElements.DataCard
-                title={'Number of Vehicles'}
-                dataString={this.props.vehicles.length.toString()}
-              />
-            </div>
-            <div className="col-md-2" style={noPadding}>
-              <DashboardElements.DataCard
-                title={'Total Driving Time'}
-                dataString={'2750'}
-              />
-            </div>
-            <div className="col-md-2" style={noPadding}>
-              <DashboardElements.DataCard
-                title={'Avg Speed'}
-                dataString={'65'}
-                unit={'KM'}
-              />
-            </div>
-            <div className="col-md-2" style={noPadding}>
-              <DashboardElements.DataCard
-                title={'Total Running Time'}
-                dataString={'2500'}
-                unit={'hrs'}
-              />
-            </div>
-            <div className="col-md-2" style={noPadding}>
-              <DashboardElements.DataCard
-                title={'Total Driving Time'}
-                dataString={'1500'}
-                unit={'hrs'}
-              />
-            </div>
-            <div className="col-md-2" style={noPadding}>
-              <DashboardElements.DataCard
-                title={'Total Idle Time'}
-                dataString={'200'}
-                unit={'min'}
-              />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-6" style={noPadding}>
-              <ServiceOverview />
-            </div>
-            <div className="col-md-6" style={{paddingLeft: 0}}>
-              <IdleOverview />
-            </div>
-          </div>
-          <div className="row" style={{marginTop: 35}}>
-            <div className="col-md-6">
-              <FuelConsumption />
-            </div>
-            <div className="col-md-6">
-              <AlertsChart key="alerts" />
-              <AlertSummaryTable myKind={alertKinds._ALERT_KIND_TEMPERATURE} />
-              <AlertSummaryTable myKind={alertKinds._ALERT_KIND_SPEEDING} />
-              <AlertSummaryTable myKind={alertKinds._ALERT_KIND_GF} />
-              <AlertSummaryTable myKind={alertKinds._ALERT_KIND_FUEL_DIFF} />
-            </div>
-          </div>
-        </Layout.Content>
-        {/*
         <Layout.Content style={{ flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+          <DashboardElements.DataCard
+            title={'Number of Vehicles'}
+            dataString={this.props.vehicles.length.toString()}
+          />
+          <DashboardElements.DataCard
+            title={'Total Distance Travelled'}
+            dataString={'22373 km'}
+          />
+          <DashboardElements.DataCard
+            title={'Avg Speed'}
+            dataString={'67 km/h'}
+          />
+          <DashboardElements.DataCard
+            title={'Total Running Time'}
+            dataString={'2538 hrs'}
+          />
+          <DashboardElements.DataCard
+            title={'Total Driving Time'}
+            dataString={'1452 hrs'}
+          />
+          <DashboardElements.DataCard
+            title={'Total Idle Time'}
+            dataString={'195 hrs'}
+          />
+          <ServiceOverview />
+          <IdleOverview />
+          <FuelConsumption />
         </Layout.Content>
-        */}
+        <Layout.Content style={{ flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+          <AlertsChart
+            key="alerts"
+          />
+          <AlertSummaryTable myKind={alertKinds._ALERT_KIND_TEMPERATURE} />
+          <AlertSummaryTable myKind={alertKinds._ALERT_KIND_SPEEDING} />
+          <AlertSummaryTable myKind={alertKinds._ALERT_KIND_GF} />
+          <AlertSummaryTable myKind={alertKinds._ALERT_KIND_FUEL_DIFF} />
+        </Layout.Content>
       </DealerPage>
     );
   }

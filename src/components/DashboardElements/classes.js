@@ -30,11 +30,9 @@ const classes = StyleSheet.create({
   },
   dataItemTitleDark: {
     margin: '4px',
-    textAlign: 'left',
+    textAlign: 'center',
     whiteSpace: 'nowrap',
-    color: 'black',
-    fontSize: 24,
-    letterSpacing: '4px'
+    color: theme.palette.dachboardElementColor,
   },
   dataItemValueContainer: {
     margin: '8px 32px',

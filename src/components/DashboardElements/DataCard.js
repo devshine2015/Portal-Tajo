@@ -20,10 +20,10 @@ const SubCard = ({
   const className = css(classes.dataItemValueContainer, classes.subCard);
   return (
     <div className={className} style={style}>
-      <div style={{fontSize: 20, fontWeight: 400}}> 
+      <div className={css(classes.dataItemValueContainer, classes.subCardValue)} > 
         {dataString}
       </div>
-      <div style={{fontSize: 30, fontWeight: 'bold'}}>
+      <div className={css(classes.dataItemTitle, classes.subCardTitle)}>
         {title}
       </div>
     </div>
@@ -40,19 +40,18 @@ SubCard.propTypes = {
 const DataCard = ({
   title,
   dataString,
-  unit,
   style,
 }) => {
   // const className = cs(css(classes.progBarBody));
   // const containerStyle = Object.assign({}, maxWidth !== undefined ? { maxWidth } : {}, style);
   // style={{ width: witdhPerc }} 
   return (
-    <div className={css(classes.itemBox, classes.itemBody)} style={{padding: 18, borderRadius: 5}}>
-      <div className={css(classes.dataItemTitle)} style={{fontSize: 20}}>
+    <div className={css(classes.itemBox, classes.itemBody)}>
+      <div className={css(classes.dataItemTitle)}>
         {title}
       </div>
-      <div className={css(classes.dataItemValueContainer)} style={{fontSize: 50, letterSpacing: 3}} >
-        {dataString}<label style={{fontSize: 15}}>{unit}</label>
+      <div className={css(classes.dataItemValueContainer)} >
+        {dataString}
       </div>
     </div>
   );
