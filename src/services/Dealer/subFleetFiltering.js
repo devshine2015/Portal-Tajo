@@ -2,8 +2,8 @@
 import { isDealer } from 'configs';
 
 const objectBelongsToSubFleet = (aObj, subFleet) =>
-  aObj.meta !== undefined;
-  // return aObj.meta !== undefined && aObj.meta.subfleet === subFleet;
+  // aObj.meta !== undefined;
+  aObj.meta !== undefined && aObj.meta.subfleet === subFleet;
 
 export default (allObjectsArray, selectedSubFleet) => {
   if (!isDealer) {
