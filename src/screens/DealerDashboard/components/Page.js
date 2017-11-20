@@ -46,7 +46,7 @@ class DealerDashboard extends React.Component {
             </div>
             <div className="col-md-2" style={noPadding}>
               <DashboardElements.DataCard
-                title={'Total Distance Travelled KM'}
+                title={'Total Driving Time'}
                 dataString={'2750'}
               />
             </div>
