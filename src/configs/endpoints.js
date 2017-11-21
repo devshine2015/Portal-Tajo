@@ -133,6 +133,16 @@ const endpoints = {
     apiVersion: 1,
   },
 
+  // reports fleet level
+  getFleetOverview: params => ({
+    url: `reports/overview?${qs.stringify(params)}`,
+    method: 'get',
+  }),
+  getFleetFuel: params => ({
+    url: `reports/fuel?${qs.stringify(params)}`,
+    method: 'get',
+  }),
+
   // users managment
   getUsers: params => ({
     url: `users?${qs.stringify(params)}`,
