@@ -1,6 +1,6 @@
 /* customer portal root */
-// import DealerDashboard from 'screens/DealerDashboard';
-import InstallerScreen from 'screens/InstallerScreen';
+import DealerDashboard from 'screens/DealerDashboard';
+// import InstallerScreen from 'screens/InstallerScreen';
 import { fetchSubFleets } from 'services/Fleets/actions/subFleetActions';
 // import { initDealerPortal } from 'services/Dealer/actions';
 import renderProject from '../baseProject';
@@ -20,8 +20,8 @@ renderProject({
     menu,
     screens,
     initialScreenConfig: {
-      component: InstallerScreen,
-      // component: DealerDashboard,
+      // component: InstallerScreen,
+      component: DealerDashboard,
       protected: true,
     },
   },

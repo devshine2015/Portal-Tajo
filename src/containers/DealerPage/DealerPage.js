@@ -16,14 +16,15 @@ const DealerPage = ({
 
     case 'loading':
       return <Loader.FullscreenLogo />;
-
+      // backgroundColor: '#fafafa',
+      
     case 'ready':
     default:
       return (
         <div
           style={{
             minHeight: '100%',
-            backgroundColor: '#fafafa',
+            backgroundColor: '#fff',
           }}
         >
           {children}

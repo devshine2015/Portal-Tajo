@@ -20,8 +20,8 @@ const SubCard = ({
   const className = css(classes.dataItemValueContainer, classes.subCard);
   return (
     <div className={className} style={style}>
-      <div className={css(classes.dataItemValueContainer, classes.subCardValue)} > 
-        {dataString}
+      <div className={css(classes.dataItemValueContainer, classes.subCardValue)} >
+        <div className={css(classes.dataItemValue)}>{dataString}</div>
       </div>
       <div className={css(classes.dataItemTitle, classes.subCardTitle)}>
         {title}
@@ -40,7 +40,8 @@ SubCard.propTypes = {
 const DataCard = ({
   title,
   dataString,
-  style,
+  dataUnits,
+  // style,
 }) => {
   // const className = cs(css(classes.progBarBody));
   // const containerStyle = Object.assign({}, maxWidth !== undefined ? { maxWidth } : {}, style);
@@ -51,7 +52,8 @@ const DataCard = ({
         {title}
       </div>
       <div className={css(classes.dataItemValueContainer)} >
-        {dataString}
+        <span className={css(classes.dataItemValue)}>{dataString}</span>
+        { dataUnits !== undefined && <span className={css(classes.dataItemUnits)}>{dataUnits}</span>}
       </div>
     </div>
   );
@@ -60,7 +62,13 @@ const DataCard = ({
 DataCard.propTypes = {
   title: PropTypes.string.isRequired,
   dataString: PropTypes.string.isRequired,
-  style: PropTypes.object,
+  dataUnits: PropTypes.string,
+  // style: PropTypes.object,
+};
+
+DataCard.defaultProps = {
+  dataUnits: undefined,
+  style: undefined,
 };
 
 export default pure(DataCard);

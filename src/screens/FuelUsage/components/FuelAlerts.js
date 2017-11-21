@@ -98,7 +98,7 @@ const FuelConsumption = () => {
         </tr>
         <tr>
           <td><div className={classNameAltrs} style={tableCellCardTheft}>
-            <div className={css(inClasses.subText)}>Number of Fuel Theft Alerts</div>
+            <div className={css(inClasses.subText)}>Number of Fuel Loss Alerts</div>
             <div className={css(inClasses.subBadge)} style={tableCellCardTheftInv}>1</div>
           </div></td>
           <td><div className={className} style={tableCellCardTheft}>20 Ltr</div></td>

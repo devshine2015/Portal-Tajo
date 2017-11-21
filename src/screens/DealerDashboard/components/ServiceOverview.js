@@ -40,7 +40,7 @@ const ServiceOverview = (vehicles) => {
   } );
 
   return (
-    <div className={css(classes.itemBox)}>
+    <div className={css(classes.itemBox)} style={{ flex: 'none' }}>
       <div className={css(classes.dataItemTitleDark)}>
         {'Next Service Overview'}
       </div>

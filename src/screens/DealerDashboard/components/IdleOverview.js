@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, css } from 'aphrodite/no-important';
+import PropTypes from 'prop-types';
+import { css } from 'aphrodite/no-important';
 
 //
 //
@@ -14,31 +15,31 @@ import DashboardElements from 'components/DashboardElements';
 
 import classes from 'components/DashboardElements/classes';
 
-const IdleOverview = () => {
+const IdleOverview = ({ idle1, idle2 }) => {
   const classNameParent = cs(css(classes.itemBody), css(classes.subCardsContainer));
-
+  const drive = 100 - (idle1 + idle2);
   // const containerStyle = Object.assign({}, maxWidth !== undefined ? { maxWidth } : {}, style);
   // style={{ width: witdhPerc }} 
   return (
-    <div className={css(classes.itemBox)}>
+    <div className={css(classes.itemBox)} style={{ flex: 1 }}>
       <div className={css(classes.dataItemTitleDark)}>
         {'Idle and Running Time'}
       </div>
       <div className={classNameParent}>
         <DashboardElements.SubCard
           title={'<30min'}
-          dataString={'20%'}
-          style={{ backgroundColor: theme.palette.warningColor, width: '140px' }}
+          dataString={`${idle1}%`}
+          style={{ backgroundColor: theme.palette.warningColor, width: `${idle1}%` }}
         />
         <DashboardElements.SubCard
           title={'>30min'}
-          dataString={'10%'}
-          style={{ backgroundColor: theme.palette.alertColor, width: '70px', minWidth: '0' }}
+          dataString={`${idle2}%`}
+          style={{ backgroundColor: theme.palette.alertColor, width: `${idle2}%` }}
         />
         <DashboardElements.SubCard
           title={'Drive time'}
-          dataString={'70%'}
-          style={{ backgroundColor: theme.palette.dachboardElementColor, width: '490px' }}
+          dataString={`${drive}%`}
+          style={{ backgroundColor: '#61a653', width: `${drive}%` }}
         />
       </div>
     </div>
@@ -46,7 +47,9 @@ const IdleOverview = () => {
 };
 
 IdleOverview.propTypes = {
-  // title: PropTypes.string.isRequired,
+  idle1: PropTypes.number.isRequired,
+  idle2: PropTypes.number.isRequired,
+  // value3: PropTypes.number.isRequired,
 };
 
 export default pure(IdleOverview);

@@ -64,7 +64,7 @@ const FuelConsumption = () => {
           <td className={css(inClasses.tableCellDescr)} style={{ fontWeight: 'normal', padding: '12px 0 0', textAlign: 'center' }}>% of Fuel Consumption</td>
         </tr>
         <tr>
-          <td className={css(inClasses.tableCellDescr)}>Estimated Fuel Theft</td>
+          <td className={css(inClasses.tableCellDescr)}>Estimated Fuel Loss</td>
           <td><div className={className} style={tableCellCardTheft}>20 Ltr</div></td>
           <td><div className={className} style={tableCellCardTheft}>5.7%</div></td>
         </tr>

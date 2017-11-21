@@ -50,16 +50,18 @@ class VehicleMaintenance extends React.Component {
     const fuelCap = (this.props.theVehicle.original.fuelCapacity !== undefined
       && this.props.theVehicle.original.fuelCapacity > 0)
       ? this.props.theVehicle.original.fuelCapacity : 'N/A';
+
     return (
       <Layout.Content style={{ padding: '0' }}>
-        <Layout.Section style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+        <Layout.Section style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', backgroundColor: 'white' }}>
           <DashboardElements.DataCard
             title={'Tank Capacity'}
             dataString={fuelCap}
           />
           <DashboardElements.DataCard
             title={'Total Fuel Concumptipn'}
-            dataString={'350 Ltr'}
+            dataString={'350'}
+            dataUnis="Ltr"
           />
           <DashboardElements.DataCard
             title={'Liters per KM'}
@@ -67,14 +69,16 @@ class VehicleMaintenance extends React.Component {
           />
           <DashboardElements.DataCard
             title={'Total Distance'}
-            dataString={'2538 km'}
+            dataString={'2538'}
+            dataUnis="km"
           />
           <DashboardElements.DataCard
             title={'Speed Avg'}
-            dataString={'65 km/h'}
+            dataString={'65'}
+            dataUnis="km/h"
           />
         </Layout.Section>
-        <Layout.Section style={{ padding: '24px' }}>
+        <Layout.Section style={{ padding: '24px', backgroundColor: 'white' }}>
           <FuelAlerts />
         </Layout.Section>
       </Layout.Content>

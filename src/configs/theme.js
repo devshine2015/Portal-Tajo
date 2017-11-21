@@ -60,9 +60,9 @@ export const fusoTheme = {
     primary1Color: ccMainBrandColor, // '#e3142e',
     accent1Color: '#e3142e', // '#c4c3b1',
 
-    okColor: green600,    
-    warningColor: yellow700,
-    alertColor: deepOrange700,
+    okColor: green600,
+    warningColor: tinycolor('rgb 190 190 190'),
+    alertColor: tinycolor('rgb 234 34 36'),
     dachboardElementColor: ccMainBrandColor, // '#2196F3',
 
     PLItemBackgroundColor: cyan700,

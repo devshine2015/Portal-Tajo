@@ -16,7 +16,7 @@ const buildChart = (node) => {
       columns: [
         ['Refuel', 30],
         ['Engine Temp', 120],
-        ['Fuel Theft', 73],
+        ['Fuel Loss', 73],
       ],
       type: 'pie',
       // onclick: function (d, i) { console.log('onclick', d, i); },

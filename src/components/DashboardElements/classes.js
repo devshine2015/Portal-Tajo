@@ -7,12 +7,13 @@ import { theme } from 'configs';
 const classes = StyleSheet.create({
 // ---- top level container
   itemBox: {
-    height: '100px',
-    margin: '16px',
+    margin: '4px',
+    padding: '0 8px',
     boxSizing: 'content-box',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
+    flex: 1,
     // overflow: 'hidden',
   },
 
@@ -27,6 +28,7 @@ const classes = StyleSheet.create({
     textAlign: 'center',
     whiteSpace: 'nowrap',
     color: 'white',
+    fontSize: 'small',
   },
   dataItemTitleDark: {
     margin: '4px',
@@ -36,10 +38,16 @@ const classes = StyleSheet.create({
   },
   dataItemValueContainer: {
     margin: '8px 32px',
+    height: '48px',
+    color: 'white',
+  },
+  dataItemValue: {
     fontSize: 'xx-large',
     fontWeight: 'bold',
     textAlign: 'center',
-    color: 'white',
+  },
+  dataItemUnits: {
+    fontSize: 'small',
   },
 
   //
