@@ -76,13 +76,12 @@ RefreshButton.propTypes = {
 };
 
 class DeviceSelector extends React.Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
-      searchText: '',
       isRefreshing: false,
+      searchText: props.value ? props.value : '',
     };
   }
 
@@ -136,11 +135,11 @@ class DeviceSelector extends React.Component {
     });
 
     this.props.fetchDevices()
-    .then(() => {
-      this.setState({
-        isRefreshing: false,
+      .then(() => {
+        this.setState({
+          isRefreshing: false,
+        });
       });
-    });
   }
 
   render() {
