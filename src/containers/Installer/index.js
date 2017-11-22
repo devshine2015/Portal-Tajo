@@ -23,7 +23,7 @@ const initialFields = new Map({
   name: null,
   imei: null,
   license: null,
-  odometer: null,
+  odometer: 0,
   chassisNumber: null,
 });
 

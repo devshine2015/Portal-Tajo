@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { List } from 'immutable';
+// import { List } from 'immutable';
 import { css } from 'aphrodite/no-important';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
@@ -45,7 +45,7 @@ class FleetSelector extends React.Component {
   }
 
   render() {
-    if(this.props.fleets === undefined) {
+    if (this.props.fleets === undefined) {
       return false;
     }
     const fleetReadyState = this.props;
@@ -79,7 +79,8 @@ class FleetSelector extends React.Component {
 
 FleetSelector.propTypes = {
   onSelect: PropTypes.func.isRequired,
-  fleets: PropTypes.instanceOf(List).isRequired,
+  // fleets: PropTypes.instanceOf(List).isRequired,
+  fleets: PropTypes.arrayOf(PropTypes.string).isRequired,
   fleetReadyState: PropTypes.oneOf(['ready', 'not ready', 'loading', 'error']).isRequired,
   selectedFleet: PropTypes.string,
 };
