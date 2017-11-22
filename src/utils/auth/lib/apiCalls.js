@@ -13,6 +13,7 @@ import {
   getIdToken,
 } from './profileUtils';
 
+// TODO: legacy - safe to remove?
 const getExtraPassword = (fleet) => {
   switch (fleet) {
     case 'mwa': return serverEnv === 'dev' ? 'EH8NAsy5' : 'o48ab1Ul29$b';
@@ -45,8 +46,8 @@ const deprecatedAuth0Login = async (username, password) => {
     .then(res => res.json());
 };
 
-const normalLogin = async (payload) => {
-  const { url, method, apiVersion } = endpoints.login;
+const normalLogin = async (payload, fleetId) => {
+  const { url, method, apiVersion } = endpoints.login(fleetId ? { fleetId } : undefined);
   const options = {
     apiVersion,
     payload,
@@ -67,18 +68,18 @@ const fetchProfile = async (idToken) => {
     .then(res => res.json());
 };
 
-export const login = async (username, password) => {
+export const login = async (username, password, fleetId) => {
   try {
     let session = {};
     let profile = {};
     let idToken = {};
 
     if (needSeveralLoginCalls()) {
-      session = await normalLogin(buildExtraPayload());
+      session = await normalLogin(buildExtraPayload(), fleetId);
       idToken = await deprecatedAuth0Login(username, password);
       profile = await fetchProfile(getIdToken(idToken));
     } else {
-      session = await normalLogin({ username, password });
+      session = await normalLogin({ username, password }, fleetId);
     }
 
     const result = Object.assign({}, profile, idToken, session);

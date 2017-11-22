@@ -1,4 +1,7 @@
 import auth0 from 'auth0-js';
+import {
+  isFeatureSupported,
+} from 'configs';
 import getClientConfig from './variables';
 import verifyToken from './tokenHelpers';
 import {
@@ -85,7 +88,8 @@ class AuthenticationWeb {
    * @param {Function} cb - callback which has (err, profile) signature
    */
   traditionalLogin = (username, password) => {
-    return login(username, password)
+    const fleet = isFeatureSupported('extraPath');
+    return login(username, password, fleet)
       .then((loginResult) => {
         this._authenticate(extractTokens(loginResult));
 

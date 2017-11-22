@@ -8,11 +8,11 @@ const apis = {
 
 const endpoints = {
   // authentication
-  login: {
-    url: 'login',
+  login: params => ({
+    url: params === undefined ? 'login' : `login?${qs.stringify(params)}`,
     method: 'post',
     apiVersion: 1.1,
-  },
+  }),
   logout: accessToken => ({
     url: `logout/${accessToken}`,
     method: 'get',
