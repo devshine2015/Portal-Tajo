@@ -31,14 +31,14 @@ const devCssLoaders = 'style-loader!css-loader?localIdentName=[local]__[path][na
  * - portal - serves files from `public/index.html`, includes virtual `mwa`
  * - tajo - serves files from `public/tajo/index.html`.
  * - dealer - at this moment of having just one dealer.
- *    - cc - serves files from `public/cc/index.html`
+ *    - ccmm - serves files from `public/ccmm/index.html`
  */
 function getPublicPath() {
   switch (PROJECT) {
     case 'tajo':
       return '/tajo/';
     case 'dealer':
-      return '/cc/';
+      return '/ccmm/';
     default:
       return '/';
   }

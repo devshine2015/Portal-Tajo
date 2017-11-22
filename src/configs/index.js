@@ -116,8 +116,8 @@ console.log(`%cProject: %c${project}`, bold, boldGreen);
 
 const getExtraPathname = (location) => {
   const splitted = location.pathname.split('/');
-  const result = splitted.filter(path => ['mwa', 'cc', 'ccmm'].indexOf(path) !== -1);
-  
+  const result = splitted.filter(path => ['mwa', 'ccmm'].indexOf(path) !== -1);
+
   return result.length !== 0 ? result[0] : false;
 };
 

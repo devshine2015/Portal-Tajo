@@ -52,4 +52,4 @@ echo "to $DEALER folder"
 scp -r $DEALER_FOLDER $HOST:$PUBLIC
 
 echo "Rename dealer to cc ..."
-ssh $HOST "cd $PUBLIC && mv $DEALER/ cc/"
+ssh $HOST "cd $PUBLIC && mv $DEALER/ ccmm/"

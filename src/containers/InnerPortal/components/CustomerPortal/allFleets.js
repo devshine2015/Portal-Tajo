@@ -9,7 +9,7 @@ const fleets = new List([
   'boss',
   'boss_vacation_travels',
   'carlsberg',
-  'cc',
+  'ccmm',
   'cipta',
   'daizen',
   'demo',
