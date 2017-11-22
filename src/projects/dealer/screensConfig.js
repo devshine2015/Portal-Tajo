@@ -9,6 +9,7 @@ import createMaintenanceScreen from 'screens/Maintenance/route';
 import createVehiclesManagerScreen from 'screens/VehiclesManagerScreen/route';
 import createInstallerScreen from 'screens/InstallerScreen/route';
 import createDevicesManagerScreen from 'screens/DevicesManager/route';
+import createFleetManagerScreen from 'screens/FleetManager/route';
 
 import menu from './menu';
 
@@ -49,4 +50,7 @@ export default [{
 }, {
   create: createUsersManagerScreen,
   options: menu.users,
+}, {
+  create: createFleetManagerScreen,
+  options: menu.fleetManager,
 }];

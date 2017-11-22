@@ -45,7 +45,8 @@ export default {
   drive_comparison: 'drive comparison',
   fuel_usage: 'fuel usage',
   vehicle_maintenance: 'vehicle diagnostics',
-  
+  fleet_manager: 'fleet manager',
+
   // -- end main menu
 
   // dashboard screen

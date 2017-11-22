@@ -17,4 +17,5 @@ export default [
   'fuel_usage',
   'drive_comparison',
   'vehicle_maintenance',
+  'fleet_manager',
 ];

@@ -19,9 +19,6 @@ import FuelConsumption from './FuelConsumption';
 import AlertsChart from './AlertsPieChart';
 import AlertSummaryTable from './AlertSummaryTable';
 
-import FleetForm from './FleetForm';
-
-
 class DealerDashboard extends React.Component {
   // state = {
   //   isDefaultRange: true,
@@ -44,7 +41,6 @@ class DealerDashboard extends React.Component {
       <DealerPage>
         <PageHeader text="Fleet Overview" onApply={tr => this.applyTimeRange(tr)} />
         {/* containerClass={classes.widgetContainer} */}
-        <FleetForm />
         <Layout.Content style={{ flexDirection: 'row', justifyContent: 'center', backgroundColor: 'white', marginTop: '4px' }}>
           <DashboardElements.DataCard
             title={'Number of Vehicles'}

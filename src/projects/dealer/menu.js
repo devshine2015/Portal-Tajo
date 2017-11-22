@@ -41,6 +41,11 @@ const menu = {
     name: 'devices_manager',
     path: 'devices',
   },
+  fleetManager: {
+    name: 'fleet_manager',
+    path: 'fleetmanager',
+    requireOneOfPermissions: ['add:sub_fleet'],
+  },
 };
 
 export default menu;
