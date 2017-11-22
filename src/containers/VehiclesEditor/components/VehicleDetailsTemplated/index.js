@@ -21,16 +21,21 @@ import workbook from './Truck.xls';
 // TODO: use permissions for ODO editing
 // const canShowDevicesManager = () => authorizeWithPermissions('view:devices_manager');
 
+function safeParseInt(inValue) {
+  if (!inValue || isNaN(inValue)) return 0;
+  return parseInt(inValue, 10);
+}
+
 // inValue : string "1200-1600" or integer number
 function extractMinNumber(inValue) {
-  return parseInt(inValue, 10);
+  return safeParseInt(inValue);
 }
 function extractMaxNumber(inValue) {
   if (isNaN(inValue)) {
     const minMax = inValue.split('-');
-    return parseInt(minMax[1], 10);
+    return safeParseInt(minMax[1]);
   }
-  return parseInt(inValue, 10);
+  return safeParseInt(inValue);
 }
 
 function onlyUnique(value, index, self) {
@@ -207,11 +212,11 @@ class VehicleDetails extends React.Component {
         driverId: this.state.driverId,
       },
       maxPower: {
-        max: parseInt(this.state.maxPower, 10),
-        rpm: parseInt(this.state.maxRpm, 10),
+        max: safeParseInt(this.state.maxPower),
+        rpm: safeParseInt(this.state.maxRpm),
       },
       maxTorque: {
-        max: parseInt(this.state.maxTorque, 10),
+        max: safeParseInt(this.state.maxTorque),
         minRpm: extractMinNumber(this.state.rpm),
         maxRpm: extractMaxNumber(this.state.rpm),
       },
@@ -356,7 +361,6 @@ class VehicleDetails extends React.Component {
                 // vehicleId={this.props.details.id}
                 deviceId={this.state.deviceId}
                 updateDeviceId={this.updateDeviceId}
-                style={{ height: 80 }}
               />
 
               <TextField
