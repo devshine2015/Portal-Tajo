@@ -3,15 +3,20 @@ import endpoints from 'configs/endpoints';
 import {
   makeTimeRangeParams,
 } from 'utils/dateTimeUtils';
+import dealerSelectors from 'services/Dealer/selectors';
 
 
 export const UPDATE_FLEET_OWERVIEW = 'upFleetOverView';
 export const UPDATE_FLEET_FUEL = 'upFleetFuel';
 
-export const fetchFleetOverview = timeRange => (dispatch) => {
+export const fetchFleetOverview = timeRange => (dispatch, getState) => {
   const params = { ...makeTimeRangeParams(timeRange.fromDate, timeRange.toDate),
     tzoffset: 0,
   };
+  const selectedSubFleet = dealerSelectors.getSelectedSubFleet(getState());
+  if (selectedSubFleet) {
+    params.subFleet = selectedSubFleet;
+  }
   _fetchFleetOverview(params, dispatch);
   _fetchFleetFuel(params, dispatch);
 };
@@ -41,17 +46,21 @@ const _fetchFleetFuel = (params, dispatch) => {
 };
 
 
-const _setFleetOverviewData = () => ({
+const _setFleetOverviewData = data => ({
   type: UPDATE_FLEET_OWERVIEW,
-  totalDist: 1,
-  avgSpeed: 2,
-  totalRunTime: 3,
-  totalDriveTime: 4,
-  totalIdleTime: 5,
+  avgSpeed: data.avgSpeed,
+  idleOver30Min: data.idleOver30Min,
+  idleUnder30Min: data.idleUnder30Min,
+  normalDriving: data.normalDriving,
+  totalDistance: data.totalDistance,
+  totalDrivingTime: data.totalDrivingTime,
+  totalIdleTime: data.totalIdleTime,
+  totalRunningTime: data.totalRunningTime,
+  vehicleCount: data.vehicleCount,
 });
 
 const _setFleetFuelData = () => ({
   type: UPDATE_FLEET_FUEL,
-  toatalFuel: 51, //overview.consumption
+  totalFuel: 51, // overview.consumption
 });
 

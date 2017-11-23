@@ -5,27 +5,35 @@ import {
 } from './actions';
 
 const initialState = fromJS({
-  totalDist: 0,
   avgSpeed: 0,
-  totalRunTime: 0,
-  totalDriveTime: 0,
+  idleOver30Min: 0,
+  idleUnder30Min: 0,
+  normalDriving: 0,
+  totalDistance: 0,
+  totalDrivingTime: 0,
   totalIdleTime: 0,
-  toatalFuel: 0,
+  totalRunningTime: 0,
+  vehicleCount: 0,
+  totalFuel: 0,
 });
 
 function reducer(state = initialState, action) {
   switch (action.type) {
     case UPDATE_FLEET_OWERVIEW:
       return state.withMutations((s) => {
-        s.set('totalDist', action.totalDist)
-          .set('avgSpeed', action.avgSpeed)
-          .set('totalRunTime', action.totalRunTime)
+        s.set('avgSpeed', action.avgSpeed)
+          .set('idleOver30Min', action.idleOver30Min)
+          .set('idleUnder30Min', action.idleUnder30Min)
+          .set('normalDriving', action.normalDriving)
+          .set('totalDistance', action.totalDistance)
           .set('totalDriveTime', action.totalDriveTime)
-          .set('totalIdleTime', action.totalIdleTime);
+          .set('totalIdleTime', action.totalIdleTime)
+          .set('totalRunningTime', action.totalRunningTime)
+          .set('vehicleCount', action.vehicleCount);
       });
     case UPDATE_FLEET_FUEL:
       return state.withMutations((s) => {
-        s.set('toatalFuel', action.toatalFuel);
+        s.set('totalFuel', action.totalFuel);
       });
 
     default:
