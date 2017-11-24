@@ -59,8 +59,8 @@ const _setFleetOverviewData = data => ({
   vehicleCount: data.vehicleCount,
 });
 
-const _setFleetFuelData = () => ({
+const _setFleetFuelData = overview => ({
   type: UPDATE_FLEET_FUEL,
-  totalFuel: 51, // overview.consumption
+  totalFuel: overview.totalConsumption,
 });
 

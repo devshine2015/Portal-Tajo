@@ -143,6 +143,12 @@ const endpoints = {
     method: 'get',
   }),
 
+  // reports vehicle level
+  getVehicleFuelReport: (id, params) => ({
+    url: `vehicles/${id}/report/fuel/?${qs.stringify(params)}`,
+    method: 'get',
+  }),
+
   // users managment
   getUsers: params => ({
     url: `users?${qs.stringify(params)}`,

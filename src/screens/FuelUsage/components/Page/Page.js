@@ -3,16 +3,19 @@ import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
-import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
-// import { getVehiclesExSorted, reducerKey } from 'services/FleetModel/reducers/vehiclesReducer';
-import { vehiclesActions } from 'services/FleetModel/actions';
-
-
 import DealerPage, {
   PowerList,
   PageHeader,
 } from 'containers/DealerPage';
 import FixedContent from 'components/FixedContent';
+
+import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
+// import { getVehiclesExSorted, reducerKey } from 'services/FleetModel/reducers/vehiclesReducer';
+// import { vehiclesActions } from 'services/FleetModel/actions';
+
+import { fetchVehicleFuelReport } from './../../services/actions';
+
+
 import VehicleFuel from './../VehicleFuel';
 
 class Page extends React.Component {
@@ -29,6 +32,10 @@ class Page extends React.Component {
     }
   }
 
+  applyTimeRange = (timeRange) => {
+    this.props.fetchVehicleFuelReport(this.state.selectedVehicleId, timeRange);
+  }
+
   render() {
     return (
       <DealerPage>
@@ -38,7 +45,7 @@ class Page extends React.Component {
             height: '100%',
           }}
         >
-          <PageHeader text="Fuel Usage" onApply={() => this.forceUpdate()} />
+          <PageHeader text="Fuel Usage" onApply={tr => this.applyTimeRange(tr)} />
           <VehicleFuel theVehicle={this.props.getVehicleById(this.state.selectedVehicleId)} />
         </FixedContent>
       </DealerPage>
@@ -47,10 +54,8 @@ class Page extends React.Component {
 }
 
 Page.propTypes = {
-  // vehicles: PropTypes.array.isRequired,
-  // selectedVehicleId: PropTypes.string.isRequired,
-
   getVehicleById: PropTypes.func.isRequired,
+  fetchVehicleFuelReport: PropTypes.func.isRequired,
 };
 
 const mapState = state => ({
@@ -59,7 +64,7 @@ const mapState = state => ({
   getVehicleById: getVehicleByIdFunc(state),
 });
 const mapDispatch = {
-  filterFunc: vehiclesActions.filterVehicles,
+  fetchVehicleFuelReport,
 };
 
 export default connect(mapState, mapDispatch)(pure(Page));
