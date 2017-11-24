@@ -1,5 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite/no-important';
+import DashboardElements from 'components/DashboardElements';
 
 //
 //
@@ -7,31 +9,13 @@ import { StyleSheet, css } from 'aphrodite/no-important';
 
 import pure from 'recompose/pure';
 
-import cs from 'classnames';
 import { theme } from 'configs';
 
 import classes from 'components/DashboardElements/classes';
 
 // import classes from './classes';
 
-const tableCellCard = {
-};
-
-const tableCellCardTheft = {
-  backgroundColor: theme.palette.alertColor,
-};
-const tableCellCardRefuel = {
-  backgroundColor: theme.palette.dachboardElementColor,
-};
-
 const inClasses = StyleSheet.create({
-  tableCellCard: {
-    height: '64px',
-    lineHeight: '64px',
-    backgroundColor: theme.palette.dachboardElementColor,
-    padding: '4px 16px',
-    margin: '4px',
-  },
   tableCellDescr: {
     padding: '4px 16px',
     textAlign: 'right',
@@ -43,10 +27,12 @@ const inClasses = StyleSheet.create({
   },
 });
 
-const FuelConsumption = () => {
-  const className = cs(css(classes.dataItemContainer), css(classes.dataItemValueContainer), css(inClasses.tableCellCard));
+const FuelConsumption = ({ fleetOverviewData }) => {
   // const containerStyle = Object.assign({}, maxWidth !== undefined ? { maxWidth } : {}, style);
   // style={{ width: witdhPerc }} 
+  const ltrPerKm = fleetOverviewData.totalDistance
+    ? fleetOverviewData.totalFuel / fleetOverviewData.totalDistance
+    : 0;
   return (
     <div className={css(inClasses.container)}>
       <div className={css(classes.dataItemTitleDark)}>
@@ -55,8 +41,14 @@ const FuelConsumption = () => {
       <table >
         <tr>
           <td className={css(inClasses.tableCellDescr)}>Total Fuel Consumption</td>
-          <td><div className={className} style={tableCellCard}>350 Ltr</div></td>
-          <td><div className={className} style={tableCellCard}>2.8 Ltr/Km</div></td>
+          <DashboardElements.TableDataCell
+            dataString={fleetOverviewData.totalFuel.toFixed(1).toString()}
+            dataUnits="ltr"
+          />
+          <DashboardElements.TableDataCell
+            dataString={ltrPerKm.toFixed(1).toString()}
+            dataUnits="Ltr/Km"
+          />
         </tr>
         <tr>
           <td />
@@ -65,21 +57,58 @@ const FuelConsumption = () => {
         </tr>
         <tr>
           <td className={css(inClasses.tableCellDescr)}>Estimated Fuel Loss</td>
-          <td><div className={className} style={tableCellCardTheft}>20 Ltr</div></td>
-          <td><div className={className} style={tableCellCardTheft}>5.7%</div></td>
+          <DashboardElements.TableDataCell
+            dataString={`20`}
+            dataUnits="ltr"
+          />
+          <DashboardElements.TableDataCell
+            dataString={"5.7%"}
+            style={{ backgroundColor: theme.palette.alertColor }}
+          />
         </tr>
         <tr>
           <td className={css(inClasses.tableCellDescr)}>Estimated Refuel</td>
-          <td><div className={className} style={tableCellCardRefuel}>175 Ltr</div></td>
-          <td><div className={className} style={tableCellCardRefuel}>50%</div></td>
+          <DashboardElements.TableDataCell
+            dataString={`175`}
+            dataUnits="ltr"
+          />
+          <DashboardElements.TableDataCell
+            dataString={"43.%"}
+            style={{ backgroundColor: theme.palette.okColor }}
+          />
         </tr>
       </table>
     </div>
   );
 };
 
+// TODO: defaine the shape separetly, DRY
 FuelConsumption.propTypes = {
-  // title: PropTypes.string.isRequired,
+  fleetOverviewData: PropTypes.shape({
+    avgSpeed: PropTypes.number,
+    idleOver30Min: PropTypes.number,
+    idleUnder30Min: PropTypes.number,
+    normalDriving: PropTypes.number,
+    totalDistance: PropTypes.number,
+    totalDrivingTime: PropTypes.number,
+    totalIdleTime: PropTypes.number,
+    totalRunningTime: PropTypes.number,
+    vehicleCount: PropTypes.number,
+  }).isRequired,
 };
 
+// const mapState = state => ({
+//   vehicles: fromFleetReducer.getVehiclesExSorted(state),
+//   fleetOverviewData: getFleetOverView(state),
+//   // selectedVehicleId: ctxGetSelectedVehicleId(state),
+//   // getVehicleById: getVehicleByIdFunc(state),
+// });
+// const mapDispatch = {
+//   fetchLogs: logActions.fetchLogs,
+//   fetchFleetOverview,
+// };
+
+// export default connect(mapState, mapDispatch)(pure(FuelConsumption));
+
 export default pure(FuelConsumption);
+

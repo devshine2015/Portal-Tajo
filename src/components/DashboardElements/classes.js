@@ -40,6 +40,7 @@ const classes = StyleSheet.create({
     margin: '8px 32px',
     height: '48px',
     color: 'white',
+    textAlign: 'center',
   },
   dataItemValue: {
     fontSize: 'xx-large',
@@ -79,7 +80,11 @@ const classes = StyleSheet.create({
     lineHeight: 'initial',
     margin: '4px 0 0 0',
   },
-
+  //
+  tableDataCell: {
+    margin: '2px',
+    backgroundColor: theme.palette.dachboardElementColor,
+  },
 });
 
 export default classes;

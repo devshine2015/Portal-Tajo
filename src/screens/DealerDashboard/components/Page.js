@@ -35,15 +35,6 @@ class DealerDashboard extends React.Component {
     const overviewData = this.props.fleetOverviewData;
     // dataString={this.props.vehicles.length.toString()}
     // dataString={overviewData.vehicleCount.toString()}    
-    // avgSpeed
-    // idleOver30Min
-    // idleUnder30Min
-    // normalDriving
-    // totalDistance
-    // totalDrivingTime
-    // totalIdleTime
-    // totalRunningTime
-    // vehicleCount
     const totalTotal = overviewData.totalDrivingTime + overviewData.idleUnder30Min + overviewData.idleOver30Min;
     const normalizer = totalTotal > 0 ? 100 / totalTotal : 0;
     const divLineStyle = { borderTop: 'solid 1px #00000038', margin: '0 35px' };
@@ -88,8 +79,8 @@ class DealerDashboard extends React.Component {
           <IdleOverview idle1={overviewData.idleUnder30Min * normalizer} idle2={overviewData.idleOver30Min * normalizer} />
         </Layout.Content>
         <hr style={divLineStyle} />
-        <Layout.Content>
-          <FuelConsumption />
+        <Layout.Content style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <FuelConsumption fleetOverviewData={overviewData} />
           <AlertsChart
             key="alerts"
           />
@@ -109,11 +100,15 @@ class DealerDashboard extends React.Component {
 DealerDashboard.propTypes = {
   vehicles: PropTypes.array.isRequired,
   fleetOverviewData: PropTypes.shape({
-    totalDist: PropTypes.number,
     avgSpeed: PropTypes.number,
-    totalRunTime: PropTypes.number,
-    totalDriveTime: PropTypes.number,
+    idleOver30Min: PropTypes.number,
+    idleUnder30Min: PropTypes.number,
+    normalDriving: PropTypes.number,
+    totalDistance: PropTypes.number,
+    totalDrivingTime: PropTypes.number,
     totalIdleTime: PropTypes.number,
+    totalRunningTime: PropTypes.number,
+    vehicleCount: PropTypes.number,
   }).isRequired,
   // selectedVehicleId: PropTypes.string.isRequired,
 

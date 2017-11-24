@@ -1,28 +1,9 @@
 import React from 'react';
 import { StyleSheet, css } from 'aphrodite/no-important';
-import cs from 'classnames';
-
-//
-//
-// import PropTypes from 'prop-types';
-
+import DashboardElements from 'components/DashboardElements';
 import pure from 'recompose/pure';
 
 import { theme } from 'configs';
-
-import classes from 'components/DashboardElements/classes';
-
-// import classes from './classes';
-
-// const tableCellCard = {
-// };
-
-const tableCellCardTheft = {
-  backgroundColor: theme.palette.alertColor,
-};
-const tableCellCardRefuel = {
-  backgroundColor: theme.palette.dachboardElementColor,
-};
 
 const tableCellCardTheftInv = {
   backgroundColor: 'white',
@@ -39,19 +20,6 @@ const inClasses = StyleSheet.create({
     height: '32px',
     padding: '4px 16px',
     margin: '4px',
-  },
-  tableCellCard: {
-    minHeight: '64px',
-    lineHeight: '64px',
-    backgroundColor: theme.palette.dachboardElementColor,
-    padding: '4px 16px',
-    margin: '4px',
-  },
-  tableCellDescr: {
-    padding: '4px 16px',
-    textAlign: 'right',
-    fontWeight: 'bold',
-    color: theme.palette.dachboardElementColor,
   },
   tableCellAlerts: {
     display: 'flex',
@@ -80,39 +48,42 @@ const inClasses = StyleSheet.create({
 
 const FuelConsumption = () => {
   const headClass = css(inClasses.tableHead);
-  const className = css(classes.dataItemContainer, classes.dataItemValueContainer, inClasses.tableCellCard);
-  const classNameAltrs = cs(className, css(inClasses.tableCellAlerts));
-  // const containerStyle = Object.assign({}, maxWidth !== undefined ? { maxWidth } : {}, style);
-  // style={{ width: witdhPerc }} 
+  const classNameAltrs = css(inClasses.tableCellAlerts);
   return (
     <div className={css(inClasses.container)}>
-      {/* <div className={css(classes.dataItemTitleDark)}>
-        {'Fleet wide fuel consumption'}
-      </div> */}
       <table >
         <tr>
           <td className={headClass} />
           <td className={headClass}>Total liters</td>
           <td className={headClass}>% of Fuel Consumption</td>
-          {/* <td className={headClass}>Approx Monetary Value</td> */}
         </tr>
         <tr>
-          <td><div className={classNameAltrs} style={tableCellCardTheft}>
+          <td><div className={classNameAltrs}>
             <div className={css(inClasses.subText)}>Number of Fuel Loss Alerts</div>
             <div className={css(inClasses.subBadge)} style={tableCellCardTheftInv}>1</div>
           </div></td>
-          <td><div className={className} style={tableCellCardTheft}>20 Ltr</div></td>
-          <td><div className={className} style={tableCellCardTheft}>5.7%</div></td>
-          {/* <td><div className={className} style={tableCellCardTheft}>14840 Kyat</div></td> */}
+          <DashboardElements.TableDataCell
+            dataString="20"
+            dataUnits="ltr"
+          />
+          <DashboardElements.TableDataCell
+            dataString="6.4%"
+            style={{ backgroundColor: theme.palette.alertColor }}
+          />
         </tr>
         <tr>
-          <td><div className={classNameAltrs} style={tableCellCardRefuel}>
+          <td><div className={classNameAltrs}>
             <div className={css(inClasses.subText)}>Number of Refuel Alerts </div>
             <div className={css(inClasses.subBadge)} style={tableCellCardRefuelInv}>5</div>
           </div></td>
-          <td><div className={className} style={tableCellCardRefuel}>165 Ltr</div></td>
-          <td><div className={className} style={tableCellCardRefuel}>54.2%</div></td>
-          {/* <td><div className={className} style={tableCellCardRefuel}>129730 Kyat</div></td> */}
+          <DashboardElements.TableDataCell
+            dataString="238"
+            dataUnits="ltr"
+          />
+          <DashboardElements.TableDataCell
+            dataString="36.4%"
+            style={{ backgroundColor: theme.palette.okColor }}
+          />
         </tr>
       </table>
     </div>
