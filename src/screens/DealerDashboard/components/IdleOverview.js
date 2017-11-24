@@ -29,7 +29,7 @@ const IdleOverview = ({ idle1, idle2 }) => {
         <DashboardElements.SubCard
           title={'<30min'}
           dataString={`${idle1}%`}
-          style={{ backgroundColor: theme.palette.warningColor, width: `${idle1}%` }}
+          style={{ backgroundColor: theme.palette.dachboardElementSecondaryColor, width: `${idle1}%` }}
         />
         <DashboardElements.SubCard
           title={'>30min'}
@@ -39,7 +39,7 @@ const IdleOverview = ({ idle1, idle2 }) => {
         <DashboardElements.SubCard
           title={'Drive time'}
           dataString={`${drive}%`}
-          style={{ backgroundColor: '#61a653', width: `${drive}%` }}
+          style={{ backgroundColor: theme.palette.okColor, width: `${drive}%` }}
         />
       </div>
     </div>

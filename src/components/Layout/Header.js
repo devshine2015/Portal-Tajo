@@ -30,9 +30,9 @@ const Header = ({
       { icon !== undefined &&
         <Avatar
           color="#fff"
-          backgroundColor={tinycolor(theme.layout.headerColor).setAlpha(0.6)}
+          backgroundColor={tinycolor(theme.layout.headerColor).setAlpha(0.6).toString()}
           icon={icon}
-          className={css(classes.header__icon)} 
+          className={css(classes.header__icon)}
         />
       }
       <span className={css(classes.header__text)} style={labelStyle}>{ label }</span>

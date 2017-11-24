@@ -17,7 +17,6 @@ import { conditionsActions } from 'services/AlertsSystem/actions';
 import classes from './classes';
 
 class AlertCard extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -79,7 +78,7 @@ class AlertCard extends React.Component {
                       closeForm: this.closeForm,
                       alert: this.props.alert,
                     })
-                  ) }
+                    ) }
             </VelocityTransitionGroup>
             <VelocityTransitionGroup
               enter={{ animation: 'slideDown', duration: 300 }}
@@ -95,7 +94,7 @@ class AlertCard extends React.Component {
                         >
                           <EditIcon
                             color={this.context.muiTheme.palette.primary1Color}
-                            hoverColor={tinycolor(this.context.muiTheme.palette.primary1Color).brighten()}
+                            hoverColor={tinycolor(this.context.muiTheme.palette.primary1Color).brighten().toString()}
                           />
                         </IconButton>
                         <IconButton
@@ -110,9 +109,9 @@ class AlertCard extends React.Component {
                         </IconButton>
                       </div>
                     </div>
-                )}
+                    )}
             </VelocityTransitionGroup>
-            </CardText>)
+          </CardText>)
           }
         </VelocityTransitionGroup>
       </Card>

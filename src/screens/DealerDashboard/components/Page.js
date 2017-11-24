@@ -51,7 +51,7 @@ class DealerDashboard extends React.Component {
       <DealerPage>
         <PageHeader text="Fleet Overview" onApply={tr => this.applyTimeRange(tr)} />
         {/* containerClass={classes.widgetContainer} */}
-        <Layout.Content style={{ flexDirection: 'row', justifyContent: 'center', backgroundColor: 'white', marginTop: '4px' }}>
+        <Layout.Content style={{ flexDirection: 'row', justifyContent: 'center', marginTop: '4px' }}>
           <DashboardElements.DataCard
             title={'Number of Vehicles'}
             dataString={this.props.vehicles.length.toString()}
@@ -83,12 +83,12 @@ class DealerDashboard extends React.Component {
           />
         </Layout.Content>
         <hr style={divLineStyle} />
-        <Layout.Content style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'white' }}>
+        <Layout.Content style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <ServiceOverview />
           <IdleOverview idle1={overviewData.idleUnder30Min * normalizer} idle2={overviewData.idleOver30Min * normalizer} />
         </Layout.Content>
         <hr style={divLineStyle} />
-        <Layout.Content style={{ backgroundColor: 'white' }}>
+        <Layout.Content>
           <FuelConsumption />
           <AlertsChart
             key="alerts"

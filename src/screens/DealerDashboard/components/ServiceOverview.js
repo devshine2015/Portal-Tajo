@@ -25,7 +25,7 @@ const OverdueCard = {
   backgroundColor: theme.palette.alertColor,
 };
 const SoonCard = {
-  backgroundColor: theme.palette.warningColor,
+  backgroundColor: theme.palette.dachboardElementSecondaryColor,
 };
 
 const ServiceOverview = (vehicles) => {

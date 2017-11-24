@@ -130,6 +130,8 @@ class VehicleMaintenance extends React.Component {
             showRestValue
             units={'km'}
           />
+        </Layout.Section>
+        <Layout.Section style={{ padding: '32px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <BarIndicator
               style={{ flex: '1', paddingRight: '6px' }}

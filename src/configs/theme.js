@@ -27,12 +27,12 @@ export const tajoTheme = {
     dachboardElementColor: '#c4c3b1',
 
     PLItemBackgroundColor: cyan700,
-    PLItemBackgroundColorHover: tinycolor(cyan700).setAlpha(0.85).toRgbString(),
+    PLItemBackgroundColorHover: tinycolor(cyan700).setAlpha(0.85).toString(),
     PLItemColor: white,
     PLItemBackgroundColorExpanded: deepOrange700, // '#fd9e83',
-    PLItemBackgroundColorExpandedHover: tinycolor(deepOrange700).setAlpha(0.85).toRgbString(),
+    PLItemBackgroundColorExpandedHover: tinycolor(deepOrange700).setAlpha(0.85).toString(),
     PLItemGFBackgroundColorExpanded: blue600,
-    PLItemGFBackgroundColorExpandedHover: tinycolor(blue600).setAlpha(0.85).toRgbString(),
+    PLItemGFBackgroundColorExpandedHover: tinycolor(blue600).setAlpha(0.85).toString(),
   },
   appBar: {
     logoutBackgroundColor: 'transparent',
@@ -46,6 +46,8 @@ export const tajoTheme = {
   },
   layout: {
     headerColor: '#009688',
+    sectionColor1: '#ddd',
+    sectionColor2: '#f4f4f4',
   },
   spacing: {
     appBarHeigth: 64,
@@ -60,18 +62,19 @@ export const fusoTheme = {
     primary1Color: ccMainBrandColor, // '#e3142e',
     accent1Color: '#e3142e', // '#c4c3b1',
 
-    okColor: green600,
-    warningColor: tinycolor('rgb 190 190 190'),
-    alertColor: tinycolor('rgb 234 34 36'),
+    okColor: '#61a653',
+    warningColor: yellow700,
+    alertColor: tinycolor('rgb 234 34 36').toString(),
+    dachboardElementSecondaryColor: tinycolor('rgb 190 190 190').toString(),
     dachboardElementColor: ccMainBrandColor, // '#2196F3',
 
     PLItemBackgroundColor: cyan700,
-    PLItemBackgroundColorHover: tinycolor(cyan700).setAlpha(0.85).toRgbString(),
+    PLItemBackgroundColorHover: tinycolor(cyan700).setAlpha(0.85).toString(),
     PLItemColor: white,
     PLItemBackgroundColorExpanded: deepOrange700, // '#fd9e83',
-    PLItemBackgroundColorExpandedHover: tinycolor(deepOrange700).setAlpha(0.85).toRgbString(),
+    PLItemBackgroundColorExpandedHover: tinycolor(deepOrange700).setAlpha(0.85).toString(),
     PLItemGFBackgroundColorExpanded: blue600,
-    PLItemGFBackgroundColorExpandedHover: tinycolor(blue600).setAlpha(0.85).toRgbString(),
+    PLItemGFBackgroundColorExpandedHover: tinycolor(blue600).setAlpha(0.85).toString(),
   },
   appBar: {
     color: '#fff',
@@ -90,6 +93,8 @@ export const fusoTheme = {
   },
   layout: {
     headerColor: ccMainBrandColor,
+    sectionColor1: 'white',
+    sectionColor2: 'white',
   },
   spacing: tajoTheme.spacing,
 };

@@ -47,9 +47,9 @@ const classes = StyleSheet.create({
   // ---- section
   sectionContainer: {
     borderBottom: '1px solid rgba(0, 0, 0, 0.2);',
-    backgroundColor: '#ddd',
+    backgroundColor: theme.layout.sectionColor1,
     ':nth-child(odd)': {
-      backgroundColor: '#f4f4f4',
+      backgroundColor: theme.layout.sectionColor2,
     },
   },
   // ---- header

@@ -53,15 +53,15 @@ class VehicleMaintenance extends React.Component {
 
     return (
       <Layout.Content style={{ padding: '0' }}>
-        <Layout.Section style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', backgroundColor: 'white' }}>
+        <Layout.Section style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
           <DashboardElements.DataCard
             title={'Tank Capacity'}
             dataString={fuelCap}
           />
           <DashboardElements.DataCard
-            title={'Total Fuel Concumptipn'}
+            title={'Total Fuel Concumption'}
             dataString={'350'}
-            dataUnis="Ltr"
+            dataUnits="Ltr"
           />
           <DashboardElements.DataCard
             title={'Liters per KM'}
@@ -70,15 +70,15 @@ class VehicleMaintenance extends React.Component {
           <DashboardElements.DataCard
             title={'Total Distance'}
             dataString={'2538'}
-            dataUnis="km"
+            dataUnits="km"
           />
           <DashboardElements.DataCard
             title={'Speed Avg'}
             dataString={'65'}
-            dataUnis="km/h"
+            dataUnits="km/h"
           />
         </Layout.Section>
-        <Layout.Section style={{ padding: '24px', backgroundColor: 'white' }}>
+        <Layout.Section style={{ padding: '24px' }}>
           <FuelAlerts />
         </Layout.Section>
       </Layout.Content>

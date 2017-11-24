@@ -24,7 +24,7 @@ const classes = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bolder',
     color: 'rgba(255, 255, 255, 0.6)',
-    backgroundColor: '#c4c2b1',
+    backgroundColor: theme.palette.dachboardElementSecondaryColor,
     borderRadius: '6px',
     boxShadow: '0 1px 5px rgba(0,0,0,0.4)',
     overflow: 'hidden',
@@ -46,7 +46,7 @@ const classes = StyleSheet.create({
     flex: 1,
   },
   titleContainer: {
-    color: tinycolor(theme.palette.primary1Color).setAlpha(0.75).toRgbString(),
+    color: tinycolor(theme.palette.primary1Color).setAlpha(0.75).toString(),
   },
 
   lightContainer: {
@@ -57,12 +57,13 @@ const classes = StyleSheet.create({
     border: '1px solid rgba(0,0,0,0.15)',
     height: '48px',
     width: '48px',
-    backgroundColor: '#c4c2b1',
+    backgroundColor: theme.palette.dachboardElementSecondaryColor,
     borderRadius: '50%',
     boxShadow: '0 1px 5px rgba(0,0,0,0.4)',
     overflow: 'hidden',
     margin: 'auto',
   },
 });
+
 
 export default classes;
