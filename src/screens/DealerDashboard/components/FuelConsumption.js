@@ -38,45 +38,47 @@ const FuelConsumption = ({ fleetOverviewData }) => {
       <div className={css(classes.dataItemTitleDark)}>
         {'Fleet wide fuel consumption'}
       </div>
-      <table >
-        <tr>
-          <td className={css(inClasses.tableCellDescr)}>Total Fuel Consumption</td>
-          <DashboardElements.TableDataCell
-            dataString={fleetOverviewData.totalFuel.toFixed(1).toString()}
-            dataUnits="ltr"
-          />
-          <DashboardElements.TableDataCell
-            dataString={ltrPerKm.toFixed(1).toString()}
-            dataUnits="Ltr/Km"
-          />
-        </tr>
-        <tr>
-          <td />
-          <td className={css(inClasses.tableCellDescr)} style={{ fontWeight: 'normal', padding: '12px 0 0', textAlign: 'center' }}>Total Litres</td>
-          <td className={css(inClasses.tableCellDescr)} style={{ fontWeight: 'normal', padding: '12px 0 0', textAlign: 'center' }}>% of Fuel Consumption</td>
-        </tr>
-        <tr>
-          <td className={css(inClasses.tableCellDescr)}>Estimated Fuel Loss</td>
-          <DashboardElements.TableDataCell
-            dataString={`20`}
-            dataUnits="ltr"
-          />
-          <DashboardElements.TableDataCell
-            dataString={"5.7%"}
-            style={{ backgroundColor: theme.palette.alertColor }}
-          />
-        </tr>
-        <tr>
-          <td className={css(inClasses.tableCellDescr)}>Estimated Refuel</td>
-          <DashboardElements.TableDataCell
-            dataString={`175`}
-            dataUnits="ltr"
-          />
-          <DashboardElements.TableDataCell
-            dataString={"43.%"}
-            style={{ backgroundColor: theme.palette.okColor }}
-          />
-        </tr>
+      <table>
+        <tbody>
+          <tr>
+            <td className={css(inClasses.tableCellDescr)}>Total Fuel Consumption</td>
+            <DashboardElements.TableDataCell
+              dataString={fleetOverviewData.totalFuel.toFixed(1).toString()}
+              dataUnits="ltr"
+            />
+            <DashboardElements.TableDataCell
+              dataString={ltrPerKm.toFixed(1).toString()}
+              dataUnits="Ltr/Km"
+            />
+          </tr>
+          <tr>
+            <td />
+            <td className={css(inClasses.tableCellDescr)} style={{ fontWeight: 'normal', padding: '12px 0 0', textAlign: 'center' }}>Total Litres</td>
+            <td className={css(inClasses.tableCellDescr)} style={{ fontWeight: 'normal', padding: '12px 0 0', textAlign: 'center' }}>% of Fuel Consumption</td>
+          </tr>
+          <tr>
+            <td className={css(inClasses.tableCellDescr)}>Estimated Fuel Loss</td>
+            <DashboardElements.TableDataCell
+              dataString={'20'}
+              dataUnits="ltr"
+            />
+            <DashboardElements.TableDataCell
+              dataString={'5.7%'}
+              style={{ backgroundColor: theme.palette.alertColor }}
+            />
+          </tr>
+          <tr>
+            <td className={css(inClasses.tableCellDescr)}>Estimated Refuel</td>
+            <DashboardElements.TableDataCell
+              dataString={'175'}
+              dataUnits="ltr"
+            />
+            <DashboardElements.TableDataCell
+              dataString={'43.%'}
+              style={{ backgroundColor: theme.palette.okColor }}
+            />
+          </tr>
+        </tbody>
       </table>
     </div>
   );

@@ -52,39 +52,41 @@ const FuelConsumption = () => {
   return (
     <div className={css(inClasses.container)}>
       <table >
-        <tr>
-          <td className={headClass} />
-          <td className={headClass}>Total liters</td>
-          <td className={headClass}>% of Fuel Consumption</td>
-        </tr>
-        <tr>
-          <td><div className={classNameAltrs}>
-            <div className={css(inClasses.subText)}>Number of Fuel Loss Alerts</div>
-            <div className={css(inClasses.subBadge)} style={tableCellCardTheftInv}>1</div>
-          </div></td>
-          <DashboardElements.TableDataCell
-            dataString="20"
-            dataUnits="ltr"
-          />
-          <DashboardElements.TableDataCell
-            dataString="6.4%"
-            style={{ backgroundColor: theme.palette.alertColor }}
-          />
-        </tr>
-        <tr>
-          <td><div className={classNameAltrs}>
-            <div className={css(inClasses.subText)}>Number of Refuel Alerts </div>
-            <div className={css(inClasses.subBadge)} style={tableCellCardRefuelInv}>5</div>
-          </div></td>
-          <DashboardElements.TableDataCell
-            dataString="238"
-            dataUnits="ltr"
-          />
-          <DashboardElements.TableDataCell
-            dataString="36.4%"
-            style={{ backgroundColor: theme.palette.okColor }}
-          />
-        </tr>
+        <tbody>
+          <tr>
+            <td className={headClass} />
+            <td className={headClass}>Total liters</td>
+            <td className={headClass}>% of Fuel Consumption</td>
+          </tr>
+          <tr>
+            <td><div className={classNameAltrs}>
+              <div className={css(inClasses.subText)}>Number of Fuel Loss Alerts</div>
+              <div className={css(inClasses.subBadge)} style={tableCellCardTheftInv}>1</div>
+            </div></td>
+            <DashboardElements.TableDataCell
+              dataString="20"
+              dataUnits="ltr"
+            />
+            <DashboardElements.TableDataCell
+              dataString="6.4%"
+              style={{ backgroundColor: theme.palette.alertColor }}
+            />
+          </tr>
+          <tr>
+            <td><div className={classNameAltrs}>
+              <div className={css(inClasses.subText)}>Number of Refuel Alerts </div>
+              <div className={css(inClasses.subBadge)} style={tableCellCardRefuelInv}>5</div>
+            </div></td>
+            <DashboardElements.TableDataCell
+              dataString="238"
+              dataUnits="ltr"
+            />
+            <DashboardElements.TableDataCell
+              dataString="36.4%"
+              style={{ backgroundColor: theme.palette.okColor }}
+            />
+          </tr>
+        </tbody>
       </table>
     </div>
   );

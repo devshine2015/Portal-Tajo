@@ -15,7 +15,7 @@ const TableDataCell = ({
   return (
     <td>
       <div className={className} style={style}>
-        <spawn className={css(classes.dataItemValue)}>{dataString}</spawn>
+        <span className={css(classes.dataItemValue)}>{dataString}</span>
         { dataUnits !== undefined && <span className={css(classes.dataItemUnits)}>{dataUnits}</span>}
       </div>
     </td>

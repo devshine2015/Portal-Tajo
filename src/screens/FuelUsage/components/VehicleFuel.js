@@ -49,7 +49,7 @@ class VehicleMaintenance extends React.Component {
     // '6K1577 pajero sport';
     const fuelCap = (this.props.theVehicle.original.fuelCapacity !== undefined
       && this.props.theVehicle.original.fuelCapacity > 0)
-      ? this.props.theVehicle.original.fuelCapacity : 'N/A';
+      ? this.props.theVehicle.original.fuelCapacity.toString() : 'N/A';
 
     return (
       <Layout.Content style={{ padding: '0' }}>
