@@ -10,6 +10,7 @@ import pure from 'recompose/pure';
 
 import Layout from 'components/Layout';
 import DashboardElements from 'components/DashboardElements';
+import LineChart from 'components/DashboardElements/LineChart';
 
 import FuelAlerts from './FuelAlerts';
 
@@ -80,6 +81,7 @@ class VehicleMaintenance extends React.Component {
         </Layout.Section>
         <Layout.Section style={{ padding: '24px' }}>
           <FuelAlerts />
+          <LineChart />
         </Layout.Section>
       </Layout.Content>
     );
