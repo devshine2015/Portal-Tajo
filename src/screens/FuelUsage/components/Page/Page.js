@@ -45,7 +45,7 @@ class Page extends React.Component {
             height: '100%',
           }}
         >
-          <PageHeader text="Fuel Usage" onApply={tr => this.applyTimeRange(tr)} />
+          <PageHeader text="Fuel Usage" subHeader="Overview of vehicle fuel usages" onApply={tr => this.applyTimeRange(tr)} />
           <VehicleFuel theVehicle={this.props.getVehicleById(this.state.selectedVehicleId)} />
         </FixedContent>
       </DealerPage>
