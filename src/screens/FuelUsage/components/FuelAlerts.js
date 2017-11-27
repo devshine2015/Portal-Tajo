@@ -1,56 +1,24 @@
 import React from 'react';
-import { StyleSheet, css } from 'aphrodite/no-important';
+import { css } from 'aphrodite/no-important';
 import DashboardElements from 'components/DashboardElements';
 import pure from 'recompose/pure';
 
 import { theme } from 'configs';
+import inClasses from '../styles';
 
-const tableCellCardTheftInv = {
-  backgroundColor: 'white',
-  color: theme.palette.alertColor,
+const redBadge = {
+  backgroundColor: 'red',
 };
-const tableCellCardRefuelInv = {
-  backgroundColor: 'white',
-  color: theme.palette.dachboardElementColor,
+const greenBadge = {
+  backgroundColor: 'green',
 };
-
-const inClasses = StyleSheet.create({
-  tableHead: {
-    color: theme.palette.dachboardElementColor,
-    height: '32px',
-    padding: '4px 16px',
-    margin: '4px',
-  },
-  tableCellAlerts: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: '8px 8px',
-  },
-  subText: {
-    fontSize: 'small',
-    lineHeight: 'initial',
-    // lineBreak: normal;
-    textAlign: 'start',
-  },
-  subBadge: {
-    backgroundColor: 'white',
-    width: '56px',
-    minWidth: '56px',
-    height: '56px',
-    lineHeight: '56px',
-    borderRadius: '50%',
-  },
-
-  container: {
-    marginTop: '32px',
-  },
-});
 
 const FuelConsumption = () => {
   const headClass = css(inClasses.tableHead);
   const classNameAltrs = css(inClasses.tableCellAlerts);
   return (
     <div className={css(inClasses.container)}>
+      <div className={css(inClasses.containerHeading)}>Fuel Alerts</div>
       <table >
         <tbody>
           <tr>
@@ -61,7 +29,8 @@ const FuelConsumption = () => {
           <tr>
             <td><div className={classNameAltrs}>
               <div className={css(inClasses.subText)}>Number of Fuel Loss Alerts</div>
-              <div className={css(inClasses.subBadge)} style={tableCellCardTheftInv}>1</div>
+              <div className={css(inClasses.subBadge)} style={redBadge}>1</div>
+              <div className={css(inClasses.subText)}>Estimated Fuel Loss </div>
             </div></td>
             <DashboardElements.TableDataCell
               dataString="20"
@@ -75,7 +44,8 @@ const FuelConsumption = () => {
           <tr>
             <td><div className={classNameAltrs}>
               <div className={css(inClasses.subText)}>Number of Refuel Alerts </div>
-              <div className={css(inClasses.subBadge)} style={tableCellCardRefuelInv}>5</div>
+              <div className={css(inClasses.subBadge)} style={greenBadge}>5</div>
+              <div className={css(inClasses.subText)}>Estimated Refuel</div>
             </div></td>
             <DashboardElements.TableDataCell
               dataString="238"
