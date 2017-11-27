@@ -18,7 +18,7 @@ class DealerPowerList extends React.Component {
   }
 
   selectInitalVehicle = (arr = []) => {
-    const initialId = arr[0].id || null;
+    const initialId = (arr.length > 0 && arr[0].id) ? arr[0].id : null;
     this.state = {
       selectedId: initialId,
     };
