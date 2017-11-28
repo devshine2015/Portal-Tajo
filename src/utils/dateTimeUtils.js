@@ -32,7 +32,17 @@ export const makeDateWithTime = (dateDate, dateTime) => {
 
 
 export const makePeriodForLast24Hours = () => {
-  const fromDate = moment().subtract(24, 'hours').toDate();
+  return makePeriodForHoursBack(24);
+};
+
+/**
+ * Create time range ending now, starting backHours back from now
+ * @returns {Object} 
+ * @returns {Date} fromDate - now minus backHours
+ * @returns {Date} toDate - now
+ */
+export const makePeriodForHoursBack = (backHours) => {
+  const fromDate = moment().subtract(backHours, 'hours').toDate();
   const toDate = moment().toDate();
 
   return {

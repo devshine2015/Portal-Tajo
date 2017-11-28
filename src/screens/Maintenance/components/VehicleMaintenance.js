@@ -10,10 +10,12 @@ import { connect } from 'react-redux';
 import { vehiclesActions } from 'services/FleetModel/actions';
 
 // import TimeFrameController from './components/TimeFrameSelector';
-import BetaLabel from 'components/BetaLabel';
+// import BetaLabel from 'components/BetaLabel';
 
 import Layout from 'components/Layout';
 import FixedContent from 'components/FixedContent';
+import VehicleSummary from 'components/VehicleSummary/VehicleSummary';
+
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import { conditionsActions } from 'services/AlertsSystem/actions';
 import { getVehicleAlertConditions,
@@ -104,22 +106,14 @@ class VehicleMaintenance extends React.Component {
     const distToNextService = mntEnd - vehCurrent;
     // const toServicePerc = 100 * (vehCurrent - mntZero) / (mntEnd - mntZero);
 
-    const headLbl = this.props.theVehicle.original.name;
-    // const headLbl = this.state.selectedVehicleId;
-    // '6K1577 pajero sport';
     return (
       <FixedContent
         style={{
           padding: 0,
         }}
       >
-        <BetaLabel />
-        <Layout.Section style={{ padding: '32px' }}>
-          <Layout.Header
-            label={headLbl}
-            style={{ textAlign: 'center', paddingLeft: 0 }}
-          />
-        </Layout.Section>
+        <VehicleSummary theVehicle={this.props.theVehicle} />
+        {/* <BetaLabel /> */}
         <Layout.Section style={{ padding: '32px' }}>
           <BarIndicator
             title={`Next Service ${(distToNextService > 0) ?
