@@ -14,6 +14,9 @@ const classes = StyleSheet.create({
     backgroundColor: '#fff',
     borderBottom: '1px solid rgba(0, 0, 0, 0.07)',
     margin: '0 -20px 20px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     flexShrink: 0,
   },
   text: {
@@ -24,19 +27,13 @@ const classes = StyleSheet.create({
     color: tinycolor(theme.layout.headerColor).setAlpha(0.45).toString(),
   },
   actions: {
-    position: 'absolute',
-    top: '20px',
-    right: '0',
   },
 });
 
-const PageHeader = ({ text, subHeader, onApply, hasDateSelector }) => (
+const PageHeader = ({ text, onApply, hasDateSelector }) => (
   <div className={css(classes.header)}>
     <div className={css(classes.text)}>
       { text }
-    </div>
-    <div className={css(classes.text)}>
-      {subHeader}
     </div>
     {hasDateSelector && <div className={css(classes.actions)}>
       <DateRangeWithButton
@@ -57,12 +54,10 @@ PageHeader.propTypes = {
   text: PropTypes.string.isRequired,
   onApply: PropTypes.func.isRequired,
   hasDateSelector: PropTypes.bool,
-  subHeader: PropTypes.string,
 };
 
 PageHeader.defaultProps = {
   hasDateSelector: true,
-  subHeader: '',
 };
 
 

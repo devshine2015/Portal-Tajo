@@ -14,6 +14,7 @@ import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
 // import { vehiclesActions } from 'services/FleetModel/actions';
 
 import { fetchVehicleFuelReport } from './../../services/actions';
+import { getFuelReport } from './../../services/reducer';
 
 
 import VehicleFuel from './../VehicleFuel';
@@ -37,6 +38,7 @@ class Page extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     return (
       <DealerPage>
         <PowerList onVehicleSelect={id => this.vehicleSelected(id)} />
@@ -45,7 +47,7 @@ class Page extends React.Component {
             height: '100%',
           }}
         >
-          <PageHeader text="Fuel Usage" subHeader="Overview of vehicle fuel usages" onApply={tr => this.applyTimeRange(tr)} />
+          <PageHeader text="Fuel Usage" onApply={tr => this.applyTimeRange(tr)} />
           <VehicleFuel theVehicle={this.props.getVehicleById(this.state.selectedVehicleId)} />
         </FixedContent>
       </DealerPage>
@@ -56,13 +58,29 @@ class Page extends React.Component {
 Page.propTypes = {
   getVehicleById: PropTypes.func.isRequired,
   fetchVehicleFuelReport: PropTypes.func.isRequired,
+  getFuelReport: PropTypes.array,
 };
 
-const mapState = state => ({
-  // vehicles: fromFleetReducer.getVehiclesExSorted(state),
-  // selectedVehicleId: ctxGetSelectedVehicleId(state),
-  getVehicleById: getVehicleByIdFunc(state),
-});
+Page.defaultProps = {
+  getFuelReport: [],
+};
+
+// const mapState = state => ({
+//   // vehicles: fromFleetReducer.getVehiclesExSorted(state),
+//   // selectedVehicleId: ctxGetSelectedVehicleId(state),
+//   getVehicleById: getVehicleByIdFunc(state),
+//   getFuelReport: getFuelReport(state),
+// });
+
+function mapState(state) {
+  console.log(state);
+  return {
+    // listData: state.fuelUseage,
+    getVehicleById: getVehicleByIdFunc(state),
+    getFuelReport: getFuelReport(state),
+  };
+}
+
 const mapDispatch = {
   fetchVehicleFuelReport,
 };

@@ -15,6 +15,7 @@ import devicesReducer from 'services/Devices/reducer';
 import alertsSystemReducer from 'services/AlertsSystem/reducer';
 import overviewReducer from 'services/FleetOverview/reducer';
 import routerReducer from '../utils/routerReducer';
+import fuelUseageReducer from '../../screens/FuelUsage/services/reducer';
 
 /**
  * Creates the main reducer with the asynchronously loaded ones
@@ -34,6 +35,7 @@ export default function createReducer(asyncReducers) {
     alerts: alertsSystemReducer,
     devices: devicesReducer,
     fleetOverview: overviewReducer,
+    fuelUseage: fuelUseageReducer,
     ...asyncReducers,
   });
 }
