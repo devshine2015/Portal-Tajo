@@ -1,16 +1,10 @@
 import React from 'react';
 
-// import PortalReports from 'containers/Report';
-
-// export default PortalReports;
 import PropTypes from 'prop-types';
 
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { vehiclesActions } from 'services/FleetModel/actions';
-
-// import TimeFrameController from './components/TimeFrameSelector';
-// import BetaLabel from 'components/BetaLabel';
 
 import Layout from 'components/Layout';
 import FixedContent from 'components/FixedContent';
@@ -23,14 +17,8 @@ import { getVehicleAlertConditions,
 
 import AnimatedLogo from 'components/animated';
 import BarIndicator from './MaintenaceProgressBar';
-import LightIndicator from './LightIndicator';
+import WarningLights from './WarningLights';
 
-// import { makeMaintenanceData,
-//   MaintenanceStatus } from './../utils/maintenanceHelper';
-
-function devRndLightStatus() {
-  return (Math.random() < 0.7) ? 0 : 1;
-}
 
 class VehicleMaintenance extends React.Component {
   constructor(props) {
@@ -145,24 +133,7 @@ class VehicleMaintenance extends React.Component {
               title={'Clutch Wear'}
               currentValue={Math.random() * 100}
             />
-          </div>
-          <div style={{ display: 'flex' }}>
-            <LightIndicator
-              title={'Engine Trouble'}
-              status={devRndLightStatus()}
-            />
-            <LightIndicator
-              title={'Brake Warning'}
-              status={devRndLightStatus()}
-            />
-            <LightIndicator
-              title={'Engine Temp'}
-              status={devRndLightStatus()}
-            />
-            <LightIndicator
-              title={'Oil Pressure'}
-              status={devRndLightStatus()}
-            />
+            <WarningLights />
           </div>
         </Layout.Section>
       </FixedContent>
@@ -188,6 +159,5 @@ const mapDispatch = {
   fetchVehicleAlertConditions: conditionsActions.fetchVehicleAlertConditions,
   updateLocalVehicleDetails: vehiclesActions.updateLocalDetails,
 };
-
 
 export default connect(mapState, mapDispatch)(pure(VehicleMaintenance));

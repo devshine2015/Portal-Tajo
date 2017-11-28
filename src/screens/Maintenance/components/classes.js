@@ -11,6 +11,16 @@ const alertColorAnimation = {
   },
 };
 
+const alertFillAnimation = {
+  '0%': {
+    fill: theme.palette.alertColor,
+  },
+  '100%': {
+    fill: theme.palette.warningColor,
+  },
+};
+
+
 const classes = StyleSheet.create({
 // ---- top level container
   progContainer: {
@@ -42,6 +52,12 @@ const classes = StyleSheet.create({
     animationIterationCount: 'infinite',
     animationDirection: 'alternate',
   },
+  animatedAlertFill: {
+    animationName: alertFillAnimation,
+    animationDuration: '0.5s',
+    animationIterationCount: 'infinite',
+    animationDirection: 'alternate',
+  },
   progBarRest: {
     flex: 1,
   },
@@ -50,8 +66,15 @@ const classes = StyleSheet.create({
   },
 
   lightContainer: {
-    marginTop: '48px',
-    paddingRight: '24px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  lightTitle: {
+    fontSize: 'x-small',
+  },
+  lightSvg: {
+    fill: theme.palette.dachboardElementSecondaryColor,
   },
   lightBody: {
     border: '1px solid rgba(0,0,0,0.15)',
