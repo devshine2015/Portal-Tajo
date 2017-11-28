@@ -28,17 +28,17 @@ const IdleOverview = ({ idle1, idle2 }) => {
       <div className={classNameParent}>
         <DashboardElements.SubCard
           title={'<30min'}
-          dataString={`${idle1}%`}
+          dataString={`${idle1.toFixed(0)}%`}
           style={{ backgroundColor: theme.palette.dachboardElementSecondaryColor, width: `${idle1}%` }}
         />
         <DashboardElements.SubCard
           title={'>30min'}
-          dataString={`${idle2}%`}
+          dataString={`${idle2.toFixed(0)}%`}
           style={{ backgroundColor: theme.palette.alertColor, width: `${idle2}%` }}
         />
         <DashboardElements.SubCard
           title={'Drive time'}
-          dataString={`${drive}%`}
+          dataString={`${drive.toFixed(0)}%`}
           style={{ backgroundColor: theme.palette.okColor, width: `${drive}%` }}
         />
       </div>

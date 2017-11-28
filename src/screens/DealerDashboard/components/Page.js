@@ -12,6 +12,7 @@ import { logActions } from 'services/AlertsSystem/actions';
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import { fetchFleetOverview } from 'services/FleetOverview/actions';
 import { getFleetOverView } from 'services/FleetOverview/reducer';
+// import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
 
 import ServiceOverview from './ServiceOverview';
 import IdleOverview from './IdleOverview';
@@ -22,6 +23,10 @@ import AlertSummaryTable from './AlertSummaryTable';
 const secondsToHvrs = timeSec => (timeSec / 60 / 60).toFixed(0);
 
 class DealerDashboard extends React.Component {
+  // componentDidMount() {
+  //   this.applyTimeRange(makePeriodForLast24Hours());
+  // }
+
   // state = {
   //   isDefaultRange: true,
   // };  
@@ -35,7 +40,7 @@ class DealerDashboard extends React.Component {
     const overviewData = this.props.fleetOverviewData;
     // dataString={this.props.vehicles.length.toString()}
     // dataString={overviewData.vehicleCount.toString()}    
-    const totalTotal = overviewData.totalDrivingTime + overviewData.idleUnder30Min + overviewData.idleOver30Min;
+    const totalTotal = overviewData.normalDriving + overviewData.idleUnder30Min + overviewData.idleOver30Min;
     const normalizer = totalTotal > 0 ? 100 / totalTotal : 0;
     const divLineStyle = { borderTop: 'solid 1px #00000038', margin: '0 35px' };
     return (
@@ -49,7 +54,7 @@ class DealerDashboard extends React.Component {
           />
           <DashboardElements.DataCard
             title={'Total Distance Travelled'}
-            dataString={`${overviewData.totalDistance.toFixed(1)}`}
+            dataString={`${(overviewData.totalDistance / 1000).toFixed(1)}`}
             dataUnits="km"
           />
           <DashboardElements.DataCard
