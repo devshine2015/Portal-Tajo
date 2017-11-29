@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import DealerPage, {
   PowerList,
@@ -36,9 +37,21 @@ class Page extends React.Component {
   applyTimeRange = (timeRange) => {
     this.props.fetchVehicleFuelReport(this.state.selectedVehicleId, timeRange);
   }
-
+  componentDidMount() {
+    const timeRange = {
+      fromDate: moment().subtract(1, 'days'),
+      toDate: moment(),
+    };
+    this.props.fetchVehicleFuelReport(this.state.selectedVehicleId, timeRange);
+  }
+  getVehicleFuelReportById = (id) => {
+    if (!this.props.getFuelReport.length) {
+      return false;
+    }
+    const selectedReport = this.props.getFuelReport.find(report => report.id === id);
+    return selectedReport;
+  }
   render() {
-    console.log(this.props);
     return (
       <DealerPage>
         <PowerList onVehicleSelect={id => this.vehicleSelected(id)} />
@@ -48,7 +61,7 @@ class Page extends React.Component {
           }}
         >
           <PageHeader text="Fuel Usage" onApply={tr => this.applyTimeRange(tr)} />
-          <VehicleFuel theVehicle={this.props.getVehicleById(this.state.selectedVehicleId)} />
+          <VehicleFuel fuelReport={this.getVehicleFuelReportById(this.state.selectedVehicleId)} theVehicle={this.props.getVehicleById(this.state.selectedVehicleId)} />
         </FixedContent>
       </DealerPage>
     );
@@ -58,7 +71,7 @@ class Page extends React.Component {
 Page.propTypes = {
   getVehicleById: PropTypes.func.isRequired,
   fetchVehicleFuelReport: PropTypes.func.isRequired,
-  getFuelReport: PropTypes.array,
+  getFuelReport: PropTypes.object,
 };
 
 Page.defaultProps = {

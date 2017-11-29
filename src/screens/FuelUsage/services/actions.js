@@ -20,15 +20,25 @@ export const fetchVehicleFuelReport = (vehicleId, timeRange) => (dispatch, getSt
   //   params.subFleet = selectedSubFleet;
   // }
 
-  const reportSData = {
-    totalConsumption: 0,
-    totalDist: 0,
-    ltrPerKm: 0,
-    avgSpeed: 0,
+  const reportSData = [{
+    id: '8f7ce33d-025d-4ec6-b770-dcefadb88111',
+    totalConsumption: 10,
+    totalDist: 20,
+    ltrPerKm: 30,
+    avgSpeed: 40,
     series: {
     },
     alerts: [],
-  };
+  }, {
+    id: '689cefe8-bf9b-4747-8424-7620c23187fa',
+    totalConsumption: 50,
+    totalDist: 60,
+    ltrPerKm: 70,
+    avgSpeed: 80,
+    series: {
+    },
+    alerts: [],
+  }];
 
   const urls = [];
   const allReportsData = [];
@@ -40,16 +50,17 @@ export const fetchVehicleFuelReport = (vehicleId, timeRange) => (dispatch, getSt
     });
   }, this);
   return Promise.all(
-    urls.map(({ url, method }) =>
+    urls.map(({ url, method, id }) =>
       api[method](url)
         .then(response => response.json())
         .then((reportData) => {
+          reportData.id = id;
           allReportsData.push(reportData);
         }),
     ),
   )
     .then(() => {
-      dispatch(_setVehicleFuel(vehicleId, allReportsData));
+      dispatch(_setVehicleFuel(vehicleId, reportSData));
     });
   // const { url, method } = endpoints.getVehicleFuelReport(vehicleId, params);
 
