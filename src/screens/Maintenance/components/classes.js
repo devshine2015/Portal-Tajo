@@ -66,6 +66,7 @@ const classes = StyleSheet.create({
   },
 
   lightContainer: {
+    margin: '0 8px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
