@@ -8,7 +8,8 @@ import { css } from 'aphrodite/no-important';
 // import SvgIcon from 'material-ui/SvgIcon';
 import Oil from 'assets/images/svg_icons/oil.svg';
 import Brake from 'assets/images/svg_icons/brake.svg';
-import Worker from 'assets/images/svg_icons/worker.svg';
+// import Worker from 'assets/images/svg_icons/worker.svg';
+import Warning from 'assets/images/svg_icons/warning.svg';
 import Engine from 'assets/images/svg_icons/engine.svg';
 
 import classes from './classes';
@@ -22,20 +23,20 @@ function getMyLight(kind) {
   switch (kind) {
     case ENGINE_TROUBLE: return {
       icon: (<Engine className={css(classes.lightSvg)} />),
-      title: 'Engine Trouble',
+      title: 'Check Engine',
     };
     case BRAKE_WARNING: return {
       icon: (<Brake className={css(classes.lightSvg, classes.animatedAlertFill)} />),
       title: 'Brake Warning',
     };
     case ENGINE_TEMP: return {
-      icon: (<Worker className={css(classes.lightSvg)} />),
+      icon: (<Warning className={css(classes.lightSvg)} />),
       title: 'Engine Temp',
     };
     default:
     case OIL_PREASSURE: return {
       icon: (<Oil className={css(classes.lightSvg)} />),
-      title: 'Oil Pressure',
+      title: 'Check Oil',
     };
   }
 };
