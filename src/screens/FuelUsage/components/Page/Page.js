@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import moment from 'moment';
+import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
 
 import DealerPage, {
   PowerList,
@@ -15,7 +15,7 @@ import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
 // import { vehiclesActions } from 'services/FleetModel/actions';
 
 import { fetchVehicleFuelReport } from './../../services/actions';
-import { getFuelReport } from './../../services/reducer';
+import { getFuelReport, getFuelReportForVehicle } from './../../services/reducer';
 
 
 import VehicleFuel from './../VehicleFuel';
@@ -38,11 +38,7 @@ class Page extends React.Component {
     this.props.fetchVehicleFuelReport(this.state.selectedVehicleId, timeRange);
   }
   componentDidMount() {
-    const timeRange = {
-      fromDate: moment().subtract(1, 'days'),
-      toDate: moment(),
-    };
-    this.props.fetchVehicleFuelReport(this.state.selectedVehicleId, timeRange);
+    this.props.fetchVehicleFuelReport(this.state.selectedVehicleId, makePeriodForLast24Hours());
   }
   getVehicleFuelReportById = (id) => {
     if (!this.props.getFuelReport.length) {
@@ -61,7 +57,7 @@ class Page extends React.Component {
           }}
         >
           <PageHeader text="Fuel Usage" onApply={tr => this.applyTimeRange(tr)} />
-          <VehicleFuel fuelReport={this.getVehicleFuelReportById(this.state.selectedVehicleId)} theVehicle={this.props.getVehicleById(this.state.selectedVehicleId)} />
+          <VehicleFuel theVehicle={this.props.getFuelReportForVehicle(this.state.selectedVehicleId)} />
         </FixedContent>
       </DealerPage>
     );
@@ -72,10 +68,11 @@ Page.propTypes = {
   getVehicleById: PropTypes.func.isRequired,
   fetchVehicleFuelReport: PropTypes.func.isRequired,
   getFuelReport: PropTypes.object,
+  getFuelReportForVehicle: PropTypes.func.isRequired,
 };
 
 Page.defaultProps = {
-  getFuelReport: [],
+  getFuelReport: {},
 };
 
 // const mapState = state => ({
@@ -86,11 +83,11 @@ Page.defaultProps = {
 // });
 
 function mapState(state) {
-  console.log(state);
   return {
     // listData: state.fuelUseage,
     getVehicleById: getVehicleByIdFunc(state),
     getFuelReport: getFuelReport(state),
+    getFuelReportForVehicle: getFuelReportForVehicle(state),
   };
 }
 
