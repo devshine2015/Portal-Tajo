@@ -2,6 +2,7 @@
   transition: all .25s;
   position: relative;
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
 }
 .list__item h1 {
   font-weight: bold;

@@ -85,8 +85,10 @@ export const fusoTheme = {
     borderColor: ccMainBrandColor,
   },
   powerList: {
-    backgroundColor: '#c4c3b1',
-    itemColor: '#dee3ef',
+    // backgroundColor: '#c4c3b1',
+    // itemColor: '#dee3ef',
+    backgroundColor: '#eaeaea',
+    itemColor: '#fff',
     activeItemColor: ccMainBrandColor,
     itemTextColor: '#000',
     activeItemTextColor: white,
