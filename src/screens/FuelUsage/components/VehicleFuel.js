@@ -27,7 +27,8 @@ class VehicleMaintenance extends React.Component {
   }
 
   render() {
-    if (this.props.theVehicle === null || this.props.fuelReport === undefined) {
+    console.log(this.props.theVehicle);
+    if (this.props.theVehicle === undefined) {
       return false;
     }
     // if (this.state.isLoading) {
@@ -48,9 +49,9 @@ class VehicleMaintenance extends React.Component {
 
     // const headLbl = this.state.selectedVehicleId;
     // '6K1577 pajero sport';
-    const fuelCap = (this.props.theVehicle.original.fuelCapacity !== undefined
-      && this.props.theVehicle.original.fuelCapacity > 0)
-      ? this.props.theVehicle.original.fuelCapacity.toString() : 'N/A';
+    const fuelCap = (this.props.theVehicle.fuelCapacity !== undefined
+      && this.props.theVehicle.fuelCapacity > 0)
+      ? this.props.theVehicle.fuelCapacity.toString() : 'N/A';
 
     return (
       <Layout.Content style={{ padding: '0' }}>
@@ -61,21 +62,21 @@ class VehicleMaintenance extends React.Component {
           />
           <DashboardElements.DataCard
             title={'Total Fuel Concumption'}
-            dataString={this.props.fuelReport.totalConsumption}
+            dataString={this.props.theVehicle.totalConsumption}
             dataUnits="Ltr"
           />
           <DashboardElements.DataCard
             title={'Liters per KM'}
-            dataString={this.props.fuelReport.ltrPerKm}
+            dataString={this.props.theVehicle.ltrPerKm}
           />
           <DashboardElements.DataCard
             title={'Total Distance'}
-            dataString={this.props.fuelReport.totalDist}
+            dataString={this.props.theVehicle.totalDist}
             dataUnits="km"
           />
           <DashboardElements.DataCard
             title={'Speed Avg'}
-            dataString={this.props.fuelReport.avgSpeed}
+            dataString={this.props.theVehicle.avgSpeed}
             dataUnits="km/h"
           />
         </Layout.Section>
@@ -90,7 +91,6 @@ class VehicleMaintenance extends React.Component {
 
 VehicleMaintenance.propTypes = {
   theVehicle: PropTypes.object,
-  fuelReport: PropTypes.object.isRequired,
 };
 
 // const mapState = state => ({

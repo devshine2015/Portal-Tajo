@@ -20,8 +20,7 @@ export const fetchVehicleFuelReport = (vehicleId, timeRange) => (dispatch, getSt
   //   params.subFleet = selectedSubFleet;
   // }
 
-  const reportSData = [{
-    id: '8f7ce33d-025d-4ec6-b770-dcefadb88111',
+  const staticDevReportData = {
     totalConsumption: 10,
     totalDist: 20,
     ltrPerKm: 30,
@@ -29,19 +28,10 @@ export const fetchVehicleFuelReport = (vehicleId, timeRange) => (dispatch, getSt
     series: {
     },
     alerts: [],
-  }, {
-    id: '689cefe8-bf9b-4747-8424-7620c23187fa',
-    totalConsumption: 50,
-    totalDist: 60,
-    ltrPerKm: 70,
-    avgSpeed: 80,
-    series: {
-    },
-    alerts: [],
-  }];
+  };
 
   const urls = [];
-  const allReportsData = [];
+  const localReportsData = {};
   const vehiclesList = getVehiclesExSorted(getState());
   vehiclesList.forEach((vehicle) => {
     const aVehicleId = vehicle.id;
@@ -54,13 +44,13 @@ export const fetchVehicleFuelReport = (vehicleId, timeRange) => (dispatch, getSt
       api[method](url)
         .then(response => response.json())
         .then((reportData) => {
-          reportData.id = id;
-          allReportsData.push(reportData);
+          // localReportsData[id] = reportData;
+          localReportsData[id] = staticDevReportData;
         }),
     ),
   )
     .then(() => {
-      dispatch(_setVehicleFuel(vehicleId, reportSData));
+      dispatch(_setVehicleFuel(vehicleId, localReportsData));
     });
   // const { url, method } = endpoints.getVehicleFuelReport(vehicleId, params);
 
