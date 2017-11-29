@@ -147,6 +147,7 @@ const endpoints = {
   getVehicleFuelReport: (id, params) => ({
     url: `vehicles/${id}/report/fuel?${qs.stringify(params)}`,
     method: 'get',
+    id: id,
   }),
 
   // users managment

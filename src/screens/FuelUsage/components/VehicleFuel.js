@@ -27,7 +27,7 @@ class VehicleMaintenance extends React.Component {
   }
 
   render() {
-    if (this.props.theVehicle === null) {
+    if (this.props.theVehicle === null || this.props.fuelReport === undefined) {
       return false;
     }
     // if (this.state.isLoading) {
@@ -61,21 +61,21 @@ class VehicleMaintenance extends React.Component {
           />
           <DashboardElements.DataCard
             title={'Total Fuel Concumption'}
-            dataString={'350'}
+            dataString={this.props.fuelReport.totalConsumption}
             dataUnits="Ltr"
           />
           <DashboardElements.DataCard
             title={'Liters per KM'}
-            dataString={'2.85'}
+            dataString={this.props.fuelReport.ltrPerKm}
           />
           <DashboardElements.DataCard
             title={'Total Distance'}
-            dataString={'2538'}
+            dataString={this.props.fuelReport.totalDist}
             dataUnits="km"
           />
           <DashboardElements.DataCard
             title={'Speed Avg'}
-            dataString={'65'}
+            dataString={this.props.fuelReport.avgSpeed}
             dataUnits="km/h"
           />
         </Layout.Section>
@@ -90,6 +90,7 @@ class VehicleMaintenance extends React.Component {
 
 VehicleMaintenance.propTypes = {
   theVehicle: PropTypes.object,
+  fuelReport: PropTypes.object.isRequired,
 };
 
 // const mapState = state => ({
