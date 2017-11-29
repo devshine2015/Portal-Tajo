@@ -15,7 +15,7 @@ export const fetchFleetOverview = timeRange => (dispatch, getState) => {
   };
   const selectedSubFleet = dealerSelectors.getSelectedSubFleet(getState());
   if (selectedSubFleet) {
-    params.subFleet = selectedSubFleet;
+    params.subFleetId = selectedSubFleet;
   }
   _fetchFleetOverview(params, dispatch);
   _fetchFleetFuel(params, dispatch);
