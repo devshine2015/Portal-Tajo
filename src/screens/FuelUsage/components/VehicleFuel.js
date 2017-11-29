@@ -81,7 +81,7 @@ class VehicleMaintenance extends React.Component {
           />
         </Layout.Section>
         <Layout.Section style={{ padding: '24px' }}>
-          <FuelAlerts />
+          <FuelAlerts vehicleAlerts={this.props.theVehicle.alerts} />
           <LineChart />
         </Layout.Section>
       </Layout.Content>
