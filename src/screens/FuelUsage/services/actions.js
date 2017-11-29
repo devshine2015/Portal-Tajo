@@ -27,7 +27,53 @@ export const fetchVehicleFuelReport = (vehicleId, timeRange) => (dispatch, getSt
     avgSpeed: 40,
     series: {
     },
-    alerts: [],
+    alerts: [
+      {
+        type: 'vehicle-temperature-alert',
+        ev: {
+          ts: '2017-11-03T16:04:35.000+0000',
+          vehicleId: 'bdf3429d-1da5-4281-9c75-f1199fe2b837',
+          conditionKind: 'temperature-alert',
+          conditionId: '8eb0b823-9713-4b2e-91fe-3582506fb6d5',
+          pos: {
+            latlon: {
+              lat: 20.037036895751953,
+              lng: 95.93600463867188,
+            },
+            speed: 77.5,
+            azimuth: 154,
+            accuracy: 1,
+            posTime: '2017-11-03T16:04:38.000+0000',
+          },
+          meta: {
+            name: 'Flower',
+          },
+          temp: 11.75,
+        },
+      }, {
+        type: 'vehicle-temperature-alert',
+        ev: {
+          ts: '2017-11-03T16:04:35.000+0000',
+          vehicleId: 'bdf3429d-1da5-4281-9c75-f1199fe2b837',
+          conditionKind: 'temperature-alert',
+          conditionId: '8eb0b823-9713-4b2e-91fe-3582506fb6d5',
+          pos: {
+            latlon: {
+              lat: 20.037036895751953,
+              lng: 95.93600463867188,
+            },
+            speed: 77.5,
+            azimuth: 154,
+            accuracy: 1,
+            posTime: '2017-11-03T16:04:38.000+0000',
+          },
+          meta: {
+            name: 'Flower',
+          },
+          temp: 11.75,
+        },
+      },
+    ],
   };
 
   const urls = [];
