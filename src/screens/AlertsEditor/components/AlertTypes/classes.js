@@ -20,7 +20,7 @@ const classes = StyleSheet.create({
     padding: 12,
     margin: '0 auto',
     paddingBottom: 12,
-    width: 400,
+    // width: 400,
   },
 });
 

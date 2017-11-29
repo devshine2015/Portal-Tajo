@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import classnames from 'classnames';
 import dateFormats from 'configs/dateFormats';
+import { isDealer } from 'configs';
+
 import SimpleItem from '../Simple';
 import CheckboxItem from '../WithCheckboxes';
 import DetailedGFItem from '../WithDetails/gf';
@@ -155,6 +157,11 @@ class GenericListItem extends React.Component {
     });
 
     const element = chooseItem(this.props.type, { ...rest, isExpanded });
+    const expandedExtraStyle = isDealer ?
+      { borderRadius: (isExpanded && '45px 0 0 45px'),
+        paddingLeft: (isExpanded && '24px') }
+      : { borderRadius: (isExpanded && '15px 0 0 15px'),
+        paddingLeft: (isExpanded && '12px') };
     return (
       <li
         className={className}
@@ -162,6 +169,7 @@ class GenericListItem extends React.Component {
         style={{
           backgroundColor: isExpanded ? muiTheme.powerList.activeItemColor : muiTheme.powerList.itemColor,
           color: (isExpanded && muiTheme.powerList.activeItemTextColor) ? muiTheme.powerList.activeItemTextColor : muiTheme.powerList.itemTextColor,
+          ...expandedExtraStyle,
         }}
       >
         { _needIndicator(rest.noDefaultActivityIndicator, rest.item) && (

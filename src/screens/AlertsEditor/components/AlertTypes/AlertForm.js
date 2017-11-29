@@ -29,7 +29,6 @@ function setAlertState(props) {
 }
 
 class AlertForm extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -37,7 +36,7 @@ class AlertForm extends React.Component {
       || this.props.alert.id === undefined;
     /**
      * Initial values for controlled inputs
-     **/
+     * */
     this.state = setAlertState(props);
   }
 
@@ -71,11 +70,11 @@ class AlertForm extends React.Component {
     const { translations, showSnackbar, createAlertConditions } = this.props;
 
     createAlertConditions([newAlert])
-    .then(() => {
-      showSnackbar(translations.new_alert_condition_created_successfully, 3000);
-    }, () => {
-      showSnackbar(translations.failed_to_create_new_alert_condition, 5000);
-    });
+      .then(() => {
+        showSnackbar(translations.new_alert_condition_created_successfully, 3000);
+      }, () => {
+        showSnackbar(translations.failed_to_create_new_alert_condition, 5000);
+      });
   }
 
   putExisting = (newAlert) => {
@@ -83,11 +82,11 @@ class AlertForm extends React.Component {
     const { translations, showSnackbar, updateAlertCondition } = this.props;
 
     updateAlertCondition(newAlert)
-    .then(() => {
-      showSnackbar(translations.alert_condition_updated_successfuly, 3000);
-    }, () => {
-      showSnackbar(translations.failed_to_change_alert_alert_condition, 5000);
-    });
+      .then(() => {
+        showSnackbar(translations.alert_condition_updated_successfuly, 3000);
+      }, () => {
+        showSnackbar(translations.failed_to_change_alert_alert_condition, 5000);
+      });
   }
   render() {
     const fields = this.props.controlledFields === undefined ? [] :
@@ -101,7 +100,7 @@ class AlertForm extends React.Component {
           value={this.state[fld.fieldName]}
         />));
     return (
-      <Paper zDepth={5} className={css(classes.formWrapper__inn)} >
+      <Paper zDepth={2} className={css(classes.formWrapper__inn)} >
         {this.newAlert && <Layout.Header
           label={this.props.translations.new_alert_condition}
           style={{ padding: '0' }}

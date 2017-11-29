@@ -42,7 +42,7 @@ class VehicleSummary extends React.Component {
     }
     const headLbl = this.props.theVehicle.original.name;
     return (
-      <Layout.Section style={{ padding: '32px' }}>
+      <Layout.Section style={{ padding: '24px 0 12px' }}>
         <div className={css(classes.title)}>
           {headLbl}
         </div>
