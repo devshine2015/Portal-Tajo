@@ -99,6 +99,18 @@ export const fusoTheme = {
     sectionColor2: 'white',
   },
   spacing: tajoTheme.spacing,
+  mainMenuItem: {
+    backgroundColor: '#fff',
+    color: '#222',
+  },
+  mainMenuItemSelected: {
+    backgroundColor: ccMainBrandColor,
+    color: '#fff',
+    borderTopLeftRadius: '40px',
+    borderBottomLeftRadius: '40px',
+    boxShadow: '0px 2px 7px 1px rgba(0, 0, 0, .5)',
+    zIndex: 1,
+  },
 };
 
 // eslint-disable-next-line import/no-mutable-exports

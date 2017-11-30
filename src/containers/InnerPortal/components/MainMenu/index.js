@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import { isAlerts } from 'configs';
 import pageShape from 'containers/InnerPortal/PropTypes';
@@ -8,6 +9,8 @@ import {
   makePhrasesShape,
 } from 'utils/i18n';
 import { authorizeWithPermissions } from 'utils/authz';
+import { routeLocation } from 'projects/utils/routerReducer';
+
 import MenuItem from './components/ManuItem';
 import styles from './styles.css';
 import phrases from './PropTypes';
@@ -27,7 +30,9 @@ const MainMenu = ({
   pages,
   closeSidebar,
   translations,
+  activeRouteLocation,
 }) => {
+  const activePath = activeRouteLocation.pathname;
   const menuItems = pages.map((page) => {
     if (!verifyPermissions(page.requireOneOfPermissions)) return null;
     if (page.name === 'users' && !canShowUsersManager()) return null;
@@ -41,6 +46,7 @@ const MainMenu = ({
         page={page}
         niceName={translations[page.name]}
         closeSidebar={closeSidebar}
+        isSelected={page.path === activePath}
       />
     );
   });
@@ -58,6 +64,13 @@ MainMenu.propTypes = {
   translations: makePhrasesShape(phrases).isRequired,
   closeSidebar: PropTypes.func.isRequired,
   pages: PropTypes.arrayOf(pageShape).isRequired,
+  activeRouteLocation: PropTypes.string.isRequired,
 };
 
-export default pure(translate(phrases)(MainMenu));
+const mapState = state => ({
+  activeRouteLocation: routeLocation(state),
+});
+const mapDispatch = {
+};
+
+export default connect(mapState, mapDispatch)(pure(translate(phrases)(MainMenu)));
