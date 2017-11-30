@@ -26,7 +26,7 @@ function reducer(state = initialState, action) {
           .set('idleUnder30Min', action.idleUnder30Min)
           .set('normalDriving', action.normalDriving)
           .set('totalDistance', action.totalDistance)
-          .set('totalDriveTime', action.totalDriveTime)
+          .set('totalDrivingTime', action.totalDrivingTime)
           .set('totalIdleTime', action.totalIdleTime)
           .set('totalRunningTime', action.totalRunningTime)
           .set('vehicleCount', action.vehicleCount);
