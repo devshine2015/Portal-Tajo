@@ -13,7 +13,7 @@ class SimpleListItem extends React.Component {
     return (
       <div
         className={styles.listItemInn}
-        style={{ lineHeight: '78px' }}
+        style={{ lineHeight: '60px' }}
         onClick={this.onClick}
       >
         {this.props.name}
