@@ -1,40 +1,20 @@
 import React from 'react';
-import Oil from 'assets/images/svg_icons/oil.svg';
-import Brake from 'assets/images/svg_icons/brake.svg';
-// import Worker from 'assets/images/svg_icons/worker.svg';
-import Warning from 'assets/images/svg_icons/warning.svg';
-import Engine from 'assets/images/svg_icons/engine.svg';
 
 import OverviewIcon from 'assets/images/svg_icons/main_menu/overview.svg';
-// import AlertEditorIcon from 'assets/images/svg_icons/main_menu/alert_editor.svg';
+import AlertEditorIcon from 'assets/images/svg_icons/main_menu/alert_editor.svg';
 import DeviceManagerIcon from 'assets/images/svg_icons/main_menu/devices_manager.svg';
 import AlertLogsIcon from 'assets/images/svg_icons/main_menu/alert_logs.svg';
 import DriveComparisonIcon from 'assets/images/svg_icons/main_menu/drive_comparison.svg';
 import FuelUsageIcon from 'assets/images/svg_icons/main_menu/fuel_usage.svg';
-// import InstallerIcon from 'assets/images/svg_icons/main_menu/installer.svg';
-
-import ProfileIcon from 'assets/images/svg_icons/main_menu/profile.svg';
-import TruckIcon from 'assets/images/svg_icons/main_menu/truck.svg';
+import InstallerIcon from 'assets/images/svg_icons/main_menu/installer.svg';
 import UsersIcon from 'assets/images/svg_icons/main_menu/users.svg';
-// import VehicleDiagIcon from 'assets/images/svg_icons/main_menu/vehicle_diag.svg';
-// import VehicleEditorIcon from 'assets/images/svg_icons/main_menu/vehicle_editor.svg';
+import VehicleEditorIcon from 'assets/images/svg_icons/main_menu/truck_editor.svg';
 
+// import ProfileIcon from 'assets/images/svg_icons/main_menu/profile.svg';
+// import TruckIcon from 'assets/images/svg_icons/main_menu/truck.svg';
+import VehicleDiagIcon from 'assets/images/svg_icons/main_menu/truck_diag.svg';
 
-// const OverviewIcon = Brake; 
-// const DriveComparisonIcon = Oil;
-const AlertEditorIcon = Warning;
-// const DeviceManagerIcon = Brake;
-// const AlertLogsIcon = Engine;
-// const FuelUsageIcon = Oil;
-const InstallerIcon = Brake;
-// const ProfileIcon = Brake;
-// const TruckIcon = Engine;
-// const UsersIcon  = Brake;
-const VehicleDiagIcon = Engine;
-const VehicleEditorIcon = Oil;
-
-
-const iconHeight = "24";
+const iconHeight = '24';
 
 const menu = {
   dashboard: {
