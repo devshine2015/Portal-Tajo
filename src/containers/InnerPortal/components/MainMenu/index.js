@@ -9,7 +9,7 @@ import {
   makePhrasesShape,
 } from 'utils/i18n';
 import { authorizeWithPermissions } from 'utils/authz';
-import { routeLocation } from 'projects/utils/routerReducer';
+import { routeLocationPath } from 'projects/utils/routerReducer';
 
 import MenuItem from './components/ManuItem';
 import styles from './styles.css';
@@ -30,23 +30,23 @@ const MainMenu = ({
   pages,
   closeSidebar,
   translations,
-  activeRouteLocation,
+  activeRouteLocationPath,
 }) => {
-  const activePath = activeRouteLocation.pathname;
+  let displayedItemIdx = 0;
   const menuItems = pages.map((page) => {
     if (!verifyPermissions(page.requireOneOfPermissions)) return null;
     if (page.name === 'users' && !canShowUsersManager()) return null;
     if (page.name === 'alerts_editor' && !isAlerts) return null;
     if (page.name === 'devices_manager' && !canShowDevicesManager()) return null;
     if (page.name === 'installer' && !canShowInstallerManager()) return null;
-
     return (
       <MenuItem
         key={page.path}
         page={page}
         niceName={translations[page.name]}
         closeSidebar={closeSidebar}
-        isSelected={page.path === activePath}
+        isSelected={page.path === activeRouteLocationPath}
+        index={displayedItemIdx++}
       />
     );
   });
@@ -64,11 +64,11 @@ MainMenu.propTypes = {
   translations: makePhrasesShape(phrases).isRequired,
   closeSidebar: PropTypes.func.isRequired,
   pages: PropTypes.arrayOf(pageShape).isRequired,
-  activeRouteLocation: PropTypes.string.isRequired,
+  activeRouteLocationPath: PropTypes.string.isRequired,
 };
 
 const mapState = state => ({
-  activeRouteLocation: routeLocation(state),
+  activeRouteLocationPath: routeLocationPath(state),
 });
 const mapDispatch = {
 };

@@ -53,6 +53,24 @@ export const tajoTheme = {
     appBarHeigth: 64,
     powerlistFilterHeight: 50,
   },
+  mainMenuItemColors: [
+    '#3F51B5',
+    '#1976D2',
+    '#009688',
+    '#2E7D32',
+    '#FFA000',
+    '#FF5722',
+    '#795548',
+    '#607D8B',
+    '#3F51B5',
+    '#1976D2',
+    '#009688',
+    '#2E7D32',
+    '#FFA000',
+    '#FF5722',
+    '#795548',
+    '#607D8B',
+  ],
 };
 
 const ccMainBrandColor = '#00619E';
@@ -100,8 +118,10 @@ export const fusoTheme = {
   },
   spacing: tajoTheme.spacing,
   mainMenuItem: {
+    height: '80px',
+    fontSize: '16px',
     backgroundColor: '#fff',
-    color: '#222',
+    color: ccMainBrandColor, // '#222',
   },
   mainMenuItemSelected: {
     backgroundColor: ccMainBrandColor,
