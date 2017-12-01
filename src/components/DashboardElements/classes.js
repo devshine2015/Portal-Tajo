@@ -83,6 +83,7 @@ const classes = StyleSheet.create({
   //
   tableDataCell: {
     margin: '2px',
+    padding: '0 12px',
     backgroundColor: theme.palette.dachboardElementColor,
   },
 });
