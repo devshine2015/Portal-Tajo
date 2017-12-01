@@ -54,7 +54,7 @@ class DealerDashboard extends React.Component {
           />
           <DashboardElements.DataCard
             title={'Total Distance Travelled'}
-            dataString={`${(overviewData.totalDistance / 1000).toFixed(1)}`}
+            dataString={`${overviewData.totalDistance.toFixed(1)}`}
             dataUnits="km"
           />
           <DashboardElements.DataCard
