@@ -8,7 +8,7 @@ import Layout from 'components/Layout';
 import FormButtons from 'components/Controls/FormButtons';
 
 import DeviceEditor from '../DeviceEditor';
-// import VehicleAlerts from '../VehicleAlerts';
+import VehicleAlerts from '../VehicleAlerts';
 import VehicleKindSelector from '../VehicleKindSelector';
 import MarkerSelector from '../MarkerSelector/MarkerSelector';
 import DriverSelector from '../DriverSelector/DriverSelector';
@@ -484,8 +484,7 @@ class VehicleDetails extends React.Component {
             isDisabled={!this.state.isTouched}
           />
         </Layout.Section>
-        {/* no alerts for DEALER for now */}
-        {/* <VehicleAlerts vehicleId={this.props.details.id} /> */}
+        <VehicleAlerts vehicleId={this.props.details.id} />
       </div>
     );
   }
