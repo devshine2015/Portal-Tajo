@@ -8,11 +8,11 @@ import DriveComparisonIcon from 'assets/images/svg_icons/main_menu/drive_compari
 import FuelUsageIcon from 'assets/images/svg_icons/main_menu/fuel_usage.svg';
 import InstallerIcon from 'assets/images/svg_icons/main_menu/installer.svg';
 import UsersIcon from 'assets/images/svg_icons/main_menu/users.svg';
-import VehicleEditorIcon from 'assets/images/svg_icons/main_menu/truck_editor.svg';
+import VehicleDiagIcon from 'assets/images/svg_icons/main_menu/truck_editor.svg';
 
 // import ProfileIcon from 'assets/images/svg_icons/main_menu/profile.svg';
 // import TruckIcon from 'assets/images/svg_icons/main_menu/truck.svg';
-import VehicleDiagIcon from 'assets/images/svg_icons/main_menu/truck_diag.svg';
+import VehicleEditorIcon from 'assets/images/svg_icons/main_menu/truck_diag.svg';
 
 const iconHeight = '24';
 

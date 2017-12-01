@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 //
 //
@@ -7,7 +8,7 @@ import pure from 'recompose/pure';
 import { css } from 'aphrodite/no-important';
 import classes from './classes';
 import LightIndicator, { ENGINE_TROUBLE, BRAKE_WARNING,
-  ENGINE_TEMP, OIL_PREASSURE } from './LightIndicator';
+  ENGINE_TEMP, OIL_PREASSURE, BATTERY_WARNING } from './LightIndicator';
 
 
 // import classes from './classes';
@@ -16,9 +17,9 @@ function devRndLightStatus() {
 }
 
 
-const WarningLights = () =>
+const WarningLights = props =>
   (
-    <div className={css(classes.progContainer)} style={{ width: '50%', paddingLeft: '6px' }}>
+    <div className={css(classes.progContainer)} style={props.style}>
       <div className={css(classes.titleContainer)}>
         {'Warning Lights'}
       </div>
@@ -28,11 +29,15 @@ const WarningLights = () =>
           status={devRndLightStatus()}
         />
         <LightIndicator
+          myKind={ENGINE_TEMP}
+          status={devRndLightStatus()}
+        />
+        <LightIndicator
           myKind={BRAKE_WARNING}
           status={devRndLightStatus()}
         />
         <LightIndicator
-          myKind={ENGINE_TEMP}
+          myKind={BATTERY_WARNING}
           status={devRndLightStatus()}
         />
         <LightIndicator
@@ -45,6 +50,7 @@ const WarningLights = () =>
 ;
 
 WarningLights.propTypes = {
+  style: PropTypes.object.isRequired,
 };
 
 export default pure(WarningLights);
