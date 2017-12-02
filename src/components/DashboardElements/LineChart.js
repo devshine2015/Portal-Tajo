@@ -4,8 +4,10 @@ import { bb } from 'billboard.js';
 import 'billboard.js/dist/billboard.css';
 import { css } from 'aphrodite/no-important';
 import classes from './classes';
+import PropTypes from 'prop-types';
+import moment from 'moment';
 
-const buildChart = (node) => {
+const buildChart = (node, data) => {
   const {
     // width,
     height,
@@ -13,15 +15,33 @@ const buildChart = (node) => {
 
   return bb.generate({
     data: {
-      columns: [
-        ['data1', 30, 200, 100, 400, 150, 250],
-        ['data2', 50, 20, 10, 40, 15, 25],
-        ['data2', 50, 20, 10, 40, 15, 25],
-      ],
-      type: 'line',
+      json: data,
+      type: 'spline',
+      keys: {
+        x: 'date',
+        value: ['date', 'value'],
+      },
       // onclick: function (d, i) { console.log('onclick', d, i); },
       // onover: function (d, i) { console.log('onover', d, i); },
       // onout: function (d, i) { console.log('onout', d, i); },
+    },
+    point: {
+      show: false,
+    },
+    axis: {
+      x: {
+        show: false,
+        type: 'category',
+      },
+    },
+    tooltip: {
+      format: {
+        title(d) { return 'Date'; },
+        value(value, ratio, id) {
+          // console.log(value, ratio, id);
+          return value;
+        },
+      },
     },
     bindto: node,
     size: {
@@ -36,7 +56,22 @@ const buildChart = (node) => {
 };
 
 
+function filterSeries(fuelSeries) {
+  const keys = [];
+  Object.keys(fuelSeries).forEach((k) => {
+    const obj = {};
+    obj.date = moment(k).valueOf();
+    obj.value = fuelSeries[k];
+    keys.push(obj);
+  });
+  return keys;
+}
 class FuelChart extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
   chartRef = null;
   chart = null;
 
@@ -44,17 +79,20 @@ class FuelChart extends Component {
     this.chartInit();
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   // it's better to validate by ts
-  //   // if (nextProps.lastUpdate !== this.props.lastUpdate) {
-  //   //   this.chart.load(formatJobs(nextProps.jobs, this.props.vehicles));
-  //   // }
-  // }
-
   chartInit() {
-    this.chart = buildChart(this.chartRef);
+    this.chart = buildChart(this.chartRef, filterSeries(this.props.fuelSeries));
   }
-
+  componentWillReceiveProps(nextProps) {
+    this.chart.load(
+      {
+        json: filterSeries(nextProps.fuelSeries),
+        keys: {
+          x: 'date',
+          value: ['date', 'value'],
+        },
+      },
+    );
+  }
   render() {
     return (
       <div style={{ width: '100%', margin: '24px' }}>
@@ -70,6 +108,7 @@ class FuelChart extends Component {
 }
 
 FuelChart.propTypes = {
+  fuelSeries: PropTypes.array.isRequired,
 };
 
 export default FuelChart;

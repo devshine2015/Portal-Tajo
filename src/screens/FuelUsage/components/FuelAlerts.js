@@ -37,7 +37,7 @@ class FuelConsumption extends React.Component {
           dataUnits="ltr"
         />
         <DashboardElements.TableDataCell
-          dataString="6.4%"
+          dataString={`${alert.percentageDif} %`}
           style={{ backgroundColor: theme.palette.alertColor }}
         />
       </tr>));
@@ -46,16 +46,18 @@ class FuelConsumption extends React.Component {
     return (
       <div className={css(inClasses.container)}>
         <div className={css(inClasses.containerHeading)}>Fuel Alerts</div>
-        <table >
-          <tbody>
-            <tr>
-              <td className={headClass} />
-              <td className={headClass}>Total liters</td>
-              <td className={headClass}>% of Fuel Consumption</td>
-            </tr>
-            {tableData}
-          </tbody>
-        </table>
+        {
+          this.props.vehicleAlerts.length > 0 ?
+            <table >
+              <tbody>
+                <tr>
+                  <td className={headClass} />
+                  <td className={headClass}>Total liters</td>
+                  <td className={headClass}>% of Fuel Consumption</td>
+                </tr>
+                {tableData}
+              </tbody>
+            </table> : <div> No Alerts </div> }
       </div>
     );
   }

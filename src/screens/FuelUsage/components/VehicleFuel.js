@@ -27,7 +27,7 @@ class VehicleMaintenance extends React.Component {
   }
 
   render() {
-    console.log(this.props.theVehicle);
+    // console.log(this.props.theVehicle);
     if (this.props.theVehicle === undefined) {
       return false;
     }
@@ -62,27 +62,27 @@ class VehicleMaintenance extends React.Component {
           />
           <DashboardElements.DataCard
             title={'Total Fuel Concumption'}
-            dataString={this.props.theVehicle.totalConsumption}
+            dataString={this.props.theVehicle.totalConsumption.toFixed(1).toString()}
             dataUnits="Ltr"
           />
           <DashboardElements.DataCard
             title={'Liters per KM'}
-            dataString={this.props.theVehicle.ltrPerKm}
+            dataString={this.props.theVehicle.ltrPerKm.toFixed(1).toString()}
           />
           <DashboardElements.DataCard
             title={'Total Distance'}
-            dataString={this.props.theVehicle.totalDist}
+            dataString={this.props.theVehicle.totalDist.toFixed(1).toString()}
             dataUnits="km"
           />
           <DashboardElements.DataCard
             title={'Speed Avg'}
-            dataString={this.props.theVehicle.avgSpeed}
+            dataString={this.props.theVehicle.avgSpeed.toFixed(1).toString()}
             dataUnits="km/h"
           />
         </Layout.Section>
         <Layout.Section style={{ padding: '24px' }}>
           <FuelAlerts vehicleAlerts={this.props.theVehicle.alerts} />
-          <LineChart />
+          <LineChart fuelSeries={this.props.theVehicle.series} />
         </Layout.Section>
       </Layout.Content>
     );

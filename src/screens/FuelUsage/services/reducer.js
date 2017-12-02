@@ -13,7 +13,7 @@ const fuelReportsInitialState = {
   localReports: {},
 };
 export default function fuelReportsReducer(state = fuelReportsInitialState, action) {
-  console.log(action.consumption);
+  // console.log(action.consumption);
   switch (action.type) {
     case UPDATE_VEHICLE_FUEL_REPORT:
       return Object.assign({}, state, {
