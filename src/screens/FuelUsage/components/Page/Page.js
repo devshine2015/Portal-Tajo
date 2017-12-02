@@ -9,6 +9,7 @@ import DealerPage, {
   PageHeader,
 } from 'containers/DealerPage';
 import FixedContent from 'components/FixedContent';
+import Layout from 'components/Layout';
 
 import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
 // import { getVehiclesExSorted, reducerKey } from 'services/FleetModel/reducers/vehiclesReducer';
@@ -59,13 +60,17 @@ class Page extends React.Component {
       // const animation = `transition.flipX${(isFetching ? 'In' : 'Out')}`;      
       // animation={animation}
       return (
-        <FixedContent
+        <Layout.Content
           style={{
-            height: '100%',
+            height: '400px',
+            width: '100%',
+            backgroundColor: 'white',
+            position: 'absolute',
+            maxWidth: 'unset',
           }}
         >
           <AnimatedLogo.FullscreenLogo />
-        </FixedContent>
+        </Layout.Content>
       );
     }
     return (
