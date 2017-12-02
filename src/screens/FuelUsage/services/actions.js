@@ -90,8 +90,9 @@ export const fetchVehicleFuelReport = (vehicleId, timeRange) => (dispatch, getSt
       api[method](url)
         .then(response => response.json())
         .then((reportData) => {
-          // localReportsData[id] = reportData;
-          localReportsData[id] = staticDevReportData;
+          // console.log(reportData);
+          localReportsData[id] = reportData;
+          // localReportsData[id] = staticDevReportData;
         }),
     ),
   )

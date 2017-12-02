@@ -16,6 +16,7 @@ import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
 
 import { fetchVehicleFuelReport } from './../../services/actions';
 import { getFuelReport, getFuelReportForVehicle } from './../../services/reducer';
+import AnimatedLogo from '../../../../components/animated';
 
 
 import VehicleFuel from './../VehicleFuel';
@@ -25,6 +26,7 @@ class Page extends React.Component {
     super(props);
     this.state = {
       selectedVehicleId: '',
+      loading: true,
     };
   }
 
@@ -33,21 +35,39 @@ class Page extends React.Component {
       this.setState({ selectedVehicleId: id });
     }
   }
-
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.getFuelReport) {
+      this.setState({ loading: false });
+    }
+  }
   applyTimeRange = (timeRange) => {
+    this.setState({ loading: true });
     this.props.fetchVehicleFuelReport(this.state.selectedVehicleId, timeRange);
   }
   componentDidMount() {
     this.props.fetchVehicleFuelReport(this.state.selectedVehicleId, makePeriodForLast24Hours());
   }
-  getVehicleFuelReportById = (id) => {
-    if (!this.props.getFuelReport.length) {
-      return false;
-    }
-    const selectedReport = this.props.getFuelReport.find(report => report.id === id);
-    return selectedReport;
-  }
+  // getVehicleFuelReportById = (id) => {
+  //   if (!this.props.getFuelReport.length) {
+  //     return false;
+  //   }
+  //   const selectedReport = this.props.getFuelReport.find(report => report.id === id);
+  //   return selectedReport;
+  // }
   render() {
+    if (this.state.loading) {
+      // const animation = `transition.flipX${(isFetching ? 'In' : 'Out')}`;      
+      // animation={animation}
+      return (
+        <FixedContent
+          style={{
+            height: '100%',
+          }}
+        >
+          <AnimatedLogo.FullscreenLogo />
+        </FixedContent>
+      );
+    }
     return (
       <DealerPage>
         <PowerList onVehicleSelect={id => this.vehicleSelected(id)} />

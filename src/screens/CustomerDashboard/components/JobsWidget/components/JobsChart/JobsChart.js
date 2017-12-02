@@ -72,15 +72,14 @@ function formatJobs(jobs = [], vehicles = []) {
     acc[teamId] = prevVal + 1;
     return acc;
   }, {}))
-  .map(([teamId, totalJobs]) => ({
-    teamName: getVehicleName(teamId, vehicles),
-    totalJobs,
-  }))
-  .sort((a, b) => b.totalJobs - a.totalJobs);
+    .map(([teamId, totalJobs]) => ({
+      teamName: getVehicleName(teamId, vehicles),
+      totalJobs,
+    }))
+    .sort((a, b) => b.totalJobs - a.totalJobs);
 }
 
 class JobsChart extends Component {
-
   chartRef = null;
   chart = null;
 
