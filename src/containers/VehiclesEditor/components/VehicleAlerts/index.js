@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import { isAlerts } from 'configs';
+import { isAlerts, isDealer } from 'configs';
 import {
   translate,
   makePhrasesShape,
@@ -114,35 +114,35 @@ class VehicleAlerts extends React.Component {
       <Layout.Section>
         <Layout.Header label={`${translations.alerts}${this.state.isLoading ? ` ${translations.loading}` : ''}`} />
         <Layout.Content style={{display: 'inherit'}}>
-          <AlertOfKindSelector
+          {isDealer || <AlertOfKindSelector
             myKind={alertKinds._ALERT_KIND_SPEEDING}
             onOfKindChange={this.onOfKindChange}
             vehicleAlerts={this.state.alerts}
-          />
-          <AlertOfKindSelector
+          />}
+          {isDealer || <AlertOfKindSelector
             myKind={alertKinds._ALERT_KIND_TEMPERATURE}
             onOfKindChange={this.onOfKindChange}
             vehicleAlerts={this.state.alerts}
-          />
+          />}
           <AlertOfKindSelector
             myKind={alertKinds._ALERT_KIND_ODO}
             title={translations.service_frequency}         
             onOfKindChange={this.onOfKindChange}
             vehicleAlerts={this.state.alerts}
           />
-          <AlertOfKindToggle
+          {isDealer || <AlertOfKindToggle
             myKind={alertKinds._ALERT_KIND_IDLE}
             onOfKindChange={this.onOfKindToggle}
             vehicleAlerts={this.state.alerts}
-          />
-          <AlertOfKindMultiSelector
+          />}
+          {isDealer || <AlertOfKindMultiSelector
             title={translations.fuel_alert}
             vehicleAlerts={this.state.alerts}
             vehicleId={this.props.vehicleId}
             doAddAlert={this.doAddAlert}
             onRemoveClick={this.onRemoveClick}
             alertFilter={a => (a.kind === alertKinds._ALERT_KIND_FUEL_DIFF)}
-          />
+          />}
           {/* <AlertOfKindMultiSelector
             title={translations.maintenance}
             vehicleAlerts={this.state.alerts}
@@ -152,22 +152,22 @@ class VehicleAlerts extends React.Component {
             alertFilter={a => (a.kind === alertKinds._ALERT_KIND_ODO)}
           /> */}
           {/* put all the GF alerts with chips here? */}
-          <AlertOfKindMultiSelector
+          {isDealer || <AlertOfKindMultiSelector
             title={translations.on_enter_location}
             vehicleAlerts={this.state.alerts}
             vehicleId={this.props.vehicleId}
             doAddAlert={this.doAddAlert}
             onRemoveClick={this.onRemoveClick}
             alertFilter={a => (a.kind === alertKinds._ALERT_KIND_GF && a.onEnter === true)}
-          />
-          <AlertOfKindMultiSelector
+          />}
+          {isDealer || <AlertOfKindMultiSelector
             title={translations.on_exit_location}
             vehicleAlerts={this.state.alerts}
             vehicleId={this.props.vehicleId}
             doAddAlert={this.doAddAlert}
             onRemoveClick={this.onRemoveClick}
             alertFilter={a => (a.kind === alertKinds._ALERT_KIND_GF && a.onEnter === false)}
-          />
+          />}
           <FormButtons
             onSubmit={this.saveAlerts}
             onCancel={this.resetChange}

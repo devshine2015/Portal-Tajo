@@ -17,8 +17,10 @@ export const fetchFleetOverview = timeRange => (dispatch, getState) => {
   if (selectedSubFleet) {
     params.subFleetId = selectedSubFleet;
   }
-  _fetchFleetOverview(params, dispatch);
-  _fetchFleetFuel(params, dispatch);
+  return Promise.all([
+    _fetchFleetOverview(params, dispatch),
+    _fetchFleetFuel(params, dispatch)
+  ]);
 };
 
 const _fetchFleetOverview = (params, dispatch) => {
@@ -26,10 +28,11 @@ const _fetchFleetOverview = (params, dispatch) => {
 
   // dispatch(fleetIsReady(false));
 
-  api[method](url)
+  return api[method](url)
     .then(response => response.json())
     .then((overview) => {
       dispatch(_setFleetOverviewData(overview));
+      Promise.resolve({ ready: true });
     });
   // return Promise.resolve({ ready: true });
   // dispatch(_setFleetOverviewData());
@@ -38,10 +41,11 @@ const _fetchFleetOverview = (params, dispatch) => {
 const _fetchFleetFuel = (params, dispatch) => {
   const { url, method } = endpoints.getFleetFuel(params);
 
-  api[method](url)
+  return api[method](url)
     .then(response => response.json())
     .then((overview) => {
       dispatch(_setFleetFuelData(overview));
+      Promise.resolve({ ready: true });
     });
 };
 

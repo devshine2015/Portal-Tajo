@@ -6,7 +6,10 @@ import PropTypes from 'prop-types';
 import DealerPage, { PageHeader } from 'containers/DealerPage';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 
+import { VelocityTransitionGroup } from 'velocity-react';
+
 import Layout from 'components/Layout';
+import AnimatedLogo from 'components/animated';
 import DashboardElements from 'components/DashboardElements';
 import { logActions } from 'services/AlertsSystem/actions';
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
@@ -23,20 +26,42 @@ import AlertSummaryTable from './AlertSummaryTable';
 const secondsToHvrs = timeSec => (timeSec / 60 / 60).toFixed(0);
 
 class DealerDashboard extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLoading: false,
+    };
+  }
+
   // componentDidMount() {
   //   this.applyTimeRange(makePeriodForLast24Hours());
   // }
 
-  // state = {
-  //   isDefaultRange: true,
-  // };  
   applyTimeRange = (timeRange) => {
-    this.props.fetchFleetOverview(timeRange);
-    this.props.fetchLogs(timeRange)
-      .then();
+    this.setState({ isLoading: true });
+    this.props.fetchFleetOverview(timeRange)
+      .then(() => this.setState({ isLoading: false }),
+      );
+    this.props.fetchLogs(timeRange);
   }
 
-  render() {
+  renderLoading = () => (
+    <div>
+      <Layout.Content
+        style={{
+          height: '400px',
+          width: '100%',
+          backgroundColor: 'white',
+          position: 'absolute',
+          maxWidth: 'unset',
+        }}
+      >
+        <AnimatedLogo.FullscreenLogo />
+      </Layout.Content>
+    </div>)
+
+  renderData() {
     const overviewData = this.props.fleetOverviewData;
     // dataString={this.props.vehicles.length.toString()}
     // dataString={overviewData.vehicleCount.toString()}    
@@ -44,9 +69,7 @@ class DealerDashboard extends React.Component {
     const normalizer = totalTotal > 0 ? 100 / totalTotal : 0;
     const divLineStyle = { borderTop: 'solid 1px #00000038', margin: '0 35px' };
     return (
-      <DealerPage>
-        <PageHeader text="Fleet Overview" onApply={tr => this.applyTimeRange(tr)} />
-        {/* containerClass={classes.widgetContainer} */}
+      <div>
         <Layout.Content style={{ flexDirection: 'row', justifyContent: 'center', marginTop: '4px' }}>
           <DashboardElements.DataCard
             title={'Number of Vehicles'}
@@ -54,7 +77,7 @@ class DealerDashboard extends React.Component {
           />
           <DashboardElements.DataCard
             title={'Total Distance Travelled'}
-            dataString={`${(overviewData.totalDistance / 1000).toFixed(1)}`}
+            dataString={`${overviewData.totalDistance.toFixed(1)}`}
             dataUnits="km"
           />
           <DashboardElements.DataCard
@@ -97,6 +120,18 @@ class DealerDashboard extends React.Component {
           <AlertSummaryTable myKind={alertKinds._ALERT_KIND_GF} />
           <AlertSummaryTable myKind={alertKinds._ALERT_KIND_FUEL_DIFF} />
         </Layout.Content>
+      </div>
+    );
+  }
+
+  render() {
+    return (
+      <DealerPage>
+        <PageHeader text="Fleet Overview" onApply={tr => this.applyTimeRange(tr)} />
+        <VelocityTransitionGroup enter={{ animation: { opacity: 1 } }} leave={{ animation: { opacity: 0 } }}>
+          {this.state.isLoading ? undefined : this.renderData()}
+          {this.state.isLoading ? this.renderLoading() : undefined}
+        </VelocityTransitionGroup>
       </DealerPage>
     );
   }

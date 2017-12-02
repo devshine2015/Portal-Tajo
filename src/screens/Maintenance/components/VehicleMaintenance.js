@@ -116,12 +116,12 @@ class VehicleMaintenance extends React.Component {
         <Layout.Section style={{ padding: '32px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <BarIndicator
-              style={{ flex: '1', paddingRight: '6px' }}
+              style={{ flex: '1', paddingRight: '20px' }}
               title={'Brake Wear'}
               currentValue={Math.random() * 100}
             />
             <BarIndicator
-              style={{ flex: '1', paddingLeft: '6px' }}
+              style={{ flex: '1', paddingLeft: '20px' }}
               title={'Exhaust Brake'}
               currentValue={Math.random() * 100}
             />
@@ -129,11 +129,11 @@ class VehicleMaintenance extends React.Component {
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <BarIndicator
-              style={{ width: '50%', paddingRight: '6px' }}
+              style={{ flex: '1', paddingRight: '20px' }}
               title={'Clutch Wear'}
               currentValue={Math.random() * 100}
             />
-            <WarningLights />
+            <WarningLights style={{ flex: '1', paddingLeft: '12px' }} />
           </div>
         </Layout.Section>
       </FixedContent>

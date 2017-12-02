@@ -15,3 +15,6 @@ export default function routerReducer(state = routeInitialState, action) {
       return state;
   }
 }
+
+export const routeLocationPath = state =>
+  state.get('route').get('locationBeforeTransitions').toJS().pathname;

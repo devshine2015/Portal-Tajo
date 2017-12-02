@@ -6,11 +6,12 @@ import pure from 'recompose/pure';
 // import cs from 'classnames';
 import { css } from 'aphrodite/no-important';
 // import SvgIcon from 'material-ui/SvgIcon';
-import Oil from 'assets/images/svg_icons/oil.svg';
-import Brake from 'assets/images/svg_icons/brake.svg';
+import Oil from 'assets/images/svg_icons/change_car_oil.svg';
+import Brake from 'assets/images/svg_icons/info.svg';
 // import Worker from 'assets/images/svg_icons/worker.svg';
-import Warning from 'assets/images/svg_icons/warning.svg';
-import Engine from 'assets/images/svg_icons/engine.svg';
+import EngineTemp from 'assets/images/svg_icons/thermometer.svg';
+import Engine from 'assets/images/svg_icons/motor.svg';
+import Battery from 'assets/images/svg_icons/battery.svg';
 
 import classes from './classes';
 
@@ -18,28 +19,33 @@ export const ENGINE_TROUBLE = 'engTrb';
 export const BRAKE_WARNING = 'brkWarn';
 export const ENGINE_TEMP = 'enfTemp';
 export const OIL_PREASSURE = 'oilPrs';
+export const BATTERY_WARNING = 'btrWarn';
 
 function getMyLight(kind) {
   switch (kind) {
     case ENGINE_TROUBLE: return {
       icon: (<Engine className={css(classes.lightSvg)} />),
-      title: 'Check Engine',
+      title: 'Engine',
     };
     case BRAKE_WARNING: return {
-      icon: (<Brake className={css(classes.lightSvg, classes.animatedAlertFill)} />),
-      title: 'Brake Warning',
+      icon: (<Brake className={css(classes.lightSvg)} />),
+      title: 'Brake',
     };
     case ENGINE_TEMP: return {
-      icon: (<Warning className={css(classes.lightSvg)} />),
+      icon: (<EngineTemp className={css(classes.lightSvg, classes.animatedAlertFill)} />),
       title: 'Engine Temp',
+    };
+    case BATTERY_WARNING: return {
+      icon: (<Battery className={css(classes.lightSvg)} />),
+      title: 'Battery',
     };
     default:
     case OIL_PREASSURE: return {
-      icon: (<Oil className={css(classes.lightSvg)} />),
-      title: 'Check Oil',
+      icon: (<Oil className={css(classes.lightSvg)} style={{ position: 'relative', bottom: '-5px' }} />),
+      title: 'Oil',
     };
   }
-};
+}
 
 const LightIndicator = ({
   myKind,
