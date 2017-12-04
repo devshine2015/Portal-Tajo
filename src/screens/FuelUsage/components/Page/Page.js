@@ -48,41 +48,23 @@ class Page extends React.Component {
   componentDidMount() {
     this.props.fetchVehicleFuelReport(this.state.selectedVehicleId, makePeriodForLast24Hours());
   }
-  // getVehicleFuelReportById = (id) => {
-  //   if (!this.props.getFuelReport.length) {
-  //     return false;
-  //   }
-  //   const selectedReport = this.props.getFuelReport.find(report => report.id === id);
-  //   return selectedReport;
-  // }
   render() {
-    if (this.state.loading) {
-      // const animation = `transition.flipX${(isFetching ? 'In' : 'Out')}`;      
-      // animation={animation}
-      return (
-        <Layout.Content
-          style={{
-            height: '400px',
-            width: '100%',
-            backgroundColor: 'white',
-            position: 'absolute',
-            maxWidth: 'unset',
-          }}
-        >
-          <AnimatedLogo.FullscreenLogo />
-        </Layout.Content>
-      );
-    }
     return (
       <DealerPage>
         <PowerList onVehicleSelect={id => this.vehicleSelected(id)} />
         <FixedContent
           style={{
+            padding: 0,
             height: '100%',
+            minHeight: '400px',
+            backgroundColor: 'white',
           }}
         >
           <PageHeader text="Fuel Usage" onApply={tr => this.applyTimeRange(tr)} />
-          <VehicleFuel theVehicle={this.props.getFuelReportForVehicle(this.state.selectedVehicleId)} />
+          {(this.state.loading) ?
+            <AnimatedLogo.FullscreenLogo /> :
+            <VehicleFuel theVehicle={this.props.getFuelReportForVehicle(this.state.selectedVehicleId)} />
+          }
         </FixedContent>
       </DealerPage>
     );
@@ -99,17 +81,8 @@ Page.propTypes = {
 Page.defaultProps = {
   getFuelReport: {},
 };
-
-// const mapState = state => ({
-//   // vehicles: fromFleetReducer.getVehiclesExSorted(state),
-//   // selectedVehicleId: ctxGetSelectedVehicleId(state),
-//   getVehicleById: getVehicleByIdFunc(state),
-//   getFuelReport: getFuelReport(state),
-// });
-
 function mapState(state) {
   return {
-    // listData: state.fuelUseage,
     getVehicleById: getVehicleByIdFunc(state),
     getFuelReport: getFuelReport(state),
     getFuelReportForVehicle: getFuelReportForVehicle(state),
