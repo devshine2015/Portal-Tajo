@@ -23,7 +23,7 @@ function calcTemperature(records, { selectedTypes, period, frequency }) {
     avgTemp: 'n/a',
   };
 
-  if (records.length === 0) {
+  if ( records.length === 0 || records[0] === undefined) {
     return specsUtils.calcToReturn(resultTemps, selectedTypes);
   }
 
@@ -36,7 +36,7 @@ function calcTemperature(records, { selectedTypes, period, frequency }) {
   for (let i = 0; i < records.length; i++) {
     const record = records[i];
 
-    if (frequency && !withinPeriod(record.time, period)) {
+    if (records[i] === undefined || frequency && !withinPeriod(record.time, period)) {
       continue;
     }
 
