@@ -5,22 +5,25 @@ import SpeedSection from './components/AlertTypes/SpeedSection';
 import TempSection from './components/AlertTypes/TempSection';
 import OdoSection from './components/AlertTypes/OdoSection';
 import DriveTimeSection from './components/AlertTypes/DriveTimeSection';
-import FuelSection from './components/AlertTypes/FuelSection';
+// import FuelSection from './components/AlertTypes/FuelSection';
+import FuelGainSection from './components/AlertTypes/FuelGainSection';
+import FuelLossSection from './components/AlertTypes/FuelLossSection';
 
 
 const AlertsEditor = () => {
   if (isDealer) {
     return (
       <Layout.Content noPadding maxWidth={'inherit'}>
-        <FuelSection />
         <OdoSection />
+        <FuelGainSection />
+        <FuelLossSection />
       </Layout.Content>);
   }
   return (
     <Layout.Content noPadding maxWidth={'inherit'}>
       <SpeedSection />
       <TempSection />
-      <FuelSection />
+      <FuelGainSection />
       <OdoSection />
       <DriveTimeSection />
     </Layout.Content>);

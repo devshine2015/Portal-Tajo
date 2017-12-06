@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { css } from 'aphrodite/no-important';
 import { connect } from 'react-redux';
-import { TextField, Paper } from 'material-ui';
+import { TextField, Paper, Checkbox } from 'material-ui';
 import {
   translate,
   makePhrasesShape,
@@ -24,6 +24,7 @@ function setAlertState(props) {
     fuelDiff: 10,
     // gfId: props.gfs.length > 0 ? props.gfs[0].id : '',
     driveTimeSec: 2.5,
+    default: false,
     ...props.alert,
   };
 }
@@ -118,6 +119,13 @@ class AlertForm extends React.Component {
           value={this.state.name}
         />
         {fields}
+        <Checkbox
+          key="default"
+          name="default"
+          onCheck={this.onChange}
+          label="Is Default"
+          defaultChecked={this.state.default}
+        />
         {this.props.children}
         <FormButtons
           onSubmit={this.onSubmit}
