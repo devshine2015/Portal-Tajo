@@ -1,6 +1,5 @@
 import React from 'react';
-
-// import PortalReports from 'containers/Report';
+import { connect } from 'react-redux';
 
 // export default PortalReports;
 import PropTypes from 'prop-types';
@@ -12,13 +11,18 @@ import Layout from 'components/Layout';
 import DashboardElements from 'components/DashboardElements';
 import LineChart from 'components/DashboardElements/LineChart';
 
+import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
+
+import { getFuelReportForVehicle } from './../services/reducer';
+
+import FuelAlertsSummary from './FuelAlertsSummary';
 import FuelAlerts from './FuelAlerts';
 
 // import { makeMaintenanceData,
 //   MaintenanceStatus } from './../utils/maintenanceHelper';
 
 
-class VehicleMaintenance extends React.Component {
+class VehicleFuel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,31 +31,22 @@ class VehicleMaintenance extends React.Component {
   }
 
   render() {
-    // console.log(this.props.theVehicle);
-    if (this.props.theVehicle === undefined) {
+    if (!this.props.theVehicleId) {
       return false;
     }
-    // if (this.state.isLoading) {
-    //   // const animation = `transition.flipX${(isFetching ? 'In' : 'Out')}`;      
-    //   // animation={animation}
-    //   return (
-    //     <FixedContent
-    //       style={{
-    //         padding: 0,
-    //         height: '400px',
-    //         backgroundColor: 'white',
-    //       }}
-    //     >
-    //       <AnimatedLogo.FullscreenLogo />
-    //     </FixedContent>
-    //   );
-    // }
 
-    // const headLbl = this.state.selectedVehicleId;
-    // '6K1577 pajero sport';
-    const fuelCap = (this.props.theVehicle.fuelCapacity !== undefined
-      && this.props.theVehicle.fuelCapacity > 0)
-      ? this.props.theVehicle.fuelCapacity.toString() : 'N/A';
+    const theVehicle = this.props.getVehicleById(this.props.theVehicleId);
+    if (theVehicle === undefined) {
+      return false;
+    }
+
+    const fuelReport = this.props.getFuelReportForVehicle(this.props.theVehicleId);
+    if (fuelReport === undefined) {
+      return false;
+    }
+    const fuelCap = (theVehicle.original.fuelCapacity !== undefined
+      && theVehicle.original.fuelCapacity > 0)
+      ? theVehicle.original.fuelCapacity.toString() : 'N/A';
 
     return (
       <Layout.Content style={{ padding: '0' }}>
@@ -62,41 +57,49 @@ class VehicleMaintenance extends React.Component {
           />
           <DashboardElements.DataCard
             title={'Total Fuel Concumption'}
-            dataString={this.props.theVehicle.totalConsumption.toFixed(1).toString()}
+            dataString={fuelReport.totalConsumption.toFixed(1).toString()}
             dataUnits="Ltr"
           />
           <DashboardElements.DataCard
             title={'Liters per KM'}
-            dataString={this.props.theVehicle.ltrPerKm.toFixed(1).toString()}
+            dataString={fuelReport.ltrPerKm.toFixed(1).toString()}
           />
           <DashboardElements.DataCard
             title={'Total Distance'}
-            dataString={this.props.theVehicle.totalDist.toFixed(1).toString()}
+            dataString={fuelReport.totalDist.toFixed(1).toString()}
             dataUnits="km"
           />
           <DashboardElements.DataCard
             title={'Speed Avg'}
-            dataString={this.props.theVehicle.avgSpeed.toFixed(1).toString()}
+            dataString={fuelReport.avgSpeed.toFixed(1).toString()}
             dataUnits="km/h"
           />
         </Layout.Section>
         <Layout.Section style={{ padding: '24px' }}>
-          <FuelAlerts vehicleAlerts={this.props.theVehicle.alerts} />
-          <LineChart fuelSeries={this.props.theVehicle.series} />
+          <FuelAlertsSummary vehicleAlerts={fuelReport.alerts} />
+        </Layout.Section>
+        <Layout.Section style={{ padding: '4px' }}>
+          <LineChart fuelSeries={fuelReport.series} />
+        </Layout.Section>
+        <Layout.Section style={{ padding: '24px' }}>
+          <FuelAlerts vehicleAlerts={fuelReport.alerts} />
         </Layout.Section>
       </Layout.Content>
     );
   }
 }
 
-VehicleMaintenance.propTypes = {
-  theVehicle: PropTypes.object,
+VehicleFuel.propTypes = {
+  theVehicleId: PropTypes.string.isRequired,
+  getVehicleById: PropTypes.func.isRequired,
+  getFuelReportForVehicle: PropTypes.func.isRequired,
 };
 
-// const mapState = state => ({
-// });
-// const mapDispatch = {
-// };
+const mapState = state => ({
+  getVehicleById: getVehicleByIdFunc(state),
+  getFuelReportForVehicle: getFuelReportForVehicle(state),
+});
+const mapDispatch = {
+};
 
-// export default connect(mapState, mapDispatch)(pure(VehicleMaintenance));
-export default pure(VehicleMaintenance);
+export default connect(mapState, mapDispatch)(pure(VehicleFuel));

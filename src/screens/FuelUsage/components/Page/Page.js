@@ -2,23 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
+import { makePeriodForHoursBack } from 'utils/dateTimeUtils';
 
 import DealerPage, {
   PowerList,
   PageHeader,
 } from 'containers/DealerPage';
 import FixedContent from 'components/FixedContent';
-import Layout from 'components/Layout';
-
-import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
-// import { getVehiclesExSorted, reducerKey } from 'services/FleetModel/reducers/vehiclesReducer';
-// import { vehiclesActions } from 'services/FleetModel/actions';
+import AnimatedLogo from 'components/animated';
 
 import { fetchVehicleFuelReport } from './../../services/actions';
-import { getFuelReport, getFuelReportForVehicle } from './../../services/reducer';
-import AnimatedLogo from '../../../../components/animated';
-
+import { getFuelReport } from './../../services/reducer';
 
 import VehicleFuel from './../VehicleFuel';
 
@@ -29,6 +23,11 @@ class Page extends React.Component {
       selectedVehicleId: '',
       loading: true,
     };
+  }
+
+  componentDidMount() {
+    // by default - query one month back
+    this.applyTimeRange(makePeriodForHoursBack(30 * 24));
   }
 
   vehicleSelected = (id) => {
@@ -45,9 +44,6 @@ class Page extends React.Component {
     this.setState({ loading: true });
     this.props.fetchVehicleFuelReport(this.state.selectedVehicleId, timeRange);
   }
-  componentDidMount() {
-    this.props.fetchVehicleFuelReport(this.state.selectedVehicleId, makePeriodForLast24Hours());
-  }
   render() {
     return (
       <DealerPage>
@@ -63,7 +59,7 @@ class Page extends React.Component {
           <PageHeader text="Fuel Usage" onApply={tr => this.applyTimeRange(tr)} />
           {(this.state.loading) ?
             <AnimatedLogo.FullscreenLogo /> :
-            <VehicleFuel theVehicle={this.props.getFuelReportForVehicle(this.state.selectedVehicleId)} />
+            <VehicleFuel theVehicleId={this.state.selectedVehicleId} />
           }
         </FixedContent>
       </DealerPage>
@@ -72,10 +68,8 @@ class Page extends React.Component {
 }
 
 Page.propTypes = {
-  getVehicleById: PropTypes.func.isRequired,
   fetchVehicleFuelReport: PropTypes.func.isRequired,
   getFuelReport: PropTypes.object,
-  getFuelReportForVehicle: PropTypes.func.isRequired,
 };
 
 Page.defaultProps = {
@@ -83,9 +77,7 @@ Page.defaultProps = {
 };
 function mapState(state) {
   return {
-    getVehicleById: getVehicleByIdFunc(state),
     getFuelReport: getFuelReport(state),
-    getFuelReportForVehicle: getFuelReportForVehicle(state),
   };
 }
 
