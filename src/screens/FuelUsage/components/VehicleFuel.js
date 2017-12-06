@@ -54,6 +54,7 @@ class VehicleFuel extends React.Component {
           <DashboardElements.DataCard
             title={'Tank Capacity'}
             dataString={fuelCap}
+            dataUnits="Ltr"
           />
           <DashboardElements.DataCard
             title={'Total Fuel Concumption'}
