@@ -16,7 +16,7 @@ const buildChart = (node, data) => {
   return bb.generate({
     data: {
       json: data,
-      type: 'spline',
+      type: 'line',
       keys: {
         x: 'date',
         value: ['date', 'value'],

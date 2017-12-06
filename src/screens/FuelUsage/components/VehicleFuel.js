@@ -51,7 +51,7 @@ class VehicleMaintenance extends React.Component {
     // '6K1577 pajero sport';
     const fuelCap = (this.props.theVehicle.fuelCapacity !== undefined
       && this.props.theVehicle.fuelCapacity > 0)
-      ? this.props.theVehicle.fuelCapacity.toString() : 'N/A';
+      ? this.props.theVehicle.fuelCapacity.toString() : '550';
 
     return (
       <Layout.Content style={{ padding: '0' }}>
@@ -59,6 +59,7 @@ class VehicleMaintenance extends React.Component {
           <DashboardElements.DataCard
             title={'Tank Capacity'}
             dataString={fuelCap}
+            dataUnits="Ltr"
           />
           <DashboardElements.DataCard
             title={'Total Fuel Concumption'}
