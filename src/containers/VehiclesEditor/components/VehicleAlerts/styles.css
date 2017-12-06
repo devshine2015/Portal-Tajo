@@ -50,5 +50,6 @@
   }
   .kindOfName {
     padding-left: 7px;
+    text-transform: capitalize;
   }
 }

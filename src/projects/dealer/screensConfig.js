@@ -32,10 +32,12 @@ export default [{
 }, {
   create: createFuelUsageScreen,
   options: menu.fuelUsage,
-}, {
-  create: createDriveComaprisonScreen,
-  options: menu.driveComparison,
-}, {
+},
+//  {
+//   create: createDriveComaprisonScreen,
+//   options: menu.driveComparison,
+// },
+{
   create: createVehiclesManagerScreen,
   options: menu.vehicles,
 }, {

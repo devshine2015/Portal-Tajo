@@ -1,7 +1,7 @@
 import React from 'react';
 
 // import Undefined from 'components/Icons/undefined.svg';
-//import Undefined from 'material-ui/svg-icons/content/gesture';
+// import Undefined from 'material-ui/svg-icons/content/gesture';
 import Undefined from 'material-ui/svg-icons/image/panorama-fish-eye';
 import IconSnow from 'material-ui/svg-icons/places/ac-unit';
 import IconLocation from 'material-ui/svg-icons/maps/pin-drop';
@@ -19,6 +19,8 @@ export const _ALERT_KIND_ODO = 'odometer-alert';
 export const _ALERT_KIND_IDLE = 'idling-alert';
 export const _ALERT_KIND_DRIVE_TIME = 'drive-time-alert';
 export const _ALERT_KIND_FUEL_DIFF = 'fuel-diff-alert';
+export const _ALERT_KIND_FUEL_GAIN = 'fuel-inc-alert';
+export const _ALERT_KIND_FUEL_LOSS = 'fuel-dec-alert';
 
 
 const undefinedType = {
@@ -32,16 +34,16 @@ export const ALERT_KINDS = [
     niceName: 'Temperature',
     icon: <IconSnow />,
     // making back-end object for particular kind
-    makeBEObject: (inState) => (
+    makeBEObject: inState => (
       {
         aboveTemp: Math.round(inState.maxTemp),
       }
     ),
   }, {
-    value: _ALERT_KIND_GF,  // enterGF
+    value: _ALERT_KIND_GF, // enterGF
     niceName: 'GeoFence',
     icon: <IconLocation />,
-    makeBEObject: (inState) => (
+    makeBEObject: inState => (
       {
         gfId: inState.gfId,
         meta: {
@@ -55,7 +57,7 @@ export const ALERT_KINDS = [
     value: _ALERT_KIND_SPEEDING,
     niceName: 'Speeding',
     icon: <IconOverSpeed />,
-    makeBEObject: (inState) => (
+    makeBEObject: inState => (
       {
         maxSpeed: Math.round(inState.maxSpeed),
       }
@@ -64,7 +66,7 @@ export const ALERT_KINDS = [
     value: _ALERT_KIND_ODO,
     niceName: 'Odometer',
     icon: <IconOdo />,
-    makeBEObject: (inState) => (
+    makeBEObject: inState => (
       {
         odoValue: Math.round(inState.odoValue),
       }
@@ -73,7 +75,7 @@ export const ALERT_KINDS = [
     value: _ALERT_KIND_IDLE,
     niceName: 'Idling',
     icon: <IconIdle />,
-    makeBEObject: (inState) => (
+    makeBEObject: inState => (
       {
         odoValue: Math.round(inState.odoValue),
       }
@@ -82,7 +84,7 @@ export const ALERT_KINDS = [
     value: _ALERT_KIND_DRIVE_TIME,
     niceName: 'Drive Time',
     icon: <IconTime />,
-    makeBEObject: (inState) => (
+    makeBEObject: inState => (
       {
         driveTimeSec: inState.driveTimeSec,
       }
@@ -91,13 +93,30 @@ export const ALERT_KINDS = [
     value: _ALERT_KIND_FUEL_DIFF,
     niceName: 'Fuel',
     icon: <IconFuel />,
-    makeBEObject: (inState) => (
+    makeBEObject: inState => (
       {
         percentDiff: Math.round(inState.fuelDiff),
       }
     ),
-  },
-];
+  }, {
+    value: _ALERT_KIND_FUEL_GAIN,
+    niceName: 'Fuel Gain',
+    icon: <IconFuel />,
+    makeBEObject: inState => (
+      {
+        fuelThreshold: Math.round(inState.fuelDiff),
+      }
+    ),
+  }, {
+    value: _ALERT_KIND_FUEL_LOSS,
+    niceName: 'Fuel Loss',
+    icon: <IconFuel />,
+    makeBEObject: inState => (
+      {
+        fuelThreshold: Math.round(inState.fuelDiff),
+      }
+    ),
+  }];
 
 export function getAlertByKind(value) {
   return ALERT_KINDS.filter(kind => kind.value === value)[0] || undefinedType;

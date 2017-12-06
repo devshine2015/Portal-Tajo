@@ -24,10 +24,11 @@ export const makeLocalAlertCondition = (originObject, state) => (
   { id: originObject.id,
     name: safeGetFromMeta(originObject, 'name', 'No Name'),
     kind: originObject.kind,
+    default: !!originObject.default,
     maxTemp: originObject.aboveTemp || 0,
     maxSpeed: originObject.maxSpeed || 0,
     odoValue: originObject.odoValue || 0,
-    fuelDiff: originObject.percentDiff || 0,
+    fuelDiff: originObject.percentDiff || originObject.fuelThreshold || 0,
     // safely extracting those for GF alerts:
     // gfId:
     // gfName:
@@ -78,6 +79,7 @@ const makeGenericAlrt = inState => (
     // created: moment().format('YYYY-MM-DD[T]HH:mm:ss.SSSZ'),
     created: '2017-03-06T18:29:50.950+1100',
     status: '',
+    default: !!inState.default,
     meta: {
       name: inState.name,
     },

@@ -9,5 +9,7 @@ export default [
   'reset',
   'add',
   'fuel_alert',
+  'fuel_gain_alert',
+  'fuel_loss_alert',
   'service_frequency',
 ];

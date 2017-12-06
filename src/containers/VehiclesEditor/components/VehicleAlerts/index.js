@@ -113,7 +113,7 @@ class VehicleAlerts extends React.Component {
     return (
       <Layout.Section>
         <Layout.Header label={`${translations.alerts}${this.state.isLoading ? ` ${translations.loading}` : ''}`} />
-        <Layout.Content style={{display: 'inherit'}}>
+        <Layout.Content style={{ display: 'inherit' }}>
           {isDealer || <AlertOfKindSelector
             myKind={alertKinds._ALERT_KIND_SPEEDING}
             onOfKindChange={this.onOfKindChange}
@@ -126,7 +126,19 @@ class VehicleAlerts extends React.Component {
           />}
           <AlertOfKindSelector
             myKind={alertKinds._ALERT_KIND_ODO}
-            title={translations.service_frequency}         
+            title={translations.service_frequency}
+            onOfKindChange={this.onOfKindChange}
+            vehicleAlerts={this.state.alerts}
+          />
+          <AlertOfKindSelector
+            myKind={alertKinds._ALERT_KIND_FUEL_GAIN}
+            title={translations.fuel_gain_alert}
+            onOfKindChange={this.onOfKindChange}
+            vehicleAlerts={this.state.alerts}
+          />
+          <AlertOfKindSelector
+            myKind={alertKinds._ALERT_KIND_FUEL_LOSS}
+            title={translations.fuel_loss_alert}
             onOfKindChange={this.onOfKindChange}
             vehicleAlerts={this.state.alerts}
           />
