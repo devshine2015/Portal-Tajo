@@ -6,6 +6,15 @@ import pure from 'recompose/pure';
 import { theme } from 'configs';
 import inClasses from '../styles';
 import PropTypes from 'prop-types';
+import moment from 'moment';
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
 
 const redBadge = {
   backgroundColor: 'red',
@@ -13,6 +22,7 @@ const redBadge = {
 const greenBadge = {
   backgroundColor: 'green',
 };
+const lossCount = 0;
 
 class FuelConsumption extends React.Component {
   constructor(props) {
@@ -24,40 +34,39 @@ class FuelConsumption extends React.Component {
   render() {
     const headClass = css(inClasses.tableHead);
     const classNameAltrs = css(inClasses.tableCellAlerts);
-
+    console.log(this.props.vehicleAlerts);
     const tableData = this.props.vehicleAlerts.map(
-      alert => (<tr>
-        <td><div className={classNameAltrs}>
-          <div className={css(inClasses.subText)}>{alert.type}</div>
-          <div className={css(inClasses.subBadge)} style={redBadge}>1</div>
-          <div className={css(inClasses.subText)}>Estimated Fuel Loss </div>
-        </div></td>
-        <DashboardElements.TableDataCell
-          dataString="20"
-          dataUnits="ltr"
-        />
-        <DashboardElements.TableDataCell
-          dataString={`${alert.percentageDif} %`}
-          style={{ backgroundColor: theme.palette.alertColor }}
-        />
-      </tr>));
+      alert => (
+        <TableRow>
+          <TableRowColumn>{alert.alertType}</TableRowColumn>
+          <TableRowColumn>{moment(alert.date).format('DD/MM/YY h:mm')}</TableRowColumn>
+          <TableRowColumn>N/A</TableRowColumn>
+          <TableRowColumn>{alert.liters.toFixed(1).toString()}</TableRowColumn>
+          <TableRowColumn>N/A</TableRowColumn>
+        </TableRow>
+      ));
 
 
     return (
       <div className={css(inClasses.container)}>
         <div className={css(inClasses.containerHeading)}>Fuel Alerts</div>
-        {
-          this.props.vehicleAlerts.length > 0 ?
-            <table >
-              <tbody>
-                <tr>
-                  <td className={headClass} />
-                  <td className={headClass}>Total liters</td>
-                  <td className={headClass}>% of Fuel Consumption</td>
-                </tr>
-                {tableData}
-              </tbody>
-            </table> : <div> No Alerts </div> }
+        <Table height={300}>
+          <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+            <TableRow>
+              <TableHeaderColumn>Alert Type</TableHeaderColumn>
+              <TableHeaderColumn>Date/Time</TableHeaderColumn>
+              <TableHeaderColumn>Location</TableHeaderColumn>
+              <TableHeaderColumn>Liters</TableHeaderColumn>
+              <TableHeaderColumn>% of consumption</TableHeaderColumn>
+            </TableRow>
+          </TableHeader>
+          <TableBody
+            displayRowCheckbox={false}
+            showRowHover
+          >
+            {tableData}
+          </TableBody>
+        </Table>
       </div>
     );
   }
