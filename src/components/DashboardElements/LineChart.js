@@ -16,7 +16,7 @@ const buildChart = (node, data) => {
   return bb.generate({
     data: {
       json: data,
-      type: 'line',
+      type: 'area',
       keys: {
         x: 'date',
         value: ['date', 'value'],
@@ -64,7 +64,8 @@ function filterSeries(fuelSeries) {
     obj.value = fuelSeries[k];
     keys.push(obj);
   });
-  return keys;
+  // TODO: dirty quick fix - do the sorting/converting when we recieve the data
+  return keys.sort((a, b) => moment(a.date).isBefore(moment(b.date)) ? -1 : 1);
 }
 class FuelChart extends Component {
   constructor(props) {
