@@ -3,6 +3,7 @@
 ESCAPE='tajo'
 SUNSHINE='portal'
 DEALER='dealer'
+SCC='scc'
 BACKUP_FOLDER='public_backup'
 HOST=$1
 PUBLIC=$2
@@ -14,6 +15,7 @@ SERVER_ENV=$3
 ESCAPE_FOLDER="builds/$SERVER_ENV/$ESCAPE"
 SUNSHINE_FOLDER="builds/$SERVER_ENV/$SUNSHINE"
 DEALER_FOLDER="builds/$SERVER_ENV/$DEALER"
+SCC_FOLDER="builds/$SERVER_ENV/$SCC"
 
 echo "rebuild static sources..."
 npm run clean
@@ -24,10 +26,12 @@ if [ $SERVER_ENV = "prod" ] ; then
   npm run build:escape
   npm run build:sunshine
   npm run build:dealer
+  npm run build:scc
 else
   npm run build:escape-dev
   npm run build:sunshine-dev
   npm run build:dealer-dev
+  npm run build:scc-dev
 fi
 
 if [ $SERVER_ENV = "prod" ] ; then
@@ -48,6 +52,8 @@ echo "to $SUNSHINE folder"
 scp -r $SUNSHINE_FOLDER/* $HOST:$PUBLIC
 echo "to $ESCAPE folder"
 scp -r $ESCAPE_FOLDER $HOST:$PUBLIC
+echo "to $SCC folder"
+scp -r $SCC_FOLDER $HOST:$PUBLIC
 echo "to $DEALER folder"
 scp -r $DEALER_FOLDER $HOST:$PUBLIC
 

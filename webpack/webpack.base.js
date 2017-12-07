@@ -20,7 +20,7 @@ const devCssLoaders = 'style-loader!css-loader?localIdentName=[local]__[path][na
  * all projects related to same bundle would be served
  * from different routes, but by equally same bundles.
  * @example
- * drvrstage.cloudapp.net:8080/cc - it is a client-specific route, but it's a `dealer` project, just with unique uri,
+ * drvrstage.cloudapp.net:8080/ccmm - it is a client-specific route, but it's a `dealer` project, just with unique uri,
  * so, since our backend(s) don't know how to serve right bundle per url we including this logic in bundle.
  * That means static resources should be taken from directory where index.html file lives
  * @example
@@ -39,6 +39,8 @@ function getPublicPath() {
       return '/tajo/';
     case 'dealer':
       return '/ccmm/';
+    case 'scc':
+      return '/scc/';
     default:
       return '/';
   }

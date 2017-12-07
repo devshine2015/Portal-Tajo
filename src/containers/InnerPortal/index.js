@@ -11,6 +11,7 @@ export default function createInnerPortal(props) {
   switch (project) {
     case 'portal':
     case 'tajo':
+    case 'scc':
       Portal = require('./components/CustomerPortal').default;
       break;
 

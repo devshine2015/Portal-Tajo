@@ -1,7 +1,7 @@
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import drvrStorage from 'utils/drvrStorage';
 import { authorizeWithRole } from 'utils/authz';
-import { tajoTheme, fusoTheme } from './theme';
+import { tajoTheme, ccTheme, sccTheme } from './theme';
 import * as _configHelpers from './_helpers';
 
 // const DEV_ENGINE_BASE = 'ddsdev.cloudapp.net:8080'; // for dev testing
@@ -16,7 +16,7 @@ export const isEscape = project === 'tajo';
 // export const isSunshine = !isEscape;
 
 export const isDealer = project === 'dealer';
-
+export const isSCC = project === 'scc';
 
 /**
  * the url of remote server. In case of running locally
@@ -44,7 +44,7 @@ export const DRVR_PROFILE_LAST_KEY = 'drvr:profile:last';
 
 // TODO: this is to toggle alerts while in development
 // remove this when Alerts System done/released
-export let isAlerts = true;
+export const isAlerts = true;
 
 export let isNoIcons = false;
 
@@ -82,7 +82,8 @@ export function checkSetNoIcons(fleetName) {
   isNoIcons = fleetName.indexOf('cipta') !== -1;
 }
 
-export const theme = isDealer ? getMuiTheme(fusoTheme) : getMuiTheme(tajoTheme);
+export const theme = isDealer ? getMuiTheme(ccTheme)
+  : (isSCC ? getMuiTheme(sccTheme) : getMuiTheme(tajoTheme));
 
 // TODO: quick fix - just doubled prev limit - need some proven number
 // TODO: currently using same for hisotry (24hvr) and reports (arbitrary time range)
@@ -116,7 +117,7 @@ console.log(`%cProject: %c${project}`, bold, boldGreen);
 
 const getExtraPathname = (location) => {
   const splitted = location.pathname.split('/');
-  const result = splitted.filter(path => ['mwa', 'ccmm'].indexOf(path) !== -1);
+  const result = splitted.filter(path => ['mwa', 'ccmm', 'scc'].indexOf(path) !== -1);
 
   return result.length !== 0 ? result[0] : false;
 };
@@ -138,7 +139,7 @@ export const init = () => {
 
       return {
         lowercase: pre,
-        js: pre[0].toUpperCase() + pre.substr(1)
+        js: pre[0].toUpperCase() + pre.substr(1),
       };
     })(window),
   });
