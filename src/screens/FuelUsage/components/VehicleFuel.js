@@ -77,13 +77,13 @@ class VehicleFuel extends React.Component {
           />
         </Layout.Section>
         <Layout.Section style={{ padding: '24px' }}>
-          <FuelAlertsSummary vehicleAlerts={fuelReport.alerts} />
+          <FuelAlertsSummary vehicleAlerts={fuelReport.alerts} totalConsumption={fuelReport.totalConsumption} />
         </Layout.Section>
         <Layout.Section style={{ padding: '4px' }}>
           <LineChart fuelSeries={fuelReport.series} />
         </Layout.Section>
         <Layout.Section style={{ padding: '24px' }}>
-          <FuelAlerts vehicleAlerts={fuelReport.alerts} />
+          <FuelAlerts vehicleAlerts={fuelReport.alerts} totalConsumption={fuelReport.totalConsumption} />
         </Layout.Section>
       </Layout.Content>
     );
