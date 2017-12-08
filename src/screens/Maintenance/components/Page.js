@@ -7,7 +7,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
 import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
-// import { getVehiclesExSorted, reducerKey } from 'services/FleetModel/reducers/vehiclesReducer';
+import { getVehiclesExSorted, reducerKey } from 'services/FleetModel/reducers/vehiclesReducer';
 import { vehiclesActions } from 'services/FleetModel/actions';
 
 import VehicleMaintenance from './VehicleMaintenance';
@@ -48,7 +48,7 @@ VehicleMaintenancePage.propTypes = {
 };
 
 const mapState = state => ({
-  // vehicles: fromFleetReducer.getVehiclesExSorted(state),
+  vehicles: getVehiclesExSorted(state),
   // selectedVehicleId: ctxGetSelectedVehicleId(state),
   getVehicleById: getVehicleByIdFunc(state),
 });

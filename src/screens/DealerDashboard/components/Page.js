@@ -65,7 +65,7 @@ class DealerDashboard extends React.Component {
     const overviewData = this.props.fleetOverviewData;
     // dataString={this.props.vehicles.length.toString()}
     // dataString={overviewData.vehicleCount.toString()}    
-    const totalTotal = overviewData.normalDriving + overviewData.idleUnder30Min + overviewData.idleOver30Min;
+    const totalTotal = overviewData.normalDriving + overviewData.idleUnder + overviewData.idleOver;
     const normalizer = totalTotal > 0 ? 100 / totalTotal : 0;
     const divLineStyle = { borderTop: 'solid 1px #00000038', margin: '0 35px' };
     return (
@@ -104,7 +104,7 @@ class DealerDashboard extends React.Component {
         <hr style={divLineStyle} />
         <Layout.Content style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <ServiceOverview />
-          <IdleOverview idle1={overviewData.idleUnder30Min * normalizer} idle2={overviewData.idleOver30Min * normalizer} />
+          <IdleOverview idle1={overviewData.idleUnder * normalizer} idle2={overviewData.idleOver * normalizer} />
         </Layout.Content>
         <hr style={divLineStyle} />
         <Layout.Content style={{ flexDirection: 'row', justifyContent: 'space-between' }}>

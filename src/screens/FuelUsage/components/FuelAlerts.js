@@ -1,99 +1,58 @@
 import React from 'react';
-import { StyleSheet, css } from 'aphrodite/no-important';
-import DashboardElements from 'components/DashboardElements';
+import PropTypes from 'prop-types';
+import moment from 'moment';
+import { css } from 'aphrodite/no-important';
 import pure from 'recompose/pure';
 
-import { theme } from 'configs';
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
+import inClasses from './classes';
 
-const tableCellCardTheftInv = {
-  backgroundColor: 'white',
-  color: theme.palette.alertColor,
-};
-const tableCellCardRefuelInv = {
-  backgroundColor: 'white',
-  color: theme.palette.dachboardElementColor,
-};
+const FuelConsumption = ({ vehicleAlerts, totalConsumption }) => {
+  const tableData = vehicleAlerts.map(
+    alert => (
+      <TableRow>
+        <TableRowColumn>{alert.alertType}</TableRowColumn>
+        <TableRowColumn>{moment(alert.date).format('DD/MM/YY h:mm')}</TableRowColumn>
+        <TableRowColumn>N/A</TableRowColumn>
+        <TableRowColumn>{alert.liters.toFixed(1).toString()}</TableRowColumn>
+        <TableRowColumn> {totalConsumption > 0 ? (100 * alert.liters / totalConsumption).toFixed(1).toString() : 'N/A'} </TableRowColumn>
+      </TableRow>
+    ));
 
-const inClasses = StyleSheet.create({
-  tableHead: {
-    color: theme.palette.dachboardElementColor,
-    height: '32px',
-    padding: '4px 16px',
-    margin: '4px',
-  },
-  tableCellAlerts: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: '8px 8px',
-  },
-  subText: {
-    fontSize: 'small',
-    lineHeight: 'initial',
-    // lineBreak: normal;
-    textAlign: 'start',
-  },
-  subBadge: {
-    backgroundColor: 'white',
-    width: '56px',
-    minWidth: '56px',
-    height: '56px',
-    lineHeight: '56px',
-    borderRadius: '50%',
-  },
-
-  container: {
-    marginTop: '32px',
-  },
-});
-
-const FuelConsumption = () => {
-  const headClass = css(inClasses.tableHead);
-  const classNameAltrs = css(inClasses.tableCellAlerts);
   return (
     <div className={css(inClasses.container)}>
-      <table >
-        <tbody>
-          <tr>
-            <td className={headClass} />
-            <td className={headClass}>Total liters</td>
-            <td className={headClass}>% of Fuel Consumption</td>
-          </tr>
-          <tr>
-            <td><div className={classNameAltrs}>
-              <div className={css(inClasses.subText)}>Number of Fuel Loss Alerts</div>
-              <div className={css(inClasses.subBadge)} style={tableCellCardTheftInv}>1</div>
-            </div></td>
-            <DashboardElements.TableDataCell
-              dataString="20"
-              dataUnits="ltr"
-            />
-            <DashboardElements.TableDataCell
-              dataString="6.4%"
-              style={{ backgroundColor: theme.palette.alertColor }}
-            />
-          </tr>
-          <tr>
-            <td><div className={classNameAltrs}>
-              <div className={css(inClasses.subText)}>Number of Refuel Alerts </div>
-              <div className={css(inClasses.subBadge)} style={tableCellCardRefuelInv}>5</div>
-            </div></td>
-            <DashboardElements.TableDataCell
-              dataString="238"
-              dataUnits="ltr"
-            />
-            <DashboardElements.TableDataCell
-              dataString="36.4%"
-              style={{ backgroundColor: theme.palette.okColor }}
-            />
-          </tr>
-        </tbody>
-      </table>
+      <div className={css(inClasses.containerHeading)}>Fuel Alerts</div>
+      <Table height={300}>
+        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+          <TableRow>
+            <TableHeaderColumn>Alert Type</TableHeaderColumn>
+            <TableHeaderColumn>Date/Time</TableHeaderColumn>
+            <TableHeaderColumn>Location</TableHeaderColumn>
+            <TableHeaderColumn>Liters</TableHeaderColumn>
+            <TableHeaderColumn>% of consumption</TableHeaderColumn>
+          </TableRow>
+        </TableHeader>
+        <TableBody
+          displayRowCheckbox={false}
+          showRowHover
+        >
+          {tableData}
+        </TableBody>
+      </Table>
     </div>
   );
 };
 
 FuelConsumption.propTypes = {
-  // title: PropTypes.string.isRequired,
+  vehicleAlerts: PropTypes.array.isRequired,
+  totalConsumption: PropTypes.number.isRequired,
 };
 
 export default pure(FuelConsumption);

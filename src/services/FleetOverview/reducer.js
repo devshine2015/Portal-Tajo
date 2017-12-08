@@ -6,8 +6,8 @@ import {
 
 const initialState = fromJS({
   avgSpeed: 0,
-  idleOver30Min: 0,
-  idleUnder30Min: 0,
+  idleOver: 0,
+  idleUnder: 0,
   normalDriving: 0,
   totalDistance: 0,
   totalDrivingTime: 0,
@@ -22,8 +22,8 @@ function reducer(state = initialState, action) {
     case UPDATE_FLEET_OWERVIEW:
       return state.withMutations((s) => {
         s.set('avgSpeed', action.avgSpeed)
-          .set('idleOver30Min', action.idleOver30Min)
-          .set('idleUnder30Min', action.idleUnder30Min)
+          .set('idleOver', action.idleOver)
+          .set('idleUnder', action.idleUnder)
           .set('normalDriving', action.normalDriving)
           .set('totalDistance', action.totalDistance)
           .set('totalDrivingTime', action.totalDrivingTime)
