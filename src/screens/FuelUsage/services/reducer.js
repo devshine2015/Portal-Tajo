@@ -39,7 +39,7 @@ export const getFuelReport = state =>
 export const getFuelReportForVehicle = state => vehicleId =>
   _fuelUseageSlice(state).localReports[vehicleId];
 
-export const getFuelReportTimeRAnge = state =>
+export const getFuelReportTimeRange = state =>
   _fuelUseageSlice(state).timeRange;
 
   // export const getFuelReportById = state => (vehicleId) => {

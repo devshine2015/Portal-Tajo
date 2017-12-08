@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+
+import pure from 'recompose/pure';
+
 // import R from 'ramda';
 import { bb } from 'billboard.js';
 import 'billboard.js/dist/billboard.css';
@@ -8,6 +13,9 @@ import moment from 'moment';
 
 // import classes from 'components/DashboardElements/classes';
 import inClasses from './classes';
+
+import { getFuelReportTimeRange } from './../services/reducer';
+
 
 const buildChart = (node, data, maxY) => {
   // const {
@@ -42,7 +50,8 @@ const buildChart = (node, data, maxY) => {
           fit: true,
           count: 7,
           format(x) {
-            return moment(x).format('dddd, MMMM Do YYYY');
+            return moment(x).format('DD-MM-YYYY');
+            // return moment(x).format('dddd, MMMM Do YYYY');
             // return x.getFullYear();
           },
         },
@@ -150,7 +159,9 @@ class FuelChart extends Component {
   render() {
     return (
       <div className={css(inClasses.container)}>
-        <div className={css(inClasses.containerHeading)}>Fuel Usage History</div>
+        <div className={css(inClasses.containerHeading)}>
+          {`Fuel History for ${moment(this.props.timeRange.fromDate).format('MMMM Do YYYY')} to ${moment(this.props.timeRange.toDate).format('MMMM Do YYYY')}.`}
+        </div>
         <div
           ref={(ref) => { this.chartRef = ref; }}
         />
@@ -162,6 +173,13 @@ class FuelChart extends Component {
 FuelChart.propTypes = {
   fuelSeries: PropTypes.array.isRequired,
   fuelCapacity: PropTypes.number.isRequired,
+  timeRange: PropTypes.object.isRequired,
 };
 
-export default FuelChart;
+const mapState = state => ({
+  timeRange: getFuelReportTimeRange(state),
+});
+const mapDispatch = {
+};
+
+export default connect(mapState, mapDispatch)(pure(FuelChart));
