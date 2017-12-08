@@ -12,7 +12,7 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
-import inClasses from '../styles';
+import inClasses from './classes';
 
 const FuelConsumption = ({ vehicleAlerts, totalConsumption }) => {
   const tableData = vehicleAlerts.map(

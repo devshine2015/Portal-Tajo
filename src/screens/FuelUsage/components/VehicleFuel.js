@@ -9,12 +9,12 @@ import pure from 'recompose/pure';
 
 import Layout from 'components/Layout';
 import DashboardElements from 'components/DashboardElements';
-import LineChart from 'components/DashboardElements/LineChart';
 
 import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
 
 import { getFuelReportForVehicle } from './../services/reducer';
 
+import FuelChart from './FuelChart';
 import FuelAlertsSummary from './FuelAlertsSummary';
 import FuelAlerts from './FuelAlerts';
 
@@ -50,7 +50,7 @@ class VehicleFuel extends React.Component {
 
     return (
       <Layout.Content style={{ padding: '0' }}>
-        <Layout.Section style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+        <Layout.Section style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', padding: '32px 0' }}>
           <DashboardElements.DataCard
             title={'Tank Capacity'}
             dataString={fuelCap}
@@ -76,13 +76,13 @@ class VehicleFuel extends React.Component {
             dataUnits="km/h"
           />
         </Layout.Section>
-        <Layout.Section style={{ padding: '24px' }}>
+        <Layout.Section style={{ padding: '32px 0' }}>
           <FuelAlertsSummary vehicleAlerts={fuelReport.alerts} totalConsumption={fuelReport.totalConsumption} />
         </Layout.Section>
-        <Layout.Section style={{ padding: '4px' }}>
-          <LineChart fuelSeries={fuelReport.series} />
+        <Layout.Section style={{ padding: '32px 0' }}>
+          <FuelChart fuelSeries={fuelReport.series} fuelCapacity={theVehicle.original.fuelCapacity} />
         </Layout.Section>
-        <Layout.Section style={{ padding: '24px' }}>
+        <Layout.Section style={{ padding: '32px 0' }}>
           <FuelAlerts vehicleAlerts={fuelReport.alerts} totalConsumption={fuelReport.totalConsumption} />
         </Layout.Section>
       </Layout.Content>

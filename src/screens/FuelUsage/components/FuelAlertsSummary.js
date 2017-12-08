@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import DashboardElements from 'components/DashboardElements';
 import { theme } from 'configs';
-import inClasses from '../styles';
+import inClasses from './classes';
 
 const redBadge = {
   backgroundColor: theme.palette.alertColor,

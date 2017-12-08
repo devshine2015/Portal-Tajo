@@ -36,6 +36,10 @@ module.exports = StyleSheet.create({
   },
   containerHeading: {
     fontSize: 'larger',
-    color: '#000',
+    fontWeight: 'bold',
+    paddingBottom: '16px',
+    // color: '#000',
+    color: theme.palette.dachboardElementColor,
+    opacity: '0.5',
   },
 });
