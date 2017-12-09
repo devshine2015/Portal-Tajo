@@ -5,16 +5,15 @@ import PropTypes from 'prop-types';
 
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-
-import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
-import { getVehiclesExSorted, reducerKey } from 'services/FleetModel/reducers/vehiclesReducer';
-import { vehiclesActions } from 'services/FleetModel/actions';
-
-import VehicleMaintenance from './VehicleMaintenance';
-
 import DealerPage, {
   PowerList,
 } from 'containers/DealerPage';
+
+import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
+// import { getVehiclesExSorted, reducerKey } from 'services/FleetModel/reducers/vehiclesReducer';
+import { vehiclesActions } from 'services/FleetModel/actions';
+
+import VehicleMaintenance from './VehicleMaintenance';
 
 class VehicleMaintenancePage extends React.Component {
   constructor(props) {
@@ -48,7 +47,7 @@ VehicleMaintenancePage.propTypes = {
 };
 
 const mapState = state => ({
-  vehicles: getVehiclesExSorted(state),
+  // vehicles: getVehiclesExSorted(state),
   // selectedVehicleId: ctxGetSelectedVehicleId(state),
   getVehicleById: getVehicleByIdFunc(state),
 });
