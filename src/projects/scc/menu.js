@@ -47,6 +47,10 @@ const menu = {
     name: 'devices_manager',
     path: 'devices',
   },
+  booking: {
+    name: 'booking_screen',
+    path: 'booking',
+  },
 };
 
 export default menu;

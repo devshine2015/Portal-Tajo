@@ -18,4 +18,5 @@ export default [
   'drive_comparison',
   'vehicle_maintenance',
   'fleet_manager',
+  'booking_screen',
 ];

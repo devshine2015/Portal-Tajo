@@ -46,7 +46,8 @@ export default {
   fuel_usage: 'fuel usage',
   vehicle_maintenance: 'vehicle diagnostics',
   fleet_manager: 'fleet manager',
-
+  booking_screen: 'booking',
+  
   // -- end main menu
 
   // dashboard screen

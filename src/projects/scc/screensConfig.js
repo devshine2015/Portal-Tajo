@@ -13,6 +13,7 @@ import createUsersManagerScreen from 'screens/UsersManager/route';
 import createAlertLogsScreen from 'screens/AlertsLog/route';
 import createInstallerScreen from 'screens/InstallerScreen/route';
 import createDevicesManagerScreen from 'screens/DevicesManager/route';
+import createBookingScreen from 'screens/Booking/route';
 
 import menu from './menu';
 
@@ -34,6 +35,9 @@ export default [{
 }, {
   create: createDashboardScreen,
   options: menu.review,
+}, {
+  create: createBookingScreen,
+  options: menu.booking,
 }, {
   create: createOperationalScreen,
   options: menu.operational,
