@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import { makePeriodForHoursBack } from 'utils/dateTimeUtils';
+// import { makePeriodForHoursBack } from 'utils/dateTimeUtils';
 
 import DealerPage, {
   PowerList,
@@ -12,7 +12,7 @@ import FixedContent from 'components/FixedContent';
 import AnimatedLogo from 'components/animated';
 
 import { fetchVehicleFuelReport } from './../../services/actions';
-import { getFuelReport } from './../../services/reducer';
+import { getFuelReportLoadingState } from './../../services/reducer';
 
 import VehicleFuel from './../VehicleFuel';
 
@@ -21,23 +21,17 @@ class Page extends React.Component {
     super(props);
     this.state = {
       selectedVehicleId: '',
-      loading: true,
     };
   }
 
-  componentDidMount() {
-    // by default - query one month back
-    this.applyTimeRange(makePeriodForHoursBack(30 * 24));
-  }
+  // componentDidMount() {
+  //   // // by default - query one month back
+  //   this.applyTimeRange(makePeriodForHoursBack(30 * 24));
+  // }
 
   vehicleSelected = (id) => {
     if (id !== this.state.selectedVehicleId) {
       this.setState({ selectedVehicleId: id });
-    }
-  }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.getFuelReport) {
-      this.setState({ loading: false });
     }
   }
   applyTimeRange = (timeRange) => {
@@ -57,7 +51,7 @@ class Page extends React.Component {
           }}
         >
           <PageHeader text="Fuel Usage" onApply={tr => this.applyTimeRange(tr)} />
-          {(this.state.loading) ?
+          {(this.props.isLoading) ?
             <AnimatedLogo.FullscreenLogo /> :
             <VehicleFuel theVehicleId={this.state.selectedVehicleId} />
           }
@@ -69,17 +63,12 @@ class Page extends React.Component {
 
 Page.propTypes = {
   fetchVehicleFuelReport: PropTypes.func.isRequired,
-  getFuelReport: PropTypes.object,
+  isLoading: PropTypes.bool.isRequired,
 };
 
-Page.defaultProps = {
-  getFuelReport: {},
-};
-function mapState(state) {
-  return {
-    getFuelReport: getFuelReport(state),
-  };
-}
+const mapState = state => ({
+  isLoading: getFuelReportLoadingState(state),
+});
 
 const mapDispatch = {
   fetchVehicleFuelReport,

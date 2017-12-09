@@ -8,11 +8,13 @@
 import {
   UPDATE_VEHICLE_FUEL_REPORT,
   UPDATE_VEHICLE_FUEL_REPORT_TIME,
+  VEHICLE_FUEL_REPORT_LOADING,
 } from './actions';
 
 const fuelReportsInitialState = {
   localReports: {},
   timeRange: {},
+  isLoading: false,
 };
 export default function fuelReportsReducer(state = fuelReportsInitialState, action) {
   // console.log(action.consumption);
@@ -24,6 +26,10 @@ export default function fuelReportsReducer(state = fuelReportsInitialState, acti
     case UPDATE_VEHICLE_FUEL_REPORT_TIME:
       return Object.assign({}, state, {
         timeRange: action.timeRange,
+      });
+    case VEHICLE_FUEL_REPORT_LOADING:
+      return Object.assign({}, state, {
+        isLoading: action.isLoading,
       });
     default:
       return state;
@@ -41,6 +47,9 @@ export const getFuelReportForVehicle = state => vehicleId =>
 
 export const getFuelReportTimeRange = state =>
   _fuelUseageSlice(state).timeRange;
+
+export const getFuelReportLoadingState = state =>
+  _fuelUseageSlice(state).isLoading;
 
   // export const getFuelReportById = state => (vehicleId) => {
 //   // const fuelData = state.getIn(['chronicle', 'localFrames', id]);

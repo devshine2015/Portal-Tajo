@@ -8,6 +8,7 @@ import {
 import { getVehiclesExSorted } from '../../../services/FleetModel/reducer';
 
 export const UPDATE_VEHICLE_FUEL_REPORT = 'upVehFuel';
+export const VEHICLE_FUEL_REPORT_LOADING = 'upVehFuelLoad';
 export const UPDATE_VEHICLE_FUEL_REPORT_TIME = 'upVehRange';
 
 export const fetchVehicleFuelReport = (vehicleId, timeRange) => (dispatch, getState) => {
@@ -28,6 +29,9 @@ export const fetchVehicleFuelReport = (vehicleId, timeRange) => (dispatch, getSt
       ...endpoints.getVehicleFuelReport(aVehicleId, params),
     });
   }, this);
+
+  dispatch(_setLoading(true));
+
   return Promise.all(
     urls.map(({ url, method, id }) =>
       api[method](url)
@@ -40,6 +44,7 @@ export const fetchVehicleFuelReport = (vehicleId, timeRange) => (dispatch, getSt
   )
     .then(() => {
       dispatch(_setVehicleFuelReportTime(timeRange));
+      dispatch(_setLoading(false));
       dispatch(_setVehicleFuel(vehicleId, localReportsData));
     });
   // const { url, method } = endpoints.getVehicleFuelReport(vehicleId, params);
@@ -82,5 +87,10 @@ const _setVehicleFuel = (vehicleId, reportData) => ({
 const _setVehicleFuelReportTime = timeRange => ({
   type: UPDATE_VEHICLE_FUEL_REPORT_TIME,
   timeRange,
+});
+
+const _setLoading = isLoading => ({
+  type: VEHICLE_FUEL_REPORT_LOADING,
+  isLoading,
 });
 
