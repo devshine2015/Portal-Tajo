@@ -133,7 +133,7 @@ export const ccTheme = {
   },
 };
 
-const sccMainBrandColor =  '#e3142e';
+const sccMainBrandColor = '#ec1c24';
 export const sccTheme = {
   palette: {
     primary1Color: sccMainBrandColor,

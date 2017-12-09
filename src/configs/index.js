@@ -72,7 +72,8 @@ export function checkSetMaritime(fleetName) {
 
 export let hasFullScreenBoard = false;
 export function checkSetFullScreen(fleetName) {
-  hasFullScreenBoard = authorizeWithRole('uber') || fleetName.indexOf('psl') !== -1;
+  hasFullScreenBoard = authorizeWithRole('uber') || fleetName.indexOf('psl') !== -1
+  || fleetName.indexOf('scc') !== -1;
 }
 
 //

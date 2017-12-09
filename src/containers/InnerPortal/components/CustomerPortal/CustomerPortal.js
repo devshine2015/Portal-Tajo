@@ -3,7 +3,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { css } from 'aphrodite/no-important';
-import { isMwa } from 'configs';
+import { isMwa, isSCC } from 'configs';
 import { authorizeWithRole } from 'utils/authz';
 import AppBar from 'components/AppBar';
 import FleetSelector from 'components/FleetSelector';
@@ -13,6 +13,10 @@ import MainSidebar from '../MainSidebar';
 import RightElement from './AppBarRightElement';
 import classes from './classes';
 import allFleets from './allFleets';
+
+import sccLogo from 'assets/images/logos/scc/scc_logo.png';
+
+// const sccLogo = require('assets/images/logos/scc/scc_logo_appbar.png');
 
 const canChangeFleet = () => authorizeWithRole('uber');
 
@@ -40,11 +44,20 @@ FleetSwitcher.propTypes = {
   selectedFleet: PropTypes.string.isRequired,
 };
 
+// TODO: make it generic, keep logis in the /projects/.. for each project
 function renderTitle(fleetName, onFleetChange) {
   if (isMwa) {
     return (
       <Title onFleetChange={onFleetChange}>
         <img src={require('assets/images/logos/mwa/mwa.png')} alt="mwa logo" height="60" width="76" />
+        { canChangeFleet() && <FleetSwitcher selectedFleet={fleetName} onFleetChange={onFleetChange} /> }
+      </Title>
+    );
+  }
+  if (isSCC) {
+    return (
+      <Title onFleetChange={onFleetChange}>
+        <img src={sccLogo} alt="scc logo" height="60" width="180" />
         { canChangeFleet() && <FleetSwitcher selectedFleet={fleetName} onFleetChange={onFleetChange} /> }
       </Title>
     );
@@ -60,27 +73,25 @@ function renderTitle(fleetName, onFleetChange) {
   );
 }
 
-const CustomerPortal = (props) => {
-  return (
-    <div style={{ height: '100%' }}>
+const CustomerPortal = props => (
+  <div style={{ height: '100%' }}>
 
-      <AppBar
-        title={renderTitle(props.fleet, props.changeFleet)}
-        toggleSidebar={props.toggleSidebar}
-        logout={props.logout}
-        rightElement={<RightElement />}
-      />
+    <AppBar
+      title={renderTitle(props.fleet, props.changeFleet)}
+      toggleSidebar={props.toggleSidebar}
+      logout={props.logout}
+      rightElement={<RightElement />}
+    />
 
-      <MainSidebar
-        isOpened={props.isSidebarOpen}
-        toggleSidebar={props.toggleSidebar}
-      />
+    <MainSidebar
+      isOpened={props.isSidebarOpen}
+      toggleSidebar={props.toggleSidebar}
+    />
 
-      { props.children }
+    { props.children }
 
-    </div>
-  );
-};
+  </div>
+);
 
 CustomerPortal.propTypes = {
   children: PropTypes.node.isRequired,
