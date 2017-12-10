@@ -15,6 +15,13 @@ import classes from 'components/DashboardElements/classes';
 
 // import classes from './classes';
 
+function calcPerc(value, total) {
+  if (total > 0) {
+    return `${((100 * value) / total).toFixed(1)}%`;
+  }
+  return '0%';
+}
+
 const inClasses = StyleSheet.create({
   tableCellDescr: {
     padding: '4px 16px',
@@ -59,22 +66,22 @@ const FuelConsumption = ({ fleetOverviewData }) => {
           <tr>
             <td className={css(inClasses.tableCellDescr)}>Estimated Fuel Loss</td>
             <DashboardElements.TableDataCell
-              dataString={'20'}
+              dataString={fleetOverviewData.totalLoss.toFixed(1).toString()}
               dataUnits="ltr"
             />
             <DashboardElements.TableDataCell
-              dataString={'5.7%'}
+              dataString={calcPerc(fleetOverviewData.totalLoss, fleetOverviewData.totalFuel)}
               style={{ backgroundColor: theme.palette.alertColor }}
             />
           </tr>
           <tr>
             <td className={css(inClasses.tableCellDescr)}>Estimated Refuel</td>
             <DashboardElements.TableDataCell
-              dataString={'175'}
+              dataString={fleetOverviewData.totalGain.toFixed(1).toString()}
               dataUnits="ltr"
             />
             <DashboardElements.TableDataCell
-              dataString={'43.%'}
+              dataString={calcPerc(fleetOverviewData.totalGain, fleetOverviewData.totalFuel)}
               style={{ backgroundColor: theme.palette.okColor }}
             />
           </tr>

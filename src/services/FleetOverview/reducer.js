@@ -15,6 +15,8 @@ const initialState = fromJS({
   totalRunningTime: 0,
   vehicleCount: 0,
   totalFuel: 0,
+  totalGain: 0,
+  totalLoss: 0,
 });
 
 function reducer(state = initialState, action) {
@@ -33,7 +35,10 @@ function reducer(state = initialState, action) {
       });
     case UPDATE_FLEET_FUEL:
       return state.withMutations((s) => {
-        s.set('totalFuel', action.totalFuel);
+        s.set('totalFuel', action.totalFuel)
+          .set('totalGain', action.totalGain)
+          .set('totalLoss', action.totalLoss)
+        ;
       });
 
     default:

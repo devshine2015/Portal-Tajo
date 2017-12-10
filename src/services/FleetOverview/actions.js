@@ -66,5 +66,7 @@ const _setFleetOverviewData = data => ({
 const _setFleetFuelData = overview => ({
   type: UPDATE_FLEET_FUEL,
   totalFuel: overview.totalConsumption,
+  totalGain: overview.totalGain,
+  totalLoss: overview.totalLoss,
 });
 
