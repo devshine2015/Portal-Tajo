@@ -1,12 +1,18 @@
 import React from 'react';
 import Layout from 'components/Layout';
-import ComingSoon from 'components/ComingSoon/ComingSoon';
-
 
 const Booking = () => {
   return (
-    <Layout.Content noPadding maxWidth={'inherit'}>
-      <ComingSoon />
+    <Layout.Content noPadding maxWidth={'inherit'} style={{ height: '100%' }} >
+      <iframe
+        title="booking"
+        src={'https://truck-booking.now.sh/'}
+        style={{
+          height: '100%',
+          width: '100%',
+          border: 'none',
+        }}
+      />
     </Layout.Content>);
 };
 
