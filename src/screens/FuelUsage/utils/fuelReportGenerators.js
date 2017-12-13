@@ -19,7 +19,7 @@ export const doSaveSpreadSheetSeries = (theVehicle, fuelReport, timeRange) => {
 //
 const makeOverviewTableWithHeaders = (theVehicle, fuelReport, alertsSummary) =>
   [['Tank Capacity, Ltr', !!theVehicle.original.fuelCapacity ? theVehicle.original.fuelCapacity : 'n/a'],
-    ['Total Fuel Concumption, Ltr', fuelReport.totalConsumption],
+    ['Total Fuel Consumption, Ltr', fuelReport.totalConsumption],
     ['Liters per Km', fuelReport.ltrPerKm],
     ['Total Distance, Km', fuelReport.totalDist],
     ['Speed Avg, Km/h', fuelReport.avgSpeed],

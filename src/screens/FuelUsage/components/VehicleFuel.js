@@ -73,7 +73,7 @@ class VehicleFuel extends React.Component {
             dataUnits="Ltr"
           />
           <DashboardElements.DataCard
-            title={'Total Fuel Concumption'}
+            title={'Total Fuel Consumption'}
             dataString={fuelReport.totalConsumption.toFixed(1).toString()}
             dataUnits="Ltr"
           />
