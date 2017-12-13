@@ -142,6 +142,12 @@ class VehicleAlerts extends React.Component {
             onOfKindChange={this.onOfKindChange}
             vehicleAlerts={this.state.alerts}
           />
+          <AlertOfKindSelector
+            myKind={alertKinds._ALERT_KIND_ENGINE_TEMP}
+            title={translations.engine_temp_alert}
+            onOfKindChange={this.onOfKindChange}
+            vehicleAlerts={this.state.alerts}
+          />
           {isDealer || <AlertOfKindToggle
             myKind={alertKinds._ALERT_KIND_IDLE}
             onOfKindChange={this.onOfKindToggle}

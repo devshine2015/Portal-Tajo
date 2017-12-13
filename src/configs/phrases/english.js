@@ -318,6 +318,7 @@ export default {
   fuel_gain_alert: 'fuel gain',
   fuel_loss_alert: 'fuel loss',
   fuel_diff: 'fuel diff',
+  engine_temp_alert: 'engine temperature',
   add_alert: 'add alert',
   alert_name: 'alert name',
   speed_limit: 'speed limit',

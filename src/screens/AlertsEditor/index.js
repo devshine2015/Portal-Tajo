@@ -8,7 +8,7 @@ import DriveTimeSection from './components/AlertTypes/DriveTimeSection';
 // import FuelSection from './components/AlertTypes/FuelSection';
 import FuelGainSection from './components/AlertTypes/FuelGainSection';
 import FuelLossSection from './components/AlertTypes/FuelLossSection';
-
+import EngineTempSection from './components/AlertTypes/EngineTempSection';
 
 const AlertsEditor = () => {
   if (isDealer) {
@@ -17,6 +17,7 @@ const AlertsEditor = () => {
         <OdoSection />
         <FuelGainSection />
         <FuelLossSection />
+        <EngineTempSection />
       </Layout.Content>);
   }
   return (

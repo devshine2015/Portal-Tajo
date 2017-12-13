@@ -14,6 +14,7 @@ export default [
   'fuel_gain_alert',
   'fuel_loss_alert',
   'fuel_diff',
+  'engine_temp_alert',
   'new_alert_condition_created_successfully',
   'failed_to_create_new_alert_condition',
   'alert_condition_updated_successfuly',

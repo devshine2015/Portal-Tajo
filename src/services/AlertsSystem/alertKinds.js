@@ -10,6 +10,7 @@ import IconOdo from 'material-ui/svg-icons/notification/network-check';
 import IconIdle from 'material-ui/svg-icons/av/snooze';
 import IconTime from 'material-ui/svg-icons/action/watch-later';
 import IconFuel from 'material-ui/svg-icons/maps/local-gas-station';
+import IconSun from 'material-ui/svg-icons/image/wb-sunny';
 
 export const _ALERT_KIND_UNDEFINED = 'undefined-alert';
 export const _ALERT_KIND_TEMPERATURE = 'temperature-alert';
@@ -21,7 +22,7 @@ export const _ALERT_KIND_DRIVE_TIME = 'drive-time-alert';
 export const _ALERT_KIND_FUEL_DIFF = 'fuel-diff-alert';
 export const _ALERT_KIND_FUEL_GAIN = 'fuel-inc-alert';
 export const _ALERT_KIND_FUEL_LOSS = 'fuel-dec-alert';
-
+export const _ALERT_KIND_ENGINE_TEMP = 'engine-temp-alert';
 
 const undefinedType = {
   value: _ALERT_KIND_UNDEFINED,
@@ -114,6 +115,15 @@ export const ALERT_KINDS = [
     makeBEObject: inState => (
       {
         fuelThreshold: Math.round(inState.fuelDiff),
+      }
+    ),
+  }, {
+    value: _ALERT_KIND_ENGINE_TEMP,
+    niceName: 'Engine Temperature',
+    icon: <IconSun />,
+    makeBEObject: inState => (
+      {
+        maxTemp: Math.round(inState.maxTemp),
       }
     ),
   }];

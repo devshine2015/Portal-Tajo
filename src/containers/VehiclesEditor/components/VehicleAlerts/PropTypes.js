@@ -11,5 +11,6 @@ export default [
   'fuel_alert',
   'fuel_gain_alert',
   'fuel_loss_alert',
+  'engine_temp_alert',
   'service_frequency',
 ];
