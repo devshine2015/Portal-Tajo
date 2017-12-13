@@ -3,16 +3,15 @@ import { connect } from 'react-redux';
 // export default PortalReports;
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
-import moment from 'moment';
 
 import Layout from 'components/Layout';
 import DashboardElements from 'components/DashboardElements';
 import MainActionButton from 'components/Controls/MainActionButton';
 
 import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
-import Book from 'utils/reports/spreadsheetGenerator';
 
 import { getFuelReportForVehicle, getFuelReportTimeRange } from './../services/reducer';
+import { doSaveSpreadSheetSeries, doSaveSpreadSheetOverview } from './../utils/fuelReportGenerators';
 
 import FuelChart from './FuelChart';
 import FuelAlertsSummary from './FuelAlertsSummary';
@@ -30,10 +29,6 @@ class VehicleFuel extends React.Component {
     };
   }
 
-  generateFuelRaw = fuelReport => Object.entries(fuelReport.series)
-    .sort((a, b) => moment(a[0]).valueOf() < moment(b[0]).valueOf() ? -1 : 1)
-    .map(aData => [moment(aData[0]).format('DD-MM-YYYY HH:mm:ss'), aData[1]])
-
   doSaveSpreadSheet = () => {
     const fuelReport = this.props.getFuelReportForVehicle(this.props.theVehicleId);
     if (fuelReport === undefined) {
@@ -43,11 +38,8 @@ class VehicleFuel extends React.Component {
     if (theVehicle === undefined) {
       return;
     }
-    const fileName = `fuel_${theVehicle.original.name}_${moment(this.props.timeRange.fromDate).format('DD-MM-YYYY')}_${moment(this.props.timeRange.toDate).format('DD-MM-YYYY')}`;
-    const book = new Book(['time', 'fuel, ltr'],
-      this.generateFuelRaw(fuelReport),
-      { fileName });
-    book.createBook();
+    doSaveSpreadSheetOverview(theVehicle, fuelReport, this.props.timeRange);
+    doSaveSpreadSheetSeries(theVehicle, fuelReport, this.props.timeRange);
   }
 
   doPrint = () => {
