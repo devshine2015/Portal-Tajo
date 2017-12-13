@@ -12,13 +12,13 @@ import moment from 'moment';
 import { DateRange } from 'components/DateRange';
 // import TimeFrameController from './components/TimeFrameSelector';
 import BetaLabel from 'components/BetaLabel';
+import NoPrint from 'components/NoPrint/NoPrint';
 
 import Layout from 'components/Layout';
 import VehiclesList from 'components/InstancesList';
 import PowerList from 'components/PowerList';
 import Filter from 'components/Filter';
 import SoloReport from './components/SoloReport';
-import NoPrint from './components/NoPrint';
 
 // import { makeDefaultDatePeriod } from 'utils/dateTimeUtils';
 import { ctxGetSelectedVehicleId } from 'services/Global/reducers/contextReducer';

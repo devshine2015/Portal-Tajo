@@ -39,13 +39,14 @@ export const fetchVehicleFuelReport = (vehicleId, timeRange) => (dispatch, getSt
         .then((reportData) => {
           // console.log(reportData);
           localReportsData[id] = reportData;
+          // dispatch(_setAllVehicleFuelId(id, localReportsData));
         }),
     ),
   )
     .then(() => {
       dispatch(_setVehicleFuelReportTime(timeRange));
       dispatch(_setLoading(false));
-      dispatch(_setVehicleFuel(vehicleId, localReportsData));
+      dispatch(_setVehicleFuel(localReportsData));
     });
   // const { url, method } = endpoints.getVehicleFuelReport(vehicleId, params);
 
@@ -78,9 +79,8 @@ export const fetchVehicleFuelReport = (vehicleId, timeRange) => (dispatch, getSt
 //     });
 // }
 
-const _setVehicleFuel = (vehicleId, reportData) => ({
+const _setVehicleFuel = reportData => ({
   type: UPDATE_VEHICLE_FUEL_REPORT,
-  vehicleId,
   consumption: reportData,
 });
 

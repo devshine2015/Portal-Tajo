@@ -2,10 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 import DealerPage, { PageHeader } from 'containers/DealerPage';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 
+import MainActionButton from 'components/Controls/MainActionButton';
 import { VelocityTransitionGroup } from 'velocity-react';
 
 import Layout from 'components/Layout';
@@ -15,7 +17,8 @@ import { logActions } from 'services/AlertsSystem/actions';
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import { fetchFleetOverview } from 'services/FleetOverview/actions';
 import { getFleetOverView } from 'services/FleetOverview/reducer';
-// import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
+import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
+import Book from 'utils/reports/spreadsheetGenerator';
 
 import ServiceOverview from './ServiceOverview';
 import IdleOverview from './IdleOverview';
@@ -31,6 +34,7 @@ class DealerDashboard extends React.Component {
 
     this.state = {
       isLoading: false,
+      timeRange: makePeriodForLast24Hours(),
     };
   }
 
@@ -39,11 +43,27 @@ class DealerDashboard extends React.Component {
   // }
 
   applyTimeRange = (timeRange) => {
-    this.setState({ isLoading: true });
+    this.setState({ isLoading: true, timeRange });
     this.props.fetchFleetOverview(timeRange)
       .then(() => this.setState({ isLoading: false }),
       );
     this.props.fetchLogs(timeRange);
+  }
+
+  generateHeaders = entries => entries.map(aEntr => aEntr[0])
+
+  generateData = entries => [entries.map(aEntr => aEntr[1])]
+
+  doSaveSpreadSheet = () => {
+    const overviewEntries = Object.entries(this.props.fleetOverviewData);
+    const book = new Book(this.generateHeaders(overviewEntries),
+      this.generateData(overviewEntries),
+      { fileName: `fleet_overview_${moment(this.state.timeRange.fromDate).format('DD-MM-YYYY')}_${moment(this.state.timeRange.toDate).format('DD-MM-YYYY')}` });
+    book.createBook();
+  }
+
+  doPrint = () => {
+    window.print();
   }
 
   renderLoading = () => (
@@ -119,6 +139,20 @@ class DealerDashboard extends React.Component {
           <AlertSummaryTable myKind={alertKinds._ALERT_KIND_SPEEDING} />
           <AlertSummaryTable myKind={alertKinds._ALERT_KIND_GF} />
           <AlertSummaryTable myKind={alertKinds._ALERT_KIND_FUEL_DIFF} />
+        </Layout.Content>
+
+        <Layout.Content style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+          <MainActionButton
+            label="Print"
+            onClick={this.doPrint}
+            icon={null}
+          />
+          <MainActionButton
+            label="Save RAW"
+            onClick={this.doSaveSpreadSheet}
+            icon={null}
+            style={{ marginLeft: '32px' }}
+          />
         </Layout.Content>
       </div>
     );

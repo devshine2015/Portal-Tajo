@@ -1,4 +1,4 @@
-import Book from 'utils/reports//spreadsheetGenerator';
+import Book from 'utils/reports/spreadsheetGenerator';
 import { metersToKmString, speedToString, msToTimeIntervalString,
   dateToHHMM } from 'utils/convertors';
 

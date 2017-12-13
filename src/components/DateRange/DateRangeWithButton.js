@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import { DateRange } from 'components/DateRange';
 import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
+import NoPrint from 'components/NoPrint/NoPrint';
 import classes from './classes';
 
 class DateRangeWithButton extends Component {
@@ -41,7 +42,9 @@ class DateRangeWithButton extends Component {
           toDate={this.state.toDate}
           {...rest}
         />
-        { btn }
+        <NoPrint>
+          { btn }
+        </NoPrint>
       </div>
     );
   }
