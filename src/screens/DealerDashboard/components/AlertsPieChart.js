@@ -10,11 +10,20 @@ import {
   getLogEntries,
 } from 'services/AlertsSystem/reducers/logReducer';
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
+import { theme } from 'configs';
 
 import dashboardClasses from 'components/DashboardElements/classes';
 
 
+const alertMap = {
+  [alertKinds._ALERT_KIND_ENGINE_TEMP]: 'Engine Temperature Alerts',
+  [alertKinds._ALERT_KIND_FUEL_LOSS]: 'Fuel Loss Alerts',
+  [alertKinds._ALERT_KIND_FUEL_GAIN]: 'Fuel Gain Alerts',
+};
+
 const buildChart = (node, chartColumns) => {
+  if (!node)
+    {return null;}
   const {
     // width,
     height,
@@ -28,11 +37,9 @@ const buildChart = (node, chartColumns) => {
       // onover: function (d, i) { console.log('onover', d, i); },
       // onout: function (d, i) { console.log('onout', d, i); },
       colors: {
-        [alertKinds._ALERT_KIND_TEMPERATURE]: '#00619E',
-        [alertKinds._ALERT_KIND_SPEEDING]: '#00619E',
-        [alertKinds._ALERT_KIND_TEMPERATURE]: '#00619E',
-        [alertKinds._ALERT_KIND_FUEL_DIFF]: '#00619E',
-        [alertKinds._ALERT_KIND_GF]: '#00619E',
+        [alertMap[alertKinds._ALERT_KIND_ENGINE_TEMP]]: theme.palette.alertColor,
+        [alertMap[alertKinds._ALERT_KIND_FUEL_LOSS]]: theme.palette.dachboardElementSecondaryColor,
+        [alertMap[alertKinds._ALERT_KIND_FUEL_GAIN]]: theme.palette.okColor,
       },
     },
     bindto: node,
@@ -82,12 +89,18 @@ const buildChart = (node, chartColumns) => {
 
 
 class AlertsChart extends Component {
-  chartRef = null;
-  chart = null;
+  constructor(props) {
+    super(props);
 
+    this.chartRef = null;
+    this.chart = null;
+
+    this.state = {
+    };
+  }
 
   componentDidMount() {
-    this.chartInit();
+    // this.chartInit();
   }
 
   // componentWillReceiveProps(nextProps) {
@@ -97,24 +110,29 @@ class AlertsChart extends Component {
   //   // }
   // }
 
-  chartInit() {
-    this.chart = buildChart(this.chartRef, []);
-  }
+  // chartInit() {
+  //   this.chart = buildChart(this.chartRef, []);
+  // }
+  // componentWillReceiveProps(nextProps) {
+  //   this.prepareData(nextProps.alerts.toJS());
+  // }
 
   prepareData() {
     if (this.chartRef == null) {
       return;
     }
-    const kindsCounter = { [alertKinds._ALERT_KIND_TEMPERATURE]: 0,
-      [alertKinds._ALERT_KIND_SPEEDING]: 0,
-      [alertKinds._ALERT_KIND_TEMPERATURE]: 0,
-      [alertKinds._ALERT_KIND_FUEL_DIFF]: 0,
-      [alertKinds._ALERT_KIND_GF]: 0 };
+    const kindsCounter = {
+      [alertKinds._ALERT_KIND_FUEL_GAIN]: 0,
+      [alertKinds._ALERT_KIND_FUEL_LOSS]: 0,
+      [alertKinds._ALERT_KIND_ENGINE_TEMP]: 0 };
     const theAlerts = this.props.alerts.toJS();
     // console.log(theAlerts);
     theAlerts.forEach((alrt) => { if (kindsCounter[alrt.eventKind] !== undefined) kindsCounter[alrt.eventKind]++; });
 
-    const chartColumns = Object.entries(kindsCounter);
+    // const chartColumns = Object.entries(kindsCounter);
+    const chartColumns = [[[alertMap[alertKinds._ALERT_KIND_FUEL_GAIN]], kindsCounter[alertKinds._ALERT_KIND_FUEL_GAIN]],
+      [[alertMap[alertKinds._ALERT_KIND_FUEL_LOSS]], kindsCounter[alertKinds._ALERT_KIND_FUEL_LOSS]],
+      [[alertMap[alertKinds._ALERT_KIND_ENGINE_TEMP]], kindsCounter[alertKinds._ALERT_KIND_ENGINE_TEMP]]];
 
     this.chart = buildChart(this.chartRef, chartColumns);
   }
@@ -127,7 +145,7 @@ class AlertsChart extends Component {
           {'Fleet Alerts'}
         </div>
         <div
-          ref={(ref) => { this.chartRef = ref; }}
+          ref={(ref) => { this.chartRef = ref; if (this.chartRef) this.prepareData(); }}
         />
       </div>
     );

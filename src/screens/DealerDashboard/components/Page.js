@@ -134,12 +134,12 @@ class DealerDashboard extends React.Component {
           />
         </Layout.Content>
         <hr style={divLineStyle} />
-        <Layout.Content style={{ flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+        {/* <Layout.Content style={{ flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
           <AlertSummaryTable myKind={alertKinds._ALERT_KIND_TEMPERATURE} />
           <AlertSummaryTable myKind={alertKinds._ALERT_KIND_SPEEDING} />
           <AlertSummaryTable myKind={alertKinds._ALERT_KIND_GF} />
           <AlertSummaryTable myKind={alertKinds._ALERT_KIND_FUEL_DIFF} />
-        </Layout.Content>
+        </Layout.Content> */}
 
         <Layout.Content style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
           <MainActionButton
