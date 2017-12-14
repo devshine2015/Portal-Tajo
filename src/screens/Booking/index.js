@@ -6,7 +6,7 @@ const Booking = () => {
     <Layout.Content noPadding maxWidth={'inherit'} style={{ height: '100%' }} >
       <iframe
         title="booking"
-        src={'https://truck-booking.now.sh/'}
+        src={'https://truck-booking.now.sh/booking'}
         style={{
           height: '100%',
           width: '100%',
