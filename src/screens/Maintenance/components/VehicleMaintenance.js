@@ -93,7 +93,7 @@ class VehicleMaintenance extends React.Component {
 
     const distToNextService = mntEnd - vehCurrent;
     // const toServicePerc = 100 * (vehCurrent - mntZero) / (mntEnd - mntZero);
-
+    const useDemoRandomData = false;
     return (
       <FixedContent
         style={{
@@ -118,12 +118,12 @@ class VehicleMaintenance extends React.Component {
             <BarIndicator
               style={{ flex: '1', paddingRight: '20px' }}
               title={'Brake Wear'}
-              currentValue={Math.random() * 100}
+              currentValue={useDemoRandomData ? Math.random() * 100 : 0}
             />
             <BarIndicator
               style={{ flex: '1', paddingLeft: '20px' }}
               title={'Exhaust Brake'}
-              currentValue={Math.random() * 100}
+              currentValue={useDemoRandomData ? Math.random() * 100 : 0}
             />
 
           </div>
@@ -131,7 +131,7 @@ class VehicleMaintenance extends React.Component {
             <BarIndicator
               style={{ flex: '1', paddingRight: '20px' }}
               title={'Clutch Wear'}
-              currentValue={Math.random() * 100}
+              currentValue={useDemoRandomData ? Math.random() * 100 : 0}
             />
             <WarningLights style={{ flex: '1', paddingLeft: '12px' }} />
           </div>

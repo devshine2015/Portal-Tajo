@@ -13,7 +13,8 @@ import LightIndicator, { ENGINE_TROUBLE, BRAKE_WARNING,
 
 // import classes from './classes';
 function devRndLightStatus() {
-  return (Math.random() < 0.7) ? 0 : 1;
+  return 0;
+  // return (Math.random() < 0.7) ? 0 : 1;
 }
 
 

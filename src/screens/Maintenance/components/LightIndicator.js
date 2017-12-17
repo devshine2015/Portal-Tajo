@@ -32,7 +32,8 @@ function getMyLight(kind) {
       title: 'Brake',
     };
     case ENGINE_TEMP: return {
-      icon: (<EngineTemp className={css(classes.lightSvg, classes.animatedAlertFill)} />),
+      // icon: (<EngineTemp className={css(classes.lightSvg, classes.animatedAlertFill)} />),
+      icon: (<EngineTemp className={css(classes.lightSvg)} />),
       title: 'Engine Temp',
     };
     case BATTERY_WARNING: return {
