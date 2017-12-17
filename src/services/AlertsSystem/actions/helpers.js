@@ -54,7 +54,8 @@ export function fetchNotificationsForTimeRange(range = {}) {
  */
 export function createJournalEntries(entries = [], state) {
   return entries.filter(entry => Boolean(getAlertConditionById(state, entry.ev.conditionId)))
-    .map(entry => _createJournalEntry(entry, state));
+    .map(entry => _createJournalEntry(entry, state))
+    .filter(entry => entry !== undefined);
 }
 
 function getEventDate(alertEvent) {
@@ -70,6 +71,13 @@ function getEventDate(alertEvent) {
 
 function _createJournalEntry(alertEvent, state) {
   const imVehicle = getVehicleById(state, alertEvent.ev.vehicleId);
+
+  // handeling sub-fleets - when dealer, we get alerts for all the sub - feets,
+  // but intetested in the selected one
+  if (imVehicle === undefined) {
+    return undefined;
+  }
+
   const imCondition = getAlertConditionById(state, alertEvent.ev.conditionId);
   const eventDate = getEventDate(alertEvent);
 

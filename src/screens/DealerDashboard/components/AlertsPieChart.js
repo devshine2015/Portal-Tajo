@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
+import moment from 'moment';
 import { bb } from 'billboard.js';
 import 'billboard.js/dist/billboard.css';
 import { css } from 'aphrodite/no-important';
@@ -22,8 +23,7 @@ const alertMap = {
 };
 
 const buildChart = (node, chartColumns) => {
-  if (!node)
-    {return null;}
+  if (!node) { return null; }
   const {
     // width,
     height,
@@ -127,7 +127,9 @@ class AlertsChart extends Component {
       [alertKinds._ALERT_KIND_ENGINE_TEMP]: 0 };
     const theAlerts = this.props.alerts.toJS();
     // console.log(theAlerts);
-    theAlerts.forEach((alrt) => { if (kindsCounter[alrt.eventKind] !== undefined) kindsCounter[alrt.eventKind]++; });
+    theAlerts
+      .filter(alrt => moment(alrt.eventTS).isBetween(this.props.timeRange.fromDate, this.props.timeRange.toDate))
+      .forEach((alrt) => { if (kindsCounter[alrt.eventKind] !== undefined) kindsCounter[alrt.eventKind]++; });
 
     // const chartColumns = Object.entries(kindsCounter);
     const chartColumns = [[[alertMap[alertKinds._ALERT_KIND_FUEL_GAIN]], kindsCounter[alertKinds._ALERT_KIND_FUEL_GAIN]],
@@ -154,6 +156,7 @@ class AlertsChart extends Component {
 
 AlertsChart.propTypes = {
   alerts: PropTypes.array.isRequired,
+  timeRange: PropTypes.object.isRequired,
 };
 // export default JobsChart;
 const mapState = state => ({

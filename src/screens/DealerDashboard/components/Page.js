@@ -14,7 +14,7 @@ import Layout from 'components/Layout';
 import AnimatedLogo from 'components/animated';
 import DashboardElements from 'components/DashboardElements';
 import { logActions } from 'services/AlertsSystem/actions';
-import * as alertKinds from 'services/AlertsSystem/alertKinds';
+// import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import { fetchFleetOverview } from 'services/FleetOverview/actions';
 import { getFleetOverView } from 'services/FleetOverview/reducer';
 import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
@@ -24,7 +24,7 @@ import ServiceOverview from './ServiceOverview';
 import IdleOverview from './IdleOverview';
 import FuelConsumption from './FuelConsumption';
 import AlertsChart from './AlertsPieChart';
-import AlertSummaryTable from './AlertSummaryTable';
+// import AlertSummaryTable from './AlertSummaryTable';
 
 const secondsToHvrs = timeSec => (timeSec / 60 / 60).toFixed(0);
 
@@ -131,6 +131,7 @@ class DealerDashboard extends React.Component {
           <FuelConsumption fleetOverviewData={overviewData} />
           <AlertsChart
             key="alerts"
+            timeRange={this.state.timeRange}
           />
         </Layout.Content>
         <hr style={divLineStyle} />
