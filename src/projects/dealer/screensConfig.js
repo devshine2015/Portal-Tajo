@@ -27,11 +27,11 @@ export default [{
   create: createDealerDashboardScreen,
   options: menu.dashboard,
 }, {
-  create: createMaintenanceScreen,
-  options: menu.maintenance,
-}, {
   create: createFuelUsageScreen,
   options: menu.fuelUsage,
+}, {
+  create: createMaintenanceScreen,
+  options: menu.maintenance,
 },
 //  {
 //   create: createDriveComaprisonScreen,
