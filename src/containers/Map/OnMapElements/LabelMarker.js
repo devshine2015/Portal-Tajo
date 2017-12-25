@@ -106,25 +106,25 @@ class LabelMarker extends React.Component {
   }
 
   expand(doExpand) {
-// #2969c3 -
-// #3388ff - light blue
+    // #2969c3 -
+    // #3388ff - light blue
     const color = doExpand ? '#e64a19' : '#2969c3';
 
     this.iconHeadContainerElement.style.bottom = doExpand ?
-          `${this.pointerActiveSzH}px` : `${this.pointerIdleSzH}px`;
+      `${this.pointerActiveSzH}px` : `${this.pointerIdleSzH}px`;
     // this.iconHeadContainerElement.style.fontWeight = doExpand ? 'bold' : '';
     this.iconHeadContainerElement.style.borderColor = color;
     this.iconHeadContainerElement.style.color = color;
 
     this.iconPointerElement.style.borderTopWidth = doExpand ?
-          `${this.pointerActiveSzH}px` : `${this.pointerIdleSzH}px`;
+      `${this.pointerActiveSzH}px` : `${this.pointerIdleSzH}px`;
     this.iconPointerElement.style.borderTopColor = color;
     // this.iconPointerElement.style.bottom = doExpand ?
     //       `${this.pointerActiveSzH - this.pointerIdleSzH}px`
     //       : `${tipOffset}px`;
     this.iconPointerElement.style.bottom = doExpand ?
-          `${this.pointerActiveSzH}px`
-          : `${this.pointerIdleSzH}px`;
+      `${this.pointerActiveSzH}px`
+      : `${this.pointerIdleSzH}px`;
 
     this.theMarker.setZIndexOffset(doExpand ? 2000 : 0);
   }

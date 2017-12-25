@@ -18,7 +18,6 @@ import LabelMarker from './LabelMarker';
 require('containers/Map/leafletStyles.css');
 
 class VehicleNameMarker extends React.Component {
-
   shouldComponentUpdate(nextProps) {
     return this.props.theVehicle.pos !== nextProps.theVehicle.pos
       || this.props.theVehicle.filteredOut !== nextProps.theVehicle.filteredOut
@@ -56,7 +55,7 @@ VehicleNameMarker.defaultProps = {
   theMap: null,
 };
 
-const mapState = (state) => ({
+const mapState = state => ({
   selectedVehicleId: ctxGetSelectedVehicleId(state),
   hideMe: ctxGetHideVehicles(state),
 });
@@ -66,10 +65,10 @@ const mapDispatch = {
 
 const CompleteVehicle = connect(mapState, mapDispatch)(VehicleNameMarker);
 
-export const mapVehicleNameMaker = (v) => (
+export const mapVehicleNameMaker = v => (
   <CompleteVehicle
     key={v.id}
     theMap={null}
     theVehicle={v}
   />
-    );
+);

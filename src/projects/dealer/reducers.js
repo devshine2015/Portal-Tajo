@@ -14,8 +14,10 @@ import usersManagerReducer, { reducerKey as usersManagerReducerKey } from 'servi
 import devicesReducer from 'services/Devices/reducer';
 import alertsSystemReducer from 'services/AlertsSystem/reducer';
 import overviewReducer from 'services/FleetOverview/reducer';
+import mapStateReducer from 'containers/Map/reducerAction';
 import routerReducer from '../utils/routerReducer';
 import fuelUseageReducer from '../../screens/FuelUsage/services/reducer';
+
 
 /**
  * Creates the main reducer with the asynchronously loaded ones
@@ -32,6 +34,7 @@ export default function createReducer(asyncReducers) {
     // [fleetReducerKey]: fleetReducer,
     [dealerReducerKey]: dealerReducer,
     [usersManagerReducerKey]: usersManagerReducer,
+    mapState: mapStateReducer,
     alerts: alertsSystemReducer,
     devices: devicesReducer,
     fleetOverview: overviewReducer,

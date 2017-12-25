@@ -75,5 +75,5 @@ function dateToChronicleStringTime(inDate) {
 }
 
 export function dateToChronicleString(inDate) {
-  return moment(inDate).format('DD-MM-YY HH:mm');
+  return moment(inDate).format('DD/MM/YY HH:mm');
 }

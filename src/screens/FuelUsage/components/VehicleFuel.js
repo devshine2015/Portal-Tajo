@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-// export default PortalReports;
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 
@@ -16,10 +15,7 @@ import { doSaveSpreadSheetSeries, doSaveSpreadSheetOverview } from './../utils/f
 import FuelChart from './FuelChart';
 import FuelAlertsSummary from './FuelAlertsSummary';
 import FuelAlerts from './FuelAlerts';
-
-// import { makeMaintenanceData,
-//   MaintenanceStatus } from './../utils/maintenanceHelper';
-
+import FuelMap from './FuelMap';
 
 class VehicleFuel extends React.Component {
   constructor(props) {
@@ -45,6 +41,8 @@ class VehicleFuel extends React.Component {
   doPrint = () => {
     window.print();
   }
+
+  makeChronoPath = () => null
 
   render() {
     if (!this.props.theVehicleId) {
@@ -97,6 +95,9 @@ class VehicleFuel extends React.Component {
         </Layout.Section>
         <Layout.Section style={{ padding: '32px' }}>
           <FuelChart fuelSeries={fuelReport.series} fuelCapacity={theVehicle.original.fuelCapacity} />
+        </Layout.Section>
+        <Layout.Section style={{ padding: '32px' }}>
+          <FuelMap selectedVehicleId={this.props.theVehicleId} />
         </Layout.Section>
         <Layout.Section style={{ padding: '32px' }}>
           <FuelAlerts vehicleAlerts={fuelReport.alerts} totalConsumption={fuelReport.totalConsumption} />

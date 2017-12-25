@@ -42,4 +42,9 @@ module.exports = StyleSheet.create({
     color: theme.palette.dachboardElementColor,
     opacity: '0.5',
   },
+  mapContainer: {
+    height: '400px',
+    width: '100%',
+    display: 'flex',
+  },
 });
