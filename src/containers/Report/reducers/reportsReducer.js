@@ -1,4 +1,5 @@
 import { fromJS, List } from 'immutable';
+import { isSCC } from 'configs';
 import { reportActions } from '../actions';
 import tempSpecs from '../specs/temperature';
 import baseSpecs from '../specs/base';
@@ -11,21 +12,26 @@ import statsSpecs from '../specs/stats';
 
 // join arrays and filter for available ones
 const specs = baseSpecs
-  .concat( mileageSpecs, tempSpecs, statsSpecs)
+  .concat(mileageSpecs, tempSpecs, statsSpecs)
   .filter(spec =>
-    !spec.hasOwnProperty('available') || spec.available
+    !spec.hasOwnProperty('available') || spec.available,
+  );
+const specsSCC = baseSpecs
+  .concat(mileageSpecs, statsSpecs)
+  .filter(spec =>
+    !spec.hasOwnProperty('available') || spec.available,
   );
 const specsMWA = baseSpecs
-  .concat( mwaJobs, mwaPipeSizeCount, mwaJobsTime, mileageSpecs, tempSpecs, statsSpecs)
+  .concat(mwaJobs, mwaPipeSizeCount, mwaJobsTime, mileageSpecs, tempSpecs, statsSpecs)
   .filter(spec =>
-    !spec.hasOwnProperty('available') || spec.available
+    !spec.hasOwnProperty('available') || spec.available,
   );
 const checkedSpecs = specs
   .filter(({ checkedByDefault }) => checkedByDefault)
   .map((spec, i) => i);
 
 const configuratorInitialState = fromJS({
-  available: new List(specs),
+  available: new List(isSCC ? specsSCC : specs),
   selected: new List(checkedSpecs),
 });
 
@@ -35,12 +41,12 @@ function configuratorReducer(state = configuratorInitialState, action) {
       return state.set('available', new List(specsMWA));
     case reportActions.REPORT_SELECTED_ADD:
       return state.updateIn(['selected'], selected =>
-        selected.push(action.index)
+        selected.push(action.index),
       );
 
     case reportActions.REPORT_SELECTED_REMOVE:
       return state.updateIn(['selected'], selected =>
-        selected.delete(action.index)
+        selected.delete(action.index),
       );
 
     default:
@@ -55,10 +61,10 @@ export const getAvailableReports = state =>
 
 export const getAvailableReportIndex = (state, value) =>
   state
-  .get('available')
-  .findKey((field) => (
-    field.name === value
-  ));
+    .get('available')
+    .findKey(field => (
+      field.name === value
+    ));
 
 export const getSelectedReports = state =>
   state.get('selected');

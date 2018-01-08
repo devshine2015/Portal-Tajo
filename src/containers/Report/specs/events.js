@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { fuelToString } from 'utils/convertors';
+import { isSCC } from 'configs';
 
 const TYPES = {
   POSITION: {
@@ -58,8 +59,8 @@ const prettifiedTypes = {
 };
 
 const disabledTypes = Object.keys(TYPES)
-                      .filter(key => TYPES[key].disabled)
-                      .map(key => TYPES[key].type);
+  .filter(key => TYPES[key].disabled)
+  .map(key => TYPES[key].type);
 
 function prettifyAdditionalInfo(type, {
   fuelInfo,
@@ -71,7 +72,7 @@ function prettifyAdditionalInfo(type, {
   movingPeriod,
   gf,
 },
-  theVehicle) {
+theVehicle) {
   switch (type) {
     case TYPES.FUEL.type: {
       return fuelToString(fuelInfo.fuelLevelPerc / 100, theVehicle.original.fuelCapacity);
@@ -117,12 +118,12 @@ function calcCommonEvents({ ev, type } = {}, {
 
   return [
     licensePlate, // license plate number
-    name,         // vehicle name
-    prettyType,   // prettified event type
+    name, // vehicle name
+    prettyType, // prettified event type
     moment(pos.posTime).format(dateFormat), // event time
-    `${pos.latlon.lat}, ${pos.latlon.lng}`,   // event position
-    pos.speed.toFixed(2, 10),   // speed
-    prettifyAdditionalInfo(type, rest, theVehicle),  // additional info
+    `${pos.latlon.lat}, ${pos.latlon.lng}`, // event position
+    pos.speed.toFixed(2, 10), // speed
+    prettifyAdditionalInfo(type, rest, theVehicle), // additional info
   ];
 }
 
@@ -136,12 +137,12 @@ function calcGeofenceEvents({ ev, type } = {}, {
 
   return [
     licensePlate, // license plate number
-    name,         // vehcile name
-    prettyType,   // prettified event type
+    name, // vehcile name
+    prettyType, // prettified event type
     moment(crossTime).format(dateFormat), // event time
-    `${crossPos.lat}, ${crossPos.lng}`,   // event position
+    `${crossPos.lat}, ${crossPos.lng}`, // event position
     '', // speed
-    prettifyAdditionalInfo(type, rest),  // additional info
+    prettifyAdditionalInfo(type, rest), // additional info
   ];
 }
 
@@ -176,7 +177,7 @@ const calculateVehicleRows = options => (events = []) => {
   const rows = [];
 
   if (events.length > 0) {
-    events.forEach(event => {
+    events.forEach((event) => {
       // filter events only if user selected some
       if (disabledTypes.indexOf(event.type) !== -1 ||
           !!options.selectedEvents &&
@@ -212,6 +213,7 @@ export const fields = [{
   eventTypes: [TYPES.TEMPERATURE.type],
   name: TYPES.TEMPERATURE.type,
   disabled: false,
+  skipIf: () => isSCC,
 }, {
   label: 'Start/Stop Moving',
   order: 3,
@@ -224,6 +226,7 @@ export const fields = [{
   eventTypes: [TYPES.FUEL.type],
   name: TYPES.FUEL.type,
   disabled: false,
+  skipIf: () => isSCC,
 }, {
   label: 'Geofence crossing (coming soon)',
   order: 5,

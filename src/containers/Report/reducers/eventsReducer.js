@@ -3,7 +3,7 @@ import { eventActions, reportVehiclesActions } from '../actions';
 import { fields } from '../specs/events';
 
 const initialState = fromJS({
-  available: new List(fields),
+  available: new List(fields.filter(aFld => aFld.skipIf === undefined || !aFld.skipIf())),
   selected: new List(),
   tooManyVehiclesSelected: true,
   forced: false,
@@ -13,12 +13,12 @@ function reducer(state = initialState, action) {
   switch (action.type) {
     case eventActions.EVENT_SELECTED_ADD:
       return state.updateIn(['selected'], selected =>
-        selected.push(action.index)
+        selected.push(action.index),
       );
 
     case eventActions.EVENT_SELECTED_REMOVE:
       return state.updateIn(['selected'], selected =>
-        selected.delete(action.index)
+        selected.delete(action.index),
       );
 
     case reportVehiclesActions.VEHICLE_ADD:
@@ -28,9 +28,9 @@ function reducer(state = initialState, action) {
       return state.set('tooManyVehiclesSelected', action.selectedTooMuch);
 
     case eventActions.EVENT_ALLOW_PICK_MORE:
-      return state.withMutations(s => {
+      return state.withMutations((s) => {
         s.set('tooManyVehiclesSelected', !action.allow)
-         .set('forced', action.forced);
+          .set('forced', action.forced);
       });
 
     default:
@@ -45,10 +45,10 @@ export const getAvailableEvents = state =>
 
 export const getAvailableEventIndex = (state, value) =>
   state
-  .get('available')
-  .findKey((field) => (
-    field.name === value
-  ));
+    .get('available')
+    .findKey(field => (
+      field.name === value
+    ));
 
 export const getSelectedEvents = state =>
   state.get('selected');

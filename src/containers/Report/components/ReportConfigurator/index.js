@@ -40,7 +40,7 @@ const FIELDS_ROW_CLASS = cs(styles.row, styles.form);
 function getDefaultCheckedReportTypes(fields) {
   const result = {};
 
-  fields.forEach(f => {
+  fields.forEach((f) => {
     if (!f.checkedByDefault) return;
 
     result[f.name] = true;
@@ -52,12 +52,11 @@ function getDefaultCheckedReportTypes(fields) {
 function getStoredCheckedReportTypes(availableReports, selectedFields) {
   const result = {};
   const availableArray = availableReports.toArray();
-  selectedFields.forEach(index => {result[availableArray[index].name] = true;});
+  selectedFields.forEach((index) => { result[availableArray[index].name] = true; });
   return result;
 }
 
 class Report extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -85,13 +84,13 @@ class Report extends React.Component {
     const field = event.target.name;
 
     this.props.updateSelectedTypesFields({ field, value, index, source })
-    .then(() => {
-      if (this.props.hasReport) {
-        this.props.swipeGeneratedData();
-      }
+      .then(() => {
+        if (this.props.hasReport) {
+          this.props.swipeGeneratedData();
+        }
 
-      this.onChange(field, value);
-    });
+        this.onChange(field, value);
+      });
   }
 
   onDateTimeChange = (newFromDate, newToDate) => {
@@ -175,14 +174,14 @@ class Report extends React.Component {
               onChange={this.onSelectedFieldsChange}
               fields={this.props.availableReports}
               source="reports"
-              title={ translations.customise_report }
+              title={translations.customise_report}
             />
 
             { !this.props.isLoading && (
               <div className={styles.buttons}>
                 <RaisedButton
                   className={styles.button}
-                  label={ translations.generate_report}
+                  label={translations.generate_report}
                   onClick={this.onSubmit}
                   disabled={this.props.isLoading}
                   primary
@@ -190,7 +189,7 @@ class Report extends React.Component {
                 { this.props.hasReport && (
                   <RaisedButton
                     className={styles.button}
-                    label={ translations.save_report }
+                    label={translations.save_report}
                     onClick={this.props.saveReport}
                     secondary
                   />
@@ -207,7 +206,7 @@ class Report extends React.Component {
               onChange={this.onSelectedFieldsChange}
               fields={this.props.availableEvents}
               source="events"
-              title={ translations.customise_raw_events }
+              title={translations.customise_raw_events}
             />
 
             { !this.props.isLoading && (
@@ -256,7 +255,7 @@ Report.defaultProps = {
 };
 
 
-const mapState = (state) => ({
+const mapState = state => ({
   availableReports: getAvailableReports(state),
   availableEvents: getAvailableEvents(state),
   isLoading: getLoadingState(state),
