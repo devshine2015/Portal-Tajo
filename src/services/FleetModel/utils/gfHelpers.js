@@ -17,7 +17,6 @@ import { ZERO_LOCATION, NEW_GF_RADIUS } from 'utils/constants';
 import { sortByName } from 'utils/sorting';
 
 export function makeBackendGF(inData) {
-
 // const __backEndGF = {
 //     name: "test-poly-gf-123",
 //     kind: "poly",
@@ -34,9 +33,9 @@ export function makeBackendGF(inData) {
   };
   if (inData.isPolygon) {
     backEndGF.kind = 'poly';
-//    backEndGF.points = inData.latLngs;
+    //    backEndGF.points = inData.latLngs;
     backEndGF.points = [];
-    inData.latLngs.forEach(latLng => {
+    inData.latLngs.forEach((latLng) => {
       backEndGF.points.push({ lat: latLng.lat, lng: latLng.lng });
     });
   } else {
@@ -57,7 +56,7 @@ export function makeLocalGF(srcGFObject) {
     theGF.id = srcGFObject.id;
   }
   theGF.address = srcGFObject.hasOwnProperty('address') ? srcGFObject.address : '';
-//  theGF.kind = srcGFObject.hasOwnProperty('kind') ? srcGFObject.kind : '';
+  //  theGF.kind = srcGFObject.hasOwnProperty('kind') ? srcGFObject.kind : '';
   // synthetic
   theGF.isPolygon = srcGFObject.hasOwnProperty('isPolygon') ? srcGFObject.isPolygon : false;
   theGF.isPolygon = theGF.isPolygon || srcGFObject.kind === 'poly';
@@ -68,12 +67,13 @@ export function makeLocalGF(srcGFObject) {
     // for polygon set POS to the leftMost point
     theGF.pos = [srcGFObject.points[0].lat, srcGFObject.points[0].lng];
     theGF.latLngs.forEach((latLng) => {
-      if (latLng.lng < theGF.pos[1])
+      if (latLng.lng < theGF.pos[1]) {
         theGF.pos = [latLng.lat, latLng.lng];
+      }
     });
   } else {
     // is CIRCULAR? - use center and radius
-    theGF.pos = [srcGFObject.center.lat, srcGFObject.center.lng];
+    theGF.pos = { lat: srcGFObject.center.lat, lng: srcGFObject.center.lng };
     theGF.radius = srcGFObject.hasOwnProperty('radius') ? srcGFObject.radius : 100;
   }
   return theGF;

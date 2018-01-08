@@ -38,12 +38,12 @@ class EditGF extends React.Component {
     addMapMenuItemEx(this.props.theMap,
       { text: this.context.translator.getTranslation('ctx_add_circular'),
         icon: iconCircle16,
-        callback: (e) => this.startCircular(e.latlng),
+        callback: e => this.startCircular(e.latlng),
       });
     addMapMenuItemEx(this.props.theMap,
       { text: this.context.translator.getTranslation('ctx_add_poly'),
         icon: iconPoly16,
-        callback: (e) => this.startPolygon(e.latlng),
+        callback: e => this.startPolygon(e.latlng),
       });
   }
 
@@ -96,17 +96,13 @@ class EditGF extends React.Component {
 
   startCircular(latLng) {
     this.props.gfEditUpdate(makeLocalGF({ center: latLng }));
-    if (this.theCircle === null) {
-      this.theCircle = window.L.circle(latLng, NEW_GF_RADIUS);
-      this.theCircle.editing.enable();
-      this.theCircle.on('edit', () => {
-        this.props.subjectGF.pos = this.theCircle.getLatLng();
-        this.props.subjectGF.radius = Math.round(this.theCircle.getRadius());
-        this.props.gfEditUpdate(this.props.subjectGF);
-      });
-    } else {
-      this.setPosition(latLng);
-    }
+    this.theCircle = window.L.circle(latLng, NEW_GF_RADIUS);
+    this.theCircle.editing.enable();
+    this.theCircle.on('edit', () => {
+      this.props.subjectGF.pos = this.theCircle.getLatLng();
+      this.props.subjectGF.radius = Math.round(this.theCircle.getRadius());
+      this.props.gfEditUpdate(this.props.subjectGF);
+    });
 
     hideLayer(this.props.theMap, this.theCircle, false);
 
@@ -144,13 +140,19 @@ class EditGF extends React.Component {
   }
 
   hideAll() {
-    hideLayer(this.props.theMap, this.theCircle, true);
+    try {
+      hideLayer(this.props.theMap, this.theCircle, true);
+    } catch (err) {
+      console.log(`circle Edit error: ${err}`);
+    }
     hideLayer(this.props.theMap, this.thePolygon, true);
     hideLayer(this.props.theMap, this.polygonDrawer, true);
+    this.polygonDrawer = null;
+    this.theCircle = null;
   }
 
   render() {
-    if (!this.props.gfEditMode) { 
+    if (!this.props.gfEditMode) {
       this.hideAll();
       return false;
     }
@@ -175,7 +177,7 @@ EditGF.defaultProps = {
   subjectGF: {},
 };
 
-const mapState = (state) => ({
+const mapState = state => ({
   subjectGF: gfEditGetSubject(state),
   gfEditMode: gfEditIsEditing(state),
 });
