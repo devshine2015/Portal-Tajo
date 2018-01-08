@@ -21,7 +21,7 @@ export const deleteGF = id => (dispatch, getState) =>
 
 /**
  * fleet is optional
- **/
+ * */
 function _fetchGFs(dispatch) {
   const { url, method } = endpoints.getGFs;
 
@@ -38,36 +38,34 @@ function _fetchGFs(dispatch) {
 
 /**
  * POST - new GF details to the server
- **/
+ * */
 function _createGFRequest(gfObject, index, dispatch, getState) {
   const { url, method } = endpoints.createGF;
 
   return api[method](url, {
     payload: gfObject,
   })
-// TODO: temporary logic - GF alert conditions should be added
-// on BeckEnd automatically
-// --->>> REMOVE THIS when implemented on BE side
-  .then(gf => gf.json())
-  .then((gfObj) => {
-    if (gfObj.kind === 'poly') {
+  // TODO: temporary logic - GF alert conditions should be added
+  // on BeckEnd automatically
+  // --->>> REMOVE THIS when implemented on BE side
+    .then(gf => gf.json())
+    .then((gfObj) => {
       createAlertConditions([
         makeGFAlertConditionBackEndObject(gfObj, true),
         makeGFAlertConditionBackEndObject(gfObj, false),
       ])(dispatch, getState);
-    }
-  })
-// ---<<< REMOVE THIS over
-  .then(() => {
-// TODO: no need to fetch all - just add the new one to the sore?
-    _fetchGFs(dispatch, getState);
-    return Promise.resolve();
-  }, error => Promise.reject(error));
+    })
+  // ---<<< REMOVE THIS over
+    .then(() => {
+      // TODO: no need to fetch all - just add the new one to the sore?
+      _fetchGFs(dispatch, getState);
+      return Promise.resolve();
+    }, error => Promise.reject(error));
 }
 
 /**
  * DELETE - new GF details to the server
- **/
+ * */
 function _deleteGFRequest(id, dispatch, getState) {
   const { url, method } = endpoints.deleteGF(id);
 
