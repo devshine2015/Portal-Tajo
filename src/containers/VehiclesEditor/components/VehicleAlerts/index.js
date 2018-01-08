@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import { isAlerts, isDealer } from 'configs';
+import { isAlerts, isDealer, isSCC } from 'configs';
 import {
   translate,
   makePhrasesShape,
@@ -18,6 +18,30 @@ import AlertOfKindMultiSelector from './AlertOfKindMultiSelector';
 import AlertOfKindSelector from './AlertsOfKindSelector';
 import AlertOfKindToggle from './AlertsOfKindToggle';
 import phrases from './PropTypes';
+
+function needsAlertKind(aKind) {
+  switch (aKind) {
+    case alertKinds._ALERT_KIND_SPEEDING:
+      return !isDealer;
+    case alertKinds._ALERT_KIND_TEMPERATURE:
+      return !isDealer && !isSCC;
+    case alertKinds._ALERT_KIND_ENGINE_TEMP:
+      return !isDealer && !isSCC;
+    case alertKinds._ALERT_KIND_FUEL_DIFF:
+      return !isDealer && !isSCC;
+    case alertKinds._ALERT_KIND_FUEL_GAIN:
+    case alertKinds._ALERT_KIND_FUEL_LOSS:
+      return !isSCC;
+    case alertKinds._ALERT_KIND_IDLE:
+      return !isDealer;
+    case alertKinds._ALERT_KIND_ODO:
+      return !isSCC;
+    case alertKinds._ALERT_KIND_GF:
+      return !isDealer;
+    default:
+      return true;
+  }
+}
 
 class VehicleAlerts extends React.Component {
   constructor(props) {
@@ -114,46 +138,54 @@ class VehicleAlerts extends React.Component {
       <Layout.Section>
         <Layout.Header label={`${translations.alerts}${this.state.isLoading ? ` ${translations.loading}` : ''}`} />
         <Layout.Content style={{ display: 'inherit' }}>
-          {isDealer || <AlertOfKindSelector
+          {needsAlertKind(alertKinds._ALERT_KIND_SPEEDING)
+          && <AlertOfKindSelector
             myKind={alertKinds._ALERT_KIND_SPEEDING}
             onOfKindChange={this.onOfKindChange}
             vehicleAlerts={this.state.alerts}
           />}
-          {isDealer || <AlertOfKindSelector
+          {needsAlertKind(alertKinds._ALERT_KIND_TEMPERATURE)
+          && <AlertOfKindSelector
             myKind={alertKinds._ALERT_KIND_TEMPERATURE}
             onOfKindChange={this.onOfKindChange}
             vehicleAlerts={this.state.alerts}
           />}
-          <AlertOfKindSelector
+          {needsAlertKind(alertKinds._ALERT_KIND_ODO)
+          && <AlertOfKindSelector
             myKind={alertKinds._ALERT_KIND_ODO}
             title={translations.service_frequency}
             onOfKindChange={this.onOfKindChange}
             vehicleAlerts={this.state.alerts}
-          />
-          <AlertOfKindSelector
+          />}
+          {needsAlertKind(alertKinds._ALERT_KIND_FUEL_GAIN)
+          && <AlertOfKindSelector
             myKind={alertKinds._ALERT_KIND_FUEL_GAIN}
             title={translations.fuel_gain_alert}
             onOfKindChange={this.onOfKindChange}
             vehicleAlerts={this.state.alerts}
-          />
-          <AlertOfKindSelector
+          />}
+          {needsAlertKind(alertKinds._ALERT_KIND_FUEL_LOSS)
+          && <AlertOfKindSelector
             myKind={alertKinds._ALERT_KIND_FUEL_LOSS}
             title={translations.fuel_loss_alert}
             onOfKindChange={this.onOfKindChange}
             vehicleAlerts={this.state.alerts}
-          />
-          <AlertOfKindSelector
+          />}
+          {needsAlertKind(alertKinds._ALERT_KIND_ENGINE_TEMP)
+          && <AlertOfKindSelector
             myKind={alertKinds._ALERT_KIND_ENGINE_TEMP}
             title={translations.engine_temp_alert}
             onOfKindChange={this.onOfKindChange}
             vehicleAlerts={this.state.alerts}
-          />
-          {isDealer || <AlertOfKindToggle
+          />}
+          {needsAlertKind(alertKinds._ALERT_KIND_IDLE)
+          && <AlertOfKindToggle
             myKind={alertKinds._ALERT_KIND_IDLE}
             onOfKindChange={this.onOfKindToggle}
             vehicleAlerts={this.state.alerts}
           />}
-          {isDealer || <AlertOfKindMultiSelector
+          {needsAlertKind(alertKinds._ALERT_KIND_FUEL_DIFF)
+          && <AlertOfKindMultiSelector
             title={translations.fuel_alert}
             vehicleAlerts={this.state.alerts}
             vehicleId={this.props.vehicleId}
@@ -170,7 +202,8 @@ class VehicleAlerts extends React.Component {
             alertFilter={a => (a.kind === alertKinds._ALERT_KIND_ODO)}
           /> */}
           {/* put all the GF alerts with chips here? */}
-          {isDealer || <AlertOfKindMultiSelector
+          {needsAlertKind(alertKinds._ALERT_KIND_GF)
+          && <AlertOfKindMultiSelector
             title={translations.on_enter_location}
             vehicleAlerts={this.state.alerts}
             vehicleId={this.props.vehicleId}
@@ -178,7 +211,8 @@ class VehicleAlerts extends React.Component {
             onRemoveClick={this.onRemoveClick}
             alertFilter={a => (a.kind === alertKinds._ALERT_KIND_GF && a.onEnter === true)}
           />}
-          {isDealer || <AlertOfKindMultiSelector
+          {needsAlertKind(alertKinds._ALERT_KIND_GF)
+          && <AlertOfKindMultiSelector
             title={translations.on_exit_location}
             vehicleAlerts={this.state.alerts}
             vehicleId={this.props.vehicleId}

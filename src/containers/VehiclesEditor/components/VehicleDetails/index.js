@@ -12,7 +12,7 @@ import {
 } from 'utils/i18n';
 import Layout from 'components/Layout';
 import FormButtons from 'components/Controls/FormButtons';
-import { isDealer } from 'configs';
+import { isDealer, isSCC } from 'configs';
 
 import DeviceEditor from '../DeviceEditor';
 import VehicleAlerts from '../VehicleAlerts';
@@ -163,7 +163,7 @@ class VehicleDetails extends React.Component {
 
   render() {
     const { translations } = this.props;
-
+    const showFuel = !isSCC;
     return (
       <div className={styles.details}>
         <Layout.Section>
@@ -250,14 +250,16 @@ class VehicleDetails extends React.Component {
               checked={this.state.isMiles}
               onCheck={this.onIsMilesChange}
             />
-            <TextField
-              fullWidth
-              name="fuelCapacity"
-              onChange={this.onChange}
-              floatingLabelText={translations.fuel_capacity}
-              value={this.state.fuelCapacity}
-              type="number"
-            />
+            {showFuel &&
+              <TextField
+                fullWidth
+                name="fuelCapacity"
+                onChange={this.onChange}
+                floatingLabelText={translations.fuel_capacity}
+                value={this.state.fuelCapacity}
+                type="number"
+              />
+            }
             <DriverSelector driverId={this.state.driverId} onChange={this.onDriverChange} />
             <MarkerSelector kind={this.state.marker} onChange={this.onMarkerChange} />
             <FormButtons
