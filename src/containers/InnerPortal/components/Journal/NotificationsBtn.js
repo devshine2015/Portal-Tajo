@@ -6,6 +6,8 @@ import {
   IconButton,
   Badge,
 } from 'material-ui';
+import { theme, isSCC } from 'configs';
+
 import classes from './NotificationsBtn.classes';
 
 const STYLES = {
@@ -19,7 +21,7 @@ const STYLES = {
   },
 };
 
-const Icon = () => <BellInactiveIcon color="white" />;
+const Icon = () => <BellInactiveIcon color={isSCC ? theme.palette.primary1Color : 'white'} />;
 
 const WithBadge = (props) => {
   return (

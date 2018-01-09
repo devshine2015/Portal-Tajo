@@ -1,9 +1,14 @@
 import React from 'react';
+import { isSCC } from 'configs';
 import Profile from '../MiniProfile';
+import Journal from '../Journal';
 
 const AppBarRightElement = () => {
   return (
-    <Profile />
+    <div>
+      {isSCC && <Journal />}
+      <Profile />
+    </div>
   );
 };
 
