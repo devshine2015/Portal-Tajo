@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from 'components/Layout';
-import { isDealer } from 'configs';
+import { isDealer, isSCC } from 'configs';
 import SpeedSection from './components/AlertTypes/SpeedSection';
 import TempSection from './components/AlertTypes/TempSection';
 import OdoSection from './components/AlertTypes/OdoSection';
@@ -11,6 +11,13 @@ import FuelLossSection from './components/AlertTypes/FuelLossSection';
 import EngineTempSection from './components/AlertTypes/EngineTempSection';
 
 const AlertsEditor = () => {
+  if (isSCC) {
+    return (
+      <Layout.Content noPadding maxWidth={'inherit'}>
+        <SpeedSection />
+        <DriveTimeSection />
+      </Layout.Content>);
+  }
   if (isDealer) {
     return (
       <Layout.Content noPadding maxWidth={'inherit'}>

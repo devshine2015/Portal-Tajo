@@ -13,7 +13,8 @@ import { TimePicker } from 'material-ui';
 
 function setAlertState(props) {
   return {
-    driveTimeSec: props.alert !== undefined ? props.alert.driveTimeSec : 6000,
+    // default 4 hvrs drive limit
+    driveTimeSec: props.alert.driveTimeSec !== undefined ? props.alert.driveTimeSec : 60 * 60 * 4,
   };
 }
 
