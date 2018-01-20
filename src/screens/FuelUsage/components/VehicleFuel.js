@@ -6,11 +6,13 @@ import pure from 'recompose/pure';
 import Layout from 'components/Layout';
 import DashboardElements from 'components/DashboardElements';
 import MainActionButton from 'components/Controls/MainActionButton';
+import NoPrint from 'components/NoPrint/NoPrint';
 
 import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
 
 import { getFuelReportForVehicle, getFuelReportTimeRange } from './../services/reducer';
 import { doSaveSpreadSheetSeries, doSaveSpreadSheetOverview } from './../utils/fuelReportGenerators';
+import { numberToFixedString } from 'utils/convertors';
 
 import FuelChart from './FuelChart';
 import FuelAlertsSummary from './FuelAlertsSummary';
@@ -72,21 +74,21 @@ class VehicleFuel extends React.Component {
           />
           <DashboardElements.DataCard
             title={'Total Fuel Consumption'}
-            dataString={fuelReport.totalConsumption.toFixed(1).toString()}
+            dataString={numberToFixedString(fuelReport.totalConsumption)}
             dataUnits="Ltr"
           />
           <DashboardElements.DataCard
             title={'Liters per KM'}
-            dataString={fuelReport.ltrPerKm.toFixed(1).toString()}
+            dataString={numberToFixedString(fuelReport.ltrPerKm)}
           />
           <DashboardElements.DataCard
             title={'Total Distance'}
-            dataString={fuelReport.totalDist.toFixed(1).toString()}
+            dataString={numberToFixedString(fuelReport.totalDist)}
             dataUnits="km"
           />
           <DashboardElements.DataCard
-            title={'Speed Avg'}
-            dataString={fuelReport.avgSpeed.toFixed(1).toString()}
+            title={'Avg Speed'}
+            dataString={numberToFixedString(fuelReport.avgSpeed)}
             dataUnits="km/h"
           />
         </Layout.Section>
@@ -96,12 +98,24 @@ class VehicleFuel extends React.Component {
         <Layout.Section style={{ padding: '32px' }}>
           <FuelChart fuelSeries={fuelReport.series} fuelCapacity={theVehicle.original.fuelCapacity} />
         </Layout.Section>
-        <Layout.Section style={{ padding: '32px' }}>
-          <FuelMap selectedVehicleId={this.props.theVehicleId} />
-        </Layout.Section>
-        <Layout.Section style={{ padding: '32px' }}>
-          <FuelAlerts vehicleAlerts={fuelReport.alerts} totalConsumption={fuelReport.totalConsumption} />
-        </Layout.Section>
+        <NoPrint>
+          <Layout.Section style={{ padding: '32px' }}>
+            <FuelMap selectedVehicleId={this.props.theVehicleId} />
+          </Layout.Section>
+        </NoPrint>
+        {/* same table - screen and print version - limited height on screen */}
+        <NoPrint>
+          <Layout.Section style={{ padding: '32px' }}>
+            <FuelAlerts vehicleAlerts={fuelReport.alerts} totalConsumption={fuelReport.totalConsumption} height="300px" />
+          </Layout.Section>
+        </NoPrint>
+        <NoPrint onlyPrint>
+          <Layout.Section style={{ padding: '32px' }}>
+            <FuelAlerts vehicleAlerts={fuelReport.alerts} totalConsumption={fuelReport.totalConsumption} height="auto" />
+          </Layout.Section>
+        </NoPrint>
+        {/* -- same table ------------------------ */}
+
         <Layout.Section style={{ padding: '32px' }}>
           <MainActionButton
             label="Save RAW"

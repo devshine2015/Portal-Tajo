@@ -14,7 +14,7 @@ import {
 } from 'material-ui/Table';
 import inClasses from './classes';
 
-const FuelConsumption = ({ vehicleAlerts, totalConsumption }) => {
+const FuelConsumption = ({ vehicleAlerts, totalConsumption, height }) => {
   const tableData = vehicleAlerts.map(
     alert => (
       <TableRow key={alert.date}>
@@ -29,7 +29,7 @@ const FuelConsumption = ({ vehicleAlerts, totalConsumption }) => {
   return (
     <div className={css(inClasses.container)}>
       <div className={css(inClasses.containerHeading)}>Fuel Alerts</div>
-      <Table height="300px">
+      <Table height={height}>
         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
           <TableRow>
             <TableHeaderColumn>Alert Type</TableHeaderColumn>
@@ -53,6 +53,7 @@ const FuelConsumption = ({ vehicleAlerts, totalConsumption }) => {
 FuelConsumption.propTypes = {
   vehicleAlerts: PropTypes.array.isRequired,
   totalConsumption: PropTypes.number.isRequired,
+  height: PropTypes.string.isRequired,
 };
 
 export default pure(FuelConsumption);

@@ -47,4 +47,11 @@ module.exports = StyleSheet.create({
     width: '100%',
     display: 'flex',
   },
+  table_print: {
+    height: '300px',
+    // '@media print': {
+    //   height: 'auto',
+    // },
+  },
+
 });

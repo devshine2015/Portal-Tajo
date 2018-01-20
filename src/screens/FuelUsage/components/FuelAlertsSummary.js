@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 
 import DashboardElements from 'components/DashboardElements';
 import { theme } from 'configs';
+import { numberToFixedString } from 'utils/convertors';
+
 import inClasses from './classes';
 
 import { summarizeFuelAlerts } from './../utils/alertsSummaryHelper';
@@ -42,7 +44,7 @@ const FuelAlertsSummary = ({ vehicleAlerts, totalConsumption }) => {
               <div className={css(inClasses.subText)}>Estimated Fuel Loss </div>
             </div></td>
             <DashboardElements.TableDataCell
-              dataString={alertsSummary.lossAmount.toFixed(1).toString()}
+              dataString={numberToFixedString(alertsSummary.lossAmount)}
               dataUnits="ltr"
             />
             <DashboardElements.TableDataCell
@@ -57,7 +59,7 @@ const FuelAlertsSummary = ({ vehicleAlerts, totalConsumption }) => {
               <div className={css(inClasses.subText)}>Estimated Refuel</div>
             </div></td>
             <DashboardElements.TableDataCell
-              dataString={alertsSummary.gainAmount.toFixed(1).toString()}
+              dataString={numberToFixedString(alertsSummary.gainAmount)}
               dataUnits="ltr"
             />
             <DashboardElements.TableDataCell
