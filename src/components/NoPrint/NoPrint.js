@@ -14,14 +14,21 @@ const classes = StyleSheet.create({
       display: 'none !important',
     },
   },
+  no_screen: {
+    '@media screen': {
+      display: 'none !important',
+    },
+  },
 });
 
 const NoPrint = ({
   children,
   style,
+  onlyPrint,
 }) => {
   if (children === null) return false;
-  return (<div className={css(classes.no_print)} style={style}>
+  const classN = onlyPrint ? css(classes.no_screen) : css(classes.no_print);
+  return (<div className={classN} style={style}>
     {children}
   </div>
   );
@@ -30,10 +37,12 @@ const NoPrint = ({
 NoPrint.propTypes = {
   children: PropTypes.any,
   style: PropTypes.object,
+  onlyPrint: PropTypes.bool,
 };
 NoPrint.defaultProps = {
   children: null,
   style: {},
+  onlyPrint: false,
 };
 
 export default pure(NoPrint);
