@@ -18,6 +18,8 @@ import { logActions } from 'services/AlertsSystem/actions';
 import { fetchFleetOverview } from 'services/FleetOverview/actions';
 import { getFleetOverView } from 'services/FleetOverview/reducer';
 import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
+import { numberToFixedString } from 'utils/convertors';
+
 import Book from 'utils/reports/spreadsheetGenerator';
 
 import ServiceOverview from './ServiceOverview';
@@ -97,12 +99,12 @@ class DealerDashboard extends React.Component {
           />
           <DashboardElements.DataCard
             title={'Total Distance Travelled'}
-            dataString={`${overviewData.totalDistance.toFixed(1)}`}
+            dataString={numberToFixedString(overviewData.totalDistance)}
             dataUnits="km"
           />
           <DashboardElements.DataCard
             title={'Avg Speed'}
-            dataString={`${overviewData.avgSpeed.toFixed(1)}`}
+            dataString={numberToFixedString(overviewData.avgSpeed)}
             dataUnits="km/h"
           />
           <DashboardElements.DataCard

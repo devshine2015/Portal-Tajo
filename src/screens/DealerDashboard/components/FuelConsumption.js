@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import DashboardElements from 'components/DashboardElements';
+import { numberToFixedString } from 'utils/convertors';
 
 //
 //
@@ -50,11 +51,11 @@ const FuelConsumption = ({ fleetOverviewData }) => {
           <tr>
             <td className={css(inClasses.tableCellDescr)}>Total Fuel Consumption</td>
             <DashboardElements.TableDataCell
-              dataString={fleetOverviewData.totalFuel.toFixed(1).toString()}
+              dataString={numberToFixedString(fleetOverviewData.totalFuel)}
               dataUnits="ltr"
             />
             <DashboardElements.TableDataCell
-              dataString={ltrPerKm.toFixed(1).toString()}
+              dataString={numberToFixedString(ltrPerKm)}
               dataUnits="Ltr/Km"
             />
           </tr>
@@ -66,7 +67,7 @@ const FuelConsumption = ({ fleetOverviewData }) => {
           <tr>
             <td className={css(inClasses.tableCellDescr)}>Estimated Fuel Loss</td>
             <DashboardElements.TableDataCell
-              dataString={fleetOverviewData.totalLoss.toFixed(1).toString()}
+              dataString={numberToFixedString(fleetOverviewData.totalLoss)}
               dataUnits="ltr"
             />
             <DashboardElements.TableDataCell
@@ -77,7 +78,7 @@ const FuelConsumption = ({ fleetOverviewData }) => {
           <tr>
             <td className={css(inClasses.tableCellDescr)}>Estimated Refuel</td>
             <DashboardElements.TableDataCell
-              dataString={fleetOverviewData.totalGain.toFixed(1).toString()}
+              dataString={numberToFixedString(fleetOverviewData.totalGain)}
               dataUnits="ltr"
             />
             <DashboardElements.TableDataCell
