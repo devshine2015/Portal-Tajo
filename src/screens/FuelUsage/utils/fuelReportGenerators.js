@@ -22,7 +22,7 @@ const makeOverviewTableWithHeaders = (theVehicle, fuelReport, alertsSummary) =>
     ['Total Fuel Consumption, Ltr', fuelReport.totalConsumption],
     ['Liters per Km', fuelReport.ltrPerKm],
     ['Total Distance, Km', fuelReport.totalDist],
-    ['Speed Avg, Km/h', fuelReport.avgSpeed],
+    ['Avg Speed, Km/h', fuelReport.avgSpeed],
     ['Number of Fuel Loss Alerts', alertsSummary.lossCount],
     ['Estimated Fuel Loss, Ltr', alertsSummary.lossAmount],
     ['Estimated Fuel Loss, %', alertsSummary.lossPerc],
