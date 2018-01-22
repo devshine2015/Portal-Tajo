@@ -31,7 +31,8 @@ function reducer(state = initialState, action) {
           .set('totalDrivingTime', action.totalDrivingTime)
           .set('totalIdleTime', action.totalIdleTime)
           .set('totalRunningTime', action.totalRunningTime)
-          .set('vehicleCount', action.vehicleCount);
+          .set('vehicleCount', action.vehicleCount)
+          .set('totalIdleFuelUsed', action.totalIdleFuelUsed);
       });
     case UPDATE_FLEET_FUEL:
       return state.withMutations((s) => {

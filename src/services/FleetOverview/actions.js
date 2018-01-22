@@ -52,15 +52,16 @@ const _fetchFleetFuel = (params, dispatch) => {
 
 const _setFleetOverviewData = data => ({
   type: UPDATE_FLEET_OWERVIEW,
-  avgSpeed: data.avgSpeed,
-  idleOver: data.idleAbove,
-  idleUnder: data.idleUnder,
-  normalDriving: data.normalDriving,
-  totalDistance: data.totalDistance,
-  totalDrivingTime: data.totalDrivingTime,
-  totalIdleTime: data.totalIdleTime,
-  totalRunningTime: data.totalRunningTime,
-  vehicleCount: data.vehicleCount,
+  ...data,
+  // avgSpeed: data.avgSpeed,
+  // idleOver: data.idleAbove,
+  // idleUnder: data.idleUnder,
+  // normalDriving: data.normalDriving,
+  // totalDistance: data.totalDistance,
+  // totalDrivingTime: data.totalDrivingTime,
+  // totalIdleTime: data.totalIdleTime,
+  // totalRunningTime: data.totalRunningTime,
+  // vehicleCount: data.vehicleCount,
 });
 
 const _setFleetFuelData = overview => ({

@@ -77,5 +77,5 @@ export function fuelToString(fuelNormalized, fuelCapacity) {
 }
 
 export function numberToFixedString(inNumber) {
-  return inNumber.toLocaleString('en', { maximumFractionDigits: 1 });
+  return inNumber ? inNumber.toLocaleString('en', { maximumFractionDigits: 1 }) : '0';
 }

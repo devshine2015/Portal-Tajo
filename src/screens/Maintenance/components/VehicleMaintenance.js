@@ -9,6 +9,7 @@ import { vehiclesActions } from 'services/FleetModel/actions';
 import Layout from 'components/Layout';
 import FixedContent from 'components/FixedContent';
 import VehicleSummary from 'components/VehicleSummary/VehicleSummary';
+import MainActionButton from 'components/Controls/MainActionButton';
 
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import { conditionsActions } from 'services/AlertsSystem/actions';
@@ -135,6 +136,13 @@ class VehicleMaintenance extends React.Component {
             />
             <WarningLights style={{ flex: '1', paddingLeft: '12px' }} />
           </div>
+        </Layout.Section>
+        <Layout.Section style={{ flexDirection: 'row', justifyContent: 'flex-end', padding: '32px' }}>
+          <MainActionButton
+            label="Service Done"
+            onClick={() => {}}
+            icon={null}
+          />
         </Layout.Section>
       </FixedContent>
     );

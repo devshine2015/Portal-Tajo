@@ -23,12 +23,14 @@ import { numberToFixedString } from 'utils/convertors';
 import Book from 'utils/reports/spreadsheetGenerator';
 
 import ServiceOverview from './ServiceOverview';
-import IdleOverview from './IdleOverview';
+import IdleOverviewBin from './IdleOverviewBin';
+// import IdleOverview from './IdleOverview';
 import FuelConsumption from './FuelConsumption';
 import AlertsChart from './AlertsPieChart';
 // import AlertSummaryTable from './AlertSummaryTable';
 
-const secondsToHvrs = timeSec => (timeSec / 60 / 60).toFixed(0);
+// const secondsToHvrs = timeSec => (timeSec / 60 / 60).toFixed(0);
+const hoursToHvrs = timeHvr => (timeHvr).toFixed(0);
 
 class DealerDashboard extends React.Component {
   constructor(props) {
@@ -87,7 +89,9 @@ class DealerDashboard extends React.Component {
     const overviewData = this.props.fleetOverviewData;
     // dataString={this.props.vehicles.length.toString()}
     // dataString={overviewData.vehicleCount.toString()}    
-    const totalTotal = overviewData.normalDriving + overviewData.idleUnder + overviewData.idleOver;
+    // const totalTotal = overviewData.normalDriving + overviewData.idleUnder + overviewData.idleOver;
+    // const normalizer = totalTotal > 0 ? 100 / totalTotal : 0;
+    const totalTotal = overviewData.totalDrivingTime + overviewData.totalIdleTime;
     const normalizer = totalTotal > 0 ? 100 / totalTotal : 0;
     const divLineStyle = { borderTop: 'solid 1px #00000038', margin: '0 35px' };
     return (
@@ -109,24 +113,30 @@ class DealerDashboard extends React.Component {
           />
           <DashboardElements.DataCard
             title={'Total Running Time'}
-            dataString={`${secondsToHvrs(overviewData.totalRunningTime)}`}
+            dataString={`${hoursToHvrs(overviewData.totalRunningTime)}`}
             dataUnits="hrs"
           />
           <DashboardElements.DataCard
             title={'Total Driving Time'}
-            dataString={`${secondsToHvrs(overviewData.totalDrivingTime)}`}
+            dataString={`${hoursToHvrs(overviewData.totalDrivingTime)}`}
             dataUnits="hrs"
           />
           <DashboardElements.DataCard
             title={'Total Idle Time'}
-            dataString={`${secondsToHvrs(overviewData.totalIdleTime)}`}
+            dataString={`${hoursToHvrs(overviewData.totalIdleTime)}`}
             dataUnits="hrs"
+          />
+          <DashboardElements.DataCard
+            title={'Total Idle Fuel'}
+            dataString={`${numberToFixedString(overviewData.totalIdleFuelUsed)}`}
+            dataUnits="ltr"
           />
         </Layout.Content>
         <hr style={divLineStyle} />
         <Layout.Content style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <ServiceOverview />
-          <IdleOverview idle1={overviewData.idleUnder * normalizer} idle2={overviewData.idleOver * normalizer} />
+          <IdleOverviewBin idle={overviewData.totalIdleTime * normalizer} />
+          {/* <IdleOverview idle1={overviewData.idleUnder * normalizer} idle2={overviewData.idleOver * normalizer} /> */}
         </Layout.Content>
         <hr style={divLineStyle} />
         <Layout.Content style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
