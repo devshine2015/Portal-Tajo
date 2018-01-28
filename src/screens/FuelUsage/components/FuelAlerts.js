@@ -19,7 +19,7 @@ const FuelConsumption = ({ vehicleAlerts, totalConsumption, height }) => {
     alert => (
       <TableRow key={alert.date}>
         <TableRowColumn>{alert.alertType}</TableRowColumn>
-        <TableRowColumn>{moment(alert.date).format('DD/MM/YY h:mm')}</TableRowColumn>
+        <TableRowColumn>{moment(alert.date).format('DD/MM/YY HH:mm')}</TableRowColumn>
         <TableRowColumn>{alert.position ? `${alert.position.lat.toFixed(3)}, ${alert.position.lng.toFixed(3)}` : 'N/A'}</TableRowColumn>
         <TableRowColumn>{alert.liters.toFixed(1).toString()}</TableRowColumn>
         <TableRowColumn> {totalConsumption > 0 ? (100 * alert.liters / totalConsumption).toFixed(1).toString() : 'N/A'} </TableRowColumn>
