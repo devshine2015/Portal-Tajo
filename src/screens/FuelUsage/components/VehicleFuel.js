@@ -52,7 +52,7 @@ class VehicleFuel extends React.Component {
     }
 
     const theVehicle = this.props.getVehicleById(this.props.theVehicleId);
-    if (theVehicle === undefined) {
+    if (!theVehicle) {
       return false;
     }
 
