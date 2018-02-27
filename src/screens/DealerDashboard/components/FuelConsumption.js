@@ -35,11 +35,11 @@ const inClasses = StyleSheet.create({
   },
 });
 
-const FuelConsumption = ({ fleetOverviewData }) => {
+const FuelConsumption = (props) => {
   // const containerStyle = Object.assign({}, maxWidth !== undefined ? { maxWidth } : {}, style);
   // style={{ width: witdhPerc }} 
-  const ltrPerKm = fleetOverviewData.totalDistance
-    ? fleetOverviewData.totalFuel / fleetOverviewData.totalDistance
+  const ltrPerKm = props.totalDistance
+    ? props.totalFuel / props.totalDistance
     : 0;
   return (
     <div className={css(inClasses.container)}>
@@ -51,7 +51,7 @@ const FuelConsumption = ({ fleetOverviewData }) => {
           <tr>
             <td className={css(inClasses.tableCellDescr)}>Total Fuel Consumption</td>
             <DashboardElements.TableDataCell
-              dataString={numberToFixedString(fleetOverviewData.totalFuel)}
+              dataString={numberToFixedString(props.totalFuel)}
               dataUnits="ltr"
             />
             <DashboardElements.TableDataCell
@@ -67,22 +67,22 @@ const FuelConsumption = ({ fleetOverviewData }) => {
           <tr>
             <td className={css(inClasses.tableCellDescr)}>Estimated Fuel Loss</td>
             <DashboardElements.TableDataCell
-              dataString={numberToFixedString(fleetOverviewData.totalLoss)}
+              dataString={numberToFixedString(props.totalLoss)}
               dataUnits="ltr"
             />
             <DashboardElements.TableDataCell
-              dataString={calcPerc(fleetOverviewData.totalLoss, fleetOverviewData.totalFuel)}
+              dataString={calcPerc(props.totalLoss, props.totalFuel)}
               style={{ backgroundColor: theme.palette.alertColor }}
             />
           </tr>
           <tr>
             <td className={css(inClasses.tableCellDescr)}>Estimated Refuel</td>
             <DashboardElements.TableDataCell
-              dataString={numberToFixedString(fleetOverviewData.totalGain)}
+              dataString={numberToFixedString(props.totalGain)}
               dataUnits="ltr"
             />
             <DashboardElements.TableDataCell
-              dataString={calcPerc(fleetOverviewData.totalGain, fleetOverviewData.totalFuel)}
+              dataString={calcPerc(props.totalGain, props.totalFuel)}
               style={{ backgroundColor: theme.palette.okColor }}
             />
           </tr>
@@ -92,33 +92,12 @@ const FuelConsumption = ({ fleetOverviewData }) => {
   );
 };
 
-// TODO: defaine the shape separetly, DRY
 FuelConsumption.propTypes = {
-  fleetOverviewData: PropTypes.shape({
-    avgSpeed: PropTypes.number,
-    idleOver30Min: PropTypes.number,
-    idleUnder30Min: PropTypes.number,
-    normalDriving: PropTypes.number,
-    totalDistance: PropTypes.number,
-    totalDrivingTime: PropTypes.number,
-    totalIdleTime: PropTypes.number,
-    totalRunningTime: PropTypes.number,
-    vehicleCount: PropTypes.number,
-  }).isRequired,
+  totalFuel: PropTypes.number.isRequired,
+  totalLoss: PropTypes.number.isRequired,
+  totalGain: PropTypes.number.isRequired,
+  totalDistance: PropTypes.number.isRequired,
 };
-
-// const mapState = state => ({
-//   vehicles: fromFleetReducer.getVehiclesExSorted(state),
-//   fleetOverviewData: getFleetOverView(state),
-//   // selectedVehicleId: ctxGetSelectedVehicleId(state),
-//   // getVehicleById: getVehicleByIdFunc(state),
-// });
-// const mapDispatch = {
-//   fetchLogs: logActions.fetchLogs,
-//   fetchFleetOverview,
-// };
-
-// export default connect(mapState, mapDispatch)(pure(FuelConsumption));
 
 export default pure(FuelConsumption);
 

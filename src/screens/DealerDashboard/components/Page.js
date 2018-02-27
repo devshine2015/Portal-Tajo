@@ -15,7 +15,7 @@ import AnimatedLogo from 'components/animated';
 import DashboardElements from 'components/DashboardElements';
 import { logActions } from 'services/AlertsSystem/actions';
 // import * as alertKinds from 'services/AlertsSystem/alertKinds';
-import { fetchFleetOverview } from 'services/FleetOverview/actions';
+import { fetchFleetVehicleStats, fetchFleetFuelStats } from 'services/FleetOverview/actions';
 import { getFleetOverView } from 'services/FleetOverview/reducer';
 import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
 import { numberToFixedString } from 'utils/convertors';
@@ -37,7 +37,8 @@ class DealerDashboard extends React.Component {
     super(props);
 
     this.state = {
-      isLoading: false,
+      pageIsLoading: false,
+      fleetFuelIsLoading: false,
       timeRange: makePeriodForLast24Hours(),
     };
   }
@@ -47,9 +48,16 @@ class DealerDashboard extends React.Component {
   // }
 
   applyTimeRange = (timeRange) => {
-    this.setState({ isLoading: true, timeRange });
-    this.props.fetchFleetOverview(timeRange)
-      .then(() => this.setState({ isLoading: false }),
+    this.setState({
+      pageIsLoading: true,
+      fleetFuelIsLoading: true,
+      timeRange,
+    });
+    this.props.fetchFleetVehicleStats(timeRange)
+      .then(() => this.setState({ pageIsLoading: false }),
+      );
+    this.props.fetchFleetFuelStats(timeRange)
+      .then(() => this.setState({ fleetFuelIsLoading: false }),
       );
     this.props.fetchLogs(timeRange);
   }
@@ -74,18 +82,19 @@ class DealerDashboard extends React.Component {
     <div>
       <Layout.Content
         style={{
-          height: '400px',
-          width: '100%',
           backgroundColor: 'white',
-          position: 'absolute',
+          height: '400px',
           maxWidth: 'unset',
+          position: 'absolute',
+          width: '100%',
         }}
       >
         <AnimatedLogo.FullscreenLogo />
       </Layout.Content>
-    </div>)
+    </div>
+  );
 
-  renderData() {
+  renderVehicleStats() {
     const overviewData = this.props.fleetOverviewData;
     // dataString={this.props.vehicles.length.toString()}
     // dataString={overviewData.vehicleCount.toString()}    
@@ -139,8 +148,22 @@ class DealerDashboard extends React.Component {
           {/* <IdleOverview idle1={overviewData.idleUnder * normalizer} idle2={overviewData.idleOver * normalizer} /> */}
         </Layout.Content>
         <hr style={divLineStyle} />
+      </div>
+    );
+  }
+
+  renderFuelStats() {
+    const { totalFuel, totalLoss, totalGain, totalDistance } = this.props.fleetOverviewData;
+    const divLineStyle = { borderTop: 'solid 1px #00000038', margin: '0 35px' };
+    return (
+      <div>
         <Layout.Content style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <FuelConsumption fleetOverviewData={overviewData} />
+          <FuelConsumption
+            totalFuel={totalFuel}
+            totalLoss={totalLoss}
+            totalGain={totalGain}
+            totalDistance={totalDistance}
+          />
           <AlertsChart
             key="alerts"
             timeRange={this.state.timeRange}
@@ -153,7 +176,6 @@ class DealerDashboard extends React.Component {
           <AlertSummaryTable myKind={alertKinds._ALERT_KIND_GF} />
           <AlertSummaryTable myKind={alertKinds._ALERT_KIND_FUEL_DIFF} />
         </Layout.Content> */}
-
         <Layout.Content style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
           <MainActionButton
             label="Print"
@@ -176,8 +198,8 @@ class DealerDashboard extends React.Component {
       <DealerPage>
         <PageHeader text="Fleet Overview" onApply={tr => this.applyTimeRange(tr)} />
         <VelocityTransitionGroup enter={{ animation: { opacity: 1 } }} leave={{ animation: { opacity: 0 } }}>
-          {this.state.isLoading ? undefined : this.renderData()}
-          {this.state.isLoading ? this.renderLoading() : undefined}
+          { this.state.pageIsLoading ? this.renderLoading() : this.renderVehicleStats() }
+          { this.state.fleetFuelIsLoading ? this.renderLoading() : this.renderFuelStats() }
         </VelocityTransitionGroup>
       </DealerPage>
     );
@@ -196,11 +218,14 @@ DealerDashboard.propTypes = {
     totalIdleTime: PropTypes.number,
     totalRunningTime: PropTypes.number,
     vehicleCount: PropTypes.number,
+    totalFuel: PropTypes.number,
+    totalLoss: PropTypes.number,
+    totalGain: PropTypes.number,
   }).isRequired,
-  // selectedVehicleId: PropTypes.string.isRequired,
-
   fetchLogs: PropTypes.func.isRequired,
-  fetchFleetOverview: PropTypes.func.isRequired,
+  fetchFleetVehicleStats: PropTypes.func.isRequired,
+  fetchFleetFuelStats: PropTypes.func.isRequired,
+  // selectedVehicleId: PropTypes.string.isRequired,
 };
 
 const mapState = state => ({
@@ -211,7 +236,8 @@ const mapState = state => ({
 });
 const mapDispatch = {
   fetchLogs: logActions.fetchLogs,
-  fetchFleetOverview,
+  fetchFleetVehicleStats,
+  fetchFleetFuelStats,
 };
 
 export default connect(mapState, mapDispatch)(pure(DealerDashboard));

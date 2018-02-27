@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable';
 import {
-  UPDATE_FLEET_OWERVIEW,
+  UPDATE_FLEET_OVERVIEW,
   UPDATE_FLEET_FUEL,
 } from './actions';
 
@@ -12,6 +12,7 @@ const initialState = fromJS({
   totalDistance: 0,
   totalDrivingTime: 0,
   totalIdleTime: 0,
+  totalIdleFuelUsed: 0,
   totalRunningTime: 0,
   vehicleCount: 0,
   totalFuel: 0,
@@ -21,7 +22,7 @@ const initialState = fromJS({
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case UPDATE_FLEET_OWERVIEW:
+    case UPDATE_FLEET_OVERVIEW:
       return state.withMutations((s) => {
         s.set('avgSpeed', action.avgSpeed)
           .set('idleOver', action.idleOver)
