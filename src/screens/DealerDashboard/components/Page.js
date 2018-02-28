@@ -15,7 +15,10 @@ import AnimatedLogo from 'components/animated';
 import DashboardElements from 'components/DashboardElements';
 import { logActions } from 'services/AlertsSystem/actions';
 // import * as alertKinds from 'services/AlertsSystem/alertKinds';
-import { fetchFleetVehicleStats, fetchFleetFuelStats } from 'services/FleetOverview/actions';
+import {
+  fetchFleetVehicleStats,
+  fetchFleetFuelStats,
+  clearFleetOverview } from 'services/FleetOverview/actions';
 import { getFleetOverView } from 'services/FleetOverview/reducer';
 import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
 import { numberToFixedString } from 'utils/convertors';
@@ -40,6 +43,7 @@ class DealerDashboard extends React.Component {
       pageIsLoading: false,
       fleetFuelIsLoading: false,
       timeRange: makePeriodForLast24Hours(),
+      renderOverview: false,
     };
   }
 
@@ -47,10 +51,20 @@ class DealerDashboard extends React.Component {
   //   this.applyTimeRange(makePeriodForLast24Hours());
   // }
 
+  componentWillReceiveProps = (nextProps) => {
+    if (this.props.selectedFleet !== nextProps.selectedFleet) {
+      this.setState({
+        renderOverview: false,
+      });
+      this.props.clearFleetOverview();
+    }
+  }
+
   applyTimeRange = (timeRange) => {
     this.setState({
       pageIsLoading: true,
       fleetFuelIsLoading: true,
+      renderOverview: true,
       timeRange,
     });
     this.props.fetchFleetVehicleStats(timeRange)
@@ -198,25 +212,30 @@ class DealerDashboard extends React.Component {
     return (
       <DealerPage>
         <PageHeader text="Fleet Overview" onApply={tr => this.applyTimeRange(tr)} />
-        <VelocityTransitionGroup enter={{ animation: { opacity: 1 } }} leave={{ animation: { opacity: 0 } }}>
-          { this.state.pageIsLoading ? this.renderLoading() : this.renderVehicleStats() }
-          { this.state.fleetFuelIsLoading ?
-            <div>
-              <Layout.Content
-                style={{
-                  backgroundColor: 'white',
-                  height: '400px',
-                  maxWidth: 'unset',
-                  position: 'absolute',
-                  width: '100%',
-                }}
-              >
-                <AnimatedLogo.FullscreenLogo />
-              </Layout.Content>
-            </div>
-            : this.renderFuelStats()
-          }
-        </VelocityTransitionGroup>
+        { this.state.renderOverview &&
+          <VelocityTransitionGroup
+            enter={{ animation: { opacity: 1 } }}
+            leave={{ animation: { opacity: 0 } }}
+          >
+            { this.state.pageIsLoading ? this.renderLoading() : this.renderVehicleStats() }
+            { this.state.fleetFuelIsLoading ?
+              <div>
+                <Layout.Content
+                  style={{
+                    backgroundColor: 'white',
+                    height: '400px',
+                    maxWidth: 'unset',
+                    position: 'absolute',
+                    width: '100%',
+                  }}
+                >
+                  <AnimatedLogo.FullscreenLogo />
+                </Layout.Content>
+              </div>
+              : this.renderFuelStats()
+            }
+          </VelocityTransitionGroup>
+        }
       </DealerPage>
     );
   }
@@ -241,12 +260,15 @@ DealerDashboard.propTypes = {
   fetchLogs: PropTypes.func.isRequired,
   fetchFleetVehicleStats: PropTypes.func.isRequired,
   fetchFleetFuelStats: PropTypes.func.isRequired,
+  clearFleetOverview: PropTypes.func.isRequired,
+  selectedFleet: PropTypes.string.isRequired,
   // selectedVehicleId: PropTypes.string.isRequired,
 };
 
 const mapState = state => ({
-  vehicles: fromFleetReducer.getVehiclesExSorted(state),
   fleetOverviewData: getFleetOverView(state),
+  selectedFleet: state.toJS().Dealer.selectedFleet,
+  vehicles: fromFleetReducer.getVehiclesExSorted(state),
   // selectedVehicleId: ctxGetSelectedVehicleId(state),
   // getVehicleById: getVehicleByIdFunc(state),
 });
@@ -254,6 +276,7 @@ const mapDispatch = {
   fetchLogs: logActions.fetchLogs,
   fetchFleetVehicleStats,
   fetchFleetFuelStats,
+  clearFleetOverview,
 };
 
 export default connect(mapState, mapDispatch)(pure(DealerDashboard));

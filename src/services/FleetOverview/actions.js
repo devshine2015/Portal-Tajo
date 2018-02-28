@@ -8,6 +8,7 @@ import dealerSelectors from 'services/Dealer/selectors';
 
 export const UPDATE_FLEET_OVERVIEW = 'upFleetOverView';
 export const UPDATE_FLEET_FUEL = 'upFleetFuel';
+export const CLEAR_FLEET_OVERVIEW = 'clearFleetOverview';
 
 const makeTimeParams = timeRange => ({
   ...makeTimeRangeParams(timeRange.fromDate, timeRange.toDate),
@@ -67,5 +68,9 @@ const _setFleetFuelData = overview => ({
   totalFuel: overview.totalConsumption,
   totalGain: overview.totalGain,
   totalLoss: overview.totalLoss,
+});
+
+export const clearFleetOverview = () => ({
+  type: CLEAR_FLEET_OVERVIEW,
 });
 

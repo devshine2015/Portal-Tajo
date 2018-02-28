@@ -2,6 +2,7 @@ import { fromJS } from 'immutable';
 import {
   UPDATE_FLEET_OVERVIEW,
   UPDATE_FLEET_FUEL,
+  CLEAR_FLEET_OVERVIEW,
 } from './actions';
 
 const initialState = fromJS({
@@ -42,7 +43,8 @@ function reducer(state = initialState, action) {
           .set('totalLoss', action.totalLoss)
         ;
       });
-
+    case CLEAR_FLEET_OVERVIEW:
+      return initialState;
     default:
       return state;
   }
