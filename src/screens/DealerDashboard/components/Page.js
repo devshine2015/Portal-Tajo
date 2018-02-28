@@ -83,10 +83,11 @@ class DealerDashboard extends React.Component {
       <Layout.Content
         style={{
           backgroundColor: 'white',
-          height: '400px',
+          height: '540px',
           maxWidth: 'unset',
           position: 'absolute',
           width: '100%',
+          zIndex: 10,
         }}
       >
         <AnimatedLogo.FullscreenLogo />
@@ -199,7 +200,22 @@ class DealerDashboard extends React.Component {
         <PageHeader text="Fleet Overview" onApply={tr => this.applyTimeRange(tr)} />
         <VelocityTransitionGroup enter={{ animation: { opacity: 1 } }} leave={{ animation: { opacity: 0 } }}>
           { this.state.pageIsLoading ? this.renderLoading() : this.renderVehicleStats() }
-          { this.state.fleetFuelIsLoading ? this.renderLoading() : this.renderFuelStats() }
+          { this.state.fleetFuelIsLoading ?
+            <div>
+              <Layout.Content
+                style={{
+                  backgroundColor: 'white',
+                  height: '400px',
+                  maxWidth: 'unset',
+                  position: 'absolute',
+                  width: '100%',
+                }}
+              >
+                <AnimatedLogo.FullscreenLogo />
+              </Layout.Content>
+            </div>
+            : this.renderFuelStats()
+          }
         </VelocityTransitionGroup>
       </DealerPage>
     );
