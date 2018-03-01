@@ -37,18 +37,34 @@ const PageHeader = ({ text, onApply, hasDateSelector, defaultTimeRange }) => (
       { text }
     </div>
     {hasDateSelector && <div className={css(classes.actions)}>
-      <DateRangeWithButton
-        withTime={false}
-        onApply={onApply}
-        fromDate={defaultTimeRange.fromDate}
-        toDate={defaultTimeRange.toDate}
-        button={(
-          <FlatButton
-            primary
-            label="apply"
+      {
+        defaultTimeRange.fromDate === undefined ?
+          <DateRangeWithButton
+            withTime={false}
+            onApply={onApply}
+            fromDate={makePeriodForHoursBack(30 * 24).fromDate}
+            toDate={makePeriodForHoursBack(30 * 24).toDate}
+            button={(
+              <FlatButton
+                primary
+                label="apply"
+              />
+            )}
           />
-        )}
-      />
+          :
+          <DateRangeWithButton
+            withTime={false}
+            onApply={onApply}
+            fromDate={defaultTimeRange.fromDate}
+            toDate={defaultTimeRange.toDate}
+            button={(
+              <FlatButton
+                primary
+                label="apply"
+              />
+            )}
+          />
+      }
     </div>}
   </div>
 );

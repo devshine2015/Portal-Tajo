@@ -19,6 +19,7 @@ import {
   fetchFleetVehicleStats,
   fetchFleetFuelStats,
   clearFleetOverview } from 'services/FleetOverview/actions';
+import { changeTimeRange } from 'services/Dealer/actions';
 import { getFleetOverView } from 'services/FleetOverview/reducer';
 import { makePeriodForLast24Hours } from 'utils/dateTimeUtils';
 import { numberToFixedString } from 'utils/convertors';
@@ -74,6 +75,7 @@ class DealerDashboard extends React.Component {
       .then(() => this.setState({ fleetFuelIsLoading: false }),
       );
     this.props.fetchLogs(timeRange);
+    this.props.changeTimeRange(timeRange);
   }
 
   generateHeaders = entries => entries.map(aEntr => aEntr[0])
@@ -211,7 +213,11 @@ class DealerDashboard extends React.Component {
   render() {
     return (
       <DealerPage>
-        <PageHeader text="Fleet Overview" onApply={tr => this.applyTimeRange(tr)} />
+        <PageHeader
+          text="Fleet Overview"
+          onApply={tr => this.applyTimeRange(tr)}
+          defaultTimeRange={this.props.selectedTimeRange}
+        />
         { this.state.renderOverview &&
           <VelocityTransitionGroup
             enter={{ animation: { opacity: 1 } }}
@@ -262,12 +268,15 @@ DealerDashboard.propTypes = {
   fetchFleetFuelStats: PropTypes.func.isRequired,
   clearFleetOverview: PropTypes.func.isRequired,
   selectedFleet: PropTypes.string.isRequired,
+  changeTimeRange: PropTypes.func.isRequired,
+  selectedTimeRange: PropTypes.object.isRequired,
   // selectedVehicleId: PropTypes.string.isRequired,
 };
 
 const mapState = state => ({
   fleetOverviewData: getFleetOverView(state),
   selectedFleet: state.toJS().Dealer.selectedFleet,
+  selectedTimeRange: state.toJS().Dealer.selectedTimeRange,
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
   // selectedVehicleId: ctxGetSelectedVehicleId(state),
   // getVehicleById: getVehicleByIdFunc(state),
@@ -277,6 +286,7 @@ const mapDispatch = {
   fetchFleetVehicleStats,
   fetchFleetFuelStats,
   clearFleetOverview,
+  changeTimeRange,
 };
 
 export default connect(mapState, mapDispatch)(pure(DealerDashboard));
