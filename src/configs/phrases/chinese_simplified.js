@@ -41,6 +41,13 @@ export default {
   history: '历史记录',
   alerts_editor: '警报编辑',
   alerts_logs: '警报日志',
+  // overview: 'overview',
+  // drive_comparison: 'drive comparison',
+  // fuel_usage: 'fuel usage',
+  // vehicle_maintenance: 'vehicle diagnostics',
+  // fleet_manager: 'fleet manager',
+  // booking_screen: 'booking',
+  
   // -- end main menu
 
   // dashboard screen
@@ -50,6 +57,7 @@ export default {
   // fleet summary
   vehicles_amount: '辆车在车队中',
   never_reported: '辆车未有记录',
+  // fullscreen_mode: 'fullscreen mode',
   // -- end fleet summary
 
   // installer
@@ -119,7 +127,10 @@ export default {
   model_name: '型号名称',
   year: '年份',
   year_of_manufacture: '生产年份',
+  // chassis_number: 'Chassis Number',
+  // fuel_capacity: 'Fuel Capacity (ltr.)',
   odometer_value: '里程数 (公里.)',
+  // last_service_odo: 'Last Service Odometer (km.)',
   vehicle_kind_hint: '车辆类别',
   disable: '禁用',
   parameters: '参数',
@@ -130,10 +141,22 @@ export default {
   alerts: '警报',
   no_alerts: '没有警报',
   maintenance: '保养',
+  service_frequency: '服务频率',
   name: '名称',
   on_enter_location: '在进入位置',
   on_exit_location: '在出口位置',
   add: '添加',
+  // brand: 'brand',
+  // model: 'Model',
+  // max_power_hp: 'Max Power (hp)',
+  // torque_nm: 'Torque (Nm)',
+  // rpm_max: '@rpm Max',
+  // rpm: '@rpm',
+  // tank_size_litres: 'Tank Size Litres',
+  // power_tran: 'Power Train',
+  // gearbox: 'Gearbox(auto/manual/semi-auto)',
+  // can_odometer: 'CAN Odometer',
+
   // -- end vehicle details
 
   // vehicle kinds
@@ -239,6 +262,7 @@ export default {
   repeat_password: '重复密码',
   changing: '更改中',
   choose_fleet: '选择车辆',
+  // change_default_password: 'Change default password',
   // --end users manager
 
   // 404 page
@@ -287,6 +311,11 @@ export default {
   idling: '空转',
   speeding: '超速',
   drive_time: '开车时间',
+  fuel_alert: '燃料', //
+    fuel_gain_alert: '燃料增益', //
+  fuel_loss_alert: '燃料损失', //
+  // fuel_diff: 'fuel diff',
+  // engine_temp_alert: 'engine temperature',
   add_alert: '添加警报',
   alert_name: '警报名称',
   speed_limit: '速度极限',
