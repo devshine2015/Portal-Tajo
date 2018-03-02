@@ -125,6 +125,7 @@ export default {
   alerts: 'การแจ้งเตือน',
   no_alerts: 'ไม่มีการแจ้งเตือน',
   maintenance: 'ซ่อมบำรุง',
+  service_frequency: 'ความถี่ในการให้บริการ',
   name: 'ชื่อ',
   on_enter_location: 'เข้าสู่ตำแหน่งที่ตั้ง',
   on_exit_location: 'ทางออกตำแหน่งที่ตั้ง ',

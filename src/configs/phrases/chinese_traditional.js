@@ -130,6 +130,7 @@ export default {
   alerts: '警報',
   no_alerts: '沒有警報',
   maintenance: '保養',
+  service_frequency: '服務頻率',
   name: '名稱',
   on_enter_location: '在進入位置',
   on_exit_location: '在出口位置',

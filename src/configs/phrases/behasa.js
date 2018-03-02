@@ -129,6 +129,7 @@ export default {
   alerts: 'alerts',
   no_alerts: 'tidak ada peringatan',
   maintenance: 'perawatan',
+  service_frequency: 'Frekuensi Layanan',
   name: 'nama',
   on_enter_location: 'di lokasi masuk',
   on_exit_location: 'di lokasi keluar',
