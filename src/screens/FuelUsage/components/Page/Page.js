@@ -12,6 +12,7 @@ import FixedContent from 'components/FixedContent';
 import AnimatedLogo from 'components/animated';
 import { mapStoreSetPan } from 'containers/Map/reducerAction';
 
+import { changeTimeRange } from 'services/Dealer/actions';
 import { fetchVehicleFuelReport } from './../../services/actions';
 import { getFuelReportForVehicle, getFuelReportLoadingState } from './../../services/reducer';
 
@@ -48,6 +49,7 @@ class Page extends React.Component {
   applyTimeRange = (timeRange) => {
     this.setState({ loading: true });
     this.props.fetchVehicleFuelReport(this.state.selectedVehicleId, timeRange);
+    this.props.changeTimeRange(timeRange);
   }
   render() {
     return (
@@ -61,7 +63,11 @@ class Page extends React.Component {
             backgroundColor: 'white',
           }}
         >
-          <PageHeader text="Fuel Usage" onApply={tr => this.applyTimeRange(tr)} />
+          <PageHeader
+            text="Fuel Usage"
+            onApply={tr => this.applyTimeRange(tr)}
+            defaultTimeRange={this.props.selectedTimeRange}
+          />
           {(this.props.isLoading) ?
             <AnimatedLogo.FullscreenLogo /> :
             <VehicleFuel theVehicleId={this.state.selectedVehicleId} />
@@ -77,16 +83,20 @@ Page.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   getFuelReportForVehicle: PropTypes.func.isRequired,
   mapStoreSetPan: PropTypes.func.isRequired,
+  changeTimeRange: PropTypes.func.isRequired,
+  selectedTimeRange: PropTypes.object.isRequired,
 };
 
 const mapState = state => ({
   isLoading: getFuelReportLoadingState(state),
   getFuelReportForVehicle: getFuelReportForVehicle(state),
+  selectedTimeRange: state.toJS().Dealer.selectedTimeRange,
 });
 
 const mapDispatch = {
   fetchVehicleFuelReport,
   mapStoreSetPan,
+  changeTimeRange,
 };
 
 export default connect(mapState, mapDispatch)(pure(Page));

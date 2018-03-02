@@ -6,27 +6,23 @@ import {
 import dealerSelectors from 'services/Dealer/selectors';
 
 
-export const UPDATE_FLEET_OWERVIEW = 'upFleetOverView';
+export const UPDATE_FLEET_OVERVIEW = 'upFleetOverView';
 export const UPDATE_FLEET_FUEL = 'upFleetFuel';
+export const CLEAR_FLEET_OVERVIEW = 'clearFleetOverview';
 
-export const fetchFleetOverview = timeRange => (dispatch, getState) => {
-  const params = { ...makeTimeRangeParams(timeRange.fromDate, timeRange.toDate),
-    tzoffset: 0,
-  };
+const makeTimeParams = timeRange => ({
+  ...makeTimeRangeParams(timeRange.fromDate, timeRange.toDate),
+  tzoffset: 0,
+});
+
+export const fetchFleetVehicleStats = timeRange => (dispatch, getState) => {
+  const overviewParams = makeTimeParams(timeRange);
   const selectedSubFleet = dealerSelectors.getSelectedSubFleet(getState());
   if (selectedSubFleet) {
-    params.subFleetId = selectedSubFleet;
+    overviewParams.subFleetId = selectedSubFleet;
   }
-  return Promise.all([
-    _fetchFleetOverview(params, dispatch),
-    _fetchFleetFuel(params, dispatch)
-  ]);
-};
 
-const _fetchFleetOverview = (params, dispatch) => {
-  const { url, method } = endpoints.getFleetOverview(params);
-
-  // dispatch(fleetIsReady(false));
+  const { url, method } = endpoints.getFleetOverview(overviewParams);
 
   return api[method](url)
     .then(response => response.json())
@@ -34,12 +30,15 @@ const _fetchFleetOverview = (params, dispatch) => {
       dispatch(_setFleetOverviewData(overview));
       Promise.resolve({ ready: true });
     });
-  // return Promise.resolve({ ready: true });
-  // dispatch(_setFleetOverviewData());
 };
 
-const _fetchFleetFuel = (params, dispatch) => {
-  const { url, method } = endpoints.getFleetFuel(params);
+export const fetchFleetFuelStats = timeRange => (dispatch, getState) => {
+  const fuelParams = makeTimeParams(timeRange);
+  const selectedSubFleet = dealerSelectors.getSelectedSubFleet(getState());
+  if (selectedSubFleet) {
+    fuelParams.subFleetId = selectedSubFleet;
+  }
+  const { url, method } = endpoints.getFleetFuel(fuelParams);
 
   return api[method](url)
     .then(response => response.json())
@@ -51,7 +50,7 @@ const _fetchFleetFuel = (params, dispatch) => {
 
 
 const _setFleetOverviewData = data => ({
-  type: UPDATE_FLEET_OWERVIEW,
+  type: UPDATE_FLEET_OVERVIEW,
   ...data,
   // avgSpeed: data.avgSpeed,
   // idleOver: data.idleAbove,
@@ -69,5 +68,9 @@ const _setFleetFuelData = overview => ({
   totalFuel: overview.totalConsumption,
   totalGain: overview.totalGain,
   totalLoss: overview.totalLoss,
+});
+
+export const clearFleetOverview = () => ({
+  type: CLEAR_FLEET_OVERVIEW,
 });
 

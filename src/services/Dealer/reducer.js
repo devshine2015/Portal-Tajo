@@ -1,9 +1,10 @@
-import { fromJS/* , List */ } from 'immutable';
+import { fromJS } from 'immutable';
 import { SESSION_CLEAN } from 'services/Session/actions';
 import {
   DEALER_PORTAL_READY,
   DEALER_PORTAL_FLEET_READY_STATE_SET,
   DEALER_PORTAL_SELECT_FLEET,
+  DEALER_PORTAL_SELECT_TIME_RANGE,
 } from './actions';
 
 const initialState = fromJS({
@@ -11,6 +12,7 @@ const initialState = fromJS({
   fleetReadyState: 'not ready',
   subfleets: [],
   selectedFleet: '',
+  selectedTimeRange: {},
 });
 
 function reducer(state = initialState, action) {
@@ -30,7 +32,8 @@ function reducer(state = initialState, action) {
 
     case DEALER_PORTAL_FLEET_READY_STATE_SET:
       return state.set('fleetReadyState', action.readyState);
-
+    case DEALER_PORTAL_SELECT_TIME_RANGE:
+      return state.set('selectedTimeRange', action.selectedTimeRange);
     default:
       return state;
   }

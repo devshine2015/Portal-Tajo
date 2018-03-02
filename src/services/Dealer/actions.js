@@ -9,6 +9,7 @@ import { isDealer } from 'configs';
 export const DEALER_PORTAL_READY = 'dealer portal set ready state';
 export const DEALER_PORTAL_FLEET_READY_STATE_SET = 'change dealer portal fleet data ready state';
 export const DEALER_PORTAL_SELECT_FLEET = 'dlrSelectSubFleet';
+export const DEALER_PORTAL_SELECT_TIME_RANGE = 'dlrSelectTimeRange';
 
 // export const initDealerPortal = isReady => (dispatch, getState) => {
 //   const profile = getSessionData(getState());
@@ -27,6 +28,7 @@ export const initDealerPortal = (isReady, subFleets) => (dispatch) => {
     isReady,
     fleets: subFleets,
     selectedFleet: '',
+    selectedTimeRange: {},
   });
 };
 
@@ -60,4 +62,9 @@ const fleetReadyStateChange = nextState => ({
 const setSubFleet = nextFleetName => ({
   type: DEALER_PORTAL_SELECT_FLEET,
   selectedFleet: nextFleetName,
+});
+
+export const changeTimeRange = data => ({
+  type: DEALER_PORTAL_SELECT_TIME_RANGE,
+  selectedTimeRange: data,
 });
