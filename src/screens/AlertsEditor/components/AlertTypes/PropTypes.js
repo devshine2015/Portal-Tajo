@@ -19,4 +19,5 @@ export default [
   'failed_to_create_new_alert_condition',
   'alert_condition_updated_successfuly',
   'failed_to_change_alert_alert_condition',
+  'idling',
 ];
