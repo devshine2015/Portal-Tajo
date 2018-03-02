@@ -13,4 +13,7 @@ export default [
   'fuel_loss_alert',
   'engine_temp_alert',
   'service_frequency',
+  'idling',
+  'temperature',
+  'speeding',
 ];

@@ -141,12 +141,14 @@ class VehicleAlerts extends React.Component {
           {needsAlertKind(alertKinds._ALERT_KIND_SPEEDING)
           && <AlertOfKindSelector
             myKind={alertKinds._ALERT_KIND_SPEEDING}
+            title={translations.speeding}
             onOfKindChange={this.onOfKindChange}
             vehicleAlerts={this.state.alerts}
           />}
           {needsAlertKind(alertKinds._ALERT_KIND_TEMPERATURE)
           && <AlertOfKindSelector
             myKind={alertKinds._ALERT_KIND_TEMPERATURE}
+            title={translations.temperature}
             onOfKindChange={this.onOfKindChange}
             vehicleAlerts={this.state.alerts}
           />}
@@ -181,6 +183,7 @@ class VehicleAlerts extends React.Component {
           {needsAlertKind(alertKinds._ALERT_KIND_IDLE)
           && <AlertOfKindToggle
             myKind={alertKinds._ALERT_KIND_IDLE}
+            title={translations.idling} //????????
             onOfKindChange={this.onOfKindToggle}
             vehicleAlerts={this.state.alerts}
           />}
