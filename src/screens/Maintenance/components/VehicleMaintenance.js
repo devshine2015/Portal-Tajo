@@ -6,16 +6,20 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { vehiclesActions } from 'services/FleetModel/actions';
 
+import { TextField } from 'material-ui';
 import Layout from 'components/Layout';
 import FixedContent from 'components/FixedContent';
 import VehicleSummary from 'components/VehicleSummary/VehicleSummary';
 import MainActionButton from 'components/Controls/MainActionButton';
+import DateSelector from 'components/DateRange/SubPeriod';
 
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import { conditionsActions } from 'services/AlertsSystem/actions';
-import { getVehicleAlertConditions,
-  getAlertConditionByIdFunc, getAlertConditions } from 'services/AlertsSystem/reducer';
-
+import {
+  getVehicleAlertConditions,
+  getAlertConditionByIdFunc,
+  getAlertConditions,
+} from 'services/AlertsSystem/reducer';
 import AnimatedLogo from 'components/animated';
 import BarIndicator from './MaintenaceProgressBar';
 import WarningLights from './WarningLights';
@@ -137,12 +141,36 @@ class VehicleMaintenance extends React.Component {
             <WarningLights style={{ flex: '1', paddingLeft: '12px' }} />
           </div>
         </Layout.Section>
-        <Layout.Section style={{ flexDirection: 'row', justifyContent: 'flex-end', padding: '32px' }}>
-          <MainActionButton
-            label="Service Done"
-            onClick={() => {}}
-            icon={null}
+        <Layout.Section style={{ flexDirection: 'column', padding: '32px' }}>
+          <DateSelector
+            // date={}
+            withTime={false}
           />
+          <br />
+          <TextField
+            // onChange={}
+            defaultValue={vehCurrent.toFixed(0.1)}
+            floatingLabelFixed
+            floatingLabelText="Odometer value (km)"
+            name="odo_value"
+            value={this.state.odoValue}
+          />
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+            <TextField
+              // onChange={}
+              floatingLabelFixed
+              floatingLabelText="Notes about service"
+              rows={3}
+              name="service_notes"
+              multiLine
+              value={this.state.odoValue}
+            />
+            <MainActionButton
+              label="Service Done"
+              onClick={() => {}}
+              icon={null}
+            />
+          </div>
         </Layout.Section>
       </FixedContent>
     );
