@@ -2,6 +2,7 @@ import { combineReducers } from 'redux-immutable';
 import { List, Map, fromJS } from 'immutable';
 import * as vehiclesActions from '../actions/vehiclesActions';
 import * as socketActions from '../actions/socketActions';
+//
 
 const vehiclesInitialState = fromJS({
   processedList: {},
@@ -66,6 +67,10 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
           .deleteIn(['delayedList', delayedListIndex]);
       });
     }
+    case vehiclesActions.LAST_SERVICE_CREATE:
+      return state;
+    case vehiclesActions.LAST_SERVICE_UPDATE:
+      return state;
 
     default:
       return state;

@@ -24,6 +24,10 @@ export const FLEET_MODEL_VEHICLE_DISABLE = 'portal/services/FLEET_MODEL_VEHICLE_
 export const FLEET_MODEL_ORDER_UPDATE = 'portal/services/FLEET_MODEL_ORDER_UPDATE';
 export const FLEET_MODEL_DETACH_DEVICE = 'portal/services/FLEET_MODEL_DETACH_DEVICE';
 export const FLEET_MODEL_ATTACH_DEVICE = 'portal/services/FLEET_MODEL_ATTACH_DEVICE';
+//
+export const LAST_SERVICE_CREATE = 'LAST_SERVICE_CREATE';
+export const LAST_SERVICE_UPDATE = 'LAST_SERVICE_UPDATE';
+
 
 export const updateDetails = (details = {}) => dispatch =>
   makeUpdateVehicleRequest(details, dispatch);
@@ -205,4 +209,15 @@ const _vehicleDisable = id => ({
 export const fleetIsReady = isReady => ({
   type: FLEET_MODEL_READY_SET,
   isReady,
+});
+
+//actions for last service
+export const createLastService = (id, odometer) => ({
+  type: LAST_SERVICE_CREATE,
+  odometer,
+});
+
+export const updateLastService = (id, odometer) => ({
+  type: LAST_SERVICE_UPDATE,
+  odometer,
 });

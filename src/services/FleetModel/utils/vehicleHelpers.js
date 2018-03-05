@@ -6,10 +6,11 @@ import { LAG_INDICAION_TRH_MIN, LAG_INDICAION_TRH_NOIGN_MIN } from 'utils/consta
 import { sortByName } from 'utils/sorting';
 
 import {
-  getProcessedVehicles,
+  getProcessedVehicles, //
   getDeadList,
   getDelayedList,
 } from '../reducer';
+
 import {
   removeMe_OverrideMaritimeDemoData, // eslint-disable-line camelcase
   removeMe_OverrideMaritimeDemoVessel, // eslint-disable-line camelcase
@@ -263,7 +264,14 @@ export function imMakeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
       .set('id', backEndObject.id)
       .set('marker', marker)
       .set('driverId', driverId)
-      .set('lastServiceOdo', backEndObject.hasOwnProperty('lastServiceOdo') ? backEndObject.lastServiceOdo.value : 0);
+      // let it be here till replaced with lastService
+      .set('lastServiceOdo', backEndObject.hasOwnProperty('lastServiceOdo') ? backEndObject.lastServiceOdo.value : 0) 
+    // TODO: maybe rewrite next more clear or init in other, more convinient place
+      .set('lastService', {
+        date: '',
+        odoValue: '',
+        note: '',
+      });
   });
 }
 

@@ -5,21 +5,21 @@ import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import { vehiclesActions } from 'services/FleetModel/actions';
-
-import { TextField } from 'material-ui';
-import Layout from 'components/Layout';
-import FixedContent from 'components/FixedContent';
-import VehicleSummary from 'components/VehicleSummary/VehicleSummary';
-import MainActionButton from 'components/Controls/MainActionButton';
-import DateSelector from 'components/DateRange/SubPeriod';
-
-import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import { conditionsActions } from 'services/AlertsSystem/actions';
+import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import {
   getVehicleAlertConditions,
   getAlertConditionByIdFunc,
   getAlertConditions,
 } from 'services/AlertsSystem/reducer';
+
+import { TextField } from 'material-ui';
+import DatePicker from 'material-ui/DatePicker';
+import Layout from 'components/Layout';
+import FixedContent from 'components/FixedContent';
+import VehicleSummary from 'components/VehicleSummary/VehicleSummary';
+import MainActionButton from 'components/Controls/MainActionButton';
+
 import AnimatedLogo from 'components/animated';
 import BarIndicator from './MaintenaceProgressBar';
 import WarningLights from './WarningLights';
@@ -30,6 +30,9 @@ class VehicleMaintenance extends React.Component {
     super(props);
     this.state = {
       isLoading: true,
+      serviceDate: new Date(),
+      serviceOdometer: '',
+      serviceNote: '',
     };
     this.maintenanceAlert = null;
     if (props.theVehicle !== null) {
@@ -49,6 +52,9 @@ class VehicleMaintenance extends React.Component {
         this.setVehicleAlerts(vehAlertIds);
       }
     }
+    this.setState({
+      serviceOdometer: (nextProps.theVehicle.dist.total / 1000).toFixed(0.1),
+    });
   }
 
   fetchAlerts = (vehicleId) => {
@@ -69,6 +75,36 @@ class VehicleMaintenance extends React.Component {
     });
 
     // this.props.updateLocalVehicleDetails(this.props.theVehicle.id, makeMaintenanceData());
+  }
+
+  handleDateSelect = (_, date) => {
+    this.setState({
+      serviceDate: date,
+    });
+  }
+
+  handleOdometerChange = (e) => {
+    const numbers = /^[0-9]+$/;
+    if (e.target.value === '' || numbers.test(e.target.value)) {
+      this.setState({
+        serviceOdometer: e.target.value,
+      });
+    }
+  }
+
+  handleNoteChange = (e) => {
+    this.setState({
+      serviceNote: e.target.value,
+    });
+  }
+
+  serviceDoneClick = () => {
+    const odometer = {
+      date: this.state.serviceDate,
+      odoValue: this.state.serviceOdometer,
+      note: this.state.serviceNote,
+    };
+    console.log(odometer);
   }
 
   render() {
@@ -142,32 +178,40 @@ class VehicleMaintenance extends React.Component {
           </div>
         </Layout.Section>
         <Layout.Section style={{ flexDirection: 'column', padding: '32px' }}>
-          <DateSelector
-            // date={}
-            withTime={false}
-          />
-          <br />
-          <TextField
-            // onChange={}
-            defaultValue={vehCurrent.toFixed(0.1)}
-            floatingLabelFixed
-            floatingLabelText="Odometer value (km)"
-            name="odo_value"
-            value={this.state.odoValue}
-          />
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+          <div style={{ flexDirection: 'row' }}>
+            <div style={{ display: 'inline-block', marginRight: '40px', width: '256px' }}>
+              <DatePicker
+                autoOk
+                defaultDate={this.state.serviceDate}
+                floatingLabelText="Date of service"
+                maxDate={new Date()}
+                onChange={this.handleDateSelect}
+              />
+            </div>
             <TextField
-              // onChange={}
               floatingLabelFixed
-              floatingLabelText="Notes about service"
-              rows={3}
-              name="service_notes"
-              multiLine
-              value={this.state.odoValue}
+              floatingLabelText="Odometer value (km)"
+              name="serviceOdometer"
+              value={this.state.serviceOdometer}
+              onChange={this.handleOdometerChange}
             />
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+            <div style={{ marginRight: '24px', width: '556px' }}>
+              <TextField
+                floatingLabelFixed
+                floatingLabelText="Notes about service"
+                fullWidth
+                rows={3}
+                name="serviceNote"
+                multiLine
+                value={this.state.serviceNote}
+                onChange={this.handleNoteChange}
+              />
+            </div>
             <MainActionButton
               label="Service Done"
-              onClick={() => {}}
+              onClick={this.serviceDoneClick}
               icon={null}
             />
           </div>
@@ -176,6 +220,9 @@ class VehicleMaintenance extends React.Component {
     );
   }
 }
+VehicleMaintenance.contextTypes = {
+  muiTheme: PropTypes.object.isRequired,
+};
 
 VehicleMaintenance.propTypes = {
   theVehicle: PropTypes.object,
