@@ -3,6 +3,7 @@ import english from './english';
 import simplified from './chinese_simplified';
 import traditional from './chinese_traditional';
 import thai from './thai';
+import japanese from './japanese';
 
 export default {
   en: english,
@@ -10,6 +11,7 @@ export default {
   id: behasa,
   cn: simplified,
   tw: traditional,
+  jp: japanese,
 };
 
 export const locales = [{
@@ -27,4 +29,7 @@ export const locales = [{
 }, {
   text: '繁體',
   value: 'tw', // traditional
+}, {
+  text: '日本語',
+  value: 'jp',
 }];
