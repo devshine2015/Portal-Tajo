@@ -11,7 +11,7 @@ const vehiclesInitialState = fromJS({
   delayedList: [],
 });
 
-function vehiclesReducer(state = vehiclesInitialState, action) {
+function vehiclesReducer(state = vehiclesInitialState, action) { // !
   switch (action.type) {
     case vehiclesActions.FLEET_MODEL_VEHICLES_SET:
       return state.withMutations((st) => {
@@ -67,11 +67,17 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
           .deleteIn(['delayedList', delayedListIndex]);
       });
     }
-    case vehiclesActions.LAST_SERVICE_CREATE:
+    case vehiclesActions.VEHICLE_SERVICE_HISTORY_ADD:
       return state;
-    case vehiclesActions.LAST_SERVICE_UPDATE:
-      return state;
-
+      // return state.setIn(
+      //   ['processedList', action.vehicleId, 'serviceHistory'],
+      //   action.odometer.odometer,
+      // );
+    case vehiclesActions.VEHICLE_SERVICE_HISTORY_SET:
+      return state.setIn(
+        ['processedList', action.vehicleId, 'serviceHistory'],
+        action.serviceHistory,
+      );
     default:
       return state;
   }

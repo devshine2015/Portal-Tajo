@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import { conditionsActions } from 'services/AlertsSystem/actions';
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
@@ -21,6 +22,7 @@ import VehicleSummary from 'components/VehicleSummary/VehicleSummary';
 import MainActionButton from 'components/Controls/MainActionButton';
 
 import AnimatedLogo from 'components/animated';
+import ServiceHistoryTable from './ServiceHistoryTable';
 import BarIndicator from './MaintenaceProgressBar';
 import WarningLights from './WarningLights';
 
@@ -42,12 +44,13 @@ class VehicleMaintenance extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.theVehicle === null) return;
-    if (this.props.theVehicle === null
-      || this.props.theVehicle.id !== nextProps.theVehicle.id) {
+    if (this.props.theVehicle === null ||
+      this.props.theVehicle.id !== nextProps.theVehicle.id) {
       const vehAlertIds = nextProps.getVehicleAlerts(nextProps.theVehicle.id);
       if (vehAlertIds === null) {
         this.setState({ isLoading: true });
         this.fetchAlerts(nextProps.theVehicle.id);
+        this.fetchServiceHistory(nextProps.theVehicle.id);
       } else {
         this.setVehicleAlerts(vehAlertIds);
       }
@@ -55,6 +58,10 @@ class VehicleMaintenance extends React.Component {
     this.setState({
       serviceOdometer: (nextProps.theVehicle.dist.total / 1000).toFixed(0.1),
     });
+  }
+
+  fetchServiceHistory = (vehicleId) => {
+    this.props.fetchServiceOdoHistory(vehicleId);
   }
 
   fetchAlerts = (vehicleId) => {
@@ -99,18 +106,24 @@ class VehicleMaintenance extends React.Component {
   }
 
   serviceDoneClick = () => {
+    const vehicleId = this.props.theVehicle.id;
     const odometer = {
-      date: this.state.serviceDate,
-      odoValue: this.state.serviceOdometer,
-      note: this.state.serviceNote,
+      odometer: {
+        // ts: moment(this.state.serviceDate).toISOString(),
+        ts: '2017-04-02T23:59:59.000+0000',
+        value: parseInt(this.state.serviceOdometer, 10),
+        note: this.state.serviceNote,
+      }
     };
-    console.log(odometer);
+    console.log(odometer); // !
+    this.props.addServiceOdoHistory(vehicleId, odometer);
   }
 
   render() {
     if (this.props.theVehicle === null) {
       return false;
     }
+    // const history = this.fetchServiceHistory(this.props.theVehicle.id);
     if (this.state.isLoading) {
       // const animation = `transition.flipX${(isFetching ? 'In' : 'Out')}`;      
       // animation={animation}
@@ -216,6 +229,13 @@ class VehicleMaintenance extends React.Component {
             />
           </div>
         </Layout.Section>
+        {
+          this.props.serviceHistory.length !== 0 ? (
+            <Layout.Section style={{ padding: '40px 32px' }}>
+              <ServiceHistoryTable history={this.props.serviceHistory} />
+            </Layout.Section>
+          ) : null
+        }
       </FixedContent>
     );
   }
@@ -226,21 +246,33 @@ VehicleMaintenance.contextTypes = {
 
 VehicleMaintenance.propTypes = {
   theVehicle: PropTypes.object,
+  serviceHistory: PropTypes.array,
+  addServiceOdoHistory: PropTypes.func.isRequired,
   getVehicleAlerts: PropTypes.func.isRequired,
   fetchVehicleAlertConditions: PropTypes.func.isRequired,
+  fetchServiceOdoHistory: PropTypes.func.isRequired,
   updateLocalVehicleDetails: PropTypes.func.isRequired,
   alertById: PropTypes.func.isRequired,
   alertConditions: PropTypes.array.isRequired,
 };
 
-const mapState = state => ({
-  getVehicleAlerts: getVehicleAlertConditions(state),
-  alertById: getAlertConditionByIdFunc(state),
-  alertConditions: getAlertConditions(state),
-});
+const mapState = (state, props) => {
+  const vehicleHistory = props.theVehicle !== null ?
+    state.toJS().fleet.vehicles.dynamic.processedList[props.theVehicle.id].serviceHistory
+    : null;
+
+  return {
+    getVehicleAlerts: getVehicleAlertConditions(state),
+    alertById: getAlertConditionByIdFunc(state),
+    alertConditions: getAlertConditions(state),
+    serviceHistory: vehicleHistory,
+  };
+};
 const mapDispatch = {
   fetchVehicleAlertConditions: conditionsActions.fetchVehicleAlertConditions,
   updateLocalVehicleDetails: vehiclesActions.updateLocalDetails,
+  fetchServiceOdoHistory: vehiclesActions.fetchServiceOdoHistory,
+  addServiceOdoHistory: vehiclesActions.createServiceOdo,
 };
 
 export default connect(mapState, mapDispatch)(pure(VehicleMaintenance));

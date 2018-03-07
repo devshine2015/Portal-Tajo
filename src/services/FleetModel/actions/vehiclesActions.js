@@ -24,9 +24,11 @@ export const FLEET_MODEL_VEHICLE_DISABLE = 'portal/services/FLEET_MODEL_VEHICLE_
 export const FLEET_MODEL_ORDER_UPDATE = 'portal/services/FLEET_MODEL_ORDER_UPDATE';
 export const FLEET_MODEL_DETACH_DEVICE = 'portal/services/FLEET_MODEL_DETACH_DEVICE';
 export const FLEET_MODEL_ATTACH_DEVICE = 'portal/services/FLEET_MODEL_ATTACH_DEVICE';
-//
-export const LAST_SERVICE_CREATE = 'LAST_SERVICE_CREATE';
-export const LAST_SERVICE_UPDATE = 'LAST_SERVICE_UPDATE';
+
+// variables for vehicle service history
+export const VEHICLE_SERVICE_HISTORY_ADD = 'VEHICLE_SERVICE_HISTORY_ADD';
+export const VEHICLE_SERVICE_HISTORY_SET = 'VEHICLE_SERVICE_HISTORY_SET';
+export const VEHICLE_SERVICE_HISTORY_UPDATE = 'VEHICLE_SERVICE_HISTORY_UPDATE';
 
 
 export const updateDetails = (details = {}) => dispatch =>
@@ -51,7 +53,6 @@ export const fetchVehicles = getState => (dispatch) => {
   }, {
     ...endpoints.getStats,
   }];
-
   dispatch(fleetIsReady(false));
 
   return Promise.all(
@@ -59,9 +60,9 @@ export const fetchVehicles = getState => (dispatch) => {
       api[method](url).then(toJson),
     ),
   ).then(([vehicles = [], { status = [] } = {}]) => {
-    const localObjects = makeLocalVehicles(
+    const localObjects = makeLocalVehicles( // !
       subFleetFilter(vehicles, dealerSelectors.getSelectedSubFleet(getState())), status);
-
+    // debugger;
     dispatch(_vehiclesSet(localObjects));
   }).then(() => {
     if (isMwa) {
@@ -177,7 +178,7 @@ const _vehiclesSet = ({
   localVehicles,
   orderedVehicles,
 }) => ({
-  type: FLEET_MODEL_VEHICLES_SET,
+  type: FLEET_MODEL_VEHICLES_SET, // !
   deadList,
   delayedList,
   localVehicles,
@@ -211,13 +212,37 @@ export const fleetIsReady = isReady => ({
   isReady,
 });
 
-//actions for last service
-export const createLastService = (id, odometer) => ({
-  type: LAST_SERVICE_CREATE,
-  odometer,
+export const fetchServiceOdoHistory = vehicleId => (dispatch) => {
+  const { url, method } = endpoints.getOdoServiceHistory(vehicleId);
+
+  return api[method](url)
+    .then(res => res.json())
+    .then((data) => {
+      dispatch(setServiceOdoHistory(vehicleId, data));
+      return Promise.resolve();
+    }, error => Promise.reject(error));
+};
+
+export const createServiceOdo = (vehicleId, odometer) => (dispatch) => {
+  const { url, method } = endpoints.createOdoService(vehicleId);
+
+  return api[method](url, {
+    payload: odometer,
+  }).then(res => res.json())
+    .then((data) => {
+      dispatch(addServiceOdo(vehicleId, data));
+      return Promise.resolve();
+    }, error => Promise.reject(error));
+};
+
+export const setServiceOdoHistory = (vehicleId, serviceHistory) => ({
+  type: VEHICLE_SERVICE_HISTORY_SET,
+  vehicleId,
+  serviceHistory,
 });
 
-export const updateLastService = (id, odometer) => ({
-  type: LAST_SERVICE_UPDATE,
+export const addServiceOdo = (vehicleId, odometer) => ({
+  type: VEHICLE_SERVICE_HISTORY_ADD,
+  vehicleId,
   odometer,
 });
