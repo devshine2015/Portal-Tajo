@@ -74,6 +74,27 @@ const endpoints = {
     method: 'delete',
     apiVersion: 1,
   }),
+  // vehicles service odometer history
+  createOdoService: id => ({
+    url: `vehicles/${id}/service-odometer`,
+    method: 'post',
+    apiVersion: 1,
+  }),
+  getOdoServiceHistory: id => ({
+    url: `vehicles/${id}/service-odometer`,
+    method: 'get',
+    apiVersion: 1,
+  }),
+  updateOdoServiceHistory: id => ({
+    url: `vehicles/${id}/service-odometer`,
+    method: 'update',
+    apiVersion: 1,
+  }),
+  deleteOdoService: (id, odoId) => ({
+    url: `vehicles/${id}/service-odometer/${odoId}`,
+    method: 'delete',
+    apiVersion: 1,
+  }),
 
   // drivers
   getDrivers: {
