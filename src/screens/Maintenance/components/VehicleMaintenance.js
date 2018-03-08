@@ -124,16 +124,22 @@ class VehicleMaintenance extends React.Component {
     window.print();
   }
 
-  generateData = entries => [entries.map(aEntr => aEntr[1])]
+  generateServiceData = entries => [
+    entries.map(aEntr => [
+      moment(aEntr[1].odometer.ts).format('DD-MM-YYYY'),
+      aEntr[1].odometer.value,
+      aEntr[1].odometer.note,
+    ]),
+  ]
 
   doSaveSpreadSheet = () => {
-    // const overviewEntries = Object.entries(this.props.serviceHistory);
-    // const book = new Book(
-    //   ['Date', 'Odometer Value (km)', 'Notes'],
-    //   this.generateData(overviewEntries),
-    //   { fileName: 'service_history' }
-    // );
-    // book.createBook();
+    const overviewEntries = Object.entries(this.props.serviceHistory);
+    const book = new Book(
+      ['Date', 'Odometer Value (km)', 'Notes'],
+      this.generateServiceData(overviewEntries),
+      { fileName: 'service_history' },
+    );
+    book.createBookWithRows();
   }
 
   render() {

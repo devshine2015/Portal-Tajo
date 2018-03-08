@@ -30,6 +30,20 @@ Book.prototype.createBook = function () {
   this.download(bookData);
 };
 
+// input data structure - [[oneRow], [...], [...]]
+Book.prototype.createBookWithRows = function () {
+  let bookData = '';
+
+  bookData = this.addHeaders(this.headers, true);
+
+  this.rowData[0].forEach(data => {
+    const row = _addRow(data);
+    bookData = bookData.concat(row);
+  });
+  
+  this.download(bookData);
+};
+
 /**
  * Generate file out of data and download it
  */
