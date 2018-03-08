@@ -60,7 +60,7 @@ export const fetchVehicles = getState => (dispatch) => {
       api[method](url).then(toJson),
     ),
   ).then(([vehicles = [], { status = [] } = {}]) => {
-    const localObjects = makeLocalVehicles( // !
+    const localObjects = makeLocalVehicles(
       subFleetFilter(vehicles, dealerSelectors.getSelectedSubFleet(getState())), status);
     // debugger;
     dispatch(_vehiclesSet(localObjects));
@@ -178,7 +178,7 @@ const _vehiclesSet = ({
   localVehicles,
   orderedVehicles,
 }) => ({
-  type: FLEET_MODEL_VEHICLES_SET, // !
+  type: FLEET_MODEL_VEHICLES_SET,
   deadList,
   delayedList,
   localVehicles,

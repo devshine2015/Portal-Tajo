@@ -11,7 +11,7 @@ const vehiclesInitialState = fromJS({
   delayedList: [],
 });
 
-function vehiclesReducer(state = vehiclesInitialState, action) { // !
+function vehiclesReducer(state = vehiclesInitialState, action) {
   switch (action.type) {
     case vehiclesActions.FLEET_MODEL_VEHICLES_SET:
       return state.withMutations((st) => {
