@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import Book from 'utils/reports/spreadsheetGenerator';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import { conditionsActions } from 'services/AlertsSystem/actions';
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
@@ -119,11 +120,26 @@ class VehicleMaintenance extends React.Component {
     this.props.addServiceOdoHistory(vehicleId, odometer);
   }
 
+  doPrint = () => {
+    window.print();
+  }
+
+  generateData = entries => [entries.map(aEntr => aEntr[1])]
+
+  doSaveSpreadSheet = () => {
+    // const overviewEntries = Object.entries(this.props.serviceHistory);
+    // const book = new Book(
+    //   ['Date', 'Odometer Value (km)', 'Notes'],
+    //   this.generateData(overviewEntries),
+    //   { fileName: 'service_history' }
+    // );
+    // book.createBook();
+  }
+
   render() {
     if (this.props.theVehicle === null) {
       return false;
     }
-    // const history = this.fetchServiceHistory(this.props.theVehicle.id);
     if (this.state.isLoading) {
       // const animation = `transition.flipX${(isFetching ? 'In' : 'Out')}`;      
       // animation={animation}
@@ -226,6 +242,10 @@ class VehicleMaintenance extends React.Component {
               label="Service Done"
               onClick={this.serviceDoneClick}
               icon={null}
+              disabled={
+                this.state.serviceOdometer === '' ||
+                parseInt(this.state.serviceOdometer, 10) === 0
+              }
             />
           </div>
         </Layout.Section>
@@ -233,6 +253,19 @@ class VehicleMaintenance extends React.Component {
           this.props.serviceHistory.length !== 0 ? (
             <Layout.Section style={{ padding: '40px 32px' }}>
               <ServiceHistoryTable history={this.props.serviceHistory} />
+              <div style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: '32px' }}>
+                <MainActionButton
+                  label="Save RAW"
+                  onClick={this.doSaveSpreadSheet}
+                  icon={null}
+                  style={{ marginLeft: '32px' }}
+                />
+                <MainActionButton
+                  label="Print"
+                  onClick={this.doPrint}
+                  icon={null}
+                />
+              </div>
             </Layout.Section>
           ) : null
         }
