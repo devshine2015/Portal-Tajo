@@ -2,6 +2,7 @@ import { combineReducers } from 'redux-immutable';
 import { List, Map, fromJS } from 'immutable';
 import * as vehiclesActions from '../actions/vehiclesActions';
 import * as socketActions from '../actions/socketActions';
+//
 
 const vehiclesInitialState = fromJS({
   processedList: {},
@@ -66,6 +67,21 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
           .deleteIn(['delayedList', delayedListIndex]);
       });
     }
+    case vehiclesActions.VEHICLE_SERVICE_HISTORY_ADD: {
+      const oldHistory = state.getIn(['processedList', action.vehicleId, 'serviceHistory']);
+      const newHistory = oldHistory.concat(action.odometer);
+
+      return state.setIn(
+        ['processedList', action.vehicleId, 'serviceHistory'],
+        newHistory,
+      );
+    }
+
+    case vehiclesActions.VEHICLE_SERVICE_HISTORY_SET:
+      return state.setIn(
+        ['processedList', action.vehicleId, 'serviceHistory'],
+        action.serviceHistory,
+      );
 
     default:
       return state;

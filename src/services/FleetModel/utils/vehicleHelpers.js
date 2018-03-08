@@ -5,17 +5,18 @@ import { Map, fromJS } from 'immutable';
 import { LAG_INDICAION_TRH_MIN, LAG_INDICAION_TRH_NOIGN_MIN } from 'utils/constants';
 import { sortByName } from 'utils/sorting';
 
+import markerTypes from 'services/FleetModel/utils/markerTypes';
 import {
-  getProcessedVehicles,
+  getProcessedVehicles, //
   getDeadList,
   getDelayedList,
 } from '../reducer';
+
 import {
   removeMe_OverrideMaritimeDemoData, // eslint-disable-line camelcase
   removeMe_OverrideMaritimeDemoVessel, // eslint-disable-line camelcase
 } from './maritimeDemoData';
 import { vehicleClientUpdate } from './localTickHelpers';
-import markerTypes from 'services/FleetModel/utils/markerTypes';
 
 const isTest = process.env.NODE_ENV === 'test';
 
@@ -263,7 +264,10 @@ export function imMakeLocalVehicle(backEndObject = {}, vehicleStats = {}) {
       .set('id', backEndObject.id)
       .set('marker', marker)
       .set('driverId', driverId)
-      .set('lastServiceOdo', backEndObject.hasOwnProperty('lastServiceOdo') ? backEndObject.lastServiceOdo.value : 0);
+      // let it be here till replaced with lastService
+      .set('lastServiceOdo', backEndObject.hasOwnProperty('lastServiceOdo') ? backEndObject.lastServiceOdo.value : 0)
+    // TODO: maybe rewrite next more clear or init in other, more convinient place
+      .set('serviceHistory', []);
   });
 }
 
@@ -376,7 +380,7 @@ export function cleanVehicle(vehicle) {
   const requiredBackEndProps = [
     'id', 'name', 'licensePlate', 'make', 'model', 'kind',
     'odometer', 'lastServiceOdo', 'year', 'created', 'updated', 'deviceId',
-    'status', 'meta', 'chassisNumber', 'fuelCapacity',
+    'status', 'meta', 'chassisNumber', 'fuelCapacity', 'serviceHistory',
   ];
   const optionalBackEndProps = [
     'gearbox', 'powertrain', 'maxPower', 'maxTorque',

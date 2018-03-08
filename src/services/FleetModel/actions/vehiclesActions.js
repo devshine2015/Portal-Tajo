@@ -25,6 +25,12 @@ export const FLEET_MODEL_ORDER_UPDATE = 'portal/services/FLEET_MODEL_ORDER_UPDAT
 export const FLEET_MODEL_DETACH_DEVICE = 'portal/services/FLEET_MODEL_DETACH_DEVICE';
 export const FLEET_MODEL_ATTACH_DEVICE = 'portal/services/FLEET_MODEL_ATTACH_DEVICE';
 
+// variables for vehicle service history
+export const VEHICLE_SERVICE_HISTORY_ADD = 'VEHICLE_SERVICE_HISTORY_ADD';
+export const VEHICLE_SERVICE_HISTORY_SET = 'VEHICLE_SERVICE_HISTORY_SET';
+export const VEHICLE_SERVICE_HISTORY_UPDATE = 'VEHICLE_SERVICE_HISTORY_UPDATE';
+
+
 export const updateDetails = (details = {}) => dispatch =>
   makeUpdateVehicleRequest(details, dispatch);
 export const updateLocalDetails = (vehicleId, newDetails) => dispatch =>
@@ -47,7 +53,6 @@ export const fetchVehicles = getState => (dispatch) => {
   }, {
     ...endpoints.getStats,
   }];
-
   dispatch(fleetIsReady(false));
 
   return Promise.all(
@@ -57,7 +62,7 @@ export const fetchVehicles = getState => (dispatch) => {
   ).then(([vehicles = [], { status = [] } = {}]) => {
     const localObjects = makeLocalVehicles(
       subFleetFilter(vehicles, dealerSelectors.getSelectedSubFleet(getState())), status);
-
+    // debugger;
     dispatch(_vehiclesSet(localObjects));
   }).then(() => {
     if (isMwa) {
@@ -205,4 +210,39 @@ const _vehicleDisable = id => ({
 export const fleetIsReady = isReady => ({
   type: FLEET_MODEL_READY_SET,
   isReady,
+});
+
+export const fetchServiceOdoHistory = vehicleId => (dispatch) => {
+  const { url, method } = endpoints.getOdoServiceHistory(vehicleId);
+
+  return api[method](url)
+    .then(res => res.json())
+    .then((data) => {
+      dispatch(setServiceOdoHistory(vehicleId, data));
+      return Promise.resolve();
+    }, error => Promise.reject(error));
+};
+
+export const createServiceOdo = (vehicleId, odometer) => (dispatch) => {
+  const { url, method } = endpoints.createOdoService(vehicleId);
+
+  return api[method](url, {
+    payload: odometer,
+  }).then(res => res.json())
+    .then((data) => {
+      dispatch(addServiceOdo(vehicleId, data));
+      return Promise.resolve();
+    }, error => Promise.reject(error));
+};
+
+export const setServiceOdoHistory = (vehicleId, serviceHistory) => ({
+  type: VEHICLE_SERVICE_HISTORY_SET,
+  vehicleId,
+  serviceHistory,
+});
+
+export const addServiceOdo = (vehicleId, odometer) => ({
+  type: VEHICLE_SERVICE_HISTORY_ADD,
+  vehicleId,
+  odometer,
 });
