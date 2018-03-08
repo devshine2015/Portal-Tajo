@@ -19,6 +19,7 @@ const MainActionButton = ({
   label,
   icon,
   style,
+  disabled,
 }) => (
   <RaisedButton
     onClick={onClick}
@@ -27,6 +28,7 @@ const MainActionButton = ({
     style={Object.assign({}, { float: 'right' }, style)}
     className={css(classes.no_print)}
     primary
+    disabled={disabled}
   />
 );
 
@@ -35,11 +37,13 @@ MainActionButton.propTypes = {
   label: PropTypes.string.isRequired,
   icon: PropTypes.node,
   style: PropTypes.object,
+  disabled: PropTypes.bool,
 };
 
 MainActionButton.defaultProps = {
   icon: <ContentAddIcon style={DEF_STYLES.icon} />,
   style: undefined,
+  disabled: false,
 };
 
 export default MainActionButton;
