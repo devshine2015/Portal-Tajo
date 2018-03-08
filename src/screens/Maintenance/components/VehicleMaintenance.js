@@ -107,15 +107,15 @@ class VehicleMaintenance extends React.Component {
 
   serviceDoneClick = () => {
     const vehicleId = this.props.theVehicle.id;
+    const time = moment(this.state.serviceDate).format();
+    const ts = time.replace(/:([^:]*)$/, '$1');
     const odometer = {
       odometer: {
-        // ts: moment(this.state.serviceDate).toISOString(),
-        ts: '2017-04-02T23:59:59.000+0000',
+        ts,
         value: parseInt(this.state.serviceOdometer, 10),
         note: this.state.serviceNote,
-      }
+      },
     };
-    console.log(odometer); // !
     this.props.addServiceOdoHistory(vehicleId, odometer);
   }
 

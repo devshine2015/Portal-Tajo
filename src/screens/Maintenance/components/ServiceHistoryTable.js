@@ -13,6 +13,7 @@ import {
 const ServiceHistoryTable = props => (
   <Table
     fixedHeader
+    height={'290px'}
     selecable={false}
   >
     <TableHeader
@@ -24,7 +25,7 @@ const ServiceHistoryTable = props => (
           colSpan="3"
           style={{ color: 'rgba(0, 97, 158, 0.75)', fontSize: '18px', textAlign: 'center' }}
         >
-          Vehicle Service History
+          Service History
         </TableHeaderColumn>
       </TableRow>
       <TableRow>

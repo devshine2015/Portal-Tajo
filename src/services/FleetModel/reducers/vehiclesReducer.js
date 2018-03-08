@@ -67,17 +67,22 @@ function vehiclesReducer(state = vehiclesInitialState, action) { // !
           .deleteIn(['delayedList', delayedListIndex]);
       });
     }
-    case vehiclesActions.VEHICLE_SERVICE_HISTORY_ADD:
-      return state;
-      // return state.setIn(
-      //   ['processedList', action.vehicleId, 'serviceHistory'],
-      //   action.odometer.odometer,
-      // );
+    case vehiclesActions.VEHICLE_SERVICE_HISTORY_ADD: {
+      const oldHistory = state.getIn(['processedList', action.vehicleId, 'serviceHistory']);
+      const newHistory = oldHistory.concat(action.odometer);
+
+      return state.setIn(
+        ['processedList', action.vehicleId, 'serviceHistory'],
+        newHistory,
+      );
+    }
+
     case vehiclesActions.VEHICLE_SERVICE_HISTORY_SET:
       return state.setIn(
         ['processedList', action.vehicleId, 'serviceHistory'],
         action.serviceHistory,
       );
+
     default:
       return state;
   }
