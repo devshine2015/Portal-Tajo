@@ -122,16 +122,13 @@ export function _updateLocalVehicleModel(vehicleId, newDetails, dispatch) {
  * */
 export function makeUpdateVehicleRequest(details, dispatch) {
   const { url, method } = endpoints.updateVehicle(details.id);
-
   return api[method](url, {
     payload: details,
   }).then(() => {
     dispatch(_vehicleUpdate({
       original: details,
-      //
       marker: details.meta.marker,
       driverId: details.meta.driverId,
-
       dist: {
         total: details.odometer.value,
       },
@@ -139,6 +136,20 @@ export function makeUpdateVehicleRequest(details, dispatch) {
     return Promise.resolve();
   }, error => Promise.reject(error));
 }
+
+export const updateLastVehicleOdo = data => (dispatch) => {
+  const { url, method } = endpoints.updateVehicle(data.id);
+  return api[method](url, {
+    payload: data.original,
+  }).then(() => {
+    dispatch(_vehicleUpdate({
+      original: data.original,
+      lastServiceOdo: data.odometerValue,
+    },
+    data.id));
+    return Promise.resolve();
+  }, error => Promise.reject(error));
+};
 
 export const disableVehicle = vehicleId => (dispatch) => {
   const { url, method } = endpoints.disableVehicle(vehicleId);
@@ -225,7 +236,6 @@ export const fetchServiceOdoHistory = vehicleId => (dispatch) => {
 
 export const createServiceOdo = (vehicleId, odometer) => (dispatch) => {
   const { url, method } = endpoints.createOdoService(vehicleId);
-
   return api[method](url, {
     payload: odometer,
   }).then(res => res.json())

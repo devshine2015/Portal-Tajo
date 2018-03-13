@@ -38,8 +38,8 @@ const ServiceHistoryTable = props => (
       displayRowCheckbox={false}
     >
       {
-        props.history.map(historyItem => (
-          <TableRow key={historyItem.id}>
+        props.history.map((historyItem, index) => (
+          <TableRow key={historyItem.odometer.value + index.toString()}>
             <TableRowColumn>{moment(historyItem.odometer.ts).format('DD-MM-YYYY')}</TableRowColumn>
             <TableRowColumn>{historyItem.odometer.value}</TableRowColumn>
             <TableRowColumn>{historyItem.odometer.note}</TableRowColumn>

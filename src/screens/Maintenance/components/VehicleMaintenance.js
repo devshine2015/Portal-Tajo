@@ -36,6 +36,7 @@ class VehicleMaintenance extends React.Component {
       serviceDate: new Date(),
       serviceOdometer: '',
       serviceNote: '',
+      // serviceDoneSet: 0,
     };
     this.maintenanceAlert = null;
     if (props.theVehicle !== null) {
@@ -57,6 +58,7 @@ class VehicleMaintenance extends React.Component {
       }
     }
     this.setState({
+      // serviceDoneSet: this.state.serviceDoneSet + nextProps.theVehicle.lastServiceOdo,
       serviceOdometer: (nextProps.theVehicle.dist.total / 1000).toFixed(0.1),
     });
   }
@@ -117,7 +119,18 @@ class VehicleMaintenance extends React.Component {
         note: this.state.serviceNote,
       },
     };
-    this.props.addServiceOdoHistory(vehicleId, odometer);
+    const original = {
+      ...this.props.theVehicle.original,
+      lastServiceOdo: {
+        value: odometer.odometer.value,
+      },
+    };
+    // this.props.addServiceOdoHistory(vehicleId, odometer);
+    this.props.updateServiceOdoHistory({
+      id: vehicleId,
+      odometerValue: odometer.odometer.value,
+      original,
+    });
   }
 
   doPrint = () => {
@@ -166,9 +179,8 @@ class VehicleMaintenance extends React.Component {
     const mntZero = this.props.theVehicle.lastServiceOdo;
     const mntEnd = this.props.theVehicle.lastServiceOdo + mnyCycle;
     const vehCurrent = this.props.theVehicle.dist.total / 1000;
-
+    // debugger;
     const distToNextService = mntEnd - vehCurrent;
-    // const toServicePerc = 100 * (vehCurrent - mntZero) / (mntEnd - mntZero);
     const useDemoRandomData = false;
     return (
       <FixedContent
@@ -287,6 +299,7 @@ VehicleMaintenance.propTypes = {
   theVehicle: PropTypes.object,
   serviceHistory: PropTypes.array,
   addServiceOdoHistory: PropTypes.func.isRequired,
+  updateServiceOdoHistory: PropTypes.func.isRequired,
   getVehicleAlerts: PropTypes.func.isRequired,
   fetchVehicleAlertConditions: PropTypes.func.isRequired,
   fetchServiceOdoHistory: PropTypes.func.isRequired,
@@ -294,7 +307,7 @@ VehicleMaintenance.propTypes = {
   alertById: PropTypes.func.isRequired,
   alertConditions: PropTypes.array.isRequired,
 };
-
+// TODO: REWRITE IN A BETTER WAY (WITHOUT DIRECT GETTING STATE)
 const mapState = (state, props) => {
   const vehicleHistory = props.theVehicle !== null ?
     state.toJS().fleet.vehicles.dynamic.processedList[props.theVehicle.id].serviceHistory
@@ -312,6 +325,7 @@ const mapDispatch = {
   updateLocalVehicleDetails: vehiclesActions.updateLocalDetails,
   fetchServiceOdoHistory: vehiclesActions.fetchServiceOdoHistory,
   addServiceOdoHistory: vehiclesActions.createServiceOdo,
+  updateServiceOdoHistory: vehiclesActions.updateLastVehicleOdo,
 };
 
 export default connect(mapState, mapDispatch)(pure(VehicleMaintenance));
