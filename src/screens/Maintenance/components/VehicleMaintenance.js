@@ -39,6 +39,7 @@ class VehicleMaintenance extends React.Component {
       serviceOdometerTotal: 0,
       serviceNote: '',
       snackbarOpen: false,
+      tableHeight: '280px',
     };
     this.maintenanceAlert = null;
     if (props.theVehicle !== null) {
@@ -159,18 +160,17 @@ class VehicleMaintenance extends React.Component {
     });
   }
 
-  doPrintTable = () => {
-    const content = document.getElementById('serviceTable').innerHTML;
-    const printWindow = window.open('', 'Print', 'height=700,width=900');
+  handleRequestClose = () => {
+    this.setState({
+      snackbarOpen: false,
+    });
+  };
 
-    printWindow.document.write('<html><head><title>Service history</title>');
-    printWindow.document.write('</head><body>');
-    printWindow.document.write(content);
-    printWindow.document.write('</body></html>');
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
-    printWindow.close();
+  doPrint = () => {
+    this.setState({
+      tableHeight: 'inherit',
+    });
+    window.print();
   }
 
   generateServiceData = entries => [
@@ -307,7 +307,7 @@ class VehicleMaintenance extends React.Component {
         {
           this.props.serviceHistory.length !== 0 ? (
             <Layout.Section style={{ padding: '40px 32px' }}>
-              <ServiceHistoryTable history={this.props.serviceHistory} height={'280px'} />
+              <ServiceHistoryTable history={this.props.serviceHistory} height={this.state.tableHeight} />
               <div style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: '32px' }}>
                 <MainActionButton
                   label="Save RAW"
@@ -317,20 +317,18 @@ class VehicleMaintenance extends React.Component {
                 />
                 <MainActionButton
                   label="Print"
-                  onClick={this.doPrintTable}
+                  onClick={this.doPrint}
                   icon={null}
                 />
               </div>
             </Layout.Section>
           ) : null
         }
-        <div id="serviceTable" style={{ display: 'none' }}>
-          <ServiceHistoryTable history={this.props.serviceHistory} />
-        </div>
         <Snackbar
           open={this.state.snackbarOpen}
           message={this.state.message}
-          autoHideDuration={4000}
+          autoHideDuration={3000}
+          onRequestClose={this.handleRequestClose}
         />
       </FixedContent>
     );
