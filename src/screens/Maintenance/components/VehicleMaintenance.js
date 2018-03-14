@@ -32,11 +32,12 @@ class VehicleMaintenance extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      error: '',
       isLoading: true,
       serviceDate: new Date(),
-      serviceOdometer: '',
+      serviceOdometer: 0,
+      serviceOdometerTotal: 0,
       serviceNote: '',
-      // serviceDoneSet: 0,
     };
     this.maintenanceAlert = null;
     if (props.theVehicle !== null) {
@@ -58,8 +59,9 @@ class VehicleMaintenance extends React.Component {
       }
     }
     this.setState({
-      // serviceDoneSet: this.state.serviceDoneSet + nextProps.theVehicle.lastServiceOdo,
-      serviceOdometer: (nextProps.theVehicle.dist.total / 1000).toFixed(0.1),
+      serviceOdometer: (nextProps.theVehicle.dist.total / 1000).toFixed(0.1) -
+        nextProps.theVehicle.lastServiceOdo,
+      serviceOdometerTotal: nextProps.theVehicle.lastServiceOdo,
     });
   }
 
@@ -100,6 +102,11 @@ class VehicleMaintenance extends React.Component {
         serviceOdometer: e.target.value,
       });
     }
+    if (this.state.error !== '') {
+      this.setState({
+        error: '',
+      });
+    }
   }
 
   handleNoteChange = (e) => {
@@ -110,25 +117,37 @@ class VehicleMaintenance extends React.Component {
 
   serviceDoneClick = () => {
     const vehicleId = this.props.theVehicle.id;
+    const totalDist = parseInt((this.props.theVehicle.dist.total / 1000).toFixed(0.1), 10);
+    const newOdoValue = parseInt(this.state.serviceOdometer, 10);
+    const totalOdoValue = this.state.serviceOdometerTotal + newOdoValue;
     const time = moment(this.state.serviceDate).format();
     const ts = time.replace(/:([^:]*)$/, '$1');
+    if (totalDist < totalOdoValue) {
+      this.setState({
+        error: "This value can't be bigger than current ODO",
+      });
+      return;
+    }
+    this.setState({
+      serviceOdometerTotal: totalOdoValue,
+    });
     const odometer = {
       odometer: {
         ts,
-        value: parseInt(this.state.serviceOdometer, 10),
+        value: totalOdoValue,
         note: this.state.serviceNote,
       },
     };
     const original = {
       ...this.props.theVehicle.original,
       lastServiceOdo: {
-        value: odometer.odometer.value,
+        value: totalOdoValue,
       },
     };
-    // this.props.addServiceOdoHistory(vehicleId, odometer);
+    this.props.addServiceOdoHistory(vehicleId, odometer);
     this.props.updateServiceOdoHistory({
       id: vehicleId,
-      odometerValue: odometer.odometer.value,
+      odometerValue: totalOdoValue,
       original,
     });
   }
@@ -226,7 +245,7 @@ class VehicleMaintenance extends React.Component {
         </Layout.Section>
         <Layout.Section style={{ flexDirection: 'column', padding: '32px' }}>
           <div style={{ flexDirection: 'row' }}>
-            <div style={{ display: 'inline-block', marginRight: '40px', width: '256px' }}>
+            <div style={{ display: 'inline-block', marginRight: '40px', verticalAlign: 'top', width: '256px' }}>
               <DatePicker
                 autoOk
                 defaultDate={this.state.serviceDate}
@@ -241,6 +260,7 @@ class VehicleMaintenance extends React.Component {
               name="serviceOdometer"
               value={this.state.serviceOdometer}
               onChange={this.handleOdometerChange}
+              errorText={this.state.error}
             />
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
