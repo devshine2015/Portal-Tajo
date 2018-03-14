@@ -15,7 +15,7 @@ import {
   getAlertConditions,
 } from 'services/AlertsSystem/reducer';
 
-import { TextField } from 'material-ui';
+import { Snackbar, TextField } from 'material-ui';
 import DatePicker from 'material-ui/DatePicker';
 import Layout from 'components/Layout';
 import FixedContent from 'components/FixedContent';
@@ -34,10 +34,12 @@ class VehicleMaintenance extends React.Component {
     this.state = {
       error: '',
       isLoading: true,
+      message: 'Service Recorded to History',
       serviceDate: new Date(),
       serviceOdometer: 0,
       serviceOdometerTotal: 0,
       serviceNote: '',
+      snackbarOpen: false,
     };
     this.maintenanceAlert = null;
     if (props.theVehicle !== null) {
@@ -135,6 +137,7 @@ class VehicleMaintenance extends React.Component {
     }
     this.setState({
       serviceOdometerTotal: totalOdoValue,
+      snackbarOpen: true,
     });
     const odometer = {
       odometer: {
@@ -295,7 +298,9 @@ class VehicleMaintenance extends React.Component {
         {
           this.props.serviceHistory.length !== 0 ? (
             <Layout.Section style={{ padding: '40px 32px' }}>
-              <ServiceHistoryTable history={this.props.serviceHistory} />
+              <div id="serviceTable">
+                <ServiceHistoryTable history={this.props.serviceHistory} />
+              </div>
               <div style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: '32px' }}>
                 <MainActionButton
                   label="Save RAW"
@@ -312,6 +317,11 @@ class VehicleMaintenance extends React.Component {
             </Layout.Section>
           ) : null
         }
+        <Snackbar
+          open={this.state.snackbarOpen}
+          message={this.state.message}
+          autoHideDuration={4000}
+        />
       </FixedContent>
     );
   }

@@ -63,7 +63,6 @@ export const fetchVehicles = getState => (dispatch) => {
   ).then(([vehicles = [], { status = [] } = {}]) => {
     const localObjects = makeLocalVehicles(
       subFleetFilter(vehicles, dealerSelectors.getSelectedSubFleet(getState())), status);
-    // debugger;
     dispatch(_vehiclesSet(localObjects));
   }).then(() => {
     if (isMwa) {
