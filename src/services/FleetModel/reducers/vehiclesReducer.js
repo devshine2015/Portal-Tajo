@@ -2,7 +2,7 @@ import { combineReducers } from 'redux-immutable';
 import { List, Map, fromJS } from 'immutable';
 import * as vehiclesActions from '../actions/vehiclesActions';
 import * as socketActions from '../actions/socketActions';
-//
+import { orderByResentHistory } from '../utils/vehicleHelpers';
 
 const vehiclesInitialState = fromJS({
   processedList: {},
@@ -71,10 +71,10 @@ function vehiclesReducer(state = vehiclesInitialState, action) {
     case vehiclesActions.VEHICLE_SERVICE_HISTORY_ADD: {
       const oldHistory = state.getIn(['processedList', action.vehicleId, 'serviceHistory']);
       const newHistory = oldHistory.concat(action.odometer);
-
+      const newOrderedHistory = orderByResentHistory(newHistory);
       return state.setIn(
         ['processedList', action.vehicleId, 'serviceHistory'],
-        newHistory,
+        newOrderedHistory,
       );
     }
 
@@ -195,7 +195,7 @@ export const getAmounts = state => ({
 export const getVehicleById = (state, id) =>
   getDynamicSlice(state).getIn(['processedList', id]);
 
-export const getIsReady = (state) => state.get('isReady');
+export const getIsReady = state => state.get('isReady');
 
 export const getSelectedVehicleId = state =>
   getStaticSlice(state).get('selectedVehicleId');

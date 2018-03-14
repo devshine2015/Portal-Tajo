@@ -120,7 +120,12 @@ class VehicleMaintenance extends React.Component {
     const totalDist = parseInt((this.props.theVehicle.dist.total / 1000).toFixed(0.1), 10);
     const newOdoValue = parseInt(this.state.serviceOdometer, 10);
     const totalOdoValue = this.state.serviceOdometerTotal + newOdoValue;
-    const time = moment(this.state.serviceDate).format();
+    const stateDate = moment(this.state.serviceDate).format('DD-MM-YYYY');
+    const currentDate = moment(new Date()).format('DD-MM-YYYY');
+    const withTime = stateDate === currentDate ?
+      new Date() : this.state.serviceDate;
+
+    const time = moment(withTime).format();
     const ts = time.replace(/:([^:]*)$/, '$1');
     if (totalDist < totalOdoValue) {
       this.setState({

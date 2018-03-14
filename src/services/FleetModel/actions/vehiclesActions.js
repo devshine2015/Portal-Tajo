@@ -10,6 +10,7 @@ import {
   makeLocalVehicles,
   imMakeLocalVehicle,
   sortVehicles,
+  orderByResentHistory,
 } from '../utils/vehicleHelpers';
 
 export const FLEET_MODEL_READY_SET = 'portal/services/FLEET_MODEL_READY_SET';
@@ -229,7 +230,8 @@ export const fetchServiceOdoHistory = vehicleId => (dispatch) => {
   return api[method](url)
     .then(res => res.json())
     .then((data) => {
-      dispatch(setServiceOdoHistory(vehicleId, data));
+      const orderedHistory = orderByResentHistory(data);
+      dispatch(setServiceOdoHistory(vehicleId, orderedHistory));
       return Promise.resolve();
     }, error => Promise.reject(error));
 };

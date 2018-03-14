@@ -341,6 +341,19 @@ export function sortVehicles(vehicles = []) {
       return obj.id;
     });
 }
+/**
+  * accept array of history items
+  * each element MUST HAVE 'odometer.ts' property.
+  *
+  * returns new array of elements in date order from most recent first
+* */
+export function orderByResentHistory(history = []) {
+  const historyCopy = history.slice();
+  historyCopy.sort(function(a,b) {
+    return new Date(b.odometer.ts) - new Date(a.odometer.ts);
+  });
+  return historyCopy;
+}
 
 /**
  * return properties required by backend
