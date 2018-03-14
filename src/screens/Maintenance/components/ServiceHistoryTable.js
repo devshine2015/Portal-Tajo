@@ -13,7 +13,7 @@ import {
 const ServiceHistoryTable = props => (
   <Table
     fixedHeader
-    height={'290px'}
+    height={props.height}
     selecable={false}
   >
     <TableHeader
@@ -52,6 +52,10 @@ const ServiceHistoryTable = props => (
 
 ServiceHistoryTable.propTypes = {
   history: PropTypes.array.isRequired,
+  height: PropTypes.string,
+};
+ServiceHistoryTable.defaultProps = {
+  height: 'inherit',
 };
 
 export default ServiceHistoryTable;

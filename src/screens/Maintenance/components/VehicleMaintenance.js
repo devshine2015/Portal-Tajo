@@ -27,7 +27,6 @@ import ServiceHistoryTable from './ServiceHistoryTable';
 import BarIndicator from './MaintenaceProgressBar';
 import WarningLights from './WarningLights';
 
-
 class VehicleMaintenance extends React.Component {
   constructor(props) {
     super(props);
@@ -160,8 +159,18 @@ class VehicleMaintenance extends React.Component {
     });
   }
 
-  doPrint = () => {
-    window.print();
+  doPrintTable = () => {
+    const content = document.getElementById('serviceTable').innerHTML;
+    const printWindow = window.open('', 'Print', 'height=700,width=900');
+
+    printWindow.document.write('<html><head><title>Service history</title>');
+    printWindow.document.write('</head><body>');
+    printWindow.document.write(content);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+    printWindow.close();
   }
 
   generateServiceData = entries => [
@@ -298,9 +307,7 @@ class VehicleMaintenance extends React.Component {
         {
           this.props.serviceHistory.length !== 0 ? (
             <Layout.Section style={{ padding: '40px 32px' }}>
-              <div id="serviceTable">
-                <ServiceHistoryTable history={this.props.serviceHistory} />
-              </div>
+              <ServiceHistoryTable history={this.props.serviceHistory} height={'280px'} />
               <div style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: '32px' }}>
                 <MainActionButton
                   label="Save RAW"
@@ -310,13 +317,16 @@ class VehicleMaintenance extends React.Component {
                 />
                 <MainActionButton
                   label="Print"
-                  onClick={this.doPrint}
+                  onClick={this.doPrintTable}
                   icon={null}
                 />
               </div>
             </Layout.Section>
           ) : null
         }
+        <div id="serviceTable" style={{ display: 'none' }}>
+          <ServiceHistoryTable history={this.props.serviceHistory} />
+        </div>
         <Snackbar
           open={this.state.snackbarOpen}
           message={this.state.message}
