@@ -33,10 +33,10 @@ class VehicleMaintenance extends React.Component {
     this.state = {
       error: '',
       isLoading: true,
+      lastServiceOdo: 0,
       message: 'Service Recorded to History',
       serviceDate: new Date(),
       serviceOdometer: 0,
-      serviceOdometerTotal: 0,
       serviceNote: '',
       snackbarOpen: false,
       tableHeight: '280px',
@@ -53,7 +53,9 @@ class VehicleMaintenance extends React.Component {
       this.props.theVehicle.id !== nextProps.theVehicle.id) {
       const vehAlertIds = nextProps.getVehicleAlerts(nextProps.theVehicle.id);
       if (vehAlertIds === null) {
-        this.setState({ isLoading: true });
+        this.setState({
+          isLoading: true,
+        });
         this.fetchAlerts(nextProps.theVehicle.id);
         this.fetchServiceHistory(nextProps.theVehicle.id);
       } else {
@@ -61,9 +63,10 @@ class VehicleMaintenance extends React.Component {
       }
     }
     this.setState({
-      serviceOdometer: (nextProps.theVehicle.dist.total / 1000).toFixed(0.1) -
-        nextProps.theVehicle.lastServiceOdo,
-      serviceOdometerTotal: nextProps.theVehicle.lastServiceOdo,
+      serviceDate: new Date(),
+      serviceNote: '',
+      lastServiceOdo: nextProps.theVehicle.lastServiceOdo,
+      serviceOdometer: (nextProps.theVehicle.dist.total / 1000).toFixed(0.1),
     });
   }
 
@@ -121,7 +124,6 @@ class VehicleMaintenance extends React.Component {
     const vehicleId = this.props.theVehicle.id;
     const totalDist = parseInt((this.props.theVehicle.dist.total / 1000).toFixed(0.1), 10);
     const newOdoValue = parseInt(this.state.serviceOdometer, 10);
-    const totalOdoValue = this.state.serviceOdometerTotal + newOdoValue;
     const stateDate = moment(this.state.serviceDate).format('DD-MM-YYYY');
     const currentDate = moment(new Date()).format('DD-MM-YYYY');
     const withTime = stateDate === currentDate ?
@@ -129,35 +131,39 @@ class VehicleMaintenance extends React.Component {
 
     const time = moment(withTime).format();
     const ts = time.replace(/:([^:]*)$/, '$1');
-    if (totalDist < totalOdoValue) {
+    if (newOdoValue > totalDist) {
       this.setState({
         error: "This value can't be bigger than current ODO",
       });
       return;
     }
     this.setState({
-      serviceOdometerTotal: totalOdoValue,
+      serviceDate: new Date(),
+      serviceNote: '',
       snackbarOpen: true,
     });
     const odometer = {
       odometer: {
         ts,
-        value: totalOdoValue,
+        value: newOdoValue,
         note: this.state.serviceNote,
       },
     };
-    const original = {
-      ...this.props.theVehicle.original,
-      lastServiceOdo: {
-        value: totalOdoValue,
-      },
-    };
     this.props.addServiceOdoHistory(vehicleId, odometer);
-    this.props.updateServiceOdoHistory({
-      id: vehicleId,
-      odometerValue: totalOdoValue,
-      original,
-    });
+
+    if (newOdoValue > this.state.lastServiceOdo) {
+      const original = {
+        ...this.props.theVehicle.original,
+        lastServiceOdo: {
+          value: newOdoValue,
+        },
+      };
+      this.props.updateLastServiceOdo({
+        id: vehicleId,
+        odometerValue: newOdoValue,
+        original,
+      });
+    }
   }
 
   handleRequestClose = () => {
@@ -222,7 +228,6 @@ class VehicleMaintenance extends React.Component {
     const mntZero = this.props.theVehicle.lastServiceOdo;
     const mntEnd = this.props.theVehicle.lastServiceOdo + mnyCycle;
     const vehCurrent = this.props.theVehicle.dist.total / 1000;
-    // debugger;
     const distToNextService = mntEnd - vehCurrent;
     const useDemoRandomData = false;
     return (
@@ -349,7 +354,7 @@ VehicleMaintenance.propTypes = {
   theVehicle: PropTypes.object,
   serviceHistory: PropTypes.array,
   addServiceOdoHistory: PropTypes.func.isRequired,
-  updateServiceOdoHistory: PropTypes.func.isRequired,
+  updateLastServiceOdo: PropTypes.func.isRequired,
   getVehicleAlerts: PropTypes.func.isRequired,
   fetchVehicleAlertConditions: PropTypes.func.isRequired,
   fetchServiceOdoHistory: PropTypes.func.isRequired,
@@ -375,7 +380,7 @@ const mapDispatch = {
   updateLocalVehicleDetails: vehiclesActions.updateLocalDetails,
   fetchServiceOdoHistory: vehiclesActions.fetchServiceOdoHistory,
   addServiceOdoHistory: vehiclesActions.createServiceOdo,
-  updateServiceOdoHistory: vehiclesActions.updateLastVehicleOdo,
+  updateLastServiceOdo: vehiclesActions.updateLastServiceOdo,
 };
 
 export default connect(mapState, mapDispatch)(pure(VehicleMaintenance));

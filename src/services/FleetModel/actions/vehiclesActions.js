@@ -137,7 +137,7 @@ export function makeUpdateVehicleRequest(details, dispatch) {
   }, error => Promise.reject(error));
 }
 
-export const updateLastVehicleOdo = data => (dispatch) => {
+export const updateLastServiceOdo = data => (dispatch) => {
   const { url, method } = endpoints.updateVehicle(data.id);
   return api[method](url, {
     payload: data.original,
