@@ -170,7 +170,14 @@ class VehicleMaintenance extends React.Component {
     this.setState({
       tableHeight: 'inherit',
     });
-    window.print();
+    window.onafterprint = () => {
+      this.setState({
+        tableHeight: '280px',
+      });
+    };
+    setTimeout(() => {
+      window.print();
+    });
   }
 
   generateServiceData = entries => [
