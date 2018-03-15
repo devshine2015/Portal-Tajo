@@ -125,7 +125,7 @@ class AlertsChart extends Component {
       [alertKinds._ALERT_KIND_FUEL_GAIN]: 0,
       [alertKinds._ALERT_KIND_FUEL_LOSS]: 0,
       [alertKinds._ALERT_KIND_ENGINE_TEMP]: 0 };
-    const theAlerts = this.props.alerts.toJS();
+    const theAlerts = this.props.alerts;
     // console.log(theAlerts);
     theAlerts
       .filter(alrt => moment(alrt.eventTS).isBetween(this.props.timeRange.fromDate, this.props.timeRange.toDate))
@@ -160,7 +160,7 @@ AlertsChart.propTypes = {
 };
 // export default JobsChart;
 const mapState = state => ({
-  alerts: getLogEntries(state),
+  alerts: getLogEntries(state).toJS(),
   // selectedVehicleId: ctxGetSelectedVehicleId(state),
   // getVehicleById: getVehicleByIdFunc(state),
 });
