@@ -63,7 +63,6 @@ class VehicleMaintenance extends React.Component {
       }
     }
     this.setState({
-      serviceDate: new Date(),
       serviceNote: '',
       lastServiceOdo: nextProps.theVehicle.lastServiceOdo,
       serviceOdometer: (nextProps.theVehicle.dist.total / 1000).toFixed(0.1),
