@@ -9,6 +9,7 @@ import dealerSelectors from 'services/Dealer/selectors';
 export const UPDATE_FLEET_OVERVIEW = 'upFleetOverView';
 export const UPDATE_FLEET_FUEL = 'upFleetFuel';
 export const CLEAR_FLEET_OVERVIEW = 'clearFleetOverview';
+export const UPDATE_FLEET_FUEL_ALERTS = 'UPDATE_FLEET_FUEL_ALERTS';
 
 const makeTimeParams = timeRange => ({
   ...makeTimeRangeParams(timeRange.fromDate, timeRange.toDate),
@@ -44,6 +45,7 @@ export const fetchFleetFuelStats = timeRange => (dispatch, getState) => {
     .then(response => response.json())
     .then((overview) => {
       dispatch(_setFleetFuelData(overview));
+      dispatch(_setFleetFuelAlerts(overview.alerts));
       Promise.resolve({ ready: true });
     });
 };
@@ -52,15 +54,6 @@ export const fetchFleetFuelStats = timeRange => (dispatch, getState) => {
 const _setFleetOverviewData = data => ({
   type: UPDATE_FLEET_OVERVIEW,
   ...data,
-  // avgSpeed: data.avgSpeed,
-  // idleOver: data.idleAbove,
-  // idleUnder: data.idleUnder,
-  // normalDriving: data.normalDriving,
-  // totalDistance: data.totalDistance,
-  // totalDrivingTime: data.totalDrivingTime,
-  // totalIdleTime: data.totalIdleTime,
-  // totalRunningTime: data.totalRunningTime,
-  // vehicleCount: data.vehicleCount,
 });
 
 const _setFleetFuelData = overview => ({
@@ -68,6 +61,11 @@ const _setFleetFuelData = overview => ({
   totalFuel: overview.totalConsumption,
   totalGain: overview.totalGain,
   totalLoss: overview.totalLoss,
+});
+
+const _setFleetFuelAlerts = alerts => ({
+  type: UPDATE_FLEET_FUEL_ALERTS,
+  alerts,
 });
 
 export const clearFleetOverview = () => ({

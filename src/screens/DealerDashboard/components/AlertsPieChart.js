@@ -7,17 +7,14 @@ import moment from 'moment';
 import { bb } from 'billboard.js';
 import 'billboard.js/dist/billboard.css';
 import { css } from 'aphrodite/no-important';
-import {
-  getLogEntries,
-} from 'services/AlertsSystem/reducers/logReducer';
+import { getLogEntries } from 'services/AlertsSystem/reducers/logReducer';
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import { theme } from 'configs';
 
 import dashboardClasses from 'components/DashboardElements/classes';
 
-
 const alertMap = {
-  [alertKinds._ALERT_KIND_ENGINE_TEMP]: 'Engine Temperature Alerts',
+  // [alertKinds._ALERT_KIND_ENGINE_TEMP]: 'Engine Temperature Alerts',
   [alertKinds._ALERT_KIND_FUEL_LOSS]: 'Fuel Loss Alerts',
   [alertKinds._ALERT_KIND_FUEL_GAIN]: 'Fuel Gain Alerts',
 };
@@ -25,7 +22,6 @@ const alertMap = {
 const buildChart = (node, chartColumns) => {
   if (!node) { return null; }
   const {
-    // width,
     height,
   } = node.getBoundingClientRect();
 
@@ -33,11 +29,9 @@ const buildChart = (node, chartColumns) => {
     data: {
       columns: chartColumns,
       type: 'pie',
-      // onclick: function (d, i) { console.log('onclick', d, i); },
-      // onover: function (d, i) { console.log('onover', d, i); },
-      // onout: function (d, i) { console.log('onout', d, i); },
+      onclick: (d, i) => { console.log('onclick', d, i); },
       colors: {
-        [alertMap[alertKinds._ALERT_KIND_ENGINE_TEMP]]: theme.palette.alertColor,
+        // [alertMap[alertKinds._ALERT_KIND_ENGINE_TEMP]]: theme.palette.alertColor,
         [alertMap[alertKinds._ALERT_KIND_FUEL_LOSS]]: theme.palette.dachboardElementSecondaryColor,
         [alertMap[alertKinds._ALERT_KIND_FUEL_GAIN]]: theme.palette.okColor,
       },
@@ -47,41 +41,15 @@ const buildChart = (node, chartColumns) => {
       width: height,
       height,
     },
-    // size: {
-    //   width: width - (HORIZONTAL * 2),
-    //   height,
-    // },
     pie: {
       label: {
-        // show: false,
         format(value) {
           return value.toString();
         },
-        // threshold: 0.1,
-      // expand: false,
-      // padAngle: 0.1
       },
     },
     tooltip: {
       show: false,
-      // contents(value, ratio, id) {
-      //   return '<div  style="background-color:#ffeeFF;padding: 3px;">"C&C ( 034362 )"</div>';
-      //   // let format = id === 'data1' ? d3.format(',') : d3.format('$');
-      //   // return format(value);
-      // },
-      // format: {
-      //   title(d) { return `ALERTS ${  d}`; },
-      //   value(value, ratio, id) {
-      //     return 'asdf\n qwert\n zxcv';
-      //     // let format = id === 'data1' ? d3.format(',') : d3.format('$');
-      //     // return format(value);
-      //   },
-      // value: function (value, ratio, id) {
-      //   var format = id === 'data1' ? d3.format(',') : d3.format('$');
-
-      //   return format(value);
-      // }
-      // },
     },
   });
   return chart;
@@ -92,49 +60,74 @@ class AlertsChart extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      showChart: false,
+    };
     this.chartRef = null;
     this.chart = null;
-
-    this.state = {
-    };
   }
 
-  componentDidMount() {
-    // this.chartInit();
+  componentWillMount() {
+    const alerts = this.props.alerts.filter((alert) => {
+      return moment(alert.date).isBetween(
+        this.props.timeRange.fromDate,
+        this.props.timeRange.toDate);
+    });
+    this.setState({
+      showChart: alerts.length !== 0,
+    });
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   // it's better to validate by ts
-  //   // if (nextProps.lastUpdate !== this.props.lastUpdate) {
-  //   //   this.chart.load(formatJobs(nextProps.jobs, this.props.vehicles));
-  //   // }
-  // }
-
-  // chartInit() {
-  //   this.chart = buildChart(this.chartRef, []);
-  // }
-  // componentWillReceiveProps(nextProps) {
-  //   this.prepareData(nextProps.alerts.toJS());
-  // }
+  componentWillReceiveProps(nextProps) {
+    this.prepareData(nextProps.alerts);
+    const alerts = this.props.alerts.filter((alert) => {
+      return moment(alert.date).isBetween(
+        this.props.timeRange.fromDate,
+        this.props.timeRange.toDate);
+    });
+    this.setState({
+      showChart: alerts.length !== 0,
+    });
+  }
 
   prepareData() {
     if (this.chartRef == null) {
       return;
     }
+    const theAlerts = this.props.alerts;
+
     const kindsCounter = {
       [alertKinds._ALERT_KIND_FUEL_GAIN]: 0,
       [alertKinds._ALERT_KIND_FUEL_LOSS]: 0,
-      [alertKinds._ALERT_KIND_ENGINE_TEMP]: 0 };
-    const theAlerts = this.props.alerts;
-    // console.log(theAlerts);
-    theAlerts
-      .filter(alrt => moment(alrt.eventTS).isBetween(this.props.timeRange.fromDate, this.props.timeRange.toDate))
-      .forEach((alrt) => { if (kindsCounter[alrt.eventKind] !== undefined) kindsCounter[alrt.eventKind]++; });
+      // [alertKinds._ALERT_KIND_ENGINE_TEMP]: 0,
+    };
 
-    // const chartColumns = Object.entries(kindsCounter);
-    const chartColumns = [[[alertMap[alertKinds._ALERT_KIND_FUEL_GAIN]], kindsCounter[alertKinds._ALERT_KIND_FUEL_GAIN]],
-      [[alertMap[alertKinds._ALERT_KIND_FUEL_LOSS]], kindsCounter[alertKinds._ALERT_KIND_FUEL_LOSS]],
-      [[alertMap[alertKinds._ALERT_KIND_ENGINE_TEMP]], kindsCounter[alertKinds._ALERT_KIND_ENGINE_TEMP]]];
+    theAlerts
+      .filter((alrt) => {
+        return moment(alrt.date).isBetween(
+          this.props.timeRange.fromDate,
+          this.props.timeRange.toDate);
+      }).forEach((alrt) => {
+        switch (alrt.alertType) {
+          case 'REFUEL':
+            kindsCounter[alertKinds._ALERT_KIND_FUEL_GAIN] += 1;
+            break;
+          case 'LOSS':
+            kindsCounter[alertKinds._ALERT_KIND_FUEL_LOSS] += 1;
+            break;
+          default:
+            break;
+        }
+      });
+
+    const chartColumns = [
+      [[alertMap[alertKinds._ALERT_KIND_FUEL_GAIN]],
+        kindsCounter[alertKinds._ALERT_KIND_FUEL_GAIN]],
+      [[alertMap[alertKinds._ALERT_KIND_FUEL_LOSS]],
+        kindsCounter[alertKinds._ALERT_KIND_FUEL_LOSS]],
+      // [[alertMap[alertKinds._ALERT_KIND_ENGINE_TEMP]],
+      //   kindsCounter[alertKinds._ALERT_KIND_ENGINE_TEMP]],
+    ];
 
     this.chart = buildChart(this.chartRef, chartColumns);
   }
@@ -146,9 +139,17 @@ class AlertsChart extends Component {
         <div className={css(dashboardClasses.dataItemTitleDark)}>
           {'Fleet Alerts'}
         </div>
-        <div
-          ref={(ref) => { this.chartRef = ref; if (this.chartRef) this.prepareData(); }}
-        />
+        {
+          this.state.showChart ?
+            <div
+              ref={(ref) => { this.chartRef = ref; if (this.chartRef) this.prepareData(); }}
+            />
+            :
+            <div style={{ fontWeight: 'bold', color: '#00619E' }}>
+              <div style={{ padding: '14px 0 10px' }}>Fuel Gain Alerts: 0</div>
+              <div style={{ padding: '10px 0' }}>Fuel Loss Alerts: 0</div>
+            </div>
+        }
       </div>
     );
   }
@@ -158,13 +159,9 @@ AlertsChart.propTypes = {
   alerts: PropTypes.array.isRequired,
   timeRange: PropTypes.object.isRequired,
 };
-// export default JobsChart;
+
 const mapState = state => ({
   alerts: getLogEntries(state).toJS(),
-  // selectedVehicleId: ctxGetSelectedVehicleId(state),
-  // getVehicleById: getVehicleByIdFunc(state),
 });
-const mapDispatch = {
-};
 
-export default connect(mapState, mapDispatch)(pure(AlertsChart));
+export default connect(mapState, null)(pure(AlertsChart));
