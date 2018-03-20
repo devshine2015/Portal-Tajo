@@ -48,10 +48,6 @@ class DealerDashboard extends React.Component {
     };
   }
 
-  // componentDidMount() {
-  //   this.applyTimeRange(makePeriodForLast24Hours());
-  // }
-
   componentWillReceiveProps = (nextProps) => {
     if (this.props.selectedFleet !== nextProps.selectedFleet) {
       this.setState({
@@ -86,7 +82,9 @@ class DealerDashboard extends React.Component {
     const overviewEntries = Object.entries(this.props.fleetOverviewData);
     const book = new Book(this.generateHeaders(overviewEntries),
       this.generateData(overviewEntries),
-      { fileName: `fleet_overview_${moment(this.state.timeRange.fromDate).format('DD-MM-YYYY')}_${moment(this.state.timeRange.toDate).format('DD-MM-YYYY')}` });
+      { fileName: `fleet_overview_${
+        moment(this.state.timeRange.fromDate).format('DD-MM-YYYY')}_${
+        moment(this.state.timeRange.toDate).format('DD-MM-YYYY')}` });
     book.createBook();
   }
 

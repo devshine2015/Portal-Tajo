@@ -3,3 +3,11 @@ body,
 :global(#app){
   height: 100%;
 }
+
+:global(.AlertPiechart .bb-chart-arc text) {
+  font-size: 28px;
+}
+
+:global(.AlertPiechart .bb) {
+  text-align: center;
+}

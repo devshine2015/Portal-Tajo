@@ -1,5 +1,6 @@
 import { fromJS } from 'immutable';
 import { SESSION_CLEAN } from 'services/Session/actions';
+import { UPDATE_FLEET_FUEL_ALERTS } from 'services/FleetOverview/actions';
 import { logActions } from '../actions';
 import newestFirst from './helpers';
 
@@ -24,6 +25,9 @@ export default function (state = initialState, action) {
 
     case SESSION_CLEAN:
       return initialState;
+
+    case UPDATE_FLEET_FUEL_ALERTS:
+      return state.set('entries', fromJS(action.alerts));
 
     default:
       return state;
