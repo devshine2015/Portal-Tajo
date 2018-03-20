@@ -62,10 +62,7 @@ const FuelAlertsSummary = ({ vehicleAlerts, totalConsumption }) => {
               dataString={numberToFixedString(alertsSummary.gainAmount)}
               dataUnits="ltr"
             />
-            <DashboardElements.TableDataCell
-              dataString={`${alertsSummary.gainPerc.toFixed(1)}%`}
-              style={{ backgroundColor: theme.palette.okColor }}
-            />
+            
           </tr>
         </tbody>
       </table>
