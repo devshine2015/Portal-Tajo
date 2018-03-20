@@ -62,7 +62,6 @@ const FuelAlertsSummary = ({ vehicleAlerts, totalConsumption }) => {
               dataString={numberToFixedString(alertsSummary.gainAmount)}
               dataUnits="ltr"
             />
-            
           </tr>
         </tbody>
       </table>
