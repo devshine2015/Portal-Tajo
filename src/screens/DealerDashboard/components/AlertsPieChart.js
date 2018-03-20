@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
-// import R from 'ramda';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import moment from 'moment';
 import { bb } from 'billboard.js';
-import 'billboard.js/dist/billboard.css';
 import { css } from 'aphrodite/no-important';
 import { getLogEntries } from 'services/AlertsSystem/reducers/logReducer';
 import * as alertKinds from 'services/AlertsSystem/alertKinds';
 import { theme } from 'configs';
-
 import dashboardClasses from 'components/DashboardElements/classes';
 
 const alertMap = {
@@ -21,9 +18,6 @@ const alertMap = {
 
 const buildChart = (node, chartColumns) => {
   if (!node) { return null; }
-  const {
-    height,
-  } = node.getBoundingClientRect();
 
   const chart = bb.generate({
     data: {
@@ -38,8 +32,8 @@ const buildChart = (node, chartColumns) => {
     },
     bindto: node,
     size: {
-      width: height,
-      height,
+      width: 260,
+      height: 260,
     },
     pie: {
       label: {
