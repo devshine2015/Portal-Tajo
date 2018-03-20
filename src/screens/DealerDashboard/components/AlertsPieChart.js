@@ -129,7 +129,10 @@ class AlertsChart extends Component {
   render() {
     this.prepareData();
     return (
-      <div style={{ width: '320px', margin: '24px' }}>
+      <div
+        className="AlertPiechart"
+        style={{ width: '320px', margin: '24px' }}
+      >
         <div className={css(dashboardClasses.dataItemTitleDark)}>
           {'Fleet Alerts'}
         </div>
