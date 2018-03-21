@@ -23,7 +23,7 @@ const buildChart = (node, chartColumns) => {
     data: {
       columns: chartColumns,
       type: 'pie',
-      onclick: (d, i) => { console.log('onclick', d, i); },
+      // onclick: (d, i) => { console.log('onclick', d, i); },
       colors: {
         // [alertMap[alertKinds._ALERT_KIND_ENGINE_TEMP]]: theme.palette.alertColor,
         [alertMap[alertKinds._ALERT_KIND_FUEL_LOSS]]: theme.palette.dachboardElementSecondaryColor,
