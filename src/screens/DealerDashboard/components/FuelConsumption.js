@@ -81,10 +81,6 @@ const FuelConsumption = (props) => {
               dataString={numberToFixedString(props.totalGain)}
               dataUnits="ltr"
             />
-            <DashboardElements.TableDataCell
-              dataString={calcPerc(props.totalGain, props.totalFuel)}
-              style={{ backgroundColor: theme.palette.okColor }}
-            />
           </tr>
         </tbody>
       </table>
