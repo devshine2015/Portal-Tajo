@@ -29,25 +29,25 @@ export default {
   // main menu
   reports: 'レポート',
   exec_report: 'トリップレポート',
-  vehicles_editor: 'vehicles editor', // x
+  vehicles_editor: '車両の編集',
   users: 'ユーザー',
   operational: '使用可能',
   profile: 'プロフィール',
   dashboard: '隊列サマリー',
-  installer: 'installer', // x
-  promos: 'promos', // x
-  devices_manager: '', // x
+  installer: 'インストーラー',
+  promos: 'プロモーション',
+  devices_manager: 'デバイスマネジャー',
   review: 'レビュー',
   history: '履歴',
   alerts_editor: 'アラートエディター',
-  alerts_logs: 'alerts logs', // x
+  alerts_logs: 'アラートログ',
   // overview: 'overview',
   // drive_comparison: 'drive comparison',
   // fuel_usage: 'fuel usage',
   // vehicle_maintenance: 'vehicle diagnostics',
   // fleet_manager: 'fleet manager',
   // booking_screen: 'booking',
-  
+
   // -- end main menu
 
   // dashboard screen
@@ -128,8 +128,8 @@ export default {
   model_name: 'モデルネーム',
   year: '年',
   year_of_manufacture: '製造年',
-  // chassis_number: 'Chassis Number',
-  // fuel_capacity: 'Fuel Capacity (ltr.)',
+  chassis_number: '車両番号',
+  fuel_capacity: '燃料の容量 (ltr.)',
   odometer_value: 'オドメーター',
   // last_service_odo: 'Last Service Odometer (km.)',
   vehicle_kind_hint: '車両の種類',
@@ -140,7 +140,7 @@ export default {
   map_marker: 'マップマーカー',
   icon: 'アイコン',
   alerts: 'アラート',
-  no_alerts: '', // x
+  no_alerts: '警告なし',
   maintenance: 'メンテナンス',
   service_frequency: 'サービス頻度',
   name: '名前',
@@ -279,14 +279,14 @@ export default {
   door_open_close_opened: 'オープン',
   door_open_close_closed: 'クローズ',
   engine_status: 'エンジンステータス',
-  fuel_level: 'Fuel Level', // x
+  fuel_level: '燃料値',
 
   // -- map context menu
-  ctx_add_circular: 'Circualr GF', // x
-  ctx_add_poly: 'Poly GF', // x
-  ctx_route: 'Route To', // x
-  ctx_nearest: 'Find Nearest', // x
-  ctx_gmap: 'Google Maps',
+  ctx_add_circular: 'ジオフェンス（円形）',
+  ctx_add_poly: 'ジオフェンス（多角形）',
+  ctx_route: '目的地',
+  ctx_nearest: '最寄りを探す',
+  ctx_gmap: 'グーグルマップ',
   // -- end map context menu
 
   // -- mwa reports
@@ -296,10 +296,10 @@ export default {
   job_name: 'ジョブネーム',
   from: 'から',
   to: 'まで',
-  job_duration: 'Duration', // x
-  job_pipe: 'Pipe Size', // x
-  job_pipe_type: 'Pipe Type', // x
-  job_status: 'Job Status', // x
+  job_duration: '時間',
+  job_pipe: 'パイプの大きさ',
+  job_pipe_type: 'パイプの種類',
+  job_status: 'ジョブの状況',
   // -- end mwa reports
 
   // -- notifications panel
@@ -312,11 +312,11 @@ export default {
   idling: 'アイドリング',
   speeding: 'すぴーディング',
   drive_time: '運転時間',
-  fuel_alert: '燃料', //
+  fuel_alert: '燃料',
   fuel_gain_alert: '燃料取得',
   fuel_loss_alert: '燃料損失',
-  // fuel_diff: 'fuel diff',
-  // engine_temp_alert: 'engine temperature',
+  fuel_diff: '燃料値の差',
+  engine_temp_alert: 'エンジン温度',
   add_alert: 'アラートの追加',
   alert_name: 'アラートネーム',
   speed_limit: 'スピードリミット',
@@ -348,7 +348,7 @@ export default {
   timeline: 'タイムライン',
   print: 'プリント',
   rest_duration: '休憩期間',
-  start: 'start', // x
+  start: 'スタート',
   end: '終了',
   operation_duration: '実行期間',
   idle: 'アイドリング',

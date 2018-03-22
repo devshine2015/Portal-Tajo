@@ -36,7 +36,7 @@ export default {
   dashboard: 'dashboard',
   installer: 'installer',
   promos: 'promos',
-  devices_manager: 'devices manager',
+  devices_manager: 'Perangkat manajer',
   review: 'ulasan',
   history: 'riwayat',
   alerts_editor: 'editor waspada',

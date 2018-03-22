@@ -36,7 +36,7 @@ export default {
   dashboard: 'dashboard',
   installer: 'installer',
   promos: 'promos',
-  devices_manager: 'devices manager',
+  devices_manager: '設備 經理',
   review: '概況',
   history: '歷史記錄',
   alerts_editor: '警報編輯',

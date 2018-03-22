@@ -36,7 +36,7 @@ export default {
   dashboard: 'dashboard',
   installer: 'installer',
   promos: 'promos',
-  devices_manager: 'devices manager',
+  devices_manager: '设备 经理',
   review: '概况',
   history: '历史记录',
   alerts_editor: '警报编辑',
@@ -311,9 +311,9 @@ export default {
   idling: '空转',
   speeding: '超速',
   drive_time: '开车时间',
-  fuel_alert: '燃料', //
-    fuel_gain_alert: '燃料增益', //
-  fuel_loss_alert: '燃料损失', //
+  fuel_alert: '燃料',
+  fuel_gain_alert: '燃料增益',
+  fuel_loss_alert: '燃料损失',
   // fuel_diff: 'fuel diff',
   // engine_temp_alert: 'engine temperature',
   add_alert: '添加警报',

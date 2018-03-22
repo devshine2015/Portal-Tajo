@@ -31,6 +31,7 @@ export default {
   exec_report: 'รายงานการเดินทาง',
   vehicles_editor: 'จัดการยานพาหนะ',
   operational: 'ปฏิบัติการ',
+  devices_manager: 'กำหนดคอนฟิกอุปกรณ์',
   review: 'ภาพรวม',
   history: 'ประวัติ',
   users: 'ผู้ใช้',
@@ -80,7 +81,7 @@ export default {
   moving: 'เริ่ม/หยุด เคลื่อนที่',
   ignition: 'สถานะ เปิด/ปิด เครื่องยนต์',
   'vehicle-1wire-temperature': 'อุณหภูมิ',
-  geofences: 'ผ่าน Geofence (เร็วๆ นี้)',
+  geofences: 'ผ่าน รั้วทางภูมิศาสตร์ (เร็วๆ นี้)',
   // -- end report available types
 
   // report date selector with memory
@@ -114,6 +115,8 @@ export default {
   model_name: 'รุ่น',
   year: 'ปี',
   year_of_manufacture: 'ปีที่ผลิต',
+  chassis_number: 'เลขตัวถังรถ',
+  fuel_capacity: 'ความจุเชื้อเพลิง (ltr.)',
   odometer_value: 'มาตรวัดระยะทาง (กิโลเมตร)',
   vehicle_kind_hint: 'ประเภทของยานพาหนะ',
   disable: 'ปิดการใช้งาน',
@@ -255,9 +258,9 @@ export default {
   // --map context menu
   ctx_add_circular: 'สร้างสถานที่แบบวงกลม',
   ctx_add_poly: 'สร้างสถานที่แบบหลายเหลี่ยม',
-  ctx_route: 'เส้นทาง',
-  ctx_nearest: 'ใกล้ที่สุด',
-  ctx_gmap: 'Google Maps',
+  ctx_route: 'เส้นทางไปสู่',
+  ctx_nearest: 'ค้นหาจุดที่ใกล้ที่สุด',
+  ctx_gmap: 'แผนที่กูเกิ้ล',
   // --end map context menu
 
   // -- mwa reports
@@ -269,7 +272,7 @@ export default {
   to: 'ถึึง',
   job_duration: 'ระยะเวลาปฏิบัติงาน',
   job_pipe: 'ขนาดท่อ',
-  job_pipe_type: 'Pipe Type',
+  job_pipe_type: 'ประเภทท่อ',
   job_status: 'สถานะงาน',
   // -- end mwa reports
 
@@ -285,8 +288,8 @@ export default {
   drive_time: 'เวลาขับรถ',
   fuel_gain_alert: 'การรับน้ำมันเชื้อเพลิง',
   fuel_loss_alert: 'การสูญเสียน้ำมันเชื้อเพลิง',
-  // fuel_diff: 'fuel diff',
-  // engine_temp_alert: 'engine temperature',
+  fuel_diff: 'ค่าความแตกต่างน้ำมัน',
+  engine_temp_alert: 'อุณหภูมิเครื่องยนต์',
   add_alert: 'เพิ่มการแจ้งเตือน',
   alert_name: 'ชื่อการแจ้งเตือน',
   speed_limit: 'จำกัด ความเร็ว',
