@@ -40,6 +40,7 @@ class VehicleMaintenance extends React.Component {
       serviceNote: '',
       snackbarOpen: false,
       tableHeight: '280px',
+      serviceFormVisible: false,
     };
     this.maintenanceAlert = null;
     if (props.theVehicle !== null) {
@@ -140,6 +141,7 @@ class VehicleMaintenance extends React.Component {
       serviceDate: new Date(),
       serviceNote: '',
       snackbarOpen: true,
+      serviceFormVisible: false,
     });
     const odometer = {
       odometer: {
@@ -202,14 +204,17 @@ class VehicleMaintenance extends React.Component {
     );
     book.createBookWithRows();
   }
+  toggleServiceRecordForm = () => {
+    this.setState({
+      serviceFormVisible: !this.state.serviceFormVisible,
+    });
+  }
 
   render() {
     if (this.props.theVehicle === null) {
       return false;
     }
     if (this.state.isLoading) {
-      // const animation = `transition.flipX${(isFetching ? 'In' : 'Out')}`;      
-      // animation={animation}
       return (
         <FixedContent
           style={{
@@ -236,7 +241,6 @@ class VehicleMaintenance extends React.Component {
         }}
       >
         <VehicleSummary theVehicle={this.props.theVehicle} />
-        {/* <BetaLabel /> */}
         <Layout.Section style={{ padding: '32px' }}>
           <BarIndicator
             title={`Next Service ${(distToNextService > 0) ?
@@ -247,7 +251,60 @@ class VehicleMaintenance extends React.Component {
             showRestValue
             units={'km'}
           />
+          <MainActionButton
+            label="Record Service"
+            onClick={this.toggleServiceRecordForm}
+            icon={null}
+            style={{ marginTop: '24px' }}
+          />
         </Layout.Section>
+
+        { this.state.serviceFormVisible &&
+          <Layout.Section style={{ flexDirection: 'column', padding: '32px' }}>
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
+              <div style={{ display: 'inline-block', marginRight: '40px', verticalAlign: 'top', width: '258px' }}>
+                <DatePicker
+                  autoOk
+                  defaultDate={this.state.serviceDate}
+                  floatingLabelText="Date of service"
+                  maxDate={new Date()}
+                  onChange={this.handleDateSelect}
+                />
+              </div>
+              <TextField
+                floatingLabelFixed
+                floatingLabelText="Odometer value (km)"
+                name="serviceOdometer"
+                value={this.state.serviceOdometer}
+                onChange={this.handleOdometerChange}
+                errorText={this.state.error}
+              />
+            </div>
+            <div style={{ marginLeft: 'auto', marginBottom: '24px', width: '556px' }}>
+              <TextField
+                floatingLabelFixed
+                floatingLabelText="Notes about service"
+                fullWidth
+                rows={3}
+                rowsMax={3}
+                name="serviceNote"
+                multiLine
+                value={this.state.serviceNote}
+                onChange={this.handleNoteChange}
+              />
+            </div>
+
+            <MainActionButton
+              label="Submit"
+              onClick={this.serviceDoneClick}
+              icon={null}
+              disabled={
+                this.state.serviceOdometer === '' ||
+                parseInt(this.state.serviceOdometer, 10) === 0
+              }
+            />
+          </Layout.Section>
+        }
         <Layout.Section style={{ padding: '32px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <BarIndicator
@@ -271,54 +328,13 @@ class VehicleMaintenance extends React.Component {
             <WarningLights style={{ flex: '1', paddingLeft: '12px' }} />
           </div>
         </Layout.Section>
-        <Layout.Section style={{ flexDirection: 'column', padding: '32px' }}>
-          <div style={{ flexDirection: 'row' }}>
-            <div style={{ display: 'inline-block', marginRight: '40px', verticalAlign: 'top', width: '256px' }}>
-              <DatePicker
-                autoOk
-                defaultDate={this.state.serviceDate}
-                floatingLabelText="Date of service"
-                maxDate={new Date()}
-                onChange={this.handleDateSelect}
-              />
-            </div>
-            <TextField
-              floatingLabelFixed
-              floatingLabelText="Odometer value (km)"
-              name="serviceOdometer"
-              value={this.state.serviceOdometer}
-              onChange={this.handleOdometerChange}
-              errorText={this.state.error}
-            />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-            <div style={{ marginRight: '24px', width: '556px' }}>
-              <TextField
-                floatingLabelFixed
-                floatingLabelText="Notes about service"
-                fullWidth
-                rows={3}
-                name="serviceNote"
-                multiLine
-                value={this.state.serviceNote}
-                onChange={this.handleNoteChange}
-              />
-            </div>
-            <MainActionButton
-              label="Service Done"
-              onClick={this.serviceDoneClick}
-              icon={null}
-              disabled={
-                this.state.serviceOdometer === '' ||
-                parseInt(this.state.serviceOdometer, 10) === 0
-              }
-            />
-          </div>
-        </Layout.Section>
         {
           this.props.serviceHistory.length !== 0 ? (
             <Layout.Section style={{ padding: '40px 32px' }}>
-              <ServiceHistoryTable history={this.props.serviceHistory} height={this.state.tableHeight} />
+              <ServiceHistoryTable
+                history={this.props.serviceHistory}
+                height={this.state.tableHeight}
+              />
               <div style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: '32px' }}>
                 <MainActionButton
                   label="Save RAW"
