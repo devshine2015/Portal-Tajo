@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import FlatButton from 'material-ui/FlatButton';
 import tinycolor from 'tinycolor2';
-import { makePeriodForHoursBack } from 'utils/dateTimeUtils';
+import { makePeriodForMonthsBack, makePeriodForHoursBack } from 'utils/dateTimeUtils';
 
 import { DateRangeWithButton } from 'components/DateRange';
 import { theme } from 'configs';
@@ -38,12 +39,14 @@ const PageHeader = ({ text, onApply, hasDateSelector, defaultTimeRange }) => (
     </div>
     {hasDateSelector && <div className={css(classes.actions)}>
       {
+        // if have got defaultTimeRange, but not defined
+        // use one month back period
         defaultTimeRange.fromDate === undefined ?
           <DateRangeWithButton
             withTime={false}
             onApply={onApply}
-            fromDate={makePeriodForHoursBack(30 * 24).fromDate}
-            toDate={makePeriodForHoursBack(30 * 24).toDate}
+            fromDate={(makePeriodForMonthsBack(1).fromDate)}
+            toDate={makePeriodForMonthsBack(1).toDate}
             button={(
               <FlatButton
                 primary
@@ -52,6 +55,7 @@ const PageHeader = ({ text, onApply, hasDateSelector, defaultTimeRange }) => (
             )}
           />
           :
+          // otherwise - what was passed to props
           <DateRangeWithButton
             withTime={false}
             onApply={onApply}
@@ -79,7 +83,7 @@ PageHeader.propTypes = {
 PageHeader.defaultProps = {
   hasDateSelector: true,
   // by default - query one month back
-  defaultTimeRange: makePeriodForHoursBack(30 * 24),
+  defaultTimeRange: makePeriodForMonthsBack(1),
 };
 
 

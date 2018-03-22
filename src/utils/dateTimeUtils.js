@@ -36,14 +36,30 @@ export const makePeriodForLast24Hours = () => {
 };
 
 /**
- * Create time range ending now, starting backHours back from now
- * @returns {Object} 
- * @returns {Date} fromDate - now minus backHours
- * @returns {Date} toDate - now
- */
-export const makePeriodForHoursBack = (backHours) => {
-  const fromDate = moment().subtract(backHours, 'hours').toDate();
+  * Create time range ending now, starting 'hours' back from now
+  * @returns {Object} 
+  * @returns {Date} fromDate - now minus hours
+  * @returns {Date} toDate - now
+  */
+export const makePeriodForHoursBack = (hours) => {
+  const fromDate = moment().subtract(hours, 'hours').toDate();
   const toDate = moment().toDate();
+
+  return {
+    fromDate,
+    toDate,
+  };
+};
+
+/**
+  * Create time range ending now, starting 'months' back from today
+  * @returns {Object} 
+  * @returns {Date} fromDate - now minus months day with 00:00:00 time
+  * @returns {Date} toDate - today with 23:59:59 time 
+  */
+export const makePeriodForMonthsBack = (months) => {
+  const fromDate = moment().subtract(months, 'months').startOf('day').toDate();
+  const toDate = moment().endOf('day').toDate();
 
   return {
     fromDate,
@@ -78,21 +94,37 @@ export const makeTimeRangeParams = (fromDate, toDate) => {
   const to = toDate || fromDate;
 
   return {
-    from: _formatDateForRequest(fromDate),
-    to: _formatDateForRequest(to),
+    from: _formatFromDateForRequest(fromDate),
+    to: _formatToDateForRequest(to),
   };
 };
 
-/**
- * formatting argument to DRVR ENGINE compatible date string
- * @param {Date} dateStr - date to be formatted
- * @return {String}
- */
-function _formatDateForRequest(dateStr) {
-  const isoDate = dateStr.toISOString();
 
-  return `${isoDate.slice(0, -1)}+0000`;
+/**
+  * formatting argument to DRVR ENGINE compatible date string
+  * output date example - 2018-01-15T00:00:00.000+0200
+  * @param {Date} dateStr - date to be formatted
+  * @return {String}
+  */
+function _formatFromDateForRequest(dateStr) {
+  const date = moment(dateStr).format();
+  const isoDate = date.replace(/:([^:]*)$/, '$1').replace('+', '.000+');
+  return isoDate;
 }
+
+/**
+  * formatting argument to end of the day (of DRVR ENGINE compatible date string)
+  * output date example - 2018-01-29T23:59:59.000+0200
+  * @param {Date} dateStr - date to be formatted
+  * @return {String}
+  */
+function _formatToDateForRequest(dateStr) {
+  const endTime = dateStr.setHours(23, 59, 59, 59);
+  const date = moment(endTime).format();
+  const isoDate = date.replace(/:([^:]*)$/, '$1').replace('+', '.000+');
+  return isoDate;
+}
+
 
 /**
  * Make date string compatible with browsers.
