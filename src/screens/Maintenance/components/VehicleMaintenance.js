@@ -17,10 +17,13 @@ import {
 
 import { Snackbar, TextField } from 'material-ui';
 import DatePicker from 'material-ui/DatePicker';
+import AddIcon from 'material-ui/svg-icons/content/add';
+import RemoveIcon from 'material-ui/svg-icons/content/remove';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import MainActionButton from 'components/Controls/MainActionButton';
 import Layout from 'components/Layout';
 import FixedContent from 'components/FixedContent';
 import VehicleSummary from 'components/VehicleSummary/VehicleSummary';
-import MainActionButton from 'components/Controls/MainActionButton';
 
 import AnimatedLogo from 'components/animated';
 import ServiceHistoryTable from './ServiceHistoryTable';
@@ -244,19 +247,21 @@ class VehicleMaintenance extends React.Component {
         <Layout.Section style={{ padding: '32px' }}>
           <BarIndicator
             title={`Next Service ${(distToNextService > 0) ?
-              `in ${distToNextService.toFixed(0.1)}km` : `${(-distToNextService).toFixed(0.1)}km overdue`}`}
+              `in ${distToNextService.toFixed(0.1)}km` :
+              `${(-distToNextService).toFixed(0.1)}km overdue`}`}
             zeroValue={mntZero}
             endValue={mntEnd}
             currentValue={vehCurrent}
             showRestValue
             units={'km'}
           />
-          <MainActionButton
-            label="Record Service"
+          <FloatingActionButton
+            mini
+            style={{ marginTop: '24px', float: 'right' }}
             onClick={this.toggleServiceRecordForm}
-            icon={null}
-            style={{ marginTop: '24px' }}
-          />
+          >
+            { this.state.serviceFormVisible ? <RemoveIcon /> : <AddIcon />}
+          </FloatingActionButton>
         </Layout.Section>
 
         { this.state.serviceFormVisible &&
