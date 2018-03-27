@@ -5,7 +5,8 @@ body,
 }
 
 :global(.AlertPiechart .bb-chart-arc text) {
-  font-size: 28px;
+  font-size: 26px;
+  alignment-baseline: central;
 }
 
 :global(.AlertPiechart .bb) {

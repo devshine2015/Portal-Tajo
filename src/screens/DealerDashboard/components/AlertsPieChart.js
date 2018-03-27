@@ -40,6 +40,7 @@ const buildChart = (node, chartColumns) => {
         format(value) {
           return value.toString();
         },
+        ratio: 1.1,
       },
     },
     tooltip: {
