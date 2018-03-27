@@ -34,7 +34,7 @@ class AuthenticationWeb {
     auth0SupportLevel,
     // since there is no way on frontend to check which auth0 client is used on backend
     // we can configure it by clientName, which is 'pseudo' name for it.
-    // Value should be one of: 'thomas', 'drvr', where thomas is for the client used for development
+    // Value should be: 'drvr', ('thomas' variable was used for development)
     clientName,
     onAuthSuccess,
     onAuthFailure,

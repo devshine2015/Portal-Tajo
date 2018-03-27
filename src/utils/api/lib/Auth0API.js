@@ -1,4 +1,3 @@
-import { onProduction } from 'configs';
 import BaseAPIClass from './BaseAPIClass';
 import getExtAccessToken from './authHeaderHelper';
 
@@ -8,14 +7,9 @@ const HEADERS = {
 };
 
 const CLIENT = {
-  thomas: {
-    auth0Api: 'https://thomas-drvr.eu.auth0.com',
-    managmentAPI: 'https://thomas-drvr.eu.auth0.com/api/v2',
-    authorizationExtAPI: 'https://thomas-drvr.eu.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api',
-  },
   drvr: {
-    auth0Api: 'https://drvr.auth0.com',
-    managmentAPI: 'https://drvr.auth0.com/api/v2',
+    auth0Api: 'https://auth.drvrapp.net',
+    managmentAPI: 'https://auth.drvrapp.net/api/v2',
     authorizationExtAPI: 'https://drvr.us.webtask.io/adf6e2f2b84784b57522e3b19dfc9201/api',
   },
 };
@@ -68,7 +62,7 @@ const auth0Api = new Auth0API({
   // it's awful, but inevitable evil until we organize auth0 usage
   // check out baseProject.js on how authentication util initialised with clientName property
   // same idea is here
-  clientConfig: onProduction ? CLIENT.drvr : CLIENT.drvr,
+  clientConfig: CLIENT.drvr,
 });
 
 export default auth0Api;

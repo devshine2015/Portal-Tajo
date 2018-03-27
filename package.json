@@ -1,6 +1,6 @@
 {
   "name": "drvr.co",
-  "version": "1.4.391",
+  "version": "1.4.392",
   "description": "common code base for DRVR portals",
   "repository": {
     "type": "git",
@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "aphrodite": "1.2.4",
-    "auth0-js": "8.10.1",
+    "auth0-js": "9.4.1",
     "babel-polyfill": "6.26.0",
     "billboard.js": "1.1.1",
     "classnames": "2.2.5",
