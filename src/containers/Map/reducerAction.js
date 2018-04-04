@@ -13,6 +13,10 @@ const mapInitialState = fromJS({
   // center: isMwa ? ZERO_LOCATION_MWA : ZERO_LOCATION,
   // zoom: ZERO_ZOOM,
   mapView: {},
+  focused: {
+    lat: null,
+    long: null,
+  },
   panLatLngs: null,
   routeObj: {},
 });
