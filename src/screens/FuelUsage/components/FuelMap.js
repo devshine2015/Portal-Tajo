@@ -15,9 +15,6 @@ import { getFuelReportForVehicle, getFuelReportTimeRange } from './../services/r
 
 import inClasses from './classes';
 
-// import { makeMaintenanceData,
-//   MaintenanceStatus } from './../utils/maintenanceHelper';
-
 class FuelMap extends React.Component {
   constructor(props) {
     super(props);
@@ -31,7 +28,9 @@ class FuelMap extends React.Component {
   }
 
   createMarkers(vehicles) {
-    this.mapMarkers = vehicles.reduce((acum, aVehicle) => acum.concat(this.createVehicleMarkers(aVehicle.id)), []);
+    this.mapMarkers = vehicles.reduce(
+      (acum, aVehicle) => acum.concat(this.createVehicleMarkers(aVehicle.id)), [],
+    );
   }
 
   createVehicleMarkers(theVehicleId) {
@@ -42,8 +41,6 @@ class FuelMap extends React.Component {
         (<FuelMarker
           key={alrt.date}
           theMap={null}
-          // label={alrt.liters.toFixed(1)}
-          // label={alrt.alertType}
           fuelEvent={alrt}
           latLng={[alrt.position.lat, alrt.position.lng]}
           isSelected={false}
@@ -58,7 +55,7 @@ class FuelMap extends React.Component {
 
     return (
       <div className={css(inClasses.mapContainer)}>
-        <TheMap >
+        <TheMap>
           {this.mapMarkers}
         </TheMap>
       </div>
@@ -70,7 +67,6 @@ FuelMap.propTypes = {
   selectedVehicleId: PropTypes.string,
   getFuelReportForVehicle: PropTypes.func.isRequired,
   vehicles: PropTypes.array.isRequired,
-  mapStoreSetPan: PropTypes.func.isRequired,
   timeRange: PropTypes.object.isRequired,
 };
 

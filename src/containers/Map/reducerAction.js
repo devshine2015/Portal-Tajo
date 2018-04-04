@@ -33,7 +33,7 @@ export default function mapReducer(state = mapInitialState, action) {
   }
 }
 
-const _mapStateReducer = (state) => state.get('mapState');
+const _mapStateReducer = state => state.get('mapState');
 
 // TODO: implement proper fleet-based default locations mechanism
 export const mapStoreGetView = () => {
@@ -47,23 +47,23 @@ export const mapStoreGetView = () => {
   // return mapView;
 };
 
-export const mapStoreGetPan = (state) => (_mapStateReducer(state).get('panLatLngs'));
-export const mapStoreGetRoute = (state) => (_mapStateReducer(state).get('routeObj'));
+export const mapStoreGetPan = state => _mapStateReducer(state).get('panLatLngs');
+export const mapStoreGetRoute = state => _mapStateReducer(state).get('routeObj');
 
-export const mapStoreSetView = (center, zoom) => (dispatch) =>
+export const mapStoreSetView = (center, zoom) => dispatch =>
   dispatch({
     type: MAP_STOREVIEW,
     center,
     zoom,
   });
 
-export const mapStoreSetPan = (panLatLngs) => (dispatch) =>
+export const mapStoreSetPan = panLatLngs => dispatch =>
   dispatch({
     type: MAP_PAN_TO,
     panLatLngs,
   });
 
-export const mapStoreRouteObj = (routeObj) => (dispatch) =>
+export const mapStoreRouteObj = routeObj => dispatch =>
   dispatch({
     type: MAP_ROUTE_OBJ,
     routeObj,
