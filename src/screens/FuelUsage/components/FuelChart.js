@@ -148,8 +148,7 @@ function makeAlertsObject(vehicleAlerts, fuelSeries) {
         }
 
         alerts.loss.dates.push(moment(alert.date).valueOf());
-        // alerts.loss.values.push(value); 
-        alerts.loss.values.push(value - 5);
+        alerts.loss.values.push(value - 5); // -5 makes value smaller - to prevent same cords for 2 types of data (billboard bug)
         break;
       }
       case 'REFUEL': {
