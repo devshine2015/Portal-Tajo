@@ -7,7 +7,7 @@ import { ifArraysEqual } from 'utils/arrays';
 
 import CustomControls from './OnMapElements/CustomControls';
 
-import { mapStoreGetView, mapStoreGetPan } from './reducerAction';
+import { mapStoreSetView, mapStoreGetView, mapStoreGetPan } from './reducerAction';
 
 import styles from './styles.css';
 
@@ -138,6 +138,7 @@ class MapContainer extends React.Component {
 MapContainer.propTypes = {
   noCustomControls: PropTypes.bool,
   noLayersControl: PropTypes.bool,
+  mapStoreSetView: PropTypes.func.isRequired,
   mapStoredView: PropTypes.object.isRequired,
   mapStoredPan: PropTypes.array,
   children: PropTypes.array,
@@ -154,4 +155,7 @@ const mapState = state => ({
   mapStoredView: mapStoreGetView(state),
   mapStoredPan: mapStoreGetPan(state),
 });
-export default connect(mapState, null)(pure(MapContainer));
+const mapDispatch = {
+  mapStoreSetView,
+};
+export default connect(mapState, mapDispatch)(pure(MapContainer));
