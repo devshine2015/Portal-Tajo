@@ -17,6 +17,8 @@ import { getFuelReportTimeRange } from './../services/reducer';
 // }
 
 const buildChart = (node, data, maxY) => {
+  console.log(data);
+
   const theChart = bb.generate({
     legend: {
       show: false,
@@ -100,7 +102,9 @@ function makeSeriesObject(fuelSeries) {
   const dates = Object.keys(fuelSeries).map((date) => {
     return moment(date).valueOf();
   });
-  const values = Object.values(fuelSeries);
+  const values = Object.values(fuelSeries).map((value) => {
+    return parseFloat(value);
+  });
 
   return {
     dates,
@@ -143,12 +147,17 @@ function makeAlertsObject(vehicleAlerts, fuelSeries) {
             const { fromTime, toTime } = toNextMinuteTimeRange(alert.date);
             return (dateValue >= fromTime) && (dateValue < toTime);
           });
-
-          value = closestDate !== undefined ? fuelSeries[closestDate] : 0;
+          value = closestDate !== undefined ? parseFloat(fuelSeries[closestDate]) : 0;
+        } else {
+          value = parseFloat(value);
         }
 
+        // -5 makes value smaller - to prevent same cords for 2 types of data (billboard bug)
+        if (value > 5) {
+          value -= 5;
+        }
         alerts.loss.dates.push(moment(alert.date).valueOf());
-        alerts.loss.values.push(value - 5); // -5 makes value smaller - to prevent same cords for 2 types of data (billboard bug)
+        alerts.loss.values.push(value);
         break;
       }
       case 'REFUEL': {
@@ -161,10 +170,16 @@ function makeAlertsObject(vehicleAlerts, fuelSeries) {
             return (dateValue >= fromTime) && (dateValue < toTime);
           });
 
-          value = closestDate !== undefined ? fuelSeries[closestDate] : 0;
+          value = closestDate !== undefined ? parseFloat(fuelSeries[closestDate]) : 0;
+        } else {
+          value = parseFloat(value);
+        }
+        // -5 makes value smaller - to prevent same cords for 2 types of data (billboard bug)
+        if (value > 5) {
+          value -= 5;
         }
         alerts.refuel.dates.push(moment(alert.date).valueOf());
-        alerts.refuel.values.push(value - 5);
+        alerts.refuel.values.push(value);
         break;
       }
       default:
@@ -199,6 +214,7 @@ class FuelChart extends Component {
   componentWillReceiveProps(nextProps) {
     const { dates, values } = makeSeriesObject(nextProps.fuelSeries);
     const alerts = makeAlertsObject(nextProps.vehicleAlerts, nextProps.fuelSeries);
+    console.log({ dates, values, alerts });
 
     this.chart.load({
       columns: [
