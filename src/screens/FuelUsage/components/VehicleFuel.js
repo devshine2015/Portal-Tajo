@@ -7,12 +7,12 @@ import Layout from 'components/Layout';
 import DashboardElements from 'components/DashboardElements';
 import MainActionButton from 'components/Controls/MainActionButton';
 import NoPrint from 'components/NoPrint/NoPrint';
+import { numberToFixedString } from 'utils/convertors';
 
 import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
 
 import { getFuelReportForVehicle, getFuelReportTimeRange } from './../services/reducer';
 import { doSaveSpreadSheetSeries, doSaveSpreadSheetOverview } from './../utils/fuelReportGenerators';
-import { numberToFixedString } from 'utils/convertors';
 
 import FuelChart from './FuelChart';
 import FuelAlertsSummary from './FuelAlertsSummary';
@@ -96,7 +96,11 @@ class VehicleFuel extends React.Component {
           <FuelAlertsSummary vehicleAlerts={fuelReport.alerts} totalConsumption={fuelReport.totalConsumption} />
         </Layout.Section>
         <Layout.Section style={{ padding: '32px' }}>
-          <FuelChart fuelSeries={fuelReport.series} fuelCapacity={theVehicle.original.fuelCapacity} />
+          <FuelChart
+            fuelSeries={fuelReport.series}
+            fuelCapacity={theVehicle.original.fuelCapacity}
+            vehicleAlerts={fuelReport.alerts}
+          />
         </Layout.Section>
         <NoPrint>
           <Layout.Section style={{ padding: '32px' }}>
