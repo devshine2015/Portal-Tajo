@@ -17,9 +17,6 @@ import { getFuelReportTimeRange } from './../services/reducer';
 // }
 
 const buildChart = (node, data, maxY) => {
-  console.log(data);
-  // debugger;
-
   const theChart = bb.generate({
     legend: {
       show: false,
@@ -201,8 +198,6 @@ class FuelChart extends Component {
     );
   }
   componentWillReceiveProps(nextProps) {
-    // const processedData = filterSeries(nextProps.fuelSeries);
-    debugger;
     const { dates, values } = makeSeriesObject(nextProps.fuelSeries);
     const alerts = makeAlertsObject(nextProps.vehicleAlerts, nextProps.fuelSeries);
 
