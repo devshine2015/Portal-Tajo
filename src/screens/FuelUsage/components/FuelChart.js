@@ -5,6 +5,7 @@ import { bb } from 'billboard.js';
 import pure from 'recompose/pure';
 import moment from 'moment';
 import { css } from 'aphrodite/no-important';
+import { mapSetFocusCoords } from 'containers/Map/reducerAction';
 import inClasses from './classes';
 
 import { getFuelReportTimeRange } from './../services/reducer';
@@ -15,8 +16,7 @@ import { getFuelReportTimeRange } from './../services/reducer';
 //   values: ['162.8', '162.8'],
 //   alerts: {loss: [{.}, {.}], refuel: [{.}, {.}, {.} ]},
 // }
-
-const buildChart = (node, data, maxY) => {
+const buildChart = (node, data, maxY, onClickedFunc) => {
   console.log(data);
 
   const theChart = bb.generate({
@@ -47,10 +47,17 @@ const buildChart = (node, data, maxY) => {
         data2: '#ea2224',
         data3: '#61a653',
       },
-      onclick: (d, element) => console.log(d, element),
+      onclick: (d) => {
+        const alertType = d.name === 'data2' ? 'LOSS' : 'REFUEL';
+        onClickedFunc({
+          date: moment(d.x).utc().format('YYYY-MM-DDTHH:mm:ss.SSSZZ'),
+          type: alertType,
+        });
+      },
     },
     axis: {
       x: {
+        localtime: false,
         type: 'timeseries',
         tick: {
           fit: true,
@@ -79,7 +86,7 @@ const buildChart = (node, data, maxY) => {
       r: 0,
     },
     bubble: {
-      maxR: 30,
+      maxR: 25,
     },
     tooltip: {
       contents(d) {
@@ -92,6 +99,7 @@ const buildChart = (node, data, maxY) => {
     },
     bindto: node,
   });
+  theChart.defocus('data1');
 
   return theChart;
 };
@@ -152,10 +160,10 @@ function makeAlertsObject(vehicleAlerts, fuelSeries) {
           value = parseFloat(value);
         }
 
-        // -5 makes value smaller - to prevent same cords for 2 types of data (billboard bug)
-        if (value > 5) {
-          value -= 5;
-        }
+        // // -5 makes value smaller - to prevent same cords for 2 types of data (billboard bug)
+        // if (value > 5) {
+        //   value -= 5;
+        // }
         alerts.loss.dates.push(moment(alert.date).valueOf());
         alerts.loss.values.push(value);
         break;
@@ -174,10 +182,10 @@ function makeAlertsObject(vehicleAlerts, fuelSeries) {
         } else {
           value = parseFloat(value);
         }
-        // -5 makes value smaller - to prevent same cords for 2 types of data (billboard bug)
-        if (value > 5) {
-          value -= 5;
-        }
+        // // -5 makes value smaller - to prevent same cords for 2 types of data (billboard bug)
+        // if (value > 5) {
+        //   value -= 5;
+        // }
         alerts.refuel.dates.push(moment(alert.date).valueOf());
         alerts.refuel.values.push(value);
         break;
@@ -198,23 +206,9 @@ class FuelChart extends Component {
     this.chartInit();
   }
 
-  chartInit() {
-    const { dates, values } = makeSeriesObject(this.props.fuelSeries);
-    const alerts = makeAlertsObject(this.props.vehicleAlerts, this.props.fuelSeries);
-    this.chart = buildChart(
-      this.chartRef,
-      {
-        dates,
-        values,
-        alerts,
-      },
-      this.props.fuelCapacity + 100, // add 100 just to prevent cut of alert nodes
-    );
-  }
   componentWillReceiveProps(nextProps) {
     const { dates, values } = makeSeriesObject(nextProps.fuelSeries);
     const alerts = makeAlertsObject(nextProps.vehicleAlerts, nextProps.fuelSeries);
-    console.log({ dates, values, alerts });
 
     this.chart.load({
       columns: [
@@ -227,6 +221,31 @@ class FuelChart extends Component {
       ],
     });
   }
+
+  handleBubbleClick = (d) => {
+    const clickedAlert = this.props.vehicleAlerts.find((alert) => {
+      return alert.date === d.date;
+      // return alert.date === "2017-03-06T13:17:05.000+0000";
+    });
+    console.log(clickedAlert);
+    this.props.mapSetFocusCoords(clickedAlert.position);
+  }
+
+  chartInit() {
+    const { dates, values } = makeSeriesObject(this.props.fuelSeries);
+    const alerts = makeAlertsObject(this.props.vehicleAlerts, this.props.fuelSeries);
+    this.chart = buildChart(
+      this.chartRef,
+      {
+        dates,
+        values,
+        alerts,
+      },
+      this.props.fuelCapacity + 100, // add 100 just to prevent cut of alert nodes,
+      this.handleBubbleClick,
+    );
+  }
+
   render() {
     return (
       <div className={css(inClasses.container)}>
@@ -246,10 +265,14 @@ FuelChart.propTypes = {
   vehicleAlerts: PropTypes.array.isRequired,
   fuelCapacity: PropTypes.number.isRequired,
   timeRange: PropTypes.object.isRequired,
+  mapSetFocusCoords: PropTypes.func.isRequired,
 };
 
 const mapState = state => ({
   timeRange: getFuelReportTimeRange(state),
 });
+const mapDispatch = {
+  mapSetFocusCoords,
+};
 
-export default connect(mapState, null)(pure(FuelChart));
+export default connect(mapState, mapDispatch)(pure(FuelChart));

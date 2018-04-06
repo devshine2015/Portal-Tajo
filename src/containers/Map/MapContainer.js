@@ -6,9 +6,12 @@ import { createMapboxMap } from 'utils/mapBoxMap';
 import { ifArraysEqual } from 'utils/arrays';
 
 import CustomControls from './OnMapElements/CustomControls';
-
-import { mapStoreSetView, mapStoreGetView, mapStoreGetPan } from './reducerAction';
-
+import {
+  mapStoreSetView,
+  mapStoreGetView,
+  mapStoreGetPan,
+  mapGetFocusCoords,
+  mapCleanFocusCoords } from './reducerAction';
 import styles from './styles.css';
 
 // export const MapOptions = {
@@ -20,6 +23,15 @@ import styles from './styles.css';
 // import { gfEditIsEditing } from 'containers/GFEditor/reducer';
 // import { contextMenuAddGFItems } from 'containers/GFEditor/utils';
 
+function arraysEqual(a, b) {
+  if (a === b) return true;
+  if (a == null || b == null) return false;
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; ++i) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
+}
 
 class MapContainer extends React.Component {
   constructor(props) {
@@ -39,14 +51,25 @@ class MapContainer extends React.Component {
     this.createMapboxMap();
   }
 
-  // shouldComponentUpdate(nextProps) {
-  //   // return this.props.children !== nextProps.children;
-  //   return this.props.children.lenght !== nextProps.children.lenght;
-  // }
+  componentWillReceiveProps(nextProps) {
+    // if new vehicle selected - set focused in store to null
+    // if(mapStoredPan different - both arrays)
+    const panIsEqual = arraysEqual(this.props.mapStoredPan, nextProps.mapStoredPan);
+    if (nextProps.mapStoredPan !== null &&
+      nextProps.mapStoredPan.length !== 0 &&
+      panIsEqual) {
+      this.props.mapCleanFocusCoords();
+    } else if (nextProps.mapStoredFocus !== null) {
+      this.state.theMap.panTo(nextProps.mapStoredFocus);
+    }
+  }
 
   componentWillUnmount() {
     // TODO: need to shutdown the mapbox object?
     this.props.mapStoreSetView(this.state.theMap.getCenter(), this.state.theMap.getZoom());
+
+    //  clearing mapStoredFocus
+    this.props.mapCleanFocusCoords();
   }
 
   createMapboxMap() {
@@ -139,13 +162,16 @@ MapContainer.propTypes = {
   noCustomControls: PropTypes.bool,
   noLayersControl: PropTypes.bool,
   mapStoreSetView: PropTypes.func.isRequired,
+  mapCleanFocusCoords: PropTypes.func.isRequired,
   mapStoredView: PropTypes.object.isRequired,
+  mapStoredFocus: PropTypes.object,
   mapStoredPan: PropTypes.array,
   children: PropTypes.array,
 };
 
 MapContainer.defaultProps = {
   mapStoredPan: null,
+  mapStoredFocus: null,
   noCustomControls: false,
   noLayersControl: false,
   children: [],
@@ -154,8 +180,10 @@ MapContainer.defaultProps = {
 const mapState = state => ({
   mapStoredView: mapStoreGetView(state),
   mapStoredPan: mapStoreGetPan(state),
+  mapStoredFocus: mapGetFocusCoords(state),
 });
 const mapDispatch = {
   mapStoreSetView,
+  mapCleanFocusCoords,
 };
 export default connect(mapState, mapDispatch)(pure(MapContainer));

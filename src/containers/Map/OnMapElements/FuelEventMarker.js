@@ -41,10 +41,12 @@ class FuelMarker extends React.Component {
       offset: [0, highlighetR],
       className: 'ddsMapHistoryPopup', // styles.ddsMapHistoryPopup,
       closeButton: false,
-      closeOnClick: false,
+      closeOnClick: true,
       autoPan: false,
       keepInView: false,
       zoomAnimation: true,
+      // here to format date without tz
+    // }).setContent(`${dateToChronicleString(moment(this.props.fuelEvent.date).utc().toDate())
     }).setContent(`${dateToChronicleString(moment(this.props.fuelEvent.date).toDate())
     }<br>${
       this.props.fuelEvent.alertType === 'REFUEL' ? 'Refuel : ' : 'Loss : '}   ${this.props.fuelEvent.liters.toFixed(1)} Ltr`);
