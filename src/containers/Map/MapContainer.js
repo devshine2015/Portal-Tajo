@@ -53,7 +53,6 @@ class MapContainer extends React.Component {
 
     //  clearing mapStoredFocus
     this.props.mapCleanFocusCoords();
-    // console.log('map container unmount');
   }
 
   createMapboxMap() {
