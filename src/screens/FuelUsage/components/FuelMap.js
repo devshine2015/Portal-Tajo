@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import pure from 'recompose/pure';
+import moment from 'moment';
 
 import TheMap from 'containers/Map/MapContainer';
 // import LabelMarker from 'containers/Map/OnMapElements/LabelMarker';
@@ -37,9 +38,10 @@ class FuelMap extends React.Component {
     const fuelReport = this.props.getFuelReportForVehicle(theVehicleId);
     return fuelReport.alerts
       .filter(alrt => alrt.position !== undefined)
-      .map(alrt =>
+      .map((alrt, i) =>
         (<FuelMarker
-          key={alrt.date}
+          // be careful should create unique key, here here copied elems
+          key={`${moment(alrt.date).utc().format('YYYY-MM-DDTHH-mm-ss-SSS')}&${i}`}
           theMap={null}
           fuelEvent={alrt}
           latLng={[alrt.position.lat, alrt.position.lng]}

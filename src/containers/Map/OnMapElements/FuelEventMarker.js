@@ -6,7 +6,6 @@ import tinycolor from 'tinycolor2';
 import { hideLayer } from 'utils/mapBoxMap';
 import { theme } from 'configs';
 import moment from 'moment';
-import { dateToChronicleString } from 'screens/Chronicle/utils/strings';
 
 require('containers/Map/leafletStyles.css');
 
@@ -46,8 +45,7 @@ class FuelMarker extends React.Component {
       keepInView: false,
       zoomAnimation: true,
       // here to format date without tz
-    // }).setContent(`${dateToChronicleString(moment(this.props.fuelEvent.date).utc().toDate())
-    }).setContent(`${dateToChronicleString(moment(this.props.fuelEvent.date).toDate())
+    }).setContent(`${moment(this.props.fuelEvent.date).utc().format('DD/MM/YY HH:mm')
     }<br>${
       this.props.fuelEvent.alertType === 'REFUEL' ? 'Refuel : ' : 'Loss : '}   ${this.props.fuelEvent.liters.toFixed(1)} Ltr`);
     this.popUp.setLatLng(pos);

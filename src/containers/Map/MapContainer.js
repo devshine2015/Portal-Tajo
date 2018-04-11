@@ -23,16 +23,6 @@ import styles from './styles.css';
 // import { gfEditIsEditing } from 'containers/GFEditor/reducer';
 // import { contextMenuAddGFItems } from 'containers/GFEditor/utils';
 
-function arraysEqual(a, b) {
-  if (a === b) return true;
-  if (a == null || b == null) return false;
-  if (a.length !== b.length) return false;
-  for (let i = 0; i < a.length; ++i) {
-    if (a[i] !== b[i]) return false;
-  }
-  return true;
-}
-
 class MapContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -52,14 +42,7 @@ class MapContainer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // if new vehicle selected - set focused in store to null
-    // if(mapStoredPan different - both arrays)
-    const panIsEqual = arraysEqual(this.props.mapStoredPan, nextProps.mapStoredPan);
-    if (nextProps.mapStoredPan !== null &&
-      nextProps.mapStoredPan.length !== 0 &&
-      panIsEqual) {
-      this.props.mapCleanFocusCoords();
-    } else if (nextProps.mapStoredFocus !== null) {
+    if (nextProps.mapStoredFocus !== null) {
       this.state.theMap.panTo(nextProps.mapStoredFocus);
     }
   }
@@ -70,6 +53,7 @@ class MapContainer extends React.Component {
 
     //  clearing mapStoredFocus
     this.props.mapCleanFocusCoords();
+    // console.log('map container unmount');
   }
 
   createMapboxMap() {

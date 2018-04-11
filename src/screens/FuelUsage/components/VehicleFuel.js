@@ -97,6 +97,7 @@ class VehicleFuel extends React.Component {
         </Layout.Section>
         <Layout.Section style={{ padding: '32px' }}>
           <FuelChart
+            vehicle={this.props.theVehicleId}
             fuelSeries={fuelReport.series}
             fuelCapacity={theVehicle.original.fuelCapacity}
             vehicleAlerts={fuelReport.alerts}

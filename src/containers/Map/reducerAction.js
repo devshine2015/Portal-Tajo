@@ -32,7 +32,7 @@ export default function mapReducer(state = mapInitialState, action) {
     case MAP_FOCUS_ON_COORDS:
       return state.set('focusCoords', action.coords);
     case MAP_CLEAN_FOCUS_COORDS:
-      return state.set('focusCoords', mapInitialState.focusCoords);
+      return state.set('focusCoords', action.coords);
     case MAP_ROUTE_OBJ:
       return state.set('routeObj', action.routeObj);
     default:
@@ -79,6 +79,7 @@ export const mapSetFocusCoords = coords => dispatch =>
 export const mapCleanFocusCoords = () => dispatch =>
   dispatch({
     type: MAP_CLEAN_FOCUS_COORDS,
+    coords: null,
   });
 
 export const mapStoreRouteObj = routeObj => dispatch =>
