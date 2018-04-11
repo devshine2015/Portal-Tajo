@@ -154,9 +154,9 @@ function makeAlertsObject(vehicleAlerts, fuelSeries) {
           value = parseFloat(value);
         }
 
-        // -5 makes value smaller - to prevent same cords for 2 types of data (billboard bug)
-        if (value > 5) {
-          value -= 5;
+        // -8 makes value smaller - to prevent same cords for 2 types of data (billboard bug)
+        if (value > 8) {
+          value -= 8;
         }
         alerts.loss.dates.push(moment(alert.date).valueOf());
         alerts.loss.values.push(value);
@@ -176,9 +176,9 @@ function makeAlertsObject(vehicleAlerts, fuelSeries) {
         } else {
           value = parseFloat(value);
         }
-        // -5 makes value smaller - to prevent same cords for 2 types of data (billboard bug)
-        if (value > 5) {
-          value -= 5;
+        // -8 makes value smaller - to prevent same cords for 2 types of data (billboard bug)
+        if (value > 8) {
+          value -= 8;
         }
         alerts.refuel.dates.push(moment(alert.date).valueOf());
         alerts.refuel.values.push(value);
@@ -193,8 +193,14 @@ function makeAlertsObject(vehicleAlerts, fuelSeries) {
 }
 
 class FuelChart extends Component {
-  chartRef = null;
-  chart = null;
+  constructor(props) {
+    super(props);
+    this.state = {
+      focusCoords: null,
+    };
+    this.chartRef = null;
+    this.chart = null;
+  }
 
   componentDidMount() {
     this.chartInit();
@@ -239,6 +245,9 @@ class FuelChart extends Component {
         );
       }
     }
+    this.setState({
+      focusCoords: null,
+    });
   }
 
   componentWillUnmount() {
@@ -250,7 +259,19 @@ class FuelChart extends Component {
       return alert.date === d.date;
     });
     if (clickedAlert !== undefined) {
+      // this condition is here to make MapContainer focusing on coords
+      // even if we clicked on one bubble twice (so with same coords)
+      // that's why we firstly need to clear (set null for it), and then apply same coords
+      if (this.state.focusCoords !== null && (
+        (clickedAlert.lat !== this.state.focusCoords.lat) ||
+        (clickedAlert.lng !== this.state.focusCoords.lng))
+      ) {
+        this.props.mapCleanFocusCoords();
+      }
       this.props.mapSetFocusCoords(clickedAlert.position);
+      this.setState({
+        focusCoords: clickedAlert.position,
+      });
     }
   }
 
