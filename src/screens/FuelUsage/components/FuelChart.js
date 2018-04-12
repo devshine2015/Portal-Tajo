@@ -207,7 +207,6 @@ class FuelChart extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-
     const { dates, values } = makeSeriesObject(nextProps.fuelSeries);
     const alerts = makeAlertsObject(nextProps.vehicleAlerts, nextProps.fuelSeries);
     // if vehicle changed - remove focus coords, load active vehicle data
