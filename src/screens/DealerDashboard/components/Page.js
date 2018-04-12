@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import DealerPage, { PageHeader } from 'containers/DealerPage';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
+import dealerSelectors from 'services/Dealer/selectors';
 
 import MainActionButton from 'components/Controls/MainActionButton';
 import { VelocityTransitionGroup } from 'velocity-react';
@@ -112,7 +113,7 @@ class DealerDashboard extends React.Component {
   renderVehicleStats() {
     const overviewData = this.props.fleetOverviewData;
     // dataString={this.props.vehicles.length.toString()}
-    // dataString={overviewData.vehicleCount.toString()}    
+    // dataString={overviewData.vehicleCount.toString()}
     // const totalTotal = overviewData.normalDriving + overviewData.idleUnder + overviewData.idleOver;
     // const normalizer = totalTotal > 0 ? 100 / totalTotal : 0;
     const totalTotal = overviewData.totalDrivingTime + overviewData.totalIdleTime;
@@ -244,6 +245,9 @@ class DealerDashboard extends React.Component {
     );
   }
 }
+DealerDashboard.defaultProps = {
+  selectedTimeRange: {},
+};
 
 DealerDashboard.propTypes = {
   vehicles: PropTypes.array.isRequired,
@@ -267,14 +271,14 @@ DealerDashboard.propTypes = {
   clearFleetOverview: PropTypes.func.isRequired,
   selectedFleet: PropTypes.string.isRequired,
   changeTimeRange: PropTypes.func.isRequired,
-  selectedTimeRange: PropTypes.object.isRequired,
+  selectedTimeRange: PropTypes.object,
   // selectedVehicleId: PropTypes.string.isRequired,
 };
 
 const mapState = state => ({
   fleetOverviewData: getFleetOverView(state),
-  selectedFleet: state.toJS().Dealer.selectedFleet,
-  selectedTimeRange: state.toJS().Dealer.selectedTimeRange,
+  selectedFleet: dealerSelectors.getSelectedSubFleet(state),
+  selectedTimeRange: dealerSelectors.getSelectedTimeRange(state),
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
   // selectedVehicleId: ctxGetSelectedVehicleId(state),
   // getVehicleById: getVehicleByIdFunc(state),

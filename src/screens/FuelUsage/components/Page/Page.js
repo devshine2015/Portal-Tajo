@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 // import { makePeriodForHoursBack } from 'utils/dateTimeUtils';
-
 import DealerPage, {
   PowerList,
   PageHeader,
 } from 'containers/DealerPage';
 import FixedContent from 'components/FixedContent';
 import AnimatedLogo from 'components/animated';
-import { mapStoreSetPan } from 'containers/Map/reducerAction';
 
+import { mapStoreSetPan } from 'containers/Map/reducerAction';
+import dealerSelectors from 'services/Dealer/selectors';
 import { changeTimeRange } from 'services/Dealer/actions';
 import { fetchVehicleFuelReport } from './../../services/actions';
 import { getFuelReportForVehicle, getFuelReportLoadingState } from './../../services/reducer';
@@ -77,20 +77,23 @@ class Page extends React.Component {
     );
   }
 }
+Page.defaultProps = {
+  selectedTimeRange: {},
+};
 
 Page.propTypes = {
-  fetchVehicleFuelReport: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  getFuelReportForVehicle: PropTypes.func.isRequired,
   mapStoreSetPan: PropTypes.func.isRequired,
   changeTimeRange: PropTypes.func.isRequired,
-  selectedTimeRange: PropTypes.object.isRequired,
+  fetchVehicleFuelReport: PropTypes.func.isRequired,
+  getFuelReportForVehicle: PropTypes.func.isRequired,
+  selectedTimeRange: PropTypes.object,
 };
 
 const mapState = state => ({
   isLoading: getFuelReportLoadingState(state),
   getFuelReportForVehicle: getFuelReportForVehicle(state),
-  selectedTimeRange: state.toJS().Dealer.selectedTimeRange,
+  selectedTimeRange: dealerSelectors.getSelectedTimeRange(state),
 });
 
 const mapDispatch = {
@@ -100,4 +103,3 @@ const mapDispatch = {
 };
 
 export default connect(mapState, mapDispatch)(pure(Page));
-

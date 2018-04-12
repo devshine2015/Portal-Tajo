@@ -7,6 +7,7 @@ const localState = state => state.get(reducerKey);
 export const getReadyState = state => state.get('isReady');
 export const getFleetReadyState = state => state.get('fleetReadyState');
 export const getSubfleets = state => state.get('subfleets');
+const getSelectedTimeRange = state => state.get('selectedTimeRange');
 const getSelectedSubFleet = state => state === undefined ? undefined : state.get('selectedFleet');
 
 // global selectors - use it in mapStateToProps, or in action creators (getState())
@@ -15,4 +16,5 @@ export default globalizeSelectors(localState, {
   getFleetReadyState,
   getSubfleets,
   getSelectedSubFleet,
+  getSelectedTimeRange,
 });
