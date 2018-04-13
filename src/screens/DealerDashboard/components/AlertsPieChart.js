@@ -63,25 +63,9 @@ class AlertsChart extends Component {
   }
 
   componentWillMount() {
-    const alerts = this.props.alerts.filter((alert) => {
-      return moment(alert.date).isBetween(
-        this.props.timeRange.fromDate,
-        this.props.timeRange.toDate);
-    });
+    const alertsLength = this.props.alerts.toJS().length;
     this.setState({
-      showChart: alerts.length !== 0,
-    });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.prepareData(nextProps.alerts);
-    const alerts = this.props.alerts.filter((alert) => {
-      return moment(alert.date).isBetween(
-        this.props.timeRange.fromDate,
-        this.props.timeRange.toDate);
-    });
-    this.setState({
-      showChart: alerts.length !== 0,
+      showChart: alertsLength !== 0,
     });
   }
 
@@ -89,7 +73,7 @@ class AlertsChart extends Component {
     if (this.chartRef == null) {
       return;
     }
-    const theAlerts = this.props.alerts;
+    const theAlerts = this.props.alerts.toJS();
 
     const kindsCounter = {
       [alertKinds._ALERT_KIND_FUEL_GAIN]: 0,
@@ -97,23 +81,18 @@ class AlertsChart extends Component {
       // [alertKinds._ALERT_KIND_ENGINE_TEMP]: 0,
     };
 
-    theAlerts
-      .filter((alrt) => {
-        return moment(alrt.date).isBetween(
-          this.props.timeRange.fromDate,
-          this.props.timeRange.toDate);
-      }).forEach((alrt) => {
-        switch (alrt.alertType) {
-          case 'REFUEL':
-            kindsCounter[alertKinds._ALERT_KIND_FUEL_GAIN] += 1;
-            break;
-          case 'LOSS':
-            kindsCounter[alertKinds._ALERT_KIND_FUEL_LOSS] += 1;
-            break;
-          default:
-            break;
-        }
-      });
+    theAlerts.forEach((alrt) => {
+      switch (alrt.alertType) {
+        case 'REFUEL':
+          kindsCounter[alertKinds._ALERT_KIND_FUEL_GAIN] += 1;
+          break;
+        case 'LOSS':
+          kindsCounter[alertKinds._ALERT_KIND_FUEL_LOSS] += 1;
+          break;
+        default:
+          break;
+      }
+    });
 
     const chartColumns = [
       [[alertMap[alertKinds._ALERT_KIND_FUEL_GAIN]],
@@ -128,7 +107,6 @@ class AlertsChart extends Component {
   }
 
   render() {
-    this.prepareData();
     return (
       <div
         className="AlertPiechart"
@@ -154,12 +132,12 @@ class AlertsChart extends Component {
 }
 
 AlertsChart.propTypes = {
-  alerts: PropTypes.array.isRequired,
+  alerts: PropTypes.object.isRequired,
   timeRange: PropTypes.object.isRequired,
 };
 
 const mapState = state => ({
-  alerts: getLogEntries(state).toJS(),
+  alerts: getLogEntries(state),
 });
 
 export default connect(mapState, null)(pure(AlertsChart));
