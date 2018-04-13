@@ -37,7 +37,7 @@ const inClasses = StyleSheet.create({
 });
 
 const AlertSummaryTable = ({ alerts, myKind }) => {
-  const theAlerts = alerts.filter(alrt => alrt.eventKind === myKind);
+  const theAlerts = alerts.toJS().filter(alrt => alrt.eventKind === myKind);
   if (theAlerts.length === 0) { return false; }
   const perVehicle = {};
   theAlerts.forEach((alrt) => {
@@ -74,11 +74,11 @@ const AlertSummaryTable = ({ alerts, myKind }) => {
 
 AlertSummaryTable.propTypes = {
   myKind: PropTypes.string.isRequired,
-  alerts: PropTypes.array.isRequired,
+  alerts: PropTypes.object.isRequired,
 };
 
 const mapState = state => ({
-  alerts: getLogEntries(state).toJS(),
+  alerts: getLogEntries(state),
 });
 
 const mapDispatch = {
