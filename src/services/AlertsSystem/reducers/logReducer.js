@@ -39,7 +39,7 @@ export const getLogEntriesNewestFirst = (state) => {
 };
 
 export const getLogEntries = (state) => {
-  return state.get('alerts').get('logs').get('entries');
+  return state.getIn(['alerts', 'logs', 'entries']);
 };
 
 export const getLogPeriod = (state) => {

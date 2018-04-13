@@ -17,5 +17,5 @@ export default combineReducers({
   pages: pagesReducer,
 });
 
-export const getDashboardPages = (state) =>
+export const getDashboardPages = state =>
   state.getIn(['inner', 'pages']);

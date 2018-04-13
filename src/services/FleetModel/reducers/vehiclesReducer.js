@@ -195,6 +195,10 @@ export const getAmounts = state => ({
 export const getVehicleById = (state, id) =>
   getDynamicSlice(state).getIn(['processedList', id]);
 
+export const getVehicleServiceHistory = (state, id) =>
+  getProcessedVehicles(state).getIn([id, 'serviceHistory']);
+
+
 export const getIsReady = state => state.get('isReady');
 
 export const getSelectedVehicleId = state =>

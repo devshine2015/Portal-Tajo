@@ -14,6 +14,7 @@ import {
   getAlertConditionByIdFunc,
   getAlertConditions,
 } from 'services/AlertsSystem/reducer';
+import { getVehicleServiceHistory } from 'services/FleetModel/reducer';
 
 import { Snackbar, TextField } from 'material-ui';
 import DatePicker from 'material-ui/DatePicker';
@@ -334,7 +335,7 @@ class VehicleMaintenance extends React.Component {
           </div>
         </Layout.Section>
         {
-          this.props.serviceHistory.length !== 0 ? (
+          (this.props.serviceHistory && this.props.serviceHistory.length > 0) ? (
             <Layout.Section style={{ padding: '40px 32px' }}>
               <ServiceHistoryTable
                 history={this.props.serviceHistory}
@@ -382,17 +383,13 @@ VehicleMaintenance.propTypes = {
   alertById: PropTypes.func.isRequired,
   alertConditions: PropTypes.array.isRequired,
 };
-// TODO: REWRITE IN A BETTER WAY (WITHOUT DIRECT GETTING STATE)
 const mapState = (state, props) => {
-  const vehicleHistory = props.theVehicle !== null ?
-    state.toJS().fleet.vehicles.dynamic.processedList[props.theVehicle.id].serviceHistory
-    : null;
-
   return {
     getVehicleAlerts: getVehicleAlertConditions(state),
     alertById: getAlertConditionByIdFunc(state),
     alertConditions: getAlertConditions(state),
-    serviceHistory: vehicleHistory,
+    serviceHistory: props.theVehicle ?
+      getVehicleServiceHistory(state, props.theVehicle.id) : null,
   };
 };
 const mapDispatch = {

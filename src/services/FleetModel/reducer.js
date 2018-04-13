@@ -69,6 +69,9 @@ export const getAmounts = state =>
   fromVehiclesReducer.getAmounts(getPathToVehicles(state));
 export const getVehicleById = (state, id) =>
   fromVehiclesReducer.getVehicleById(getPathToVehicles(state), id);
+export const getVehicleServiceHistory = (state, id) =>
+  fromVehiclesReducer.getVehicleServiceHistory(getPathToVehicles(state), id);
+
 
 export const getGFs = state =>
   fromgfReducer.getGFs(locations(state));
