@@ -1,6 +1,6 @@
 {
   "name": "drvr.co",
-  "version": "1.4.410",
+  "version": "1.4.411",
   "description": "common code base for DRVR portals",
   "repository": {
     "type": "git",
@@ -88,6 +88,7 @@
     "react-tap-event-plugin": "3.0.1",
     "recompose": "0.25.1",
     "redux": "3.7.2",
+    "redux-devtools-extension": "^2.13.2",
     "redux-immutable": "4.0.0",
     "redux-thunk": "2.2.0",
     "reselect": "3.0.1",
@@ -143,7 +144,6 @@
     "mocha": "3.5.3",
     "react-style-proptype": "3.0.0",
     "react-test-renderer": "16.0.0",
-    "redux-logger": "3.0.6",
     "rimraf": "2.6.2",
     "style-loader": "0.18.2",
     "svg-react-loader": "0.4.5",
