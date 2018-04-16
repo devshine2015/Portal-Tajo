@@ -56,13 +56,13 @@ class VehicleMaintenance extends React.Component {
     if (nextProps.theVehicle === null) return;
     if (this.props.theVehicle === null ||
       this.props.theVehicle.id !== nextProps.theVehicle.id) {
+      this.fetchServiceHistory(nextProps.theVehicle.id);
       const vehAlertIds = nextProps.getVehicleAlerts(nextProps.theVehicle.id);
       if (vehAlertIds === null) {
         this.setState({
           isLoading: true,
         });
         this.fetchAlerts(nextProps.theVehicle.id);
-        this.fetchServiceHistory(nextProps.theVehicle.id);
       } else {
         this.setVehicleAlerts(vehAlertIds);
       }
