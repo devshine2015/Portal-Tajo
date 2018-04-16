@@ -128,7 +128,7 @@ function _fetchTemerature(vehicleId, theFrame, queryString/* , dispatch*/) {
     //   dispatch(_updateVehicleChronicleFrame(vehicleId, theFrame));
     // });
 }
-
+// TODO: needs to be fixed - timezone counted in a wrong way
 function _prepareReportsQueryString(dateFrom, dateTo) {
   let fromString = dateFrom.toISOString();
   fromString = `${fromString.slice(0, -1)}+0000`;
