@@ -49,9 +49,6 @@ class FuelConsumption extends Component {
         >
           <TableRowColumn>{alert.alertType}</TableRowColumn>
           <TableRowColumn>{moment(alert.date).utc().format('DD/MM/YY HH:mm')}</TableRowColumn>
-          {/* <TableRowColumn>{alert.position ?
-            `${alert.position.lat.toFixed(3)}, ${alert.position.lng.toFixed(3)}` :
-            'N/A'}</TableRowColumn> */}
           <TableRowColumn>{alert.liters.toFixed(1).toString()}</TableRowColumn>
           <TableRowColumn> {this.props.totalConsumption > 0 ?
             ((100 * alert.liters) / this.props.totalConsumption).toFixed(1).toString() :
@@ -76,7 +73,6 @@ class FuelConsumption extends Component {
                 <TableRow>
                   <TableHeaderColumn>Alert Type</TableHeaderColumn>
                   <TableHeaderColumn>Date/Time</TableHeaderColumn>
-                  {/* <TableHeaderColumn>Location</TableHeaderColumn> */}
                   <TableHeaderColumn>Liters</TableHeaderColumn>
                   <TableHeaderColumn>% of consumption</TableHeaderColumn>
                 </TableRow>

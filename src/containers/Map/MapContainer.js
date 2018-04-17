@@ -27,14 +27,15 @@ class MapContainer extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      theMap: null,
+    };
+
     this.mappp = null;
     this.mappedMap = {};
     this.latestPan = [];
     this.node = null;
-
-    this.state = {
-      theMap: null,
-    };
+    this.focusedMarker = null;
   }
 
   componentDidMount() {
@@ -42,8 +43,11 @@ class MapContainer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    this.clearFocusedCircle();
+
     if (nextProps.mapStoredFocus !== null) {
       this.state.theMap.panTo(nextProps.mapStoredFocus);
+      this.updateFocusedCircle(nextProps.mapStoredFocus);
     }
   }
 
@@ -53,6 +57,26 @@ class MapContainer extends React.Component {
 
     //  clearing mapStoredFocus
     this.props.mapCleanFocusCoords();
+    this.clearFocusedCircle();
+  }
+
+  updateFocusedCircle(coords) {
+    this.focusedMarker = window.L.circleMarker(coords,
+      {
+        color: 'yellow',
+        opacity: 0.4,
+        fillColor: 'yellow',
+        fillOpacity: 0.4,
+      },
+    ).setRadius(20);
+    this.state.theMap.addLayer(this.focusedMarker);
+    this.focusedMarker.bringToBack();
+  }
+
+  clearFocusedCircle() {
+    if (this.focusedMarker !== null) {
+      this.state.theMap.removeLayer(this.focusedMarker);
+    }
   }
 
   createMapboxMap() {
