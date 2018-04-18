@@ -19,9 +19,6 @@ import { getFuelReportTimeRange } from './../services/reducer';
 const buildChart = (node, data, maxY, onClickedFunc) => {
 
   const theChart = bb.generate({
-    legend: {
-      show: false,
-    },
     data: {
       xs: {
         data1: 'x1',
@@ -36,6 +33,11 @@ const buildChart = (node, data, maxY, onClickedFunc) => {
         ['data2', ...data.alerts.loss.values],
         ['data3', ...data.alerts.refuel.values],
       ],
+      names: {
+        data1: 'History',
+        data2: 'Loss Alerts',
+        data3: 'Refuel Alerts',
+      },
       type: 'area',
       types: {
         data1: 'area',
@@ -76,6 +78,9 @@ const buildChart = (node, data, maxY, onClickedFunc) => {
           },
         },
       },
+    },
+    padding: {
+      bottom: 10,
     },
     point: {
       r: 0,
