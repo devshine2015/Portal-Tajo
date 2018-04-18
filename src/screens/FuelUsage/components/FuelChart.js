@@ -188,8 +188,6 @@ function makeAlertsObject(vehicleAlerts, fuelSeries) {
         return null;
     }
   });
-  // console.log('vehicleAlerts', vehicleAlerts);
-  // console.log('alerts', alerts);
   return alerts;
 }
 
@@ -211,16 +209,13 @@ class FuelChart extends Component {
     const { dates, values } = makeSeriesObject(nextProps.fuelSeries);
     const alerts = makeAlertsObject(nextProps.vehicleAlerts, nextProps.fuelSeries);
     // if vehicle changed - remove focus coords, load active vehicle data
-    // debugger;
     if (this.props.vehicle !== nextProps.vehicle) {
       this.props.mapCleanFocusCoords();
       if (dates.length === 0) {
-        // console.log('1');
         this.chart.unload({
           ids: ['data1', 'data2', 'data3'],
         });
       } else {
-        // console.log('5');
         this.chart.load({
           columns: [
             ['x1', ...dates],
@@ -241,6 +236,7 @@ class FuelChart extends Component {
             ids: ['data3'],
           });
         }
+        this.chart.flush(); // Force to redraw
       }
     } else {
       // happens when vehicle the same, but dates changed
