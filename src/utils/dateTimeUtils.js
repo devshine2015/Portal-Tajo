@@ -37,7 +37,7 @@ export const makePeriodForLast24Hours = () => {
 
 /**
   * Create time range ending now, starting 'hours' back from now
-  * @returns {Object} 
+  * @returns {Object}
   * @returns {Date} fromDate - now minus hours
   * @returns {Date} toDate - now
   */
@@ -53,9 +53,9 @@ export const makePeriodForHoursBack = (hours) => {
 
 /**
   * Create time range ending now, starting 'months' back from today
-  * @returns {Object} 
+  * @returns {Object}
   * @returns {Date} fromDate - now minus months day with 00:00:00 time
-  * @returns {Date} toDate - today with 23:59:59 time 
+  * @returns {Date} toDate - today with 23:59:59 time
   */
 export const makePeriodForMonthsBack = (months) => {
   const fromDate = moment().subtract(months, 'months').startOf('day').toDate();
@@ -92,7 +92,7 @@ export const makeDefaultDatePeriod = () => {
  */
 export const makeTimeRangeParams = (fromDate, toDate) => {
   const to = toDate || fromDate;
-
+  debugger;
   return {
     from: _formatFromDateForRequest(fromDate),
     to: _formatToDateForRequest(to),
@@ -107,9 +107,10 @@ export const makeTimeRangeParams = (fromDate, toDate) => {
   * @return {String}
   */
 function _formatFromDateForRequest(dateStr) {
-  const date = moment(dateStr).format();
-  const isoDate = date.replace(/:([^:]*)$/, '$1').replace('+', '.000+');
-  return isoDate;
+  const startTime = dateStr.setHours(0, 0, 0, 0);
+  const date = moment(startTime).format('YYYY-MM-DDTHH:mm:ss.SSSZZ');
+  console.log(date);
+  return date;
 }
 
 /**
@@ -119,10 +120,10 @@ function _formatFromDateForRequest(dateStr) {
   * @return {String}
   */
 function _formatToDateForRequest(dateStr) {
-  const endTime = dateStr.setHours(23, 59, 59, 59);
-  const date = moment(endTime).format();
-  const isoDate = date.replace(/:([^:]*)$/, '$1').replace('+', '.000+');
-  return isoDate;
+  const endTime = dateStr.setHours(23, 59, 59, 999);
+  const date = moment(endTime).format('YYYY-MM-DDTHH:mm:ss.SSSZZ');
+  console.log(date);
+  return date;
 }
 
 
