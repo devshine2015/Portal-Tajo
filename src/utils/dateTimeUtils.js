@@ -92,7 +92,7 @@ export const makeDefaultDatePeriod = () => {
  */
 export const makeTimeRangeParams = (fromDate, toDate) => {
   const to = toDate || fromDate;
-  debugger;
+
   return {
     from: _formatFromDateForRequest(fromDate),
     to: _formatToDateForRequest(to),
@@ -109,7 +109,6 @@ export const makeTimeRangeParams = (fromDate, toDate) => {
 function _formatFromDateForRequest(dateStr) {
   const startTime = dateStr.setHours(0, 0, 0, 0);
   const date = moment(startTime).format('YYYY-MM-DDTHH:mm:ss.SSSZZ');
-  console.log(date);
   return date;
 }
 
@@ -122,7 +121,6 @@ function _formatFromDateForRequest(dateStr) {
 function _formatToDateForRequest(dateStr) {
   const endTime = dateStr.setHours(23, 59, 59, 999);
   const date = moment(endTime).format('YYYY-MM-DDTHH:mm:ss.SSSZZ');
-  console.log(date);
   return date;
 }
 
