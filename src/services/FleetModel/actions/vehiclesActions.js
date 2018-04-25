@@ -1,5 +1,5 @@
 import { api } from 'utils/api';
-import { isMwa } from 'configs';
+import { isMwa, isDemo } from 'configs';
 import endpoints from 'configs/endpoints';
 import { mwaFetchJobs } from 'services/MWA/actions';
 import subFleetFilter from 'services/Dealer/subFleetFiltering';
@@ -49,6 +49,13 @@ export const setSelectedVehicleId = id => ({
 });
 
 export const fetchVehicles = getState => (dispatch) => {
+  // if demo portal we use fake set of vehicles
+  if (isDemo) {
+    console.log('!!! isDemo ', isDemo);
+    dispatch(fleetIsReady(true));
+    return Promise.resolve({ ready: true });
+  }
+
   const urls = [{
     ...endpoints.getVehicles,
   }, {

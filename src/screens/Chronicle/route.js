@@ -7,7 +7,7 @@ const createRoute = ({
   name,
   niceName,
   getComponent: (location, cb) => {
-    require.ensure([], require => {
+    require.ensure([], (require) => {
       cb(null, require('./index').default);
     }, 'history');
   },

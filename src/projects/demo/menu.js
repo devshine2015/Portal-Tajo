@@ -1,55 +1,15 @@
 const menu = {
-  review: {
-    name: 'review',
-    path: 'review',
+  operational: {
+    name: 'operational',
+    path: 'map',
   },
   history: {
     name: 'history',
     path: 'history',
   },
-  reports: {
-    name: 'reports',
-    path: 'reports',
-  },
-  vehicles: {
-    name: 'vehicles_editor',
-    path: 'vehicles',
-  },
-  users: {
-    name: 'users',
-    path: 'users',
-  },
-  operational: {
-    name: 'operational',
-    path: 'map',
-  },
-  alerts: {
-    name: 'alerts_editor',
-    path: 'alerts',
-  },
-  execReport: {
-    name: 'exec_report',
-    path: 'execreport',
-  },
-  profile: {
-    name: 'profile',
-    path: 'profile',
-  },
-  alertsLogs: {
-    name: 'alerts_logs',
-    path: 'alertslogs',
-  },
-  installer: {
-    name: 'installer',
-    path: 'installer',
-  },
-  devices: {
-    name: 'devices_manager',
-    path: 'devices',
-  },
-  booking: {
-    name: 'booking_screen',
-    path: 'booking',
+  overview: {
+    name: 'overview',
+    path: 'overview',
   },
 };
 

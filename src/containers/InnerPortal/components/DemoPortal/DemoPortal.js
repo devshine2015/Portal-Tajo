@@ -75,7 +75,6 @@ const DemoPortal = props => (
       title={renderTitle(props.fleet, props.changeFleet)}
       toggleSidebar={props.toggleSidebar}
       logout={props.logout}
-      // rightElement={<RightElement />}
     />
 
     <MainSidebar
