@@ -41,6 +41,8 @@ function getPublicPath() {
       return '/ccmm/';
     case 'scc':
       return '/scc/';
+    case 'demo':
+      return '/demo/';
     default:
       return '/';
   }
