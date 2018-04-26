@@ -1,5 +1,5 @@
 import createLoginScreen from 'screens/LoginScreen/route';
-import createOperationalScreen from 'screens/Operational/route';
+import createOperationalScreen from 'screens/DemoOperational/route';
 import createChronicleScreen from 'screens/Chronicle/route';
 import createOverviewScreen from 'screens/DemoDealerDashboard/route';
 import createNotFoundScreen from 'screens/NotFound/route';

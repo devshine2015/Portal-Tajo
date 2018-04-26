@@ -1,7 +1,7 @@
 const menu = {
   operational: {
     name: 'operational',
-    path: 'map',
+    path: 'operational',
   },
   history: {
     name: 'history',
