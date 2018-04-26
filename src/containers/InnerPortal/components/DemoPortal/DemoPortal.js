@@ -5,19 +5,19 @@ import React from 'react';
 import { css } from 'aphrodite/no-important';
 import { isMwa, isSCC } from 'configs';
 import { authorizeWithRole } from 'utils/authz';
-import AppBar from 'components/AppBar';
 import FleetSelector from 'components/FleetSelector';
 import CodebaseVersion from 'components/CodebaseVersion';
 import makeInnerPortal from '../Main';
-import MainSidebar from '../MainSidebar';
-import classes from './classes';
+import TopBar from './components/TopBar';
+import Navigation from './components/Navigation';
+import styles from './styles.css';
 
 import sccLogo from 'assets/images/logos/scc/scc_logo.png';
 
 const canChangeFleet = () => authorizeWithRole('uber');
 
 const Title = props => (
-  <div className={css(classes.titleElement)}>
+  <div>
     { props.children }
   </div>
 );
@@ -59,7 +59,7 @@ function renderTitle(fleetName, onFleetChange) {
   }
   return (
     <Title onFleetChange={onFleetChange}>
-      <div className={css(classes.withCodename)}>
+      <div>
         { fleetName }
         <CodebaseVersion />
       </div>
@@ -69,18 +69,11 @@ function renderTitle(fleetName, onFleetChange) {
 }
 
 const DemoPortal = props => (
-  <div style={{ height: '100%' }}>
+  <div className={styles.portalWrapper}>
 
-    <AppBar
-      title={renderTitle(props.fleet, props.changeFleet)}
-      toggleSidebar={props.toggleSidebar}
-      logout={props.logout}
-    />
+    <TopBar />
 
-    <MainSidebar
-      isOpened={props.isSidebarOpen}
-      toggleSidebar={props.toggleSidebar}
-    />
+    <Navigation />
 
     { props.children }
 
@@ -88,12 +81,7 @@ const DemoPortal = props => (
 );
 
 DemoPortal.propTypes = {
-  children: PropTypes.node.isRequired,
-  fleet: PropTypes.string,
-  toggleSidebar: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
-  isSidebarOpen: PropTypes.bool.isRequired,
-  changeFleet: PropTypes.func.isRequired,
 };
 
 DemoPortal.defaultProps = {

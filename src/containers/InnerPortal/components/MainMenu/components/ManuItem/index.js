@@ -29,17 +29,6 @@ const MenuItem = (props) => {
     </div>
   </Link>);
 
-  // return (<Link
-  //   className={styles.menu__item}
-  //   style={theme.mainMenuItem}
-  //   key={props.page.path}
-  //   to={props.page.path}
-  //   onClick={props.closeSidebar}
-  // >
-  //   <span className={styles.item__text}>
-  //     { props.niceName || props.page.name }
-  //   </span>
-  // </Link>);
 };
 
 MenuItem.propTypes = {

@@ -1,0 +1,15 @@
+.topBar {
+  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.1);
+  height: 78px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 5;
+}
+
+@media screen and (max-width: 1600px) {
+  .topBar {
+    height: 48px;
+  }
+}

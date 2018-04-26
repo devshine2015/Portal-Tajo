@@ -1,0 +1,12 @@
+.portalWrapper {
+  height: 100%;
+  padding-left: 80px;
+  padding-top: 80px;
+}
+
+@media screen and (max-width: 1600px) {
+  .portalWrapper {
+    padding-left: 50px;
+    padding-top: 50px;
+  }
+}
