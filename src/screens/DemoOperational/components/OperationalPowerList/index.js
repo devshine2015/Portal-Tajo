@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import Filter from 'components/Filter';
+import Filter from 'components/DemoFilter';
 import ItemsList from 'components/InstancesList';
 import listTypes from 'components/InstancesList/types';
 import { vehiclesActions, gfActions } from 'services/FleetModel/actions';

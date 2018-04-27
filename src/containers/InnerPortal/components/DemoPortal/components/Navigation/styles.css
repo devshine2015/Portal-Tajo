@@ -45,7 +45,7 @@
   width: 3px;
 }
 
-@media screen and (max-width: 1600px) {
+@media screen and (max-width: 1920px) {
   .nav {
     width: 50px;
   }

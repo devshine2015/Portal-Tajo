@@ -13,10 +13,12 @@ const Navigation = (props) => {
   return (
     <div className={styles.nav}>
       <div className={styles.nav__logo}>
-        <svg viewBox="0 0 128 125"><g fill="none" fillRule="evenodd">
-          <ellipse fill="#FFF" cx="63.713" cy="62.342" rx="63.713" ry="62.342"/>
-          <ellipse fill="#4A4A4A" cx="64.349" cy="62.432" rx="50.07" ry="48.578"/>
-          <path fill="#FFF" d="M57.116 100.44h14.279v13.854H57.116zM57.116 41.561h14.279v41.561H57.116zM57.116 3.463h14.279v20.781H57.116z"/></g>
+        <svg viewBox="0 0 36 37">
+          <g fill="none" fillRule="evenodd" opacity=".9">
+            <ellipse fill="#FFF" cx="17.919" cy="18.021" rx="17.919" ry="18.021" />
+            <ellipse fill="#4A4A4A" cx="18.098" cy="18.047" rx="14.082" ry="14.042" />
+            <path fill="#FFF" d="M16.064 29.034h4.016v4.005h-4.016zM16.064 12.014h4.016v12.014h-4.016zM16.064 1.001h4.016v6.007h-4.016z" />
+          </g>
         </svg>
       </div>
       <div className={styles.nav__links}>

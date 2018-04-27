@@ -1,0 +1,27 @@
+.filterContainer {
+  background-color: #fff;
+  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  width: 100%;
+}
+.inputStyle {
+  font-size: 14px;
+  height: 78px;
+  letter-spacing: 1px;
+  padding-left: 64px;
+  padding-right: 32px;
+  width: 100%;
+}
+.inputStyle:focus {
+  outline: none;
+}
+@media screen and (max-width: 1920px) {
+  .inputStyle {
+    font-size: 12px;
+    height: 48px;
+    padding-left: 32px;
+    padding-right: 16px;
+  }
+}

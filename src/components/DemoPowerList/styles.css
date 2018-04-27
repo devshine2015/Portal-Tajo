@@ -1,14 +1,19 @@
-@media screen and (min-width: 100px) {
+.columnContainer {
+  width: 346px;
+  background-color: #fff;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+  z-index: 5;
+}
+
+.powerlist {
+  height: 100%;
+  position: relative;
+}
+
+@media screen and (max-width: 1920px) {
   .columnContainer {
-    width: 10%;
-    min-width: 250px;
-    background-color: #fff;
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
-    z-index: 5;
+    width: 250px;
+    max-width: inherit;
   }
 
-  .powerlist {
-    height: 100%;
-    position: relative;
-  }
 }

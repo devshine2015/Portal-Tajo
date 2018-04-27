@@ -9,7 +9,6 @@ import RouteFinder from 'containers/Map/OnMapElements/MapRoute/RouteFinder';
 import NearestFinder from 'containers/Map/OnMapElements/MapRoute/NearestFinder';
 import RoutePath from 'containers/Map/OnMapElements/MapRoute/RoutePath';
 import CtxtOpenGoogleMap from 'containers/Map/OnMapElements/CtxtMenuOpenGMap';
-import GFEditor from 'containers/GFEditor/GFEditor';
 import GFEditorMapComponent from 'containers/GFEditor/MapComponenet';
 import markerTypes from 'services/FleetModel/utils/markerTypes';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
@@ -50,13 +49,10 @@ class DemoOperational extends React.Component {
     return (
       <Layout.ScreenWithList>
         <DemoPowerList>
-          {this.props.isEditGF ?
-            <GFEditor /> :
-            <OperationalList
-              gfs={this.props.gfs}
-              vehicles={this.props.vehicles}
-            />
-          }
+          <OperationalList
+            gfs={this.props.gfs}
+            vehicles={this.props.vehicles}
+          />
         </DemoPowerList>
         <FixedContent containerClassName={styles.fixedContent}>
           <div className={styles.row}>
