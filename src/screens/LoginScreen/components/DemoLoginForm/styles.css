@@ -1,10 +1,10 @@
 .error {
-  margin-top: 50px;
+  margin: 15px 0;
   width: 100%;
 }
 .inn {
   position: relative;
-  padding: 100px 78px;
+  padding: 100px 78px 70px;
   transition: padding-top .25s;
 }
 .loginFormWrapper {
@@ -28,16 +28,22 @@
 .formInput {
   background-color: #eee;
   border-radius: 100px;
+  box-sizing: border-box;
   font-size: 30px;
   color: #000;
   letter-spacing: 3px;
   line-height: 1.2;
   padding: 44px 50px;
   margin-bottom: 38px;
+  transition: box-shadow .2s;
   width: 100%;
 }
+.formInput:focus {
+  box-shadow: 0 1px 2px #e2e2e2;
+  outline: none;
+}
 .loginButton {
-  background: linear-gradient(99deg, #ff2a68, #ff5e3a);
+  background-image: linear-gradient(99deg, #ff2a68, #ff5e3a);
   border-radius: 100px;
   color: #ffffff;
   display: flex;
@@ -48,13 +54,18 @@
   justify-content: center;
   letter-spacing: 3px;
   text-align: center;
+  transition: background-image .3s, box-shadow .2s;
   cursor: pointer;
   width: 100%;
 }
-/* .loginButton__wrapper:active,
-.loginButton__wrapper:focus {
+.loginButton:active,
+.loginButton:focus {
   outline: none;
-} */
+  box-shadow: 0 2px 4px #a0a0a0;
+}
+.loginButton:hover {
+  background-image: linear-gradient(130deg, #ff2a68, #ff5e3a);
+}
 
 /* customized checkbox */
 .radioLabel {
@@ -110,9 +121,9 @@
   transform: rotate(45deg);
 }
 /* customized checkbox end */
-@media screen and (max-width: 1600px) {
+@media screen and (max-width: 1920px) {
   .inn {
-    padding: 40px 50px;
+    padding: 40px 50px 10px;
   }
   .formInput {
     border-radius: 100px;

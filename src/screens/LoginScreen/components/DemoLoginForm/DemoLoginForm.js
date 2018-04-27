@@ -181,9 +181,9 @@ class DemoLoginForm extends Component {
               isLoading={this.state.isLoading}
               // isLoading={false}
             />
+            { this.renderError() }
           </form>
         </Paper>
-        { this.renderError() }
       </div>
     );
   }

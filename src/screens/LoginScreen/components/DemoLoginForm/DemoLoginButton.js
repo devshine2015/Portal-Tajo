@@ -5,7 +5,6 @@ import styles from './styles.css';
 const DemoLoginButton = (props) => {
   return (
     <button
-      disabled={props.isLoading}
       type="submit"
       onClick={props.onClick}
       className={styles.loginButton}
