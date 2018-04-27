@@ -1,18 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="36px" height="37px" viewBox="0 0 36 37" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
-    <title>Group</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="099-outsourcing-010418" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.699999988">
-        <g id="03.01-trip_history" transform="translate(-22.000000, -22.000000)">
-            <g id="Group" transform="translate(22.000000, 22.000000)">
-                <ellipse id="Oval-4" fill="#FFFFFF" cx="17.9191808" cy="18.0207983" rx="17.9191808" ry="18.0207983"></ellipse>
-                <ellipse id="Oval-2" fill="#4A4A4A" cx="18.0980865" cy="18.0468024" rx="14.0820846" ry="14.0421805"></ellipse>
-                <rect id="Rectangle" fill="#FFFFFF" x="16.0640076" y="29.0335084" width="4.01600189" height="4.00462185"></rect>
-                <rect id="Rectangle-Copy" fill="#FFFFFF" x="16.0640076" y="12.0138656" width="4.01600189" height="12.0138656"></rect>
-                <rect id="Rectangle-Copy-2" fill="#FFFFFF" x="16.0640076" y="1.00115546" width="4.01600189" height="6.00693278"></rect>
-            </g>
-        </g>
-    </g>
+<svg viewBox="0 0 36 37">
+  <g fill="none" fill-rule="evenodd" opacity=".7">
+    <ellipse fill="#FFF" cx="17.919" cy="18.021" rx="17.919" ry="18.021"/>
+    <ellipse fill="#4A4A4A" cx="18.098" cy="18.047" rx="14.082" ry="14.042"/>
+    <path fill="#FFF" d="M16.064 29.034h4.016v4.005h-4.016zM16.064 12.014h4.016v12.014h-4.016zM16.064 1.001h4.016v6.007h-4.016z"/>
+  </g>
 </svg>

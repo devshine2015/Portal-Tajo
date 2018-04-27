@@ -1,0 +1,155 @@
+.error {
+  margin-top: 50px;
+  width: 100%;
+}
+.inn {
+  position: relative;
+  padding: 100px 78px;
+  transition: padding-top .25s;
+}
+.loginFormWrapper {
+  position: relative;
+  width: 100%;
+};
+.links {
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+ }
+.title {
+  color: #000;
+  font-size: 60px;
+  margin-bottom: 60px;
+  line-height: 1;
+  letter-spacing: 1.5px;
+  text-align: center;
+}
+.formInput {
+  background-color: #eee;
+  border-radius: 100px;
+  font-size: 30px;
+  color: #000;
+  letter-spacing: 3px;
+  line-height: 1.2;
+  padding: 44px 50px;
+  margin-bottom: 38px;
+  width: 100%;
+}
+.loginButton {
+  background: linear-gradient(99deg, #ff2a68, #ff5e3a);
+  border-radius: 100px;
+  color: #ffffff;
+  display: flex;
+  height: 122px;
+  font-size: 30px;
+  font-weight: 500;
+  overflow: hidden;
+  justify-content: center;
+  letter-spacing: 3px;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+}
+/* .loginButton__wrapper:active,
+.loginButton__wrapper:focus {
+  outline: none;
+} */
+
+/* customized checkbox */
+.radioLabel {
+  display: block;
+  position: relative;
+  padding-left: 76px;
+  margin-bottom: 38px;
+  cursor: pointer;
+  font-size: 30px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  letter-spacing: 3px;
+  line-height: 50px;
+}
+.radioLabel input {
+  position: absolute;
+  opacity: 0;
+}
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 50px;
+  width: 50px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+.radioLabel:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+.radioLabel input:checked ~ .checkmark {
+  background: linear-gradient(124deg, #F44336, #f5564a);
+}
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+.radioLabel input:checked ~ .checkmark:after {
+  display: block;
+}
+.radioLabel .checkmark:after {
+  left: 17px;
+  top: 7px;
+  width: 17px;
+  height: 27px;
+  border: solid white;
+  border-width: 0 5px 5px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+/* customized checkbox end */
+@media screen and (max-width: 1600px) {
+  .inn {
+    padding: 40px 50px;
+  }
+  .formInput {
+    border-radius: 100px;
+    font-size: 16px;
+    letter-spacing: 1px;
+    padding: 14px 24px;
+    margin-bottom: 16px;
+    width: 100%;
+  }
+  .title {
+    font-size: 24px;
+    margin-bottom: 32px;
+  }
+  .loginButton {
+    border-radius: 100px;
+    height: 50px;
+    font-size: 16px;
+    justify-content: center;
+    letter-spacing: 2px;
+  }
+  .radioLabel {
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin-bottom: 24px;
+    padding-left: 32px;
+    line-height: inherit;
+  }
+  .checkmark {
+    height: 20px;
+    width: 20px;
+  }
+  .radioLabel .checkmark:after {
+    left: 7px;
+    top: 3px;
+    width: 7px;
+    height: 11px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+  }
+}
