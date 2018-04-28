@@ -12,6 +12,7 @@ import {
   sortVehicles,
   orderByResentHistory,
 } from '../utils/vehicleHelpers';
+import { demoVehicles, demoStatus } from './demoVehicles';
 
 export const FLEET_MODEL_READY_SET = 'portal/services/FLEET_MODEL_READY_SET';
 export const FLEET_MODEL_VEHICLES_SET = 'portal/services/FLEET_MODEL_VEHICLES_SET';
@@ -53,6 +54,9 @@ export const fetchVehicles = getState => (dispatch) => {
   if (isDemo) {
     console.log('!!! isDemo ', isDemo);
     dispatch(fleetIsReady(true));
+    const localObjects = makeLocalVehicles(
+      subFleetFilter(demoVehicles, dealerSelectors.getSelectedSubFleet(getState())), demoStatus);
+    dispatch(_vehiclesSet(localObjects));
     return Promise.resolve({ ready: true });
   }
 
@@ -69,7 +73,7 @@ export const fetchVehicles = getState => (dispatch) => {
     ),
   ).then(([vehicles = [], { status = [] } = {}]) => {
     const localObjects = makeLocalVehicles(
-      subFleetFilter(vehicles, dealerSelectors.getSelectedSubFleet(getState())), status);
+      subFleetFilter(demoVehicles, dealerSelectors.getSelectedSubFleet(getState())), demoStatus);
     dispatch(_vehiclesSet(localObjects));
   }).then(() => {
     if (isMwa) {
