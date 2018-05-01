@@ -1,0 +1,29 @@
+.mapContainer {
+  flex-grow: 1;
+}
+
+:global(.leaflet-touch .leaflet-control-layers-toggle) {
+  width: 36px;
+  height: 36px;
+}
+
+:global(.leaflet-touch .leaflet-control-layers),
+:global(.leaflet-touch .leaflet-bar) {
+  border: none;
+}
+
+:global(.leaflet-touch .leaflet-control-attribution),
+:global( .leaflet-touch .leaflet-control-layers),
+:global(.leaflet-touch .leaflet-bar) {
+  box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+}
+@media screen and (min-width: 100px) {
+}
+
+
+
+
+
+
+
+

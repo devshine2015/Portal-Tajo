@@ -4,20 +4,20 @@ import { connect } from 'react-redux';
 import Layout from 'components/Layout';
 import DemoPowerList from 'components/DemoPowerList';
 import TheMap from 'containers/Map/MapContainer';
-import FixedContent from 'components/FixedContent';
-import RouteFinder from 'containers/Map/OnMapElements/MapRoute/RouteFinder';
-import NearestFinder from 'containers/Map/OnMapElements/MapRoute/NearestFinder';
-import RoutePath from 'containers/Map/OnMapElements/MapRoute/RoutePath';
-import CtxtOpenGoogleMap from 'containers/Map/OnMapElements/CtxtMenuOpenGMap';
+import FixedContent from 'components/DemoFixedContent';
+import RouteFinder from 'containers/DemoMap/OnMapElements/MapRoute/RouteFinder';
+import NearestFinder from 'containers/DemoMap/OnMapElements/MapRoute/NearestFinder';
+import RoutePath from 'containers/DemoMap/OnMapElements/MapRoute/RoutePath';
+import CtxtOpenGoogleMap from 'containers/DemoMap/OnMapElements/CtxtMenuOpenGMap';
 import GFEditorMapComponent from 'containers/GFEditor/MapComponenet';
 import markerTypes from 'services/FleetModel/utils/markerTypes';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { socketActions, localTickActions } from 'services/FleetModel/actions';
 import { gfEditIsEditing } from 'containers/GFEditor/reducer';
-import { mapVehicleMarkerMaker } from 'containers/Map/OnMapElements/MapVehicle';
-import { mapVehicleNameMaker } from 'containers/Map/OnMapElements/VehicleNameMarker';
-import { mapGFMarkerMaker } from 'containers/Map/OnMapElements/MapGF';
-import { mapMWAJobMarkerMaker } from 'containers/Map/OnMapElements/MWAJobMarker';
+import { mapVehicleMarkerMaker } from 'containers/DemoMap/OnMapElements/MapVehicle';
+import { mapVehicleNameMaker } from 'containers/DemoMap/OnMapElements/VehicleNameMarker';
+import { mapGFMarkerMaker } from 'containers/DemoMap/OnMapElements/MapGF';
+import { mapMWAJobMarkerMaker } from 'containers/DemoMap/OnMapElements/MWAJobMarker';
 import { getMWAJobs } from 'services/MWA/reducer';
 import OperationalList from './components/OperationalPowerList';
 
@@ -54,8 +54,8 @@ class DemoOperational extends React.Component {
             vehicles={this.props.vehicles}
           />
         </DemoPowerList>
-        <FixedContent containerClassName={styles.fixedContent}>
-          <div className={styles.row}>
+        <FixedContent>
+          <div className={styles.mapContainer}>
             <TheMap>
               {mwaJobs}
               {mapGFs}
