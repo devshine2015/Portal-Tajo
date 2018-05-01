@@ -15,10 +15,6 @@
   align-items: center;
   width: 80px;
 }
-.nav__logo svg {
-  height: 37px;
-  width: 36px;
-}
 .nav__links {
   margin: 60px 0;
 }
@@ -31,6 +27,7 @@
   position: relative;
   width: 100%;
 }
+
 :global(.nav__link--active) {
   font-size: 24px;
 }
@@ -62,5 +59,8 @@
   }
   .nav__link {
     height: 40px;
+  }
+  .nav__link svg {
+    width: 22px;
   }
 }

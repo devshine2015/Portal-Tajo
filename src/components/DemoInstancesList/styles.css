@@ -1,0 +1,33 @@
+.list {
+  list-style: none;
+  margin-top: 30px;
+}
+
+.listItemInn {
+  display: block;
+  font-size: 0;
+  height: 54px;
+  padding: 0 26px;
+  position: relative;
+  transition: opacity .2s;
+}
+
+.listItemInn,
+.listItemInn label {
+  cursor: pointer;
+}
+
+.listItemInn input[type="checkbox"],
+.listItemInn input[type="radio"] {
+  margin-right: 5px;
+  vertical-align: 1px;
+}
+@media screen and (max-width: 1920px) {
+  .list {
+    margin-top: 20px;
+  }
+  .listItemInn {
+    height: 45px;
+    padding: 0 16px;
+  }
+}

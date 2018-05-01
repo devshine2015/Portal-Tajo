@@ -13,7 +13,7 @@ const Navigation = (props) => {
   return (
     <div className={styles.nav}>
       <div className={styles.nav__logo}>
-        <svg viewBox="0 0 36 37">
+        <svg viewBox="0 0 36 37" height="36" width="37">
           <g fill="none" fillRule="evenodd" opacity=".9">
             <ellipse fill="#FFF" cx="17.919" cy="18.021" rx="17.919" ry="18.021" />
             <ellipse fill="#4A4A4A" cx="18.098" cy="18.047" rx="14.082" ry="14.042" />
