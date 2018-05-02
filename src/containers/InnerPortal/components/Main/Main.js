@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cs from 'classnames';
+import { isDemo } from 'configs';
 import { css } from 'aphrodite/no-important';
 import AnimatedLogo from 'components/animated';
 import SnackbarNotification from 'containers/Snackbar';
@@ -48,7 +50,10 @@ const makeInnerPortal = () => (Component) => {
             {...rest}
           >
 
-            <div className={css(classes.innerPortal)}>
+            <div className={cs(css(classes.innerPortal), {
+              [css(classes.innerPortalWithoutPaddind)]: isDemo
+            })}
+            >
               {children}
             </div>
 
