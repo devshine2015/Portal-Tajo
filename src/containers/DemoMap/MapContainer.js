@@ -179,7 +179,7 @@ MapContainer.propTypes = {
 MapContainer.defaultProps = {
   mapStoredPan: null,
   mapStoredFocus: null,
-  noCustomControls: false,
+  noCustomControls: true,
   noLayersControl: false,
   children: [],
 };

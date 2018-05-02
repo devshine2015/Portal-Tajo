@@ -7,7 +7,6 @@ import styles from './styles.css';
 
 const FixedContent = ({
   children,
-  containerClassName,
 }) => {
   return (
     <div className={styles.fixedContent}>

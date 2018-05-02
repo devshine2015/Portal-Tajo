@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Layout from 'components/Layout';
 import DemoPowerList from 'components/DemoPowerList';
-import TheMap from 'containers/Map/MapContainer';
+import TheMap from 'containers/DemoMap/MapContainer';
 import FixedContent from 'components/DemoFixedContent';
 import RouteFinder from 'containers/DemoMap/OnMapElements/MapRoute/RouteFinder';
 import NearestFinder from 'containers/DemoMap/OnMapElements/MapRoute/NearestFinder';

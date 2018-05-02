@@ -20,6 +20,44 @@
   font-size: 24px;
   font-weight: 700;
 }
+.rightSection {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0;
+  width: 50%;
+  max-width: 350px;
+}
+.printElement {
+  display: inline-block;
+  cursor: pointer;
+  height: 29px;
+  transition: opacity .2s;
+  width: 34px;
+}
+.printElement:hover {
+  opacity: .8;
+}
+.userSection {
+  display: flex;
+  align-items: center;
+}
+.userName {
+  display: flex;
+  align-items: center;
+}
+.user {
+  margin-right: 12px;
+  line-height: 1;
+  font-size: 21px;
+}
+.userPic {
+  border-radius: 50%;
+  background-color: #e8e8e8;
+  display: inline-block;
+  height: 45px;
+  width: 45px;
+}
 
 @media screen and (max-width: 1920px) {
   .topBar {
@@ -29,5 +67,17 @@
   .screenName {
     padding: 0 24px;
     font-size: 18px;
+  }
+  .user {
+    font-size: 14px;
+  }
+  .userPic {
+    height: 35px;
+    width: 35px;
+  }
+  .printElement,
+  .printElement svg {
+    height: 21px;
+    width: 26px;
   }
 }
