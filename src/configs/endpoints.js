@@ -9,7 +9,8 @@ const apis = {
 const endpoints = {
   // authentication
   login: params => ({
-    url: params === undefined ? 'login' : `login?${qs.stringify(params)}`,
+    url: (params === undefined) || (params.fleetId === 'demo') ? 'login' :
+      `login?${qs.stringify(params)}`,
     method: 'post',
     apiVersion: 1.1,
   }),
