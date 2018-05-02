@@ -70,7 +70,7 @@ function renderTitle(fleetName, onFleetChange) {
 const DemoPortal = props => (
   <div className={styles.portalWrapper}>
 
-    <TopBar logout={props.logout} />
+    <TopBar route={props.route} logout={props.logout} />
 
     <Navigation />
 
@@ -80,6 +80,7 @@ const DemoPortal = props => (
 );
 
 DemoPortal.propTypes = {
+  route: PropTypes.string.isRequired,
   logout: PropTypes.func.isRequired,
 };
 

@@ -4,14 +4,35 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import classnames from 'classnames';
 import styles from './styles.css';
 
 const TopBar = (props) => {
-  return (
-    <div className={styles.topBar}>
-      <div className={styles.screenName}>
-        Operational
+  let title = '';
+  if (props.route === '/' || props.route === '/operational') {
+    title = 'Operational';
+  } else if (props.route === '/history') {
+    title = 'Trip History';
+  } else if (props.route === '/overview') {
+    title = 'Fleet Overview';
+  }
+  const titleElement = title === 'Trip History' ?
+    (
+      <div className={styles.screenTitle}>
+        { title }
       </div>
+    ) : (
+      <div className={styles.screenTitle}>
+        { title }
+        {/* here will extra */}
+      </div>
+    )
+  return (
+    <div className={classnames(styles.topBar, {
+      [styles.topBarWithoutPadding]: props.route === '/overview'
+    })}
+    >
+      { titleElement }
       <div className={styles.rightSection}>
         <div
           className={styles.printElement}

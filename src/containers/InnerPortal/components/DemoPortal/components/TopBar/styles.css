@@ -15,7 +15,10 @@
   z-index: 5;
 
 }
-.screenName {
+.topBarWithoutPadding {
+  padding-left: 56px;
+}
+.screenTitle {
   padding: 0 40px;
   font-size: 24px;
   font-weight: 700;
@@ -64,7 +67,7 @@
     height: 48px;
     padding-left: 300px;
   }
-  .screenName {
+  .screenTitle {
     padding: 0 24px;
     font-size: 18px;
   }
@@ -79,5 +82,8 @@
   .printElement svg {
     height: 21px;
     width: 26px;
+  }
+  .topBarWithoutPadding {
+    padding-left: 56px;
   }
 }
