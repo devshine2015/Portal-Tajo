@@ -1,18 +1,17 @@
 /* eslint-disable global-require */
 
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'aphrodite/no-important';
 import { isMwa, isSCC } from 'configs';
 import { authorizeWithRole } from 'utils/authz';
+
 import FleetSelector from 'components/FleetSelector';
 import CodebaseVersion from 'components/CodebaseVersion';
 import makeInnerPortal from '../Main';
 import TopBar from './components/TopBar';
 import Navigation from './components/Navigation';
 import styles from './styles.css';
-
-import sccLogo from 'assets/images/logos/scc/scc_logo.png';
 
 const canChangeFleet = () => authorizeWithRole('uber');
 
@@ -71,7 +70,7 @@ function renderTitle(fleetName, onFleetChange) {
 const DemoPortal = props => (
   <div className={styles.portalWrapper}>
 
-    <TopBar />
+    <TopBar logout={props.logout} />
 
     <Navigation />
 
