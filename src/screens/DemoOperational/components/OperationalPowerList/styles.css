@@ -1,6 +1,7 @@
 .title {
   color: #222222;
   font-size: 26px;
+  font-weight: 400;
   line-height: 1;
   padding: 110px 0 22px;
   margin: 0 26px;
@@ -9,9 +10,10 @@
 .subtitle {
   color: #888;
   font-size: 20px;
+  font-weight: 500;
   line-height: 1;
-  margin: 12px 26px 32px;
   letter-spacing: 4px;
+  margin: 12px 26px 32px;
 }
 @media screen and (max-width: 1920px) {
   .title {

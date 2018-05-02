@@ -11,6 +11,7 @@
 .list__item h2 {
   color: #222;  
   font-size: 21px;
+  font-weight: 500;
   line-height: 27px;
   letter-spacing: 2px;
 }

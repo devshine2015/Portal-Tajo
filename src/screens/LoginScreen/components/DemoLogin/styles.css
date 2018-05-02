@@ -1,4 +1,6 @@
 .page {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
   height: 100%;
   background: linear-gradient(299deg, #ff2a68, #ff5e3a);
 }
@@ -14,13 +16,12 @@
   width: 968px;
 }
 .logo {
-  border-radius: 64px;
-  height: 125px;
   padding: 0;
   margin: 0 auto;
   overflow: hidden;
-  width: 128px;
+  text-align: center;
 }
+
 .title {
   color: #fff;
   font-size: 72px;
@@ -47,7 +48,7 @@
   .page__content {
     width: 480px;
   }
-  .logo {
+  .logo svg {
     height: 68px;
     width: 65px;
   }

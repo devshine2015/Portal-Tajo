@@ -179,7 +179,6 @@ class DemoLoginForm extends Component {
             <LoginButton
               onClick={this.onSubmit}
               isLoading={this.state.isLoading}
-              // isLoading={false}
             />
             { this.renderError() }
           </form>

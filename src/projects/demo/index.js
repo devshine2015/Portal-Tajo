@@ -3,7 +3,7 @@ import renderProject from 'projects/baseProject';
 import { commonFleetActions } from 'services/FleetModel/actions';
 import { fetchAllVehicleAlerts } from 'services/AlertsSystem/actions/conditionsActions';
 
-import Operational from 'screens/Operational';
+import Operational from 'screens/DemoOperational';
 import screens from './screensConfig';
 import createReducer from './reducers';
 import menu from './menu';

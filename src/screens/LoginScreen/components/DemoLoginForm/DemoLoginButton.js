@@ -8,7 +8,15 @@ const DemoLoginButton = (props) => {
       type="submit"
       onClick={props.onClick}
       className={styles.loginButton}
-    >LOGIN</button>
+    >
+      LOGIN { !props.isLoading ? '' : (
+        <div className={styles.spinner}>
+          <div className={styles.doubleBounce1}></div>
+          <div className={styles.doubleBounce2}></div>
+        </div>
+      )
+}
+    </button>
   );
 };
 

@@ -6,7 +6,7 @@ import styles from './styles.css';
 const BrandLogos = () => {
   return (
     <div className={styles.logo}>
-      <svg viewBox="0 0 36 37">
+      <svg viewBox="0 0 36 37" width="128" height="125">
         <g fill="none" fillRule="evenodd">
           <ellipse fill="#FFF" cx="17.919" cy="18.021" rx="17.919" ry="18.021"/>
           <ellipse fill="#4A4A4A" cx="18.098" cy="18.047" rx="14.082" ry="14.042"/>
