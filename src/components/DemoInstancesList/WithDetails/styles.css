@@ -1,5 +1,5 @@
 .check {
-  margin-top: 3px; 
+  margin-top: 3px;
   color: #FFFFFF;
   font-size: 14px;
 }
@@ -10,7 +10,7 @@
   width: calc(100% - 60px);
   line-height: 24px;
   color:#ffffff;
-  font-family: Roboto, sans-serif;    
+  font-family: Roboto, sans-serif;
 }
 .listItemNoChronicle {
     background-color: #1f757d;;

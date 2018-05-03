@@ -30,26 +30,24 @@ class ChronicleListItem extends React.Component {
 
   render() {
     const chronicleFrame = this.props.getInstanceChronicleFrameById(this.props.id);
-    const className = classnames(stylesTop.listItemInn, {
-      [styles.listItemNoChronicle]: (!chronicleFrame.isValid() && !this.props.isExpanded),
-    });
 
     return (
       <div
-        className={className}
+        className={stylesTop.listItemInn}
         onClick={this.onClick}
       >
-        {this.props.vehicle.original.name}
-        { chronicleFrame.isLoading() ?
-          <LinearProgress mode="indeterminate" />
-          : false
-        }
-        { chronicleFrame.isEmpty() ?
-          <div >
-            { this.props.translations.no_history_data }
-          </div>
-          : false
-        }
+        <div className={styles.imageWrapper}>
+          <img
+            src={require('assets/images/demo/combined-shape.png')}
+            alt="vehicle"
+          />
+        </div>
+        <div className={styles.nameWrapper}>
+          <h2>
+            { this.props.vehicle.original.name }
+          </h2>
+          <span className={styles.trips}>3 trips</span>
+        </div>
       </div>
     );
   }

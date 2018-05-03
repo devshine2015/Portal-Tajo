@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import pure from 'recompose/pure';
 import classnames from 'classnames';
 import FixedColumn from 'components/FixedColumn';
 import Scrollable from 'components/Scrollable';

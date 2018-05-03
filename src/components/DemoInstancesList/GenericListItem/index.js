@@ -1,12 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
-import classnames from 'classnames';
 import dateFormats from 'configs/dateFormats';
-import { isDealer } from 'configs';
 
 import SimpleItem from '../Simple';
-import CheckboxItem from '../WithCheckboxes';
 import DetailedGFItem from '../WithDetails/gf';
 import DetailedVehicleItem from '../WithDetails/vehicle';
 import VehicleChronicleItem from '../WithDetails/vehicleChronicle';
