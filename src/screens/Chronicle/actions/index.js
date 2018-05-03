@@ -65,7 +65,7 @@ function _requestHistory(vehicleId, dateFrom, dateTo, dispatch, getState) {
     .then(toJson)
     .then(events =>
       dispatch(_newVehicleChronicleFrame(vehicleId,
-              createHistoryFrame(dateFrom, dateTo, theVehicle, events))),
+        createHistoryFrame(dateFrom, dateTo, theVehicle, events))),
     )
     .then(() => {
       if (isMwa) {
