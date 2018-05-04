@@ -1,6 +1,6 @@
 export const demoVehicles = [
   {
-    'id': 'f9a3be59-b360-4cad-84b1-735efcca06cf',
+    'id': '5a96f938-c898-4878-a21a-e6eaa510e249',
     'name': 'Actros (2P2686)',
     'licensePlate': 'unknown',
     'make': 'Mercedes-Benz',
@@ -76,7 +76,7 @@ export const demoVehicles = [
     }
   },
   {
-    'id': 'b78801ef-df77-4a17-a715-a2f3e3990dc3',
+    'id': '5a2b6ecc-43d1-4ed7-97a6-0e86bf3eaf95',
     'name': 'Actros (2P4649)',
     'licensePlate': '2P4649',
     'make': 'Mercedes-Benz',
@@ -155,7 +155,7 @@ export const demoVehicles = [
 
 export const demoStatus = [
   {
-    'id': 'f9a3be59-b360-4cad-84b1-735efcca06cf',
+    'id': '5a96f938-c898-4878-a21a-e6eaa510e249',
     'name': 'Actros (2P2686)',
     'ts': '2018-03-08T13:38:43.000+0000',
     'pos': {
@@ -218,7 +218,7 @@ export const demoStatus = [
     'ignOn': false
   },
   {
-    'id': 'b78801ef-df77-4a17-a715-a2f3e3990dc3',
+    'id': '5a2b6ecc-43d1-4ed7-97a6-0e86bf3eaf95',
     'name': 'Actros (2P4649)',
     'ts': '2018-04-28T08:57:33.000+0000',
     'pos': {

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
-import { setChronicleNormalizedT } from 'screens/Chronicle/actions';
+import { setChronicleNormalizedT } from 'screens/DemoChronicle/actions';
 import { hideLayer } from 'utils/mapBoxMap';
 
 require('containers/Map/leafletStyles.css');
@@ -59,7 +59,7 @@ class ChroniclePath extends React.Component {
     // this.thePathStart.bringToBack();
     hideLayer(this.props.theMap, this.thePathEnd, false);
     // this.thePathEnd.bringToBack();
-    
+
     // const markerR = 12;
     // this.thePathStart = window.L.circleMarker(latLngArray[0],
     //   { opacity: 1,
