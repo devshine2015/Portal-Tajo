@@ -37,9 +37,9 @@ const inClasses = StyleSheet.create({
 
 const FuelConsumption = (props) => {
   // const containerStyle = Object.assign({}, maxWidth !== undefined ? { maxWidth } : {}, style);
-  // style={{ width: witdhPerc }} 
-  const ltrPerKm = props.totalDistance
-    ? props.totalFuel / props.totalDistance
+  // style={{ width: witdhPerc }}
+  const kmPerLtr = props.totalDistance
+    ? props.totalDistance / props.totalFuel
     : 0;
   return (
     <div className={css(inClasses.container)}>
@@ -55,8 +55,8 @@ const FuelConsumption = (props) => {
               dataUnits="ltr"
             />
             <DashboardElements.TableDataCell
-              dataString={numberToFixedString(ltrPerKm)}
-              dataUnits="Ltr/Km"
+              dataString={numberToFixedString(kmPerLtr)}
+              dataUnits=" KM / Litre"
             />
           </tr>
           <tr>
@@ -96,4 +96,3 @@ FuelConsumption.propTypes = {
 };
 
 export default pure(FuelConsumption);
-

@@ -78,7 +78,7 @@ class VehicleFuel extends React.Component {
             dataUnits="Ltr"
           />
           <DashboardElements.DataCard
-            title={'Liters per KM'}
+            title={'KM / Litre'}
             dataString={numberToFixedString(fuelReport.ltrPerKm)}
           />
           <DashboardElements.DataCard
