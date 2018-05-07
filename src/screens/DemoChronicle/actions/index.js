@@ -56,17 +56,17 @@ function _requestHistory(vehicleId, dateFrom, dateTo, dispatch, getState) {
   dispatch(_newVehicleChronicleFrame(vehicleId,
     createHistoryFrame(dateFrom, dateTo, theVehicle, null, true)));
 
-  // console.log(trip12);
-  // return dispatch(_newVehicleChronicleFrame(vehicleId,
-  //   createHistoryFrame(dateFrom, dateTo, theVehicle, trip12)))
-  return api[method](url)
-    .then(toJson)
-    .then(events => {
-      console.log(events);
-      dispatch(_newVehicleChronicleFrame(vehicleId,
-        createHistoryFrame(dateFrom, dateTo, theVehicle, events)));
-    }
-    );
+  console.log(trip12);
+  return dispatch(_newVehicleChronicleFrame(vehicleId,
+    createHistoryFrame(dateFrom, dateTo, theVehicle, trip12)))
+  // return api[method](url)
+  //   .then(toJson)
+  //   .then(events => {
+  //     console.log(events);
+  //     dispatch(_newVehicleChronicleFrame(vehicleId,
+  //       createHistoryFrame(dateFrom, dateTo, theVehicle, events)));
+  //   }
+  //   );
 }
 
 function toJson(response) {

@@ -47,7 +47,7 @@ class ListItemVehicle extends React.Component {
           <h2>
             { vehicle.original.name }
           </h2>
-          <span className={styles.trips}>3 trips</span>
+          <span className={styles.trips}>{this.props.vehicle.original.trips} trips</span>
         </div>
       </div>
     );

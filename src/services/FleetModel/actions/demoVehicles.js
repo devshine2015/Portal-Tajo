@@ -1,42 +1,42 @@
 export const demoVehicles = [
-  {
-    'id': '5a96f938-c898-4878-a21a-e6eaa510e249',
-    'name': 'Actros (2P2686)',
-    'licensePlate': 'unknown',
-    'make': 'Mercedes-Benz',
-    'model': '3340',
-    'year': '2017',
-    'kind': 'HGV',
-    'chassisNumber': 'WDB93416110168166',
-    'fuelCapacity': 550,
-    'maxPower': {
-      'max': 400,
-      'rpm': 1800
-    },
-    'maxTorque': {
-      'max': 1850,
-      'minRpm': 1085,
-      'maxRpm': 1085
-    },
-    'powertrain': '6x4',
-    'gearbox': 'S',
-    'created': '2017-11-23T06:14:43.140+0000',
-    'updated': '2018-04-09T15:19:14.022+0000',
-    'deviceId': '863286023295976',
-    'status': 'active',
-    'odometer': {
-      'value': 17079000,
-      'updated': '2018-04-09T15:19:14.022+0000'
-    },
-    'lastServiceOdo': {
-      'value': 0
-    },
-    'meta': {
-      'marker': 'icon',
-      'driverId': '',
-      'subfleet': 'ccmm_boc'
-    }
-  },
+  // {
+  //   'id': '5a96f938-c898-4878-a21a-e6eaa510e249',
+  //   'name': 'Actros (2P2686)',
+  //   'licensePlate': 'unknown',
+  //   'make': 'Mercedes-Benz',
+  //   'model': '3340',
+  //   'year': '2017',
+  //   'kind': 'HGV',
+  //   'chassisNumber': 'WDB93416110168166',
+  //   'fuelCapacity': 550,
+  //   'maxPower': {
+  //     'max': 400,
+  //     'rpm': 1800
+  //   },
+  //   'maxTorque': {
+  //     'max': 1850,
+  //     'minRpm': 1085,
+  //     'maxRpm': 1085
+  //   },
+  //   'powertrain': '6x4',
+  //   'gearbox': 'S',
+  //   'created': '2017-11-23T06:14:43.140+0000',
+  //   'updated': '2018-04-09T15:19:14.022+0000',
+  //   'deviceId': '863286023295976',
+  //   'status': 'active',
+  //   'odometer': {
+  //     'value': 17079000,
+  //     'updated': '2018-04-09T15:19:14.022+0000'
+  //   },
+  //   'lastServiceOdo': {
+  //     'value': 0
+  //   },
+  //   'meta': {
+  //     'marker': 'icon',
+  //     'driverId': '',
+  //     'subfleet': 'ccmm_boc'
+  //   }
+  // },
   {
     'id': '31cb5062-f316-49b6-b2bd-2317da383299',
     'name': 'Actros (2P2746)',
@@ -73,7 +73,8 @@ export const demoVehicles = [
       'marker': 'icon',
       'driverId': '',
       'subfleet': 'ccmm_boc'
-    }
+    },
+    trips: 2,
   },
   {
     'id': '5a2b6ecc-43d1-4ed7-97a6-0e86bf3eaf95',
@@ -111,7 +112,8 @@ export const demoVehicles = [
       'marker': 'icon',
       'driverId': '',
       'subfleet': 'ccmm_boc'
-    }
+    },
+    trips: 1,
   },
   {
     'id': 'c5081aec-9982-4423-9eea-894b4a9ac9e7',
@@ -149,7 +151,8 @@ export const demoVehicles = [
       'marker': 'icon',
       'driverId': '',
       'subfleet': 'ccmm_boc'
-    }
+    },
+    trips: 0,
   },
 ];
 

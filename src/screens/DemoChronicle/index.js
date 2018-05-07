@@ -25,13 +25,13 @@ import {
 } from './reducer';
 import { ctxGetSelectedVehicleId } from 'services/Global/reducers/contextReducer';
 
-import GFEditor from 'containers/GFEditor/GFEditor';
 import GFEditorMapComponent from 'containers/GFEditor/MapComponenet';
 
 import { gfEditIsEditing } from 'containers/GFEditor/reducer';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import listTypes from 'components/DemoInstancesList/types';
+import TripItem from './components/TripItem';
 
 import styles from './styles.css';
 
@@ -40,6 +40,7 @@ class DemoChronicle extends React.Component {
     super(props);
     this.state = {
       expandStopEvents: false,
+      selectedTrip: null,
     };
   }
 
@@ -82,18 +83,64 @@ class DemoChronicle extends React.Component {
       theLayer={this.theMap}
       chronicleEvent={v}
     />
-          );
+  );
   makeChronoEventStaticPopups = (v, idx) => (
     <ChronicleEventStaticPopUp
       key={`${this.props.selectedVehicleId + idx}CrSt`}
       theLayer={this.theMap}
       chronicleEvent={v}
     />
-      );
+  );
 
   makeChronoMWAMarker = (aJob, idx) => {
     aJob.idx = idx;
     return mapMWAJobChronicleMarkerMaker(aJob);
+  }
+  onTripClick(e) {
+    console.log(e.target);
+    // this.setState({
+    //   selectedTrip: e.target.trip,
+    // });
+  }
+
+  renderFakeTrips = (id) => {
+    if (id === '31cb5062-f316-49b6-b2bd-2317da383299') {
+      return (
+        <div>
+          <TripItem
+            name="trip11"
+            tripNumber="1"
+            tripDriver="danny worss"
+            tripTime="30 minutes"
+            handleClick={this.onTripClick}
+          />
+          <TripItem
+            name="trip12"
+            tripNumber="2"
+            tripDriver="danny worss"
+            tripTime="40 minutes"
+            handleClick={this.onTripClick}
+          />
+        </div>
+      )
+    } else if (id === '5a2b6ecc-43d1-4ed7-97a6-0e86bf3eaf95') {
+      return (
+        <TripItem
+          name="trip21"
+          tripNumber="1"
+          tripDriver="brent smith"
+          tripTime="1 hour"
+          handleClick={this.onTripClick}
+        />
+      )
+    } else if (id === 'c5081aec-9982-4423-9eea-894b4a9ac9e7') {
+      return (
+        <div className={styles.emptyNote}>No trips yet</div>
+      )
+    }
+    return (
+      <div className={styles.emptyNote}>No vehicle selected</div>
+    )
   }
 
   render() {
@@ -110,13 +157,6 @@ class DemoChronicle extends React.Component {
       : chronicleFrame.stopEvents.map(this.makeChronoEventMarker);
     }
 
-    // let stopEventsPopups = [];
-    // if (chronicleFrame.isValid()
-    // && chronicleFrame.hasPositions()
-    // && chronicleFrame.stopEvents.length > 0) {
-    //   stopEventsPopups = chronicleFrame.stopEvents.map(this.makeChronoEventStaticPopups);
-    // }
-
     let mwaJobs = [];
     if (chronicleFrame.isValid()
     && chronicleFrame.hasPositions()
@@ -127,30 +167,32 @@ class DemoChronicle extends React.Component {
 
     return (
       <Layout.ScreenWithList>
+        <div className={styles.tripsContainer}>
+          <div className={styles.tripsTitle}>Trips</div>
+          <div className={styles.tripsWrapper}>
 
-        {this.props.isEditGF ? (
-          <PowerList>
-            <GFEditor />
-          </PowerList>
-        ) : (
-          <PowerList
-            scrollable
-            filter={
-              <Filter filterFunc={this.props.filterFunc} />
-            }
-            content={
-              <div>
-                <h3 className={styles.title}>Vehicles</h3>
-                <h5 className={styles.subtitle}>ALL</h5>
-                <VehiclesList
-                  data={this.props.vehicles}
-                  currentExpandedItemId={this.props.selectedVehicleId}
-                  type={listTypes.vehicleChronicle}
-                />
-              </div>
-            }
-          />
-        )}
+            { this.renderFakeTrips(this.props.selectedVehicleId) }
+
+            <a href="/" className={styles.tripSubmit} onClick={(e) => { e.preventDefault(); }}>Show Selected</a>
+          </div>
+        </div>
+        <PowerList
+          scrollable
+          filter={
+            <Filter filterFunc={this.props.filterFunc} />
+          }
+          content={
+            <div>
+              <h3 className={styles.title}>Vehicles</h3>
+              <h5 className={styles.subtitle}>ALL</h5>
+              <VehiclesList
+                data={this.props.vehicles}
+                currentExpandedItemId={this.props.selectedVehicleId}
+                type={listTypes.vehicleChronicle}
+              />
+            </div>
+          }
+        />
         <FixedContent containerClassName={styles.fixedContent}>
           <TheMap>
             {this.props.vehicles.map(this.makeChronoPath)}

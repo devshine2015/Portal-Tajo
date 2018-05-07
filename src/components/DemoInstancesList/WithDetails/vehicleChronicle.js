@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { vehicleShape } from 'services/FleetModel/PropTypes';
 
-import LinearProgress from 'material-ui/LinearProgress';
-
 import { contextActions } from 'services/Global/actions';
 import { requestHistory } from 'screens/DemoChronicle/actions';
 
@@ -22,15 +20,14 @@ import { historyDetailsShape } from '../PropTypes';
 class ChronicleListItem extends React.Component {
   onClick = () => {
     this.props.selectVehicle(this.props.id);
-    if (!this.props.getInstanceChronicleFrameById(this.props.id).isValid()) {
-      const currentTimeFrame = this.props.chronicleTimeFrame;
-      this.props.requestHistory(this.props.id, currentTimeFrame.fromDate, currentTimeFrame.toDate);
-    }
+    // if (!this.props.getInstanceChronicleFrameById(this.props.id).isValid()) {
+    //   const currentTimeFrame = this.props.chronicleTimeFrame;
+    //   this.props.requestHistory(this.props.id, currentTimeFrame.fromDate, currentTimeFrame.toDate);
+    // }
   }
 
   render() {
-    const chronicleFrame = this.props.getInstanceChronicleFrameById(this.props.id);
-
+    // const chronicleFrame = this.props.getInstanceChronicleFrameById(this.props.id);
     return (
       <div
         className={stylesTop.listItemInn}
@@ -46,7 +43,7 @@ class ChronicleListItem extends React.Component {
           <h2>
             { this.props.vehicle.original.name }
           </h2>
-          <span className={styles.trips}>3 trips</span>
+          <span className={styles.trips}>{this.props.vehicle.original.trips} trips</span>
         </div>
       </div>
     );
