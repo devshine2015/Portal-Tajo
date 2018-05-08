@@ -40,15 +40,12 @@ function _requestHistory(vehicleId, selectedTrip, dateFrom, dateTo, dispatch, ge
   dispatch(_newVehicleChronicleFrame(vehicleId,
     createHistoryFrame(dateFrom, dateTo, theVehicle, null, true)));
   if (selectedTrip === 'trip11') {
-    console.log('1');
     return dispatch(_newVehicleChronicleFrame(vehicleId,
       createHistoryFrame(new Date("2018-05-03T15:09:57.000+0000"), new Date("2018-05-03T15:38:21.000+0000"), theVehicle, trip11)))
   } else if (selectedTrip === 'trip12') {
-    console.log('2');
     return dispatch(_newVehicleChronicleFrame(vehicleId,
       createHistoryFrame(new Date("2018-05-03T15:38:21.000+0000"), new Date("2018-05-03T16:53:49.000+0000"), theVehicle, trip12)))
   } else if (selectedTrip === 'trip21') {
-    console.log('3');
     return dispatch(_newVehicleChronicleFrame(vehicleId,
       createHistoryFrame(new Date("2018-05-04T03:55:35.000+0000"), new Date("2018-05-04T05:02:21.000+0000"), theVehicle, trip21)))
   }

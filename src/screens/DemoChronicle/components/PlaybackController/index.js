@@ -158,14 +158,6 @@ class PlaybackCtr extends React.Component {
         >
           <PlayIcon4 color={this.getBtnColor(4)} hoverColor={this.getBtnHoverColor(4)} />
         </IconButton>
-
-        <div style={toggleBtnStyle}>
-          <FlatButton
-            label={'STOPS'}
-            onClick={this.toggleEvents}
-            labelStyle={{ color: 'rgb(178, 223, 219)' }}
-          />
-        </div>
       </div>
     );
   }

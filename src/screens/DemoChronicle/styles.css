@@ -3,10 +3,12 @@
  padding: 0;
 }
 .allTheChronicleControllerscontainer {
-  background-color: #dfebf1;
+  background: none;
+  box-shadow: 0 -5px 33px 0 rgba(0, 0, 0, 0.5);
+  display: flex;
+  height: 200px;
   width: 100%;
   z-index: 500;
-  box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, .5);
 }
 
 .title {
@@ -108,7 +110,7 @@
 .tripSubmit {
   background-image: linear-gradient(to bottom, rgb(255, 93, 59), rgb(255, 43, 103));
   box-shadow: 0 23px 23px 0 rgba(0, 0, 0, 0.15);
-  border-radius: 4px;
+  border-radius: 7px;
   display: inline-block;
   cursor: pointer;
   color: #fff;
@@ -204,5 +206,8 @@
   .emptyNote {
     font-size: 14px;
     padding: 24px 0 0;
+  }
+  .allTheChronicleControllerscontainer {
+    height: 140px;
   }
 }

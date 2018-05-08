@@ -5,8 +5,7 @@ import { connect } from 'react-redux';
 import { setChronicleNormalizedT } from 'screens/DemoChronicle/actions';
 import { hideLayer } from 'utils/mapBoxMap';
 
-require('containers/Map/leafletStyles.css');
-// import styles from './../styles.css';
+require('containers/DemoMap/leafletStyles.css');
 
 class ChroniclePath extends React.Component {
   constructor(props) {
@@ -25,33 +24,16 @@ class ChroniclePath extends React.Component {
 
   createPathStartEndMarkers() {
     const srcPosArray = this.props.chronicleFrame.posData;
-    const headContainerStyle = `padding: 0 3px 0 3px;
-    height: 24px;
-    width: 50px;
-    text-align: center;
-    overflow: hidden;
-    position: relative;
-    bottom: 12px;
-    left: -20px;
-    background-color: rgba(255, 255, 255, 0.75);
-    border: 3px solid orange;
-    border-radius: 5px;`;
     this.thePathStart = window.L.marker(srcPosArray[0].pos, {
       icon: window.L.divIcon({
         className: 'drvr-leaflet-div-icon',
-        // html: '<span class="my-div-span">START</span>',
-        html: `<div style="${headContainerStyle}">
-        BEGIN
-        </div>`,
+        html: '<div class="start-marker">Start</div>',
       }),
     });
     this.thePathEnd = window.L.marker(srcPosArray[srcPosArray.length - 1].pos, {
       icon: window.L.divIcon({
         className: 'drvr-leaflet-div-icon',
-        // html: '<span class="my-div-span">START</span>',
-        html: `<div style="${headContainerStyle}">
-        END
-        </div>`,
+        html: '<div class="finish-marker">Finish</div>',
       }),
     });
     // this.thePath.addLayer(this.thePathStart);
@@ -118,9 +100,9 @@ class ChroniclePath extends React.Component {
 // TODO: colors from theme
     if (doHighlight) {
       this.thePath.setStyle({
-        color: '#e64a19',
-        weight: 3,
-        opacity: 0.85,
+        color: '#4b4b4b',
+        weight: 5,
+        opacity: 0.9,
       });
       this.thePath.bringToFront();
       hideLayer(this.props.theMap, this.thePathStart, false);

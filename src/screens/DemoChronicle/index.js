@@ -237,17 +237,13 @@ class DemoChronicle extends React.Component {
             <CtxtOpenGoogleMap />
           </TheMap>
           <div className={styles.allTheChronicleControllerscontainer}>
+            {
+              this.props.hasChroniclePlayableFrames ?
+                <PlaybackController toggleEventsCallback={this.expandStopsToggle} />
+                : false
+            }
             <ChartTimeBox chronicleFrame={chronicleFrame} />
-            <VelocityTransitionGroup
-              enter={{ animation: 'slideDown' }}
-              leave={{ animation: 'slideUp' }}
-            >
-              {
-                this.props.hasChroniclePlayableFrames ?
-                  <PlaybackController toggleEventsCallback={this.expandStopsToggle} />
-                  : false
-              }
-            </VelocityTransitionGroup>
+
           </div>
         </FixedContent>
       </Layout.ScreenWithList>

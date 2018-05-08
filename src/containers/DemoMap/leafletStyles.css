@@ -88,7 +88,7 @@
       background: none;
       border: none;
       outline: none;
-    } 
+    }
 
   :global(div.drvr-leaflet-div-lable-icon) {
       background-color: none;
@@ -96,5 +96,54 @@
       outline: none;
       width: initial !important;
       white-space: nowrap;
-    } 
+    }
+}
+:global(.leaflet-touch .leaflet-control-attribution) {
+  display: none;
+}
+:global(.start-marker){
+  width: 190px;
+  padding: 7px 0;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+  bottom: 24px;
+  left: 24px;
+  letter-spacing: 3px;
+  font-size: 30px;
+  font-weight: 400;
+  font-family: 'Montserrat';
+  background-image: linear-gradient(to top, rgb(255, 42, 104), rgb(255, 94, 58));
+  border-radius: 100px;
+  color: #fff;
+  cursor: default;
+}
+:global(.finish-marker) {
+  width: 190px;
+  padding: 7px 0px;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+  bottom: 24px;
+  letter-spacing: 3px;
+  left: 24px;
+  font-weight: 400;
+  font-size: 30px;
+  font-family: 'Montserrat';
+  background-image: linear-gradient(to top, rgb(0, 118, 255), rgb(0, 255, 128));
+  border-radius: 100px;
+  color: #fff;
+  cursor: default;
+}
+@media screen and (max-width: 1920px) {
+  :global(.start-marker),
+  :global(.finish-marker){
+    width: 100px;
+    text-align: center;
+    bottom: 14px;
+    font-size: 14px;
+  }
+  :global(.leaflet-interactive:first-child) {
+    stroke-width: 4px;
+  }
 }
