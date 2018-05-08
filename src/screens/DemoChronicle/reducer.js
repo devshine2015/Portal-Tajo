@@ -50,7 +50,7 @@ export default function chronicleReducer(state = chronicleInitialState, action) 
       return state.set('localFrames', new Map()).set('validFramesCount', 0);
     }
     case CHRONICLE_CLEAR_FRAMES: {
-      return newState.set('localFrames', []);
+      return state.set('localFrames', new Map());
     }
     default:
       return state;

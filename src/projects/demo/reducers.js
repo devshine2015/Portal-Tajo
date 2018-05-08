@@ -7,7 +7,7 @@ import { combineReducers } from 'redux-immutable';
 import snackbarReducer from 'containers/Snackbar/reducer';
 import innerPortalReducer from 'containers/InnerPortal/reducer';
 import fleetReducer from 'services/FleetModel/reducer';
-import chronicleReducer from 'screens/Chronicle/reducer';
+import chronicleReducer from 'screens/DemoChronicle/reducer';
 import gfEditorReducer from 'containers/GFEditor/reducer';
 import mapStateReducer from 'containers/Map/reducerAction';
 import sessionReducer from 'services/Session/reducer';

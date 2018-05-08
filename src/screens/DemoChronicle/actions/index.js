@@ -6,7 +6,6 @@ import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
 import createHistoryFrame from './../utils/chronicleVehicleFrame';
 import { getChronicleTimeFrame } from './../reducer';
 
-import { mwaFetchChronicleJobs } from 'services/MWA/actions';
 import { trip as trip11 } from './demo/vehicle1-trip1';
 import { trip as trip12 } from './demo/vehicle1-trip2';
 import { trip as trip21 } from './demo/vehicle2-trip1';
@@ -27,8 +26,6 @@ export const setChronicleNormalizedT = normalized100T => ({
   normalized100T,
 });
 export const setChronicleTimeFrame = (dateFrom, dateTo) => (dispatch, getState) => {
-
-  dispatch(_chronicleClearTimeFrames());
   dispatch(_chronicleSetTimeFrame(dateFrom, dateTo));
   dispatch(_chronicleValidateTimeFrame());
   dispatch(setChronicleNormalizedT(0));
@@ -36,12 +33,12 @@ export const setChronicleTimeFrame = (dateFrom, dateTo) => (dispatch, getState) 
 
 function _requestHistory(vehicleId, selectedTrip, dateFrom, dateTo, dispatch, getState) {
 
+  dispatch(_chronicleClearTimeFrames());
+
   const theVehicle = getVehicleByIdFunc(getState())(vehicleId);
 
-  console.log(dateFrom);
-  console.log(dateTo);
-  // dispatch(_newVehicleChronicleFrame(vehicleId,
-  //   createHistoryFrame(dateFrom, dateTo, theVehicle, null, true)));
+  dispatch(_newVehicleChronicleFrame(vehicleId,
+    createHistoryFrame(dateFrom, dateTo, theVehicle, null, true)));
   if (selectedTrip === 'trip11') {
     console.log('1');
     return dispatch(_newVehicleChronicleFrame(vehicleId,
@@ -56,7 +53,7 @@ function _requestHistory(vehicleId, selectedTrip, dateFrom, dateTo, dispatch, ge
       createHistoryFrame(new Date("2018-05-04T03:55:35.000+0000"), new Date("2018-05-04T05:02:21.000+0000"), theVehicle, trip21)))
   }
   return null;
-  
+
   // return dispatch(_newVehicleChronicleFrame(vehicleId,
   //   createHistoryFrame(dateFrom, dateTo, theVehicle, trip12)))
 }

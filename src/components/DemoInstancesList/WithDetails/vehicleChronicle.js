@@ -23,7 +23,6 @@ class ChronicleListItem extends React.Component {
   }
 
   render() {
-    // const chronicleFrame = this.props.getInstanceChronicleFrameById(this.props.id);
     return (
       <div
         className={stylesTop.listItemInn}

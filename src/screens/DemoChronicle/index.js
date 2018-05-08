@@ -7,7 +7,7 @@ import VehiclesList from 'components/DemoInstancesList';
 import PowerList from 'components/DemoPowerList';
 import Filter from 'components/DemoFilter';
 import FixedContent from 'components/DemoFixedContent';
-
+import classnames from 'classnames';
 import TheMap from 'containers/DemoMap/MapContainer';
 import ChroniclePath from 'containers/DemoMap/OnMapElements/ChroniclePath';
 import ChronicleMarker from 'containers/DemoMap/OnMapElements/ChronicleMarker';
@@ -153,6 +153,28 @@ class DemoChronicle extends React.Component {
       <div className={styles.emptyNote}>No vehicle selected</div>
     )
   }
+  renderButton = () => {
+    if ((this.props.selectedVehicleId !== '') && (this.state.selectedTrip != null)) {
+      return (<a href="/" className={styles.tripSubmit} onClick={this.onTripSubmit}>Show Selected</a>)
+    } else if ((this.props.selectedVehicleId !== '') && (this.state.selectedTrip == null)) {
+      return (
+        <a
+          href="/"
+          className={classnames(styles.tripSubmit, styles.disabled)}
+          onClick={this.onTripSubmit}
+        >Show Selected</a>
+      );
+    }
+    return null;
+  }
+  componentWillReceiveProps(nextProps) {
+    // console.log('nextProps ', nextProps);
+    if (this.props.selectedVehicleId !== nextProps.selectedVehicleId) {
+      this.setState({
+        selectedTrip: null,
+      });
+    }
+  }
 
   render() {
     if (this.props.vehicles.length === 0) {
@@ -184,8 +206,8 @@ class DemoChronicle extends React.Component {
 
             { this.renderFakeTrips(this.props.selectedVehicleId) }
 
-            <a href="/" className={styles.tripSubmit} onClick={this.onTripSubmit}>Show Selected</a>
-            
+            { this.renderButton() }
+
           </div>
         </div>
         <PowerList
@@ -206,7 +228,7 @@ class DemoChronicle extends React.Component {
           }
         />
         <FixedContent containerClassName={styles.fixedContent}>
-          <TheMap>
+          <TheMap selectedTrip={this.state.selectedTrip}>
             {this.props.vehicles.map(this.makeChronoPath)}
             {this.props.vehicles.map(this.makeChronoMarker)}
             {stopEvents}

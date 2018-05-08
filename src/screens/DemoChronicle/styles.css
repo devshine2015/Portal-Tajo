@@ -120,6 +120,11 @@
   margin: 50px auto 0;
   transition: opacity .2s;
 }
+.tripSubmit.disabled {
+  pointer-events: none;
+  opacity: .6;
+  cursor: default;
+}
 .tripSubmit:hover,
 .tripSubmit:active {
   color: #fff;
