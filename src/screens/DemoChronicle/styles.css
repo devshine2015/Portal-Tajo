@@ -74,10 +74,10 @@
   width: 4px;
   transition: max-height .15s;
 }
-.tripItem.selected,
-.tripItem:hover {
+.tripItem.selected {
   background-color: #ededed;
 }
+.tripItem.selected:after,
 .tripItem:hover:after {
   max-height: 73px;
 }

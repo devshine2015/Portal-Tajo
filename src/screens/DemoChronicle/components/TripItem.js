@@ -1,9 +1,14 @@
 import React from 'react';
+import classnames from 'classnames';
 import styles from './../styles.css';
 
 const TripItem = (props) => {
   return (
-    <div className={styles.tripItem} trip={props.name} onClick={props.handleClick}>
+    <div
+      className={classnames(styles.tripItem, {[styles.selected]: props.selected})}
+      data-trip={props.name}
+      onClick={props.handleClick}
+    >
       <div className={styles.tripImageWrapper}>
         <svg width="52" height="52" viewBox="0 0 52 52">
           <defs>

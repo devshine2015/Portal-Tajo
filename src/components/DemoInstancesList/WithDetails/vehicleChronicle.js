@@ -20,10 +20,6 @@ import { historyDetailsShape } from '../PropTypes';
 class ChronicleListItem extends React.Component {
   onClick = () => {
     this.props.selectVehicle(this.props.id);
-    // if (!this.props.getInstanceChronicleFrameById(this.props.id).isValid()) {
-    //   const currentTimeFrame = this.props.chronicleTimeFrame;
-    //   this.props.requestHistory(this.props.id, currentTimeFrame.fromDate, currentTimeFrame.toDate);
-    // }
   }
 
   render() {

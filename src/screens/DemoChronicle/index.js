@@ -20,6 +20,7 @@ import ChartTimeBox from './components/ChartTimeBox';
 import PlaybackController from './components/PlaybackController';
 
 import {
+  getChronicleTimeFrame,
   getInstanceChronicleFrameById,
   hasChroniclePlayableFrames,
 } from './reducer';
@@ -32,6 +33,8 @@ import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import listTypes from 'components/DemoInstancesList/types';
 import TripItem from './components/TripItem';
+
+import { requestHistory } from 'screens/DemoChronicle/actions';
 
 import styles from './styles.css';
 
@@ -96,11 +99,16 @@ class DemoChronicle extends React.Component {
     aJob.idx = idx;
     return mapMWAJobChronicleMarkerMaker(aJob);
   }
-  onTripClick(e) {
-    console.log(e.target);
-    // this.setState({
-    //   selectedTrip: e.target.trip,
-    // });
+  onTripClick = (e) => {
+    this.setState({
+      selectedTrip: e.target.dataset.trip,
+    });
+  }
+  onTripSubmit = (e) => {
+    e.preventDefault();
+
+      const currentTimeFrame = this.props.chronicleTimeFrame;
+      this.props.requestHistory(this.props.selectedVehicleId, this.state.selectedTrip, currentTimeFrame.fromDate, currentTimeFrame.toDate);
   }
 
   renderFakeTrips = (id) => {
@@ -108,17 +116,19 @@ class DemoChronicle extends React.Component {
       return (
         <div>
           <TripItem
+            selected={this.state.selectedTrip === "trip11"}
             name="trip11"
             tripNumber="1"
             tripDriver="danny worss"
-            tripTime="30 minutes"
+            tripTime="29 minutes"
             handleClick={this.onTripClick}
           />
           <TripItem
+            selected={this.state.selectedTrip === "trip12"}
             name="trip12"
             tripNumber="2"
             tripDriver="danny worss"
-            tripTime="40 minutes"
+            tripTime="1.25 hours"
             handleClick={this.onTripClick}
           />
         </div>
@@ -126,6 +136,7 @@ class DemoChronicle extends React.Component {
     } else if (id === '5a2b6ecc-43d1-4ed7-97a6-0e86bf3eaf95') {
       return (
         <TripItem
+          selected={this.state.selectedTrip === "trip21"}
           name="trip21"
           tripNumber="1"
           tripDriver="brent smith"
@@ -173,7 +184,8 @@ class DemoChronicle extends React.Component {
 
             { this.renderFakeTrips(this.props.selectedVehicleId) }
 
-            <a href="/" className={styles.tripSubmit} onClick={(e) => { e.preventDefault(); }}>Show Selected</a>
+            <a href="/" className={styles.tripSubmit} onClick={this.onTripSubmit}>Show Selected</a>
+            
           </div>
         </div>
         <PowerList
@@ -233,6 +245,7 @@ DemoChronicle.propTypes = {
 
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
+  chronicleTimeFrame: getChronicleTimeFrame(state),
   getInstanceChronicleFrameById: getInstanceChronicleFrameById(state),
   hasChroniclePlayableFrames: hasChroniclePlayableFrames(state),
   isEditGF: gfEditIsEditing(state),
@@ -240,6 +253,7 @@ const mapState = (state) => ({
 });
 const mapDispatch = {
   filterFunc: vehiclesActions.filterVehicles,
+  requestHistory,
 };
 
 export default connect(mapState, mapDispatch)(DemoChronicle);

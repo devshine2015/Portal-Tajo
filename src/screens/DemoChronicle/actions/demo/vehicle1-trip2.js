@@ -18,9 +18,6 @@ export const trip = [
       "receivedTs": "2018-05-03T15:38:22.235+0000"
     }
   },
-
-
-
   {
     "type": "vehicle-position",
     "ev": {
