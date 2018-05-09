@@ -44,6 +44,7 @@ class DemoChronicle extends React.Component {
     this.state = {
       expandStopEvents: false,
       selectedTrip: null,
+      hasActiveChronicle: false,
     };
   }
 
@@ -106,9 +107,11 @@ class DemoChronicle extends React.Component {
   }
   onTripSubmit = (e) => {
     e.preventDefault();
-
-      const currentTimeFrame = this.props.chronicleTimeFrame;
-      this.props.requestHistory(this.props.selectedVehicleId, this.state.selectedTrip, currentTimeFrame.fromDate, currentTimeFrame.toDate);
+    this.setState({
+      hasActiveChronicle: true,
+    });
+    const currentTimeFrame = this.props.chronicleTimeFrame;
+    this.props.requestHistory(this.props.selectedVehicleId, this.state.selectedTrip, currentTimeFrame.fromDate, currentTimeFrame.toDate);
   }
 
   renderFakeTrips = (id) => {
@@ -172,6 +175,7 @@ class DemoChronicle extends React.Component {
     if (this.props.selectedVehicleId !== nextProps.selectedVehicleId) {
       this.setState({
         selectedTrip: null,
+        hasActiveChronicle: false,
       });
     }
   }
@@ -238,7 +242,7 @@ class DemoChronicle extends React.Component {
           </TheMap>
           <div className={styles.allTheChronicleControllerscontainer}>
             {
-              this.props.hasChroniclePlayableFrames ?
+              this.props.hasChroniclePlayableFrames && this.state.hasActiveChronicle ?
                 <PlaybackController toggleEventsCallback={this.expandStopsToggle} />
                 : false
             }
