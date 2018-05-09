@@ -40,6 +40,7 @@ class ChronicleListItem extends React.Component {
           </h2>
           <span className={styles.trips}>{this.props.vehicle.original.trips} trips</span>
         </div>
+        <div className={classnames(styles.selectedCircle, {[styles.selectedCircleActive]: this.props.isExpanded})}></div>
       </div>
     );
   }
