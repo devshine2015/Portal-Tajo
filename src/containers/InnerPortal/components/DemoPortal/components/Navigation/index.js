@@ -24,6 +24,24 @@ const Navigation = (props) => {
       <div className={styles.nav__links}>
         {
           props.links.map((link) => {
+            if (link.name === 'operational') {
+              return (
+                <Link
+                  className={classnames(
+                    styles.nav__link, {
+                      'nav__link--active': (props.activeRouteLocationPath === '/operational') || (props.activeRouteLocationPath === '/')
+                    },
+                  )}
+                  key={link.path}
+                  to={link.path}
+                >
+                  {
+                    (props.activeRouteLocationPath === '/operational') || (props.activeRouteLocationPath === '/') ?
+                      navIcons[link.name].active : navIcons[link.name].custom
+                  }
+                </Link>
+              );
+            }
             return (
               <Link
                 className={classnames(
@@ -40,6 +58,7 @@ const Navigation = (props) => {
                 }
               </Link>
             );
+
           })
         }
       </div>

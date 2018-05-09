@@ -1333,7 +1333,7 @@ export const trip = [
     }
   },
   {
-    "type": "vehicle-stop-stats",
+    "type": "vehicle-1wire-temperature",
     "ev": {
       "ts": "2018-05-04T04:02:52.000+0000",
       "vehicleId": "5a2b6ecc-43d1-4ed7-97a6-0e86bf3eaf95",

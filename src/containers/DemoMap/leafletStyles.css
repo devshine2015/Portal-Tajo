@@ -44,7 +44,7 @@
   overflow: hidden;
   position: relative;
   bottom: 24px;
-  left: 24px;
+  left: 40px;
   letter-spacing: 3px;
   font-size: 30px;
   font-weight: 400;
@@ -63,7 +63,7 @@
   position: relative;
   bottom: 24px;
   letter-spacing: 3px;
-  left: 24px;
+  left: 40px;
   font-weight: 400;
   font-size: 30px;
   font-family: 'Montserrat';
@@ -72,6 +72,7 @@
   color: #fff;
   cursor: default;
 }
+
 :global(div.leaflet-popup-content-wrapper) {
   background: rgba(39, 104, 195, 0.75);
   padding: 0;
@@ -93,9 +94,6 @@
   line-height: 2;
   letter-spacing: 2.7px;
   padding: 25px;
-}
-:global(.chronicleMarkerInfo) {
-
 }
 :global(.chronicleMarkerInfo div.leaflet-popup-tip) {
   background: #252525;
@@ -120,27 +118,71 @@
 :global(.chronicleMarkerInfo div.leaflet-popup-content div:first-child) {
   margin-bottom: 15px;
 }
+:global(.drvr-leaflet-start) {
+  border-radius: 50%;
+  background-image: linear-gradient(to top, rgb(255, 42, 104), rgb(255, 94, 58));
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.15);
+}
+:global(.drvr-leaflet-finish) {
+  border-radius: 50%;
+  background-image: linear-gradient(to top, rgb(0, 118, 255), rgb(0, 255, 128));
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.15);
+}
+
+:global(.drvr-leaflet-start:after),
+:global(.drvr-leaflet-finish:after) {
+  content: '';
+  border-radius: 50%;
+  background: #fff;
+  display: inline-block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 7px;
+  transform: translate(-50%, -50%);
+  width: 7px;
+}
 
 @media screen and (max-width: 1920px) {
   :global(.start-marker),
   :global(.finish-marker){
-    width: 100px;
-    text-align: center;
     bottom: 14px;
     font-size: 14px;
-  }
-  :global(.leaflet-interactive:first-child) {
-    stroke-width: 4px;
+    left: 24px;
+    text-align: center;
+    width: 100px;
   }
   :global(.chronicleMarkerInfo div.leaflet-popup-content) {
-    width: 150px !important;
+    width: 130px !important;
   }
   :global(.chronicleMarkerInfo div.leaflet-popup-content div:first-child) {
-    margin-bottom: 10px;
+    margin-bottom: 6px;
   }
   :global(.chronicleMarkerInfo div.leaflet-popup-content-wrapper) {
     font-size: 12px;
     line-height: 1.4;
-    padding: 15px;
+    padding: 9px;
+  }
+  :global(.chronicleMarkerInfo .icon svg) {
+    height: 24px;
+    width: 24px;
+  }
+  :global(.chronicleMarkerInfo .text) {
+    line-height: 24px;
+  }
+  :global(.drvr-leaflet-start:after),
+  :global(.drvr-leaflet-finish:after) {
+    height: 4px;
+    width: 4px;
+  }
+}
+
+@media screen and (min-width: 1921px) {
+  :global(.drvr-leaflet-finish),
+  :global(.drvr-leaflet-start) {
+    height: 24px !important;
+    width: 24px !important;
+    margin-left: -12px !important;
+    margin-top: -12px !important;
   }
 }

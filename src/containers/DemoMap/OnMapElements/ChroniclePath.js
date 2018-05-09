@@ -26,13 +26,13 @@ class ChroniclePath extends React.Component {
     const srcPosArray = this.props.chronicleFrame.posData;
     this.thePathStart = window.L.marker(srcPosArray[0].pos, {
       icon: window.L.divIcon({
-        className: 'drvr-leaflet-div-icon',
+        className: 'drvr-leaflet-start',
         html: '<div class="start-marker">Start</div>',
       }),
     });
     this.thePathEnd = window.L.marker(srcPosArray[srcPosArray.length - 1].pos, {
       icon: window.L.divIcon({
-        className: 'drvr-leaflet-div-icon',
+        className: 'drvr-leaflet-finish',
         html: '<div class="finish-marker">Finish</div>',
       }),
     });
@@ -116,7 +116,8 @@ class ChroniclePath extends React.Component {
       this.thePath.setStyle({
         color: '#0A5',
         weight: 2,
-        opacity: 0.75,
+        opacity: 0.2,
+        fillOpacity: 0.2,
       });
       hideLayer(this.props.theMap, this.thePathStart, true);
       hideLayer(this.props.theMap, this.thePathEnd, true);
