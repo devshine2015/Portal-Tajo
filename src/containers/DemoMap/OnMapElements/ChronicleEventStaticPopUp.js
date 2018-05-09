@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 // import { connect } from 'react-redux';
 import { hideLayer } from 'utils/mapBoxMap';
-import { dateToChronicleLable, msToDurtationLable } from 'screens/Chronicle/utils/strings';
+import { dateToChronicleLable, msToDurtationLable } from 'screens/DemoChronicle/utils/strings';
 
 class ChroniclePopUp extends React.Component {
   constructor(props) {

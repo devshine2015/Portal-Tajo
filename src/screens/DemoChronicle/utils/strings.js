@@ -2,21 +2,43 @@ import moment from 'moment';
 import { isNoIcons } from 'configs';
 import { metersToKmString, msToTimeIntervalString, fuelToString } from 'utils/convertors';
 import { makeStaticLableSVG, deviceAccessTime, localGasStation,
-  notificationTimeToLeave, imageTimelapse, placesAcUnit } from './staticIcons';
+  notificationTimeToLeave, imageTimelapse, placesAcUnit, speedIcon, timeIcon } from './staticIcons';
 
-//
+// Chronicle marker
+export function generateChronoPopupInnerHTML(momentData) {
+  const content = `<div>${dateToChronicleLableIconed(momentData.date)}</div>
+                 <div>${speedToChronicleLableIconed(momentData.speed)}</div>`;
+  return content;
+}
+
+export function dateToChronicleLableIconed(inDate) {
+  return `<span class="icon">${timeIcon}</span><span class="text">${dateToChronicleStringTime(inDate)}</span>`;
+}
+
+export function speedToChronicleLableIconed(speed) {
+  return `<span class="icon">${speedIcon}</span><span class="text">${speed.toFixed(1)} km/h</span>`;
+}
+
+// Chronicle playback
+export function generatePlybackInnerHTML(momentData) {
+  const content = `${dateToChronicleLableNotIconed(momentData.date)}<br>
+                 ${speedToChronicleLableNotIconed(momentData.speed)}`;
+  return content;
+}
+
+export function dateToChronicleLableNotIconed(inDate) {
+  return `<span style="float:right">${dateToChronicleStringTime(inDate)}</span>`;
+}
+
+export function speedToChronicleLableNotIconed(speed) {
+  return `<span style="float:right">${speed.toFixed(1)} km/h</span>`;
+}
+
+
 // need this for setting content of mapBox popUp
 export function generateInnerHTMLForHistoryMoment(momentData, theVehicle/* , phrases = {} */) {
   let content = `${dateToChronicleLable(momentData.date)}<br>
                  ${speedToChronicleLable(momentData.speed)}`;
-
-  // if (momentData.temperature !== null) {
-  //   content += `<br> ${temperatureToChronicleLable(momentData.temperature)}`;
-  // }
-  // if (momentData.fuel !== null) {
-  //   content += `<br> ${fuelToChronicleLable(momentData.fuel, theVehicle.original.fuelCapacity)}`;
-  // }
-
   return content;
 }
 
@@ -25,7 +47,7 @@ export function textLable(lable, value, needsBr = true) {
 }
 
 export function dateToChronicleLable(inDate) {
-  if (!isNoIcons) {
+  if (isNoIcons) {
     return `<span style="float:right">${dateToChronicleStringTime(inDate)}</span>`;
   }
   return `${makeStaticLableSVG(deviceAccessTime)}<span style="float:right">${dateToChronicleStringTime(inDate)}</span>`;
@@ -49,7 +71,7 @@ export function metersToDistanceLable(meters) {
 }
 
 export function speedToChronicleLable(speed) {
-  if (!isNoIcons) {
+  if (isNoIcons) {
     return `<span style="float:right">${speed.toFixed(1)} km/h</span>`;
   }
   return `${makeStaticLableSVG(notificationTimeToLeave)}<span style="float:right">${speed.toFixed(1)} km/h</span>`;
