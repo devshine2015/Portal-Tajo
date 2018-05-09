@@ -10,12 +10,12 @@ export function generateInnerHTMLForHistoryMoment(momentData, theVehicle/* , phr
   let content = `${dateToChronicleLable(momentData.date)}<br>
                  ${speedToChronicleLable(momentData.speed)}`;
 
-  if (momentData.temperature !== null) {
-    content += `<br> ${temperatureToChronicleLable(momentData.temperature)}`;
-  }
-  if (momentData.fuel !== null) {
-    content += `<br> ${fuelToChronicleLable(momentData.fuel, theVehicle.original.fuelCapacity)}`;
-  }
+  // if (momentData.temperature !== null) {
+  //   content += `<br> ${temperatureToChronicleLable(momentData.temperature)}`;
+  // }
+  // if (momentData.fuel !== null) {
+  //   content += `<br> ${fuelToChronicleLable(momentData.fuel, theVehicle.original.fuelCapacity)}`;
+  // }
 
   return content;
 }
@@ -25,8 +25,8 @@ export function textLable(lable, value, needsBr = true) {
 }
 
 export function dateToChronicleLable(inDate) {
-  if (isNoIcons) {
-    return `Time: <span style="float:right">${dateToChronicleStringTime(inDate)}</span>`;
+  if (!isNoIcons) {
+    return `<span style="float:right">${dateToChronicleStringTime(inDate)}</span>`;
   }
   return `${makeStaticLableSVG(deviceAccessTime)}<span style="float:right">${dateToChronicleStringTime(inDate)}</span>`;
 }
@@ -49,8 +49,8 @@ export function metersToDistanceLable(meters) {
 }
 
 export function speedToChronicleLable(speed) {
-  if (isNoIcons) {
-    return `Speed: <span style="float:right">${speed.toFixed(1)} km/h</span>`;
+  if (!isNoIcons) {
+    return `<span style="float:right">${speed.toFixed(1)} km/h</span>`;
   }
   return `${makeStaticLableSVG(notificationTimeToLeave)}<span style="float:right">${speed.toFixed(1)} km/h</span>`;
 }
@@ -64,8 +64,8 @@ export function temperatureToChronicleLable(temp) {
 
 function fuelToChronicleLable(fuelNormalized, fuelCapacity) {
   const fuelStr = fuelToString(fuelNormalized, fuelCapacity);
-  if (isNoIcons) {
-    return `Fuel: <span style="float:right">${fuelStr}</span>`;
+  if (!isNoIcons) {
+    return `<span style="float:right">${fuelStr}</span>`;
   }
   return `${makeStaticLableSVG(localGasStation)}<span style="float:right">${fuelStr}</span>`;
 }

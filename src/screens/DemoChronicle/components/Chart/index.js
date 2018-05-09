@@ -53,7 +53,7 @@ class ChartBox extends React.Component {
     const paddings = {
       top: 10,
       right: 0,
-      bottom: 0,
+      bottom: 15,
       left: 0,
     };
     const xScale = scaleLinear().range([paddings.left, myWidht - paddings.right])

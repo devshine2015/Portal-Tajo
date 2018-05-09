@@ -14,7 +14,7 @@
   position: absolute;
   left: 33.33%;
   top: 0;
-  height: 200px;
+  height: 190px;
   }
 .timeMarkerLine:before {
   content: '';
@@ -78,7 +78,7 @@
   }
 
   .timeMarkerLine {
-    height: 140px;
+    height: 130px;
     width: 2px;
   }
   .timeMarkerLine:before,
