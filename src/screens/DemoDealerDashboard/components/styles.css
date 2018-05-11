@@ -24,7 +24,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 42px 50px;
+  padding: 42px 46px;
   margin-right: 18px;
 }
 .infoSection:last-child {
@@ -75,11 +75,24 @@
 }
 .visualSectionLeft {
   flex: 1;
-}
-.visualSectionRight {
-  flex: 2;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+}
+.visualSectionRight {
+  flex: 1.6;
+  display: flex;
+  flex-direction: column;
+}
+.visualSectionAlerts {
+  padding-bottom: 24px;
+}
+.visualSectionAlerts .visualSectionRight {
+  justify-content: flex-end;
+  flex: 2;
+}
+.donutWrapper {
+  flex: 1;
 }
 .extraValues {
   flex: 1;
@@ -94,6 +107,10 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 50px 130px 50px 80px;
+}
+.valuesSectionThin {
+  padding-top: 90px;
+  padding-bottom: 90px;
 }
 .valuesRow {
   display: flex;
@@ -114,13 +131,13 @@
   vertical-align: middle;
   width: 36px;
 }
-.lossLabel:before {
+.pinkLabel:before {
   background: #ec5b98;
 }
-.idleLabel:before {
+.blueLabel:before {
   background: #4a90e2;
 }
-.gainLabel:before {
+.greenLabel:before {
   background: #50e3c2;
 }
 .extraValueNumber {
@@ -150,6 +167,51 @@
 .value {
   font-size: 36px;
 }
+.barStatistic {
+  padding-right: 32px;
+}
+.barStatisticItem {
+  padding: 20px 0;
+  border-top: solid 2px #ddd;
+}
+.barStatisticItem:first-child {
+  border-top: none;
+}
+.barStatisticValues {
+  font-size: 27px;
+  line-height: 1.33;
+  display: flex;
+  justify-content: space-between;
+}
+.barStatisticValues .regular {
+  font-weight: 400;
+}
+.barStatisticLabel {
+  font-size: 15px;
+  line-height: 1;
+  letter-spacing: 3px;
+}
+.barLabels {
+  background-color: #fafafa;
+  box-shadow: 0 18px 27px 0 rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+  padding: 36px 24px;
+  display: flex;
+  font-size: 12px;
+  justify-content: space-around;
+  margin-top: 24px;
+  letter-spacing: 2px;
+}
+.barLabel:before {
+  content: '';
+  display: inline-block;
+  border-radius: 50%;
+  height: 18px;
+  margin-right: 18px;
+  vertical-align: middle;
+  width: 18px;
+}
+
 @media screen and (max-width: 1920px) {
   .overviewWrapper {
     padding: 16px 24px;
@@ -169,5 +231,65 @@
   .visualSection {
     border-radius: 4px;
     box-shadow: 0 18px 18px 0 rgba(0, 0, 0, 0.05);
+    padding: 20px 20px 40px 30px;
+  }
+  .visualSectionTitle {
+    font-size: 18px;
+  }
+  .extraValueNumber {
+    font-size: 18px;
+  }
+  .extraValueLabel {
+    font-size: 12px;
+  }
+  .extraValues {
+    padding: 0;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .valuesSection {
+    justify-content: space-around;
+    padding: 24px;
+  }
+  .title {
+    font-size: 12px;
+  }
+  .value {
+    font-size: 16px;
+  }
+
+  .title:before {
+    height: 16px;
+    margin-right: 18px;
+    width: 16px;
+  }
+  .barStatisticItem {
+    padding: 10px 0;
+  }
+  .barStatisticValues {
+    font-size: 16px;
+  }
+  .barStatisticLabel {
+    font-size: 10px;
+  }
+  .barStatistic {
+    padding-right: 16px;
+  }
+  .barLabels {
+    font-size: 10px;
+    padding: 16px 12px;
+  }
+  .barLabel:before {
+    height: 14px;
+    margin-right: 8px;
+    width: 14px;
+  }
+  .visualSectionAlerts .visualSectionRight {
+    flex: 1.4;
+  }
+
+  :global(.stacked-bar-container),
+  :global(.donut-container) {
+    display: none;
   }
 }
