@@ -5,7 +5,7 @@
 
 import { combineReducers } from 'redux-immutable';
 import snackbarReducer from 'containers/Snackbar/reducer';
-import innerPortalReducer from 'containers/InnerPortal/reducer';
+import innerPortalReducer from 'containers/InnerPortal/components/DemoPortal/reducer';
 import fleetReducer from 'services/FleetModel/reducer';
 import chronicleReducer from 'screens/DemoChronicle/reducer';
 import gfEditorReducer from 'containers/GFEditor/reducer';

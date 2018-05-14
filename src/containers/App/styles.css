@@ -2,6 +2,7 @@ html,
 body,
 :global(#app){
   height: 100%;
+  overflow: hidden;
 }
 
 :global(.AlertPiechart .bb-chart-arc text) {

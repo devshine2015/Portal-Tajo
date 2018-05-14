@@ -23,6 +23,27 @@
   font-size: 24px;
   font-weight: 700;
 }
+.vehiclePanelToggle {
+  color: #222222;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 0.8;
+}
+.vehiclePanelToggle.opened:after {
+  transform: rotate(90deg);
+}
+.vehiclePanelToggle:after {
+  content: '';
+	border-top: 4px solid transparent;
+	border-left: 5px solid #222;
+	border-bottom: 4px solid transparent;
+  display: inline-block;
+  margin-left: 21px;
+  height: 0;
+  transition: transform .2s; 
+  width: 0;
+}
 .rightSection {
   align-items: center;
   display: flex;
@@ -85,5 +106,12 @@
   }
   .topBarWithoutPadding {
     padding-left: 56px;
+  }
+  .vehiclePanelToggle {
+    font-size: 11px;
+  }
+
+  .vehiclePanelToggle:after {
+    margin-left: 10px;
   }
 }

@@ -54,12 +54,6 @@ const mapDispatch = dispatch => ({
   },
   changeFleet: (nextFleetName) => {
     dispatch(updateFleet(nextFleetName));
-    // api.setFleet(nextFleetName);
-    // dispatch(socketActions.reopenFleetSocket());
-
-    // dispatch(updateFleetName(nextFleetName))
-    //   .then(() => dispatch(commonFleetActions.fetchFleet()));
-    // // .then(() => dispatch(conditionsActions.fetchAllVehicleAlerts(getStore)));
   },
 });
 
