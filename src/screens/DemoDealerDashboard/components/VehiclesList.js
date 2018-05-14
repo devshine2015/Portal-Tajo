@@ -7,7 +7,7 @@ import styles from './styles.css';
 
 const VehiclesList = (props) => {
   const onClick = (e) => {
-    props.selectOverviewVehicle(e.target.dataset.vehicle);
+    props.selectOverviewVehicle(props.selectedVehicle, e.target.dataset.vehicle);
   }
   const items = props.vehicles.map((item) => {
     return (
@@ -43,19 +43,13 @@ const VehiclesList = (props) => {
   );
 };
 
-const mapStateToProps = state => ({
-  selectedVehicle: state.toJS().inner.demo.selectedOverviewVehicle,
-});
-
-const mapDispatchToProps = (dispatch, props) => ({
-  selectOverviewVehicle: (id) => {
-    if (props.selectedVehicle !== id) {
-      console.log('1');
-      return dispatch(selectOverviewVehicle(id));
+const mapDispatchToProps = (dispatch) => ({
+  selectOverviewVehicle: (prevVehicle, nextVehicle) => {
+    if (prevVehicle !== nextVehicle) {
+      return dispatch(selectOverviewVehicle(nextVehicle));
     }
-    console.log('2');
     return dispatch(selectOverviewVehicle(null));
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(VehiclesList);
+export default connect(null, mapDispatchToProps)(VehiclesList);

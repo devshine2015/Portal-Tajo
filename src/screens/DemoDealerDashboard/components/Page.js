@@ -5,152 +5,66 @@ import classnames from 'classnames';
 import { Donut, StackedBar, Sparkline } from 'britecharts-react';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import VehiclesList from './VehiclesList';
+import { general, vehicle1, vehicle2, vehicle3 } from './demoOverview';
 import styles from './styles.css';
 
-const with4Slices = () => [
-{
-    quantity: 61,
-    percentage: 61,
-    name: 'Fuel loss',
-    id: 1,
-},
-{
-    quantity: 24,
-    percentage: 24,
-    name: 'Idle fuel',
-    id: 2,
-},
-{
-    quantity: 16,
-    percentage: 16,
-    name: 'Fuel Gain',
-    id: 3,
-},
+
+const colores1 = [
+  '#ec5b98', //pink
+  '#4a90e2', //blue
+  '#50e3c2', //green
 ];
-const sparkline = () => [
-{
-    value: 1,
-    date: '2011-01-06T00:00:00Z'
-},
-{
-    value: 2,
-    date: '2011-01-07T00:00:00Z'
-},
-{
-    value: 0,
-    date: '2011-01-08T00:00:00Z'
-},
-{
-        value: 0,
-        date: '2011-01-09T00:00:00Z'
-    }
-
-]
-const with2Entries = () => [
-{
-    "name": "Mon",
-    "stack": "Refuel",
-    "value": 10
-},
-{
-    "name": "Mon",
-    "stack": "Loss",
-    "value": 13
-},
-{
-    "name": "Tue",
-    "stack": "Refuel",
-    "value": 9
-},
-{
-    "name": "Tue",
-    "stack": "Loss",
-    "value": 2
-},
-{
-    "name": "Wed",
-    "stack": "Refuel",
-    "value": 17
-},
-{
-    "name": "Wed",
-    "stack": "Loss",
-    "value": 10
-},
-{
-    "name": "Thu",
-    "stack": "Refuel",
-    "value": 17
-},
-{
-    "name": "Thu",
-    "stack": "Loss",
-    "value": 20
-},
-{
-    "name": "Fri",
-    "stack": "Refuel",
-    "value": 25
-},
-{
-    "name": "Fri",
-    "stack": "Loss",
-    "value": 8
-},
-{
-    "name": "Sat",
-    "stack": "Refuel",
-    "value": 10
-},
-{
-    "name": "Sat",
-    "stack": "Loss",
-    "value": 4
-},
-{
-    "name": "Sun",
-    "stack": "Refuel",
-    "value": 17
-},
-{
-    "name": "Sun",
-    "stack": "Loss",
-    "value": 12
-},
-
-
+const colores2 = [
+  '#50e3c2', //green
+  '#ec5b98', //pink
 ];
-const britecharts = [
-    '#ec5b98', //pink
-    '#4a90e2', //blue
-    '#50e3c2', //green
-    '#ffce00', //yellow
-    '#ffa71a', //orange
-    '#998ce3' //purple
-];
-const britecharts2 = [
-      '#50e3c2', //green
-      '#ec5b98', //pink
-
-  ];
 
 class DealerDashboard extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      // height: 400,
+      view: 'general',
     };
+  }
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps.selectedVehicle);
+    this.setState({
+      view: nextProps.selectedVehicle == null ? 'general' : nextProps.selectedVehicle
+    });
+    
+  }
+  selectDemo(name) {
+    switch(name) {
+      case '31cb5062-f316-49b6-b2bd-2317da383299':
+        console.log('1');
+        return vehicle1;
+        break;
+      case '5a2b6ecc-43d1-4ed7-97a6-0e86bf3eaf95':
+        console.log('2');
+        return vehicle2;
+        break;
+      case 'c5081aec-9982-4423-9eea-894b4a9ac9e7':
+        console.log('3');
+        return vehicle3;
+        break;
+      default:
+        console.log('general');
+        return general;
+        break;
+    }
   }
 
   render() {
     const graphRatio = window.innerWidth > 1920 ? 1 : 0.55;
+    const demoData = this.selectDemo(this.state.view);
 
     return (
       <div className={styles.wrapper}>
         {/* vehicleSidebar */}
         <VehiclesList
           vehicles={this.props.vehicles}
+          selectedVehicle={this.props.selectedVehicle}
           visible={this.props.isVehiclesPanelOpen}
         />
 
@@ -158,28 +72,28 @@ class DealerDashboard extends React.Component {
           {/* title row */}
           <div className={styles.infoSectionsWrapper}>
             <div className={styles.infoSection}>
-              <h3 className={styles.infoSectionTitle}>Reporting Vehicles</h3>
-              <div className={styles.infoSectionValue}>3 / 4</div>
+              <h3 className={styles.infoSectionTitle}>{this.state.view === 'general' ? 'Reporting Vehicles' : 'Selected Vehicle'}</h3>
+              <div className={styles.infoSectionValue}>{demoData.overview.value}</div>
             </div>
             <div className={styles.infoSection}>
               <h3 className={styles.infoSectionTitle}>Total Distance</h3>
-              <div className={styles.infoSectionValue}>16,148 km</div>
+              <div className={styles.infoSectionValue}>{demoData.overview.totalDistance} km</div>
             </div>
             <div className={styles.infoSection}>
               <h3 className={styles.infoSectionTitle}>Avg. Speed</h3>
-              <div className={styles.infoSectionValue}>25 km/h</div>
+              <div className={styles.infoSectionValue}>{demoData.overview.avgSpeed} km/h</div>
             </div>
             <div className={styles.infoSection}>
               <h3 className={styles.infoSectionTitle}>Total Running Time</h3>
-              <div className={styles.infoSectionValue}>481 h</div>
+              <div className={styles.infoSectionValue}>{demoData.overview.totalRunning} h</div>
             </div>
             <div className={styles.infoSection}>
               <h3 className={styles.infoSectionTitle}>Total Idle Time</h3>
-              <div className={styles.infoSectionValue}>49 h</div>
+              <div className={styles.infoSectionValue}>{demoData.overview.totalIdle} h</div>
             </div>
             <div className={styles.infoSection}>
               <h3 className={styles.infoSectionTitle}>Total Idle Fuel</h3>
-              <div className={styles.infoSectionValue}>1,129 l</div>
+              <div className={styles.infoSectionValue}>{demoData.overview.idleFuel} l</div>
             </div>
 
           </div>
@@ -191,12 +105,12 @@ class DealerDashboard extends React.Component {
                   <h3 className={styles.visualSectionTitle}>Fuel Consumption</h3>
                   <div className={styles.donutWrapper}>
                     <Donut
-                      data={with4Slices()}
+                      data={demoData.fuelConsumption.chartData}
                       height={390 * graphRatio}
                       width={390 * graphRatio}
                       externalRadius={190 * graphRatio}
                       internalRadius={100 * graphRatio}
-                      colorSchema={britecharts}
+                      colorSchema={colores1}
                       isAnimated={false}
                       radiusHoverOffset={10 * graphRatio}
                     />
@@ -205,26 +119,26 @@ class DealerDashboard extends React.Component {
                 <div className={styles.visualSectionRight}>
                   <div className={styles.extraValues}>
                     <div className={styles.extraValue}>
-                      <span className={styles.extraValueNumber}>9,401</span>
+                      <span className={styles.extraValueNumber}>{demoData.fuelConsumption.total}</span>
                       <span className={styles.extraValueLabel}>Total liters</span>
                     </div>
                     <div className={styles.extraValue}>
-                      <span className={styles.extraValueNumber}>3.0</span>
+                      <span className={styles.extraValueNumber}>{demoData.fuelConsumption.consumption  }</span>
                       <span className={styles.extraValueLabel}>km per liter</span>
                     </div>
                   </div>
                   <div className={styles.valuesSection}>
                     <div className={styles.valuesRow}>
                       <span className={classnames(styles.title, styles.pinkLabel)}>Fuel loss</span>
-                      <span className={styles.value}>61%</span>
+                      <span className={styles.value}>{demoData.fuelConsumption.fuelLoss}%</span>
                     </div>
                     <div className={styles.valuesRow}>
                       <span className={classnames(styles.title, styles.blueLabel)}>idle fuel</span>
-                      <span className={styles.value}>24%</span>
+                      <span className={styles.value}>{demoData.fuelConsumption.idleFuel}%</span>
                     </div>
                     <div className={styles.valuesRow}>
                       <span className={classnames(styles.title, styles.greenLabel)}>Fuel Gain</span>
-                      <span className={styles.value}>16%</span>
+                      <span className={styles.value}>{demoData.fuelConsumption.fuelGain}%</span>
                     </div>
                   </div>
                 </div>
@@ -237,13 +151,13 @@ class DealerDashboard extends React.Component {
                   <h3 className={styles.visualSectionTitle}>Running Time</h3>
                   <div className={styles.donutWrapper}>
                     <Donut
-                      data={with4Slices()}
+                      data={demoData.runningTime.chartData}
                       height={390 * graphRatio}
                       width={390 * graphRatio}
                       externalRadius={190 * graphRatio}
                       internalRadius={100 * graphRatio}
                       isAnimated={false}
-                      colorSchema={britecharts}
+                      colorSchema={colores2}
                       radiusHoverOffset={10 * graphRatio}
                     />
                   </div>
@@ -253,11 +167,11 @@ class DealerDashboard extends React.Component {
                   <div className={classnames(styles.valuesSection, styles.valuesSectionThin)}>
                     <div className={styles.valuesRow}>
                       <span className={classnames(styles.title, styles.pinkLabel)}>Idle time</span>
-                      <span className={styles.value}>10%</span>
+                      <span className={styles.value}>{demoData.runningTime.idleTime}%</span>
                     </div>
                     <div className={styles.valuesRow}>
                       <span className={classnames(styles.title, styles.greenLabel)}>Driving time</span>
-                      <span className={styles.value}>90%</span>
+                      <span className={styles.value}>{demoData.runningTime.drivingTime}%</span>
                     </div>
                   </div>
                 </div>
@@ -276,24 +190,24 @@ class DealerDashboard extends React.Component {
                       {/*  */}
                       <div className={styles.barStatisticItem}>
                         <div className={styles.barStatisticValues}>
-                          <span>14</span>
-                          <span className={styles.regular}>+15%</span>
+                          <span>{demoData.fuelAlerts.daily[0]}</span>
+                          <span className={styles.regular}>{demoData.fuelAlerts.daily[1]}</span>
                         </div>
                         <div className={styles.barStatisticLabel}>daily</div>
                       </div>
                       {/*  */}
                       <div className={styles.barStatisticItem}>
                         <div className={styles.barStatisticValues}>
-                          <span>70</span>
-                          <span className={styles.regular}>-22%</span>
+                          <span>{demoData.fuelAlerts.weekly[0]}</span>
+                          <span className={styles.regular}>{demoData.fuelAlerts.weekly[1]}</span>
                         </div>
                         <div className={styles.barStatisticLabel}>weekly</div>
                       </div>
                       {/*  */}
                       <div className={styles.barStatisticItem}>
                         <div className={styles.barStatisticValues}>
-                          <span>102</span>
-                          <span className={styles.regular}>+17%</span>
+                          <span>{demoData.fuelAlerts.monthly[0]}</span>
+                          <span className={styles.regular}>{demoData.fuelAlerts.monthly[1]}</span>
                         </div>
                         <div className={styles.barStatisticLabel}>monthly</div>
                       </div>
@@ -308,11 +222,10 @@ class DealerDashboard extends React.Component {
                 <div className={styles.visualSectionRight}>
                   <div className={styles.barWrapper}>
                     <StackedBar
-                      data={with2Entries()}
-                      grid={'vertical'}
+                      data={demoData.fuelAlerts.chartData}
                       isAnimated={false}
-                      betweenBarsPadding={0.3}
-                      colorSchema={britecharts2}
+                      betweenBarsPadding={0.3 * graphRatio}
+                      colorSchema={colores2}
                       height={400 * graphRatio}
                       width={780 * graphRatio}
                     />
@@ -322,8 +235,9 @@ class DealerDashboard extends React.Component {
               </div>
 
               {/* 4 */}
-              <div className={styles.visualSection}>
+              <div className={classnames(styles.visualSection, styles.visualSectionService)}>
                 <h3 className={styles.visualSectionTitle}>Next Service</h3>
+                <div className={styles.emptyMessage}>No data</div>
                 {/* <Sparkline
                   data={sparkline()}
                   lineCurve={'basis'}
@@ -343,5 +257,6 @@ class DealerDashboard extends React.Component {
 const mapStateToProps = state => ({
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
   isVehiclesPanelOpen: state.toJS().inner.demo.isVehiclesPanelOpen,
+  selectedVehicle: state.toJS().inner.demo.selectedOverviewVehicle,
 });
 export default connect(mapStateToProps)(pure(DealerDashboard));

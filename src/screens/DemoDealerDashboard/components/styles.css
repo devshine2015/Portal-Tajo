@@ -90,6 +90,9 @@
 .visualSectionAlerts {
   padding-bottom: 24px;
 }
+.visualSectionService {
+  flex-direction: column;
+}
 .visualSectionAlerts .visualSectionRight {
   justify-content: flex-end;
   flex: 2;
@@ -220,6 +223,14 @@
   display: flex;
   justify-content: center;
 }
+.barWrapper svg text {
+  font-family: 'Montserrat';
+  font-size: 13px;
+  fill: #222;
+}
+/*:global(.barWrapper svg path.domain) {
+  stroke: #9b9b9b;
+}*/
 .vehiclesSidebar {
   background-color: #fafafa;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
@@ -324,6 +335,13 @@
   line-height: 27px;
   letter-spacing: 3px;
   text-transform: uppercase;
+}
+.emptyMessage {
+  color: #b7b7b7;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 @media screen and (max-width: 1920px) {
   .vehiclesSidebar {
