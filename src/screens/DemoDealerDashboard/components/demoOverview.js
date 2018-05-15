@@ -124,7 +124,6 @@ export const general = {
         "value": 12
     }]
   }
-
 }
 
 export const vehicle1 = {
@@ -252,7 +251,8 @@ export const vehicle1 = {
         "stack": "Loss",
         "value": 1
     }]
-  }
+  },
+  nextService: '8,991'
 
 }
 
@@ -381,7 +381,8 @@ export const vehicle2 = {
         "stack": "Loss",
         "value": 10
     }]
-  }
+  },
+  nextService: '7,593'
 
 }
 
@@ -510,6 +511,7 @@ export const vehicle3 = {
         "stack": "Loss",
         "value": 0
     }]
-  }
+  },
+  nextService: '10,000'
 
 }
