@@ -171,11 +171,11 @@ class DemoLoginForm extends Component {
               type="password"
               onChange={this.onType}
             />
-            <label className={styles.radioLabel}>
+            {/* <label className={styles.radioLabel}>
               <input type="checkbox" name="stay-logged" value="stay" />
               <span className={styles.checkmark}></span>
               Stay Logged In
-            </label>
+            </label> */}
             <LoginButton
               onClick={this.onSubmit}
               isLoading={this.state.isLoading}

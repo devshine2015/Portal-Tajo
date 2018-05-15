@@ -32,7 +32,7 @@ class DealerDashboard extends React.Component {
     this.setState({
       view: nextProps.selectedVehicle == null ? 'general' : nextProps.selectedVehicle
     });
-    
+
   }
   selectDemo(name) {
     switch(name) {
@@ -237,7 +237,7 @@ class DealerDashboard extends React.Component {
               {/* 4 */}
               <div className={classnames(styles.visualSection, styles.visualSectionService)}>
                 <h3 className={styles.visualSectionTitle}>Next Service</h3>
-                <div className={styles.emptyMessage}>No data</div>
+                <div className={styles.emptyMessage}>{this.state.view === 'general' ? 'Select the vehicle to see this distance' : `Next service in ${demoData.nextService} km`}</div>
                 {/* <Sparkline
                   data={sparkline()}
                   lineCurve={'basis'}
