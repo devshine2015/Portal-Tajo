@@ -2,13 +2,15 @@
 import { api } from 'utils/api';
 import endpoints from 'configs/endpoints';
 import { requestSamplesLimit, isMwa } from 'configs';
-// import { setLoader } from './loaderActions';
 import { getVehicleByIdFunc } from 'services/FleetModel/reducer';
 import createHistoryFrame from './../utils/chronicleVehicleFrame';
 import { getChronicleTimeFrame } from './../reducer';
 
-import { mwaFetchChronicleJobs } from 'services/MWA/actions';
+import { trip as trip11 } from './demo/vehicle1-trip1';
+import { trip as trip12 } from './demo/vehicle1-trip2';
+import { trip as trip21 } from './demo/vehicle2-trip1';
 
+export const CHRONICLE_CLEAR_FRAMES = 'chronicle/clearFrames';
 export const CHRONICLE_ITEM_NEW_FRAME = 'chronicle/newFrame';
 export const CHRONICLE_SET_T = 'chronicle/setT';
 export const CHRONICLE_SET_TIMEFRAME = 'chronicle/setTimeFrame';
@@ -16,62 +18,41 @@ export const CHRONICLE_VALIDATE_TIMEFRAME = 'chronicle/validateTimeFrame';
 
 export const CHRONICLE_MWA_JOBS = 'chronicle/mwaJobs';
 
-export const requestHistory = (vehicleId, dateFrom, dateTo) => (dispatch, getState) =>
-  _requestHistory(vehicleId, dateFrom, dateTo, dispatch, getState);
+export const requestHistory = (vehicleId, selectedTrip, dateFrom, dateTo) => (dispatch, getState) =>
+  _requestHistory(vehicleId, selectedTrip, dateFrom, dateTo, dispatch, getState);
 
 export const setChronicleNormalizedT = normalized100T => ({
   type: CHRONICLE_SET_T,
   normalized100T,
 });
 export const setChronicleTimeFrame = (dateFrom, dateTo) => (dispatch, getState) => {
-  // TODO: fix dates comparison (use moments?)
-  //
-  if (getChronicleTimeFrame(getState()).fromDate === dateFrom
-      && getChronicleTimeFrame(getState()).toDate === dateTo) {
-    return;
-  }
   dispatch(_chronicleSetTimeFrame(dateFrom, dateTo));
   dispatch(_chronicleValidateTimeFrame());
   dispatch(setChronicleNormalizedT(0));
 };
 
-function _requestHistory(vehicleId, dateFrom, dateTo, dispatch, getState) {
+function _requestHistory(vehicleId, selectedTrip, dateFrom, dateTo, dispatch, getState) {
 
-//  dispatch(setLoader(true));
-// TODO: properly generate from and to
-//  const fromString = '2016-08-21T04:38:32.000+0000';// date.toString();
-  let fromString = dateFrom.toISOString();
-  fromString = `${fromString.slice(0, -1)}+0000`;
-  let toString = dateTo.toISOString();
-  toString = `${toString.slice(0, -1)}+0000`;
+  dispatch(_chronicleClearTimeFrames());
 
   const theVehicle = getVehicleByIdFunc(getState())(vehicleId);
 
-  const { url, method } = endpoints.getEventsInTimeRange(vehicleId, {
-    from: fromString,
-    to: toString,
-    max: requestSamplesLimit,
-    filter: 'PG',
-    // tzoffset: new Date().getTimezoneOffset(),
-  });
-  // setting loading state for local frame
   dispatch(_newVehicleChronicleFrame(vehicleId,
     createHistoryFrame(dateFrom, dateTo, theVehicle, null, true)));
-  // const fromString = moment(date).format();
-  // const toString = moment(date).add(1, 'days').format();
-//  const toString = '2016-08-22T04:38:32.000+0000';// date.toString();
+  if (selectedTrip === 'trip11') {
+    return dispatch(_newVehicleChronicleFrame(vehicleId,
+      createHistoryFrame(new Date("2018-05-03T15:09:57.000+0000"), new Date("2018-05-03T15:38:21.000+0000"), theVehicle, trip11)))
+  } else if (selectedTrip === 'trip12') {
+    return dispatch(_newVehicleChronicleFrame(vehicleId,
+      createHistoryFrame(new Date("2018-05-03T15:38:21.000+0000"), new Date("2018-05-03T16:53:49.000+0000"), theVehicle, trip12)))
+  } else if (selectedTrip === 'trip21') {
+    return dispatch(_newVehicleChronicleFrame(vehicleId,
+      createHistoryFrame(new Date("2018-05-04T03:55:35.000+0000"), new Date("2018-05-04T05:02:21.000+0000"), theVehicle, trip21)))
+  }
+  return null;
 
-  return api[method](url)
-    .then(toJson)
-    .then(events =>
-      dispatch(_newVehicleChronicleFrame(vehicleId,
-              createHistoryFrame(dateFrom, dateTo, theVehicle, events))),
-    )
-    .then(() => {
-      if (isMwa) {
-        mwaFetchChronicleJobs(vehicleId, dateFrom, dateTo, dispatch);
-      }
-    });
+  // return dispatch(_newVehicleChronicleFrame(vehicleId,
+  //   createHistoryFrame(dateFrom, dateTo, theVehicle, trip12)))
 }
 
 function toJson(response) {
@@ -88,6 +69,9 @@ const _chronicleSetTimeFrame = (dateFrom, dateTo) => ({
   type: CHRONICLE_SET_TIMEFRAME,
   dateFrom,
   dateTo,
+});
+const _chronicleClearTimeFrames = () => ({
+  type: CHRONICLE_CLEAR_FRAMES,
 });
 
 const _chronicleValidateTimeFrame = () => ({

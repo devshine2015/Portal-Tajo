@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import cs from 'classnames';
 import { contextActions } from 'services/Global/actions';
 import { mapStoreSetPan } from 'containers/Map/reducerAction';
-import { isEscape } from 'configs';
 import { vehicleShape } from 'services/FleetModel/PropTypes';
 import { getDriverByIdFunc } from 'services/FleetModel/reducer';
 import stylesBase from '../styles.css';
 import styles from './styles.css';
+import classnames from 'classnames';
 import { vehicleDetailsShape } from '../PropTypes';
 
 class ListItemVehicle extends React.Component {
@@ -47,8 +47,9 @@ class ListItemVehicle extends React.Component {
           <h2>
             { vehicle.original.name }
           </h2>
-          <span className={styles.trips}>3 trips</span>
+          <span className={styles.trips}>{this.props.vehicle.original.trips} trips</span>
         </div>
+        <div className={classnames(styles.selectedCircle, {[styles.selectedCircleActive]: this.props.isExpanded})}></div>
       </div>
     );
   }

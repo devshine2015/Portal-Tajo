@@ -79,7 +79,6 @@ class ChartTimeBox extends React.Component {
       return (
         <div className={styles.statusTextContainer}>
           <h1>{ translations.no_data }</h1>
-          <span>{ translations.please_select_vehicle }</span>
         </div>
       );
     }

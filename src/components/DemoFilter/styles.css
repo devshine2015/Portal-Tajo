@@ -6,6 +6,16 @@
   z-index: 2;
   width: 100%;
 }
+.searchIcon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  padding: 0 14px 0 32px;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
 .inputStyle {
   font-size: 14px;
   height: 78px;
@@ -21,7 +31,10 @@
   .inputStyle {
     font-size: 12px;
     height: 48px;
-    padding-left: 32px;
+    padding-left: 48px;
     padding-right: 16px;
+  }
+  .searchIcon {
+    padding-left: 18px;
   }
 }

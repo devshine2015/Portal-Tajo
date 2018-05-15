@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import styles from './styles.css';
-import { generateInnerHTMLForHistoryMoment } from 'screens/Chronicle/utils/strings';
+import { generatePlybackInnerHTML } from 'screens/DemoChronicle/utils/strings';
 
 class MomentIndicator extends React.Component {
 
   componentDidUpdate() {
     const infoBox = this.infoBoxRef;
     const momentData = this.props.chronicleFrame.player.getMomentDataAtNormalized(
-        this.props.normalized100T);
-    infoBox.innerHTML = generateInnerHTMLForHistoryMoment(momentData, this.props.chronicleFrame.theVehicle);
+      this.props.normalized100T);
+    infoBox.innerHTML = generatePlybackInnerHTML(momentData);
   }
 
   infoBoxRef = null;

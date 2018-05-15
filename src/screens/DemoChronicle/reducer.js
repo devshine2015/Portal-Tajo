@@ -6,6 +6,7 @@ import {
   CHRONICLE_ITEM_NEW_FRAME,
   CHRONICLE_VALIDATE_TIMEFRAME,
   CHRONICLE_MWA_JOBS,
+  CHRONICLE_CLEAR_FRAMES
 } from './actions';
 import createHistoryFrame from './utils/chronicleVehicleFrame';
 import moment from 'moment';
@@ -47,6 +48,9 @@ export default function chronicleReducer(state = chronicleInitialState, action) 
     // // TODO: quick and dirty - just reset all
     case CHRONICLE_VALIDATE_TIMEFRAME: {
       return state.set('localFrames', new Map()).set('validFramesCount', 0);
+    }
+    case CHRONICLE_CLEAR_FRAMES: {
+      return state.set('localFrames', new Map());
     }
     default:
       return state;

@@ -14,6 +14,7 @@ const classes = StyleSheet.create({
     height: '100%',
     // backgroundColor: '#ccc',
     backgroundColor: 'white',
+    position: 'relative',
   },
   // ---- screen "info" content - what we have on right from the PowerList
   fixedContent: {
@@ -31,7 +32,7 @@ const classes = StyleSheet.create({
     },
   },
   // ---- content
-  content: {    
+  content: {
     maxWidth: 1000,
     width: '100%',
     margin: '0 auto',

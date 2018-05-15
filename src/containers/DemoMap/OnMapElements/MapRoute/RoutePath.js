@@ -4,7 +4,7 @@ import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 
 import { hideLayer } from 'utils/mapBoxMap';
-import { metersToDistanceLable, msToDurtationLable } from 'screens/Chronicle/utils/strings';
+import { metersToDistanceLable, msToDurtationLable } from 'screens/DemoChronicle/utils/strings';
 import { AntPath } from 'leaflet-ant-path';
 import { mapStoreGetRoute } from 'containers/Map/reducerAction';
 

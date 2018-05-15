@@ -7,7 +7,7 @@ import VehiclesList from 'components/DemoInstancesList';
 import PowerList from 'components/DemoPowerList';
 import Filter from 'components/DemoFilter';
 import FixedContent from 'components/DemoFixedContent';
-
+import classnames from 'classnames';
 import TheMap from 'containers/DemoMap/MapContainer';
 import ChroniclePath from 'containers/DemoMap/OnMapElements/ChroniclePath';
 import ChronicleMarker from 'containers/DemoMap/OnMapElements/ChronicleMarker';
@@ -20,18 +20,21 @@ import ChartTimeBox from './components/ChartTimeBox';
 import PlaybackController from './components/PlaybackController';
 
 import {
+  getChronicleTimeFrame,
   getInstanceChronicleFrameById,
   hasChroniclePlayableFrames,
 } from './reducer';
 import { ctxGetSelectedVehicleId } from 'services/Global/reducers/contextReducer';
 
-import GFEditor from 'containers/GFEditor/GFEditor';
 import GFEditorMapComponent from 'containers/GFEditor/MapComponenet';
 
 import { gfEditIsEditing } from 'containers/GFEditor/reducer';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { vehiclesActions } from 'services/FleetModel/actions';
 import listTypes from 'components/DemoInstancesList/types';
+import TripItem from './components/TripItem';
+
+import { requestHistory } from 'screens/DemoChronicle/actions';
 
 import styles from './styles.css';
 
@@ -40,6 +43,8 @@ class DemoChronicle extends React.Component {
     super(props);
     this.state = {
       expandStopEvents: false,
+      selectedTrip: null,
+      hasActiveChronicle: false,
     };
   }
 
@@ -82,18 +87,97 @@ class DemoChronicle extends React.Component {
       theLayer={this.theMap}
       chronicleEvent={v}
     />
-          );
+  );
   makeChronoEventStaticPopups = (v, idx) => (
     <ChronicleEventStaticPopUp
       key={`${this.props.selectedVehicleId + idx}CrSt`}
       theLayer={this.theMap}
       chronicleEvent={v}
     />
-      );
+  );
 
   makeChronoMWAMarker = (aJob, idx) => {
     aJob.idx = idx;
     return mapMWAJobChronicleMarkerMaker(aJob);
+  }
+  onTripClick = (e) => {
+    this.setState({
+      selectedTrip: e.target.dataset.trip,
+    });
+  }
+  onTripSubmit = (e) => {
+    e.preventDefault();
+    this.setState({
+      hasActiveChronicle: true,
+    });
+    const currentTimeFrame = this.props.chronicleTimeFrame;
+    this.props.requestHistory(this.props.selectedVehicleId, this.state.selectedTrip, currentTimeFrame.fromDate, currentTimeFrame.toDate);
+  }
+
+  renderFakeTrips = (id) => {
+    if (id === '31cb5062-f316-49b6-b2bd-2317da383299') {
+      return (
+        <div>
+          <TripItem
+            selected={this.state.selectedTrip === "trip11"}
+            name="trip11"
+            tripNumber="1"
+            tripDriver="danny worss"
+            tripTime="29 minutes"
+            handleClick={this.onTripClick}
+          />
+          <TripItem
+            selected={this.state.selectedTrip === "trip12"}
+            name="trip12"
+            tripNumber="2"
+            tripDriver="danny worss"
+            tripTime="1.25 hours"
+            handleClick={this.onTripClick}
+          />
+        </div>
+      )
+    } else if (id === '5a2b6ecc-43d1-4ed7-97a6-0e86bf3eaf95') {
+      return (
+        <TripItem
+          selected={this.state.selectedTrip === "trip21"}
+          name="trip21"
+          tripNumber="1"
+          tripDriver="brent smith"
+          tripTime="1 hour"
+          handleClick={this.onTripClick}
+        />
+      )
+    } else if (id === 'c5081aec-9982-4423-9eea-894b4a9ac9e7') {
+      return (
+        <div className={styles.emptyNote}>No trips yet</div>
+      )
+    }
+    return (
+      <div className={styles.emptyNote}>No vehicle selected</div>
+    )
+  }
+  renderButton = () => {
+    if ((this.props.selectedVehicleId !== '') && (this.state.selectedTrip != null)) {
+      return (<a href="/" className={styles.tripSubmit} onClick={this.onTripSubmit}>Show Selected</a>)
+    } else if ((this.props.selectedVehicleId !== '') && (this.state.selectedTrip == null)) {
+      return (
+        <a
+          href="/"
+          className={classnames(styles.tripSubmit, styles.disabled)}
+          onClick={this.onTripSubmit}
+        >Show Selected</a>
+      );
+    }
+    return null;
+  }
+  componentWillReceiveProps(nextProps) {
+    // console.log('nextProps ', nextProps);
+    if (this.props.selectedVehicleId !== nextProps.selectedVehicleId) {
+      this.setState({
+        selectedTrip: null,
+        hasActiveChronicle: false,
+      });
+    }
   }
 
   render() {
@@ -110,13 +194,6 @@ class DemoChronicle extends React.Component {
       : chronicleFrame.stopEvents.map(this.makeChronoEventMarker);
     }
 
-    // let stopEventsPopups = [];
-    // if (chronicleFrame.isValid()
-    // && chronicleFrame.hasPositions()
-    // && chronicleFrame.stopEvents.length > 0) {
-    //   stopEventsPopups = chronicleFrame.stopEvents.map(this.makeChronoEventStaticPopups);
-    // }
-
     let mwaJobs = [];
     if (chronicleFrame.isValid()
     && chronicleFrame.hasPositions()
@@ -127,32 +204,35 @@ class DemoChronicle extends React.Component {
 
     return (
       <Layout.ScreenWithList>
+        <div className={styles.tripsContainer}>
+          <div className={styles.tripsTitle}>Trips</div>
+          <div className={styles.tripsWrapper}>
 
-        {this.props.isEditGF ? (
-          <PowerList>
-            <GFEditor />
-          </PowerList>
-        ) : (
-          <PowerList
-            scrollable
-            filter={
-              <Filter filterFunc={this.props.filterFunc} />
-            }
-            content={
-              <div>
-                <h3 className={styles.title}>Vehicles</h3>
-                <h5 className={styles.subtitle}>ALL</h5>
-                <VehiclesList
-                  data={this.props.vehicles}
-                  currentExpandedItemId={this.props.selectedVehicleId}
-                  type={listTypes.vehicleChronicle}
-                />
-              </div>
-            }
-          />
-        )}
+            { this.renderFakeTrips(this.props.selectedVehicleId) }
+
+            { this.renderButton() }
+
+          </div>
+        </div>
+        <PowerList
+          scrollable
+          filter={
+            <Filter filterFunc={this.props.filterFunc} />
+          }
+          content={
+            <div>
+              <h3 className={styles.title}>Vehicles</h3>
+              <h5 className={styles.subtitle}>ALL</h5>
+              <VehiclesList
+                data={this.props.vehicles}
+                currentExpandedItemId={this.props.selectedVehicleId}
+                type={listTypes.vehicleChronicle}
+              />
+            </div>
+          }
+        />
         <FixedContent containerClassName={styles.fixedContent}>
-          <TheMap>
+          <TheMap selectedTrip={this.state.selectedTrip}>
             {this.props.vehicles.map(this.makeChronoPath)}
             {this.props.vehicles.map(this.makeChronoMarker)}
             {stopEvents}
@@ -161,17 +241,13 @@ class DemoChronicle extends React.Component {
             <CtxtOpenGoogleMap />
           </TheMap>
           <div className={styles.allTheChronicleControllerscontainer}>
+            {
+              this.props.hasChroniclePlayableFrames && this.state.hasActiveChronicle ?
+                <PlaybackController toggleEventsCallback={this.expandStopsToggle} />
+                : false
+            }
             <ChartTimeBox chronicleFrame={chronicleFrame} />
-            <VelocityTransitionGroup
-              enter={{ animation: 'slideDown' }}
-              leave={{ animation: 'slideUp' }}
-            >
-              {
-                this.props.hasChroniclePlayableFrames ?
-                  <PlaybackController toggleEventsCallback={this.expandStopsToggle} />
-                  : false
-              }
-            </VelocityTransitionGroup>
+
           </div>
         </FixedContent>
       </Layout.ScreenWithList>
@@ -191,6 +267,7 @@ DemoChronicle.propTypes = {
 
 const mapState = (state) => ({
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
+  chronicleTimeFrame: getChronicleTimeFrame(state),
   getInstanceChronicleFrameById: getInstanceChronicleFrameById(state),
   hasChroniclePlayableFrames: hasChroniclePlayableFrames(state),
   isEditGF: gfEditIsEditing(state),
@@ -198,6 +275,7 @@ const mapState = (state) => ({
 });
 const mapDispatch = {
   filterFunc: vehiclesActions.filterVehicles,
+  requestHistory,
 };
 
 export default connect(mapState, mapDispatch)(DemoChronicle);

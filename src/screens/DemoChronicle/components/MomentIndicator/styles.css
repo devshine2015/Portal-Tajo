@@ -1,33 +1,44 @@
-@media screen and (min-width: 100px) {
-  .timeMarkerLineDrag {
-    pointer-events: none;
-    background-color: #2c3e50;
-    color: #fff;
-    width: 1px;
-    position: absolute;
-    left: 33.33%;
-    top: 0;
-    height: 75px;
-    }
-    /*//    background: #2c3e50;*/
+.timeMarkerLineDrag {
+  pointer-events: none;
+  background-color: #e76e60;
+  opacity: .6;
+  color: #fff;
+  width: 1px;
+  position: absolute;
+  left: 33.33%;
+  top: 0;
+  height: 185px;
+  }
 
+.infoBox {
+  transition: left .25s ease-in-out;
+  pointer-events: none;
+  color: #fff;
+  width: 200px;
+  height: 85px;
+  position: relative;
+  top: 0;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0;
+  margin: 0;
+  color:#fff;
+  font-size: 26px;
+  font-family: "Montserrat";
+  line-height: 1.4;
+  border-radius: 2px;
+  padding: 3px 10px;
+  margin: 0;
+  font-weight: lighter;
+  pointer-events: none;
+  }
+@media screen and (max-width: 1920px) {
+  .timeMarkerLineDrag {
+    height: 125px;
+  }
   .infoBox {
-    transition: left .25s ease-in-out;
-    pointer-events: none;
-    color: #fff;
+    font-size: 12px;
+    height: 45px;
+    line-height: 18px;
     width: 100px;
-    position: relative;
-    top: 0;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 0;
-    margin: 0;
-    color:#fff;
-    font-size:12px;
-    line-height:18px;
-    border-radius: 2px;
-    padding: 3px;
-    margin: 0;
-    font-weight: lighter;
-    pointer-events: none;
-    }
+  }
 }

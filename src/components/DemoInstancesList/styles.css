@@ -7,7 +7,7 @@
   display: block;
   font-size: 0;
   height: 54px;
-  padding: 0 26px;
+  padding: 0 14px 0 24px;
   position: relative;
   transition: opacity .2s;
 }

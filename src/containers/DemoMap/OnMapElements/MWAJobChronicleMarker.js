@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { hideLayer } from 'utils/mapBoxMap';
-import { textLable, dateToChronicleString } from 'screens/Chronicle/utils/strings';
+import { textLable, dateToChronicleString } from 'screens/DemoChronicle/utils/strings';
 import { msToTimeIntervalString } from 'utils/convertors';
 
 require('containers/Map/leafletStyles.css');
@@ -91,15 +91,15 @@ class MWAJobChronicleMarker extends React.Component {
           aJob.name)}
         ${this.checkValue(aJob.JOB_STATUS_DESC) ?
           textLable(this.context.translator.getTranslation('job_status'),
-                    aJob.JOB_STATUS_DESC) 
+                    aJob.JOB_STATUS_DESC)
           : ''}
         ${this.checkValue(aJob.REMARK) ? textLable('Remark', aJob.REMARK) : ''}
         ${this.checkValue(aJob.REQUESTER_NAME) ? textLable('Requester', aJob.REQUESTER_NAME) : ''}
-        ${this.checkValue(aJob.PIPE_SIZE_DESC) ? 
-          textLable(this.context.translator.getTranslation('job_pipe'), 
+        ${this.checkValue(aJob.PIPE_SIZE_DESC) ?
+          textLable(this.context.translator.getTranslation('job_pipe'),
                     aJob.PIPE_SIZE_DESC)
           : ''}
-        ${this.checkValue(aJob.PIPE_TYPE_DESC) ? 
+        ${this.checkValue(aJob.PIPE_TYPE_DESC) ?
           textLable(this.context.translator.getTranslation('job_pipe_type'),
                     aJob.PIPE_TYPE_DESC)
           : ''}
