@@ -18,7 +18,7 @@ const TopBar = (props) => {
   } else if (props.route === '/overview') {
     title = 'Fleet Overview';
   }
-  const titleElement = title === 'Trip History' ?
+  const titleElement = title !== 'Fleet Overview' ?
     (
       <div className={styles.screenTitle}>
         { title }
