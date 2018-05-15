@@ -28,7 +28,6 @@ class DealerDashboard extends React.Component {
     };
   }
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.selectedVehicle);
     this.setState({
       view: nextProps.selectedVehicle == null ? 'general' : nextProps.selectedVehicle
     });
@@ -37,19 +36,15 @@ class DealerDashboard extends React.Component {
   selectDemo(name) {
     switch(name) {
       case '31cb5062-f316-49b6-b2bd-2317da383299':
-        console.log('1');
         return vehicle1;
         break;
       case '5a2b6ecc-43d1-4ed7-97a6-0e86bf3eaf95':
-        console.log('2');
         return vehicle2;
         break;
       case 'c5081aec-9982-4423-9eea-894b4a9ac9e7':
-        console.log('3');
         return vehicle3;
         break;
       default:
-        console.log('general');
         return general;
         break;
     }

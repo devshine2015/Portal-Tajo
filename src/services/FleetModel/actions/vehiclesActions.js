@@ -52,7 +52,6 @@ export const setSelectedVehicleId = id => ({
 export const fetchVehicles = getState => (dispatch) => {
   // if demo portal we use fake set of vehicles
   if (isDemo) {
-    console.log('!!! isDemo ', isDemo);
     dispatch(fleetIsReady(true));
     const localObjects = makeLocalVehicles(
       subFleetFilter(demoVehicles, dealerSelectors.getSelectedSubFleet(getState())), demoStatus);
