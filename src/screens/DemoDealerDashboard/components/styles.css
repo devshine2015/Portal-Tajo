@@ -1,5 +1,5 @@
 .wrapper {
-  height: 100%;
+  min-height: 100%;
 }
 .overviewWrapper {
   background: #ececec;
@@ -66,6 +66,7 @@
   box-sizing: border-box;
   padding: 40px 30px 70px 50px;
   flex: 1;
+  min-height: 320px;
   display: flex;
 }
 .visualSection:nth-child(odd) {
