@@ -18,9 +18,6 @@ const OnePortal = props => (
 
     { props.children }
 
-
-    { props.children }
-
   </div>
 );
 

@@ -41,7 +41,7 @@
   display: inline-block;
   margin-left: 21px;
   height: 0;
-  transition: transform .2s; 
+  transition: transform .2s;
   width: 0;
 }
 .rightSection {
@@ -82,7 +82,13 @@
   height: 45px;
   width: 45px;
 }
-
+.dropdownLink {
+  display: block;
+  color: #000;
+  margin-left: -16px;
+  margin-right: -16px;
+  padding: 0 16px;
+}
 @media screen and (max-width: 1920px) {
   .topBar {
     height: 48px;
