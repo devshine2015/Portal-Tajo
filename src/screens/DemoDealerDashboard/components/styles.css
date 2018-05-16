@@ -1,5 +1,5 @@
 .wrapper {
-  min-height: 100%;
+  height: 100%;
 }
 .overviewWrapper {
   background: #ececec;
@@ -345,9 +345,14 @@
   align-items: center;
 }
 @media screen and (max-width: 1920px) {
+  .wrapper {
+    height: auto;
+    min-height: 100%;
+  }
   .vehiclesSidebar {
-    width: 250px;
+    height: 104%; 
     left: -300px;
+    width: 250px;
   }
   .vehiclesSidebarOpened {
     left: 50px;
