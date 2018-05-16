@@ -10,6 +10,8 @@ const createRoute = options => ({
         cb(null, require('./index').SccLogin);
       } else if (project === 'demo') {
         cb(null, require('./index').DemoLogin);
+      } else if (project === 'one') {
+        cb(null, require('./index').DemoLogin);
       } else {
         cb(null, require('./index').default);
       }

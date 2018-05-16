@@ -24,23 +24,26 @@ const Navigation = (props) => {
       <div className={styles.nav__links}>
         {
           props.links.map((link) => {
-            if (link.name === 'operational') {
+            if (link.name === 'review') {
               return (
                 <Link
                   className={classnames(
                     styles.nav__link, {
-                      'nav__link--active': (props.activeRouteLocationPath === '/operational') || (props.activeRouteLocationPath === '/')
+                      'nav__link--active': (props.activeRouteLocationPath === '/review') || (props.activeRouteLocationPath === '/')
                     },
                   )}
                   key={link.path}
                   to={link.path}
                 >
-                  ss{/* {
-                    (props.activeRouteLocationPath === '/operational') || (props.activeRouteLocationPath === '/') ?
+                  {
+                    (props.activeRouteLocationPath === '/review') || (props.activeRouteLocationPath === '/') ?
                       navIcons[link.name].active : navIcons[link.name].custom
-                  } */}
+                  }
                 </Link>
               );
+            }
+            if (link.name === 'profile') {
+              return null;
             }
             return (
               <Link
@@ -52,14 +55,14 @@ const Navigation = (props) => {
                 key={link.path}
                 to={link.path}
               >
-                ss{/* {
+                {
                   link.path === props.activeRouteLocationPath ?
                     navIcons[link.name].active : navIcons[link.name].custom
-                } */}
+                }
               </Link>
             );
-
           })
+
         }
       </div>
     </div>

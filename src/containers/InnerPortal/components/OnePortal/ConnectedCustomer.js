@@ -25,6 +25,7 @@ const makeMapStateToProps = () => {
   const mapState = state => ({
     fleet: getFleetName(state),
     readyToShowPortal: getIsReady(getVehiclesStaticSlice(state)),
+    route: state.toJS().route.locationBeforeTransitions.pathname,
   });
 
   return mapState;
