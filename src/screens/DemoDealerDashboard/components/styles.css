@@ -1,5 +1,6 @@
 .wrapper {
   height: 100%;
+  position: relative;
 }
 .overviewWrapper {
   background: #ececec;
@@ -237,14 +238,14 @@
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
   font-family: 'Montserrat';
   height: 100%;
-  left: -400px;
+  left: -346px;
   transition: left .3s;
   position: absolute;
   z-index: 9;
   width: 346px;
 }
 .vehiclesSidebarOpened {
-  left: 80px;
+  left: 0;
 }
 .sidebarTitle {
   color: #222222;
@@ -346,16 +347,15 @@
 }
 @media screen and (max-width: 1920px) {
   .wrapper {
-    height: auto;
+    height: inherit;
     min-height: 100%;
   }
   .vehiclesSidebar {
-    height: 104%; 
-    left: -300px;
+    left: -250px;
     width: 250px;
   }
   .vehiclesSidebarOpened {
-    left: 50px;
+    left: 0;
   }
   .sidebarTitle {
     font-size: 18px;
@@ -477,5 +477,10 @@
   }
   .visualSectionRight {
     flex: 1.4;
+  }
+}
+@media screen and (max-width: 1920px) and (max-height: 900px) {
+  .wrapper {
+    height: auto;
   }
 }
