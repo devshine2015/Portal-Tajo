@@ -18,6 +18,7 @@ export const isEscape = project === 'tajo';
 export const isDealer = project === 'dealer';
 export const isSCC = project === 'scc';
 export const isDemo = project === 'demo';
+export const isOne = project === 'one';
 
 /**
  * the url of remote server. In case of running locally
@@ -119,7 +120,7 @@ console.log(`%cProject: %c${project}`, bold, boldGreen);
 
 const getExtraPathname = (location) => {
   const splitted = location.pathname.split('/');
-  const result = splitted.filter(path => ['mwa', 'ccmm', 'scc', 'demo'].indexOf(path) !== -1);
+  const result = splitted.filter(path => ['mwa', 'ccmm', 'scc', 'demo', 'one'].indexOf(path) !== -1);
 
   return result.length !== 0 ? result[0] : false;
 };

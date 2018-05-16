@@ -5,6 +5,7 @@ SUNSHINE='portal'
 DEALER='dealer'
 SCC='scc'
 DEMO='demo'
+ONE='one'
 BACKUP_FOLDER='public_backup'
 HOST=$1
 PUBLIC=$2
@@ -18,6 +19,7 @@ SUNSHINE_FOLDER="builds/$SERVER_ENV/$SUNSHINE"
 DEALER_FOLDER="builds/$SERVER_ENV/$DEALER"
 SCC_FOLDER="builds/$SERVER_ENV/$SCC"
 DEMO_FOLDER="builds/$SERVER_ENV/$DEMO"
+ONE_FOLDER="builds/$SERVER_ENV/$ONE"
 
 echo "rebuild static sources..."
 npm run clean
@@ -30,12 +32,14 @@ if [ $SERVER_ENV = "prod" ] ; then
   npm run build:dealer
   npm run build:scc
   npm run build:demo
+  npm run build:one
 else
   npm run build:escape-dev
   npm run build:sunshine-dev
   npm run build:dealer-dev
   npm run build:scc-dev
   npm run build:demo-dev
+  npm run build:one-dev
 fi
 
 if [ $SERVER_ENV = "prod" ] ; then
@@ -58,10 +62,12 @@ echo "to $ESCAPE folder"
 scp -r $ESCAPE_FOLDER $HOST:$PUBLIC
 echo "to $SCC folder"
 scp -r $SCC_FOLDER $HOST:$PUBLIC
-echo "to $DEMO folder"
-scp -r $DEMO_FOLDER $HOST:$PUBLIC
 echo "to $DEALER folder"
 scp -r $DEALER_FOLDER $HOST:$PUBLIC
+echo "to $DEMO folder"
+scp -r $DEMO_FOLDER $HOST:$PUBLIC
+echo "to $ONE folder"
+scp -r $ONE_FOLDER $HOST:$PUBLIC
 
 echo "Rename dealer to cc ..."
 ssh $HOST "cd $PUBLIC && mv $DEALER/ ccmm/"
