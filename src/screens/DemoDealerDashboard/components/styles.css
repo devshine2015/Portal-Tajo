@@ -273,6 +273,7 @@
   font-size: 0;
   height: 54px;
   padding: 0 14px 0 24px;
+  pointer-events: none;
   position: relative;
   transition: opacity .2s;
 }
