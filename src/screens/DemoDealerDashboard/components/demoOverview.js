@@ -10,9 +10,9 @@ export const general = {
   fuelConsumption: {
     total: '9,401',
     consumption: '3.0',
-    fuelLoss: 61,
+    driving: 61,
     idleFuel: 24,
-    fuelGain: 16,
+    fuelLoss: 16,
     chartData: [{
         quantity: 61,
         percentage: 61,
@@ -138,9 +138,9 @@ export const vehicle1 = {
   fuelConsumption: {
     total: '3,401',
     consumption: '4.0',
-    fuelLoss: 59,
+    driving: 59,
     idleFuel: 11,
-    fuelGain: 30,
+    fuelLoss: 30,
     chartData: [{
         quantity: 59,
         percentage: 59,
@@ -268,9 +268,9 @@ export const vehicle2 = {
   fuelConsumption: {
     total: '4,069',
     consumption: '3.7',
-    fuelLoss: 71,
+    driving: 71,
     idleFuel: 14,
-    fuelGain: 15,
+    fuelLoss: 15,
     chartData: [{
         quantity: 71,
         percentage: 71,
@@ -400,7 +400,7 @@ export const vehicle3 = {
     consumption: '0',
     fuelLoss: 0,
     idleFuel: 0,
-    fuelGain: 0,
+    driving: 0,
     chartData: [{
         quantity: 0,
         percentage: 0,
