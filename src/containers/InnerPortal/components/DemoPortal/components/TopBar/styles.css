@@ -41,7 +41,7 @@
   display: inline-block;
   margin-left: 21px;
   height: 0;
-  transition: transform .2s; 
+  transition: transform .2s;
   width: 0;
 }
 .rightSection {
@@ -86,7 +86,7 @@
 @media screen and (max-width: 1920px) {
   .topBar {
     height: 48px;
-    padding-left: 300px;
+    padding-left: 315px;
   }
   .screenTitle {
     padding: 0 24px;

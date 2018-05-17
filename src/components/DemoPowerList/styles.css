@@ -1,5 +1,5 @@
 .columnContainer {
-  width: 346px;
+  width: 360px;
   background-color: #fff;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
   z-index: 5;
@@ -14,8 +14,8 @@
 
 @media screen and (max-width: 1920px) {
   .columnContainer {
-    width: 250px;
     max-width: inherit;
+    width: 265px;
   }
 
 }

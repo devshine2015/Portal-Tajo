@@ -13,7 +13,6 @@ const OnePortal = props => (
       route={props.route}
       logout={props.logout}
     />
-
     <Navigation />
 
     { props.children }

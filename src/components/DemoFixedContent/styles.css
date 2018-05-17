@@ -5,12 +5,12 @@
   flex-direction: column;
   overflow: hidden;
   position: relative;
-  margin-left: 346px;
+  margin-left: 360px;
   padding: 0;
   height: 100%;
 }
 @media screen and (max-width: 1920px) {
   .fixedContent {
-    margin-left: 250px;
+    margin-left: 265px;
   }
 }

@@ -22,6 +22,7 @@
   padding: 0 40px;
   font-size: 24px;
   font-weight: 700;
+  text-transform: capitalize;
 }
 .vehiclePanelToggle {
   color: #222222;
@@ -92,7 +93,7 @@
 @media screen and (max-width: 1920px) {
   .topBar {
     height: 48px;
-    padding-left: 300px;
+    padding-left: 315px;
   }
   .screenTitle {
     padding: 0 24px;

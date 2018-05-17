@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { connect } from 'react-redux';
 import Filter from 'components/DemoFilter';
-import ItemsList from 'components/DemoInstancesList';
-import listTypes from 'components/DemoInstancesList/types';
+import ItemsList from 'components/OneInstancesList';
+import listTypes from 'components/OneInstancesList/types';
 import { vehiclesActions, gfActions } from 'services/FleetModel/actions';
 import { contextActions } from 'services/Global/actions';
 import { ctxGetPowListTabType, ctxGetSelectedVehicleId,
@@ -40,7 +40,6 @@ class OperationalPowerList extends React.Component {
         <h3 className={styles.title}>Vehicles</h3>
         <h5 className={styles.subtitle}>ALL</h5>
         <ItemsList
-          scrollIntoView
           currentExpandedItemId={this.props.selectedVehicleId}
           data={this.props.vehicles}
           type={vehType}

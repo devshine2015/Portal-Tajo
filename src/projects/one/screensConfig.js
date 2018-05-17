@@ -1,5 +1,5 @@
 import { isAlerts } from 'configs';
-import createOperationalScreen from 'screens/Operational/route';
+import createOperationalScreen from 'screens/OneOperational/route';
 import createReportsScreen from 'screens/ReportsScreen/route';
 import createExecReportsScreen from 'screens/ExecReports/route';
 import createVehiclesManagerScreen from 'screens/VehiclesManagerScreen/route';

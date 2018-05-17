@@ -1,0 +1,37 @@
+.listWrapper {
+  height: calc(100vh - 220px);
+  overflow-y: auto;
+}
+
+.list {
+  list-style: none;
+}
+
+.listItemInn {
+  display: block;
+  font-size: 0;
+  height: 54px;
+  padding: 0 14px 0 24px;
+  position: relative;
+  transition: opacity .2s;
+}
+
+.listItemInn,
+.listItemInn label {
+  cursor: pointer;
+}
+
+.listItemInn input[type="checkbox"],
+.listItemInn input[type="radio"] {
+  margin-right: 5px;
+  vertical-align: 1px;
+}
+@media screen and (max-width: 1920px) {
+  .listWrapper {
+    height: calc(100vh - 140px);
+  }
+  .listItemInn {
+    height: 45px;
+    padding: 0 16px;
+  }
+}
