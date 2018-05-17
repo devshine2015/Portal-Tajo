@@ -50,6 +50,15 @@
   vertical-align: middle;
   max-width: 215px;
 }
+.locationNameWrapper {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0;
+  height: 54px;
+  padding: 0;
+  vertical-align: middle;
+}
 .selectedCircle {
   display: inline-block;
   border: solid 1px rgb(255, 42, 104);

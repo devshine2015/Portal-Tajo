@@ -3,3 +3,35 @@
   display: flex;
   flex: 1;
 }
+.operationalTabs {
+  background-color: #fafafa;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 18px;
+  font-family: 'Montserrat', sans-serif;
+  height: 80px;
+  line-height: 1;
+}
+.operationalTab {
+  border-bottom: 2px solid transparent;
+  box-sizing: border-box;
+  cursor: pointer;
+  letter-spacing: 2px;
+  width: 180px;
+}
+.operationalTabActive {
+  border-color: #ff5d3b;
+}
+.operationalTab:focus {
+  outline: none;
+}
+
+@media screen and (max-width: 1920px) {
+  .operationalTabs {
+    height: 50px;
+    font-size: 12px;
+  }
+  .operationalTab {
+    width: 130px;
+  }
+}

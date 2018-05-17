@@ -9,33 +9,20 @@ import { deleteGF } from 'services/FleetModel/actions/gfActions';
 import { gfEditUpdate } from 'containers/GFEditor/actions';
 import { contextActions } from 'services/Global/actions';
 import { mapStoreSetPan } from 'containers/Map/reducerAction';
-
 import { showSnackbar } from 'containers/Snackbar/actions';
 import DeletIcon from 'material-ui/svg-icons/action/delete-forever';
-// import EditIcon from 'material-ui/svg-icons/maps/edit-location';
-import IconButton from 'material-ui/IconButton';
 import Divider from 'material-ui/Divider';
-
+import IconButton from 'material-ui/IconButton';
 import {
   yellow700,
   yellow500,
 } from 'material-ui/styles/colors';
 
-import stylesBase from '../styles.css';
+import itemStyles from '../styles.css';
 import styles from './styles.css';
 import { gfDetailsShape } from '../PropTypes';
 
-// const stylesCheck = {
-//   labelStyle: {
-//     color: 'white',
-//   },
-//   iconStyle: {
-//     fill: 'white',
-//   },
-// };
-
 class LocationWithDetails extends React.Component {
-
   shouldComponentUpdate(nextProps) {
     return this.props.gf.filteredOut !== nextProps.gf.filteredOut
       || (this.props.isExpanded !== nextProps.isExpanded);
@@ -46,7 +33,6 @@ class LocationWithDetails extends React.Component {
     this.props.mapStoreSetPan([this.props.gf.pos]);
   }
   onDelete = () => {
-//    e.preventDefault();
     this.props.deleteGF(this.props.gf.id, 1)
       .then(() => {
         this.props.showSnackbar(`${this.props.translations.remove_success} ✓`, 3000);
@@ -58,27 +44,18 @@ class LocationWithDetails extends React.Component {
     this.props.gfEditUpdate(this.props.gfById(this.props.gf.id));
   }
   renderDetails() {
-    // TODO: no API for GF editing yet - remove the btn
-    // <IconButton
-    //   tooltip="Edit"
-    //   onClick={this.onEdit}
-    //   key="editBnt"
-    // >
-    //    <EditIcon color={teal200} hoverColor={teal100} />
-    //  </IconButton>
-
     if (this.props.isExpanded) {
       return (<div>
         <Divider key="line01" />
         <ItemProperty
           key="address"
-          title={ this.props.translations.address }
+          title={this.props.translations.address}
           value={this.props.gf.address}
         />
         {this.props.gf.isPolygon ? null :
         <ItemProperty
           key="radius"
-          title={ this.props.translations.radius }
+          title={this.props.translations.radius}
           value={this.props.gf.radius.toFixed(0)}
         />
         }
@@ -96,35 +73,19 @@ class LocationWithDetails extends React.Component {
     return false;
   }
 
-        // <Checkbox
-        //   labelStyle={stylesCheck.labelStyle}
-        //   iconStyle={stylesCheck.iconStyle}
-        //   label="Alert on enter"
-        //   name="alertEnter"
-        //   onCheck={this.onChange}
-        // />
-        // <Checkbox
-        //   labelStyle={stylesCheck.labelStyle}
-        //   iconStyle={stylesCheck.iconStyle}
-        //   label="Alert on exit"
-        //   name="alertExit"
-        //   onCheck={this.onChange}
-        // />
-
-
   render() {
-    const className = classnames(stylesBase.listItemInn, {
-      [styles.listItemInn_expanded]: this.props.isExpanded,
-    });
+    // const className = classnames(stylesBase.listItemInn, {
+    //   [styles.listItemInn_expanded]: this.props.isExpanded,
+    // });
 
     return (
       <div
-        className={className}
+        className={itemStyles.gfListItemInn}
         onClick={this.onClick}
       >
-        <h1 key="name">
+        <h2 key="name" className={styles.locationNameWrapper}>
           {this.props.gf.name}
-        </h1>
+        </h2>
         <VelocityTransitionGroup
           enter={{ animation: 'slideDown', duration: 500 }}
           leave={{ animation: 'slideUp', duration: 350 }}

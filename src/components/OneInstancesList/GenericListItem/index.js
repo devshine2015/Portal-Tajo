@@ -14,16 +14,6 @@ import types from '../types';
 
 import styles from './styles.css';
 
-function _needIndicator(noIndicator, item) {
-  if (noIndicator) return false;
-
-  const itIsTransport = item.hasOwnProperty('activityStatus');
-
-  if (!itIsTransport) return false;
-
-  return item.activityStatus !== 'ok' || item.isDelayedWithIgnitionOff;
-}
-
 function chooseItem(type, {
   onItemClick,
   selectedItems,

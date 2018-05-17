@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
 import Layout from 'components/Layout';
 import DemoPowerList from 'components/DemoPowerList';
 import TheMap from 'containers/DemoMap/MapContainer';
+import listTypes from 'components/OneInstancesList/types';
+import { ctxGetPowListTabType } from 'services/Global/reducers/contextReducer';
+import { contextActions } from 'services/Global/actions';
 import FixedContent from 'components/DemoFixedContent';
 import RouteFinder from 'containers/DemoMap/OnMapElements/MapRoute/RouteFinder';
 import NearestFinder from 'containers/DemoMap/OnMapElements/MapRoute/NearestFinder';
 import RoutePath from 'containers/DemoMap/OnMapElements/MapRoute/RoutePath';
-import CtxtOpenGoogleMap from 'containers/DemoMap/OnMapElements/CtxtMenuOpenGMap';
 import GFEditorMapComponent from 'containers/GFEditor/MapComponenet';
 import markerTypes from 'services/FleetModel/utils/markerTypes';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
@@ -41,6 +44,11 @@ class DemoOperational extends React.Component {
     }
   }
 
+  onTabLinkClick = (e) => {
+    const value = e.target.dataset.tab === 'vehicles' ? listTypes.withVehicleDetails : listTypes.withGFDetails;
+    this.props.setListTypeFunc(value);
+  }
+
   render() {
     const mapGFs = this.props.gfs.map(mapGFMarkerMaker);
     const mapVehiclesIcons = this.props.vehicles.filter(v => v.marker === markerTypes.Icon).map(mapVehicleMarkerMaker);
@@ -55,6 +63,11 @@ class DemoOperational extends React.Component {
           />
         </DemoPowerList>
         <FixedContent>
+          <div className={styles.operationalTabs}>
+            <button className={classnames(styles.operationalTab, { [styles.operationalTabActive]: this.props.selectedTab === listTypes.withVehicleDetails})} onClick={this.onTabLinkClick} data-tab="vehicles">Vehicles</button>
+            <button className={classnames(styles.operationalTab, { [styles.operationalTabActive]: this.props.selectedTab === listTypes.withGFDetails})} onClick={this.onTabLinkClick} data-tab="companies">Companies</button>
+          </div>
+
           <div className={styles.mapContainer}>
             <TheMap>
               {mwaJobs}
@@ -65,7 +78,6 @@ class DemoOperational extends React.Component {
               <NearestFinder />
               <RoutePath />
               <GFEditorMapComponent />
-              <CtxtOpenGoogleMap />
             </TheMap>
           </div>
         </FixedContent>
@@ -85,6 +97,7 @@ DemoOperational.propTypes = {
 };
 
 const mapState = state => ({
+  selectedTab: ctxGetPowListTabType(state),
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
   gfs: fromFleetReducer.getGFsExSorted(state),
   mwaJobs: getMWAJobs(state),
@@ -93,6 +106,7 @@ const mapState = state => ({
 const mapDispatch = {
   openFleetSocket: socketActions.openFleetSocket,
   startLocalTick: localTickActions.startLocalTick,
+  setListTypeFunc: contextActions.ctxPowListTabType,
 };
 
 

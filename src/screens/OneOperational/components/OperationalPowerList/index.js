@@ -12,7 +12,6 @@ import { ctxGetPowListTabType, ctxGetSelectedVehicleId,
 import { getVehicleFilterString } from 'services/Global/reducer';
 import { translate } from 'utils/i18n';
 
-import { isMaritime } from 'configs';
 import { getMWAJobs, getMWASelectedJobId } from 'services/MWA/reducer';
 import { mwaFilterJobs } from 'services/MWA/actions';
 
@@ -20,30 +19,53 @@ import phrases from './PropTypes';
 import styles from './styles.css';
 
 class OperationalPowerList extends React.Component {
-  onTabChange = (value) => {
-    this.props.setListTypeFunc(value);
+  constructor(props) {
+    super(props);
+    this.state = {
+      listType: this.props.selectedTab,
+    };
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.selectedTab !== this.state.listType) {
+      this.setState({
+        listType: nextProps.selectedTab,
+      });
+    }
   }
 
-  render() {
-    const vehType = isMaritime ? listTypes.maritime : listTypes.withVehicleDetails;
-
-    return (
-      // <Tabs
-      //   onChange={this.onTabChange}
-      //   value={this.props.selectedTab || listTypes.withVehicleDetails}
-      // >
+  renderList = () => {
+    const list = this.state.listType === listTypes.withVehicleDetails ? (
       <div>
-        <Filter
-          filterFunc={this.props.filterVehiclesFunc}
-          defaultValue={this.props.vehicleFilterString}
-        />
         <h3 className={styles.title}>Vehicles</h3>
         <h5 className={styles.subtitle}>ALL</h5>
         <ItemsList
           currentExpandedItemId={this.props.selectedVehicleId}
           data={this.props.vehicles}
-          type={vehType}
+          type={listTypes.withVehicleDetails}
         />
+      </div>
+    ) : (
+      <div>
+        <h3 className={styles.title}>Companies</h3>
+        <h5 className={styles.subtitle}>ALL</h5>
+        <ItemsList
+          currentExpandedItemId={this.props.selectedGfId}
+          data={this.props.gfs}
+          type={listTypes.withGFDetails}
+        />
+      </div>
+    );
+    return list;
+  }
+
+  render() {
+    return (
+      <div>
+        <Filter
+          filterFunc={this.props.filterVehiclesFunc}
+          defaultValue={this.props.vehicleFilterString}
+        />
+        { this.renderList()}
       </div>
     );
   }

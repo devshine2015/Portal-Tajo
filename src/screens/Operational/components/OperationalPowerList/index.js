@@ -95,7 +95,7 @@ class OperationalPowerList extends React.Component {
             />
           </Scrollable>
         </Tab>
-          }
+        }
       </Tabs>
     );
   }

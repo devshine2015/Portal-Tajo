@@ -16,6 +16,13 @@
   transition: opacity .2s;
 }
 
+.gfListItemInn {
+  display: block;
+  font-size: 0;
+  padding: 0 14px 0 24px;
+  position: relative;
+  transition: opacity .2s;
+}
 .listItemInn,
 .listItemInn label {
   cursor: pointer;
@@ -32,6 +39,10 @@
   }
   .listItemInn {
     height: 45px;
+    padding: 0 16px;
+  }
+
+  .gfListItemInn {
     padding: 0 16px;
   }
 }
