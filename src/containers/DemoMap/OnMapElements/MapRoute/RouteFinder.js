@@ -10,7 +10,7 @@ import { mapStoreRouteObj } from 'containers/Map/reducerAction';
 
 import directions from 'utils/mapServices/google/directions';
 import { addMapMenuItemEx } from 'utils/mapContextMenu';
-const iconRoute16 = require('assets/images/context_menu_icons/rt01_16.png');
+const iconRoute16 = require('assets/images/demo/map-context/route_to.png');
 
 class RouteFinder extends React.Component {
   componentDidMount() {

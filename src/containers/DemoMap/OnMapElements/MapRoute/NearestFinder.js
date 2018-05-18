@@ -9,7 +9,7 @@ import directions from 'utils/mapServices/google/directions';
 import distanceMatrixToSingleDst from 'utils/mapServices/google/distanceMatrix';
 
 import { addMapMenuItemEx } from 'utils/mapContextMenu';
-const iconNearby16 = require('assets/images/context_menu_icons/nearby16.png');
+const iconNearby16 = require('assets/images/demo/map-context/nearest.png');
 
 class NearestFinder extends React.Component {
 

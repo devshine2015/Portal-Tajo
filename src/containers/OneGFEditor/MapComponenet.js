@@ -13,8 +13,8 @@ import { hideLayer } from 'utils/mapBoxMap';
 import { addMapMenuItemEx } from 'utils/mapContextMenu';
 import { makeLocalGF } from 'services/FleetModel/utils/gfHelpers';
 
-const iconCircle16 = require('assets/images/gf_add_icons/circle16.png');
-const iconPoly16 = require('assets/images/gf_add_icons/polygon16.png');
+const iconCircle16 = require('assets/images/demo/map-context/add_gf.png');
+const iconPoly16 = require('assets/images/demo/map-context/poly_gf.png');
 
 function handleMultiPolyline(latLngs) {
   // its a multi-polyLine, use the first ring
@@ -47,16 +47,6 @@ class EditGF extends React.Component {
       });
   }
 
-  // componentWillUnmount() {
-  //   this.props.theMap.removeLayer(this.theLayer);
-  //   this.theLayer = null;
-  //   if (this.polygonDrawer !== null) {
-  //     this.props.theMap.off('draw:created', this.applyPolygon, this);
-  //     this.props.theMap.off('draw:drawstop', this.onDrawStop, this);
-  //     this.polygonDrawer = null;
-  //   }
-  // }
-
   onDrawStop() {
     if (this.thePolygon === null) {
       this.props.gfEditClose();
@@ -78,12 +68,9 @@ class EditGF extends React.Component {
   }
 
   applyPolygon(e) {
-    // e.type will be the type of layer that has been draw
-    // (polyline, marker, polygon, rectangle, circle)
-    // const type = e.layerType;
+
     const polygon = e.layer;
     this.props.subjectGF.latLngs = handleMultiPolyline(polygon.getLatLngs());
-    // create new ediatble poly every time
     this.thePolygon = window.L.polygon(this.props.subjectGF.latLngs);
     this.props.gfEditUpdate(this.props.subjectGF);
     hideLayer(this.props.theMap, this.thePolygon, false);
