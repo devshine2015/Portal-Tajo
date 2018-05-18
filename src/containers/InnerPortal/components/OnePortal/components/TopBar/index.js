@@ -16,24 +16,22 @@ const TopBar = (props) => {
   } else if (props.route === '/history') {
     title = 'Trip History';
   } else if (props.route === '/overview') {
-    title = 'Fleet Overview';
+    title = 'Fleet Report';
   }
-  // const titleElement = title !== 'Fleet Overview' ?
-  const titleElement = (
-    // (
+  const titleElement = title !== 'Fleet Report' ?
+    (
       <div className={styles.screenTitle}>
         { title }
       </div>
+    ) : (
+      <div className={styles.screenTitle}>
+        { title }
+        <div
+          className={classnames(styles.vehiclePanelToggle, { [styles.opened]: props.isVehiclesPanelOpen })}
+          onClick={props.toggleVehiclePanel}
+        >Vehicle list</div>
+      </div>
     )
-    // ) : (
-    //   <div className={styles.screenTitle}>
-    //     { title }
-    //     <div
-    //       className={classnames(styles.vehiclePanelToggle, { [styles.opened]: props.isVehiclesPanelOpen })}
-    //       onClick={props.toggleVehiclePanel}
-    //     >Vehicle list</div>
-    //   </div>
-    // )
   return (
     <div className={classnames(styles.topBar, {
       [styles.topBarWithoutPadding]: props.route === '/overview'
@@ -77,7 +75,7 @@ const TopBar = (props) => {
 };
 
 const mapStateToProps = state => ({
-  // isVehiclesPanelOpen: state.toJS().inner.demo.isVehiclesPanelOpen,
+  isVehiclesPanelOpen: state.toJS().inner.demo.isVehiclesPanelOpen,
   userNickname: state.toJS().session.nickname,
 });
 

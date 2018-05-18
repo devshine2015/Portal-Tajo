@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { api } from 'utils/api';
 import { getFleetName } from 'services/Session/reducer';
 import { getVehiclesStaticSlice } from 'services/FleetModel/reducer';
+import { routeLocationPath } from 'projects/utils/routerReducer';
 import makeGetFleetIsReady from 'services/FleetModel/selectors';
 import { fetchDevices } from 'services/Devices/actions';
 import { commonFleetActions, socketActions } from 'services/FleetModel/actions';
@@ -25,7 +26,7 @@ const makeMapStateToProps = () => {
   const mapState = state => ({
     fleet: getFleetName(state),
     readyToShowPortal: getIsReady(getVehiclesStaticSlice(state)),
-    route: state.toJS().route.locationBeforeTransitions.pathname,
+    route: routeLocationPath(state),
   });
 
   return mapState;
@@ -54,12 +55,6 @@ const mapDispatch = dispatch => ({
   },
   changeFleet: (nextFleetName) => {
     dispatch(updateFleet(nextFleetName));
-    // api.setFleet(nextFleetName);
-    // dispatch(socketActions.reopenFleetSocket());
-
-    // dispatch(updateFleetName(nextFleetName))
-    //   .then(() => dispatch(commonFleetActions.fetchFleet()));
-    // // .then(() => dispatch(conditionsActions.fetchAllVehicleAlerts(getStore)));
   },
 });
 

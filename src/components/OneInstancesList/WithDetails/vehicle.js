@@ -41,7 +41,6 @@ class ListItemVehicle extends React.Component {
           />
         );
     }
-
   }
 
   render() {

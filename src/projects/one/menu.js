@@ -9,6 +9,11 @@ const menu = {
     path: 'history',
     nicename: 'Trip History',
   },
+  fleetOverview: {
+    name: 'overview',
+    path: 'overview',
+    nicename: 'Fleet Report',
+  },
   reports: {
     name: 'reports',
     path: 'reports',

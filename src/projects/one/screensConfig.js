@@ -1,5 +1,6 @@
 import { isAlerts } from 'configs';
 import createOperationalScreen from 'screens/OneOperational/route';
+import createFleetReportScreen from 'screens/OneFleetReport/route';
 import createReportsScreen from 'screens/ReportsScreen/route';
 import createExecReportsScreen from 'screens/ExecReports/route';
 import createVehiclesManagerScreen from 'screens/VehiclesManagerScreen/route';
@@ -37,6 +38,9 @@ export default [{
 }, {
   create: createOperationalScreen,
   options: menu.operational,
+}, {
+  create: createFleetReportScreen,
+  options: menu.fleetOverview,
 }, {
   create: createChronicleScreen,
   options: menu.history,
