@@ -1,0 +1,91 @@
+.gfModal {
+  background-color: #f2f2f2;
+  box-shadow: 0 30px 30px 0 rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+  font-family: 'Montserrat';
+  left: 50%;
+  padding: 24px;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  z-index: 9999;
+}
+.gfModal h2 {
+  color: #222;
+  font-size: 26px;
+  font-weight: 500;
+}
+.titleRow {
+  display: flex;
+  justify-content: space-between;
+}
+.inputWrapper {
+  background-color: #fafafa;
+  box-shadow: 0 20px 30px 0 rgba(0, 0, 0, 0.15);
+  padding: 0 28px;
+  margin-top: 22px;
+}
+.submitButton {
+  color: #fff;
+  border-radius: 50px;
+  background-image: linear-gradient(to top, #ff2a68, #ff5e3a);
+  display: block;
+  height: 30px;
+  line-height: 30px;
+  letter-spacing: 1.5px;
+  margin: 37px auto 13px;
+  text-transform: uppercase;
+  width: 240px;
+}
+.closeButton {
+  font-size: 21px;
+  line-height: 1;
+}
+.closeButton,
+.submitButton {
+  cursor: pointer;
+}
+.closeButton:focus,
+.submitButton:focus {
+  outline: none;
+}
+.inputWrapper input {
+  font-family: 'Montserrat' !important;
+}
+.inputWrapper label {
+  color: rgba(0, 0, 0, 0.3) !important;
+  font-family: 'Montserrat';
+}
+.inputWrapper hr {
+  display: none !important;
+}
+
+@media screen and (max-width: 1920px) {
+  .gfModal h2 {
+    font-size: 21px;
+  }
+  .inputWrapper {
+    margin-top: 18px;
+  }
+  .inputWrapper > div {
+    height: 52px !important;
+  }
+  .inputWrapper input {
+    margin-top: 8px !important;
+  }
+  .inputWrapper label {
+    top: 26px !important;
+  }
+}
+@media screen and (min-width: 1921px) {
+  .inputWrapper > div {
+    height: 60px !important;
+  }
+  .inputWrapper input {
+    margin-top: 11px !important;
+  }
+  .inputWrapper label {
+    top: 32px !important;
+  }
+}

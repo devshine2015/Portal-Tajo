@@ -12,7 +12,8 @@ import FixedContent from 'components/DemoFixedContent';
 import RouteFinder from 'containers/DemoMap/OnMapElements/MapRoute/RouteFinder';
 import NearestFinder from 'containers/DemoMap/OnMapElements/MapRoute/NearestFinder';
 import RoutePath from 'containers/DemoMap/OnMapElements/MapRoute/RoutePath';
-import GFEditorMapComponent from 'containers/GFEditor/MapComponenet';
+import GFEditor from 'containers/OneGFEditor/GFEditor';
+import GFEditorMapComponent from 'containers/OneGFEditor/MapComponenet';
 import markerTypes from 'services/FleetModel/utils/markerTypes';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { socketActions, localTickActions } from 'services/FleetModel/actions';
@@ -22,6 +23,7 @@ import { mapVehicleNameMaker } from 'containers/DemoMap/OnMapElements/VehicleNam
 import { mapGFMarkerMaker } from 'containers/DemoMap/OnMapElements/MapGF';
 import { mapMWAJobMarkerMaker } from 'containers/DemoMap/OnMapElements/MWAJobMarker';
 import { getMWAJobs } from 'services/MWA/reducer';
+import Dialog from 'material-ui/Dialog';
 import OperationalList from './components/OperationalPowerList';
 
 
@@ -63,6 +65,7 @@ class DemoOperational extends React.Component {
           />
         </DemoPowerList>
         <FixedContent>
+          {this.props.isEditGF ? <GFEditor /> : null }
           <div className={styles.operationalTabs}>
             <button className={classnames(styles.operationalTab, { [styles.operationalTabActive]: this.props.selectedTab === listTypes.withVehicleDetails})} onClick={this.onTabLinkClick} data-tab="vehicles">Vehicles</button>
             <button className={classnames(styles.operationalTab, { [styles.operationalTabActive]: this.props.selectedTab === listTypes.withGFDetails})} onClick={this.onTabLinkClick} data-tab="companies">Companies</button>
