@@ -23,6 +23,9 @@
   position: relative;
   transition: opacity .2s;
 }
+.gfListItemInnExpanded {
+  background-color: #e8e8e8;
+}
 .listItemInn,
 .listItemInn label {
   cursor: pointer;

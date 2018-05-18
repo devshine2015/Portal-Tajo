@@ -9,10 +9,10 @@ const DetailItemProperty = ({
   value,
 }) => (
   <div className={styles.propContainer}>
-    <span >
-      {title === '' ? icon : `${title}:`}
+    <span className={styles.title}>
+      {title}
     </span>
-    <span >
+    <span>
       {value}
     </span>
   </div>

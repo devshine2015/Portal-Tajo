@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import dateFormats from 'configs/dateFormats';
-
+import classnames from 'classnames';
 import SimpleItem from '../Simple';
 import DetailedGFItem from '../WithDetails/gf';
 import DetailedVehicleItem from '../WithDetails/vehicle';
@@ -131,7 +131,10 @@ class GenericListItem extends React.Component {
     const element = chooseItem(this.props.type, { ...rest, isExpanded });
     return (
       <li
-        className={styles.list__item}
+        // className={styles.list__item}
+        className={classnames(styles.list__item, {
+          [styles.gfListItemInnExpanded]: this.props.isExpanded })}
+
         ref={this.saveNode}
       >
         {element}

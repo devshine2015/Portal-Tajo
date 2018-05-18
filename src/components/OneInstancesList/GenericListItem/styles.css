@@ -5,8 +5,9 @@
   padding: 10px 0;
   transition: background .2s;
 }
+.gfListItemInnExpanded,
 .list__item:hover {
-  background-color: rgba(224, 224, 224, 0.4);
+  background-color: #efefef;
 }
 .list__item h2 {
   color: #222;

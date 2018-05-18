@@ -1,9 +1,10 @@
-@media screen and (min-width: 100px) {
-  .propContainer{
-    width: 100%;
-//    color: #FFFFFF;
-    font-size: 14px;
-    display: flex;
-    justify-content: space-between;
-  }
+.propContainer{
+  width: 100%;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+.title {
+  margin-right: 16px;
 }

@@ -11,7 +11,6 @@ import { contextActions } from 'services/Global/actions';
 import { mapStoreSetPan } from 'containers/Map/reducerAction';
 import { showSnackbar } from 'containers/Snackbar/actions';
 import DeletIcon from 'material-ui/svg-icons/action/delete-forever';
-import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
 import {
   yellow700,
@@ -45,39 +44,35 @@ class LocationWithDetails extends React.Component {
   }
   renderDetails() {
     if (this.props.isExpanded) {
-      return (<div>
-        <Divider key="line01" />
-        <ItemProperty
-          key="address"
-          title={this.props.translations.address}
-          value={this.props.gf.address}
-        />
-        {this.props.gf.isPolygon ? null :
-        <ItemProperty
-          key="radius"
-          title={this.props.translations.radius}
-          value={this.props.gf.radius.toFixed(0)}
-        />
-        }
-        <Divider key="line02" />
-        <IconButton
-          tooltip={ this.props.translations.delete }
-          onClick={this.onDelete}
-          className={styles.iconDelBtn}
-          key="delBtn"
-        >
-          <DeletIcon color={yellow700} hoverColor={yellow500} />
-        </IconButton>
-      </div>);
+      return (
+        <div className={styles.detailsWrapper}>
+          <ItemProperty
+            key="address"
+            title={this.props.translations.address}
+            value={this.props.gf.address}
+          />
+          {this.props.gf.isPolygon ? null :
+            <ItemProperty
+              key="radius"
+              title={this.props.translations.radius}
+              value={this.props.gf.radius.toFixed(0)}
+            />
+          }
+          <IconButton
+            tooltip={this.props.translations.delete}
+            onClick={this.onDelete}
+            className={styles.iconDelBtn}
+            key="delBtn"
+          >
+            <DeletIcon color={yellow700} hoverColor={yellow500} />
+          </IconButton>
+        </div>
+      );
     }
     return false;
   }
 
   render() {
-    // const className = classnames(stylesBase.listItemInn, {
-    //   [styles.listItemInn_expanded]: this.props.isExpanded,
-    // });
-
     return (
       <div
         className={itemStyles.gfListItemInn}
