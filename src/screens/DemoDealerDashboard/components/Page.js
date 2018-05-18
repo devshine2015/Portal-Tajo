@@ -132,8 +132,8 @@ class DealerDashboard extends React.Component {
                       <span className={styles.value}>{demoData.fuelConsumption.idleFuel}%</span>
                     </div>
                     <div className={styles.valuesRow}>
-                      <span className={classnames(styles.title, styles.greenLabel)}>Fuel Gain</span>
-                      <span className={styles.value}>{demoData.fuelConsumption.fuelGain}%</span>
+                      <span className={classnames(styles.title, styles.greenLabel)}>Driving</span>
+                      <span className={styles.value}>{demoData.fuelConsumption.driving}%</span>
                     </div>
                   </div>
                 </div>
