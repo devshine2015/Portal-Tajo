@@ -23,7 +23,6 @@ import { mapVehicleNameMaker } from 'containers/DemoMap/OnMapElements/VehicleNam
 import { mapGFMarkerMaker } from 'containers/DemoMap/OnMapElements/MapGF';
 import { mapMWAJobMarkerMaker } from 'containers/DemoMap/OnMapElements/MWAJobMarker';
 import { getMWAJobs } from 'services/MWA/reducer';
-import Dialog from 'material-ui/Dialog';
 import OperationalList from './components/OperationalPowerList';
 
 

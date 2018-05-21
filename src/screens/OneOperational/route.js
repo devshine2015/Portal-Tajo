@@ -9,7 +9,7 @@ const createRoute = ({
   getComponent: (location, cb) => {
     require.ensure([], require => {
       cb(null, require('./index').default);
-    }, 'operational');
+    }, 'map');
   },
   childRoutes: [],
 });

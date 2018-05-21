@@ -24,19 +24,19 @@ const Navigation = (props) => {
       <div className={styles.nav__links}>
         {
           props.links.map((link) => {
-            if (link.name === 'review') {
+            if (link.name === 'operational') {
               return (
                 <Link
                   className={classnames(
                     styles.nav__link, {
-                      'nav__link--active': (props.activeRouteLocationPath === '/review') || (props.activeRouteLocationPath === '/')
+                      'nav__link--active': (props.activeRouteLocationPath === '/map') || (props.activeRouteLocationPath === '/')
                     },
                   )}
                   key={link.path}
                   to={link.path}
                 >
                   {
-                    (props.activeRouteLocationPath === '/review') || (props.activeRouteLocationPath === '/') ?
+                    (props.activeRouteLocationPath === '/map') || (props.activeRouteLocationPath === '/') ?
                       navIcons[link.name].active : navIcons[link.name].custom
                   }
                 </Link>
