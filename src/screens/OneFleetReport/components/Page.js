@@ -31,19 +31,10 @@ class DealerDashboard extends React.Component {
     this.setState({
       view: nextProps.selectedVehicle == null ? 'general' : nextProps.selectedVehicle
     });
-
   }
+
   selectDemo(name) {
     switch(name) {
-      case '31cb5062-f316-49b6-b2bd-2317da383299':
-        return vehicle1;
-        break;
-      case '5a2b6ecc-43d1-4ed7-97a6-0e86bf3eaf95':
-        return vehicle2;
-        break;
-      case 'c5081aec-9982-4423-9eea-894b4a9ac9e7':
-        return vehicle3;
-        break;
       default:
         return general;
         break;
@@ -233,13 +224,6 @@ class DealerDashboard extends React.Component {
               <div className={classnames(styles.visualSection, styles.visualSectionService)}>
                 <h3 className={styles.visualSectionTitle}>Next Service</h3>
                 <div className={styles.emptyMessage}>{this.state.view === 'general' ? 'Select the vehicle to see this distance' : `Next service in ${demoData.nextService} km`}</div>
-                {/* <Sparkline
-                  data={sparkline()}
-                  lineCurve={'basis'}
-                  // isAnimated={true}
-                  height={100}
-                  width={380}
-                /> */}
               </div>
             </div>
           </div>
@@ -251,7 +235,7 @@ class DealerDashboard extends React.Component {
 
 const mapStateToProps = state => ({
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
-  isVehiclesPanelOpen: state.toJS().inner.demo.isVehiclesPanelOpen,
-  selectedVehicle: state.toJS().inner.demo.selectedOverviewVehicle,
+  isVehiclesPanelOpen: state.toJS().inner.onePortal.isVehiclesPanelOpen,
+  selectedVehicle: state.toJS().inner.onePortal.selectedOverviewVehicle,
 });
 export default connect(mapStateToProps)(pure(DealerDashboard));

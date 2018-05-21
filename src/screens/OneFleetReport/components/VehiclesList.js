@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { selectOverviewVehicle } from 'containers/InnerPortal/components/DemoPortal/actions';
+import { selectOverviewVehicle } from 'containers/InnerPortal/components/OnePortal/actions';
 import styles from './styles.css';
 
 const selectVehicleImage = (name) => {

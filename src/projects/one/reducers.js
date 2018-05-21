@@ -5,7 +5,7 @@
 
 import { combineReducers } from 'redux-immutable';
 import snackbarReducer from 'containers/Snackbar/reducer';
-import innerPortalReducer from 'containers/InnerPortal/components/DemoPortal/reducer';
+import innerPortalReducer from 'containers/InnerPortal/components/OnePortal/reducer';
 import fleetReducer from 'services/FleetModel/reducer';
 import chronicleReducer from 'screens/DemoChronicle/reducer';
 import gfEditorReducer from 'containers/GFEditor/reducer';
@@ -17,6 +17,7 @@ import devicesReducer from 'services/Devices/reducer';
 import alertsSystemReducer from 'services/AlertsSystem/reducer';
 import execReportsReducer from 'screens/ExecReports/services/reducer';
 import mwaReducer from 'services/MWA/reducer';
+import fleetReportReducer from 'services/FleetReport/reducer';
 import routerReducer from '../utils/routerReducer';
 
 /**
@@ -30,6 +31,7 @@ export default function createReducer(asyncReducers) {
     inner: innerPortalReducer,
     snackbar: snackbarReducer,
     fleet: fleetReducer,
+    fleetReport: fleetReportReducer,
     chronicle: chronicleReducer,
     [usersManagerReducerKey]: usersManagerReducer,
     gfEditor: gfEditorReducer,

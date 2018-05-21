@@ -75,7 +75,7 @@ const TopBar = (props) => {
 };
 
 const mapStateToProps = state => ({
-  isVehiclesPanelOpen: state.toJS().inner.demo.isVehiclesPanelOpen,
+  isVehiclesPanelOpen: state.toJS().inner.onePortal.isVehiclesPanelOpen,
   userNickname: state.toJS().session.nickname,
 });
 
