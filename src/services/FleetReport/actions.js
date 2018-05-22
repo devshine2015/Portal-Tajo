@@ -6,9 +6,9 @@ import {
 import dealerSelectors from 'services/Dealer/selectors';
 
 
-export const UPDATE_FLEET_OVERVIEW = 'upFleetOverView';
-export const UPDATE_FLEET_FUEL = 'upFleetFuel';
-export const CLEAR_FLEET_OVERVIEW = 'clearFleetOverview';
+export const UPDATE_FLEET_OVERVIEW = 'UPDATE_FLEET_OVERVIEW';
+export const UPDATE_FLEET_FUEL_OVERVIEW = 'UPDATE_FLEET_FUEL_OVERVIEW';
+export const CLEAR_FLEET_OVERVIEW = 'CLEAR_FLEET_OVERVIEW';
 export const UPDATE_FLEET_FUEL_ALERTS = 'UPDATE_FLEET_FUEL_ALERTS';
 export const SELECT_TIME_RANGE = 'SELECT_TIMERANGE';
 
@@ -50,14 +50,12 @@ export const fetchFleetFuelStats = timeRange => (dispatch, getState) => {
 
 const _setFleetOverviewData = data => ({
   type: UPDATE_FLEET_OVERVIEW,
-  ...data,
+  overview: data,
 });
 
-const _setFleetFuelData = overview => ({
+const _setFleetFuelData = data => ({
   type: UPDATE_FLEET_FUEL,
-  totalFuel: overview.totalConsumption,
-  totalGain: overview.totalGain,
-  totalLoss: overview.totalLoss,
+  fuelOverview: data,
 });
 
 const _setFleetFuelAlerts = alerts => ({
@@ -67,7 +65,7 @@ const _setFleetFuelAlerts = alerts => ({
 
 export const changeTimeRange = data => ({
   type: SELECT_TIME_RANGE,
-  selectedTimeRange: data,
+  timeRange: data,
 });
 
 export const clearFleetOverview = () => ({
