@@ -2,10 +2,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import pure from 'recompose/pure';
 import classnames from 'classnames';
-import { Donut, StackedBar, Sparkline } from 'britecharts-react';
+import { Donut, StackedBar } from 'britecharts-react';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
+// import * as fromOnePortalReducer from 'containers/InnerPortal/components/OnePortal/reducer';
+import {
+  fetchFleetVehicleStats,
+  fetchFleetFuelStats,
+  clearFleetOverview,
+  changeTimeRange,
+} from 'services/FleetReport/actions';
+import { makePeriodForToday } from 'utils/dateTimeUtils';
 import VehiclesList from './VehiclesList';
-import { general, vehicle1, vehicle2, vehicle3 } from './demoOverview';
+import PageHeader from './PageHeader';
+import { general } from './demoOverview';
 import styles from './styles.css';
 
 
@@ -27,6 +36,12 @@ class DealerDashboard extends React.Component {
       view: 'general',
     };
   }
+
+  componentDidMount() {
+    const dayTimeRange = makePeriodForToday();
+    this.props.fetchFleetVehicleStats(dayTimeRange);
+  }
+
   componentWillReceiveProps(nextProps) {
     this.setState({
       view: nextProps.selectedVehicle == null ? 'general' : nextProps.selectedVehicle
@@ -39,6 +54,23 @@ class DealerDashboard extends React.Component {
         return general;
         break;
     }
+  }
+
+  applyTimeRange = (timeRange) => {
+    // this.setState({
+    //   pageIsLoading: true,
+    //   fleetFuelIsLoading: true,
+    //   renderOverview: true,
+    //   timeRange,
+    // });
+    // this.props.fetchFleetVehicleStats(timeRange)
+    //   .then(() => this.setState({ pageIsLoading: false }),
+    //   );
+    // this.props.fetchFleetFuelStats(timeRange)
+    //   .then(() => this.setState({ fleetFuelIsLoading: false }),
+    //   );
+    // this.props.fetchLogs(timeRange);
+    this.props.changeTimeRange(timeRange);
   }
 
   render() {
@@ -56,6 +88,12 @@ class DealerDashboard extends React.Component {
 
         <div className={styles.overviewWrapper}>
           {/* title row */}
+          <PageHeader
+            onApply={tr => this.applyTimeRange(tr)}
+            // defaultTimeRange={this.props.selectedTimeRange}
+          />
+
+
           <div className={styles.infoSectionsWrapper}>
             <div className={styles.infoSection}>
               <h3 className={styles.infoSectionTitle}>{this.state.view === 'general' ? 'Reporting Vehicles' : 'Selected Vehicle'}</h3>
@@ -123,8 +161,8 @@ class DealerDashboard extends React.Component {
                       <span className={styles.value}>{demoData.fuelConsumption.idleFuel}%</span>
                     </div>
                     <div className={styles.valuesRow}>
-                      <span className={classnames(styles.title, styles.greenLabel)}>Fuel Gain</span>
-                      <span className={styles.value}>{demoData.fuelConsumption.fuelGain}%</span>
+                      <span className={classnames(styles.title, styles.greenLabel)}>Driving</span>
+                      <span className={styles.value}>{demoData.fuelConsumption.driving}%</span>
                     </div>
                   </div>
                 </div>
@@ -234,8 +272,20 @@ class DealerDashboard extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  // fleetOverviewData: getFleetOverView(state),
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
   isVehiclesPanelOpen: state.toJS().inner.onePortal.isVehiclesPanelOpen,
   selectedVehicle: state.toJS().inner.onePortal.selectedOverviewVehicle,
+  // selectedTimeRange: dealerSelectors.getSelectedTimeRange(state),
+  // isVehiclesPanelOpen: fromOnePortalReducer.getVehiclesPanelState(state),
+  // selectedVehicle: fromOnePortalReducer.getSelectedOverviewVehicle(state),
 });
-export default connect(mapStateToProps)(pure(DealerDashboard));
+
+const mapDispatchToProps = {
+  fetchFleetVehicleStats,
+  fetchFleetFuelStats,
+  clearFleetOverview,
+  changeTimeRange,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(pure(DealerDashboard));

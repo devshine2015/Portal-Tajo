@@ -68,6 +68,21 @@ export const makePeriodForMonthsBack = (months) => {
 };
 
 /**
+  * Create time range for today's day
+  * @returns {Object}
+  * @returns {Date} fromDate - today with 00:00:00 time
+  * @returns {Date} toDate - today with 23:59:59 time
+  */
+export const makePeriodForToday = () => {
+  const fromDate = moment().startOf('day').toDate();
+  const toDate = moment().endOf('day').toDate();
+  return {
+    fromDate,
+    toDate,
+  };
+};
+
+/**
  * Create time range for current day
  * @returns {Object} defaultPeriod
  * @returns {Date} defaultPeriod.fromDate - date of the start of the period

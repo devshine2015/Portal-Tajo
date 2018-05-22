@@ -41,3 +41,9 @@ export default combineReducers({
 
 export const getDashboardPages = state =>
   state.getIn(['inner', 'pages']);
+
+export const getVehiclesPanelState = state =>
+  state.getIn(['inner', 'onePortal', 'isVehiclesPanelOpen']);
+
+export const getSelectedOverviewVehicle = state =>
+  state.getIn(['inner', 'onePortal', 'selectedOverviewVehicle']);
