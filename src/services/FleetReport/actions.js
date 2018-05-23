@@ -54,7 +54,7 @@ const _setFleetOverviewData = data => ({
 });
 
 const _setFleetFuelData = data => ({
-  type: UPDATE_FLEET_FUEL,
+  type: UPDATE_FLEET_FUEL_OVERVIEW,
   fuelOverview: data,
 });
 

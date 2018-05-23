@@ -6,22 +6,24 @@ import {
 } from './actions';
 
 const initialState = {
-  // avgSpeed: 0,
-  // idleOver: 0,
-  // idleUnder: 0,
-  // normalDriving: 0,
-  // totalDistance: 0,
-  // totalDrivingTime: 0,
-  // totalIdleTime: 0,
-  // totalIdleFuelUsed: 0,
-  // totalRunningTime: 0,
-  // vehicleCount: 0,
-  // totalFuel: 0,
-  // totalGain: 0,
-  // totalLoss: 0,
   selectedTimeRange: null,
-  overviewReport: null,
-  fuelUsageReport: null,
+  overviewReport: {
+    vehicleCount: 0,
+    reportingVehicleCount: 0,
+    totalDistance: 0,
+    avgSpeed: 0,
+    totalRunningTime: 0,
+    totalDrivingTime: 0,
+    totalIdleTime: 0,
+    totalIdleFuelUsed: 0,
+  },
+  fuelUsageReport: {
+    totalConsumption: 0,
+    vehicleCount: 0,
+    totalLoss: 0,
+    totalGain: 0,
+    alerts: [],
+  },
 };
 
 function reducer(state = initialState, action) {
@@ -41,16 +43,17 @@ function reducer(state = initialState, action) {
         ...state,
         selectedTimeRange: action.timeRange,
       };
-    // case CLEAR_FLEET_OVERVIEW:
-    //   return initialState;
     default:
       return state;
   }
 }
 export default reducer;
 
-const _fleetOverviewSlice = state =>
-  state.get('fleetReport');
-
 export const getFleetOverview = state =>
-  _fleetOverviewSlice(state).toJS();
+  state.get('fleetReport').overviewReport;
+
+export const getFleetFuelOverview = state =>
+  state.get('fleetReport').fuelUsageReport;
+
+export const getOverviewRange = state =>
+  state.get('fleetReport').selectedTimeRange;
