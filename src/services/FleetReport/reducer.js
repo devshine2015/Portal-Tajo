@@ -1,12 +1,20 @@
 import {
+  UPDATE_GENERAL_OVERVIEW,
+  UPDATE_GENERAL_FUEL,
   UPDATE_FLEET_OVERVIEW,
   UPDATE_FLEET_FUEL_OVERVIEW,
-  // CLEAR_FLEET_OVERVIEW,
+  UPDATE_VEHICLES_OVERVIEW,
+  CLEAR_FLEET_OVERVIEW,
   SELECT_TIME_RANGE,
 } from './actions';
 
 const initialState = {
   selectedTimeRange: null,
+  vehicleOverviews: [],
+  generalReport: {
+    overviewReport: {},
+    fuelUsageReport: {},
+  },
   overviewReport: {
     vehicleCount: 0,
     reportingVehicleCount: 0,
@@ -33,6 +41,27 @@ function reducer(state = initialState, action) {
         ...state,
         overviewReport: action.overview,
       };
+    case UPDATE_GENERAL_OVERVIEW:
+      return {
+        ...state,
+        generalReport: {
+          ...state.generalReport,
+          overviewReport: action.overview,
+        },
+      };
+    case UPDATE_GENERAL_FUEL:
+      return {
+        ...state,
+        generalReport: {
+          ...state.generalReport,
+          fuelUsageReport: action.overview,
+        },
+      };
+    case UPDATE_VEHICLES_OVERVIEW:
+      return {
+        ...state,
+        vehicleOverviews: action.overview,
+      };
     case UPDATE_FLEET_FUEL_OVERVIEW:
       return {
         ...state,
@@ -43,6 +72,11 @@ function reducer(state = initialState, action) {
         ...state,
         selectedTimeRange: action.timeRange,
       };
+    case CLEAR_FLEET_OVERVIEW:
+      return {
+        ...state,
+        overviewReport: initialState.overviewReport,
+      };
     default:
       return state;
   }
@@ -51,6 +85,9 @@ export default reducer;
 
 export const getFleetOverview = state =>
   state.get('fleetReport').overviewReport;
+
+export const getVehiclesOverviews = state =>
+  state.get('fleetReport').vehicleOverviews;
 
 export const getFleetFuelOverview = state =>
   state.get('fleetReport').fuelUsageReport;

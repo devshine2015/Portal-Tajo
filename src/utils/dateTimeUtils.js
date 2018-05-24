@@ -68,13 +68,13 @@ export const makePeriodForMonthsBack = (months) => {
 };
 
 /**
-  * Create time range for today's day
+  * Create time range for last 3 days
   * @returns {Object}
-  * @returns {Date} fromDate - today with 00:00:00 time
+  * @returns {Date} fromDate - before yesterday with 00:00:00 time
   * @returns {Date} toDate - today with 23:59:59 time
   */
-export const makePeriodForToday = () => {
-  const fromDate = moment().startOf('day').toDate();
+export const makePeriodForTwoDays = () => {
+  const fromDate = moment().subtract(2, 'days').startOf('day').toDate();
   const toDate = moment().endOf('day').toDate();
   return {
     fromDate,

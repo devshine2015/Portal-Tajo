@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 // import moment from 'moment';
-import { makePeriodForToday } from 'utils/dateTimeUtils';
+import { makePeriodForTwoDays } from 'utils/dateTimeUtils';
 import { DateRangeWithButton } from 'components/OneDateRange';
 import styles from './styles.css';
 
@@ -15,8 +15,8 @@ const PageHeader = ({ onApply, hasDateSelector, defaultTimeRange }) => (
           <DateRangeWithButton
             withTime
             onApply={onApply}
-            fromDate={makePeriodForToday().fromDate}
-            toDate={makePeriodForToday().toDate}
+            fromDate={makePeriodForTwoDays().fromDate}
+            toDate={makePeriodForTwoDays().toDate}
             button={(
               <button className={styles.datePickerButton}>APPLY</button>
             )}
@@ -46,7 +46,7 @@ PageHeader.propTypes = {
 PageHeader.defaultProps = {
   hasDateSelector: true,
   // by default - query one month back
-  defaultTimeRange: makePeriodForToday(),
+  defaultTimeRange: makePeriodForTwoDays(),
 };
 
 

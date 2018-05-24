@@ -9,15 +9,16 @@ import * as fromFleetReportReducer from 'services/FleetReport/reducer';
 import {
   fetchFleetVehicleStats,
   fetchFleetFuelStats,
-  clearFleetOverview,
+  setFleetOverviewData,
+  setVehiclesOverviewData,
+  clearOverview,
   changeTimeRange,
 } from 'services/FleetReport/actions';
 import { numberToFixedString } from 'utils/convertors';
-import { makePeriodForToday } from 'utils/dateTimeUtils';
+import { makePeriodForTwoDays } from 'utils/dateTimeUtils';
 import AnimatedLogo from 'components/animated';
 import VehiclesList from './VehiclesList';
 import PageHeader from './PageHeader';
-import { general } from './demoOverview';
 import styles from './styles.css';
 
 
@@ -31,18 +32,31 @@ const colores2 = [
   '#ec5b98', //pink
 ];
 
+const makePercentage = (num1 = 0, num2 = 0, num3 = 0) => {
+  const sum = num1 + num2 + num3;
+  if (sum === 0) return [0, 0, 0];
+
+  const p1 = Math.round((num1 * 100) / sum);
+  const p2 = Math.round((num2 * 100) / sum);
+  const p3 = 100 - p1 - p2;
+  return [p1, p2, p3];
+};
+
 class DealerDashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       view: 'general',
+      nextServiceOdo: null,
+      // pageIsLoading: true,
+      // fuelOverviewIsLoading: true,
       pageIsLoading: true,
       fuelOverviewIsLoading: true,
     };
   }
 
   componentDidMount() {
-    const dayTimeRange = makePeriodForToday();
+    const dayTimeRange = makePeriodForTwoDays();
     this.props.fetchFleetVehicleStats(dayTimeRange)
       .then(() => this.setState({ pageIsLoading: false }));
     this.props.fetchFleetFuelStats(dayTimeRange)
@@ -50,12 +64,40 @@ class DealerDashboard extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('componentWillReceiveProps');
     this.setState({
       view: nextProps.selectedVehicle == null ? 'general' : 'vehicle'
     });
+    // when deselect the vehicle
+    if ((this.props.selectedVehicle != null) && (nextProps.selectedVehicle == null)) {
+      console.log('deselected');
+      const dayTimeRange = makePeriodForTwoDays();
+      this.props.fetchFleetVehicleStats(dayTimeRange)
+        .then(() => this.setState({ pageIsLoading: false }));
+      this.props.fetchFleetFuelStats(dayTimeRange)
+        .then(() => this.setState({ fuelOverviewIsLoading: false }));
+    }
+
     if ((nextProps.selectedVehicle !== this.props.selectedVehicle) &&
       (nextProps.selectedVehicle != null)) {
-      console.log('request for vehicle fuel');
+      //
+      const vehicle = nextProps.vehicles.find(veh => veh.id === nextProps.selectedVehicle);
+      let vehicleNextOdo = Math.round(10000 - ((vehicle.original.odometer.value / 1000) - vehicle.lastServiceOdo));
+      this.setState({
+        nextServiceOdo: vehicleNextOdo < 0 ? 'Next service is overdued' : `Next service in ${vehicleNextOdo} km`
+      });
+
+      const vehicleBreakdown = nextProps.vehiclesOverviews.find(
+        overview => overview.vehicleId === nextProps.selectedVehicle
+      );
+
+      if ((vehicleBreakdown === undefined) || (Object.keys(vehicleBreakdown).length <= 1)) {
+        this.props.clearOverview();
+      } else {
+        this.props.setFleetOverviewData(vehicleBreakdown);
+      }
+    } else {
+        // this.props.setFleetOverviewData(nextProps.overviewReport);
     }
   }
 
@@ -70,7 +112,6 @@ class DealerDashboard extends React.Component {
     this.props.fetchFleetFuelStats(timeRange)
       .then(() => this.setState({ fuelOverviewIsLoading: false }),
       );
-    // this.props.fetchLogs(timeRange);
     this.props.changeTimeRange(timeRange);
   }
   renderPreloading() {
@@ -90,23 +131,23 @@ class DealerDashboard extends React.Component {
         </div>
         <div className={styles.infoSection}>
           <h3 className={styles.infoSectionTitle}>Total Distance</h3>
-          <div className={styles.infoSectionValue}>{this.props.fleetOverview.totalDistance} km</div>
+          <div className={styles.infoSectionValue}>{numberToFixedString(this.props.fleetOverview.totalDistance)} km</div>
         </div>
         <div className={styles.infoSection}>
           <h3 className={styles.infoSectionTitle}>Avg. Speed</h3>
-          <div className={styles.infoSectionValue}>{this.props.fleetOverview.avgSpeed} km/h</div>
+          <div className={styles.infoSectionValue}>{numberToFixedString(this.props.fleetOverview.avgSpeed)} km/h</div>
         </div>
         <div className={styles.infoSection}>
           <h3 className={styles.infoSectionTitle}>Total Running Time</h3>
-          <div className={styles.infoSectionValue}>{this.props.fleetOverview.totalRunningTime} h</div>
+          <div className={styles.infoSectionValue}>{(this.props.fleetOverview.totalRunningTime).toFixed(0)} h</div>
         </div>
         <div className={styles.infoSection}>
           <h3 className={styles.infoSectionTitle}>Total Idle Time</h3>
-          <div className={styles.infoSectionValue}>{this.props.fleetOverview.totalIdleTime} h</div>
+          <div className={styles.infoSectionValue}>{(this.props.fleetOverview.totalIdleTime).toFixed(0)} h</div>
         </div>
         <div className={styles.infoSection}>
           <h3 className={styles.infoSectionTitle}>Total Idle Fuel</h3>
-          <div className={styles.infoSectionValue}>{this.props.fleetOverview.totalIdleFuelUsed} l</div>
+          <div className={styles.infoSectionValue}>{numberToFixedString(this.props.fleetOverview.totalIdleFuelUsed)} l</div>
         </div>
       </div>
     )
@@ -115,36 +156,36 @@ class DealerDashboard extends React.Component {
     const graphRatio = window.innerWidth > 1920 ? 1 : 0.55;
     const { totalDistance, totalDrivingTime, totalIdleFuelUsed, totalIdleTime } = this.props.fleetOverview;
     const { totalConsumption, totalLoss, alerts } = this.props.fleetFuelUsage;
-    // const demoData = this.selectDemo(this.state.view);
+
     const fuelConsumption = totalConsumption === 0 ? 0 : totalDistance / totalConsumption;
-    const drivingFuel = totalConsumption - totalIdleFuelUsed - totalLoss;
-    const totalTime = totalDrivingTime + totalIdleTime;
-    const idleTime = totalTime !== 0 ? (totalIdleTime * 100 / totalTime) : 0;
-    const drivingTime = totalTime !== 0 ? (totalDriving * 100 / totalTime) : 0;
+    const fuelConsPercentage = makePercentage(totalLoss, totalIdleFuelUsed, totalConsumption);
+
+    const runningPercentage = makePercentage(totalIdleTime, totalDrivingTime);
+
     const fuelConsData = [{
-      quantity: totalLoss,
-      percentage: totalLoss,
+      quantity: fuelConsPercentage[0],
+      percentage: fuelConsPercentage[0],
       name: 'Fuel loss',
       id: 1,
     }, {
-      quantity: totalIdleFuelUsed,
-      percentage: totalIdleFuelUsed,
+      quantity: fuelConsPercentage[1],
+      percentage: fuelConsPercentage[1],
       name: 'Idle fuel',
       id: 2,
     }, {
-      quantity: drivingFuel,
-      percentage: drivingFuel,
+      quantity: fuelConsPercentage[2],
+      percentage: fuelConsPercentage[2],
       name: 'Driving',
       id: 3,
     }];
     const runTimeData = [{
-      quantity: idleTime,
-      percentage: idleTime,
+      quantity: runningPercentage[0],
+      percentage: runningPercentage[0],
       name: 'Idle',
       id: 1,
     }, {
-      quantity: drivingTime,
-      percentage: drivingTime,
+      quantity: runningPercentage[1],
+      percentage: runningPercentage[1],
       name: 'Driving',
       id: 2,
     }];
@@ -183,26 +224,26 @@ class DealerDashboard extends React.Component {
             <div className={styles.visualSectionRight}>
               <div className={styles.extraValues}>
                 <div className={styles.extraValue}>
-                  <span className={styles.extraValueNumber}>{this.props.fleetFuelUsage.totalConsumption}</span>
+                  <span className={styles.extraValueNumber}>{numberToFixedString(this.props.fleetFuelUsage.totalConsumption)}</span>
                   <span className={styles.extraValueLabel}>Total liters</span>
                 </div>
                 <div className={styles.extraValue}>
-                  <span className={styles.extraValueNumber}>{fuelConsumption}</span>
+                  <span className={styles.extraValueNumber}>{numberToFixedString(fuelConsumption)}</span>
                   <span className={styles.extraValueLabel}>km per liter</span>
                 </div>
               </div>
               <div className={styles.valuesSection}>
                 <div className={styles.valuesRow}>
                   <span className={classnames(styles.title, styles.pinkLabel)}>Fuel loss</span>
-                  <span className={styles.value}>{totalLoss}%</span>
+                  <span className={styles.value}>{fuelConsPercentage[0]}%</span>
                 </div>
                 <div className={styles.valuesRow}>
                   <span className={classnames(styles.title, styles.blueLabel)}>Idle fuel</span>
-                  <span className={styles.value}>{totalIdleFuelUsed}%</span>
+                  <span className={styles.value}>{fuelConsPercentage[1]}%</span>
                 </div>
                 <div className={styles.valuesRow}>
                   <span className={classnames(styles.title, styles.greenLabel)}>Driving</span>
-                  <span className={styles.value}>{drivingFuel}%</span>
+                  <span className={styles.value}>{fuelConsPercentage[2]}%</span>
                 </div>
               </div>
             </div>
@@ -231,11 +272,11 @@ class DealerDashboard extends React.Component {
               <div className={classnames(styles.valuesSection, styles.valuesSectionThin)}>
                 <div className={styles.valuesRow}>
                   <span className={classnames(styles.title, styles.pinkLabel)}>Idle time</span>
-                  <span className={styles.value}>{totalIdleTime}%</span>
+                  <span className={styles.value}>{runningPercentage[0]}%</span>
                 </div>
                 <div className={styles.valuesRow}>
                   <span className={classnames(styles.title, styles.greenLabel)}>Driving time</span>
-                  <span className={styles.value}>{totalDrivingTime}%</span>
+                  <span className={styles.value}>{runningPercentage[1]}%</span>
                 </div>
               </div>
             </div>
@@ -290,12 +331,12 @@ class DealerDashboard extends React.Component {
             <div className={styles.emptyMessage}>
               {this.state.view === 'general' ?
                 'Select the vehicle to see this distance' :
-                `Next service in ${0} km`}
+                this.state.nextServiceOdo}
             </div>
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   render() {
@@ -328,6 +369,7 @@ class DealerDashboard extends React.Component {
 
 const mapStateToProps = state => ({
   fleetOverview: fromFleetReportReducer.getFleetOverview(state),
+  vehiclesOverviews: fromFleetReportReducer.getVehiclesOverviews(state),
   fleetFuelUsage: fromFleetReportReducer.getFleetFuelOverview(state),
   overviewRange: fromFleetReportReducer.getOverviewRange(state),
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
@@ -338,7 +380,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   fetchFleetVehicleStats,
   fetchFleetFuelStats,
-  clearFleetOverview,
+  setFleetOverviewData,
+  setVehiclesOverviewData,
+  clearOverview,
   changeTimeRange,
 };
 
