@@ -17,8 +17,6 @@ import {
 import inClasses from './classes';
 
 const ClickableRow = (props) => {
-  // destructure props to keep the expected MUI TableRow props
-  // while having access to the rowData prop
   const { lat, lng, onClickFunc, ...restProps } = props;
   return (
     <TableRow
@@ -57,14 +55,14 @@ class FuelConsumption extends Component {
       ));
     return (
       <div className={css(inClasses.container)}>
-        <div className={css(inClasses.containerHeading)}>Fuel Alerts</div>
         {
           tableData.length === 0 ? (
-            <div style={{ padding: '16px 0', color: '#9e9e9e' }}>No alerts for a selected period</div>
+            <div className={css(inClasses.emptyMessage)}>No alerts for the selected period</div>
           ) : (
             <Table
               height={this.props.height}
               selectable={false}
+              className={css(inClasses.table)}
             >
               <TableHeader
                 adjustForCheckbox={false}

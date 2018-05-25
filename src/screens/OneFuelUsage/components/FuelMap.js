@@ -28,7 +28,6 @@ class FuelMap extends React.Component {
 
   createVehicleMarkers(theVehicleId) {
     const fuelReport = this.props.getFuelReportForVehicle(theVehicleId);
-    // debugger;
     return fuelReport.alerts
       .filter(alrt => alrt.position !== undefined)
       .map((alrt, i) =>

@@ -2,6 +2,9 @@ import { StyleSheet } from 'aphrodite/no-important';
 import { theme } from 'configs';
 
 module.exports = StyleSheet.create({
+  table: {
+    fontFamily: 'Montserrat',
+  },
   tableHead: {
     color: theme.palette.dachboardElementColor,
     height: '32px',
@@ -43,15 +46,19 @@ module.exports = StyleSheet.create({
     opacity: '0.5',
   },
   mapContainer: {
-    height: '400px',
+    height: '100%',
     width: '100%',
     display: 'flex',
   },
   table_print: {
-    height: '300px',
-    // '@media print': {
-    //   height: 'auto',
-    // },
+    height: '300px'
+  },
+  emptyMessage: {
+    color: '#b7b7b7',
+    flex: '1',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
 });

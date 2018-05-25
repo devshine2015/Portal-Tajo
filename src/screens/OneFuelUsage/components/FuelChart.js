@@ -17,7 +17,9 @@ import { getFuelReportTimeRange } from './../services/reducer';
 //   alerts: {loss: [{.}, {.}], refuel: [{.}, {.}, {.} ]},
 // }
 const buildChart = (node, data, maxY, onClickedFunc) => {
-
+  const graphRatioW = window.innerWidth > 1920 ? 1 : 0.55;
+  const graphRatioH = window.innerWidth > 1920 ? 1 : 0.7;
+  // console.log(graphRatio);
   const theChart = bb.generate({
     data: {
       xs: {
@@ -79,14 +81,14 @@ const buildChart = (node, data, maxY, onClickedFunc) => {
         },
       },
     },
-    padding: {
-      bottom: 10,
-    },
     point: {
       r: 0,
     },
     bubble: {
       maxR: 30,
+    },
+    legend: {
+      show: false
     },
     tooltip: {
       contents(d) {
@@ -96,6 +98,10 @@ const buildChart = (node, data, maxY, onClickedFunc) => {
         <td class="name">Fuel Amount: ${d[0].value} Ltr</td>
       </tr></tbody></table>`;
       },
+    },
+    size: {
+      width: 850 * graphRatioW,
+      height: 380 * graphRatioH,
     },
     bindto: node,
   });
@@ -261,7 +267,7 @@ class FuelChart extends Component {
             values,
             alerts,
           },
-          nextProps.fuelCapacity + 100,
+          nextProps.fuelCapacity,
           this.handleBubbleClick,
         );
       }
@@ -307,7 +313,7 @@ class FuelChart extends Component {
         values,
         alerts,
       },
-      this.props.fuelCapacity + 100, // add 100 just to prevent cut of alert nodes,
+      this.props.fuelCapacity,
       this.handleBubbleClick,
     );
   }
@@ -315,14 +321,9 @@ class FuelChart extends Component {
 
   render() {
     return (
-      <div className={css(inClasses.container)}>
-        <div className={css(inClasses.containerHeading)}>
-          {`Fuel History for ${moment(this.props.timeRange.fromDate).format('MMMM Do YYYY')} to ${moment(this.props.timeRange.toDate).format('MMMM Do YYYY')}.`}
-        </div>
-        <div
-          ref={(ref) => { this.chartRef = ref; }}
-        />
-      </div>
+      <div
+        ref={(ref) => { this.chartRef = ref; }}
+      />
     );
   }
 }

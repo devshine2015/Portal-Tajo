@@ -1,3 +1,10 @@
+.emptyMessage {
+  color: #b7b7b7;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .wrapper {
   position: relative;
   height: 100%;
@@ -87,11 +94,15 @@
   box-sizing: border-box;
   padding: 40px 30px 70px 50px;
   flex: 1;
+  flex-basis: 50%;
   min-height: 320px;
   display: flex;
 }
 .visualSection:nth-child(odd) {
   margin-right: 18px;
+}
+.visualSectionWithoutPadding {
+  padding: 0;
 }
 .visualSectionTitle {
   color: #354052;
@@ -112,6 +123,7 @@
 .visualSectionAlerts {
   padding-bottom: 24px;
 }
+.visualSectionColumn,
 .visualSectionService {
   flex-direction: column;
 }
@@ -281,6 +293,12 @@
   width: 143px;
 }
 
+.visualSectionSingleContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 40px;
+}
 @media screen and (max-width: 1920px) {
   .datePickerRow {
     height: 50px;
@@ -313,6 +331,10 @@
     box-shadow: 0 18px 18px 0 rgba(0, 0, 0, 0.05);
     padding: 20px 20px 40px 30px;
   }
+  .visualSectionWithoutPadding {
+    padding: 0;
+  }
+
   .visualSectionTitle {
     font-size: 18px;
   }
@@ -384,7 +406,7 @@
   }
 }
 @media screen and (max-width: 1920px) and (max-height: 950px) {
-  /* .wrapper {
+  .wrapper {
     height: auto;
-  } */
+  } 
 }
