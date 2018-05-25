@@ -5,13 +5,15 @@ import classnames from 'classnames';
 import { Donut, Bar } from 'britecharts-react';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import * as fromFleetReportReducer from 'services/FleetReport/reducer';
-// import * as fromOnePortalReducer from 'containers/InnerPortal/components/OnePortal/reducer';
+import { deselectOverviewVehicle } from 'containers/InnerPortal/components/OnePortal/actions';
 import {
   fetchFleetVehicleStats,
   fetchFleetFuelStats,
+  fetchVehicleFuelStats,
   setFleetOverviewData,
-  setVehiclesOverviewData,
+  setFleetFuelData,
   clearOverview,
+  clearFuelOverview,
   changeTimeRange,
 } from 'services/FleetReport/actions';
 import { numberToFixedString } from 'utils/convertors';
@@ -22,15 +24,8 @@ import PageHeader from './PageHeader';
 import styles from './styles.css';
 
 
-const colores1 = [
-  '#ec5b98', //pink
-  '#4a90e2', //blue
-  '#50e3c2', //green
-];
-const colores2 = [
-  '#50e3c2', //green
-  '#ec5b98', //pink
-];
+const colores1 = ['#ec5b98', '#4a90e2', '#50e3c2'];
+const colores2 = ['#50e3c2', '#ec5b98'];
 
 const makePercentage = (num1 = 0, num2 = 0, num3 = 0) => {
   const sum = num1 + num2 + num3;
@@ -42,62 +37,81 @@ const makePercentage = (num1 = 0, num2 = 0, num3 = 0) => {
   return [p1, p2, p3];
 };
 
+const countAlerts = (alerts) => {
+  const counter = {
+    refuel: 0,
+    loss: 0,
+  };
+  alerts.forEach((alert) => {
+    switch (alert.alertType) {
+      case 'REFUEL':
+        counter.refuel += 1;
+        break;
+      case 'LOSS':
+        counter.loss += 1;
+        break;
+      default:
+        break;
+    }
+  });
+  return counter;
+}
+
 class DealerDashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       view: 'general',
+      vehicleName: '',
       nextServiceOdo: null,
-      // pageIsLoading: true,
-      // fuelOverviewIsLoading: true,
       pageIsLoading: true,
       fuelOverviewIsLoading: true,
     };
   }
 
   componentDidMount() {
-    const dayTimeRange = makePeriodForTwoDays();
-    this.props.fetchFleetVehicleStats(dayTimeRange)
+    const daysTimeRange = makePeriodForTwoDays();
+    this.props.changeTimeRange(daysTimeRange);
+    this.props.fetchFleetVehicleStats(daysTimeRange)
       .then(() => this.setState({ pageIsLoading: false }));
-    this.props.fetchFleetFuelStats(dayTimeRange)
+    this.props.fetchFleetFuelStats(daysTimeRange)
       .then(() => this.setState({ fuelOverviewIsLoading: false }));
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps');
     this.setState({
       view: nextProps.selectedVehicle == null ? 'general' : 'vehicle'
     });
     // when deselect the vehicle
     if ((this.props.selectedVehicle != null) && (nextProps.selectedVehicle == null)) {
-      console.log('deselected');
-      const dayTimeRange = makePeriodForTwoDays();
-      this.props.fetchFleetVehicleStats(dayTimeRange)
-        .then(() => this.setState({ pageIsLoading: false }));
-      this.props.fetchFleetFuelStats(dayTimeRange)
-        .then(() => this.setState({ fuelOverviewIsLoading: false }));
+      this.props.setFleetOverviewData(nextProps.generalReport.overviewReport);
+      this.props.setFleetFuelData(nextProps.generalReport.fuelUsageReport);
     }
 
     if ((nextProps.selectedVehicle !== this.props.selectedVehicle) &&
       (nextProps.selectedVehicle != null)) {
-      //
       const vehicle = nextProps.vehicles.find(veh => veh.id === nextProps.selectedVehicle);
       let vehicleNextOdo = Math.round(10000 - ((vehicle.original.odometer.value / 1000) - vehicle.lastServiceOdo));
-      this.setState({
-        nextServiceOdo: vehicleNextOdo < 0 ? 'Next service is overdued' : `Next service in ${vehicleNextOdo} km`
-      });
-
-      const vehicleBreakdown = nextProps.vehiclesOverviews.find(
+      const vehicleBreakdown = nextProps.generalReport.overviewReport.vehicleOverviews.find(
         overview => overview.vehicleId === nextProps.selectedVehicle
       );
-
+      
+      this.setState({
+        nextServiceOdo: vehicleNextOdo < 0 ? `Next service is overdued for ${Math.abs(vehicleNextOdo)} km` :
+        `Next service in ${vehicleNextOdo} km`,
+        vehicleName: vehicle.original.name,
+      });
+      
       if ((vehicleBreakdown === undefined) || (Object.keys(vehicleBreakdown).length <= 1)) {
         this.props.clearOverview();
+        this.props.clearFuelOverview();
       } else {
         this.props.setFleetOverviewData(vehicleBreakdown);
+        
+        this.setState({ fuelOverviewIsLoading: true });
+        this.props.fetchVehicleFuelStats(vehicle.id, nextProps.overviewRange)
+          .then(() => this.setState({ fuelOverviewIsLoading: false }));
       }
-    } else {
-        // this.props.setFleetOverviewData(nextProps.overviewReport);
     }
   }
 
@@ -106,14 +120,14 @@ class DealerDashboard extends React.Component {
       pageIsLoading: true,
       fuelOverviewIsLoading: true,
     });
+    this.props.deselectOverviewVehicle();
     this.props.fetchFleetVehicleStats(timeRange)
-      .then(() => this.setState({ pageIsLoading: false }),
-      );
+      .then(() => this.setState({ pageIsLoading: false }));
     this.props.fetchFleetFuelStats(timeRange)
-      .then(() => this.setState({ fuelOverviewIsLoading: false }),
-      );
+      .then(() => this.setState({ fuelOverviewIsLoading: false }));
     this.props.changeTimeRange(timeRange);
   }
+  
   renderPreloading() {
     return (
       <div className={styles.preloading}>
@@ -127,7 +141,15 @@ class DealerDashboard extends React.Component {
       <div className={styles.infoSectionsWrapper}>
         <div className={styles.infoSection}>
           <h3 className={styles.infoSectionTitle}>{this.state.view === 'general' ? 'Reporting Vehicles' : 'Selected Vehicle'}</h3>
-          <div className={styles.infoSectionValue}>{this.props.fleetOverview.reportingVehicleCount} / {this.props.fleetOverview.vehicleCount}</div>
+          <div className={styles.infoSectionValue}>
+            {this.state.view === 'general' ? (
+              `${this.props.fleetOverview.reportingVehicleCount} /
+              ${this.props.fleetOverview.vehicleCount}`
+            ) : (
+              `${this.state.vehicleName}`
+            )
+            }
+          </div>
         </div>
         <div className={styles.infoSection}>
           <h3 className={styles.infoSectionTitle}>Total Distance</h3>
@@ -159,8 +181,8 @@ class DealerDashboard extends React.Component {
 
     const fuelConsumption = totalConsumption === 0 ? 0 : totalDistance / totalConsumption;
     const fuelConsPercentage = makePercentage(totalLoss, totalIdleFuelUsed, totalConsumption);
-
     const runningPercentage = makePercentage(totalIdleTime, totalDrivingTime);
+    const alertsCountArr = countAlerts(alerts);
 
     const fuelConsData = [{
       quantity: fuelConsPercentage[0],
@@ -192,10 +214,10 @@ class DealerDashboard extends React.Component {
     const alertsData = [
       {
         name: 'Refuel',
-        value: 1,
+        value: alertsCountArr.refuel,
       }, {
         name: 'Loss',
-        value: 2,
+        value: alertsCountArr.loss,
       }
     ];
 
@@ -368,8 +390,8 @@ class DealerDashboard extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  generalReport: fromFleetReportReducer.getGeneralReport(state),
   fleetOverview: fromFleetReportReducer.getFleetOverview(state),
-  vehiclesOverviews: fromFleetReportReducer.getVehiclesOverviews(state),
   fleetFuelUsage: fromFleetReportReducer.getFleetFuelOverview(state),
   overviewRange: fromFleetReportReducer.getOverviewRange(state),
   vehicles: fromFleetReducer.getVehiclesExSorted(state),
@@ -380,10 +402,13 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   fetchFleetVehicleStats,
   fetchFleetFuelStats,
+  fetchVehicleFuelStats,
   setFleetOverviewData,
-  setVehiclesOverviewData,
+  setFleetFuelData,
   clearOverview,
+  clearFuelOverview,
   changeTimeRange,
+  deselectOverviewVehicle,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(pure(DealerDashboard));

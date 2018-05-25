@@ -15,3 +15,7 @@ export const selectOverviewVehicle = id => ({
   type: SELECT_OVERVIEW_VEHICLE,
   id,
 });
+
+export const deselectOverviewVehicle = () => dispatch => {
+  dispatch(selectOverviewVehicle(null));
+}

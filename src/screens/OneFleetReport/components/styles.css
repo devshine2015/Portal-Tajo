@@ -66,6 +66,7 @@
   flex: 5.5;
   flex-direction: column;
   position: relative;
+  overflow: hidden;
 }
 .visualSectionsRow {
   flex: 1;
@@ -258,7 +259,7 @@
   left: -365px;
   transition: left .3s;
   position: absolute;
-  z-index: 9;
+  z-index: 9999999;
   width: 365px;
 }
 .vehiclesSidebarOpened {
