@@ -18,6 +18,7 @@ import FuelChart from './FuelChart';
 import FuelAlertsSummary from './FuelAlertsSummary';
 import FuelAlerts from './FuelAlerts';
 import FuelMap from './FuelMap';
+import styles from './styles.css';
 
 class VehicleFuel extends React.Component {
   constructor(props) {
@@ -40,12 +41,6 @@ class VehicleFuel extends React.Component {
     doSaveSpreadSheetSeries(theVehicle, fuelReport, this.props.timeRange);
   }
 
-  doPrint = () => {
-    window.print();
-  }
-
-  makeChronoPath = () => null
-
   render() {
     if (!this.props.theVehicleId) {
       return false;
@@ -65,76 +60,47 @@ class VehicleFuel extends React.Component {
       ? theVehicle.original.fuelCapacity.toString() : 'N/A';
 
     return (
-      <Layout.Content style={{ padding: '0' }}>
-        <Layout.Section style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', padding: '32px' }}>
-          <DashboardElements.DataCard
-            title={'Tank Capacity'}
-            dataString={fuelCap}
-            dataUnits="Ltr"
-          />
-          <DashboardElements.DataCard
-            title={'Total Fuel Consumption'}
-            dataString={numberToFixedString(fuelReport.totalConsumption)}
-            dataUnits="Ltr"
-          />
-          <DashboardElements.DataCard
-            title={'KM / Litre'}
-            dataString={numberToFixedString(fuelReport.ltrPerKm)}
-          />
-          <DashboardElements.DataCard
-            title={'Total Distance'}
-            dataString={numberToFixedString(fuelReport.totalDist)}
-            dataUnits="km"
-          />
-          <DashboardElements.DataCard
-            title={'Avg Speed'}
-            dataString={numberToFixedString(fuelReport.avgSpeed)}
-            dataUnits="km/h"
-          />
-        </Layout.Section>
-        <Layout.Section style={{ padding: '32px' }}>
+      <div className={styles.overviewWrapper}>
+        <div className={styles.infoSectionsWrapper}>
+          <div className={styles.infoSection}>
+            <h3 className={styles.infoSectionTitle}>Tank Capacity</h3>
+            <div className={styles.infoSectionValue}>{fuelCap} Ltr</div>
+          </div>
+          <div className={styles.infoSection}>
+            <h3 className={styles.infoSectionTitle}>Total Fuel Consumption</h3>
+            <div className={styles.infoSectionValue}>{numberToFixedString(fuelReport.totalConsumption)} Ltr</div>
+          </div>
+          <div className={styles.infoSection}>
+            <h3 className={styles.infoSectionTitle}>KM / Litre</h3>
+            <div className={styles.infoSectionValue}>{numberToFixedString(fuelReport.ltrPerKm)}</div>
+          </div>
+          <div className={styles.infoSection}>
+            <h3 className={styles.infoSectionTitle}>Total Distance</h3>
+            <div className={styles.infoSectionValue}>{numberToFixedString(fuelReport.totalDist)} km</div>
+          </div>
+          <div className={styles.infoSection}>
+            <h3 className={styles.infoSectionTitle}>Avg Speed</h3>
+            <div className={styles.infoSectionValue}>{numberToFixedString(fuelReport.avgSpeed)} km/h</div>
+          </div>
+        </div>
+        {/* <Layout.Section style={{ padding: '32px' }}>
           <FuelAlertsSummary vehicleAlerts={fuelReport.alerts} totalConsumption={fuelReport.totalConsumption} />
-        </Layout.Section>
-        <Layout.Section style={{ padding: '32px' }}>
+        </Layout.Section> */}
+        {/* <Layout.Section style={{ padding: '32px' }}>
           <FuelChart
             vehicle={this.props.theVehicleId}
             fuelSeries={fuelReport.series}
             fuelCapacity={theVehicle.original.fuelCapacity}
             vehicleAlerts={fuelReport.alerts}
           />
-        </Layout.Section>
-        <NoPrint>
+        </Layout.Section> */}
+        {/* <NoPrint>
           <Layout.Section style={{ padding: '32px' }}>
             <FuelMap selectedVehicleId={this.props.theVehicleId} />
           </Layout.Section>
-        </NoPrint>
-        {/* same table - screen and print version - limited height on screen */}
-        <NoPrint>
-          <Layout.Section style={{ padding: '32px' }}>
-            <FuelAlerts vehicleAlerts={fuelReport.alerts} totalConsumption={fuelReport.totalConsumption} height="300px" />
-          </Layout.Section>
-        </NoPrint>
-        <NoPrint onlyPrint>
-          <Layout.Section style={{ padding: '32px' }}>
-            <FuelAlerts vehicleAlerts={fuelReport.alerts} totalConsumption={fuelReport.totalConsumption} height="auto" />
-          </Layout.Section>
-        </NoPrint>
-        {/* -- same table ------------------------ */}
+        </NoPrint> */}
 
-        <Layout.Section style={{ padding: '32px' }}>
-          <MainActionButton
-            label="Save RAW"
-            onClick={this.doSaveSpreadSheet}
-            icon={null}
-            style={{ marginLeft: '32px' }}
-          />
-          <MainActionButton
-            label="Print"
-            onClick={this.doPrint}
-            icon={null}
-          />
-        </Layout.Section>
-      </Layout.Content>
+      </div>
     );
   }
 }

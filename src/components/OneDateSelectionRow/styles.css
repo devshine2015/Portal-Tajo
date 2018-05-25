@@ -11,6 +11,7 @@
   left: 0;
   top: 0;
   width: 100%;
+  z-index: 1;
 }
 .datePickerButton {
   border-radius: 4px;

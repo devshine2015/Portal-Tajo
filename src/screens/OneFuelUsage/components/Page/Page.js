@@ -7,7 +7,7 @@ import DemoPowerList from 'components/DemoPowerList';
 import OperationalList from 'components/OnePowerList';
 import PageHeader from 'components/OneDateSelectionRow';
 
-import FixedContent from 'components/FixedContent';
+import FixedContent from 'components/DemoFixedContent';
 import AnimatedLogo from 'components/animated';
 import * as fromFleetReducer from 'services/FleetModel/reducer';
 import { mapStoreSetPan } from 'containers/Map/reducerAction';
@@ -18,9 +18,9 @@ import { fetchVehicleFuelReport } from './../../services/actions';
 import { getFuelReportForVehicle, getFuelReportLoadingState } from './../../services/reducer';
 
 import VehicleFuel from './../VehicleFuel';
+import styles from './../styles.css';
 
 class Page extends React.Component {
-
   applyTimeRange = (timeRange) => {
     this.setState({ loading: true });
     this.props.fetchVehicleFuelReport(this.props.selectedVehicleId, timeRange);
@@ -28,7 +28,7 @@ class Page extends React.Component {
   }
   render() {
     return (
-      <div>
+      <div className={styles.wrapper}>
         <DemoPowerList>
           <OperationalList
             vehicles={this.props.vehicles}
@@ -38,8 +38,7 @@ class Page extends React.Component {
           style={{
             padding: 0,
             height: '100%',
-            minHeight: '400px',
-            backgroundColor: 'white',
+            minHeight: '100%',
           }}
         >
           <PageHeader
