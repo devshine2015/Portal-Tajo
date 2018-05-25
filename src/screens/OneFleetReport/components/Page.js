@@ -19,8 +19,8 @@ import {
 import { numberToFixedString } from 'utils/convertors';
 import { makePeriodForTwoDays } from 'utils/dateTimeUtils';
 import AnimatedLogo from 'components/animated';
+import PageHeader from 'components/OneDateSelectionRow';
 import VehiclesList from './VehiclesList';
-import PageHeader from './PageHeader';
 import styles from './styles.css';
 
 
@@ -91,23 +91,26 @@ class DealerDashboard extends React.Component {
     if ((nextProps.selectedVehicle !== this.props.selectedVehicle) &&
       (nextProps.selectedVehicle != null)) {
       const vehicle = nextProps.vehicles.find(veh => veh.id === nextProps.selectedVehicle);
-      let vehicleNextOdo = Math.round(10000 - ((vehicle.original.odometer.value / 1000) - vehicle.lastServiceOdo));
-      const vehicleBreakdown = nextProps.generalReport.overviewReport.vehicleOverviews.find(
-        overview => overview.vehicleId === nextProps.selectedVehicle
-      );
-      
+      const vehicleNextOdo = Math.round(10000 - ((vehicle.original.odometer.value / 1000) - vehicle.lastServiceOdo));
+
       this.setState({
         nextServiceOdo: vehicleNextOdo < 0 ? `Next service is overdued for ${Math.abs(vehicleNextOdo)} km` :
         `Next service in ${vehicleNextOdo} km`,
         vehicleName: vehicle.original.name,
       });
-      
+
+      const vehicleBreakdown = nextProps.generalReport.overviewReport.hasOwnProperty('vehicleOverviews') ? (
+        nextProps.generalReport.overviewReport.vehicleOverviews.find(
+          overview => overview.vehicleId === nextProps.selectedVehicle
+        )
+      ) : {};
+
       if ((vehicleBreakdown === undefined) || (Object.keys(vehicleBreakdown).length <= 1)) {
         this.props.clearOverview();
         this.props.clearFuelOverview();
       } else {
         this.props.setFleetOverviewData(vehicleBreakdown);
-        
+
         this.setState({ fuelOverviewIsLoading: true });
         this.props.fetchVehicleFuelStats(vehicle.id, nextProps.overviewRange)
           .then(() => this.setState({ fuelOverviewIsLoading: false }));
@@ -127,7 +130,7 @@ class DealerDashboard extends React.Component {
       .then(() => this.setState({ fuelOverviewIsLoading: false }));
     this.props.changeTimeRange(timeRange);
   }
-  
+
   renderPreloading() {
     return (
       <div className={styles.preloading}>

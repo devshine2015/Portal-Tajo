@@ -11,12 +11,12 @@ import styles from './styles.css';
 
 const TopBar = (props) => {
   let title = '';
-  if (props.route === '/' || props.route === '/operational') {
-    title = 'Operational';
-  } else if (props.route === '/history') {
-    title = 'Trip History';
+  if (props.route === '/' || props.route === '/map') {
+    title = 'Operational Map';
   } else if (props.route === '/overview') {
     title = 'Fleet Report';
+  } else if (props.route === '/fuelusage') {
+    title = 'Vehicle Fuel Usage';
   }
   const titleElement = title !== 'Fleet Report' ?
     (

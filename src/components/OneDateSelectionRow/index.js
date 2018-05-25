@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import moment from 'moment';
 import { makePeriodForTwoDays } from 'utils/dateTimeUtils';
 import { DateRangeWithButton } from 'components/OneDateRange';
 import styles from './styles.css';

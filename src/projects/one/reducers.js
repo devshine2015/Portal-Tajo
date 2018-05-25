@@ -13,12 +13,15 @@ import mapStateReducer from 'containers/Map/reducerAction';
 import sessionReducer from 'services/Session/reducer';
 import globalReducer from 'services/Global/reducer';
 import usersManagerReducer, { reducerKey as usersManagerReducerKey } from 'services/Users/reducer';
+import dealerReducer, { reducerKey as dealerReducerKey } from 'services/Dealer/reducer';
 import devicesReducer from 'services/Devices/reducer';
 import alertsSystemReducer from 'services/AlertsSystem/reducer';
 import execReportsReducer from 'screens/ExecReports/services/reducer';
 import mwaReducer from 'services/MWA/reducer';
 import fleetReportReducer from 'services/FleetReport/reducer';
 import routerReducer from '../utils/routerReducer';
+
+import fuelUsageReducer from '../../screens/OneFuelUsage/services/reducer';
 
 /**
  * Creates the main reducer with the asynchronously loaded ones
@@ -32,8 +35,10 @@ export default function createReducer(asyncReducers) {
     snackbar: snackbarReducer,
     fleet: fleetReducer,
     fleetReport: fleetReportReducer,
+    fuelUsage: fuelUsageReducer,
     chronicle: chronicleReducer,
     [usersManagerReducerKey]: usersManagerReducer,
+    [dealerReducerKey]: dealerReducer,
     gfEditor: gfEditorReducer,
     mapState: mapStateReducer,
     devices: devicesReducer,

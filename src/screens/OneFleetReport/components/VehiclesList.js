@@ -59,7 +59,7 @@ const VehiclesList = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   selectOverviewVehicle: (prevVehicle, nextVehicle) => {
     if (prevVehicle !== nextVehicle) {
       return dispatch(selectOverviewVehicle(nextVehicle));

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import Layout from 'components/Layout';
-import DemoPowerList from 'components/DemoPowerList';
 import TheMap from 'containers/DemoMap/MapContainer';
 import listTypes from 'components/OneInstancesList/types';
 import { ctxGetPowListTabType } from 'services/Global/reducers/contextReducer';
@@ -23,6 +22,7 @@ import { mapVehicleNameMaker } from 'containers/DemoMap/OnMapElements/VehicleNam
 import { mapGFMarkerMaker } from 'containers/DemoMap/OnMapElements/MapGF';
 import { mapMWAJobMarkerMaker } from 'containers/DemoMap/OnMapElements/MWAJobMarker';
 import { getMWAJobs } from 'services/MWA/reducer';
+import DemoPowerList from 'components/DemoPowerList';
 import OperationalList from './components/OperationalPowerList';
 
 

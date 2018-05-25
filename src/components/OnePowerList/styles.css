@@ -1,0 +1,29 @@
+.title {
+  color: #222222;
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1;
+  padding: 110px 0 22px;
+  margin: 0 26px;
+  border-bottom: solid 1px #ccc;
+}
+.subtitle {
+  color: #888;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 4px;
+  margin: 12px 26px 32px;
+}
+@media screen and (max-width: 1920px) {
+  .title {
+    font-size: 18px;
+    padding: 74px 0 12px;
+    margin: 0 16px;
+  }
+  .subtitle {
+    font-size: 14px;
+    margin: 10px 16px;
+    letter-spacing: 2px;
+  }
+}
