@@ -19,6 +19,11 @@ const menu = {
     path: 'fuelusage',
     nicename: 'Vehicle Fuel Usage',
   },
+  profile: {
+    name: 'profile',
+    path: 'profile',
+    nicename: '',
+  },
   // history: {
   //   name: 'history',
   //   path: 'history',
@@ -47,11 +52,6 @@ const menu = {
   // execReport: {
   //   name: 'exec_report',
   //   path: 'execreport',
-  //   nicename: '',
-  // },
-  // profile: {
-  //   name: 'profile',
-  //   path: 'profile',
   //   nicename: '',
   // },
   // alertsLogs: {
