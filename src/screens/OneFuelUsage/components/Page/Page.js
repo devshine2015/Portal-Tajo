@@ -22,9 +22,11 @@ import styles from './../styles.css';
 
 class Page extends React.Component {
   applyTimeRange = (timeRange) => {
-    this.setState({ loading: true });
-    this.props.fetchVehicleFuelReport(this.props.selectedVehicleId, timeRange);
-    this.props.changeTimeRange(timeRange);
+    if (this.props.selectedVehicleId !== '') {
+      this.setState({ loading: true });
+      this.props.fetchVehicleFuelReport(this.props.selectedVehicleId, timeRange);
+      this.props.changeTimeRange(timeRange);
+    }
   }
   render() {
     return (
